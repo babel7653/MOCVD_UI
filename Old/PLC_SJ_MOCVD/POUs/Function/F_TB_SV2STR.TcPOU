@@ -1,0 +1,39 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
+  <POU Name="F_TB_SV2STR" Id="{a9f17dcf-3769-4132-997d-cb34da53042b}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION F_TB_SV2STR : STRING
+VAR_INPUT
+	SV: REAL;
+END_VAR
+VAR
+	r1: REAL;
+	iSV: LINT;
+	str: STRING;
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[// SMC HEBC002-WA10
+// sv >= 0 -> '00010'
+// sv < 0 -> '-0010'
+r1 := SV * 10;
+iSV := REAL_TO_LINT(r1);
+IF iSV >= 0 THEN
+	str := LINT_TO_DECSTR(in:=iSV, iPrecision:=5);
+ELSE
+	str := CONCAT('', LINT_TO_DECSTR(in:=iSV, iPrecision:=4));	//CONCAT('-', LINT_TO_DECSTR(in:=iSV, iPrecision:=4));	
+END_IF
+F_TB_SV2STR := str;]]></ST>
+    </Implementation>
+    <LineIds Name="F_TB_SV2STR">
+      <LineId Id="11" Count="0" />
+      <LineId Id="28" Count="1" />
+      <LineId Id="12" Count="1" />
+      <LineId Id="22" Count="0" />
+      <LineId Id="26" Count="0" />
+      <LineId Id="23" Count="0" />
+      <LineId Id="27" Count="0" />
+      <LineId Id="24" Count="0" />
+      <LineId Id="7" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

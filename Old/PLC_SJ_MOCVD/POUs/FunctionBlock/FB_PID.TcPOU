@@ -1,0 +1,57 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
+  <POU Name="FB_PID" Id="{eac39148-27f9-4dc9-b7ba-ea36b1e4cdd2}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK FB_PID
+VAR_INPUT
+	bRun: BOOL := FALSE;
+	Kp: REAL;
+	Ki: REAL;
+	Kd: REAL;
+	DeltaT: REAL;
+    Pv: REAL;
+	Sv: REAL;
+END_VAR
+VAR_OUTPUT
+	control : REAL;
+    prev_control : REAL;
+	CtrlPercent : REAL;
+    powerOn : BOOL;
+END_VAR
+VAR
+	err : REAL;
+	prev_err : REAL;
+	I_err :	REAL;
+	D_err : REAL;
+	Kp_term : REAL;
+	Ki_term : REAL;
+	Kd_term : REAL;
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[IF bRun THEN
+	err:= Sv - Pv; 	(* 오차 = 목표치-현재값*)
+	Kp_term:= Kp *err;	(* P항 = Kp*오차  *)
+
+	I_err := I_err + err * DeltaT; (* 오차적분 += 오차 * dt  *)
+	Ki_term := Ki * I_err;	(*i항 = Ki * 오차적분*)
+
+	D_err := (err-prev_err) / DeltaT; (*오차미분 = (현재오차-이전오차)/dt*)
+	Kd_term := Kd * D_err; (*d항 =  Kd*오차미분*)
+
+	prev_err := err; (*현재 오차를 이전 오차로*)
+	control := Kp_term + Ki_term + Kd_term;(* 제어량 = p항 + i항 + d항*)
+
+	powerOn :=   prev_control < control;
+	CtrlPercent := (control - prev_control) / 100;
+	prev_control := control;
+ELSE
+	powerOn := FALSE;
+	CtrlPercent := prev_control := control := Kp_term := Ki_term := Kd_term := 0;
+END_IF;]]></ST>
+    </Implementation>
+    <LineIds Name="FB_PID">
+      <LineId Id="33" Count="18" />
+      <LineId Id="9" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

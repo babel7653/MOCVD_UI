@@ -1,0 +1,18 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
+  <POU Name="F_OPSTATE" Id="{e4a69484-b6cb-4c74-b304-d981704b0ea6}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION F_OPSTATE : BOOL
+VAR_INPUT
+	uStateIn: UINT;
+END_VAR
+VAR
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[F_OPSTATE := GETBIT32(inVal32 := uStateIn, bitNo := 3);]]></ST>
+    </Implementation>
+    <LineIds Name="F_OPSTATE">
+      <LineId Id="7" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

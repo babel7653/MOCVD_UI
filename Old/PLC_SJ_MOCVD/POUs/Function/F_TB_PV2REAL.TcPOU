@@ -1,0 +1,31 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
+  <POU Name="F_TB_PV2REAL" Id="{29079dae-059e-4bd8-b200-2aef2ca876c4}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION F_TB_PV2REAL : REAL
+VAR_INPUT
+	PvStr: STRING;
+END_VAR
+VAR
+	iPV: LINT;
+	r1: REAL;
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[// SMC HEBC002-WA10
+// sv >= 0 -> '00010'
+// sv < 0 -> '-0010'
+iPV := STRING_TO_LINT(PvStr);
+r1 := LINT_TO_REAL(iPV);
+F_TB_PV2REAL := r1 / 10;
+]]></ST>
+    </Implementation>
+    <LineIds Name="F_TB_PV2REAL">
+      <LineId Id="10" Count="0" />
+      <LineId Id="24" Count="0" />
+      <LineId Id="23" Count="0" />
+      <LineId Id="7" Count="0" />
+      <LineId Id="13" Count="1" />
+      <LineId Id="11" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

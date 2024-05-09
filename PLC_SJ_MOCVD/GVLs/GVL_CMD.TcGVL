@@ -1,0 +1,161 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
+  <GVL Name="GVL_CMD" Id="{2afc1db8-fe54-41af-ae6c-fb678da14042}">
+    <Declaration><![CDATA[//{attribute 'qualified_only'}
+VAR_GLOBAL
+
+//Address Test
+//B_B1 AT%MX127999.7: BOOL;	
+//B_B2 AT%MB127999: BYTE;	
+//B_B3 AT%MW63999: WORD;
+//B_B4 AT%QW63999: WORD;			
+//N_1	AT%MW29600: REAL;
+	
+//Excel GVL_CMD
+cm_TCAT_restart : BOOL;
+cm_RST : BOOL;
+cm_FC_stop : BOOL;
+cm_DOR_VAC : BOOL;
+cm_DOR_ATM : BOOL;
+cm_RCP_start : BOOL;
+cm_ROT_caliStart : BOOL;
+
+
+
+cm_RCP_pause : BOOL;
+cm_RCP_restart : BOOL;
+cm_RCP_skip : BOOL;
+cm_RCP_end : BOOL;
+cm_RCP_1step : BOOL;
+cm_RCP_safeStop : BOOL;
+cm_DO_TEST : BOOL;
+cm_MAX_save : BOOL;
+cm_US_save : BOOL;
+cm_AL_save : BOOL;
+cm_WN_save : BOOL;
+cm_ETC_save : BOOL;
+cm_EN_RAMP_save : BOOL;
+cm_MO_save : BOOL;
+cm_SOL1_save : BOOL;
+cm_SOL2_save : BOOL;
+cm_US1 : BOOL;
+cm_US2 : BOOL;
+cm_US3 : BOOL;
+cm_US4 : BOOL;
+cm_TV_open : BOOL;
+cm_TV_close : BOOL;
+cm_TV_run : BOOL;
+cm_TV_stop : BOOL;
+cm_TV_presMode : BOOL;
+cm_TV_posMode : BOOL;
+cm_ROT_jog : BOOL;
+cm_ROT_inch : BOOL;
+cm_ROT_pulseZero : BOOL;
+cm_BZ_UserStop : BOOL;
+
+cm_MAINT : BOOL;
+cm_DEBUG : BOOL;
+cm_IHT_AT : BOOL;
+
+cm_MAINT_off : BOOL;
+cm_V01 : BOOL;
+cm_V02 : BOOL;
+cm_V03 : BOOL;
+cm_V04 : BOOL;
+cm_V05 : BOOL;
+cm_V06 : BOOL;
+cm_V07 : BOOL;
+cm_V08 : BOOL;
+cm_V09 : BOOL;
+cm_V10 : BOOL;
+cm_V11 : BOOL;
+cm_V12 : BOOL;
+cm_V13 : BOOL;
+cm_V14 : BOOL;
+cm_V15 : BOOL;
+cm_V16 : BOOL;
+cm_V17 : BOOL;
+cm_V18 : BOOL;
+cm_V19 : BOOL;
+cm_V20 : BOOL;
+cm_V21 : BOOL;
+cm_V22 : BOOL;
+cm_V23 : BOOL;
+cm_V24 : BOOL;
+cm_V25 : BOOL;
+cm_V26 : BOOL;
+cm_V27 : BOOL;
+cm_V28 : BOOL;
+cm_V29 : BOOL;
+cm_V30 : BOOL;
+cm_V31 : BOOL;
+cm_V32 : BOOL;
+cm_V33_1 : BOOL;
+cm_V33_2 : BOOL;
+cm_V34 : BOOL;
+cm_V35 : BOOL;
+cm_V36 : BOOL;
+cm_V37 : BOOL;
+cm_V38 : BOOL;
+cm_V39 : BOOL;
+cm_V40 : BOOL;
+cm_V41 : BOOL;
+cm_V42 : BOOL;
+cm_V43 : BOOL;
+cm_V44 : BOOL;
+cm_V45 : BOOL;
+cm_V46 : BOOL;
+cm_V47 : BOOL;
+cm_V48 : BOOL;
+cm_V49 : BOOL;
+cm_V50 : BOOL;
+cm_V51 : BOOL;
+cm_V52 : BOOL;
+
+cm_RED : BOOL;
+cm_YE : BOOL;
+cm_GN : BOOL;
+cm_BU : BOOL;
+cm_WH : BOOL;
+cm_BZ : BOOL;
+cm_SH_up_ry : BOOL;
+cm_SH_dw_ry : BOOL;
+cm_IH : BOOL;
+cm_IH_rst : BOOL;
+cm_VP : BOOL;
+cm_VP_rst : BOOL;
+cm_SYS_off_lock : BOOL;
+cm_RC_lamp : BOOL;
+cm_GC_lamp : BOOL;
+cm_CC_lamp : BOOL;
+cm_IH_mc : BOOL;
+cm_TB_mc : BOOL;
+cm_VP_mc : BOOL;
+cm_LH_mc : BOOL;
+cm_ROT : BOOL;
+cm_ROT_break : BOOL;
+cm_ROT_rst : BOOL;
+cm_RST_led : BOOL;
+cm_DOR_VAC_led : BOOL;
+cm_DOR_ATM_led : BOOL;
+cm_SH_up_led : BOOL;
+cm_SH_dw_led : BOOL;
+cm_Y_29 : BOOL;
+cm_Y_30 : BOOL;
+cm_Y_31 : BOOL;
+cm_Y_32 : BOOL;
+
+
+cm_LH1_at : BOOL;
+cm_LH2_at : BOOL;
+cm_LH3_at : BOOL;
+cm_LH4_at : BOOL;
+cm_LH5_at : BOOL;
+cm_LH6_at : BOOL;
+cm_LH7_at : BOOL;
+cm_LH8_at : BOOL;
+
+
+END_VAR]]></Declaration>
+  </GVL>
+</TcPlcObject>

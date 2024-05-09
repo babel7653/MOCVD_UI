@@ -1,0 +1,55 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
+  <POU Name="F_LH_PV" Id="{8d640aea-0f44-43dd-af5a-e28d060ae9e6}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION F_LH_PV : REAL
+VAR_INPUT
+	hexPV: STRING;
+	nDecimal: INT := 0;
+END_VAR
+VAR
+	data: ARRAY[0..1] OF BYTE;
+	b1: BYTE;
+	cbData: UDINT;
+	ptPV: POINTER TO INT;
+	iPV: INT;
+	i: INT;
+	r1: REAL;
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[
+cbData := HEXSTR_TO_DATA(hexPV, ADR(data), SIZEOF(data));
+		
+//Swap
+b1 := data[0];
+data[0] := data[1];
+data[1] := b1;
+		
+ptPV := ADR(data);
+iPV := ptPV^;
+r1 := INT_TO_REAL(iPV);
+
+//Decimal
+FOR i := 0 TO nDecimal - 1 BY 1 DO
+	r1 := r1 / 10;
+END_FOR
+
+F_LH_PV := r1;]]></ST>
+    </Implementation>
+    <LineIds Name="F_LH_PV">
+      <LineId Id="27" Count="0" />
+      <LineId Id="14" Count="0" />
+      <LineId Id="25" Count="1" />
+      <LineId Id="21" Count="3" />
+      <LineId Id="16" Count="0" />
+      <LineId Id="7" Count="0" />
+      <LineId Id="29" Count="0" />
+      <LineId Id="39" Count="0" />
+      <LineId Id="32" Count="0" />
+      <LineId Id="31" Count="0" />
+      <LineId Id="34" Count="1" />
+      <LineId Id="38" Count="0" />
+      <LineId Id="37" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

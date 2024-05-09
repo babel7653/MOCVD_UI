@@ -1,0 +1,44 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
+  <POU Name="F_LH_SV" Id="{64045691-07f5-48f9-8321-3c4d0796b468}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION F_LH_SV : STRING
+VAR_INPUT
+	SV: REAL;
+	nDecimal: INT := 0;
+END_VAR
+VAR
+	iPV: INT;
+	wPV: WORD;
+	i: INT;
+	r1: REAL;
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[
+r1 := SV;
+
+//Decimal
+FOR i := 0 TO nDecimal - 1 BY 1 DO
+	r1 := r1 * 10;
+END_FOR
+
+iPV := REAL_TO_INT(r1);
+wPV := INT_TO_WORD(iPV);
+
+F_LH_SV := WORD_TO_HEXSTR(in:= wPV, iPrecision:= 4, bLoCase:= FALSE);
+]]></ST>
+    </Implementation>
+    <LineIds Name="F_LH_SV">
+      <LineId Id="69" Count="0" />
+      <LineId Id="68" Count="0" />
+      <LineId Id="71" Count="3" />
+      <LineId Id="70" Count="0" />
+      <LineId Id="77" Count="0" />
+      <LineId Id="76" Count="0" />
+      <LineId Id="79" Count="0" />
+      <LineId Id="84" Count="0" />
+      <LineId Id="83" Count="0" />
+      <LineId Id="82" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

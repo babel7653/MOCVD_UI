@@ -1,0 +1,390 @@
+﻿<Window x:Class="SapphireXE_App.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d"
+        Title="Sapphire XE" Height="1080" Width="1920"
+        WindowStartupLocation="CenterScreen"
+        ResizeMode="NoResize" WindowState="Normal">
+    <Border CornerRadius="8" Background="{DynamicResource PrimaryBackgroundColor}">
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="300"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width ="300"/>
+            </Grid.ColumnDefinitions>
+            <!-- Start: GridColumn Left -->
+            <Grid Grid.Column="0" x:Name="gridControlRight">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="240"/>
+                </Grid.RowDefinitions>
+                <Border Grid.Row="0" Background="{DynamicResource SideBackgroundColor}">
+                </Border>
+                <Border Grid.Row="1" Background="{DynamicResource BottomBackgroundColor}">
+                </Border>
+            </Grid>
+            <!-- Start: GridColumn Center -->
+            <Grid  Grid.Column="1" x:Name="gridControlCenter">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="240"/>
+                </Grid.RowDefinitions>
+                <Border Grid.Row="0" >
+                    <TabControl x:Name="tabControl" HorizontalAlignment="Stretch" >
+                        <TabItem Header="System Control" Width="120">
+                            <Canvas Background="{DynamicResource PrimaryBackgroundColor}">
+                                <!-- Drawing Nitrogen Gas Line -->
+                                <Polyline Points="196,80 196,93 90,93 90,502 1000,502 1000,522" Stroke="Lime" StrokeThickness="3" />
+                                <Line X1="0" Y1="0" X2="0" Y2="20" Stroke="Lime" StrokeThickness="3" Canvas.Left="300" Canvas.Top="502" />
+                                <Line X1="0" Y1="0" X2="0" Y2="20" Stroke="Lime" StrokeThickness="3" Canvas.Left="440" Canvas.Top="502" />
+                                <Line X1="0" Y1="0" X2="0" Y2="20" Stroke="Lime" StrokeThickness="3" Canvas.Left="580" Canvas.Top="502" />
+                                <Line X1="0" Y1="0" X2="0" Y2="20" Stroke="Lime" StrokeThickness="3" Canvas.Left="720" Canvas.Top="502" />
+                                <Line X1="0" Y1="0" X2="0" Y2="20" Stroke="Lime" StrokeThickness="3" Canvas.Left="860" Canvas.Top="502" />
+
+                                <Line X1="0" Y1="0" X2="20" Y2="0" Stroke="Lime" StrokeThickness="3" Canvas.Left="90" Canvas.Top="115" />
+                                <Line X1="0" Y1="0" X2="20" Y2="0" Stroke="Lime" StrokeThickness="3" Canvas.Left="90" Canvas.Top="300" />
+                                <!-- Drawing Hydrogen Gas Line -->
+                                <Polyline Points="70, 80 70, 490 980, 490 980,522" Stroke="Red" StrokeThickness="3" />
+                                <Line X1="0" Y1="0" X2="0" Y2="32" Stroke="Red" StrokeThickness="3" Canvas.Left="280" Canvas.Top="490" />
+                                <Line X1="0" Y1="0" X2="0" Y2="32" Stroke="Red" StrokeThickness="3" Canvas.Left="420" Canvas.Top="490" />
+                                <Line X1="0" Y1="0" X2="0" Y2="32" Stroke="Red" StrokeThickness="3" Canvas.Left="560" Canvas.Top="490" />
+                                <Line X1="0" Y1="0" X2="0" Y2="32" Stroke="Red" StrokeThickness="3" Canvas.Left="700" Canvas.Top="490" />
+                                <Line X1="0" Y1="0" X2="0" Y2="32" Stroke="Red" StrokeThickness="3" Canvas.Left="840" Canvas.Top="490" />
+
+                                <Line X1="0" Y1="0" X2="40" Y2="0" Stroke="Red" StrokeThickness="3" Canvas.Left="70" Canvas.Top="135" />
+                                <Line X1="0" Y1="0" X2="40" Y2="0" Stroke="Red" StrokeThickness="3" Canvas.Left="70" Canvas.Top="320" />
+                                <!-- Drawing Ammonia Gas Line -->
+                                <Line X1="320" Y1="80" X2="320" Y2="126" Stroke="Yellow" StrokeThickness="3" />
+                                <!-- Drawing Silane Gas Line -->
+                                <Line X1="684" Y1="80" X2="684" Y2="126" Stroke="Orange" StrokeThickness="3" />
+                                <!-- Drawing Process Gas Line -->
+                                <Polyline Points="132,115 664 115 664, 214" Stroke="Magenta" StrokeThickness="3" />
+                                <Line X1="0" Y1="0" X2="0" Y2="143" Stroke="Magenta" StrokeThickness="3" Canvas.Left="300" Canvas.Top="115" />
+                                <Line X1="0" Y1="0" X2="0" Y2="143" Stroke="Magenta" StrokeThickness="3" Canvas.Left="580" Canvas.Top="115" />
+                                <Polyline Points="300, 203 440, 203 440, 258" Stroke="Magenta" StrokeThickness="3" />
+                                <Line X1="580" Y1="203" X2="664" Y2="203" Stroke="Magenta" StrokeThickness="3" />
+                                <Line X1="132" Y1="300" X2="182" Y2="300" Stroke="Magenta" StrokeThickness="3" />
+                                <Line X1="160" Y1="322" X2="1065" Y2="322" Stroke="Magenta" StrokeThickness="3" />
+                                <Polyline Points="160, 344 750, 344 750, 242 1060, 242" Stroke="Magenta" StrokeThickness="3" />
+                                <Polyline Points="750, 270 1100, 270 1100, 260" Stroke="Magenta" StrokeThickness="3" />
+                                <Line X1="160" Y1="366" X2="1065" Y2="366" Stroke="Magenta" StrokeThickness="3" />
+                                <Line X1="160" Y1="388" X2="182" Y2="388" Stroke="Magenta" StrokeThickness="3" />
+                                <Line X1="160" Y1="300" X2="160" Y2="388" Stroke="Magenta" StrokeThickness="3" />
+
+                                <Line X1="0" Y1="0" X2="0" Y2="42" Stroke="Magenta" StrokeThickness="3" Canvas.Left="320" Canvas.Top="280"/>
+                                <Line X1="0" Y1="0" X2="0" Y2="42" Stroke="Magenta" StrokeThickness="3" Canvas.Left="460" Canvas.Top="280"/>
+                                <Line X1="0" Y1="0" X2="0" Y2="42" Stroke="Magenta" StrokeThickness="3" Canvas.Left="600" Canvas.Top="280"/>
+
+                                <Line X1="0" Y1="0" X2="0" Y2="42" Stroke="Magenta" StrokeThickness="3" Canvas.Left="300" Canvas.Top="366"/>
+                                <Line X1="0" Y1="0" X2="0" Y2="42" Stroke="Magenta" StrokeThickness="3" Canvas.Left="440" Canvas.Top="366"/>
+                                <Line X1="0" Y1="0" X2="0" Y2="42" Stroke="Magenta" StrokeThickness="3" Canvas.Left="580" Canvas.Top="366"/>
+                                <Line X1="0" Y1="0" X2="0" Y2="42" Stroke="Magenta" StrokeThickness="3" Canvas.Left="720" Canvas.Top="366"/>
+                                <Line X1="0" Y1="0" X2="0" Y2="42" Stroke="Magenta" StrokeThickness="3" Canvas.Left="860" Canvas.Top="366"/>
+                                <Line X1="0" Y1="0" X2="0" Y2="42" Stroke="Magenta" StrokeThickness="3" Canvas.Left="1000" Canvas.Top="366"/>
+
+                                <Line X1="0" Y1="0" X2="0" Y2="160" Stroke="Magenta" StrokeThickness="3" Canvas.Left="300" Canvas.Top="544"/>
+                                <Line X1="0" Y1="0" X2="0" Y2="274" Stroke="Magenta" StrokeThickness="3" Canvas.Left="320" Canvas.Top="430"/>
+                                <Line X1="0" Y1="0" X2="0" Y2="160" Stroke="Magenta" StrokeThickness="3" Canvas.Left="440" Canvas.Top="544"/>
+                                <Line X1="0" Y1="0" X2="0" Y2="274" Stroke="Magenta" StrokeThickness="3" Canvas.Left="460" Canvas.Top="430"/>
+                                <Line X1="0" Y1="0" X2="0" Y2="160" Stroke="Magenta" StrokeThickness="3" Canvas.Left="580" Canvas.Top="544"/>
+                                <Line X1="0" Y1="0" X2="0" Y2="274" Stroke="Magenta" StrokeThickness="3" Canvas.Left="600" Canvas.Top="430"/>
+                                <Line X1="0" Y1="0" X2="0" Y2="160" Stroke="Magenta" StrokeThickness="3" Canvas.Left="720" Canvas.Top="544"/>
+                                <Line X1="0" Y1="0" X2="0" Y2="274" Stroke="Magenta" StrokeThickness="3" Canvas.Left="740" Canvas.Top="430"/>
+                                <Line X1="0" Y1="0" X2="0" Y2="160" Stroke="Magenta" StrokeThickness="3" Canvas.Left="860" Canvas.Top="544"/>
+                                <Line X1="0" Y1="0" X2="0" Y2="274" Stroke="Magenta" StrokeThickness="3" Canvas.Left="880" Canvas.Top="430"/>
+                                <Line X1="0" Y1="0" X2="0" Y2="160" Stroke="Magenta" StrokeThickness="3" Canvas.Left="1000" Canvas.Top="544"/>
+                                <Line X1="0" Y1="0" X2="0" Y2="274" Stroke="Magenta" StrokeThickness="3" Canvas.Left="1020" Canvas.Top="430"/>
+
+                                <!-- Drawing Vent Gas Line -->
+                                <Polyline Points="236 300 1120, 300 1120, 450 1160, 450" Stroke="Cyan" StrokeThickness="3" />
+                                <Line X1="236" Y1="388" X2="1120" Y2="388" Stroke="Cyan" StrokeThickness="3" />
+                                <Line X1="0" Y1="0" X2="0" Y2="20" Stroke="Cyan" StrokeThickness="3" Canvas.Left="300" Canvas.Top="280"/>
+                                <Line X1="0" Y1="0" X2="0" Y2="20" Stroke="Cyan" StrokeThickness="3" Canvas.Left="440" Canvas.Top="280"/>
+                                <Line X1="0" Y1="0" X2="0" Y2="20" Stroke="Cyan" StrokeThickness="3" Canvas.Left="580" Canvas.Top="280"/>
+                                <Line X1="664" Y1="236" X2="664" Y2="300" Stroke="Cyan" StrokeThickness="3" />
+
+                                <Line X1="0" Y1="0" X2="0" Y2="20" Stroke="Cyan" StrokeThickness="3" Canvas.Left="320" Canvas.Top="388"/>
+                                <Line X1="0" Y1="0" X2="0" Y2="20" Stroke="Cyan" StrokeThickness="3" Canvas.Left="460" Canvas.Top="388"/>
+                                <Line X1="0" Y1="0" X2="0" Y2="20" Stroke="Cyan" StrokeThickness="3" Canvas.Left="600" Canvas.Top="388"/>
+                                <Line X1="0" Y1="0" X2="0" Y2="20" Stroke="Cyan" StrokeThickness="3" Canvas.Left="740" Canvas.Top="388"/>
+                                <Line X1="0" Y1="0" X2="0" Y2="20" Stroke="Cyan" StrokeThickness="3" Canvas.Left="880" Canvas.Top="388"/>
+                                <Line X1="0" Y1="0" X2="0" Y2="20" Stroke="Cyan" StrokeThickness="3" Canvas.Left="1020" Canvas.Top="388"/>
+                                <!-- Drawing Leak Test Gas Line -->
+                                <Polyline Points="410, 93 410, 26 50, 26 50, 760 1130,760 1130, 665 1160, 665" Stroke="RoyalBlue" StrokeThickness="3" />
+                                <Line X1="328" Y1="93" X2="676" Y2="93" Stroke="RoyalBlue" StrokeThickness="3" />
+                                <Polyline Points="50, 522 160, 522 160, 510" Stroke="RoyalBlue" StrokeThickness="3" />
+                                <Line X1="120" Y1="522" X2="120" Y2="498" Stroke="RoyalBlue" StrokeThickness="3" />
+
+                                <Polyline Points="38, 0 0, 0 0, 70" Stroke="RoyalBlue" StrokeThickness="3"  Canvas.Left="254" Canvas.Top="690"/>
+                                <Polyline Points="0, 0 38, 0 38, 70" Stroke="RoyalBlue" StrokeThickness="3"  Canvas.Left="328" Canvas.Top="690"/>
+                                <Polyline Points="38, 0 0, 0 0, 70" Stroke="RoyalBlue" StrokeThickness="3"  Canvas.Left="394" Canvas.Top="690"/>
+                                <Polyline Points="0, 0 38, 0 38, 70" Stroke="RoyalBlue" StrokeThickness="3"  Canvas.Left="468" Canvas.Top="690"/>
+                                <Polyline Points="38, 0 0, 0 0, 70" Stroke="RoyalBlue" StrokeThickness="3"  Canvas.Left="534" Canvas.Top="690"/>
+                                <Polyline Points="0, 0 38, 0 38, 70" Stroke="RoyalBlue" StrokeThickness="3"  Canvas.Left="608" Canvas.Top="690"/>
+                                <Polyline Points="38, 0 0, 0 0, 70" Stroke="RoyalBlue" StrokeThickness="3"  Canvas.Left="674" Canvas.Top="690"/>
+                                <Polyline Points="0, 0 38, 0 38, 70" Stroke="RoyalBlue" StrokeThickness="3"  Canvas.Left="748" Canvas.Top="690"/>
+                                <Polyline Points="38, 0 0, 0 0, 70" Stroke="RoyalBlue" StrokeThickness="3"  Canvas.Left="814" Canvas.Top="690"/>
+                                <Polyline Points="0, 0 38, 0 38, 70" Stroke="RoyalBlue" StrokeThickness="3"  Canvas.Left="888" Canvas.Top="690"/>
+                                <Polyline Points="38, 0 0, 0 0, 70" Stroke="RoyalBlue" StrokeThickness="3"  Canvas.Left="954" Canvas.Top="690"/>
+                                <Polyline Points="0, 0 38, 0 38, 70" Stroke="RoyalBlue" StrokeThickness="3"  Canvas.Left="1028" Canvas.Top="690"/>
+
+                                <!-- Drawing Exhaust Gas Line -->
+                                <Line X1="1100" Y1="430" X2="1100" Y2="649" Stroke="Cyan" StrokeThickness="3" />
+                                <Line X1="1160" Y1="260" X2="1160" Y2="704" Stroke="Cyan" StrokeThickness="6" />
+                                <Line X1="1100" Y1="577" X2="1160" Y2="577" Stroke="Cyan" StrokeThickness="3" />
+                                <Polyline Points="1240 726 1260, 726 1260, 681" Stroke="Cyan" StrokeThickness="3" />
+                                <!-- Drawing DOR Gas Line -->
+                                <Polyline Points="1190, 130 1240, 130 1240,163" Stroke="Cyan" StrokeThickness="3" />
+                                <Line X1="1250" Y1="185" X2="1250" Y2="285" Stroke="Cyan" StrokeThickness="3" />
+                                <Line X1="1160" Y1="665" X2="1179" Y2="665" Stroke="Cyan" StrokeThickness="3" />
+
+                                <!-- Drawing Chamber -->
+                                <Rectangle Width="120" Height="20"
+                                           Stroke="MidnightBlue" StrokeThickness="1"
+                                           Canvas.Left="1070" Canvas.Top="120">
+                                    <Rectangle.Fill>
+                                        <LinearGradientBrush StartPoint="0, 0.5" EndPoint="1, 0.5">
+                                            <GradientStop Color="MidnightBlue" Offset="0.0" />
+                                            <GradientStop Color="LightBlue" Offset="0.5"/>
+                                            <GradientStop Color="MidnightBlue" Offset="1"/>
+                                        </LinearGradientBrush>
+                                    </Rectangle.Fill>
+                                </Rectangle>
+
+                                <Line X1="1070" Y1="130" X2="1190" Y2="130" Stroke="MidnightBlue" StrokeThickness="1" />
+
+                                <Rectangle Width="100" Height="100"
+                                        Stroke="MidnightBlue" StrokeThickness="1"
+                                        Canvas.Left="1080" Canvas.Top="140">
+                                    <Rectangle.Fill>
+                                        <LinearGradientBrush StartPoint="0, 0.5" EndPoint="1, 0.5">
+                                            <GradientStop Color="MidnightBlue" Offset="0.0" />
+                                            <GradientStop Color="LightBlue" Offset="0.5"/>
+                                            <GradientStop Color="MidnightBlue" Offset="1"/>
+                                        </LinearGradientBrush>
+                                    </Rectangle.Fill>
+                                </Rectangle>
+
+                                <Rectangle Width="140" Height="20"
+                                    Stroke="MidnightBlue" StrokeThickness="1" 
+                                    Canvas.Left="1060" Canvas.Top="240">
+                                    <Rectangle.Fill>
+                                        <LinearGradientBrush StartPoint="0, 0.5" EndPoint="1, 0.5">
+                                            <GradientStop Color="MidnightBlue" Offset="0.0" />
+                                            <GradientStop Color="LightBlue" Offset="0.5"/>
+                                            <GradientStop Color="MidnightBlue" Offset="1"/>
+                                        </LinearGradientBrush>
+                                    </Rectangle.Fill>
+                                </Rectangle>
+
+                                <Line X1="1020" Y1="260" X2="1290" Y2="260" Stroke="LightBlue" StrokeThickness="8" />
+
+                                <!-- Button for Valve Control -->
+                                <Button x:Name="HydridCarrirerChange" Content="Button" Canvas.Left="110" Canvas.Top="145" Width="40" Height="22" Click="HydridCarrirerChange_Click">
+                                    <Button.RenderTransform>
+                                        <RotateTransform Angle="270"/>
+                                    </Button.RenderTransform>
+
+                                </Button>
+
+                                <Button x:Name="MOCarrierChange" Content="Button" Canvas.Left="110" Canvas.Top="330" Width="40" Height="22">
+                                    <Button.RenderTransform>
+                                        <RotateTransform Angle="270"/>
+                                    </Button.RenderTransform>
+                                </Button>
+
+                                <Button x:Name="SourceAmmoniaChange" Content="Button" Canvas.Left="290" Canvas.Top="126" Width="40" Height="22">
+                                </Button>
+
+                                <Button x:Name="SourceSilaneChange" Content="Button" Canvas.Left="654" Canvas.Top="126" Width="40" Height="22">
+                                </Button>
+
+                                <Button x:Name="ManifoldHyd1Run" Content="Button" Canvas.Left="290" Canvas.Top="258" Width="40" Height="22">
+                                </Button>
+                                <Button x:Name="ManifoldHyd2Run" Content="Button" Canvas.Left="430" Canvas.Top="258" Width="40" Height="22">
+                                </Button>
+                                <Button x:Name="ManifoldHyd3Run" Content="Button" Canvas.Left="570" Canvas.Top="258" Width="40" Height="22">
+                                </Button>
+
+                                <Button x:Name="ManifoldMO1Run" Content="Button" Canvas.Left="290" Canvas.Top="408" Width="40" Height="22">
+                                </Button>
+                                <Button x:Name="ManifoldMO2Run" Content="Button" Canvas.Left="430" Canvas.Top="408" Width="40" Height="22">
+                                </Button>
+                                <Button x:Name="ManifoldMO3Run" Content="Button" Canvas.Left="570" Canvas.Top="408" Width="40" Height="22">
+                                </Button>
+                                <Button x:Name="ManifoldMO4Run" Content="Button" Canvas.Left="710" Canvas.Top="408" Width="40" Height="22">
+                                </Button>
+                                <Button x:Name="ManifoldMO5Run" Content="Button" Canvas.Left="850" Canvas.Top="408" Width="40" Height="22">
+                                </Button>
+                                <Button x:Name="ManifoldMO6Run" Content="Button" Canvas.Left="990" Canvas.Top="408" Width="40" Height="22">
+                                </Button>
+
+                                <Button x:Name="BubblerCarrier1Change" Content="Button" Canvas.Left="270" Canvas.Top="522" Width="40" Height="22">
+                                </Button>
+                                <Button x:Name="BubblerCarrier2Change" Content="Button" Canvas.Left="410" Canvas.Top="522" Width="40" Height="22">
+                                </Button>
+                                <Button x:Name="BubblerCarrier3Change" Content="Button" Canvas.Left="550" Canvas.Top="522" Width="40" Height="22">
+                                </Button>
+                                <Button x:Name="BubblerCarrier4Change" Content="Button" Canvas.Left="690" Canvas.Top="522" Width="40" Height="22">
+                                </Button>
+                                <Button x:Name="BubblerCarrier5Change" Content="Button" Canvas.Left="830" Canvas.Top="522" Width="40" Height="22">
+                                </Button>
+                                <Button x:Name="BubblerCarrier6Change" Content="Button" Canvas.Left="970" Canvas.Top="522" Width="40" Height="22">
+                                </Button>
+
+                                <Button x:Name="Bubbler1Bypass" Content="Button" Canvas.Left="290" Canvas.Top="654" Width="40" Height="22">
+                                </Button>
+                                <Button x:Name="Bubbler2Bypass" Content="Button" Canvas.Left="430" Canvas.Top="654" Width="40" Height="22">
+                                </Button>
+                                <Button x:Name="Bubbler3Bypass" Content="Button" Canvas.Left="570" Canvas.Top="654" Width="40" Height="22">
+                                </Button>
+                                <Button x:Name="Bubbler4Bypass" Content="Button" Canvas.Left="710" Canvas.Top="654" Width="40" Height="22">
+                                </Button>
+                                <Button x:Name="Bubbler5Bypass" Content="Button" Canvas.Left="850" Canvas.Top="654" Width="40" Height="22">
+                                </Button>
+                                <Button x:Name="Bubbler6Bypass" Content="Button" Canvas.Left="990" Canvas.Top="654" Width="40" Height="22">
+                                </Button>
+
+                                <Button x:Name="DORVacuum" Content="Button" Canvas.Left="1220" Canvas.Top="163" Width="40" Height="22">
+                                </Button>
+                                <Button x:Name="VentToScrubber" Content="Button" Canvas.Left="1090" Canvas.Top="408" Width="40" Height="22">
+                                </Button>
+
+                                <!-- Button for Leak Test Valve -->
+                                <Button x:Name="LeakTestSilane" Content="Button" Canvas.Left="676" Canvas.Top="100" Width="14" Height="10">
+                                    <Button.RenderTransform>
+                                        <RotateTransform Angle="270"/>
+                                    </Button.RenderTransform>
+                                </Button>
+                                <Button x:Name="LeakTestAmmonia" Content="Button" Canvas.Left="318" Canvas.Top="100" Width="14" Height="10">
+                                    <Button.RenderTransform>
+                                        <RotateTransform Angle="270"/>
+                                    </Button.RenderTransform>
+                                </Button>
+                                <Button x:Name="LeakTestNitrogen" Content="Button" Canvas.Left="113" Canvas.Top="488" Width="14" Height="10">
+                                </Button>
+                                <Button x:Name="LeakTestHydrogen" Content="Button" Canvas.Left="153" Canvas.Top="500" Width="14" Height="10">
+                                </Button>
+
+                                <Button x:Name="LeakTestBubbler1In" Content="Button" Canvas.Left="302" Canvas.Top="683" Width="14" Height="10">
+                                    <Button.RenderTransform>
+                                        <RotateTransform Angle="90"/>
+                                    </Button.RenderTransform>
+                                </Button>
+                                <Button x:Name="LeakTestBubbler1Out" Content="Button" Canvas.Left="318" Canvas.Top="697" Width="14" Height="10">
+                                    <Button.RenderTransform>
+                                        <RotateTransform Angle="270"/>
+                                    </Button.RenderTransform>
+                                </Button>
+                                <Button x:Name="LeakTestBubbler2In" Content="Button" Canvas.Left="442" Canvas.Top="683" Width="14" Height="10">
+                                    <Button.RenderTransform>
+                                        <RotateTransform Angle="90"/>
+                                    </Button.RenderTransform>
+                                </Button>
+                                <Button x:Name="LeakTestBubbler2Out" Content="Button" Canvas.Left="458" Canvas.Top="697" Width="14" Height="10">
+                                    <Button.RenderTransform>
+                                        <RotateTransform Angle="270"/>
+                                    </Button.RenderTransform>
+                                </Button>
+                                <Button x:Name="LeakTestBubbler3In" Content="Button" Canvas.Left="582" Canvas.Top="683" Width="14" Height="10">
+                                    <Button.RenderTransform>
+                                        <RotateTransform Angle="90"/>
+                                    </Button.RenderTransform>
+                                </Button>
+                                <Button x:Name="LeakTestBubbler3Out" Content="Button" Canvas.Left="598" Canvas.Top="697" Width="14" Height="10">
+                                    <Button.RenderTransform>
+                                        <RotateTransform Angle="270"/>
+                                    </Button.RenderTransform>
+                                </Button>
+                                <Button x:Name="LeakTestBubbler4In" Content="Button" Canvas.Left="722" Canvas.Top="683" Width="14" Height="10">
+                                    <Button.RenderTransform>
+                                        <RotateTransform Angle="90"/>
+                                    </Button.RenderTransform>
+                                </Button>
+                                <Button x:Name="LeakTestBubbler4Out" Content="Button" Canvas.Left="738" Canvas.Top="697" Width="14" Height="10">
+                                    <Button.RenderTransform>
+                                        <RotateTransform Angle="270"/>
+                                    </Button.RenderTransform>
+                                </Button>
+                                <Button x:Name="LeakTestBubbler5In" Content="Button" Canvas.Left="862" Canvas.Top="683" Width="14" Height="10">
+                                    <Button.RenderTransform>
+                                        <RotateTransform Angle="90"/>
+                                    </Button.RenderTransform>
+                                </Button>
+                                <Button x:Name="LeakTestBubbler5Out" Content="Button" Canvas.Left="878" Canvas.Top="697" Width="14" Height="10">
+                                    <Button.RenderTransform>
+                                        <RotateTransform Angle="270"/>
+                                    </Button.RenderTransform>
+                                </Button>
+                                <Button x:Name="LeakTestBubbler6In" Content="Button" Canvas.Left="1002" Canvas.Top="683" Width="14" Height="10">
+                                    <Button.RenderTransform>
+                                        <RotateTransform Angle="90"/>
+                                    </Button.RenderTransform>
+                                </Button>
+                                <Button x:Name="LeakTestBubbler6Out" Content="Button" Canvas.Left="1018" Canvas.Top="697" Width="14" Height="10">
+                                    <Button.RenderTransform>
+                                        <RotateTransform Angle="270"/>
+                                    </Button.RenderTransform>
+                                </Button>
+
+                                <Button x:Name="LeakVacuumOpen" Content="Button" Canvas.Left="1091" Canvas.Top="753" Width="14" Height="10">
+                                    <Button.RenderTransform>
+                                        <RotateTransform Angle="90"/>
+                                    </Button.RenderTransform>
+                                </Button>
+
+                                <Button x:Name="OverPressureOpen" Content="Button" Canvas.Left="1108" Canvas.Top="570" Width="14" Height="10">
+                                    <Button.RenderTransform>
+                                        <RotateTransform Angle="90"/>
+                                    </Button.RenderTransform>
+                                </Button>
+
+                                <Button x:Name="ThrottleValveControl" Content="Button" Canvas.Left="1140" Canvas.Top="610" Width="40" Height="22">
+                                </Button>
+                                <StackPanel Background="Black" Canvas.Left="100" Canvas.Top="50" Width="124">
+                                    <Label Foreground="White">
+                                        Text
+                                    </Label>
+                                    <RadioButton Background="Green">
+                                        
+                                    </RadioButton>
+                                </StackPanel>
+                         
+                            </Canvas>
+
+                        </TabItem>
+                        <TabItem Header="Recipe Control" Width="120">
+                            <Canvas Background="DimGray">
+
+                            </Canvas>
+                        </TabItem>
+                        <TabItem Header="Report" Width="120">
+                            <Canvas Background="DarkSlateGray">
+
+                            </Canvas>
+
+                        </TabItem>
+                        <TabItem Header="Setting" Width="120">
+                            <Grid Background="#FFE5E5E5"/>
+                        </TabItem>
+                    </TabControl>
+                </Border>
+                <Border Grid.Row="1" Background="{DynamicResource BottomBackgroundColor}">
+                </Border>
+            </Grid>
+            <!-- Start: GridColumn Right -->
+            <Grid Grid.Column="2" x:Name="gridMenuRight">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="240"/>
+                </Grid.RowDefinitions>
+                <Border Grid.Row="0" Background="{DynamicResource SideBackgroundColor}">
+                </Border>
+                <Border Grid.Row="1" Background="{DynamicResource BottomBackgroundColor}">
+                </Border>
+            </Grid>
+        </Grid>
+    </Border>
+</Window>

@@ -14,7 +14,7 @@
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width ="300"/>
             </Grid.ColumnDefinitions>
-            <!-- Start: GridColumn Left -->
+        <!-- Start: GridColumn Left -->
             <Grid Grid.Column="0" x:Name="gridControlRight">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="*"/>
@@ -24,8 +24,190 @@
                 </Border>
                 <Border Grid.Row="1" Background="{DynamicResource BottomBackgroundColor}">
                 </Border>
+                <StackPanel>
+                <!-- Machine Information -->
+                    <StackPanel Height="160">
+                        <TextBlock Foreground="DarkBlue" FontSize="14"  Margin="10,20,0,2">
+                            Machine Name : Marvel 180R
+                        </TextBlock>
+                        <TextBlock Foreground="DarkBlue" FontSize="14"  Margin="10,2,0,2">
+                            Application : GaN
+                        </TextBlock>
+                        <TextBlock Foreground="DarkBlue" FontSize="14"  Margin="10,2,0,2">
+                            System ID : 2024
+                        </TextBlock>
+                        <TextBlock Foreground="DarkBlue" FontSize="14"  Margin="10,2,0,2">
+                            System Mode : Ready
+                        </TextBlock>
+                        <TextBlock Foreground="DarkBlue" FontSize="14"  Margin="10,2,0,2">
+                            PLC Address : 192.168.1.1
+                        </TextBlock>
+                    </StackPanel>
+                    <!-- Heater Control Button -->
+                    <StackPanel Height="100">
+                        <TextBlock Foreground="DarkBlue" FontSize="14" HorizontalAlignment="Center" Margin="2">
+                            <Bold>Heater Control</Bold></TextBlock>
+                        <Line X1="5" Y1="0" X2="295" Y2="0" Stroke="DarkBlue" StrokeThickness="2"/>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition />
+                                <ColumnDefinition />
+                                <ColumnDefinition />
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition/>
+                                <RowDefinition/>
+                                <RowDefinition/>
+                            </Grid.RowDefinitions>
+                            <TextBlock FontSize="14" Grid.Column="0" Grid.Row="0" HorizontalAlignment="Center" Text="SP" Margin="2"/>
+                            <TextBlock FontSize="14" Grid.Column="1" Grid.Row="0" HorizontalAlignment="Center" Text="Temp." Margin="2"/>
+                            <TextBlock FontSize="14" Grid.Column="2" Grid.Row="0" HorizontalAlignment="Center" Text="Power(%)" Margin="2"/>
+                            <TextBox  Width="80" FontSize="14" Grid.Column="0" Grid.Row="1" HorizontalAlignment="Center">
+                                1,000
+                            </TextBox>
+                            <TextBox Width="80" FontSize="14" Grid.Column="1" Grid.Row="1" HorizontalAlignment="Center" Margin="2">
+                                1,000
+                            </TextBox>
+                            <TextBox Width="80" FontSize="14" Grid.Column="2" Grid.Row="1" HorizontalAlignment="Center" Margin="2">
+                                30
+                            </TextBox>
+                            <TextBlock FontSize="14" Grid.ColumnSpan="2" Grid.Row="2">Heater Control Mode : </TextBlock>
+                            <Button FontSize="14" Grid.Column="2" Grid.Row="2" Margin="5,2,10,2">Power Rate</Button>
+                        </Grid>
+                    </StackPanel>
+                    <!-- Pressure Control Button -->
+                    <StackPanel Height="100">
+                        <TextBlock Foreground="DarkBlue" FontSize="14" HorizontalAlignment="Center" Margin="2">
+                            <Bold>Pressure Control</Bold></TextBlock>
+                        <Line X1="5" Y1="0" X2="295" Y2="0" Stroke="DarkBlue" StrokeThickness="2"/>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition />
+                                <ColumnDefinition />
+                                <ColumnDefinition />
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition/>
+                                <RowDefinition/>
+                                <RowDefinition/>
+                            </Grid.RowDefinitions>
+                            <TextBlock FontSize="14" Grid.Column="0" Grid.Row="0" HorizontalAlignment="Center" Text="SP" Margin="2"/>
+                            <TextBlock FontSize="14" Grid.Column="1" Grid.Row="0" HorizontalAlignment="Center" Text="Pressure" Margin="2"/>
+                            <TextBlock FontSize="14" Grid.Column="2" Grid.Row="0" HorizontalAlignment="Center" Text="Position(%)" Margin="2"/>
+                            <TextBox  Width="80" FontSize="14" Grid.Column="0" Grid.Row="1" HorizontalAlignment="Center">
+                                760
+                            </TextBox>
+                            <TextBox Width="80" FontSize="14" Grid.Column="1" Grid.Row="1" HorizontalAlignment="Center" Margin="2">
+                                760
+                            </TextBox>
+                            <TextBox Width="80" FontSize="14" Grid.Column="2" Grid.Row="1" HorizontalAlignment="Center" Margin="2">
+                                10
+                            </TextBox>
+                            <TextBlock FontSize="14" Grid.ColumnSpan="2" Grid.Row="2">Heater Control Mode :</TextBlock>
+                            <Button FontSize="14" Grid.Column="2" Grid.Row="2" Margin="5,2,10,2">Position(%)</Button>
+                        </Grid>
+                    </StackPanel>
+                    <!-- Rotation Control Button -->
+                    <StackPanel Height="100">
+                        <TextBlock Foreground="DarkBlue" FontSize="14" HorizontalAlignment="Center" Margin="2">
+                            <Bold>Rotation Control</Bold></TextBlock>
+                        <Line X1="5" Y1="0" X2="295" Y2="0" Stroke="DarkBlue" StrokeThickness="2"/>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition />
+                                <ColumnDefinition />
+                                <ColumnDefinition />
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition/>
+                                <RowDefinition/>
+                            </Grid.RowDefinitions>
+                            <TextBlock FontSize="14" Grid.Column="0" Grid.Row="0" HorizontalAlignment="Center" Text="SP" Margin="2"/>
+                            <TextBlock FontSize="14" Grid.Column="1" Grid.Row="0" HorizontalAlignment="Center" Text="Rotation" Margin="2"/>
+                            <TextBlock FontSize="14" Grid.Column="2" Grid.Row="0" HorizontalAlignment="Center" Text="Power" Margin="2"/>
+                            <TextBox  Width="80" FontSize="14" Grid.Column="0" Grid.Row="1" HorizontalAlignment="Center">
+                                50
+                            </TextBox>
+                            <TextBox  Width="80" FontSize="14" Grid.Column="1" Grid.Row="1" HorizontalAlignment="Center">
+                                50
+                            </TextBox>
+                            <Button FontSize="14" Grid.Column="2" Grid.Row="2" Margin="5,2,10,2">ON</Button>
+                        </Grid>
+                    </StackPanel>
+                    <!-- Source Status Button -->
+                    <StackPanel>
+                        <TextBlock Foreground="DarkBlue" FontSize="14" HorizontalAlignment="Center" Margin="2">
+                            <Bold>Source States</Bold></TextBlock>
+                        <Line X1="5" Y1="0" X2="295" Y2="0" Stroke="DarkBlue" StrokeThickness="2"/>
+                        <Grid VerticalAlignment="Top">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="100"/>
+                                <ColumnDefinition/>
+                                <ColumnDefinition/>
+                                <ColumnDefinition/>
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition/>
+                                <RowDefinition/>
+                                <RowDefinition/>
+                                <RowDefinition/>
+                                <RowDefinition/>
+                                <RowDefinition/>
+                                <RowDefinition/>
+                                <RowDefinition/>
+                                <RowDefinition/>
+                                <RowDefinition/>
+                                <RowDefinition/>
+                            </Grid.RowDefinitions>
+                            <TextBlock FontSize="14" Grid.Column="1" Grid.Row="0" Text="Carrier" HorizontalAlignment="Center"/>
+                            <TextBlock FontSize="14" Grid.Column="2" Grid.Row="0" Text="Source" HorizontalAlignment="Center"/>
+                            <TextBlock FontSize="14" Grid.Column="3" Grid.Row="0" Text="Manifold" HorizontalAlignment="Center"/>
+                            <TextBlock FontSize="14" Grid.Column="0" Grid.Row="1" Text="NH3 #1" Margin="2"/>
+                            <TextBlock FontSize="14" Grid.Column="0" Grid.Row="2" Text="NH3 #2" Margin="2"/>
+                            <TextBlock FontSize="14" Grid.Column="0" Grid.Row="3" Text="SiH4" Margin="2"/>
+                            <TextBlock FontSize="14" Grid.ColumnSpan="4" Grid.Row="4" Text="NH3 #1"/>
+                            <TextBlock FontSize="14" Grid.Column="0" Grid.Row="5" Text="TEB" Margin="2"/>
+                            <TextBlock FontSize="14" Grid.Column="0" Grid.Row="6" Text="TMAl" Margin="2"/>
+                            <TextBlock FontSize="14" Grid.Column="0" Grid.Row="7" Text="TMIn" Margin="2"/>
+                            <TextBlock FontSize="14" Grid.Column="0" Grid.Row="8" Text="TMGa" Margin="2"/>
+                            <TextBlock FontSize="14" Grid.Column="0" Grid.Row="9" Text="DTMGa" Margin="2"/>
+                            <TextBlock FontSize="14" Grid.Column="0" Grid.Row="10" Text="Cp2Mg" Margin="2"/>
+                            <Button FontSize="14" Grid.Column="1" Grid.Row="1" Margin="2">N2</Button>
+                            <Button FontSize="14" Grid.Column="2" Grid.Row="1" Margin="2">OFF</Button>
+                            <Button FontSize="14" Grid.Column="3" Grid.Row="1" Margin="2">VENT</Button>
+                            <Button FontSize="14" Grid.Column="1" Grid.Row="2" Margin="2">N2</Button>
+                            <Button FontSize="14" Grid.Column="2" Grid.Row="2" Margin="2">OFF</Button>
+                            <Button FontSize="14" Grid.Column="3" Grid.Row="2" Margin="2">VENT</Button>
+                            <Button FontSize="14" Grid.Column="1" Grid.Row="3" Margin="2">N2</Button>
+                            <Button FontSize="14" Grid.Column="2" Grid.Row="3" Margin="2">OFF</Button>
+                            <Button FontSize="14" Grid.Column="3" Grid.Row="3" Margin="2">VENT</Button>
+                            <Button FontSize="14" Grid.Column="1" Grid.Row="4" Margin="2">N2</Button>
+                            <Button FontSize="14" Grid.Column="2" Grid.Row="4" Margin="2">OFF</Button>
+                            <Button FontSize="14" Grid.Column="3" Grid.Row="4" Margin="2">VENT</Button>
+                            <Button FontSize="14" Grid.Column="1" Grid.Row="5" Margin="2">N2</Button>
+                            <Button FontSize="14" Grid.Column="2" Grid.Row="5" Margin="2">OFF</Button>
+                            <Button FontSize="14" Grid.Column="3" Grid.Row="5" Margin="2">VENT</Button>
+                            <Button FontSize="14" Grid.Column="1" Grid.Row="6" Margin="2">N2</Button>
+                            <Button FontSize="14" Grid.Column="2" Grid.Row="6" Margin="2">OFF</Button>
+                            <Button FontSize="14" Grid.Column="3" Grid.Row="6" Margin="2">VENT</Button>
+                            <Button FontSize="14" Grid.Column="1" Grid.Row="7" Margin="2">N2</Button>
+                            <Button FontSize="14" Grid.Column="2" Grid.Row="7" Margin="2">OFF</Button>
+                            <Button FontSize="14" Grid.Column="3" Grid.Row="7" Margin="2">VENT</Button>
+                            <Button FontSize="14" Grid.Column="1" Grid.Row="8" Margin="2">N2</Button>
+                            <Button FontSize="14" Grid.Column="2" Grid.Row="8" Margin="2">OFF</Button>
+                            <Button FontSize="14" Grid.Column="3" Grid.Row="8" Margin="2">VENT</Button>
+                            <Button FontSize="14" Grid.Column="1" Grid.Row="9" Margin="2">N2</Button>
+                            <Button FontSize="14" Grid.Column="2" Grid.Row="9" Margin="2">OFF</Button>
+                            <Button FontSize="14" Grid.Column="3" Grid.Row="9" Margin="2">VENT</Button>
+                            <Button FontSize="14" Grid.Column="1" Grid.Row="10" Margin="2" Background="Red">H2</Button>
+                            <Button FontSize="14" Grid.Column="2" Grid.Row="10" Margin="2" Background="LawnGreen">ON</Button>
+                            <Button FontSize="14" Grid.Column="3" Grid.Row="10" Margin="2" Background="Magenta">RUN</Button>
+
+                        </Grid>
+                    </StackPanel>
+                </StackPanel>
             </Grid>
-            <!-- Start: GridColumn Center -->
+        <!-- Start: GridColumn Center -->
             <Grid  Grid.Column="1" x:Name="gridControlCenter">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="*"/>
@@ -948,7 +1130,7 @@
                 <Border Grid.Row="1" Background="{DynamicResource BottomBackgroundColor}">
                 </Border>
             </Grid>
-            <!-- Start: GridColumn Right -->
+        <!-- Start: GridColumn Right -->
             <Grid Grid.Column="2" x:Name="gridMenuRight">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="*"/>
@@ -957,14 +1139,14 @@
                 <Border Grid.Row="0" Background="{DynamicResource SideBackgroundColor}">
                 </Border>
                 <StackPanel>
-                    <!-- Current State List -->
+            <!-- Current State List -->
                     <StackPanel Height="200" VerticalAlignment="Top">
                         <TextBlock Foreground="DarkBlue" FontSize="14" HorizontalAlignment="Center" Margin="2">
                             <Bold>Current State</Bold></TextBlock>
                         <Line X1="5" Y1="0" X2="295" Y2="0" Stroke="DarkBlue" StrokeThickness="2"/>
                         <StackPanel Orientation="Horizontal">
-                            <Button x:Name="GasState" Content="Idle State" Width="100" Margin="10,1,0,1"/>
-                            <TextBox x:Name="GasCurrentValue" Width="100" Margin="10,1,0,1">
+                            <Button x:Name="GasState" FontSize="14" Content="Idle State" Width="100" Margin="10,1,0,1"/>
+                            <TextBox x:Name="GasCurrentValue" FontSize="14" Width="100" Margin="10,1,0,1">
                                 100
                             </TextBox>
                             <Ellipse x:Name="GasCurrentState" Width="10" Height="10"
@@ -972,8 +1154,8 @@
                                      Margin="10,0,0,0"/>
                         </StackPanel>
                         <StackPanel Orientation="Horizontal">
-                            <Button x:Name="ChamberState" Content="Chamber Open" Width="100" Margin="10,1,0,1"/>
-                            <TextBox x:Name="ChamberCurrentValue" Width="100" Margin="10,1,0,1">
+                            <Button x:Name="ChamberState" FontSize="14" Content="Chamber Open" Width="100" Margin="10,1,0,1"/>
+                            <TextBox x:Name="ChamberCurrentValue" FontSize="14" Width="100" Margin="10,1,0,1">
                                 100
                             </TextBox>
                             <Ellipse x:Name="ChamberCurrentState" Width="10" Height="10"
@@ -981,8 +1163,8 @@
                                          Margin="10,0,0,0"/>
                         </StackPanel>
                         <StackPanel Orientation="Horizontal">
-                            <Button x:Name="LeakState" Content="Leak Test" Width="100" Margin="10,1,0,1"/>
-                            <TextBox x:Name="LeakCurrentValue" Width="100" Margin="10,1,0,1">
+                            <Button x:Name="LeakState" FontSize="14" Content="Leak Test" Width="100" Margin="10,1,0,1"/>
+                            <TextBox x:Name="LeakCurrentValue" FontSize="14" Width="100" Margin="10,1,0,1">
                                 Leak Test Mode
                             </TextBox>
                             <Ellipse x:Name="LeakCurrentState" Width="10" Height="10"
@@ -990,8 +1172,8 @@
                                          Margin="10,0,0,0"/>
                         </StackPanel>
                         <StackPanel Orientation="Horizontal">
-                            <Button x:Name="SoftStopState" Content="Soft STOP" Width="100" Margin="10,1,0,1"/>
-                            <TextBox x:Name="SoftStopValue" Width="100" Margin="10,1,0,1">
+                            <Button x:Name="SoftStopState" FontSize="14" Content="Soft STOP" Width="100" Margin="10,1,0,1"/>
+                            <TextBox x:Name="SoftStopValue" FontSize="14" Width="100" Margin="10,1,0,1">
                                 50
                             </TextBox>
                             <Ellipse x:Name="SoftStopCurrentState" Width="10" Height="10"
@@ -999,131 +1181,127 @@
                                          Margin="10,0,0,0"/>
                         </StackPanel>
                     </StackPanel>
-                    <!-- Enable State List -->
+                <!-- Enable State List -->
                     <StackPanel Height="230" VerticalAlignment="Top">
                         <TextBlock Foreground="DarkBlue" FontSize="14" HorizontalAlignment="Center" Margin="2">
                         <Bold>Enable State</Bold></TextBlock>
                         <Line X1="5" Y1="0" X2="295" Y2="0" Stroke="DarkBlue" StrokeThickness="2"/>
                         <StackPanel Orientation="Horizontal">
-                            <TextBlock Margin="20,2,2,2" Width="200">Recipe Allowed</TextBlock>
+                            <TextBlock FontSize="14" Margin="20,2,2,2" Width="200">Recipe Allowed</TextBlock>
                             <Ellipse x:Name="RecipeAllowedState" Width="10" Height="10"
                                  Fill="LawnGreen"
                                  Margin="10,0,0,0"/>
                         </StackPanel>
                         <StackPanel Orientation="Horizontal">
-                            <TextBlock Margin="20,2,2,2" Width="200">Control Allowed</TextBlock>
+                            <TextBlock FontSize="14" Margin="20,2,2,2" Width="200">Control Allowed</TextBlock>
                             <Ellipse x:Name="ControlAllowedState" Width="10" Height="10"
                                  Fill="LawnGreen"
                                  Margin="10,0,0,0"/>
                         </StackPanel>
                         <StackPanel Orientation="Horizontal">
-                            <TextBlock Margin="20,2,2,2" Width="200">H2 Gas Supply</TextBlock>
+                            <TextBlock FontSize="14" Margin="20,2,2,2" Width="200">H2 Gas Supply</TextBlock>
                             <Ellipse x:Name="H2GasSupplyState" Width="10" Height="10"
                                  Fill="Red"
                                  Margin="10,0,0,0"/>
                         </StackPanel>
                         <StackPanel Orientation="Horizontal">
-                            <TextBlock Margin="20,2,2,2" Width="200">Hydride Gas Supply</TextBlock>
+                            <TextBlock FontSize="14" Margin="20,2,2,2" Width="200">Hydride Gas Supply</TextBlock>
                             <Ellipse x:Name="HydrideGasSupplyState" Width="10" Height="10"
                                  Fill="Red"
                                  Margin="10,0,0,0"/>
                         </StackPanel>
                         <StackPanel Orientation="Horizontal">
-                            <TextBlock Margin="20,2,2,2" Width="200">Reactor Open Enable</TextBlock>
+                            <TextBlock FontSize="14" Margin="20,2,2,2" Width="200">Reactor Open Enable</TextBlock>
                             <Ellipse x:Name="ReactorOpenState" Width="10" Height="10"
                                  Fill="LawnGreen"
                                  Margin="10,0,0,0"/>
                         </StackPanel>
                         <StackPanel Orientation="Horizontal">
-                            <TextBlock Margin="20,2,2,2" Width="200">Reactor Open Timer</TextBlock>
+                            <TextBlock FontSize="14" Margin="20,2,2,2" Width="200">Reactor Open Timer</TextBlock>
                             <Ellipse x:Name="ReactorOpenTime" Width="10" Height="10"
                                  Fill="LawnGreen"
                                  Margin="10,0,0,0"/>
                         </StackPanel>
                         <StackPanel Orientation="Horizontal">
-                            <TextBlock Margin="20,2,2,2" Width="200">Heating Allowed</TextBlock>
+                            <TextBlock FontSize="14" Margin="20,2,2,2" Width="200">Heating Allowed</TextBlock>
                             <Ellipse x:Name="HeatingAllowedState" Width="10" Height="10"
                                  Fill="LawnGreen"
                                  Margin="10,0,0,0"/>
                         </StackPanel>
                         <StackPanel Orientation="Horizontal">
-                            <TextBlock Margin="20,2,2,2" Width="200">Double O-Ring</TextBlock>
+                            <TextBlock FontSize="14" Margin="20,2,2,2" Width="200">Double O-Ring</TextBlock>
                             <Ellipse x:Name="DORState" Width="10" Height="10"
                                  Fill="LawnGreen"
                                  Margin="10,0,0,0"/>
                         </StackPanel>
                     </StackPanel>
-                    <!-- Utility State -->
+                <!-- Utility State -->
                     <StackPanel Height="200" VerticalAlignment="Top">
                         <TextBlock Foreground="DarkBlue" FontSize="14" HorizontalAlignment="Center" Margin="2">
                         <Bold>Utility State</Bold></TextBlock>
                         <Line X1="5" Y1="0" X2="295" Y2="0" Stroke="DarkBlue" StrokeThickness="2"/>
                         <StackPanel Orientation="Horizontal">
-                            <TextBlock Margin="20,2,2,2" Width="200">Pneumatic Pressure</TextBlock>
+                            <TextBlock FontSize="14" Margin="20,2,2,2" Width="200">Pneumatic Pressure</TextBlock>
                             <Ellipse x:Name="PneumaticPressureState" Width="10" Height="10"
                                  Fill="LawnGreen"
                                  Margin="10,0,0,0"/>
                         </StackPanel>
                         <StackPanel Orientation="Horizontal">
-                            <TextBlock Margin="20,2,2,2" Width="200">Cooling Water</TextBlock>
+                            <TextBlock FontSize="14" Margin="20,2,2,2" Width="200">Cooling Water</TextBlock>
                             <Ellipse x:Name="CoolingWaterState" Width="10" Height="10"
                                  Fill="LawnGreen"
                                  Margin="10,0,0,0"/>
                         </StackPanel>
                         <StackPanel Orientation="Horizontal">
-                            <TextBlock Margin="20,2,2,2" Width="200">Reactor Cabinet Door</TextBlock>
+                            <TextBlock FontSize="14" Margin="20,2,2,2" Width="200">Reactor Cabinet Door</TextBlock>
                             <Ellipse x:Name="ReactorDoorState" Width="10" Height="10"
                                  Fill="LawnGreen"
                                  Margin="10,0,0,0"/>
                         </StackPanel>
                         <StackPanel Orientation="Horizontal">
-                            <TextBlock Margin="20,2,2,2" Width="200">Gas Cabinet Door</TextBlock>
+                            <TextBlock FontSize="14" Margin="20,2,2,2" Width="200">Gas Cabinet Door</TextBlock>
                             <Ellipse x:Name="GasDoorState" Width="10" Height="10"
                                  Fill="LawnGreen"
                                  Margin="10,0,0,0"/>
                         </StackPanel>
                         <StackPanel Orientation="Horizontal">
-                            <TextBlock Margin="20,2,2,2" Width="200">Control Cabinet Door</TextBlock>
+                            <TextBlock FontSize="14" Margin="20,2,2,2" Width="200">Control Cabinet Door</TextBlock>
                             <Ellipse x:Name="ControlDoorState" Width="10" Height="10"
                                  Fill="LawnGreen"
                                  Margin="10,0,0,0"/>
                         </StackPanel>
                     </StackPanel>
-                    <!-- Alarm State -->
+                <!-- Alarm State -->
                     <StackPanel  VerticalAlignment="Top">
                         <TextBlock Foreground="DarkBlue" FontSize="14" HorizontalAlignment="Center" Margin="2">
                         <Bold>Equipment State</Bold></TextBlock>
                         <Line X1="5" Y1="0" X2="295" Y2="0" Stroke="DarkBlue" StrokeThickness="2"/>
                         <StackPanel Orientation="Horizontal">
-                            <TextBlock Margin="20,2,2,2" Width="200">Alarm</TextBlock>
+                            <TextBlock FontSize="14" Margin="20,2,2,2" Width="200">Alarm</TextBlock>
                             <Ellipse x:Name="AlarmState" Width="10" Height="10"
                                  Fill="LawnGreen"
                                  Margin="10,0,0,0"/>
                         </StackPanel>
                         <StackPanel Orientation="Horizontal">
-                            <TextBlock Margin="20,2,2,2" Width="200">Warning</TextBlock>
+                            <TextBlock FontSize="14" Margin="20,2,2,2" Width="200">Warning</TextBlock>
                             <Ellipse x:Name="WarningState" Width="10" Height="10"
                                  Fill="LawnGreen"
                                  Margin="10,0,0,0"/>
                         </StackPanel>
                         <StackPanel Orientation="Horizontal">
-                            <TextBlock Margin="20,2,2,2" Width="200">Silence</TextBlock>
+                            <TextBlock FontSize="14" Margin="20,2,2,2" Width="200">Silence</TextBlock>
                             <Ellipse x:Name="SilenceState" Width="10" Height="10"
                                  Fill="LawnGreen"
                                  Margin="10,0,0,0"/>
                         </StackPanel>
                         <StackPanel Orientation="Horizontal">
-                            <TextBlock Margin="20,2,2,2" Width="170">User</TextBlock>
+                            <TextBlock FontSize="14" Margin="20,2,2,2" Width="170">User</TextBlock>
                             <TextBox Width="100">Administartor</TextBox>
-
                         </StackPanel>
-
                     </StackPanel>
                 </StackPanel>
-                
-
-                <Border Grid.Row="1" Background="{DynamicResource BottomBackgroundColor}">
-                </Border>
+            <Border Grid.Row="1" Background="{DynamicResource BottomBackgroundColor}">
+            </Border>
             </Grid>
         </Grid>
     </Border>

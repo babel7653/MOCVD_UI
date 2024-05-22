@@ -17,9 +17,25 @@
 
     <!-- Typograhy Colors -->
     <SolidColorBrush x:Key="TextPrimaryColor" Color="#020F16"/>
-    <SolidColorBrush x:Key="TextSecundaryColor" Color="#434344"/>
+    <SolidColorBrush x:Key="TextSecondaryColor" Color="#434344"/>
 
     <!-- Icons Colors -->
     <SolidColorBrush x:Key="ActionIconColor" Color="#434344"/>
+
+    <!-- Souce Gas, Thermal Bath -->
+    <SolidColorBrush x:Key="SourceMainColor" Color="#E97132"/>
+    <SolidColorBrush x:Key="SourceSecondaryColor" Color="#F7D5CD"/>
+
+    <!-- Control Button MFC -->
+    <SolidColorBrush x:Key="MFCMainColor" Color="#0F9ED5"/>
+    <SolidColorBrush x:Key="MFCSecondaryColor" Color="#CCDFEF"/>
+
+    <!-- Control Button EPC -->
+    <SolidColorBrush x:Key="EPCMainColor" Color="#4EA72E"/>
+    <SolidColorBrush x:Key="EPCSecondaryColor" Color="#D0E1CD"/>
+
+    <!-- Display Value -->
+    <SolidColorBrush x:Key="DisplayMainColor" Color="#A02B93"/>
+    <SolidColorBrush x:Key="DisplaySecondaryColor" Color="#DFCDDC"/>
 
 </ResourceDictionary>

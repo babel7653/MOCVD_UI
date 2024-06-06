@@ -38,17 +38,17 @@ namespace SapphireXE_App
             //Live Chart 테스트 코드
             SeriesData = new SeriesCollection
             {
-                new ColumnSeries
+                new LineSeries
                 {
                     Title = "2020",
                     Values = new ChartValues<int>{3,5,7,4,7 }
                 },
-                new ColumnSeries
+                new LineSeries
                 {
                     Title ="2021",
                     Values = new ChartValues<int>{5,6,2,7,8}
                 },
-                new ColumnSeries
+                new LineSeries
                 {
                     Title = "2022",
                     Values = new ChartValues<int> { 8, 7, 6, 9, 7}
@@ -59,8 +59,31 @@ namespace SapphireXE_App
 
             DataContext = this;
 
+            //래시피 DataGrid 데이터 내용
+            List<RecipeDataRow> recipeDataRow = new List<RecipeDataRow>();
+            recipeDataRow.Add(new RecipeDataRow { RecipeStep = 1, RecipeName = "Evacuation", RampingTime = 180, HoldingTime = 30, RecipeLoop = false, RecipeJump = false });
+            recipeDataRow.Add(new RecipeDataRow { RecipeStep = 2, RecipeName = "N2 Filling", RampingTime = 90, HoldingTime = 10, RecipeLoop = false, RecipeJump = false });
+            recipeDataRow.Add(new RecipeDataRow { RecipeStep = 3, RecipeName = "Evacuation", RampingTime = 90, HoldingTime = 30, RecipeLoop = false, RecipeJump = false });
+            recipeDataRow.Add(new RecipeDataRow { RecipeStep = 4, RecipeName = "H2 Flow Set", RampingTime = 30, HoldingTime = 10, RecipeLoop = false, RecipeJump = false });
+            recipeDataRow.Add(new RecipeDataRow { RecipeStep = 5, RecipeName = "Temp Up Pre", RampingTime = 60, HoldingTime =10, RecipeLoop = false, RecipeJump = false });
+            recipeDataRow.Add(new RecipeDataRow { RecipeStep = 6, RecipeName = "Temp Up to T Etching 1", RampingTime = 250, HoldingTime = 1, RecipeLoop = false, RecipeJump = false });
+            recipeDataRow.Add(new RecipeDataRow { RecipeStep = 7, RecipeName = "Temp Up to T Etching 2", RampingTime = 60, HoldingTime = 1, RecipeLoop = false, RecipeJump = false });
+            recipeDataRow.Add(new RecipeDataRow { RecipeStep = 8, RecipeName = "Thermal Etching", RampingTime = 1, HoldingTime = 300, RecipeLoop = false, RecipeJump = false });
+            recipeDataRow.Add(new RecipeDataRow { RecipeStep = 9, RecipeName = "Temp Dowin to Buffer", RampingTime = 200, HoldingTime = 1, RecipeLoop = false, RecipeJump = false });
+            recipeDataRow.Add(new RecipeDataRow { RecipeStep = 10, RecipeName = "Wait to Stable", RampingTime = 180, HoldingTime = 30, RecipeLoop = false, RecipeJump = false });
+            RecipeStep.ItemsSource = recipeDataRow;
         }
-
+        // 래시피 DataGrid 데이터 클래스, struct data형식과 비교 검토예정
+        public class RecipeDataRow
+        {
+            public int RecipeStep { get; set; }
+            public string RecipeName { get; set; }
+            public int RampingTime { get; set; } // 시간(초) int로
+            public int HoldingTime { get; set; } // 시간(초) int로
+            public bool RecipeLoop { get; set; } // Loop 데이터형태 변경
+            public bool RecipeJump { get; set; } // Loop와 연관된 Jump형태
+           
+        }
 
         private void HydridCarrirerChange_Click(object sender, RoutedEventArgs e)
         {

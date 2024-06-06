@@ -290,8 +290,9 @@
                 </Grid.RowDefinitions>
                 <Border Grid.Row="0" >
                     <TabControl x:Name="tabControl" HorizontalAlignment="Stretch" >
+                        <!-- Manual Control 화면 -->
                         <TabItem Header="System Control" Width="120">
-                            <Canvas Background="{DynamicResource PrimaryBackgroundColor}">
+                            <Canvas Background="DimGray">
                                 <!-- Drawing Nitrogen Gas Line -->
                                 <Polyline Points="196,80 196,93 90,93 90,502 1000,502 1000,522" Stroke="Lime" StrokeThickness="2" />
                                 <Line X1="0" Y1="0" X2="0" Y2="20" Stroke="Lime" StrokeThickness="2" Canvas.Left="300" Canvas.Top="502" />
@@ -1186,19 +1187,194 @@
                             </Canvas>
 
                         </TabItem>
+                        <!-- Recipe Control 화면 -->
                         <TabItem Header="Recipe Control" Width="120">
+                                <Grid >
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="400"/>
+                                    <RowDefinition Height="36"/>
+                                    <RowDefinition/>
+                                    </Grid.RowDefinitions>
+                                <Canvas Grid.Row="0" Background="Gray">
+                                    <!-- 가스라인 간략버전 작성 -->
+                                </Canvas>
+                                <!-- 레시피 제어화면 시작 -->
+                                <Grid Grid.Row="1"  Background="DimGray">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition/>
+                                        <ColumnDefinition/>
+                                        <ColumnDefinition/>
+                                    </Grid.ColumnDefinitions>
+                                    <!-- 레시피 파일 -->
+                                    <Grid Grid.Column="0">
+                                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                                            <StackPanel.Resources>
+                                                <Style TargetType="{x:Type Button}">
+                                                    <Setter Property="Background" Value="#FF0078D7"/>
+                                                    <Setter Property="Foreground" Value="White"/>
+                                                    <Setter Property="Width" Value="70"/>
+                                                    <Setter Property="Margin" Value="3,2,3,2"/>
+                                                    <Setter Property="HorizontalAlignment" Value="Center"/>
+                                                </Style>
+                                            </StackPanel.Resources>
+                                            <Button x:Name="FileNew" Content="New">
+                                                <Button.Resources>
+                                                    <Style TargetType="Border">
+                                                        <Setter Property="CornerRadius" Value="5"/>
+                                                    </Style>
+                                                </Button.Resources>
+                                            </Button>
+                                            <Button x:Name="FileOpen" Content="Open" >
+                                                <Button.Resources>
+                                                    <Style TargetType="Border">
+                                                        <Setter Property="CornerRadius" Value="5"/>
+                                                    </Style>
+                                                </Button.Resources>
+                                            </Button>
+                                            <Button x:Name="FileSave" Content="Save" >
+                                                <Button.Resources>
+                                                    <Style TargetType="Border">
+                                                        <Setter Property="CornerRadius" Value="5"/>
+                                                    </Style>
+                                                </Button.Resources>
+                                            </Button>
+                                            <Button x:Name="FileSaveAs" Content="SaveAs" >
+                                                <Button.Resources>
+                                                    <Style TargetType="Border">
+                                                        <Setter Property="CornerRadius" Value="5"/>
+                                                    </Style>
+                                                </Button.Resources>
+                                            </Button>
+                                            <Button x:Name="FileRefresh" Content="Refresh" >
+                                                <Button.Resources>
+                                                    <Style TargetType="Border">
+                                                        <Setter Property="CornerRadius" Value="5"/>
+                                                    </Style>
+                                                </Button.Resources>
+                                            </Button>
+                                        </StackPanel>
+                                    </Grid>
+                                    <!-- 레시피 제어 -->
+                                    <Grid Grid.Column="1" Background="LightGray">
+                                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                                            <StackPanel.Resources>
+                                                <Style TargetType="{x:Type Button}">
+                                                    <Setter Property="Background" Value="#FF0078D7"/>
+                                                    <Setter Property="Foreground" Value="White"/>
+                                                    <Setter Property="Width" Value="70"/>
+                                                    <Setter Property="Margin" Value="3,2,3,2"/>
+                                                    <Setter Property="HorizontalAlignment" Value="Center"/>
+                                                </Style>
+                                            </StackPanel.Resources>
+                                            <Button x:Name="RecipeStart" Content="Start">
+                                                <Button.Resources>
+                                                    <Style TargetType="Border">
+                                                        <Setter Property="CornerRadius" Value="5"/>
+                                                    </Style>
+                                                </Button.Resources>
+                                            </Button>
+                                            <Button x:Name="RecipePause" Content="Pause">
+                                                <Button.Resources>
+                                                    <Style TargetType="Border">
+                                                        <Setter Property="CornerRadius" Value="5"/>
+                                                    </Style>
+                                                </Button.Resources>
+                                            </Button>
+                                            <Button x:Name="RecipeRestart" Content="ReStart">
+                                                <Button.Resources>
+                                                    <Style TargetType="Border">
+                                                        <Setter Property="CornerRadius" Value="5"/>
+                                                    </Style>
+                                                </Button.Resources>
+                                            </Button>
+                                            <Button x:Name="RecipeSkip" Content="Skip">
+                                                <Button.Resources>
+                                                    <Style TargetType="Border">
+                                                        <Setter Property="CornerRadius" Value="5"/>
+                                                    </Style>
+                                                </Button.Resources>
+                                            </Button>
+
+                                        </StackPanel>
+                                    </Grid>
+                                    <!-- 레시피 파일 정보 -->
+                                    <Grid Grid.Column="2">
+                                        <Grid>
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition/>
+                                                <RowDefinition/>
+                                            </Grid.RowDefinitions>
+                                            <Grid Grid.Row="0">
+                                                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                                                    <TextBlock Foreground="White" Width="100" >Recipe File</TextBlock>
+                                                    <TextBox Width="320"></TextBox>
+                                                </StackPanel>
+                                            </Grid>
+                                            <Grid Grid.Row="1">
+                                                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                                                    <TextBlock Foreground="White" Width="100">Log File</TextBlock>
+                                                    <TextBox Width="320"></TextBox>
+                                                </StackPanel>
+                                            </Grid>
+                                        </Grid>
+                                    </Grid>
+                                </Grid>
+                                <!-- 레시피 데이터 편집 & 실행 -->
+                                <Grid Grid.Row="2" Background="AliceBlue">
+                                    <DataGrid Name="RecipeStep" AutoGenerateColumns="False"
+                                              Padding="5">
+                                        <DataGrid.Resources>
+                                            <Style TargetType="{x:Type DataGrid}">
+                                                <Setter Property="Background" Value="#2D2D30"/>
+                                                <Setter Property="HorizontalGridLinesBrush" Value="White"/>
+                                                <Setter Property="VerticalGridLinesBrush" Value="White"/>
+                                            </Style>
+                                            <Style TargetType="{x:Type DataGridRow}">
+                                                <Setter Property="Background" Value="#2D2D30"/>
+                                                <Setter Property="Height" Value="25"/>
+                                            </Style>
+                                            <Style TargetType="{x:Type DataGridColumnHeader}">
+                                                <Setter Property="Background" Value="#2D2D30"/>
+                                                <Setter Property="Foreground" Value="White"/>
+                                                <Setter Property="FontSize" Value="12"/>
+                                                <Setter Property="HorizontalAlignment" Value="Center"/>
+                                                <Setter Property="Padding" Value="5,0"/>
+                                            </Style>
+                                            <Style x:Key="Content1" TargetType="{x:Type TextBlock}">
+                                                <Setter Property="Foreground" Value="White"/>
+                                                <Setter Property="FontSize" Value="12"/>
+                                                <Setter Property="VerticalAlignment" Value="Center"/>
+                                                <Setter Property="HorizontalAlignment" Value="Center"/>
+                                            </Style>
+                                            <Style x:Key="Content2" TargetType="{x:Type TextBlock}">
+                                                <Setter Property="Foreground" Value="White"/>
+                                                <Setter Property="FontSize" Value="12"/>
+                                                <Setter Property="VerticalAlignment" Value="Center"/>
+                                            </Style>
+
+                                        </DataGrid.Resources>
+                                        <DataGrid.Columns>
+                                            <DataGridTextColumn Header="No." Binding="{Binding RecipeStep}" ElementStyle="{StaticResource Content1}" Width="30"/>
+                                            <DataGridTextColumn Header="Name" Binding="{Binding RecipeName}" ElementStyle="{StaticResource Content2}" Width="150"/>
+                                            <DataGridTextColumn Header="Ramp" Binding="{Binding RecipeRampingTime}" ElementStyle="{StaticResource Content2}" Width="60"/>
+                                            <DataGridTextColumn Header="Hold" Binding="{Binding RecipeHoldingTime}" ElementStyle="{StaticResource Content2}" Width="60"/>
+                                            <DataGridTextColumn Header="Loop" Binding="{Binding RecipeLoop}" ElementStyle="{StaticResource Content1}" Width="60"/>
+                                            <DataGridTextColumn Header="Jump" Binding="{Binding RecipeJump}" ElementStyle="{StaticResource Content1}" Width="60"/>
+                                        </DataGrid.Columns>
+                                    </DataGrid>
+                                </Grid>
+                            </Grid>
+                        </TabItem>
+                        <!-- Report 화면 -->
+                        <TabItem Header="Report" Width="120">
                             <Canvas Background="DimGray">
 
                             </Canvas>
-                        </TabItem>
-                        <TabItem Header="Report" Width="120">
-                            <Canvas Background="DarkSlateGray">
-
-                            </Canvas>
 
                         </TabItem>
+                        <!-- Setting 화면 -->
                         <TabItem Header="Setting" Width="120">
-                            <Grid Background="#FFE5E5E5"/>
+                            <Grid Background="DimGray"/>
                         </TabItem>
                     </TabControl>
                 </Border>
@@ -1215,35 +1391,46 @@
                     </Grid.RowDefinitions>
                     <!-- Signal PLOT 머리말 Title -->
                     <Grid Grid.Column="0" Background="LightGray" Grid.Row="0">
-                        <TextBlock Foreground="Black" FontSize="14" Text="SIGNAL PLOT" Margin="20,0,0,0"/>
-                        <Button x:Name="PlotAnalog" Content="Analog" Width="70" Background="Yellow" Margin="414,0,316,0">
-                            <Button.Resources>
-                                <Style TargetType="Border">
-                                    <Setter Property="CornerRadius" Value="10"/>
+                        <StackPanel Orientation="Horizontal">
+                            <StackPanel.Resources>
+                                <Style TargetType="{x:Type Button}">
+                                    <Setter Property="Foreground" Value="Black"/>
+                                    <Setter Property="Width" Value="76"/>
+                                    <Setter Property="Margin" Value="3,0,3,0"/>
+                                    <Setter Property="HorizontalAlignment" Value="Center"/>
+                                    <Setter Property="VerticalAlignment" Value="Center"/>
                                 </Style>
-                            </Button.Resources>
-                        </Button>
-                        <Button x:Name="PlotTemperatue" Content="Temperature" Width="70" Background="red" Margin="510,0,220,0">
-                            <Button.Resources>
-                                <Style TargetType="Border">
-                                    <Setter Property="CornerRadius" Value="10"/>
-                                </Style>
-                            </Button.Resources>
-                        </Button>
-                        <Button x:Name="PlotPessure" Content="Pressure" Width="70" Background="Green" Margin="607,0,123,0">
-                            <Button.Resources>
-                                <Style TargetType="Border">
-                                    <Setter Property="CornerRadius" Value="10"/>
-                                </Style>
-                            </Button.Resources>
-                        </Button>
-                        <Button x:Name="PlotTotalFlow" Content="TotalFlow" Width="70" Background="SkyBlue" Margin="705,0,25,0">
-                            <Button.Resources>
-                                <Style TargetType="Border">
-                                    <Setter Property="CornerRadius" Value="10"/>
-                                </Style>
-                            </Button.Resources>
-                        </Button>
+                            </StackPanel.Resources>
+                            <TextBlock Width="400" FontSize="14" Text="SIGNAL PLOT" Margin="20,0,0,0"/>
+                            <Button x:Name="PlotAnalog" Content="Analog" Background="Yellow">
+                                <Button.Resources>
+                                    <Style TargetType="Border">
+                                        <Setter Property="CornerRadius" Value="8"/>
+                                    </Style>
+                                </Button.Resources>
+                            </Button>
+                            <Button x:Name="PlotTemperatue" Content="Temperature" Background="red">
+                                <Button.Resources>
+                                    <Style TargetType="Border">
+                                        <Setter Property="CornerRadius" Value="8"/>
+                                    </Style>
+                                </Button.Resources>
+                            </Button>
+                            <Button x:Name="PlotPessure" Content="Pressure" Background="Green">
+                                <Button.Resources>
+                                    <Style TargetType="Border">
+                                        <Setter Property="CornerRadius" Value="8"/>
+                                    </Style>
+                                </Button.Resources>
+                            </Button>
+                            <Button x:Name="PlotTotalFlow" Content="TotalFlow" Background="SkyBlue">
+                                <Button.Resources>
+                                    <Style TargetType="Border">
+                                        <Setter Property="CornerRadius" Value="8"/>
+                                    </Style>
+                                </Button.Resources>
+                            </Button>
+                        </StackPanel>
                     </Grid>
                     <!-- 그래프 그리는 영역 -->
                     <Grid Grid.Column="0" Background="#0f9ed5" Grid.Row="1">
@@ -1263,37 +1450,47 @@
                     </Grid>
                     <!-- 이벤트 로그 머리말 Title -->
                     <Grid Grid.Column="1" Grid.Row="0" Background="LightGray" Margin="2,0,2,0">
-                        <TextBlock Foreground="Black" FontSize="14" Text="EVENT LOG" Margin="20,0,0,0"/>
-                        <Button x:Name="FilterAlarm" Content="Alarm" Width="70" Background="OrangeRed" Margin="181,0,263,0">
-                            <Button.Resources>
-                                <Style TargetType="Border">
-                                    <Setter Property="CornerRadius" Value="10"/>
+                        <StackPanel Orientation="Horizontal">
+                            <StackPanel.Resources>
+                                <Style TargetType="{x:Type Button}">
+                                    <Setter Property="Foreground" Value="White"/>
+                                    <Setter Property="Width" Value="76"/>
+                                    <Setter Property="Margin" Value="3,0,3,0"/>
+                                    <Setter Property="HorizontalAlignment" Value="Center"/>
+                                    <Setter Property="VerticalAlignment" Value="Center"/>
                                 </Style>
-                            </Button.Resources>
-                        </Button>
-                        <Button x:Name="FilterWarning" Content="Waring"  Width="70" Background="Orange" Margin="273,0,171,0">
-                            <Button.Resources>
-                                <Style TargetType="Border">
-                                    <Setter Property="CornerRadius" Value="10"/>
-                                </Style>
-                            </Button.Resources>
-                        </Button>
-                        <Button x:Name="FilterInformation" Content="Information"  Width="70" Background="LimeGreen" Margin="355,0,89,0">
-                            <Button.Resources>
-                                <Style TargetType="Border">
-                                    <Setter Property="CornerRadius" Value="10"/>
-                                </Style>
-                            </Button.Resources>
+                            </StackPanel.Resources>
+                            <TextBlock Width="150" Foreground="Black" FontSize="14" Text="EVENT LOG" Margin="20,0,0,0"/>
+                            <Button x:Name="FilterAlarm" Content="Alarm" Background="OrangeRed">
+                                <Button.Resources>
+                                    <Style TargetType="Border">
+                                        <Setter Property="CornerRadius" Value="8"/>
+                                    </Style>
+                                </Button.Resources>
+                            </Button>
+                            <Button x:Name="FilterWarning" Content="Waring"  Background="Orange">
+                                <Button.Resources>
+                                    <Style TargetType="Border">
+                                        <Setter Property="CornerRadius" Value="8"/>
+                                    </Style>
+                                </Button.Resources>
+                            </Button>
+                            <Button x:Name="FilterInformation" Content="Information" Background="LimeGreen">
+                                <Button.Resources>
+                                    <Style TargetType="Border">
+                                        <Setter Property="CornerRadius" Value="8"/>
+                                    </Style>
+                                </Button.Resources>
 
-                        </Button>
-                        <Button x:Name="FilterClear" Content="Clear"  Width="70" Background="White" Margin="438,0,6,0">
-                            <Button.Resources>
-                                <Style TargetType="Border">
-                                    <Setter Property="CornerRadius" Value="10"/>
-                                </Style>
-                            </Button.Resources>
-
-                        </Button>
+                            </Button>
+                            <Button x:Name="FilterClear" Content="Clear" Background="DarkGray">
+                                <Button.Resources>
+                                    <Style TargetType="Border">
+                                        <Setter Property="CornerRadius" Value="8"/>
+                                    </Style>
+                                </Button.Resources>
+                            </Button>
+                        </StackPanel>
                     </Grid>
                     <ListView x:Name="EventLog" Grid.Column="1" Grid.Row="1">
                         <ListView.View>

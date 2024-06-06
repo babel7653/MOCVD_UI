@@ -38,4 +38,9 @@
     <SolidColorBrush x:Key="DisplayMainColor" Color="#A02B93"/>
     <SolidColorBrush x:Key="DisplaySecondaryColor" Color="#DFCDDC"/>
 
+    <!-- 레시피제어 버턴 -->
+    <ControlTemplate x:Key="ButtonControlTemplate1" TargetType="{x:Type Button}">
+        <Grid/>
+    </ControlTemplate>
+
 </ResourceDictionary>

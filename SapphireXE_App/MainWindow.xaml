@@ -15,7 +15,7 @@
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width ="300"/>
             </Grid.ColumnDefinitions>
-        <!-- Start: GridColumn Left -->
+            <!-- Start: GridColumn Left -->
             <Grid Grid.Column="0" x:Name="gridControlRight">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="*"/>
@@ -281,8 +281,8 @@
                 </Grid>
 
             </Grid>
-          
-        <!-- Start: GridColumn Center -->
+
+            <!-- Start: GridColumn Center -->
             <Grid  Grid.Column="1" x:Name="gridControlCenter">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="*"/>
@@ -324,7 +324,7 @@
                                 <Polyline Points="300, 203 440, 203 440, 258" Stroke="Magenta" StrokeThickness="2" />
                                 <Line X1="580" Y1="203" X2="664" Y2="203" Stroke="Magenta" StrokeThickness="2" />
                                 <Line X1="132" Y1="300" X2="182" Y2="300" Stroke="Magenta" StrokeThickness="2" />
-                                <!-- Arrow  -->
+                                <!-- 샤워헤드 IN Arrow  -->
                                 <Path Canvas.Left="1067" Canvas.Top="322" Fill="Magenta">
                                     <Path.Data>
                                         <PathGeometry>
@@ -355,6 +355,7 @@
                                 <Line X1="160" Y1="300" X2="160" Y2="388" Stroke="Magenta" StrokeThickness="2" />
                                 <Line X1="1100" Y1="107" X2="1100" Y2="120" Stroke="Magenta" StrokeThickness="2" />
 
+                                <!-- Reactor Inlet 화살표 A -->
                                 <Path Canvas.Left="1100" Canvas.Top="110" Fill="Magenta">
                                     <Path.Data>
                                         <PathGeometry>
@@ -368,7 +369,7 @@
                                         </PathGeometry>
                                     </Path.Data>
                                 </Path>
-
+                                <!-- Reactor Inlet 화살표 B -->
                                 <Path Canvas.Left="1160" Canvas.Top="110" Fill="Magenta">
                                     <Path.Data>
                                         <PathGeometry>
@@ -447,7 +448,7 @@
                                 <Line X1="1160" Y1="260" X2="1160" Y2="704" Stroke="Cyan" StrokeThickness="6" />
                                 <Line X1="1100" Y1="577" X2="1160" Y2="577" Stroke="Cyan" StrokeThickness="2" />
                                 <Polyline Points="1240 726 1260, 726 1260, 681" Stroke="Cyan" StrokeThickness="2" />
-  
+
                                 <Path Canvas.Left="1100" Canvas.Top="652" Fill="Cyan">
                                     <Path.Data>
                                         <PathGeometry>
@@ -469,7 +470,6 @@
                                         </PathGeometry>
                                     </Path.Data>
                                 </Path>
-
 
                                 <!-- Drawing DOR Gas Line -->
                                 <Polyline Points="1190, 130 1240, 130 1240,163" Stroke="Cyan" StrokeThickness="2" />
@@ -694,6 +694,7 @@
 
                                 <Button x:Name="ThrottleValveControl" Content="Button" Canvas.Left="1140" Canvas.Top="610" Width="40" Height="22">
                                 </Button>
+                                <!-- 수소가스 공급 상태 -->
                                 <StackPanel Canvas.Left="60" Canvas.Top="46" Width="90" Height="34">
                                     <TextBlock Height="22"  Background="{DynamicResource SourceMainColor}" Foreground="White" FontSize="16" TextAlignment="Center" VerticalAlignment="Center">H2</TextBlock>
                                     <StackPanel Background="{DynamicResource SourceSecondaryColor}" Orientation="Horizontal">
@@ -701,6 +702,7 @@
                                         <Label x:Name="PressureValueHydrogne" HorizontalAlignment="Right" HorizontalContentAlignment="Right" Width="65" />
                                     </StackPanel>
                                 </StackPanel>
+                                <!-- 질소가스 공급 상태 -->
                                 <StackPanel Canvas.Left="185" Canvas.Top="46" Width="90" Height="34">
                                     <TextBlock Height="22"  Background="{DynamicResource SourceMainColor}" Foreground="White" FontSize="16" TextAlignment="Center" VerticalAlignment="Center">N2</TextBlock>
                                     <StackPanel Background="{DynamicResource SourceSecondaryColor}" Orientation="Horizontal">
@@ -708,6 +710,7 @@
                                         <Label x:Name="PressureValueNitrogen" HorizontalAlignment="Right" HorizontalContentAlignment="Right" Width="65" />
                                     </StackPanel>
                                 </StackPanel>
+                                <!-- 암모니아가스 공급 상태 -->
                                 <StackPanel Canvas.Left="310" Canvas.Top="46" Width="90" Height="34">
                                     <TextBlock Height="22"  Background="{DynamicResource SourceMainColor}" Foreground="White" FontSize="16" TextAlignment="Center" VerticalAlignment="Center">NH3</TextBlock>
                                     <StackPanel Background="{DynamicResource SourceSecondaryColor}" Orientation="Horizontal">
@@ -715,6 +718,7 @@
                                         <Label x:Name="PressureValueAmmonia" HorizontalAlignment="Right" HorizontalContentAlignment="Right" Width="65" />
                                     </StackPanel>
                                 </StackPanel>
+                                <!-- 실란가스 공급 상태 -->
                                 <StackPanel Canvas.Left="604" Canvas.Top="46" Width="90" Height="34">
                                     <TextBlock Height="22"  Background="{DynamicResource SourceMainColor}" Foreground="White" FontSize="16" TextAlignment="Center" VerticalAlignment="Center">SiH4</TextBlock>
                                     <StackPanel Background="{DynamicResource SourceSecondaryColor}" Orientation="Horizontal">
@@ -722,12 +726,14 @@
                                         <Label x:Name="PressureValueSilane" HorizontalAlignment="Right" HorizontalContentAlignment="Right" Width="65" />
                                     </StackPanel>
                                 </StackPanel>
-                                
-                            <!-- Display Value for Reactor State -->
+
+                                <!-- Display Value for Reactor State -->
                                 <StackPanel Canvas.Left="766" Canvas.Top="65" Width="54" Height="47">
                                     <StackPanel VerticalAlignment="Center">
-                                        <TextBlock Foreground="LightSkyBlue" FontSize="10" Text="Total" TextAlignment="Center"/>
-                                        <TextBlock Foreground="LightSkyBlue" FontSize="10" Text="Flowrate" TextAlignment="Center"/>
+                                        <TextBlock Foreground="LightSkyBlue" FontSize="10" TextAlignment="Center">
+                                            Total <LineBreak/>
+                                            Flowrate
+                                        </TextBlock>
                                     </StackPanel>
                                     <StackPanel Background="{DynamicResource DisplayMainColor}" Orientation="Horizontal">
                                         <Label x:Name="DisplayTotalFlowrateSET" Foreground="Black" HorizontalAlignment="Left" Width=" 35"/>
@@ -740,8 +746,10 @@
 
                                 <StackPanel Canvas.Left="836" Canvas.Top="65" Width="54" Height="47">
                                     <StackPanel VerticalAlignment="Center">
-                                        <TextBlock Foreground="LightSkyBlue" FontSize="10" Text="Susceptor" TextAlignment="Center"/>
-                                        <TextBlock Foreground="LightSkyBlue" FontSize="10" Text="Temperature" TextAlignment="Center"/>
+                                        <TextBlock Foreground="LightSkyBlue" FontSize="10" TextAlignment="Center">
+                                            Susceptor<LineBreak/>
+                                            Temperature
+                                        </TextBlock>
                                     </StackPanel>
                                     <StackPanel Background="{DynamicResource DisplayMainColor}" Orientation="Horizontal">
                                         <Label x:Name="DisplaySusceptorTemperatureSET" Foreground="Black" HorizontalAlignment="Left" Width=" 35"/>
@@ -753,17 +761,19 @@
                                 </StackPanel>
 
                                 <StackPanel Canvas.Left="906" Canvas.Top="65" Width="94" Height="47">
-                                        <StackPanel VerticalAlignment="Center">
-                                            <TextBlock Foreground="LightSkyBlue" FontSize="10" Text="Reactor" TextAlignment="Center"/>
-                                            <TextBlock Foreground="LightSkyBlue" FontSize="10" Text="Pressure" TextAlignment="Center"/>
-                                        </StackPanel>
+                                    <StackPanel VerticalAlignment="Center">
+                                        <TextBlock Foreground="LightSkyBlue" FontSize="10" TextAlignment="Center">
+                                            Reactor<LineBreak/>
+                                            Pressure
+                                        </TextBlock>
+                                    </StackPanel>
                                     <StackPanel Background="{DynamicResource DisplayMainColor}" Orientation="Horizontal" Margin="0, 0, 40, 0">
-                                            <Label x:Name="DisplayReactorPressureSET" Foreground="Black" HorizontalAlignment="Left" Width=" 35"/>
-                                            <Ellipse Width="7" Height="7" Fill="LawnGreen" Margin="6,0,0,0"/>
-                                        </StackPanel>
+                                        <Label x:Name="DisplayReactorPressureSET" Foreground="Black" HorizontalAlignment="Left" Width=" 35"/>
+                                        <Ellipse Width="7" Height="7" Fill="LawnGreen" Margin="6,0,0,0"/>
+                                    </StackPanel>
                                     <StackPanel Background="{DynamicResource DisplaySecondaryColor}" Margin="0,0,40,0" >
-                                            <Label x:Name="DisplayReactorPressureCurrent" Foreground="Black" HorizontalAlignment="Right"/>
-                                        </StackPanel>
+                                        <Label x:Name="DisplayReactorPressureCurrent" Foreground="Black" HorizontalAlignment="Right"/>
+                                    </StackPanel>
                                 </StackPanel>
                                 <StackPanel Canvas.Left="964" Canvas.Top="90" Width="36" Height="22">
                                     <StackPanel Background="{DynamicResource DisplayMainColor}" Height="11">
@@ -774,7 +784,7 @@
                                     </StackPanel>
                                 </StackPanel>
 
-                        <!--MFC Contol Box!-->
+                                <!--MFC Contol Box!-->
                                 <StackPanel Canvas.Left="182" Canvas.Top="355" Width="54" Height="22">
                                     <StackPanel Background="{DynamicResource MFCMainColor}" Height="11">
                                         <Ellipse Width="7" Height="7" Fill="LawnGreen" HorizontalAlignment="Right" Margin="0,3,3,0"/>
@@ -784,7 +794,7 @@
                                         <Label x:Name="DisplayCurrentValueMFC101" Foreground="Black" HorizontalAlignment="Right" />
                                     </StackPanel>
                                 </StackPanel>
-                                
+
                                 <StackPanel Canvas.Left="182" Canvas.Top="311" Width="54" Height="22">
                                     <StackPanel Background="{DynamicResource MFCMainColor}" Height="11">
                                         <Ellipse Width="7" Height="7" Fill="LawnGreen" HorizontalAlignment="Right" Margin="0,3,3,0"/>
@@ -815,7 +825,7 @@
                                     </StackPanel>
                                 </StackPanel>
 
-                                <StackPanel Canvas.Left="563" Canvas.Top="170" Width="54" Height="22">
+                                <StackPanel Canvas.Left="627" Canvas.Top="170" Width="54" Height="22">
                                     <StackPanel Background="{DynamicResource MFCMainColor}" Height="11">
                                         <Ellipse Width="7" Height="7" Fill="LawnGreen" HorizontalAlignment="Right" Margin="0,3,3,0"/>
                                         <Label x:Name="DisplaySetValueMFC105" Foreground="Black" HorizontalAlignment="Left" />
@@ -825,7 +835,7 @@
                                     </StackPanel>
                                 </StackPanel>
 
-                                <StackPanel Canvas.Left="627" Canvas.Top="170" Width="54" Height="22">
+                                <StackPanel Canvas.Left="563" Canvas.Top="170" Width="54" Height="22">
                                     <StackPanel Background="{DynamicResource MFCMainColor}" Height="11">
                                         <Ellipse Width="7" Height="7" Fill="LawnGreen" HorizontalAlignment="Right" Margin="0,3,3,0"/>
                                         <Label x:Name="DisplaySetValueMFC106" Foreground="Black" HorizontalAlignment="Left" />
@@ -885,7 +895,7 @@
                                     </StackPanel>
                                 </StackPanel>
 
-                                <StackPanel Canvas.Left="811" Canvas.Top="566" Width="54" Height="22">
+                                <StackPanel Canvas.Left="811" Canvas.Top="610" Width="54" Height="22">
                                     <StackPanel Background="{DynamicResource MFCMainColor}" Height="11">
                                         <Ellipse Width="7" Height="7" Fill="LawnGreen" HorizontalAlignment="Right" Margin="0,3,3,0"/>
                                         <Label x:Name="DisplaySetValueMFC112" Foreground="Black" HorizontalAlignment="Left" />
@@ -895,7 +905,7 @@
                                     </StackPanel>
                                 </StackPanel>
 
-                                <StackPanel Canvas.Left="811" Canvas.Top="610" Width="54" Height="22">
+                                <StackPanel Canvas.Left="811" Canvas.Top="566" Width="54" Height="22">
                                     <StackPanel Background="{DynamicResource MFCMainColor}" Height="11">
                                         <Ellipse Width="7" Height="7" Fill="LawnGreen" HorizontalAlignment="Right" Margin="0,3,3,0"/>
                                         <Label x:Name="DisplaySetValueMFC113" Foreground="Black" HorizontalAlignment="Left" />
@@ -1015,7 +1025,7 @@
                                         <Label x:Name="DisplayCurrentValueEPC205" Foreground="Black" HorizontalAlignment="Right" />
                                     </StackPanel>
                                 </StackPanel>
-                                
+
                                 <StackPanel Canvas.Left="875" Canvas.Top="610" Width="54" Height="22">
                                     <StackPanel Background="{DynamicResource EPCMainColor}" Height="11">
                                         <Ellipse Width="7" Height="7" Fill="LawnGreen" HorizontalAlignment="Right" Margin="0,3,3,0"/>
@@ -1035,9 +1045,13 @@
                                         <Label x:Name="DisplayCurrentValueEPC207" Foreground="Black" HorizontalAlignment="Right" />
                                     </StackPanel>
                                 </StackPanel>
-                                
+
                                 <!-- Reactor State Display -->
-                                <StackPanel Canvas.Left="1222" Canvas.Top="119" Width="36" Height="22">
+                                <StackPanel Canvas.Left="1222" Canvas.Top="94" Width="36" Height="47">
+                                    <TextBlock Foreground="LightSkyBlue" FontSize="10" TextAlignment="Center">
+                                        DOR<LineBreak/>
+                                        Pressure
+                                    </TextBlock>
                                     <StackPanel Background="{DynamicResource DisplayMainColor}" Height="11">
                                         <Ellipse Width="7" Height="7" Fill="LawnGreen" HorizontalAlignment="Center" Margin="0,3,0,0"/>
                                     </StackPanel>
@@ -1045,17 +1059,34 @@
                                         <Label x:Name="DisplayDORPressure" Foreground="Black" HorizontalAlignment="Right" />
                                     </StackPanel>
                                 </StackPanel>
-                                
-                                <StackPanel Canvas.Left="1172" Canvas.Top="541" Width="36" Height="47">
+
+                                <StackPanel Canvas.Left="1172" Canvas.Top="526" Width="36" Height="47">
                                     <StackPanel VerticalAlignment="Center">
-                                        <TextBlock Foreground="LightSkyBlue" FontSize="10" TextAlignment="Center" Text="Exhaust"/>
-                                        <TextBlock Foreground="LightSkyBlue" FontSize="10" TextAlignment="Center" Text="Pressure"/>
+                                        <TextBlock Foreground="LightSkyBlue" FontSize="10" TextAlignment="Center">
+                                            Exhaust<LineBreak/>
+                                            Pressure
+                                        </TextBlock>
                                     </StackPanel>
                                     <StackPanel Background="{DynamicResource DisplayMainColor}" Height="11">
                                         <Ellipse Width="7" Height="7" Fill="LawnGreen" HorizontalAlignment="Center" Margin="0,3,0,0"/>
                                     </StackPanel>
                                     <StackPanel Background="{DynamicResource DisplaySecondaryColor}">
                                         <Label x:Name="DisplayExhaustPressure" Foreground="Black" HorizontalAlignment="Right" />
+                                    </StackPanel>
+                                </StackPanel>
+
+                                <StackPanel Canvas.Left="1200" Canvas.Top="585" Width="36" Height="47">
+                                    <StackPanel VerticalAlignment="Center">
+                                        <TextBlock Foreground="LightSkyBlue" FontSize="10" TextAlignment="Center">
+                                            Throttle<LineBreak/>
+                                            Valve
+                                        </TextBlock>
+                                    </StackPanel>
+                                    <StackPanel Background="{DynamicResource DisplayMainColor}" Height="11">
+                                        <Ellipse Width="7" Height="7" Fill="LawnGreen" HorizontalAlignment="Center" Margin="0,3,0,0"/>
+                                    </StackPanel>
+                                    <StackPanel Background="{DynamicResource DisplaySecondaryColor}">
+                                        <Label x:Name="DisplayThrottleValvePosition" Foreground="Black" HorizontalAlignment="Right" />
                                     </StackPanel>
                                 </StackPanel>
 
@@ -1145,13 +1176,13 @@
                                         <TextBlock  Foreground="White" FontSize="16" TextAlignment="Center">B</TextBlock>
                                     </Border>
                                 </StackPanel>
-                                
+
                                 <StackPanel Canvas.Left="1149" Canvas.Top="70">
                                     <Border BorderThickness="2" BorderBrush="Cyan" Width="22" Height="22">
                                         <TextBlock  Foreground="White" FontSize="16" TextAlignment="Center">B</TextBlock>
                                     </Border>
                                 </StackPanel>
-                                
+
                                 <StackPanel Canvas.Left="1180" Canvas.Top="654">
                                     <Border BorderThickness="2" BorderBrush="Cyan" Width="22" Height="22">
                                         <TextBlock  Foreground="White" FontSize="16" TextAlignment="Center">C</TextBlock>
@@ -1163,7 +1194,7 @@
                                         <TextBlock  Foreground="White" FontSize="16" TextAlignment="Center">C</TextBlock>
                                     </Border>
                                 </StackPanel>
-                                
+
                                 <StackPanel Canvas.Left="1089" Canvas.Top="654">
                                     <Border BorderThickness="2" BorderBrush="Cyan" Width="22" Height="22">
                                         <TextBlock  Foreground="White" FontSize="16" TextAlignment="Center">D</TextBlock>
@@ -1183,23 +1214,656 @@
                                 <TextBlock Foreground="LightSkyBlue" FontSize="10" Canvas.Left="850" Canvas.Top="255" Height="12" Text="Rotation Seal Purge" />
                                 <TextBlock Foreground="LightSkyBlue" FontSize="10" Canvas.Left="960" Canvas.Top="307" Height="12" Text="Shower Head (HYD)" />
                                 <TextBlock Foreground="LightSkyBlue" FontSize="10" Canvas.Left="960" Canvas.Top="351" Height="12" Text="Shower Head (MO)" />
-                                
+
                             </Canvas>
 
                         </TabItem>
                         <!-- Recipe Control 화면 -->
                         <TabItem Header="Recipe Control" Width="120">
-                                <Grid >
-                                    <Grid.RowDefinitions>
-                                        <RowDefinition Height="400"/>
+                            <Grid >
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="5*"/>
+                                    <ColumnDefinition Width="8*"/>
+                                    <ColumnDefinition Width="17*"/>
+                                    <ColumnDefinition Width="406*"/>
+                                </Grid.ColumnDefinitions>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="430"/>
                                     <RowDefinition Height="36"/>
                                     <RowDefinition/>
-                                    </Grid.RowDefinitions>
-                                <Canvas Grid.Row="0" Background="Gray">
-                                    <!-- 가스라인 간략버전 작성 -->
+                                </Grid.RowDefinitions>
+                                <!-- 가스라인 간략버전 작성 -->
+                                <Canvas Grid.Row="0" Background="Gray" Grid.ColumnSpan="4">
+                                    <!-- Drawing Nitrogen Gas Line -->
+                                    <Polyline Points="176,65 176,78 90,78 90,262 1000,262 1000,268" Stroke="Lime" StrokeThickness="2" />
+                                    <Line X1="0" Y1="0" X2="0" Y2="6" Stroke="Lime" StrokeThickness="2" Canvas.Left="300" Canvas.Top="262" />
+                                    <Line X1="0" Y1="0" X2="0" Y2="6" Stroke="Lime" StrokeThickness="2" Canvas.Left="440" Canvas.Top="262" />
+                                    <Line X1="0" Y1="0" X2="0" Y2="6" Stroke="Lime" StrokeThickness="2" Canvas.Left="580" Canvas.Top="262" />
+                                    <Line X1="0" Y1="0" X2="0" Y2="6" Stroke="Lime" StrokeThickness="2" Canvas.Left="720" Canvas.Top="262" />
+                                    <Line X1="0" Y1="0" X2="0" Y2="6" Stroke="Lime" StrokeThickness="2" Canvas.Left="860" Canvas.Top="262" />
+
+                                    <Line X1="0" Y1="0" X2="20" Y2="0" Stroke="Lime" StrokeThickness="2" Canvas.Left="90" Canvas.Top="100" />
+                                    <Line X1="0" Y1="0" X2="20" Y2="0" Stroke="Lime" StrokeThickness="2" Canvas.Left="90" Canvas.Top="155" />
+                                    <!-- Drawing Hydrogen Gas Line -->
+                                    <Polyline Points="70, 65 70, 256 980, 256 980,268" Stroke="Red" StrokeThickness="2" />
+                                    <Line X1="0" Y1="0" X2="0" Y2="12" Stroke="Red" StrokeThickness="2" Canvas.Left="280" Canvas.Top="256" />
+                                    <Line X1="0" Y1="0" X2="0" Y2="12" Stroke="Red" StrokeThickness="2" Canvas.Left="420" Canvas.Top="256" />
+                                    <Line X1="0" Y1="0" X2="0" Y2="12" Stroke="Red" StrokeThickness="2" Canvas.Left="560" Canvas.Top="256" />
+                                    <Line X1="0" Y1="0" X2="0" Y2="12" Stroke="Red" StrokeThickness="2" Canvas.Left="700" Canvas.Top="256" />
+                                    <Line X1="0" Y1="0" X2="0" Y2="12" Stroke="Red" StrokeThickness="2" Canvas.Left="840" Canvas.Top="256" />
+
+                                    <Line X1="0" Y1="0" X2="40" Y2="0" Stroke="Red" StrokeThickness="2" Canvas.Left="70" Canvas.Top="120" />
+                                    <Line X1="0" Y1="0" X2="40" Y2="0" Stroke="Red" StrokeThickness="2" Canvas.Left="70" Canvas.Top="175" />
+                                    <!-- Drawing Ammonia Gas Line -->
+                                    <Polyline Points="350, 31 350, 20 320, 20 320,31" Stroke="Yellow" StrokeThickness="2" />
+                                    <!-- Drawing Silane Gas Line -->
+                                    <Polyline Points="714, 31 714, 20 684, 20 684,31" Stroke="Orange" StrokeThickness="2" />
+                                    <!-- Drawing Process Gas Line -->
+                                    <Polyline Points="132,100 273,100 273,10 664,10 664,109" Stroke="Magenta" StrokeThickness="2" />
+                                    <Polyline Points="300,98 440,98 440,143" Stroke="Magenta" StrokeThickness="2" />
+
+                                    <Line X1="0" Y1="0" X2="0" Y2="135" Stroke="Magenta" StrokeThickness="2" Canvas.Left="300" Canvas.Top="10"/>
+                                    <Line X1="0" Y1="0" X2="0" Y2="135" Stroke="Magenta" StrokeThickness="2" Canvas.Left="580" Canvas.Top="10"/>
+                                    <Line X1="0" Y1="0" X2="84" Y2="0" Stroke="Magenta" StrokeThickness="2" Canvas.Left="580" Canvas.Top="98"/>
+
+                                    <Line X1="0" Y1="0" X2="0" Y2="12" Stroke="Magenta" StrokeThickness="2" Canvas.Left="320" Canvas.Top="165"/>
+                                    <Line X1="0" Y1="0" X2="0" Y2="12" Stroke="Magenta" StrokeThickness="2" Canvas.Left="460" Canvas.Top="165"/>
+                                    <Line X1="0" Y1="0" X2="0" Y2="12" Stroke="Magenta" StrokeThickness="2" Canvas.Left="600" Canvas.Top="165"/>
+
+                                    <Line X1="0" Y1="0" X2="0" Y2="90" Stroke="Magenta" StrokeThickness="2" Canvas.Left="300" Canvas.Top="290"/>
+                                    <Line X1="0" Y1="0" X2="0" Y2="90" Stroke="Magenta" StrokeThickness="2" Canvas.Left="440" Canvas.Top="290"/>
+                                    <Line X1="0" Y1="0" X2="0" Y2="90" Stroke="Magenta" StrokeThickness="2" Canvas.Left="580" Canvas.Top="290"/>
+                                    <Line X1="0" Y1="0" X2="0" Y2="90" Stroke="Magenta" StrokeThickness="2" Canvas.Left="720" Canvas.Top="290"/>
+                                    <Line X1="0" Y1="0" X2="0" Y2="90" Stroke="Magenta" StrokeThickness="2" Canvas.Left="860" Canvas.Top="290"/>
+                                    <Line X1="0" Y1="0" X2="0" Y2="90" Stroke="Magenta" StrokeThickness="2" Canvas.Left="1000" Canvas.Top="290"/>
+
+                                    <Line X1="0" Y1="0" X2="0" Y2="135" Stroke="Magenta" StrokeThickness="2" Canvas.Left="320" Canvas.Top="245"/>
+                                    <Line X1="0" Y1="0" X2="0" Y2="135" Stroke="Magenta" StrokeThickness="2" Canvas.Left="460" Canvas.Top="245"/>
+                                    <Line X1="0" Y1="0" X2="0" Y2="135" Stroke="Magenta" StrokeThickness="2" Canvas.Left="600" Canvas.Top="245"/>
+                                    <Line X1="0" Y1="0" X2="0" Y2="135" Stroke="Magenta" StrokeThickness="2" Canvas.Left="740" Canvas.Top="245"/>
+                                    <Line X1="0" Y1="0" X2="0" Y2="135" Stroke="Magenta" StrokeThickness="2" Canvas.Left="880" Canvas.Top="245"/>
+                                    <Line X1="0" Y1="0" X2="0" Y2="135" Stroke="Magenta" StrokeThickness="2" Canvas.Left="1020" Canvas.Top="245"/>
+
+                                    <Polyline Points="132,155 160,155 160,233 182,233" Stroke="Magenta" StrokeThickness="2" />
+                                    <Line X1="0" Y1="0" X2="22" Y2="0" Stroke="Magenta" StrokeThickness="2" Canvas.Left="160" Canvas.Top="155"/>
+                                    <Polyline Points="160,177 861,177 861,137 1165,137 " Stroke="Magenta" StrokeThickness="2" />
+                                    <Polyline Points="160,194 891,194 891,160 1165,160 " Stroke="Magenta" StrokeThickness="2" />
+                                    <Line X1="0" Y1="0" X2="274" Y2="0" Stroke="Magenta" StrokeThickness="2" Canvas.Left="891" Canvas.Top="194"/>
+                                    <Line X1="0" Y1="0" X2="1005" Y2="0" Stroke="Magenta" StrokeThickness="2" Canvas.Left="160" Canvas.Top="211"/>
+                                    <Line X1="0" Y1="0" X2="22" Y2="0" Stroke="Magenta" StrokeThickness="2" Canvas.Left="160" Canvas.Top="233"/>
+
+                                    <Line X1="0" Y1="0" X2="0" Y2="12" Stroke="Magenta" StrokeThickness="2" Canvas.Left="300" Canvas.Top="211"/>
+                                    <Line X1="0" Y1="0" X2="0" Y2="12" Stroke="Magenta" StrokeThickness="2" Canvas.Left="440" Canvas.Top="211"/>
+                                    <Line X1="0" Y1="0" X2="0" Y2="12" Stroke="Magenta" StrokeThickness="2" Canvas.Left="580" Canvas.Top="211"/>
+                                    <Line X1="0" Y1="0" X2="0" Y2="12" Stroke="Magenta" StrokeThickness="2" Canvas.Left="720" Canvas.Top="211"/>
+                                    <Line X1="0" Y1="0" X2="0" Y2="12" Stroke="Magenta" StrokeThickness="2" Canvas.Left="860" Canvas.Top="211"/>
+                                    <Line X1="0" Y1="0" X2="0" Y2="12" Stroke="Magenta" StrokeThickness="2" Canvas.Left="1000" Canvas.Top="211"/>
+
+                                    <!-- 샤워헤드 IN Arrow  -->
+                                    <Path Canvas.Left="1165" Canvas.Top="137" Fill="Magenta">
+                                        <Path.Data>
+                                            <PathGeometry>
+                                                <PathFigure StartPoint="0 0" IsClosed="True">
+                                                    <LineSegment Point="-10 -5"/>
+                                                    <LineSegment Point="-10 5"/>
+                                                </PathFigure>
+                                            </PathGeometry>
+                                        </Path.Data>
+                                    </Path>
+                                    <!-- 라이너 IN Arrow  -->
+                                    <Path Canvas.Left="1165" Canvas.Top="160" Fill="Magenta">
+                                        <Path.Data>
+                                            <PathGeometry>
+                                                <PathFigure StartPoint="0 0" IsClosed="True">
+                                                    <LineSegment Point="-10 -5"/>
+                                                    <LineSegment Point="-10 5"/>
+                                                </PathFigure>
+                                            </PathGeometry>
+                                        </Path.Data>
+                                    </Path>
+                                    <!-- Rotation IN Arrow  -->
+                                    <Path Canvas.Left="1165" Canvas.Top="194" Fill="Magenta">
+                                        <Path.Data>
+                                            <PathGeometry>
+                                                <PathFigure StartPoint="0 0" IsClosed="True">
+                                                    <LineSegment Point="-10 -5"/>
+                                                    <LineSegment Point="-10 5"/>
+                                                </PathFigure>
+                                            </PathGeometry>
+                                        </Path.Data>
+                                    </Path>
+                                    <!-- 샤워헤드 IN Arrow  -->
+                                    <Path Canvas.Left="1165" Canvas.Top="211" Fill="Magenta">
+                                        <Path.Data>
+                                            <PathGeometry>
+                                                <PathFigure StartPoint="0 0" IsClosed="True">
+                                                    <LineSegment Point="-10 -5"/>
+                                                    <LineSegment Point="-10 5"/>
+                                                </PathFigure>
+                                            </PathGeometry>
+                                        </Path.Data>
+                                    </Path>
+                                    <!-- 간략버전 가스라인 Text -->
+                                    <TextBlock Foreground="LightSkyBlue" FontSize="10" Canvas.Left="1050" Canvas.Top="122" Width="100" Height="12" Text="Shower Head(HYD)" TextAlignment="Right"/>
+                                    <TextBlock Foreground="LightSkyBlue" FontSize="10" Canvas.Left="1050" Canvas.Top="145" Width="100" Height="12" Text="Out Liner Purge" TextAlignment="Right"/>
+                                    <TextBlock Foreground="LightSkyBlue" FontSize="10" Canvas.Left="1050" Canvas.Top="179" Width="100" Height="12" Text="Rotation Seal Purge" TextAlignment="Right"/>
+                                    <TextBlock Foreground="LightSkyBlue" FontSize="10" Canvas.Left="1050" Canvas.Top="196" Width="100" Height="12" Text="Shower Head(MO)" TextAlignment="Right"/>
+
+
+
+                                    <!-- 수소가스 공급 상태 -->
+                                    <StackPanel Canvas.Left="60" Canvas.Top="31" Width="90" Height="34">
+                                        <TextBlock Height="22"  Background="{DynamicResource SourceMainColor}" Foreground="White" FontSize="16" TextAlignment="Center" VerticalAlignment="Center">H2</TextBlock>
+                                        <StackPanel Background="{DynamicResource SourceSecondaryColor}" Orientation="Horizontal">
+                                            <Ellipse Width="7" Height="7" Fill="LawnGreen"  Margin="5,2,10,2"/>
+                                            <Label x:Name="PressureValueHydrogneR" HorizontalAlignment="Right" HorizontalContentAlignment="Right" Width="65" />
+                                        </StackPanel>
+                                    </StackPanel>
+                                    <!-- 질소가스 공급 상태 -->
+                                    <StackPanel Canvas.Left="165" Canvas.Top="31" Width="90" Height="34">
+                                        <TextBlock Height="22"  Background="{DynamicResource SourceMainColor}" Foreground="White" FontSize="16" TextAlignment="Center" VerticalAlignment="Center">N2</TextBlock>
+                                        <StackPanel Background="{DynamicResource SourceSecondaryColor}" Orientation="Horizontal">
+                                            <Ellipse Width="7" Height="7" Fill="LawnGreen"  Margin="5,2,10,2"/>
+                                            <Label x:Name="PressureValueNitrogenR" HorizontalAlignment="Right" HorizontalContentAlignment="Right" Width="65" />
+                                        </StackPanel>
+                                    </StackPanel>
+                                    <!-- 암모니아가스 공급 상태 -->
+                                    <StackPanel Canvas.Left="340" Canvas.Top="31" Width="90" Height="34">
+                                        <TextBlock Height="22"  Background="{DynamicResource SourceMainColor}" Foreground="White" FontSize="16" TextAlignment="Center" VerticalAlignment="Center">NH3</TextBlock>
+                                        <StackPanel Background="{DynamicResource SourceSecondaryColor}" Orientation="Horizontal">
+                                            <Ellipse Width="7" Height="7" Fill="LawnGreen"  Margin="5,2,10,2"/>
+                                            <Label x:Name="PressureValueAmmoniaR" HorizontalAlignment="Right" HorizontalContentAlignment="Right" Width="65" />
+                                        </StackPanel>
+                                    </StackPanel>
+                                    <!-- 실란가스 공급 상태 -->
+                                    <StackPanel Canvas.Left="704" Canvas.Top="31" Width="90" Height="34">
+                                        <TextBlock Height="22"  Background="{DynamicResource SourceMainColor}" Foreground="White" FontSize="16" TextAlignment="Center" VerticalAlignment="Center">SiH4</TextBlock>
+                                        <StackPanel Background="{DynamicResource SourceSecondaryColor}" Orientation="Horizontal">
+                                            <Ellipse Width="7" Height="7" Fill="LawnGreen"  Margin="5,2,10,2"/>
+                                            <Label x:Name="PressureValueSilaneR" HorizontalAlignment="Right" HorizontalContentAlignment="Right" Width="65" />
+                                        </StackPanel>
+                                    </StackPanel>
+                                    <!-- Thermal Bath for MO-Source -->
+                                    <StackPanel Canvas.Left="265" Canvas.Top="380" Width="90" Height="34">
+                                        <TextBlock Height="22"  Background="{DynamicResource SourceMainColor}" Foreground="White" FontSize="16" TextAlignment="Center" >TEB</TextBlock>
+                                        <StackPanel Background="{DynamicResource SourceSecondaryColor}" Orientation="Horizontal">
+                                            <Label x:Name="BathTemperature1R" HorizontalAlignment="Right" HorizontalContentAlignment="Left" Width="45"/>
+                                            <Label x:Name="SourceRemainingAmount1R" HorizontalAlignment="Right" HorizontalContentAlignment="Right" Width="45" />
+                                        </StackPanel>
+                                    </StackPanel>
+
+                                    <StackPanel Canvas.Left="405" Canvas.Top="380" Width="90" Height="34">
+                                        <TextBlock Height="22"  Background="{DynamicResource SourceMainColor}" Foreground="White" FontSize="16" TextAlignment="Center" >TMAl</TextBlock>
+                                        <StackPanel Background="{DynamicResource SourceSecondaryColor}" Orientation="Horizontal">
+                                            <Label x:Name="BathTemperature2R" HorizontalAlignment="Right" HorizontalContentAlignment="Left" Width="45"/>
+                                            <Label x:Name="SourceRemainingAmount2R" HorizontalAlignment="Right" HorizontalContentAlignment="Right" Width="45" />
+                                        </StackPanel>
+                                    </StackPanel>
+
+                                    <StackPanel Canvas.Left="545" Canvas.Top="380" Width="90" Height="34">
+                                        <TextBlock Height="22"  Background="{DynamicResource SourceMainColor}" Foreground="White" FontSize="16" TextAlignment="Center" >TMIn</TextBlock>
+                                        <StackPanel Background="{DynamicResource SourceSecondaryColor}" Orientation="Horizontal">
+                                            <Label x:Name="BathTemperature3R" HorizontalAlignment="Right" HorizontalContentAlignment="Left" Width="45"/>
+                                            <Label x:Name="SourceRemainingAmount3R" HorizontalAlignment="Right" HorizontalContentAlignment="Right" Width="45" />
+                                        </StackPanel>
+                                    </StackPanel>
+
+                                    <StackPanel Canvas.Left="685" Canvas.Top="380" Width="90" Height="34">
+                                        <TextBlock Height="22"  Background="{DynamicResource SourceMainColor}" Foreground="White" FontSize="16" TextAlignment="Center" >TMGa</TextBlock>
+                                        <StackPanel Background="{DynamicResource SourceSecondaryColor}" Orientation="Horizontal">
+                                            <Label x:Name="BathTemperature4R" HorizontalAlignment="Right" HorizontalContentAlignment="Left" Width="45"/>
+                                            <Label x:Name="SourceRemainingAmount4R" HorizontalAlignment="Right" HorizontalContentAlignment="Right" Width="45" />
+                                        </StackPanel>
+                                    </StackPanel>
+
+                                    <StackPanel Canvas.Left="825" Canvas.Top="380" Width="90" Height="34">
+                                        <TextBlock Height="22"  Background="{DynamicResource SourceMainColor}" Foreground="White" FontSize="16" TextAlignment="Center" >DTMGa</TextBlock>
+                                        <StackPanel Background="{DynamicResource SourceSecondaryColor}" Orientation="Horizontal">
+                                            <Label x:Name="BathTemperature5R" HorizontalAlignment="Right" HorizontalContentAlignment="Left" Width="45"/>
+                                            <Label x:Name="SourceRemainingAmount5R" HorizontalAlignment="Right" HorizontalContentAlignment="Right" Width="45" />
+                                        </StackPanel>
+                                    </StackPanel>
+
+                                    <StackPanel Canvas.Left="965" Canvas.Top="380" Width="90" Height="34">
+                                        <TextBlock Height="22"  Background="{DynamicResource SourceMainColor}" Foreground="White" FontSize="16" TextAlignment="Center" >Cp2Mg</TextBlock>
+                                        <StackPanel Background="{DynamicResource SourceSecondaryColor}" Orientation="Horizontal">
+                                            <Label x:Name="BathTemperature6R" HorizontalAlignment="Right" HorizontalContentAlignment="Left" Width="45"/>
+                                            <Label x:Name="SourceRemainingAmount6R" HorizontalAlignment="Right" HorizontalContentAlignment="Right" Width="45" />
+                                        </StackPanel>
+                                    </StackPanel>
+
+                                    <!--MFC Contol Box!-->
+                                    <StackPanel Canvas.Left="182" Canvas.Top="200" Width="54" Height="22">
+                                        <StackPanel Background="{DynamicResource MFCMainColor}" Height="11">
+                                            <Ellipse Width="7" Height="7" Fill="LawnGreen" HorizontalAlignment="Right" Margin="0,3,3,0"/>
+                                            <Label x:Name="DisplaySetValueMFC101R" Foreground="Black" HorizontalAlignment="Left" />
+                                        </StackPanel>
+                                        <StackPanel Background="{DynamicResource MFCSecondaryColor}">
+                                            <Label x:Name="DisplayCurrentValueMFC101R" Foreground="Black" HorizontalAlignment="Right" />
+                                        </StackPanel>
+                                    </StackPanel>
+
+                                    <StackPanel Canvas.Left="182" Canvas.Top="166" Width="54" Height="22">
+                                        <StackPanel Background="{DynamicResource MFCMainColor}" Height="11">
+                                            <Ellipse Width="7" Height="7" Fill="LawnGreen" HorizontalAlignment="Right" Margin="0,3,3,0"/>
+                                            <Label x:Name="DisplaySetValueMFC102R" Foreground="Black" HorizontalAlignment="Left" />
+                                        </StackPanel>
+                                        <StackPanel Background="{DynamicResource MFCSecondaryColor}">
+                                            <Label x:Name="DisplayCurrentValueMFC102R" Foreground="Black" HorizontalAlignment="Right" />
+                                        </StackPanel>
+                                    </StackPanel>
+
+                                    <StackPanel Canvas.Left="423" Canvas.Top="109" Width="54" Height="22">
+                                        <StackPanel Background="{DynamicResource MFCMainColor}" Height="11">
+                                            <Ellipse Width="7" Height="7" Fill="LawnGreen" HorizontalAlignment="Right" Margin="0,3,3,0"/>
+                                            <Label x:Name="DisplaySetValueMFC103R" Foreground="Black" HorizontalAlignment="Left" />
+                                        </StackPanel>
+                                        <StackPanel Background="{DynamicResource MFCSecondaryColor}">
+                                            <Label x:Name="DisplayCurrentValueMFC103R" Foreground="Black" HorizontalAlignment="Right" />
+                                        </StackPanel>
+                                    </StackPanel>
+
+                                    <StackPanel Canvas.Left="283" Canvas.Top="109" Width="54" Height="22">
+                                        <StackPanel Background="{DynamicResource MFCMainColor}" Height="11">
+                                            <Ellipse Width="7" Height="7" Fill="LawnGreen" HorizontalAlignment="Right" Margin="0,3,3,0"/>
+                                            <Label x:Name="DisplaySetValueMFC104R" Foreground="Black" HorizontalAlignment="Left" />
+                                        </StackPanel>
+                                        <StackPanel Background="{DynamicResource MFCSecondaryColor}">
+                                            <Label x:Name="DisplayCurrentValueMFC104R" Foreground="Black" HorizontalAlignment="Right" />
+                                        </StackPanel>
+                                    </StackPanel>
+
+                                    <StackPanel Canvas.Left="627" Canvas.Top="65" Width="54" Height="22">
+                                        <StackPanel Background="{DynamicResource MFCMainColor}" Height="11">
+                                            <Ellipse Width="7" Height="7" Fill="LawnGreen" HorizontalAlignment="Right" Margin="0,3,3,0"/>
+                                            <Label x:Name="DisplaySetValueMFC105R" Foreground="Black" HorizontalAlignment="Left" />
+                                        </StackPanel>
+                                        <StackPanel Background="{DynamicResource MFCSecondaryColor}">
+                                            <Label x:Name="DisplayCurrentValueMFC105R" Foreground="Black" HorizontalAlignment="Right" />
+                                        </StackPanel>
+                                    </StackPanel>
+
+                                    <StackPanel Canvas.Left="563" Canvas.Top="65" Width="54" Height="22">
+                                        <StackPanel Background="{DynamicResource MFCMainColor}" Height="11">
+                                            <Ellipse Width="7" Height="7" Fill="LawnGreen" HorizontalAlignment="Right" Margin="0,3,3,0"/>
+                                            <Label x:Name="DisplaySetValueMFC106R" Foreground="Black" HorizontalAlignment="Left" />
+                                        </StackPanel>
+                                        <StackPanel Background="{DynamicResource MFCSecondaryColor}">
+                                            <Label x:Name="DisplayCurrentValueMFC106R" Foreground="Black" HorizontalAlignment="Right" />
+                                        </StackPanel>
+                                    </StackPanel>
+
+                                    <StackPanel Canvas.Left="563" Canvas.Top="109" Width="54" Height="22">
+                                        <StackPanel Background="{DynamicResource MFCMainColor}" Height="11">
+                                            <Ellipse Width="7" Height="7" Fill="LawnGreen" HorizontalAlignment="Right" Margin="0,3,3,0"/>
+                                            <Label x:Name="DisplaySetValueMFC107R" Foreground="Black" HorizontalAlignment="Left" />
+                                        </StackPanel>
+                                        <StackPanel Background="{DynamicResource MFCSecondaryColor}">
+                                            <Label x:Name="DisplayCurrentValueMFC107R" Foreground="Black" HorizontalAlignment="Right" />
+                                        </StackPanel>
+                                    </StackPanel>
+
+                                    <StackPanel Canvas.Left="251" Canvas.Top="324" Width="54" Height="22">
+                                        <StackPanel Background="{DynamicResource MFCMainColor}" Height="11">
+                                            <Ellipse Width="7" Height="7" Fill="LawnGreen" HorizontalAlignment="Right" Margin="0,3,3,0"/>
+                                            <Label x:Name="DisplaySetValueMFC108R" Foreground="Black" HorizontalAlignment="Left" />
+                                        </StackPanel>
+                                        <StackPanel Background="{DynamicResource MFCSecondaryColor}">
+                                            <Label x:Name="DisplayCurrentValueMFC108R" Foreground="Black" HorizontalAlignment="Right" />
+                                        </StackPanel>
+                                    </StackPanel>
+
+                                    <StackPanel Canvas.Left="391" Canvas.Top="324" Width="54" Height="22">
+                                        <StackPanel Background="{DynamicResource MFCMainColor}" Height="11">
+                                            <Ellipse Width="7" Height="7" Fill="LawnGreen" HorizontalAlignment="Right" Margin="0,3,3,0"/>
+                                            <Label x:Name="DisplaySetValueMFC109R" Foreground="Black" HorizontalAlignment="Left" />
+                                        </StackPanel>
+                                        <StackPanel Background="{DynamicResource MFCSecondaryColor}">
+                                            <Label x:Name="DisplayCurrentValueMFC109R" Foreground="Black" HorizontalAlignment="Right" />
+                                        </StackPanel>
+                                    </StackPanel>
+
+                                    <StackPanel Canvas.Left="531" Canvas.Top="324" Width="54" Height="22">
+                                        <StackPanel Background="{DynamicResource MFCMainColor}" Height="11">
+                                            <Ellipse Width="7" Height="7" Fill="LawnGreen" HorizontalAlignment="Right" Margin="0,3,3,0"/>
+                                            <Label x:Name="DisplaySetValueMFC110R" Foreground="Black" HorizontalAlignment="Left" />
+                                        </StackPanel>
+                                        <StackPanel Background="{DynamicResource MFCSecondaryColor}">
+                                            <Label x:Name="DisplayCurrentValueMFC110R" Foreground="Black" HorizontalAlignment="Right" />
+                                        </StackPanel>
+                                    </StackPanel>
+
+                                    <StackPanel Canvas.Left="671" Canvas.Top="324" Width="54" Height="22">
+                                        <StackPanel Background="{DynamicResource MFCMainColor}" Height="11">
+                                            <Ellipse Width="7" Height="7" Fill="LawnGreen" HorizontalAlignment="Right" Margin="0,3,3,0"/>
+                                            <Label x:Name="DisplaySetValueMFC111R" Foreground="Black" HorizontalAlignment="Left" />
+                                        </StackPanel>
+                                        <StackPanel Background="{DynamicResource MFCSecondaryColor}">
+                                            <Label x:Name="DisplayCurrentValueMFC111R" Foreground="Black" HorizontalAlignment="Right" />
+                                        </StackPanel>
+                                    </StackPanel>
+
+                                    <StackPanel Canvas.Left="811" Canvas.Top="324" Width="54" Height="22">
+                                        <StackPanel Background="{DynamicResource MFCMainColor}" Height="11">
+                                            <Ellipse Width="7" Height="7" Fill="LawnGreen" HorizontalAlignment="Right" Margin="0,3,3,0"/>
+                                            <Label x:Name="DisplaySetValueMFC112R" Foreground="Black" HorizontalAlignment="Left" />
+                                        </StackPanel>
+                                        <StackPanel Background="{DynamicResource MFCSecondaryColor}">
+                                            <Label x:Name="DisplayCurrentValueMFC112R" Foreground="Black" HorizontalAlignment="Right" />
+                                        </StackPanel>
+                                    </StackPanel>
+
+                                    <StackPanel Canvas.Left="811" Canvas.Top="296" Width="54" Height="22">
+                                        <StackPanel Background="{DynamicResource MFCMainColor}" Height="11">
+                                            <Ellipse Width="7" Height="7" Fill="LawnGreen" HorizontalAlignment="Right" Margin="0,3,3,0"/>
+                                            <Label x:Name="DisplaySetValueMFC113R" Foreground="Black" HorizontalAlignment="Left" />
+                                        </StackPanel>
+                                        <StackPanel Background="{DynamicResource MFCSecondaryColor}">
+                                            <Label x:Name="DisplayCurrentValueMFC113R" Foreground="Black" HorizontalAlignment="Right" />
+                                        </StackPanel>
+                                    </StackPanel>
+
+                                    <StackPanel Canvas.Left="875" Canvas.Top="296" Width="54" Height="22">
+                                        <StackPanel Background="{DynamicResource MFCMainColor}" Height="11">
+                                            <Ellipse Width="7" Height="7" Fill="LawnGreen" HorizontalAlignment="Right" Margin="0,3,3,0"/>
+                                            <Label x:Name="DisplaySetValueMFC114R" Foreground="Black" HorizontalAlignment="Left" />
+                                        </StackPanel>
+                                        <StackPanel Background="{DynamicResource MFCSecondaryColor}">
+                                            <Label x:Name="DisplayCurrentValueMFC114R" Foreground="Black" HorizontalAlignment="Right" />
+                                        </StackPanel>
+                                    </StackPanel>
+
+                                    <StackPanel Canvas.Left="951" Canvas.Top="324" Width="54" Height="22">
+                                        <StackPanel Background="{DynamicResource MFCMainColor}" Height="11">
+                                            <Ellipse Width="7" Height="7" Fill="LawnGreen" HorizontalAlignment="Right" Margin="0,3,3,0"/>
+                                            <Label x:Name="DisplaySetValueMFC115R" Foreground="Black" HorizontalAlignment="Left" />
+                                        </StackPanel>
+                                        <StackPanel Background="{DynamicResource MFCSecondaryColor}">
+                                            <Label x:Name="DisplayCurrentValueMFC115R" Foreground="Black" HorizontalAlignment="Right" />
+                                        </StackPanel>
+                                    </StackPanel>
+
+                                    <StackPanel Canvas.Left="913" Canvas.Top="149" Width="54" Height="22">
+                                        <StackPanel Background="{DynamicResource MFCMainColor}" Height="11">
+                                            <Ellipse Width="7" Height="7" Fill="LawnGreen" HorizontalAlignment="Right" Margin="0,3,3,0"/>
+                                            <Label x:Name="DisplaySetValueMFC116R" Foreground="Black" HorizontalAlignment="Left" />
+                                        </StackPanel>
+                                        <StackPanel Background="{DynamicResource MFCSecondaryColor}">
+                                            <Label x:Name="DisplayCurrentValueMFC116R" Foreground="Black" HorizontalAlignment="Right" />
+                                        </StackPanel>
+                                    </StackPanel>
+
+                                    <StackPanel Canvas.Left="913" Canvas.Top="183" Width="54" Height="22">
+                                        <StackPanel Background="{DynamicResource MFCMainColor}" Height="11">
+                                            <Ellipse Width="7" Height="7" Fill="LawnGreen" HorizontalAlignment="Right" Margin="0,3,3,0"/>
+                                            <Label x:Name="DisplaySetValueMFC117R" Foreground="Black" HorizontalAlignment="Left" />
+                                        </StackPanel>
+                                        <StackPanel Background="{DynamicResource MFCSecondaryColor}">
+                                            <Label x:Name="DisplayCurrentValueMFC117R" Foreground="Black" HorizontalAlignment="Right" />
+                                        </StackPanel>
+                                    </StackPanel>
+
+                                    <StackPanel Canvas.Left="182" Canvas.Top="228" Width="54" Height="22">
+                                        <StackPanel Background="{DynamicResource MFCMainColor}" Height="11">
+                                            <Ellipse Width="7" Height="7" Fill="LawnGreen" HorizontalAlignment="Right" Margin="0,3,3,0"/>
+                                            <Label x:Name="DisplaySetValueMFC118R" Foreground="Black" HorizontalAlignment="Left" />
+                                        </StackPanel>
+                                        <StackPanel Background="{DynamicResource MFCSecondaryColor}">
+                                            <Label x:Name="DisplayCurrentValueMFC118R" Foreground="Black" HorizontalAlignment="Right" />
+                                        </StackPanel>
+                                    </StackPanel>
+
+                                    <StackPanel Canvas.Left="182" Canvas.Top="138" Width="54" Height="22">
+                                        <StackPanel Background="{DynamicResource MFCMainColor}" Height="11">
+                                            <Ellipse Width="7" Height="7" Fill="LawnGreen" HorizontalAlignment="Right" Margin="0,3,3,0"/>
+                                            <Label x:Name="DisplaySetValueMFC119R" Foreground="Black" HorizontalAlignment="Left" />
+                                        </StackPanel>
+                                        <StackPanel Background="{DynamicResource MFCSecondaryColor}">
+                                            <Label x:Name="DisplayCurrentValueMFC119R" Foreground="Black" HorizontalAlignment="Right" />
+                                        </StackPanel>
+                                    </StackPanel>
+                                    <!--EPC Contol Box!-->
+                                    <StackPanel Canvas.Left="627" Canvas.Top="109" Width="54" Height="22">
+                                        <StackPanel Background="{DynamicResource EPCMainColor}" Height="11">
+                                            <Ellipse Width="7" Height="7" Fill="LawnGreen" HorizontalAlignment="Right" Margin="0,3,3,0"/>
+                                            <Label x:Name="DisplaySetValueEPC201R" Foreground="Black" HorizontalAlignment="Left" />
+                                        </StackPanel>
+                                        <StackPanel Background="{DynamicResource EPCSecondaryColor}">
+                                            <Label x:Name="DisplayCurrentValueEPC201R" Foreground="Black" HorizontalAlignment="Right" />
+                                        </StackPanel>
+                                    </StackPanel>
+
+                                    <StackPanel Canvas.Left="315" Canvas.Top="324" Width="54" Height="22">
+                                        <StackPanel Background="{DynamicResource EPCMainColor}" Height="11">
+                                            <Ellipse Width="7" Height="7" Fill="LawnGreen" HorizontalAlignment="Right" Margin="0,3,3,0"/>
+                                            <Label x:Name="DisplaySetValueEPC202R" Foreground="Black" HorizontalAlignment="Left" />
+                                        </StackPanel>
+                                        <StackPanel Background="{DynamicResource EPCSecondaryColor}">
+                                            <Label x:Name="DisplayCurrentValueEPC202R" Foreground="Black" HorizontalAlignment="Right" />
+                                        </StackPanel>
+                                    </StackPanel>
+
+                                    <StackPanel Canvas.Left="455" Canvas.Top="324" Width="54" Height="22">
+                                        <StackPanel Background="{DynamicResource EPCMainColor}" Height="11">
+                                            <Ellipse Width="7" Height="7" Fill="LawnGreen" HorizontalAlignment="Right" Margin="0,3,3,0"/>
+                                            <Label x:Name="DisplaySetValueEPC203R" Foreground="Black" HorizontalAlignment="Left" />
+                                        </StackPanel>
+                                        <StackPanel Background="{DynamicResource EPCSecondaryColor}">
+                                            <Label x:Name="DisplayCurrentValueEPC203R" Foreground="Black" HorizontalAlignment="Right" />
+                                        </StackPanel>
+                                    </StackPanel>
+
+                                    <StackPanel Canvas.Left="595" Canvas.Top="324" Width="54" Height="22">
+                                        <StackPanel Background="{DynamicResource EPCMainColor}" Height="11">
+                                            <Ellipse Width="7" Height="7" Fill="LawnGreen" HorizontalAlignment="Right" Margin="0,3,3,0"/>
+                                            <Label x:Name="DisplaySetValueEPC204R" Foreground="Black" HorizontalAlignment="Left" />
+                                        </StackPanel>
+                                        <StackPanel Background="{DynamicResource EPCSecondaryColor}">
+                                            <Label x:Name="DisplayCurrentValueEPC204R" Foreground="Black" HorizontalAlignment="Right" />
+                                        </StackPanel>
+                                    </StackPanel>
+
+                                    <StackPanel Canvas.Left="735" Canvas.Top="324" Width="54" Height="22">
+                                        <StackPanel Background="{DynamicResource EPCMainColor}" Height="11">
+                                            <Ellipse Width="7" Height="7" Fill="LawnGreen" HorizontalAlignment="Right" Margin="0,3,3,0"/>
+                                            <Label x:Name="DisplaySetValueEPC205R" Foreground="Black" HorizontalAlignment="Left" />
+                                        </StackPanel>
+                                        <StackPanel Background="{DynamicResource EPCSecondaryColor}">
+                                            <Label x:Name="DisplayCurrentValueEPC205R" Foreground="Black" HorizontalAlignment="Right" />
+                                        </StackPanel>
+                                    </StackPanel>
+
+                                    <StackPanel Canvas.Left="875" Canvas.Top="324" Width="54" Height="22">
+                                        <StackPanel Background="{DynamicResource EPCMainColor}" Height="11">
+                                            <Ellipse Width="7" Height="7" Fill="LawnGreen" HorizontalAlignment="Right" Margin="0,3,3,0"/>
+                                            <Label x:Name="DisplaySetValueEPC206R" Foreground="Black" HorizontalAlignment="Left" />
+                                        </StackPanel>
+                                        <StackPanel Background="{DynamicResource EPCSecondaryColor}">
+                                            <Label x:Name="DisplayCurrentValueEPC206R" Foreground="Black" HorizontalAlignment="Right" />
+                                        </StackPanel>
+                                    </StackPanel>
+
+                                    <StackPanel Canvas.Left="1015" Canvas.Top="324" Width="54" Height="22">
+                                        <StackPanel Background="{DynamicResource EPCMainColor}" Height="11">
+                                            <Ellipse Width="7" Height="7" Fill="LawnGreen" HorizontalAlignment="Right" Margin="0,3,3,0"/>
+                                            <Label x:Name="DisplaySetValueEPC207R" Foreground="Black" HorizontalAlignment="Left" />
+                                        </StackPanel>
+                                        <StackPanel Background="{DynamicResource EPCSecondaryColor}">
+                                            <Label x:Name="DisplayCurrentValueEPC207R" Foreground="Black" HorizontalAlignment="Right" />
+                                        </StackPanel>
+                                    </StackPanel>
+
+                                    <!-- Display Value for Reactor State -->
+                                    <StackPanel Canvas.Left="900" Canvas.Top="40" Width="54" Height="47">
+                                        <StackPanel VerticalAlignment="Center">
+                                            <TextBlock Foreground="LightSkyBlue" FontSize="10" TextAlignment="Center">
+                                            Total <LineBreak/>
+                                            Flowrate
+                                            </TextBlock>
+                                        </StackPanel>
+                                        <StackPanel Background="{DynamicResource DisplayMainColor}" Orientation="Horizontal">
+                                            <Label x:Name="DisplayTotalFlowrateSETR" Foreground="Black" HorizontalAlignment="Left" Width=" 35"/>
+                                            <Ellipse Width="7" Height="7" Fill="LawnGreen" Margin="6,0,0,0"/>
+                                        </StackPanel>
+                                        <StackPanel Background="{DynamicResource DisplaySecondaryColor}" >
+                                            <Label x:Name="DisplayTotalFlowrateCurrentR" Foreground="Black" HorizontalAlignment="Right"/>
+                                        </StackPanel>
+                                    </StackPanel>
+
+                                    <StackPanel Canvas.Left="970" Canvas.Top="40" Width="54" Height="47">
+                                        <StackPanel VerticalAlignment="Center">
+                                            <TextBlock Foreground="LightSkyBlue" FontSize="10" TextAlignment="Center">
+                                            Susceptor<LineBreak/>
+                                            Temperature
+                                            </TextBlock>
+                                        </StackPanel>
+                                        <StackPanel Background="{DynamicResource DisplayMainColor}" Orientation="Horizontal">
+                                            <Label x:Name="DisplaySusceptorTemperatureSETR" Foreground="Black" HorizontalAlignment="Left" Width=" 35"/>
+                                            <Ellipse Width="7" Height="7" Fill="LawnGreen" Margin="6,0,0,0"/>
+                                        </StackPanel>
+                                        <StackPanel Background="{DynamicResource DisplaySecondaryColor}" >
+                                            <Label x:Name="DisplaySusceptorTemperatureCurrentR" Foreground="Black" HorizontalAlignment="Right"/>
+                                        </StackPanel>
+                                    </StackPanel>
+
+                                    <StackPanel Canvas.Left="1040" Canvas.Top="40" Width="54" Height="47">
+                                        <StackPanel VerticalAlignment="Center">
+                                            <TextBlock Foreground="LightSkyBlue" FontSize="10" TextAlignment="Center">
+                                            Reactor<LineBreak/>
+                                            Pressure
+                                            </TextBlock>
+                                        </StackPanel>
+                                        <StackPanel Background="{DynamicResource DisplayMainColor}" Orientation="Horizontal" >
+                                            <Label x:Name="DisplayReactorPressureSETR" Foreground="Black" HorizontalAlignment="Left" Width=" 35"/>
+                                            <Ellipse Width="7" Height="7" Fill="LawnGreen" Margin="6,0,0,0"/>
+                                        </StackPanel>
+                                        <StackPanel Background="{DynamicResource DisplaySecondaryColor}" Margin="0,0,0,0" >
+                                            <Label x:Name="DisplayReactorPressureCurrentR" Foreground="Black" HorizontalAlignment="Right"/>
+                                        </StackPanel>
+                                    </StackPanel>
+                                    <StackPanel Canvas.Left="1110" Canvas.Top="40" Width="54" Height="47">
+                                        <StackPanel VerticalAlignment="Center">
+                                            <TextBlock Foreground="LightSkyBlue" FontSize="10" TextAlignment="Center">
+                                            Susceptor<LineBreak/>
+                                            Rotation
+                                            </TextBlock>
+                                        </StackPanel>
+                                        <StackPanel Background="{DynamicResource DisplayMainColor}" Orientation="Horizontal" >
+                                            <Label x:Name="DisplaySusceptorRotationSETR" Foreground="Black" HorizontalAlignment="Left" Width=" 35"/>
+                                            <Ellipse Width="7" Height="7" Fill="LawnGreen" Margin="6,0,0,0"/>
+                                        </StackPanel>
+                                        <StackPanel Background="{DynamicResource DisplaySecondaryColor}" Margin="0,0,0,0" >
+                                            <Label x:Name="DisplaySusceptorRotationCurrentR" Foreground="Black" HorizontalAlignment="Right"/>
+                                        </StackPanel>
+                                    </StackPanel>
+
+                                    <StackPanel Canvas.Left="1136" Canvas.Top="243" Width="36" Height="47">
+                                        <StackPanel VerticalAlignment="Center">
+                                            <TextBlock Foreground="LightSkyBlue" FontSize="10" TextAlignment="Center">
+                                            Exhaust<LineBreak/>
+                                            Pressure
+                                            </TextBlock>
+                                        </StackPanel>
+                                        <StackPanel Background="{DynamicResource DisplayMainColor}" Height="11">
+                                            <Ellipse Width="7" Height="7" Fill="LawnGreen" HorizontalAlignment="Center" Margin="0,3,0,0"/>
+                                        </StackPanel>
+                                        <StackPanel Background="{DynamicResource DisplaySecondaryColor}">
+                                            <Label x:Name="DisplayExhaustPressureR" Foreground="Black" HorizontalAlignment="Right" />
+                                        </StackPanel>
+                                    </StackPanel>
+
+                                    <StackPanel Canvas.Left="1080" Canvas.Top="243" Width="36" Height="47">
+                                        <StackPanel VerticalAlignment="Center">
+                                            <TextBlock Foreground="LightSkyBlue" FontSize="10" TextAlignment="Center">
+                                            Throttle<LineBreak/>
+                                            Valve
+                                            </TextBlock>
+                                        </StackPanel>
+                                        <StackPanel Background="{DynamicResource DisplayMainColor}" Height="11">
+                                            <Ellipse Width="7" Height="7" Fill="LawnGreen" HorizontalAlignment="Center" Margin="0,3,0,0"/>
+                                        </StackPanel>
+                                        <StackPanel Background="{DynamicResource DisplaySecondaryColor}">
+                                            <Label x:Name="DisplayThrottleValvePositionR" Foreground="Black" HorizontalAlignment="Right" />
+                                        </StackPanel>
+                                    </StackPanel>
+
+                                    <StackPanel Canvas.Left="1188" Canvas.Top="243" Width="36" Height="47">
+                                        <TextBlock Foreground="LightSkyBlue" FontSize="10" TextAlignment="Center">
+                                        DOR<LineBreak/>
+                                        Pressure
+                                        </TextBlock>
+                                        <StackPanel Background="{DynamicResource DisplayMainColor}" Height="11">
+                                            <Ellipse Width="7" Height="7" Fill="LawnGreen" HorizontalAlignment="Center" Margin="0,3,0,0"/>
+                                        </StackPanel>
+                                        <StackPanel Background="{DynamicResource DisplaySecondaryColor}">
+                                            <Label x:Name="DisplayDORPressureR" Foreground="Black" HorizontalAlignment="Right" />
+                                        </StackPanel>
+                                    </StackPanel>
+
+                                    <!-- Button for Valve Control -->
+                                    <Button x:Name="HydridCarrirerChangeR" Content="Button" Canvas.Left="110" Canvas.Top="130" Width="40" Height="22" Click="HydridCarrirerChange_Click">
+                                        <Button.RenderTransform>
+                                            <RotateTransform Angle="270"/>
+                                        </Button.RenderTransform>
+                                    </Button>
+                                    <Button x:Name="MOCarrierChangeR" Content="Button" Canvas.Left="110" Canvas.Top="185" Width="40" Height="22">
+                                        <Button.RenderTransform>
+                                            <RotateTransform Angle="270"/>
+                                        </Button.RenderTransform>
+                                    </Button>
+                                    <Button x:Name="SourceAmmoniaChangeR" Content="Button" Canvas.Left="290" Canvas.Top="31" Width="40" Height="22">
+                                    </Button>
+                                    <Button x:Name="SourceSilaneChangeR" Content="Button" Canvas.Left="654" Canvas.Top="31" Width="40" Height="22">
+                                    </Button>
+                                    <Button x:Name="ManifoldHyd1RunR" Content="Button" Canvas.Left="290" Canvas.Top="143" Width="40" Height="22">
+                                    </Button>
+                                    <Button x:Name="ManifoldHyd2RunR" Content="Button" Canvas.Left="430" Canvas.Top="143" Width="40" Height="22">
+                                    </Button>
+                                    <Button x:Name="ManifoldHyd3RunR" Content="Button" Canvas.Left="570" Canvas.Top="143" Width="40" Height="22">
+                                    </Button>
+                                    <Button x:Name="ManifoldMO1RunR" Content="Button" Canvas.Left="290" Canvas.Top="223" Width="40" Height="22">
+                                    </Button>
+                                    <Button x:Name="ManifoldMO2RunR" Content="Button" Canvas.Left="430" Canvas.Top="223" Width="40" Height="22">
+                                    </Button>
+                                    <Button x:Name="ManifoldMO3RunR" Content="Button" Canvas.Left="570" Canvas.Top="223" Width="40" Height="22">
+                                    </Button>
+                                    <Button x:Name="ManifoldMO4RunR" Content="Button" Canvas.Left="710" Canvas.Top="223" Width="40" Height="22">
+                                    </Button>
+                                    <Button x:Name="ManifoldMO5RunR" Content="Button" Canvas.Left="850" Canvas.Top="223" Width="40" Height="22">
+                                    </Button>
+                                    <Button x:Name="ManifoldMO6RunR" Content="Button" Canvas.Left="990" Canvas.Top="223" Width="40" Height="22">
+                                    </Button>
+
+                                    <Button x:Name="BubblerCarrier1ChangeR" Content="Button" Canvas.Left="270" Canvas.Top="268" Width="40" Height="22">
+                                    </Button>
+                                    <Button x:Name="BubblerCarrier2ChangeR" Content="Button" Canvas.Left="410" Canvas.Top="268" Width="40" Height="22">
+                                    </Button>
+                                    <Button x:Name="BubblerCarrier3ChangeR" Content="Button" Canvas.Left="550" Canvas.Top="268" Width="40" Height="22">
+                                    </Button>
+                                    <Button x:Name="BubblerCarrier4ChangeR" Content="Button" Canvas.Left="690" Canvas.Top="268" Width="40" Height="22">
+                                    </Button>
+                                    <Button x:Name="BubblerCarrier5ChangeR" Content="Button" Canvas.Left="830" Canvas.Top="268" Width="40" Height="22">
+                                    </Button>
+                                    <Button x:Name="BubblerCarrier6ChangeR" Content="Button" Canvas.Left="970" Canvas.Top="268" Width="40" Height="22">
+                                    </Button>
+
+                                    <Button x:Name="Bubbler1BypassR" Content="Button" Canvas.Left="290" Canvas.Top="352" Width="40" Height="22">
+                                    </Button>
+                                    <Button x:Name="Bubbler2BypassR" Content="Button" Canvas.Left="430" Canvas.Top="352" Width="40" Height="22">
+                                    </Button>
+                                    <Button x:Name="Bubbler3BypassR" Content="Button" Canvas.Left="570" Canvas.Top="352" Width="40" Height="22">
+                                    </Button>
+                                    <Button x:Name="Bubbler4BypassR" Content="Button" Canvas.Left="710" Canvas.Top="352" Width="40" Height="22">
+                                    </Button>
+                                    <Button x:Name="Bubbler5BypassR" Content="Button" Canvas.Left="850" Canvas.Top="352" Width="40" Height="22">
+                                    </Button>
+                                    <Button x:Name="Bubbler6BypassR" Content="Button" Canvas.Left="990" Canvas.Top="352" Width="40" Height="22">
+                                    </Button>
+
+
                                 </Canvas>
                                 <!-- 레시피 제어화면 시작 -->
-                                <Grid Grid.Row="1"  Background="DimGray">
+                                <Grid Grid.Row="1"  Background="DimGray" Grid.ColumnSpan="4">
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition/>
                                         <ColumnDefinition/>
@@ -1215,43 +1879,20 @@
                                                     <Setter Property="Width" Value="70"/>
                                                     <Setter Property="Margin" Value="3,2,3,2"/>
                                                     <Setter Property="HorizontalAlignment" Value="Center"/>
+                                                    <Style.Resources>
+                                                        <Style TargetType="{x:Type Border}">
+                                                            <Setter Property="CornerRadius" Value="6"/>
+                                                        </Style>
+                                                    </Style.Resources>
                                                 </Style>
                                             </StackPanel.Resources>
-                                            <Button x:Name="FileNew" Content="New">
-                                                <Button.Resources>
-                                                    <Style TargetType="Border">
-                                                        <Setter Property="CornerRadius" Value="5"/>
-                                                    </Style>
-                                                </Button.Resources>
-                                            </Button>
-                                            <Button x:Name="FileOpen" Content="Open" >
-                                                <Button.Resources>
-                                                    <Style TargetType="Border">
-                                                        <Setter Property="CornerRadius" Value="5"/>
-                                                    </Style>
-                                                </Button.Resources>
-                                            </Button>
-                                            <Button x:Name="FileSave" Content="Save" >
-                                                <Button.Resources>
-                                                    <Style TargetType="Border">
-                                                        <Setter Property="CornerRadius" Value="5"/>
-                                                    </Style>
-                                                </Button.Resources>
-                                            </Button>
-                                            <Button x:Name="FileSaveAs" Content="SaveAs" >
-                                                <Button.Resources>
-                                                    <Style TargetType="Border">
-                                                        <Setter Property="CornerRadius" Value="5"/>
-                                                    </Style>
-                                                </Button.Resources>
-                                            </Button>
-                                            <Button x:Name="FileRefresh" Content="Refresh" >
-                                                <Button.Resources>
-                                                    <Style TargetType="Border">
-                                                        <Setter Property="CornerRadius" Value="5"/>
-                                                    </Style>
-                                                </Button.Resources>
-                                            </Button>
+                                            <Button x:Name="FileNew" Content="New" />
+
+                                            <Button x:Name="FileOpen" Content="Open" />
+
+                                            <Button x:Name="FileSave" Content="Save" />
+                                            <Button x:Name="FileSaveAs" Content="SaveAs" />
+                                            <Button x:Name="FileRefresh" Content="Refresh" />
                                         </StackPanel>
                                     </Grid>
                                     <!-- 레시피 제어 -->
@@ -1264,37 +1905,17 @@
                                                     <Setter Property="Width" Value="70"/>
                                                     <Setter Property="Margin" Value="3,2,3,2"/>
                                                     <Setter Property="HorizontalAlignment" Value="Center"/>
+                                                    <Style.Resources>
+                                                        <Style TargetType="{x:Type Border}">
+                                                            <Setter Property="CornerRadius" Value="6"/>
+                                                        </Style>
+                                                    </Style.Resources>
                                                 </Style>
                                             </StackPanel.Resources>
-                                            <Button x:Name="RecipeStart" Content="Start">
-                                                <Button.Resources>
-                                                    <Style TargetType="Border">
-                                                        <Setter Property="CornerRadius" Value="5"/>
-                                                    </Style>
-                                                </Button.Resources>
-                                            </Button>
-                                            <Button x:Name="RecipePause" Content="Pause">
-                                                <Button.Resources>
-                                                    <Style TargetType="Border">
-                                                        <Setter Property="CornerRadius" Value="5"/>
-                                                    </Style>
-                                                </Button.Resources>
-                                            </Button>
-                                            <Button x:Name="RecipeRestart" Content="ReStart">
-                                                <Button.Resources>
-                                                    <Style TargetType="Border">
-                                                        <Setter Property="CornerRadius" Value="5"/>
-                                                    </Style>
-                                                </Button.Resources>
-                                            </Button>
-                                            <Button x:Name="RecipeSkip" Content="Skip">
-                                                <Button.Resources>
-                                                    <Style TargetType="Border">
-                                                        <Setter Property="CornerRadius" Value="5"/>
-                                                    </Style>
-                                                </Button.Resources>
-                                            </Button>
-
+                                            <Button x:Name="RecipeStart" Content="Start" />
+                                            <Button x:Name="RecipePause" Content="Pause"/>
+                                            <Button x:Name="RecipeRestart" Content="ReStart"/>
+                                            <Button x:Name="RecipeSkip" Content="Skip"/>
                                         </StackPanel>
                                     </Grid>
                                     <!-- 레시피 파일 정보 -->
@@ -1320,48 +1941,159 @@
                                     </Grid>
                                 </Grid>
                                 <!-- 레시피 데이터 편집 & 실행 -->
-                                <Grid Grid.Row="2" Background="AliceBlue">
-                                    <DataGrid Name="RecipeStep" AutoGenerateColumns="False"
-                                              Padding="5">
-                                        <DataGrid.Resources>
-                                            <Style TargetType="{x:Type DataGrid}">
-                                                <Setter Property="Background" Value="#2D2D30"/>
-                                                <Setter Property="HorizontalGridLinesBrush" Value="White"/>
-                                                <Setter Property="VerticalGridLinesBrush" Value="White"/>
+                                <Grid Grid.Row="2" Background="AliceBlue" Grid.ColumnSpan="4">
+                                    <!-- 수직형 탭 설정 -->
+                                    <TabControl TabStripPlacement="Left" >
+                                        <TabControl.Resources>
+                                            <Style TargetType="{x:Type TabItem}">
+                                                <Setter Property="HeaderTemplate">
+                                                    <Setter.Value>
+                                                        <DataTemplate>
+                                                            <ContentPresenter Content="{TemplateBinding Content}">
+                                                                <ContentPresenter.LayoutTransform>
+                                                                    <RotateTransform Angle="270"/>
+                                                                </ContentPresenter.LayoutTransform>
+                                                            </ContentPresenter>
+                                                        </DataTemplate>
+                                                    </Setter.Value>
+                                                </Setter>
+                                                <Setter Property="Width" Value="20"/>
+                                                <Setter Property="Height" Value="90"/>
+                                                <Setter Property="Padding" Value="3"/>
                                             </Style>
-                                            <Style TargetType="{x:Type DataGridRow}">
-                                                <Setter Property="Background" Value="#2D2D30"/>
-                                                <Setter Property="Height" Value="25"/>
-                                            </Style>
-                                            <Style TargetType="{x:Type DataGridColumnHeader}">
-                                                <Setter Property="Background" Value="#2D2D30"/>
-                                                <Setter Property="Foreground" Value="White"/>
-                                                <Setter Property="FontSize" Value="12"/>
-                                                <Setter Property="HorizontalAlignment" Value="Center"/>
-                                                <Setter Property="Padding" Value="5,0"/>
-                                            </Style>
-                                            <Style x:Key="Content1" TargetType="{x:Type TextBlock}">
-                                                <Setter Property="Foreground" Value="White"/>
-                                                <Setter Property="FontSize" Value="12"/>
-                                                <Setter Property="VerticalAlignment" Value="Center"/>
-                                                <Setter Property="HorizontalAlignment" Value="Center"/>
-                                            </Style>
-                                            <Style x:Key="Content2" TargetType="{x:Type TextBlock}">
-                                                <Setter Property="Foreground" Value="White"/>
-                                                <Setter Property="FontSize" Value="12"/>
-                                                <Setter Property="VerticalAlignment" Value="Center"/>
-                                            </Style>
+                                        </TabControl.Resources>
+                                        <!-- 수직형 탭 Reactor Recipe Data  -->
+                                        <TabItem Name="ReactorData" Header="Reactor Data">
+                                            <TabItem.Content>
+                                                <DataGrid Name="RecipeStepReactor" AutoGenerateColumns="False" 
+                                                  Padding="5" ScrollViewer.ScrollChanged="ScrollChanged">
+                                                    <DataGrid.Resources>
+                                                        <Style TargetType="{x:Type DataGrid}">
+                                                            <Setter Property="HorizontalGridLinesBrush" Value="Blue"/>
+                                                            <Setter Property="VerticalGridLinesBrush" Value="Blue"  />
+                                                        </Style>
+                                                        <Style TargetType="{x:Type DataGridRow}">
+                                                            <Setter Property="Height" Value="25"/>
+                                                        </Style>
+                                                        <Style TargetType="{x:Type DataGridColumnHeader}">
+                                                            <Setter Property="Foreground" Value="Black"/>
+                                                            <Setter Property="FontSize" Value="12"/>
+                                                            <Setter Property="HorizontalAlignment" Value="Center"/>
+                                                            <Setter Property="Padding" Value="5,0"/>
+                                                        </Style>
+                                                        <Style x:Key="Content1" TargetType="{x:Type TextBlock}">
+                                                            <Setter Property="Foreground" Value="Black"/>
+                                                            <Setter Property="FontSize" Value="12"/>
+                                                            <Setter Property="VerticalAlignment" Value="Center"/>
+                                                            <Setter Property="HorizontalAlignment" Value="Center"/>
+                                                        </Style>
+                                                        <Style x:Key="Content2" TargetType="{x:Type TextBlock}">
+                                                            <Setter Property="Foreground" Value="Black"/>
+                                                            <Setter Property="FontSize" Value="12"/>
+                                                            <Setter Property="VerticalAlignment" Value="Center"/>
+                                                        </Style>
+                                                    </DataGrid.Resources>
+                                                    <DataGrid.Columns>
+                                                        <DataGridTextColumn Header="No." Binding="{Binding RecipeStep}" ElementStyle="{StaticResource Content1}" Width="30"/>
+                                                        <DataGridTextColumn Header="Name" Binding="{Binding RecipeName}" ElementStyle="{StaticResource Content2}" Width="150"/>
+                                                        <DataGridTextColumn Header="Ramp" Binding="{Binding RecipeRampingTime}" ElementStyle="{StaticResource Content2}" Width="60"/>
+                                                        <DataGridTextColumn Header="Hold" Binding="{Binding RecipeHoldingTime}" ElementStyle="{StaticResource Content2}" Width="60"/>
+                                                        <DataGridTextColumn Header="Loop" Binding="{Binding RecipeLoop}" ElementStyle="{StaticResource Content1}" Width="60"/>
+                                                        <DataGridTextColumn Header="Jump" Binding="{Binding RecipeJump}" ElementStyle="{StaticResource Content1}" Width="60"/>
+                                                    </DataGrid.Columns>
+                                                </DataGrid>
+                                            </TabItem.Content>
+                                        </TabItem>
 
-                                        </DataGrid.Resources>
-                                        <DataGrid.Columns>
-                                            <DataGridTextColumn Header="No." Binding="{Binding RecipeStep}" ElementStyle="{StaticResource Content1}" Width="30"/>
-                                            <DataGridTextColumn Header="Name" Binding="{Binding RecipeName}" ElementStyle="{StaticResource Content2}" Width="150"/>
-                                            <DataGridTextColumn Header="Ramp" Binding="{Binding RecipeRampingTime}" ElementStyle="{StaticResource Content2}" Width="60"/>
-                                            <DataGridTextColumn Header="Hold" Binding="{Binding RecipeHoldingTime}" ElementStyle="{StaticResource Content2}" Width="60"/>
-                                            <DataGridTextColumn Header="Loop" Binding="{Binding RecipeLoop}" ElementStyle="{StaticResource Content1}" Width="60"/>
-                                            <DataGridTextColumn Header="Jump" Binding="{Binding RecipeJump}" ElementStyle="{StaticResource Content1}" Width="60"/>
-                                        </DataGrid.Columns>
-                                    </DataGrid>
+                                        <!-- 수직형 탭 MFC Data  -->
+                                        <TabItem Name="MFCData" Header="MFC Data">
+                                            <TabItem.Content>
+                                                <DataGrid Name="RecipeStepMFC" AutoGenerateColumns="False" 
+                                                  Padding="5" ScrollViewer.ScrollChanged="ScrollChanged">
+                                                    <DataGrid.Resources>
+                                                        <Style TargetType="{x:Type DataGrid}">
+                                                            <Setter Property="HorizontalGridLinesBrush" Value="Blue"/>
+                                                            <Setter Property="VerticalGridLinesBrush" Value="Blue"  />
+                                                        </Style>
+                                                        <Style TargetType="{x:Type DataGridRow}">
+                                                            <Setter Property="Height" Value="25"/>
+                                                        </Style>
+                                                        <Style TargetType="{x:Type DataGridColumnHeader}">
+                                                            <Setter Property="Foreground" Value="Black"/>
+                                                            <Setter Property="FontSize" Value="12"/>
+                                                            <Setter Property="HorizontalAlignment" Value="Center"/>
+                                                            <Setter Property="Padding" Value="5,0"/>
+                                                        </Style>
+                                                        <Style x:Key="Content1" TargetType="{x:Type TextBlock}">
+                                                            <Setter Property="Foreground" Value="Black"/>
+                                                            <Setter Property="FontSize" Value="12"/>
+                                                            <Setter Property="VerticalAlignment" Value="Center"/>
+                                                            <Setter Property="HorizontalAlignment" Value="Center"/>
+                                                        </Style>
+                                                        <Style x:Key="Content2" TargetType="{x:Type TextBlock}">
+                                                            <Setter Property="Foreground" Value="Black"/>
+                                                            <Setter Property="FontSize" Value="12"/>
+                                                            <Setter Property="VerticalAlignment" Value="Center"/>
+                                                        </Style>
+                                                    </DataGrid.Resources>
+
+                                                    <DataGrid.Columns>
+                                                        <DataGridTextColumn Header="No." Binding="{Binding RecipeStep}" ElementStyle="{StaticResource Content1}" Width="30"/>
+                                                        <DataGridTextColumn Header="Name" Binding="{Binding RecipeName}" ElementStyle="{StaticResource Content2}" Width="150"/>
+                                                        <DataGridTextColumn Header="Ramp" Binding="{Binding RecipeRampingTime}" ElementStyle="{StaticResource Content2}" Width="60"/>
+                                                        <DataGridTextColumn Header="Hold" Binding="{Binding RecipeHoldingTime}" ElementStyle="{StaticResource Content2}" Width="60"/>
+                                                        <DataGridTextColumn Header="Loop" Binding="{Binding RecipeLoop}" ElementStyle="{StaticResource Content1}" Width="60"/>
+                                                        <DataGridTextColumn Header="Jump" Binding="{Binding RecipeJump}" ElementStyle="{StaticResource Content1}" Width="60"/>
+                                                    </DataGrid.Columns>
+                                                </DataGrid>
+                                            </TabItem.Content>
+                                        </TabItem>
+
+                                        <!-- 수직형 탭 Valve Data  -->
+                                        <TabItem Name="ValveData" Header="Valve Data">
+                                            <TabItem.Content>
+                                                <DataGrid Name="RecipeStepValve" AutoGenerateColumns="False" 
+                                                  Padding="5" ScrollViewer.ScrollChanged="ScrollChanged">
+                                                    <DataGrid.Resources>
+                                                        <Style TargetType="{x:Type DataGrid}">
+                                                            <Setter Property="HorizontalGridLinesBrush" Value="Blue"/>
+                                                            <Setter Property="VerticalGridLinesBrush" Value="Blue"  />
+                                                        </Style>
+                                                        <Style TargetType="{x:Type DataGridRow}">
+                                                            <Setter Property="Height" Value="25"/>
+                                                        </Style>
+                                                        <Style TargetType="{x:Type DataGridColumnHeader}">
+                                                            <Setter Property="Foreground" Value="Black"/>
+                                                            <Setter Property="FontSize" Value="12"/>
+                                                            <Setter Property="HorizontalAlignment" Value="Center"/>
+                                                            <Setter Property="Padding" Value="5,0"/>
+                                                        </Style>
+                                                        <Style x:Key="Content1" TargetType="{x:Type TextBlock}">
+                                                            <Setter Property="Foreground" Value="Black"/>
+                                                            <Setter Property="FontSize" Value="12"/>
+                                                            <Setter Property="VerticalAlignment" Value="Center"/>
+                                                            <Setter Property="HorizontalAlignment" Value="Center"/>
+                                                        </Style>
+                                                        <Style x:Key="Content2" TargetType="{x:Type TextBlock}">
+                                                            <Setter Property="Foreground" Value="Black"/>
+                                                            <Setter Property="FontSize" Value="12"/>
+                                                            <Setter Property="VerticalAlignment" Value="Center"/>
+                                                        </Style>
+                                                    </DataGrid.Resources>
+
+                                                    <DataGrid.Columns>
+                                                        <DataGridTextColumn Header="No." Binding="{Binding RecipeStep}" ElementStyle="{StaticResource Content1}" Width="30"/>
+                                                        <DataGridTextColumn Header="Name" Binding="{Binding RecipeName}" ElementStyle="{StaticResource Content2}" Width="150"/>
+                                                        <DataGridTextColumn Header="Ramp" Binding="{Binding RecipeRampingTime}" ElementStyle="{StaticResource Content2}" Width="60"/>
+                                                        <DataGridTextColumn Header="Hold" Binding="{Binding RecipeHoldingTime}" ElementStyle="{StaticResource Content2}" Width="60"/>
+                                                        <DataGridTextColumn Header="Loop" Binding="{Binding RecipeLoop}" ElementStyle="{StaticResource Content1}" Width="60"/>
+                                                        <DataGridTextColumn Header="Jump" Binding="{Binding RecipeJump}" ElementStyle="{StaticResource Content1}" Width="60"/>
+                                                    </DataGrid.Columns>
+                                                </DataGrid>
+                                            </TabItem.Content>
+                                        </TabItem>
+
+                                    </TabControl>
                                 </Grid>
                             </Grid>
                         </TabItem>
@@ -1399,37 +2131,18 @@
                                     <Setter Property="Margin" Value="3,0,3,0"/>
                                     <Setter Property="HorizontalAlignment" Value="Center"/>
                                     <Setter Property="VerticalAlignment" Value="Center"/>
+                                    <Style.Resources>
+                                        <Style TargetType="{x:Type Border}">
+                                            <Setter Property="CornerRadius" Value="8"/>
+                                        </Style>
+                                    </Style.Resources>
                                 </Style>
                             </StackPanel.Resources>
                             <TextBlock Width="400" FontSize="14" Text="SIGNAL PLOT" Margin="20,0,0,0"/>
-                            <Button x:Name="PlotAnalog" Content="Analog" Background="Yellow">
-                                <Button.Resources>
-                                    <Style TargetType="Border">
-                                        <Setter Property="CornerRadius" Value="8"/>
-                                    </Style>
-                                </Button.Resources>
-                            </Button>
-                            <Button x:Name="PlotTemperatue" Content="Temperature" Background="red">
-                                <Button.Resources>
-                                    <Style TargetType="Border">
-                                        <Setter Property="CornerRadius" Value="8"/>
-                                    </Style>
-                                </Button.Resources>
-                            </Button>
-                            <Button x:Name="PlotPessure" Content="Pressure" Background="Green">
-                                <Button.Resources>
-                                    <Style TargetType="Border">
-                                        <Setter Property="CornerRadius" Value="8"/>
-                                    </Style>
-                                </Button.Resources>
-                            </Button>
-                            <Button x:Name="PlotTotalFlow" Content="TotalFlow" Background="SkyBlue">
-                                <Button.Resources>
-                                    <Style TargetType="Border">
-                                        <Setter Property="CornerRadius" Value="8"/>
-                                    </Style>
-                                </Button.Resources>
-                            </Button>
+                            <Button x:Name="PlotAnalog" Content="Analog" Background="Yellow" />
+                            <Button x:Name="PlotTemperatue" Content="Temperature" Background="red"/>
+                            <Button x:Name="PlotPessure" Content="Pressure" Background="Green"/>
+                            <Button x:Name="PlotTotalFlow" Content="TotalFlow" Background="SkyBlue"/>
                         </StackPanel>
                     </Grid>
                     <!-- 그래프 그리는 영역 -->
@@ -1458,38 +2171,19 @@
                                     <Setter Property="Margin" Value="3,0,3,0"/>
                                     <Setter Property="HorizontalAlignment" Value="Center"/>
                                     <Setter Property="VerticalAlignment" Value="Center"/>
+                                    <Style.Resources>
+                                        <Style TargetType="{x:Type Border}">
+                                            <Setter Property="CornerRadius" Value="8"/>
+                                        </Style>
+                                    </Style.Resources>
+
                                 </Style>
                             </StackPanel.Resources>
                             <TextBlock Width="150" Foreground="Black" FontSize="14" Text="EVENT LOG" Margin="20,0,0,0"/>
-                            <Button x:Name="FilterAlarm" Content="Alarm" Background="OrangeRed">
-                                <Button.Resources>
-                                    <Style TargetType="Border">
-                                        <Setter Property="CornerRadius" Value="8"/>
-                                    </Style>
-                                </Button.Resources>
-                            </Button>
-                            <Button x:Name="FilterWarning" Content="Waring"  Background="Orange">
-                                <Button.Resources>
-                                    <Style TargetType="Border">
-                                        <Setter Property="CornerRadius" Value="8"/>
-                                    </Style>
-                                </Button.Resources>
-                            </Button>
-                            <Button x:Name="FilterInformation" Content="Information" Background="LimeGreen">
-                                <Button.Resources>
-                                    <Style TargetType="Border">
-                                        <Setter Property="CornerRadius" Value="8"/>
-                                    </Style>
-                                </Button.Resources>
-
-                            </Button>
-                            <Button x:Name="FilterClear" Content="Clear" Background="DarkGray">
-                                <Button.Resources>
-                                    <Style TargetType="Border">
-                                        <Setter Property="CornerRadius" Value="8"/>
-                                    </Style>
-                                </Button.Resources>
-                            </Button>
+                            <Button x:Name="FilterAlarm" Content="Alarm" Background="OrangeRed"/>
+                            <Button x:Name="FilterWarning" Content="Waring"  Background="Orange"/>
+                            <Button x:Name="FilterInformation" Content="Information" Background="LimeGreen"/>
+                            <Button x:Name="FilterClear" Content="Clear" Background="DarkGray"/>
                         </StackPanel>
                     </Grid>
                     <ListView x:Name="EventLog" Grid.Column="1" Grid.Row="1">
@@ -1515,12 +2209,12 @@
                             </GridView>
                         </ListView.View>
                     </ListView>
-                        
+
 
                 </Grid>
 
             </Grid>
-        <!-- Start: GridColumn Right -->
+            <!-- Start: GridColumn Right -->
             <Grid Grid.Column="2" x:Name="gridMenuRight">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="*"/>
@@ -1703,22 +2397,22 @@
                             <Setter Property="StrokeThickness" Value="1"/>
                         </Style>
                     </Grid.Resources>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="120"/>
-                            <ColumnDefinition/>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="120"/>
+                        <ColumnDefinition/>
 
-                        </Grid.ColumnDefinitions>
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="25"/>
-                            <RowDefinition/>
-                            <RowDefinition/>
-                            <RowDefinition/>
-                            <RowDefinition/>
-                            <RowDefinition/>
-                            <RowDefinition/>
-                            <RowDefinition/>
-                            <RowDefinition/>
-                        </Grid.RowDefinitions>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="25"/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
                     <Rectangle Grid.ColumnSpan="3" Style="{StaticResource Analog Device Stroke}" Fill="LightGray"/>
                     <TextBlock Grid.ColumnSpan="3" Grid.Row="0" FontSize="14" HorizontalAlignment="Center" VerticalAlignment="Center">
                         Analog Device Information

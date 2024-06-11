@@ -15,6 +15,8 @@ using System.Windows.Shapes;
 using System.Drawing;
 using TwinCAT.Ads;
 using System.IO;
+using System.Collections.ObjectModel;
+using System.Reflection;
 using LiveCharts;
 using LiveCharts.Wpf;
 
@@ -71,7 +73,13 @@ namespace SapphireXE_App
             recipeDataRow.Add(new RecipeDataRow { RecipeStep = 8, RecipeName = "Thermal Etching", RampingTime = 1, HoldingTime = 300, RecipeLoop = false, RecipeJump = false });
             recipeDataRow.Add(new RecipeDataRow { RecipeStep = 9, RecipeName = "Temp Dowin to Buffer", RampingTime = 200, HoldingTime = 1, RecipeLoop = false, RecipeJump = false });
             recipeDataRow.Add(new RecipeDataRow { RecipeStep = 10, RecipeName = "Wait to Stable", RampingTime = 180, HoldingTime = 30, RecipeLoop = false, RecipeJump = false });
-            RecipeStep.ItemsSource = recipeDataRow;
+            recipeDataRow.Add(new RecipeDataRow { RecipeStep = 11, RecipeName = "Thermal Etching", RampingTime = 1, HoldingTime = 300, RecipeLoop = false, RecipeJump = false });
+            recipeDataRow.Add(new RecipeDataRow { RecipeStep = 12, RecipeName = "Temp Dowin to Buffer", RampingTime = 200, HoldingTime = 1, RecipeLoop = false, RecipeJump = false });
+            recipeDataRow.Add(new RecipeDataRow { RecipeStep = 13, RecipeName = "Wait to Stable", RampingTime = 180, HoldingTime = 30, RecipeLoop = false, RecipeJump = false });
+            RecipeStepReactor.ItemsSource = recipeDataRow;
+            RecipeStepMFC.ItemsSource = recipeDataRow;
+            RecipeStepValve.ItemsSource = recipeDataRow;
+
         }
         // 래시피 DataGrid 데이터 클래스, struct data형식과 비교 검토예정
         public class RecipeDataRow
@@ -88,6 +96,50 @@ namespace SapphireXE_App
         private void HydridCarrirerChange_Click(object sender, RoutedEventArgs e)
         {
             MessageBox.Show("밸르를 열까요?", "밸브Open", MessageBoxButton.YesNoCancel);
+        }
+
+        private void ScrollChanged(object sender, ScrollChangedEventArgs e)
+        {
+            if(e.VerticalChange != 0.0f)
+            {
+                ScrollViewer sv1 = null;
+                ScrollViewer sv2 = null;
+                try
+                {
+                    if (sender.Equals(RecipeStepReactor))
+                    {
+                        Type t = RecipeStepReactor.GetType();
+                        sv1 = t.InvokeMember("InternalScrollHost", BindingFlags.NonPublic | BindingFlags.Instance |
+                            BindingFlags.GetProperty, null, RecipeStepMFC, null) as ScrollViewer;
+                        sv2 = t.InvokeMember("InternalScrollHost", BindingFlags.NonPublic | BindingFlags.Instance |
+                            BindingFlags.GetProperty, null, RecipeStepValve, null) as ScrollViewer;
+
+                    }
+                    else if (sender.Equals(RecipeStepMFC))
+                    {
+                        Type t = RecipeStepMFC.GetType();
+                        sv1 = t.InvokeMember("InternalScrollHost", BindingFlags.NonPublic | BindingFlags.Instance |
+                            BindingFlags.GetProperty, null, RecipeStepReactor, null) as ScrollViewer;
+                        sv2 = t.InvokeMember("InternalScrollHost", BindingFlags.NonPublic | BindingFlags.Instance |
+                            BindingFlags.GetProperty, null, RecipeStepValve, null) as ScrollViewer;
+                    }
+                    else
+                    {
+                        Type t = RecipeStepValve.GetType();
+                        sv1 = t.InvokeMember("InternalScrollHost", BindingFlags.NonPublic | BindingFlags.Instance |
+                            BindingFlags.GetProperty, null, RecipeStepReactor, null) as ScrollViewer;
+                        sv2 = t.InvokeMember("InternalScrollHost", BindingFlags.NonPublic | BindingFlags.Instance |
+                            BindingFlags.GetProperty, null, RecipeStepMFC, null) as ScrollViewer;
+                    }
+                    sv1.ScrollToVerticalOffset(e.VerticalOffset);
+                    sv2.ScrollToVerticalOffset(e.VerticalOffset);
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message);
+                }
+
+            }
         }
     }
 }

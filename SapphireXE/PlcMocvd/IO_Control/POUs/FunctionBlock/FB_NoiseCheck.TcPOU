@@ -1,0 +1,37 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
+  <POU Name="FB_NoiseCheck" Id="{45633a5c-2fbb-4c21-8a8b-f115b6a9dece}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK FB_NoiseCheck
+VAR
+	T1: TON;  (*타이머 *)
+END_VAR
+VAR_INPUT
+	bEnable: BOOL;
+	bReset: BOOL;
+	bDI: BOOL;(*디지털 시그널*)
+	wCheckMiliSec: WORD;(*딜레이 타임 millisecond*)
+END_VAR
+VAR_OUTPUT
+	noNoise: BOOL; 
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[T1();
+T1.PT := WORD_TO_TIME(wCheckMiliSec);
+T1.IN := bEnable AND  bDI  AND noNoise = FALSE ;
+IF T1.Q THEN
+	noNoise := TRUE;
+END_IF;
+
+IF bReset THEN
+	noNoise := FALSE;	
+END_IF]]></ST>
+    </Implementation>
+    <LineIds Name="FB_NoiseCheck">
+      <LineId Id="21" Count="5" />
+      <LineId Id="28" Count="0" />
+      <LineId Id="9" Count="0" />
+      <LineId Id="29" Count="1" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

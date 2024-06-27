@@ -1,0 +1,31 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
+  <POU Name="F_TB_Tx_BCC" Id="{69f47f81-473a-4601-8d80-98acba488297}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION F_TB_Tx_BCC : STRING
+VAR_INPUT
+	txStr: STRING;
+END_VAR
+VAR
+	i, len1: INT;
+	bArr: ARRAY[0..255] OF BYTE;
+	b1: BYTE;
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[// SMC HEBC002-WA10
+len1 := LEN(STR:=txStr);
+len1 := len1 - 1;
+bArr := MAXSTRING_TO_BYTEARR(txStr);
+FOR i := 0 TO len1 DO
+	b1 := b1 XOR bArr[i];
+END_FOR
+F_TB_Tx_BCC := F_toCHR(b1);]]></ST>
+    </Implementation>
+    <LineIds Name="F_TB_Tx_BCC">
+      <LineId Id="13" Count="1" />
+      <LineId Id="20" Count="0" />
+      <LineId Id="15" Count="3" />
+      <LineId Id="7" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

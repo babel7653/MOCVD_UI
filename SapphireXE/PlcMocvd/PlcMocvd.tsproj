@@ -1,0 +1,1551 @@
+<?xml version="1.0"?>
+<TcSmProject xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://www.beckhoff.com/schemas/2012/07/TcSmProject" TcSmVersion="1.0" TcVersion="3.1.4024.55">
+	<DataTypes>
+		<DataType>
+			<Name GUID="{773A0721-0680-A9F8-F5A5-C65F7E80A26F}" IecBaseType="true" AutoDeleteType="true">ARRAY [0..1] OF BYTE</Name>
+			<BitSize>16</BitSize>
+			<BaseType GUID="{18071995-0000-0000-0000-000000000001}">BYTE</BaseType>
+			<ArrayInfo>
+				<LBound>0</LBound>
+				<Elements>2</Elements>
+			</ArrayInfo>
+		</DataType>
+		<DataType>
+			<Name GUID="{5272FBDC-AFC3-6742-9B6F-5B0E8717724D}" IecBaseType="true" AutoDeleteType="true">ARRAY [0..6] OF BYTE</Name>
+			<BitSize>56</BitSize>
+			<BaseType GUID="{18071995-0000-0000-0000-000000000001}">BYTE</BaseType>
+			<ArrayInfo>
+				<LBound>0</LBound>
+				<Elements>7</Elements>
+			</ArrayInfo>
+		</DataType>
+		<DataType>
+			<Name GUID="{F13B6D04-11D0-5217-2BF9-7A8308D2316E}" Namespace="Tc2_SerialCom" AutoDeleteType="true">KL6inData22B</Name>
+			<Comment><![CDATA[ This data type is corresponding to the
+   KL-6xxx data structure used in the
+   TwinCAT SystemManager
+   (KL-6xxx version using 22 data bytes) 
+]]></Comment>
+			<BitSize>192</BitSize>
+			<SubItem>
+				<Name>Status</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000004}">WORD</Type>
+				<BitSize>16</BitSize>
+				<BitOffs>0</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>D</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000001}">BYTE</Type>
+				<ArrayInfo>
+					<LBound>0</LBound>
+					<Elements>22</Elements>
+				</ArrayInfo>
+				<BitSize>176</BitSize>
+				<BitOffs>16</BitOffs>
+			</SubItem>
+		</DataType>
+		<DataType>
+			<Name GUID="{527C5C5C-1CF8-1963-ACDC-85B7B3E5B586}" IecBaseType="true" AutoDeleteType="true">ARRAY [0..3] OF BYTE</Name>
+			<BitSize>32</BitSize>
+			<BaseType GUID="{18071995-0000-0000-0000-000000000001}">BYTE</BaseType>
+			<ArrayInfo>
+				<LBound>0</LBound>
+				<Elements>4</Elements>
+			</ArrayInfo>
+		</DataType>
+		<DataType>
+			<Name GUID="{93239C5F-8743-C1B9-CEA8-EA43A1EB5E4D}" Namespace="Tc2_SerialCom" AutoDeleteType="true">KL6outData22B</Name>
+			<Comment><![CDATA[ This data type is corresponding to the
+   KL-6xxx data structure used in the
+   TwinCAT SystemManager
+   (KL-6xxx version using 22 data bytes) 
+]]></Comment>
+			<BitSize>192</BitSize>
+			<SubItem>
+				<Name>Ctrl</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000004}">WORD</Type>
+				<BitSize>16</BitSize>
+				<BitOffs>0</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>D</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000001}">BYTE</Type>
+				<ArrayInfo>
+					<LBound>0</LBound>
+					<Elements>22</Elements>
+				</ArrayInfo>
+				<BitSize>176</BitSize>
+				<BitOffs>16</BitOffs>
+			</SubItem>
+		</DataType>
+		<DataType>
+			<Name GUID="{18071995-0000-0000-0000-002000000001}" IecBaseType="true" BitType="true" AutoDeleteType="true" HideSubItems="true">ARRAY [0..0] OF BIT</Name>
+			<BitSize>1</BitSize>
+			<BaseType GUID="{18071995-0000-0000-0000-000000000010}">BIT</BaseType>
+			<ArrayInfo>
+				<LBound>0</LBound>
+				<Elements>1</Elements>
+			</ArrayInfo>
+		</DataType>
+		<DataType>
+			<Name GUID="{18071995-0000-0000-0000-002000000006}" IecBaseType="true" BitType="true" AutoDeleteType="true" HideSubItems="true">ARRAY [0..5] OF BIT</Name>
+			<BitSize>6</BitSize>
+			<BaseType GUID="{18071995-0000-0000-0000-000000000010}">BIT</BaseType>
+			<ArrayInfo>
+				<LBound>0</LBound>
+				<Elements>6</Elements>
+			</ArrayInfo>
+		</DataType>
+	</DataTypes>
+	<ImageDatas>
+		<ImageData Id="1000">424dd6020000000000003600000028000000100000000e0000000100180000000000a0020000c40e0000c40e00000000000000000000ff00ffc0c0c0c0c0c0c0c0c0c0c0c0808080808080808080808080808080808080ff00ffff00ffff00ffff00ffff00ffff00ffc0c0c0c0c0c0c0c0c0c0c0c0808080c0c0c0000000c0c0c0000000808080ff00ffff00ffff00ffff00ffff00ffff00ffc0c0c000bfff00bfffc0c0c0808080c0c0c000ffffc0c0c000ffff808080ff00ffff00ffff00ffff00ffff00ffff00ffc0c0c000bfff00bfffc0c0c0808080c0c0c0c0c0c0c0c0c0c0c0c0808080ff00ffff00ffff00ffff00ffff00ffff00ffc0c0c000bfff00bfffc0c0c0808080c0c0c0000000c0c0c0000000808080ff00ffff00ffff00ffff00ffff00ffff00ffc0c0c0c0c0c0c0c0c0c0c0c0808080c0c0c0ff0000c0c0c0ff0000808080ff00ffff00ffff00ffff00ffff00ffff00ffc0c0c0c0c0c0c0c0c0c0c0c0808080c0c0c0c0c0c0c0c0c0c0c0c0808080ff00ffff00ffff00ffff00ffff00ffff00ffc0c0c0c0c0c0c0c0c0c0c0c0808080c0c0c0000000c0c0c0000000808080ff00ffff00ffff00ffff00ffff00ffff00ffc0c0c000bfff00bfffc0c0c0808080c0c0c00000ffc0c0c00000ff808080ff00ffff00ffff00ffff00ffff00ffff00ffc0c0c000bfff00bfffc0c0c0808080c0c0c0c0c0c0c0c0c0c0c0c0808080ff00ffff00ffff00ffff00ffff00ffff00ffc0c0c000bfff00bfffc0c0c0808080c0c0c0000000c0c0c0000000808080ff00ffff00ffff00ffff00ffff00ffff00ffc0c0c0c0c0c0c0c0c0c0c0c0808080c0c0c0c0c0c0c0c0c0c0c0c0808080ff00ffff00ffff00ffff00ffff00ffff00ffc0c0c0c0c0c0c0c0c0c0c0c0808080c0c0c0008000c0c0c0008000808080ff00ffff00ffff00ffff00ffff00ffff00ffc0c0c0c0c0c0c0c0c0c0c0c0808080c0c0c0c0c0c0c0c0c0c0c0c0808080ff00ffff00ffff00ffff00ffff00ff</ImageData>
+		<ImageData Id="1001">424dd6020000000000003600000028000000100000000e0000000100180000000000a0020000120b0000120b00000000000000000000ff00ffff00ffff00ffff00ffff00ffff00ff808080808080808080808080808080ff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffc0c0c0000000c0c0c0000000808080ff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffc0c0c000ffffc0c0c000ffff808080ff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffc0c0c0c0c0c0c0c0c0c0c0c0808080ff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffc0c0c0000000c0c0c0000000808080ff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffc0c0c0ff0000c0c0c0ff0000808080ff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffc0c0c0c0c0c0c0c0c0c0c0c0808080ff00ffff00ffff00ffff00ffff00ff0000ff0000ff0000ff0000ff0000ff0000ffc0c0c0000000c0c0c0000000808080ff00ffff00ffff00ffff00ffff00ff0000ff0000ff0000ff0000ff0000ff0000ffc0c0c00000ffc0c0c00000ff808080ff00ffff00ffff00ffff00ffff00ff0000ff0000ff0000ff0000ff0000ff0000ffc0c0c0c0c0c0c0c0c0c0c0c0808080ff00ffff00ffff00ffff00ffff00ff0000ff0000ff0000ff0000ff0000ff0000ffc0c0c0000000c0c0c0000000808080ff00ffff00ffff00ffff00ffff00ff0000ff0000ff0000ff0000ff0000ff0000ffc0c0c0c0c0c0c0c0c0c0c0c0808080ff00ffff00ffff00ffff00ffff00ff0000ff0000ff0000ff0000ff0000ff0000ffc0c0c0008000c0c0c0008000808080ff00ffff00ffff00ffff00ffff00ff0000ff0000ff0000ff0000ff0000ff0000ffc0c0c0c0c0c0c0c0c0c0c0c0808080ff00ffff00ffff00ffff00ffff00ff</ImageData>
+		<ImageData Id="1002">424dd6020000000000003600000028000000100000000e0000000100180000000000a0020000c40e0000c40e00000000000000000000ff00ffff00ffff00ffff00ffff00ffff00ff808080808080808080808080808080ff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffc0c0c0000000c0c0c0000000808080ff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffc0c0c000ffffc0c0c000ffff808080ff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffc0c0c0c0c0c0c0c0c0c0c0c0808080ff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffc0c0c0000000c0c0c0000000808080ff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffc0c0c0ff0000c0c0c0ff0000808080ff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffc0c0c0c0c0c0c0c0c0c0c0c0808080ff00ffff00ffff00ffff00ffff00ff00ff0000ff0000ff0000ff0000ff0000ff00c0c0c0000000c0c0c0000000808080ff00ffff00ffff00ffff00ffff00ff00ff0000ff0000ff0000ff0000ff0000ff00c0c0c00000ffc0c0c00000ff808080ff00ffff00ffff00ffff00ffff00ff00ff0000ff0000ff0000ff0000ff0000ff00c0c0c0c0c0c0c0c0c0c0c0c0808080ff00ffff00ffff00ffff00ffff00ff00ff0000ff0000ff0000ff0000ff0000ff00c0c0c0000000c0c0c0000000808080ff00ffff00ffff00ffff00ffff00ff00ff0000ff0000ff0000ff0000ff0000ff00c0c0c0c0c0c0c0c0c0c0c0c0808080ff00ffff00ffff00ffff00ffff00ff00ff0000ff0000ff0000ff0000ff0000ff00c0c0c0008000c0c0c0008000808080ff00ffff00ffff00ffff00ffff00ff00ff0000ff0000ff0000ff0000ff0000ff00c0c0c0c0c0c0c0c0c0c0c0c0808080ff00ffff00ffff00ffff00ffff00ff</ImageData>
+		<ImageData Id="1003">424dd6020000000000003600000028000000100000000e0000000100180000000000a0020000c40e0000c40e00000000000000000000ff00ffff00ffff00ffff00ffff00ffff00ff808080808080808080808080808080ff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffc0c0c0000000c0c0c0000000808080ff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffc0c0c000ffffc0c0c000ffff808080ff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffc0c0c0c0c0c0c0c0c0c0c0c0808080ff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffc0c0c0000000c0c0c0000000808080ff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffc0c0c0ff0000c0c0c0ff0000808080ff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffc0c0c0c0c0c0c0c0c0c0c0c0808080ff00ffff00ffff00ffff00ffff00ffff0000ff0000ff0000ff0000ff0000ff0000c0c0c0000000c0c0c0000000808080ff00ffff00ffff00ffff00ffff00ffff0000ff0000ff0000ff0000ff0000ff0000c0c0c00000ffc0c0c00000ff808080ff00ffff00ffff00ffff00ffff00ffff0000ff0000ff0000ff0000ff0000ff0000c0c0c0c0c0c0c0c0c0c0c0c0808080ff00ffff00ffff00ffff00ffff00ffff0000ff0000ff0000ff0000ff0000ff0000c0c0c0000000c0c0c0000000808080ff00ffff00ffff00ffff00ffff00ffff0000ff0000ff0000ff0000ff0000ff0000c0c0c0c0c0c0c0c0c0c0c0c0808080ff00ffff00ffff00ffff00ffff00ffff0000ff0000ff0000ff0000ff0000ff0000c0c0c0008000c0c0c0008000808080ff00ffff00ffff00ffff00ffff00ffff0000ff0000ff0000ff0000ff0000ff0000c0c0c0c0c0c0c0c0c0c0c0c0808080ff00ffff00ffff00ffff00ffff00ff</ImageData>
+		<ImageData Id="1004">424dd6020000000000003600000028000000100000000e0000000100180000000000a0020000c40e0000c40e00000000000000000000ff00ffff00ffff00ffff00ffff00ffff00ff808080808080808080ff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffc0c0c0c0c0c0808080ff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffc0c0c0c0c0c0808080ff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffc0c0c0c0c0c0808080ff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffc0c0c0c0c0c0808080ff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffc0c0c0c0c0c0808080ff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffc0c0c0c0c0c0808080ff00ffff00ffff00ffff00ffff00ffff00ffff00ff007fff007fff007fff007fff007fff007fffc0c0c0c0c0c0808080ff00ffff00ffff00ffff00ffff00ffff00ffff00ff007fff007fff007fff007fff007fff007fffc0c0c0c0c0c0808080ff00ffff00ffff00ffff00ffff00ffff00ffff00ff007fff007fff007fff007fff007fff007fffc0c0c0c0c0c0808080ff00ffff00ffff00ffff00ffff00ffff00ffff00ff007fff007fff007fff007fff007fff007fffc0c0c0c0c0c0808080ff00ffff00ffff00ffff00ffff00ffff00ffff00ff007fff007fff007fff007fff007fff007fffc0c0c0c0c0c0808080ff00ffff00ffff00ffff00ffff00ffff00ffff00ff007fff007fff007fff007fff007fff007fffc0c0c0c0c0c0808080ff00ffff00ffff00ffff00ffff00ffff00ffff00ff007fff007fff007fff007fff007fff007fffc0c0c0c0c0c0808080ff00ffff00ffff00ffff00ffff00ffff00ffff00ff</ImageData>
+	</ImageDatas>
+	<Project ProjectGUID="{ED7F7954-733A-4C9A-AC1C-71634117F92B}" Target64Bit="true" Utf8Encoding="true" ShowHideConfigurations="#x6">
+		<System>
+			<Settings MaxCpus="20"/>
+			<Tasks>
+				<Task Id="4" CreateSymbols="true" Priority="20" CycleTime="100000" AmsPort="350" AdtTasks="true">
+					<Name>PlcTask</Name>
+				</Task>
+			</Tasks>
+		</System>
+		<Plc>
+			<Project GUID="{17684FBD-45A2-4413-9DB9-54B545484FB3}" Name="IO_Control" PrjFilePath="IO_Control\IO_Control.plcproj" TmcFilePath="IO_Control\IO_Control.tmc" ReloadTmc="true" AmsPort="851" FileArchiveSettings="#x000e" SymbolicMapping="true">
+				<Instance Id="#x08502000" TcSmClass="TComPlcObjDef" KeepUnrestoredLinks="2" TmcPath="IO_Control\IO_Control.tmc" TmcHash="{A32FC43E-1D15-5CEC-6113-FA47685BA785}">
+					<Name>IO_Control Instance</Name>
+					<CLSID ClassFactory="TcPlc30">{08500001-0000-0000-F000-000000000064}</CLSID>
+					<Vars VarGrpType="1">
+						<Name>PlcTask Inputs</Name>
+						<Var>
+							<Name>GVL_IO.XD_MAINT</Name>
+							<Comment><![CDATA[Excel GVL_IO]]></Comment>
+							<Type>BIT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_IO.XD_RST</Name>
+							<Type>BIT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_IO.XD_RC_lamp</Name>
+							<Type>BIT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_IO.XD_GC_lamp</Name>
+							<Type>BIT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_IO.XD_DOR_VAC</Name>
+							<Type>BIT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_IO.XD_DOR_ATM</Name>
+							<Type>BIT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_IO.XD_SH_up</Name>
+							<Type>BIT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_IO.XD_SH_dw</Name>
+							<Type>BIT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_IO.XD_CDA_ok</Name>
+							<Type>BIT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_IO.XD_PCW_ok</Name>
+							<Type>BIT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_IO.XD_IH_ready</Name>
+							<Type>BIT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_IO.XD_IH_busy</Name>
+							<Type>BIT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_IO.XD_IH_fail</Name>
+							<Type>BIT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_IO.XD_ROT_fail</Name>
+							<Type>BIT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_IO.XD_15</Name>
+							<Type>BIT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_IO.XD_VP_fail</Name>
+							<Type>BIT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_IO.XD_VP_wn</Name>
+							<Type>BIT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_IO.XD_VP_al</Name>
+							<Type>BIT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_IO.XD_VP_busy</Name>
+							<Type>BIT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_IO.XD_VP_iv_open</Name>
+							<Type>BIT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_IO.XD_SH_hi_limit</Name>
+							<Type>BIT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_IO.XD_SH_lo_limit</Name>
+							<Type>BIT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_IO.XD_RC_close</Name>
+							<Type>BIT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_IO.XD_GC_close</Name>
+							<Type>BIT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_IO.XD_CC_close</Name>
+							<Type>BIT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_IO.XD_26</Name>
+							<Type>BIT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_IO.XD_27</Name>
+							<Type>BIT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_IO.XD_SMPS1_err</Name>
+							<Type>BIT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_IO.XD_SMPS2_err</Name>
+							<Type>BIT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_IO.XD_SMPS3_err</Name>
+							<Type>BIT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_IO.XD_SMPS4_err</Name>
+							<Type>BIT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_IO.XD_IH_CB</Name>
+							<Type>BIT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_IO.XD_TB_CB</Name>
+							<Type>BIT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_IO.XD_VP_CB</Name>
+							<Type>BIT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_IO.XD_LH_CB</Name>
+							<Type>BIT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_IO.XD_ROT_CP</Name>
+							<Type>BIT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_IO.XD_LIFT_CP</Name>
+							<Type>BIT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_IO.XD_TV_CP</Name>
+							<Type>BIT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_IO.XD_LAMP_CP</Name>
+							<Type>BIT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_IO.XD_MFC_CP</Name>
+							<Type>BIT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_IO.XD_LH1_CP</Name>
+							<Type>BIT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_IO.XD_LH2_CP</Name>
+							<Type>BIT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_IO.XD_LH3_CP</Name>
+							<Type>BIT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_IO.XD_LH4_CP</Name>
+							<Type>BIT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_IO.XD_LH5_CP</Name>
+							<Type>BIT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_IO.XD_LH6_CP</Name>
+							<Type>BIT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_IO.XD_LH7_CP</Name>
+							<Type>BIT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_IO.XD_LH8_CP</Name>
+							<Type>BIT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_IO.XD_SCRUBBER_fail</Name>
+							<Type>BIT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_IO.XD_NH3_GC_fail</Name>
+							<Type>BIT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_IO.XD_SiH4_GC_fail</Name>
+							<Type>BIT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_IO.XD_N2_GC_fail</Name>
+							<Type>BIT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_IO.XD_H2_GC_fail</Name>
+							<Type>BIT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_IO.XD_54</Name>
+							<Type>BIT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_IO.XD_55</Name>
+							<Type>BIT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_IO.XD_56</Name>
+							<Type>BIT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_IO.XD_TB1_evt</Name>
+							<Type>BIT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_IO.XD_TB1_Y_off</Name>
+							<Type>BIT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_IO.XD_TB2_evt</Name>
+							<Type>BIT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_IO.XD_TB2_Y_off</Name>
+							<Type>BIT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_IO.XD_TB3_evt</Name>
+							<Type>BIT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_IO.XD_TB3_Y_off</Name>
+							<Type>BIT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_IO.XD_TB4_evt</Name>
+							<Type>BIT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_IO.XD_TB4_Y_off</Name>
+							<Type>BIT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_IO.XD_TB5_evt</Name>
+							<Type>BIT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_IO.XD_TB5_Y_off</Name>
+							<Type>BIT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_IO.XD_TB6_evt</Name>
+							<Type>BIT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_IO.XD_TB6_Y_off</Name>
+							<Type>BIT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_IO.XD_69</Name>
+							<Type>BIT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_IO.XD_70</Name>
+							<Type>BIT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_IO.XD_71</Name>
+							<Type>BIT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_IO.XD_72</Name>
+							<Type>BIT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_IO.XA_M01</Name>
+							<Type>WORD</Type>
+						</Var>
+						<Var>
+							<Name>GVL_IO.XA_M02</Name>
+							<Type>WORD</Type>
+						</Var>
+						<Var>
+							<Name>GVL_IO.XA_M03</Name>
+							<Type>WORD</Type>
+						</Var>
+						<Var>
+							<Name>GVL_IO.XA_M04</Name>
+							<Type>WORD</Type>
+						</Var>
+						<Var>
+							<Name>GVL_IO.XA_M05</Name>
+							<Type>WORD</Type>
+						</Var>
+						<Var>
+							<Name>GVL_IO.XA_M06</Name>
+							<Type>WORD</Type>
+						</Var>
+						<Var>
+							<Name>GVL_IO.XA_M07</Name>
+							<Type>WORD</Type>
+						</Var>
+						<Var>
+							<Name>GVL_IO.XA_M08</Name>
+							<Type>WORD</Type>
+						</Var>
+						<Var>
+							<Name>GVL_IO.XA_M09</Name>
+							<Type>WORD</Type>
+						</Var>
+						<Var>
+							<Name>GVL_IO.XA_M10</Name>
+							<Type>WORD</Type>
+						</Var>
+						<Var>
+							<Name>GVL_IO.XA_M11</Name>
+							<Type>WORD</Type>
+						</Var>
+						<Var>
+							<Name>GVL_IO.XA_M12</Name>
+							<Type>WORD</Type>
+						</Var>
+						<Var>
+							<Name>GVL_IO.XA_M13</Name>
+							<Type>WORD</Type>
+						</Var>
+						<Var>
+							<Name>GVL_IO.XA_M14</Name>
+							<Type>WORD</Type>
+						</Var>
+						<Var>
+							<Name>GVL_IO.XA_M15</Name>
+							<Type>WORD</Type>
+						</Var>
+						<Var>
+							<Name>GVL_IO.XA_M16</Name>
+							<Type>WORD</Type>
+						</Var>
+						<Var>
+							<Name>GVL_IO.XA_M17</Name>
+							<Type>WORD</Type>
+						</Var>
+						<Var>
+							<Name>GVL_IO.XA_M18</Name>
+							<Type>WORD</Type>
+						</Var>
+						<Var>
+							<Name>GVL_IO.XA_M19</Name>
+							<Type>WORD</Type>
+						</Var>
+						<Var>
+							<Name>GVL_IO.XA_E01</Name>
+							<Type>WORD</Type>
+						</Var>
+						<Var>
+							<Name>GVL_IO.XA_E02</Name>
+							<Type>WORD</Type>
+						</Var>
+						<Var>
+							<Name>GVL_IO.XA_E03</Name>
+							<Type>WORD</Type>
+						</Var>
+						<Var>
+							<Name>GVL_IO.XA_E04</Name>
+							<Type>WORD</Type>
+						</Var>
+						<Var>
+							<Name>GVL_IO.XA_E05</Name>
+							<Type>WORD</Type>
+						</Var>
+						<Var>
+							<Name>GVL_IO.XA_E06</Name>
+							<Type>WORD</Type>
+						</Var>
+						<Var>
+							<Name>GVL_IO.XA_E07</Name>
+							<Type>WORD</Type>
+						</Var>
+						<Var>
+							<Name>GVL_IO.XA_P02</Name>
+							<Type>WORD</Type>
+						</Var>
+						<Var>
+							<Name>GVL_IO.XA_P03</Name>
+							<Type>WORD</Type>
+						</Var>
+						<Var>
+							<Name>GVL_IO.XA_S05</Name>
+							<Type>WORD</Type>
+						</Var>
+						<Var>
+							<Name>GVL_IO.XA_30</Name>
+							<Type>WORD</Type>
+						</Var>
+						<Var>
+							<Name>GVL_IO.XA_31</Name>
+							<Type>WORD</Type>
+						</Var>
+						<Var>
+							<Name>GVL_IO.XA_32</Name>
+							<Type>WORD</Type>
+						</Var>
+						<Var>
+							<Name>GVL_IO.XA_S01</Name>
+							<Type>WORD</Type>
+						</Var>
+						<Var>
+							<Name>GVL_IO.XA_S02</Name>
+							<Type>WORD</Type>
+						</Var>
+						<Var>
+							<Name>GVL_IO.XA_S03</Name>
+							<Type>WORD</Type>
+						</Var>
+						<Var>
+							<Name>GVL_IO.XA_S04</Name>
+							<Type>WORD</Type>
+						</Var>
+						<Var>
+							<Name>GVL_IO.XA_ROT</Name>
+							<Type>WORD</Type>
+						</Var>
+						<Var>
+							<Name>GVL_IO.XA_38</Name>
+							<Type>WORD</Type>
+						</Var>
+						<Var>
+							<Name>GVL_IO.XA_SH_CW</Name>
+							<Type>WORD</Type>
+						</Var>
+						<Var>
+							<Name>GVL_IO.XA_IH_CW</Name>
+							<Type>WORD</Type>
+						</Var>
+						<Var>
+							<Name>GVL_IO.XA_41</Name>
+							<Type>WORD</Type>
+						</Var>
+						<Var>
+							<Name>GVL_IO.XA_42</Name>
+							<Type>WORD</Type>
+						</Var>
+						<Var>
+							<Name>GVL_IO.N_COUPLER_STATES</Name>
+							<Comment><![CDATA[BK5220 x 2EA]]></Comment>
+							<Type GUID="{773A0721-0680-A9F8-F5A5-C65F7E80A26F}">ARRAY [0..1] OF BYTE</Type>
+						</Var>
+						<Var>
+							<Name>GVL_IO.N_NET_STATES</Name>
+							<Comment><![CDATA[DEVICENT Master/Slave x 7EA]]></Comment>
+							<Type GUID="{5272FBDC-AFC3-6742-9B6F-5B0E8717724D}">ARRAY [0..6] OF BYTE</Type>
+						</Var>
+						<Var>
+							<Name>GVL_P2P.Rx_TV_ST</Name>
+							<Comment><![CDATA[DeviceNet - Throttle Valve - Byte]]></Comment>
+							<Type>BYTE</Type>
+						</Var>
+						<Var>
+							<Name>GVL_P2P.Rx_TV_CDG2_L</Name>
+							<Type>BYTE</Type>
+						</Var>
+						<Var>
+							<Name>GVL_P2P.Rx_TV_CDG2</Name>
+							<Comment><![CDATA[DeviceNet - Throttle Valve - 2Byte To WORD]]></Comment>
+							<Type>WORD</Type>
+						</Var>
+						<Var>
+							<Name>GVL_P2P.Rx_TV_CDG2_H</Name>
+							<Type>BYTE</Type>
+						</Var>
+						<Var>
+							<Name>GVL_P2P.Rx_TV_CDG1_L</Name>
+							<Type>BYTE</Type>
+						</Var>
+						<Var>
+							<Name>GVL_P2P.Rx_TV_CDG1</Name>
+							<Type>WORD</Type>
+						</Var>
+						<Var>
+							<Name>GVL_P2P.Rx_TV_CDG1_H</Name>
+							<Type>BYTE</Type>
+						</Var>
+						<Var>
+							<Name>GVL_P2P.Rx_TV_SP</Name>
+							<Type>WORD</Type>
+						</Var>
+						<Var>
+							<Name>GVL_P2P.Rx_TV_SP_L</Name>
+							<Type>BYTE</Type>
+						</Var>
+						<Var>
+							<Name>GVL_P2P.Rx_TV_SP_H</Name>
+							<Type>BYTE</Type>
+						</Var>
+						<Var>
+							<Name>GVL_P2P.Rx_TV_POS</Name>
+							<Type>WORD</Type>
+						</Var>
+						<Var>
+							<Name>GVL_P2P.Rx_TV_POS_L</Name>
+							<Type>BYTE</Type>
+						</Var>
+						<Var>
+							<Name>GVL_P2P.Rx_TV_POS_H</Name>
+							<Type>BYTE</Type>
+						</Var>
+						<Var>
+							<Name>GVL_P2P.Rx_IH_PV_L</Name>
+							<Comment><![CDATA[DeviceNet - Induction Heater E3508 - Byte]]></Comment>
+							<Type>BYTE</Type>
+						</Var>
+						<Var>
+							<Name>GVL_P2P.Rx_IH_PV</Name>
+							<Comment><![CDATA[DeviceNet - Induction Heater E3508 - 2Byte To WORD]]></Comment>
+							<Type>WORD</Type>
+						</Var>
+						<Var>
+							<Name>GVL_P2P.Rx_IH_PV_H</Name>
+							<Type>BYTE</Type>
+						</Var>
+						<Var>
+							<Name>GVL_P2P.Rx_IH_SV_L</Name>
+							<Type>BYTE</Type>
+						</Var>
+						<Var>
+							<Name>GVL_P2P.Rx_IH_SV</Name>
+							<Type>WORD</Type>
+						</Var>
+						<Var>
+							<Name>GVL_P2P.Rx_IH_SV_H</Name>
+							<Type>BYTE</Type>
+						</Var>
+						<Var>
+							<Name>GVL_P2P.Rx_IH_TSV</Name>
+							<Type>WORD</Type>
+						</Var>
+						<Var>
+							<Name>GVL_P2P.Rx_IH_TSV_L</Name>
+							<Type>BYTE</Type>
+						</Var>
+						<Var>
+							<Name>GVL_P2P.Rx_IH_TSV_H</Name>
+							<Type>BYTE</Type>
+						</Var>
+						<Var>
+							<Name>GVL_P2P.Rx_IH_MOUT</Name>
+							<Type>WORD</Type>
+						</Var>
+						<Var>
+							<Name>GVL_P2P.Rx_IH_MOUT_L</Name>
+							<Type>BYTE</Type>
+						</Var>
+						<Var>
+							<Name>GVL_P2P.Rx_IH_MOUT_H</Name>
+							<Type>BYTE</Type>
+						</Var>
+						<Var>
+							<Name>GVL_P2P.Rx_IH_AL</Name>
+							<Type>WORD</Type>
+						</Var>
+						<Var>
+							<Name>GVL_P2P.Rx_IH_AL_L</Name>
+							<Type>BYTE</Type>
+						</Var>
+						<Var>
+							<Name>GVL_P2P.Rx_IH_AL_H</Name>
+							<Type>BYTE</Type>
+						</Var>
+						<Var>
+							<Name>GVL_P2P.Rx_IH_AM</Name>
+							<Type>WORD</Type>
+						</Var>
+						<Var>
+							<Name>GVL_P2P.Rx_IH_AM_L</Name>
+							<Type>BYTE</Type>
+						</Var>
+						<Var>
+							<Name>GVL_P2P.Rx_IH_AM_H</Name>
+							<Type>BYTE</Type>
+						</Var>
+						<Var>
+							<Name>GVL_P2P.Rx_IH_AT_ST</Name>
+							<Type>WORD</Type>
+						</Var>
+						<Var>
+							<Name>GVL_P2P.Rx_IH_AT_ST_L</Name>
+							<Type>BYTE</Type>
+						</Var>
+						<Var>
+							<Name>GVL_P2P.Rx_IH_AT_ST_H</Name>
+							<Type>BYTE</Type>
+						</Var>
+						<Var>
+							<Name>GVL_P2P.Rx_IH_P_L</Name>
+							<Type>BYTE</Type>
+						</Var>
+						<Var>
+							<Name>GVL_P2P.Rx_IH_P</Name>
+							<Type>WORD</Type>
+						</Var>
+						<Var>
+							<Name>GVL_P2P.Rx_IH_P_H</Name>
+							<Type>BYTE</Type>
+						</Var>
+						<Var>
+							<Name>GVL_P2P.Rx_IH_I</Name>
+							<Type>WORD</Type>
+						</Var>
+						<Var>
+							<Name>GVL_P2P.Rx_IH_I_L</Name>
+							<Type>BYTE</Type>
+						</Var>
+						<Var>
+							<Name>GVL_P2P.Rx_IH_I_H</Name>
+							<Type>BYTE</Type>
+						</Var>
+						<Var>
+							<Name>GVL_P2P.Rx_IH_D</Name>
+							<Type>WORD</Type>
+						</Var>
+						<Var>
+							<Name>GVL_P2P.Rx_IH_D_L</Name>
+							<Type>BYTE</Type>
+						</Var>
+						<Var>
+							<Name>GVL_P2P.Rx_IH_D_H</Name>
+							<Type>BYTE</Type>
+						</Var>
+						<Var>
+							<Name>GVL_P2P.in22B_LH</Name>
+							<Comment><![CDATA[ linked to the KL6031 in the TwinCAT System Manager ]]></Comment>
+							<Type GUID="{F13B6D04-11D0-5217-2BF9-7A8308D2316E}" Namespace="Tc2_SerialCom">KL6inData22B</Type>
+						</Var>
+						<Var>
+							<Name>GVL_P2P.in22B_TB</Name>
+							<Comment><![CDATA[ linked to the KL6031 in the TwinCAT System Manager ]]></Comment>
+							<Type GUID="{F13B6D04-11D0-5217-2BF9-7A8308D2316E}" Namespace="Tc2_SerialCom">KL6inData22B</Type>
+						</Var>
+					</Vars>
+					<Vars VarGrpType="2" AreaNo="1">
+						<Name>PlcTask Outputs</Name>
+						<Var>
+							<Name>GVL_IO.YD_RED</Name>
+							<Type>BIT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_IO.YD_YE</Name>
+							<Type>BIT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_IO.YD_GN</Name>
+							<Type>BIT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_IO.YD_BU</Name>
+							<Type>BIT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_IO.YD_WH</Name>
+							<Type>BIT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_IO.YD_BZ</Name>
+							<Type>BIT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_IO.YD_SH_up_ry</Name>
+							<Type>BIT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_IO.YD_SH_dw_ry</Name>
+							<Type>BIT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_IO.YD_IH</Name>
+							<Type>BIT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_IO.YD_IH_rst</Name>
+							<Type>BIT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_IO.YD_VP</Name>
+							<Type>BIT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_IO.YD_VP_rst</Name>
+							<Type>BIT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_IO.YD_SYS_off_lock</Name>
+							<Type>BIT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_IO.YD_RC_lamp</Name>
+							<Type>BIT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_IO.YD_GC_lamp</Name>
+							<Type>BIT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_IO.YD_CC_lamp</Name>
+							<Type>BIT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_IO.YD_IH_mc</Name>
+							<Type>BIT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_IO.YD_TB_mc</Name>
+							<Type>BIT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_IO.YD_VP_mc</Name>
+							<Type>BIT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_IO.YD_LH_mc</Name>
+							<Type>BIT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_IO.YD_ROT</Name>
+							<Type>BIT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_IO.YD_ROT_break</Name>
+							<Type>BIT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_IO.YD_ROT_rst</Name>
+							<Type>BIT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_IO.YD_RST_led</Name>
+							<Type>BIT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_IO.YD_DOR_VAC_led</Name>
+							<Type>BIT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_IO.YD_DOR_ATM_led</Name>
+							<Type>BIT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_IO.YD_SH_up_led</Name>
+							<Type>BIT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_IO.YD_SH_dw_led</Name>
+							<Type>BIT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_IO.YD_29</Name>
+							<Type>BIT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_IO.YD_30</Name>
+							<Type>BIT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_IO.YD_31</Name>
+							<Type>BIT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_IO.YD_32</Name>
+							<Type>BIT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_P2P.Tx_SOL1</Name>
+							<Comment><![CDATA[Word for bit operation]]></Comment>
+							<Type>DWORD</Type>
+						</Var>
+						<Var>
+							<Name>GVL_P2P.Tx_SOL2</Name>
+							<Comment><![CDATA[Word for bit operation]]></Comment>
+							<Type>DWORD</Type>
+						</Var>
+						<Var>
+							<Name>GVL_IO.YA_M01</Name>
+							<Type>WORD</Type>
+						</Var>
+						<Var>
+							<Name>GVL_IO.YA_M02</Name>
+							<Type>WORD</Type>
+						</Var>
+						<Var>
+							<Name>GVL_IO.YA_M03</Name>
+							<Type>WORD</Type>
+						</Var>
+						<Var>
+							<Name>GVL_IO.YA_M04</Name>
+							<Type>WORD</Type>
+						</Var>
+						<Var>
+							<Name>GVL_IO.YA_M05</Name>
+							<Type>WORD</Type>
+						</Var>
+						<Var>
+							<Name>GVL_IO.YA_M06</Name>
+							<Type>WORD</Type>
+						</Var>
+						<Var>
+							<Name>GVL_IO.YA_M07</Name>
+							<Type>WORD</Type>
+						</Var>
+						<Var>
+							<Name>GVL_IO.YA_M08</Name>
+							<Type>WORD</Type>
+						</Var>
+						<Var>
+							<Name>GVL_IO.YA_M09</Name>
+							<Type>WORD</Type>
+						</Var>
+						<Var>
+							<Name>GVL_IO.YA_M10</Name>
+							<Type>WORD</Type>
+						</Var>
+						<Var>
+							<Name>GVL_IO.YA_M11</Name>
+							<Type>WORD</Type>
+						</Var>
+						<Var>
+							<Name>GVL_IO.YA_M12</Name>
+							<Type>WORD</Type>
+						</Var>
+						<Var>
+							<Name>GVL_IO.YA_M13</Name>
+							<Type>WORD</Type>
+						</Var>
+						<Var>
+							<Name>GVL_IO.YA_M14</Name>
+							<Type>WORD</Type>
+						</Var>
+						<Var>
+							<Name>GVL_IO.YA_M15</Name>
+							<Type>WORD</Type>
+						</Var>
+						<Var>
+							<Name>GVL_IO.YA_M16</Name>
+							<Type>WORD</Type>
+						</Var>
+						<Var>
+							<Name>GVL_IO.YA_M17</Name>
+							<Type>WORD</Type>
+						</Var>
+						<Var>
+							<Name>GVL_IO.YA_M18</Name>
+							<Type>WORD</Type>
+						</Var>
+						<Var>
+							<Name>GVL_IO.YA_M19</Name>
+							<Type>WORD</Type>
+						</Var>
+						<Var>
+							<Name>GVL_IO.YA_E01</Name>
+							<Type>WORD</Type>
+						</Var>
+						<Var>
+							<Name>GVL_IO.YA_E02</Name>
+							<Type>WORD</Type>
+						</Var>
+						<Var>
+							<Name>GVL_IO.YA_E03</Name>
+							<Type>WORD</Type>
+						</Var>
+						<Var>
+							<Name>GVL_IO.YA_E04</Name>
+							<Type>WORD</Type>
+						</Var>
+						<Var>
+							<Name>GVL_IO.YA_E05</Name>
+							<Type>WORD</Type>
+						</Var>
+						<Var>
+							<Name>GVL_IO.YA_E06</Name>
+							<Type>WORD</Type>
+						</Var>
+						<Var>
+							<Name>GVL_IO.YA_E07</Name>
+							<Type>WORD</Type>
+						</Var>
+						<Var>
+							<Name>GVL_IO.YA_P03</Name>
+							<Type>WORD</Type>
+						</Var>
+						<Var>
+							<Name>GVL_IO.YA_ROT</Name>
+							<Type>WORD</Type>
+						</Var>
+						<Var>
+							<Name>GVL_P2P.Tx_TV_Mode</Name>
+							<Type>BYTE</Type>
+						</Var>
+						<Var>
+							<Name>GVL_P2P.Tx_TV_Arr</Name>
+							<Type GUID="{527C5C5C-1CF8-1963-ACDC-85B7B3E5B586}">ARRAY [0..3] OF BYTE</Type>
+						</Var>
+						<Var>
+							<Name>GVL_P2P.Tx_TV_SP_L</Name>
+							<Type>BYTE</Type>
+						</Var>
+						<Var>
+							<Name>GVL_P2P.Tx_TV_SP</Name>
+							<Type>WORD</Type>
+						</Var>
+						<Var>
+							<Name>GVL_P2P.Tx_TV_SP_H</Name>
+							<Type>BYTE</Type>
+						</Var>
+						<Var>
+							<Name>GVL_P2P.Tx_TV_SP_Type</Name>
+							<Type>BYTE</Type>
+						</Var>
+						<Var>
+							<Name>GVL_P2P.Tx_IH_TSV_L</Name>
+							<Type>BYTE</Type>
+						</Var>
+						<Var>
+							<Name>GVL_P2P.Tx_IH_TSV</Name>
+							<Type>WORD</Type>
+						</Var>
+						<Var>
+							<Name>GVL_P2P.Tx_IH_TSV_H</Name>
+							<Type>BYTE</Type>
+						</Var>
+						<Var>
+							<Name>GVL_P2P.Tx_IH_AM_L</Name>
+							<Type>BYTE</Type>
+						</Var>
+						<Var>
+							<Name>GVL_P2P.Tx_IH_AM</Name>
+							<Type>WORD</Type>
+						</Var>
+						<Var>
+							<Name>GVL_P2P.Tx_IH_AM_H</Name>
+							<Type>BYTE</Type>
+						</Var>
+						<Var>
+							<Name>GVL_P2P.Tx_IH_MOUT_L</Name>
+							<Type>BYTE</Type>
+						</Var>
+						<Var>
+							<Name>GVL_P2P.Tx_IH_MOUT</Name>
+							<Type>WORD</Type>
+						</Var>
+						<Var>
+							<Name>GVL_P2P.Tx_IH_MOUT_H</Name>
+							<Type>BYTE</Type>
+						</Var>
+						<Var>
+							<Name>GVL_P2P.Tx_IH_AL_CR_L</Name>
+							<Type>BYTE</Type>
+						</Var>
+						<Var>
+							<Name>GVL_P2P.Tx_IH_AL_CR</Name>
+							<Type>WORD</Type>
+						</Var>
+						<Var>
+							<Name>GVL_P2P.Tx_IH_AL_CR_H</Name>
+							<Type>BYTE</Type>
+						</Var>
+						<Var>
+							<Name>GVL_P2P.Tx_IH_AT_EN_L</Name>
+							<Type>BYTE</Type>
+						</Var>
+						<Var>
+							<Name>GVL_P2P.Tx_IH_AT_EN</Name>
+							<Type>WORD</Type>
+						</Var>
+						<Var>
+							<Name>GVL_P2P.Tx_IH_AT_EN_H</Name>
+							<Type>BYTE</Type>
+						</Var>
+						<Var>
+							<Name>GVL_P2P.Tx_IH_ABS_HI</Name>
+							<Type>WORD</Type>
+						</Var>
+						<Var>
+							<Name>GVL_P2P.Tx_IH_ABS_HI_L</Name>
+							<Type>BYTE</Type>
+						</Var>
+						<Var>
+							<Name>GVL_P2P.Tx_IH_ABS_HI_H</Name>
+							<Type>BYTE</Type>
+						</Var>
+						<Var>
+							<Name>GVL_P2P.out22B_LH</Name>
+							<Comment><![CDATA[ linked to the KL6031 in the TwinCAT System Manager ]]></Comment>
+							<Type GUID="{93239C5F-8743-C1B9-CEA8-EA43A1EB5E4D}" Namespace="Tc2_SerialCom">KL6outData22B</Type>
+						</Var>
+						<Var>
+							<Name>GVL_TEST.TST_OUT</Name>
+							<Type>BYTE</Type>
+						</Var>
+						<Var>
+							<Name>GVL_P2P.out22B_TB</Name>
+							<Comment><![CDATA[ linked to the KL6031 in the TwinCAT System Manager ]]></Comment>
+							<Type GUID="{93239C5F-8743-C1B9-CEA8-EA43A1EB5E4D}" Namespace="Tc2_SerialCom">KL6outData22B</Type>
+						</Var>
+					</Vars>
+					<UnrestoredVarLinks ImportTime="2024-06-03T13:06:46">
+						<OwnerA Name="OutputSrc" Prefix="TIPC^IO_Control^IO_Control Instance" Type="2">
+							<OwnerB Name="TIID^Device 2 (EtherCAT)^Term 1 (EK1100)^Term 3 (EL2088)">
+								<Link VarA="GVL_TEST.TST_OUT1" TypeA="BIT" InOutA="1" GuidA="{18071995-0000-0000-0000-000000000010}" VarB="Channel 1^Output" RestoreInfo="ANotFound"/>
+								<Link VarA="GVL_TEST.TST_OUT2" TypeA="BIT" InOutA="1" GuidA="{18071995-0000-0000-0000-000000000010}" VarB="Channel 3^Output" RestoreInfo="ANotFound"/>
+							</OwnerB>
+						</OwnerA>
+					</UnrestoredVarLinks>
+					<Contexts>
+						<Context>
+							<Id>0</Id>
+							<Name>PlcTask</Name>
+							<ManualConfig>
+								<OTCID>#x02010040</OTCID>
+							</ManualConfig>
+							<Priority>20</Priority>
+							<CycleTime>10000000</CycleTime>
+						</Context>
+					</Contexts>
+					<TaskPouOids>
+						<TaskPouOid Prio="20" OTCID="#x08502001"/>
+					</TaskPouOids>
+				</Instance>
+			</Project>
+		</Plc>
+		<Io>
+			<Device Id="2" DevType="111" DevFlags="#x0003" AmsPort="28674" AmsNetId="211.225.0.63.3.1" RemoteName="Device 2 (EtherCAT)" InfoImageId="2">
+				<Name>Device 2 (EtherCAT)</Name>
+				<AddressInfo>
+					<Pnp>
+						<DeviceDesc>? (Qualcomm Atheros AR8161 PCI-E Gigabit Ether</DeviceDesc>
+						<DeviceName>\DEVICE\{AC14CE34-3667-42B4-99F5-95763E6B4868}</DeviceName>
+						<DeviceData>089e013e0759</DeviceData>
+					</Pnp>
+				</AddressInfo>
+				<Image Id="1" AddrType="9" ImageType="3">
+					<Name>Image</Name>
+				</Image>
+				<Box Id="1" BoxType="9099">
+					<Name>Term 1 (EK1100)</Name>
+					<ImageId>1000</ImageId>
+					<EtherCAT SlaveType="1" PdiType="#x0d00" CycleMBoxPollingTime="0" VendorId="#x00000002" ProductCode="#x044c2c52" RevisionNo="#x00120000" PortPhys="305" MaxSlotCount="256" MaxSlotGroupCount="1" SlotPdoIncrement="1" SlotIndexIncrement="16" Type="EK1100 EtherCAT Coupler (2A E-Bus)" Desc="EK1100" PortABoxInfo="#x00ffffff"/>
+					<Box Id="2" BoxType="9099">
+						<Name>Term 2 (EL1088)</Name>
+						<ImageId>7</ImageId>
+						<EtherCAT SlaveType="1" PdiType="#x0104" CycleMBoxPollingTime="0" VendorId="#x00000002" ProductCode="#x04403052" RevisionNo="#x00120000" RepeatSupport="true" PortPhys="51" MaxSlotCount="256" MaxSlotGroupCount="1" SlotPdoIncrement="1" SlotIndexIncrement="16" Type="EL1088 8Ch. Dig. Input 24V, 3ms, negative" Desc="EL1088" PortABoxInfo="#x01000001">
+							<SyncMan>001001000000010004000000000000000100001000010000</SyncMan>
+							<Fmmu>0000000000000000001000010100000002000000000000000000000000000000</Fmmu>
+							<Pdo Name="Channel 1" Index="#x1a00" Flags="#x0011" SyncMan="0">
+								<Entry Name="Input" Index="#x6000" Sub="#x01">
+									<Type>BIT</Type>
+								</Entry>
+							</Pdo>
+							<Pdo Name="Channel 2" Index="#x1a01" Flags="#x0011" SyncMan="0">
+								<Entry Name="Input" Index="#x6010" Sub="#x01">
+									<Type>BIT</Type>
+								</Entry>
+							</Pdo>
+							<Pdo Name="Channel 3" Index="#x1a02" Flags="#x0011" SyncMan="0">
+								<Entry Name="Input" Index="#x6020" Sub="#x01">
+									<Type>BIT</Type>
+								</Entry>
+							</Pdo>
+							<Pdo Name="Channel 4" Index="#x1a03" Flags="#x0011" SyncMan="0">
+								<Entry Name="Input" Index="#x6030" Sub="#x01">
+									<Type>BIT</Type>
+								</Entry>
+							</Pdo>
+							<Pdo Name="Channel 5" Index="#x1a04" Flags="#x0011" SyncMan="0">
+								<Entry Name="Input" Index="#x6040" Sub="#x01">
+									<Type>BIT</Type>
+								</Entry>
+							</Pdo>
+							<Pdo Name="Channel 6" Index="#x1a05" Flags="#x0011" SyncMan="0">
+								<Entry Name="Input" Index="#x6050" Sub="#x01">
+									<Type>BIT</Type>
+								</Entry>
+							</Pdo>
+							<Pdo Name="Channel 7" Index="#x1a06" Flags="#x0011" SyncMan="0">
+								<Entry Name="Input" Index="#x6060" Sub="#x01">
+									<Type>BIT</Type>
+								</Entry>
+							</Pdo>
+							<Pdo Name="Channel 8" Index="#x1a07" Flags="#x0011" SyncMan="0">
+								<Entry Name="Input" Index="#x6070" Sub="#x01">
+									<Type>BIT</Type>
+								</Entry>
+							</Pdo>
+						</EtherCAT>
+					</Box>
+					<Box Id="3" BoxType="9099">
+						<Name>Term 3 (EL2088)</Name>
+						<ImageId>1001</ImageId>
+						<EtherCAT SlaveType="1" PdiType="#x0104" CycleMBoxPollingTime="0" VendorId="#x00000002" ProductCode="#x08283052" RevisionNo="#x00120000" RepeatSupport="true" PortPhys="51" MaxSlotCount="256" MaxSlotGroupCount="1" SlotPdoIncrement="1" SlotIndexIncrement="16" Type="EL2088 8Ch. Dig. Output 24V, 0.5A, switching to negative" Desc="EL2088" PortABoxInfo="#x01000002">
+							<SyncMan>000f01004400010003000000000000000000000f44090000</SyncMan>
+							<Fmmu>0000000000000000000f00020100000001000000000000000000000000000000</Fmmu>
+							<Pdo Name="Channel 1" Index="#x1600" InOut="1" Flags="#x0011" SyncMan="0">
+								<Entry Name="Output" Index="#x7000" Sub="#x01">
+									<Type>BIT</Type>
+								</Entry>
+							</Pdo>
+							<Pdo Name="Channel 2" Index="#x1601" InOut="1" Flags="#x0011" SyncMan="0">
+								<Entry Name="Output" Index="#x7010" Sub="#x01">
+									<Type>BIT</Type>
+								</Entry>
+							</Pdo>
+							<Pdo Name="Channel 3" Index="#x1602" InOut="1" Flags="#x0011" SyncMan="0">
+								<Entry Name="Output" Index="#x7020" Sub="#x01">
+									<Type>BIT</Type>
+								</Entry>
+							</Pdo>
+							<Pdo Name="Channel 4" Index="#x1603" InOut="1" Flags="#x0011" SyncMan="0">
+								<Entry Name="Output" Index="#x7030" Sub="#x01">
+									<Type>BIT</Type>
+								</Entry>
+							</Pdo>
+							<Pdo Name="Channel 5" Index="#x1604" InOut="1" Flags="#x0011" SyncMan="0">
+								<Entry Name="Output" Index="#x7040" Sub="#x01">
+									<Type>BIT</Type>
+								</Entry>
+							</Pdo>
+							<Pdo Name="Channel 6" Index="#x1605" InOut="1" Flags="#x0011" SyncMan="0">
+								<Entry Name="Output" Index="#x7050" Sub="#x01">
+									<Type>BIT</Type>
+								</Entry>
+							</Pdo>
+							<Pdo Name="Channel 7" Index="#x1606" InOut="1" Flags="#x0011" SyncMan="0">
+								<Entry Name="Output" Index="#x7060" Sub="#x01">
+									<Type>BIT</Type>
+								</Entry>
+							</Pdo>
+							<Pdo Name="Channel 8" Index="#x1607" InOut="1" Flags="#x0011" SyncMan="0">
+								<Entry Name="Output" Index="#x7070" Sub="#x01">
+									<Type>BIT</Type>
+								</Entry>
+							</Pdo>
+						</EtherCAT>
+					</Box>
+					<Box Id="4" BoxType="9099" BoxFlags="#x00000020">
+						<Name>Term 4 (EL3054)</Name>
+						<ImageId>1002</ImageId>
+						<EtherCAT SlaveType="2" PdiType="#x0005" MboxDataLinkLayer="true" StateMBoxPolling="true" CycleMBoxPollingTime="0" CoeType="7" FoeType="1" VendorId="#x00000002" ProductCode="#x0bee3052" RevisionNo="#x00140000" InfoDataAddr="true" TimeoutMailbox2="2000" CheckRevisionNoType="3" PortPhys="51" MaxSlotCount="256" MaxSlotGroupCount="1" SlotPdoIncrement="1" SlotIndexIncrement="16" Type="EL3054 4Ch. Ana. Input 4-20mA" Desc="EL3054" PortABoxInfo="#x01000003">
+							<SyncMan>001080002600010001000000800080008000001026010000</SyncMan>
+							<SyncMan>801080002200010002000000800080008000801022010000</SyncMan>
+							<SyncMan>001100000400000003000000000000000000001104000000</SyncMan>
+							<SyncMan>801110002000010004000000000000001000801120010000</SyncMan>
+							<Fmmu>0000000000000000801100010100000002000000000000000000000000000000</Fmmu>
+							<Fmmu>00000000000000000d0800010100000003000000000000000000000000000000</Fmmu>
+							<BootStrapData>0010f400f410f400</BootStrapData>
+							<Pdo Name="AI Standard Channel 1" Index="#x1a00" Flags="#x0010" SyncMan="3">
+								<ExcludePdo>#x1a01</ExcludePdo>
+								<Entry Name="Status__Underrange" Index="#x6000" Sub="#x01">
+									<Type>BIT</Type>
+									<Comment><![CDATA[Underrange event active]]></Comment>
+								</Entry>
+								<Entry Name="Status__Overrange" Index="#x6000" Sub="#x02">
+									<Type>BIT</Type>
+									<Comment><![CDATA[Overrange event active]]></Comment>
+								</Entry>
+								<Entry Name="Status__Limit 1" Index="#x6000" Sub="#x03">
+									<Type>BIT2</Type>
+									<Comment><![CDATA[Bit0: Value smaller/equal Limit1
+Bit1: Value bigger/equal Limit1]]></Comment>
+								</Entry>
+								<Entry Name="Status__Limit 2" Index="#x6000" Sub="#x05">
+									<Type>BIT2</Type>
+									<Comment><![CDATA[Bit0: Value smaller/equal Limit2
+Bit1: Value bigger/equal Limit2]]></Comment>
+								</Entry>
+								<Entry Name="Status__Error" Index="#x6000" Sub="#x07">
+									<Type>BIT</Type>
+									<Comment><![CDATA[Bit set when Over- or Underrange]]></Comment>
+								</Entry>
+								<Entry Name="Status__">
+									<Type GUID="{18071995-0000-0000-0000-002000000001}">ARRAY [0..0] OF BIT</Type>
+								</Entry>
+								<Entry Name="Status__">
+									<Type GUID="{18071995-0000-0000-0000-002000000006}">ARRAY [0..5] OF BIT</Type>
+								</Entry>
+								<Entry Name="Status__TxPDO State" Index="#x6000" Sub="#x0f">
+									<Type>BIT</Type>
+									<Comment><![CDATA[TRUE when this TxPDO is not valid]]></Comment>
+								</Entry>
+								<Entry Name="Status__TxPDO Toggle" Index="#x6000" Sub="#x10">
+									<Type>BIT</Type>
+									<Comment><![CDATA[Bit toggles everytime when new value available]]></Comment>
+								</Entry>
+								<Entry Name="Value" Index="#x6000" Sub="#x11" Flags="#x00040000">
+									<Type>INT</Type>
+								</Entry>
+							</Pdo>
+							<Pdo Name="AI Compact Channel 1" Index="#x1a01" Flags="#x0010">
+								<ExcludePdo>#x1a00</ExcludePdo>
+								<Entry Name="Value" Index="#x6000" Sub="#x11" Flags="#x00040000">
+									<Type>INT</Type>
+								</Entry>
+							</Pdo>
+							<Pdo Name="AI Standard Channel 2" Index="#x1a02" Flags="#x0010" SyncMan="3">
+								<ExcludePdo>#x1a03</ExcludePdo>
+								<Entry Name="Status__Underrange" Index="#x6010" Sub="#x01">
+									<Type>BIT</Type>
+									<Comment><![CDATA[Underrange event active]]></Comment>
+								</Entry>
+								<Entry Name="Status__Overrange" Index="#x6010" Sub="#x02">
+									<Type>BIT</Type>
+									<Comment><![CDATA[Overrange event active]]></Comment>
+								</Entry>
+								<Entry Name="Status__Limit 1" Index="#x6010" Sub="#x03">
+									<Type>BIT2</Type>
+									<Comment><![CDATA[Bit0: Value smaller/equal Limit1
+Bit1: Value bigger/equal Limit1]]></Comment>
+								</Entry>
+								<Entry Name="Status__Limit 2" Index="#x6010" Sub="#x05">
+									<Type>BIT2</Type>
+									<Comment><![CDATA[Bit0: Value smaller/equal Limit2
+Bit1: Value bigger/equal Limit2]]></Comment>
+								</Entry>
+								<Entry Name="Status__Error" Index="#x6010" Sub="#x07">
+									<Type>BIT</Type>
+									<Comment><![CDATA[Bit set when Over- or Underrange]]></Comment>
+								</Entry>
+								<Entry Name="Status__">
+									<Type GUID="{18071995-0000-0000-0000-002000000001}">ARRAY [0..0] OF BIT</Type>
+								</Entry>
+								<Entry Name="Status__">
+									<Type GUID="{18071995-0000-0000-0000-002000000006}">ARRAY [0..5] OF BIT</Type>
+								</Entry>
+								<Entry Name="Status__TxPDO State" Index="#x6010" Sub="#x0f">
+									<Type>BIT</Type>
+									<Comment><![CDATA[TRUE when this TxPDO is not valid]]></Comment>
+								</Entry>
+								<Entry Name="Status__TxPDO Toggle" Index="#x6010" Sub="#x10">
+									<Type>BIT</Type>
+									<Comment><![CDATA[Bit toggles everytime when new value available]]></Comment>
+								</Entry>
+								<Entry Name="Value" Index="#x6010" Sub="#x11" Flags="#x00040000">
+									<Type>INT</Type>
+								</Entry>
+							</Pdo>
+							<Pdo Name="AI Compact Channel 2" Index="#x1a03" Flags="#x0010">
+								<ExcludePdo>#x1a02</ExcludePdo>
+								<Entry Name="Value" Index="#x6010" Sub="#x11" Flags="#x00040000">
+									<Type>INT</Type>
+								</Entry>
+							</Pdo>
+							<Pdo Name="AI Standard Channel 3" Index="#x1a04" Flags="#x0010" SyncMan="3">
+								<ExcludePdo>#x1a05</ExcludePdo>
+								<Entry Name="Status__Underrange" Index="#x6020" Sub="#x01">
+									<Type>BIT</Type>
+									<Comment><![CDATA[Underrange event active]]></Comment>
+								</Entry>
+								<Entry Name="Status__Overrange" Index="#x6020" Sub="#x02">
+									<Type>BIT</Type>
+									<Comment><![CDATA[Overrange event active]]></Comment>
+								</Entry>
+								<Entry Name="Status__Limit 1" Index="#x6020" Sub="#x03">
+									<Type>BIT2</Type>
+									<Comment><![CDATA[Bit0: Value smaller/equal Limit1
+Bit1: Value bigger/equal Limit1]]></Comment>
+								</Entry>
+								<Entry Name="Status__Limit 2" Index="#x6020" Sub="#x05">
+									<Type>BIT2</Type>
+									<Comment><![CDATA[Bit0: Value smaller/equal Limit2
+Bit1: Value bigger/equal Limit2]]></Comment>
+								</Entry>
+								<Entry Name="Status__Error" Index="#x6020" Sub="#x07">
+									<Type>BIT</Type>
+									<Comment><![CDATA[Bit set when Over- or Underrange]]></Comment>
+								</Entry>
+								<Entry Name="Status__">
+									<Type GUID="{18071995-0000-0000-0000-002000000001}">ARRAY [0..0] OF BIT</Type>
+								</Entry>
+								<Entry Name="Status__">
+									<Type GUID="{18071995-0000-0000-0000-002000000006}">ARRAY [0..5] OF BIT</Type>
+								</Entry>
+								<Entry Name="Status__TxPDO State" Index="#x6020" Sub="#x0f">
+									<Type>BIT</Type>
+									<Comment><![CDATA[TRUE when this TxPDO is not valid]]></Comment>
+								</Entry>
+								<Entry Name="Status__TxPDO Toggle" Index="#x6020" Sub="#x10">
+									<Type>BIT</Type>
+									<Comment><![CDATA[Bit toggles everytime when new value available]]></Comment>
+								</Entry>
+								<Entry Name="Value" Index="#x6020" Sub="#x11" Flags="#x00040000">
+									<Type>INT</Type>
+								</Entry>
+							</Pdo>
+							<Pdo Name="AI Compact Channel 3" Index="#x1a05" Flags="#x0010">
+								<ExcludePdo>#x1a04</ExcludePdo>
+								<Entry Name="Value" Index="#x6020" Sub="#x11" Flags="#x00040000">
+									<Type>INT</Type>
+								</Entry>
+							</Pdo>
+							<Pdo Name="AI Standard Channel 4" Index="#x1a06" Flags="#x0010" SyncMan="3">
+								<ExcludePdo>#x1a07</ExcludePdo>
+								<Entry Name="Status__Underrange" Index="#x6030" Sub="#x01">
+									<Type>BIT</Type>
+									<Comment><![CDATA[Underrange event active]]></Comment>
+								</Entry>
+								<Entry Name="Status__Overrange" Index="#x6030" Sub="#x02">
+									<Type>BIT</Type>
+									<Comment><![CDATA[Overrange event active]]></Comment>
+								</Entry>
+								<Entry Name="Status__Limit 1" Index="#x6030" Sub="#x03">
+									<Type>BIT2</Type>
+									<Comment><![CDATA[Bit0: Value smaller/equal Limit1
+Bit1: Value bigger/equal Limit1]]></Comment>
+								</Entry>
+								<Entry Name="Status__Limit 2" Index="#x6030" Sub="#x05">
+									<Type>BIT2</Type>
+									<Comment><![CDATA[Bit0: Value smaller/equal Limit2
+Bit1: Value bigger/equal Limit2]]></Comment>
+								</Entry>
+								<Entry Name="Status__Error" Index="#x6030" Sub="#x07">
+									<Type>BIT</Type>
+									<Comment><![CDATA[Bit set when Over- or Underrange]]></Comment>
+								</Entry>
+								<Entry Name="Status__">
+									<Type GUID="{18071995-0000-0000-0000-002000000001}">ARRAY [0..0] OF BIT</Type>
+								</Entry>
+								<Entry Name="Status__">
+									<Type GUID="{18071995-0000-0000-0000-002000000006}">ARRAY [0..5] OF BIT</Type>
+								</Entry>
+								<Entry Name="Status__TxPDO State" Index="#x6030" Sub="#x0f">
+									<Type>BIT</Type>
+									<Comment><![CDATA[TRUE when this TxPDO is not valid]]></Comment>
+								</Entry>
+								<Entry Name="Status__TxPDO Toggle" Index="#x6030" Sub="#x10">
+									<Type>BIT</Type>
+									<Comment><![CDATA[Bit toggles everytime when new value available]]></Comment>
+								</Entry>
+								<Entry Name="Value" Index="#x6030" Sub="#x11" Flags="#x00040000">
+									<Type>INT</Type>
+								</Entry>
+							</Pdo>
+							<Pdo Name="AI Compact Channel 4" Index="#x1a07" Flags="#x0010">
+								<ExcludePdo>#x1a06</ExcludePdo>
+								<Entry Name="Value" Index="#x6030" Sub="#x11" Flags="#x00040000">
+									<Type>INT</Type>
+								</Entry>
+							</Pdo>
+							<CoeProfile ProfileNo="19665801"/>
+							<CoeProfile ProfileNo="19665801"/>
+							<CoeProfile ProfileNo="19665801"/>
+							<CoeProfile ProfileNo="19665801"/>
+						</EtherCAT>
+					</Box>
+					<Box Id="5" BoxType="9099" BoxFlags="#x00000020">
+						<Name>Term 5 (EL4004)</Name>
+						<ImageId>1003</ImageId>
+						<EtherCAT SlaveType="2" PdiType="#x0405" MboxDataLinkLayer="true" StateMBoxPolling="true" CycleMBoxPollingTime="0" CoeType="3" FoeType="1" VendorId="#x00000002" ProductCode="#x0fa43052" RevisionNo="#x00140000" InfoDataAddr="true" TimeoutMailbox2="2000" CheckRevisionNoType="3" PortPhys="51" MaxSlotCount="256" MaxSlotGroupCount="1" SlotPdoIncrement="1" SlotIndexIncrement="16" Type="EL4004 4Ch. Ana. Output 0-10V, 12bit" Desc="EL4004" PortABoxInfo="#x01000004">
+							<SyncMan>001080002600010001000000800080008000001026010000</SyncMan>
+							<SyncMan>801080002200010002000000800080008000801022010000</SyncMan>
+							<SyncMan>001108002400010003000000000000000800001124010000</SyncMan>
+							<SyncMan>801100000000000004000000000000000000801100000000</SyncMan>
+							<Fmmu>0000000000000000001100020100000001000000000000000000000000000000</Fmmu>
+							<Fmmu>00000000000000000d0800010100000003000000000000000000000000000000</Fmmu>
+							<BootStrapData>0010f400f410f400</BootStrapData>
+							<DcMode>53796e6368726f6e0000000000000000534d2d53796e6368726f6e000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000</DcMode>
+							<DcMode>4443000000000000000000000000000044432d53796e6368726f6e0000000000000000000000000000000000000000000000000000000000a0860100000000070100000000000000000000000000000000000000000000000000000000000000</DcMode>
+							<Pdo Name="AO Outputs Channel 1" Index="#x1600" InOut="1" Flags="#x0011" SyncMan="2">
+								<Entry Name="Analog output" Index="#x7000" Sub="#x11" Flags="#x00020000">
+									<Type>INT</Type>
+								</Entry>
+							</Pdo>
+							<Pdo Name="AO Outputs Channel 2" Index="#x1601" InOut="1" Flags="#x0011" SyncMan="2">
+								<Entry Name="Analog output" Index="#x7010" Sub="#x11" Flags="#x00020000">
+									<Type>INT</Type>
+								</Entry>
+							</Pdo>
+							<Pdo Name="AO Outputs Channel 3" Index="#x1602" InOut="1" Flags="#x0011" SyncMan="2">
+								<Entry Name="Analog output" Index="#x7020" Sub="#x11" Flags="#x00020000">
+									<Type>INT</Type>
+								</Entry>
+							</Pdo>
+							<Pdo Name="AO Outputs Channel 4" Index="#x1603" InOut="1" Flags="#x0011" SyncMan="2">
+								<Entry Name="Analog output" Index="#x7030" Sub="#x11" Flags="#x00020000">
+									<Type>INT</Type>
+								</Entry>
+							</Pdo>
+							<CoeProfile ProfileNo="26219401"/>
+							<CoeProfile ProfileNo="26219401"/>
+							<CoeProfile ProfileNo="26219401"/>
+							<CoeProfile ProfileNo="26219401"/>
+						</EtherCAT>
+					</Box>
+					<Box Id="6" BoxType="9099">
+						<Name>Term 6 (EL9011)</Name>
+						<ImageId>1004</ImageId>
+						<EtherCAT CycleMBoxPollingTime="0" VendorId="#x00000002" ProductCode="#x23333050" InfoDataState="false" MaxSlotCount="256" MaxSlotGroupCount="1" SlotPdoIncrement="1" SlotIndexIncrement="16" Type="EL9011 End Terminal" Desc="EL9011" PortABoxInfo="#x01000005"/>
+					</Box>
+				</Box>
+				<EtherCAT/>
+			</Device>
+		</Io>
+	</Project>
+	<Mappings>
+		<MappingInfo Identifier="{00000000-2001-0850-0020-500810000403}" Id="#x02030010"/>
+		<OwnerA Name="TIPC^IO_Control^IO_Control Instance">
+			<OwnerB Name="TIID^Device 2 (EtherCAT)^Term 1 (EK1100)^Term 3 (EL2088)">
+				<Link VarA="PlcTask Outputs^GVL_TEST.TST_OUT" VarB="Channel 1^Output"/>
+				<Link VarA="PlcTask Outputs^GVL_TEST.TST_OUT" VarB="Channel 2^Output" Size="1" OffsA="1"/>
+				<Link VarA="PlcTask Outputs^GVL_TEST.TST_OUT" VarB="Channel 3^Output" Size="1" OffsA="2"/>
+				<Link VarA="PlcTask Outputs^GVL_TEST.TST_OUT" VarB="Channel 4^Output" Size="1" OffsA="3"/>
+				<Link VarA="PlcTask Outputs^GVL_TEST.TST_OUT" VarB="Channel 5^Output" Size="1" OffsA="4"/>
+				<Link VarA="PlcTask Outputs^GVL_TEST.TST_OUT" VarB="Channel 6^Output" Size="1" OffsA="5"/>
+				<Link VarA="PlcTask Outputs^GVL_TEST.TST_OUT" VarB="Channel 7^Output" Size="1" OffsA="6"/>
+				<Link VarA="PlcTask Outputs^GVL_TEST.TST_OUT" VarB="Channel 8^Output" Size="1" OffsA="7"/>
+			</OwnerB>
+		</OwnerA>
+	</Mappings>
+</TcSmProject>

@@ -1,0 +1,46 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <!-- Background Colors -->
+    <SolidColorBrush x:Key="PrimaryBackgroundColor" Color="#3e4a4b"/>
+    <SolidColorBrush x:Key="SideBackgroundColor" Color="#29abe3"/>
+    <SolidColorBrush x:Key="SecundaryBackgroundColor" Color="#f9f9f9"/>
+    <SolidColorBrush x:Key="BottomBackgroundColor" Color="#f3f3f3"/>
+
+    <!-- Primary Colors -->
+    <SolidColorBrush x:Key="PrimaryBlueColor" Color="#5B7FFF"/>
+    <SolidColorBrush x:Key="PrimaryGrayColor" Color="#BFBFC4"/>
+    
+    <!-- Secundary Colors -->
+    <SolidColorBrush x:Key="SecundaryBlueColor" Color="#CEE8FB"/>
+    <SolidColorBrush x:Key="SecundaryGrayColor" Color="#EEEEEE"/>
+
+    <!-- Typograhy Colors -->
+    <SolidColorBrush x:Key="TextPrimaryColor" Color="#020F16"/>
+    <SolidColorBrush x:Key="TextSecondaryColor" Color="#434344"/>
+
+    <!-- Icons Colors -->
+    <SolidColorBrush x:Key="ActionIconColor" Color="#434344"/>
+
+    <!-- Souce Gas, Thermal Bath -->
+    <SolidColorBrush x:Key="SourceMainColor" Color="#E97132"/>
+    <SolidColorBrush x:Key="SourceSecondaryColor" Color="#F7D5CD"/>
+
+    <!-- Control Button MFC -->
+    <SolidColorBrush x:Key="MFCMainColor" Color="#0F9ED5"/>
+    <SolidColorBrush x:Key="MFCSecondaryColor" Color="#CCDFEF"/>
+
+    <!-- Control Button EPC -->
+    <SolidColorBrush x:Key="EPCMainColor" Color="#4EA72E"/>
+    <SolidColorBrush x:Key="EPCSecondaryColor" Color="#D0E1CD"/>
+
+    <!-- Display Value -->
+    <SolidColorBrush x:Key="DisplayMainColor" Color="#A02B93"/>
+    <SolidColorBrush x:Key="DisplaySecondaryColor" Color="#DFCDDC"/>
+
+    <!-- 레시피제어 버턴 -->
+    <ControlTemplate x:Key="ButtonControlTemplate1" TargetType="{x:Type Button}">
+        <Grid/>
+    </ControlTemplate>
+
+</ResourceDictionary>

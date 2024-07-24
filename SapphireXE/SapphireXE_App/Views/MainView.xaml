@@ -292,15 +292,15 @@
 					<RowDefinition Height="*"/>
 					<RowDefinition Height="240"/>
 				</Grid.RowDefinitions>
-				<Border Grid.Row="0" >
+				<Border Grid.Row="0">
 					<TabControl x:Name="tabControl" HorizontalAlignment="Stretch" >
 						<!-- Manual Control 화면 -->
 						<TabItem Header="System Control" Width="120">
-							<Frame Source="/Views/SystemControl.xaml"/>
-						</TabItem>
+                            <Frame Source="/Views/SystemControl.xaml"  Margin="-4"/>
+                        </TabItem>
 						<!-- Recipe Control 화면 -->
 						<TabItem Header="Recipe Control" Width="120">
-							<Frame Source="/Views/RecipeControl.xaml"/>
+							<Frame Source="/Views/RecipeControl.xaml" Background="Yellow"/>
 						</TabItem>
 						<!-- Report 화면 -->
 						<TabItem Header="Report" Width="120">

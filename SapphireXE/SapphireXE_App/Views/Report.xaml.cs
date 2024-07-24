@@ -1,19 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Globalization;
-using System.IO;
-using System.Windows.Controls;
-using System.Windows.Input;
-using CsvHelper;
-using LiveChartsCore;
-using LiveChartsCore.Defaults;
-using LiveChartsCore.SkiaSharpView;
-using LiveChartsCore.SkiaSharpView.Painting;
-using Microsoft.Win32;
-using SapphireXE_App.Models;
+﻿using System.Windows.Controls;
 using SapphireXE_App.ViewModels;
-using SkiaSharp;
 
 namespace SapphireXE_App.Views
 {
@@ -22,16 +8,8 @@ namespace SapphireXE_App.Views
     public Report()
     {
       InitializeComponent();
-      DataContext = new ReportViewModel();
+
+      DataContext = App.Current.Services.GetService(typeof(ReportViewModel));
     }
-
-
-    private void PlotLogFileOpen_1_MouseDoubleClick(object sender, MouseButtonEventArgs e)
-    {
-      ReportViewModel RVM = new();
-
-      RVM.CsvData();
-    }
-
   }
 }

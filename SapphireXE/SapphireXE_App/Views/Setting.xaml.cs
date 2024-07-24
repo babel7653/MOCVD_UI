@@ -1,28 +1,26 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
+using SapphireXE_App.ViewModels;
+using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Diagnostics;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
+using System.IO;
+using SapphireXE_App.Models;
+using System.Linq;
 
 namespace SapphireXE_App.Views
 {
-    /// <summary>
-    /// Setting.xaml에 대한 상호 작용 논리
-    /// </summary>
     public partial class Setting : Page
     {
         public Setting()
         {
             InitializeComponent();
+            DataContext = App.Current.Services.GetService(typeof(SettingViewModel));
+            comboSystemStart.ItemsSource = Enum.GetValues(typeof(EUserState)).Cast<EUserState>();
+            comboAlarmStart.ItemsSource = Enum.GetValues(typeof(EUserState)).Cast<EUserState>();
+            comboRecipeEnd.ItemsSource = Enum.GetValues(typeof(EUserState)).Cast<EUserState>();
         }
     }
 }

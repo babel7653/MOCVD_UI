@@ -7,32 +7,29 @@ using System.Windows.Input;
 
 namespace SapphireXE_App.Commands
 {
-	public class RelayCommand<T> : ICommand
+	public class RelayCommand : ICommand
 	{
-    private readonly Action<T>? _execute;
-    private readonly Predicate<T>? _canExecute;
+    private readonly Action _execute;
 
-    public RelayCommand(Action<T>? execute, Predicate<T>? canExecute = null)
+    public RelayCommand(Action execute)
     {
       this._execute = execute;
-      this._canExecute = canExecute;
     }
 
-    public event EventHandler? CanExecuteChanged
+    public event EventHandler CanExecuteChanged
     {
       add { CommandManager.RequerySuggested += value; }
       remove { CommandManager.RequerySuggested -= value; }
     }
 
-    public bool CanExecute(object? parameter)
+    public bool CanExecute(object parameter)
     {
-      return _canExecute?.Invoke((T)parameter!) ?? true;
+      return true;
     }
 
-    public void Execute(object? parameter)
+    public void Execute(object parameter)
     {
-      _execute?.Invoke((T)parameter!);
+      _execute?.Invoke();
     }
-
   }
 }

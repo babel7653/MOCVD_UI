@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using SapphireXE_App.ViewModels;
 
 namespace SapphireXE_App.Views
 {
@@ -23,6 +24,9 @@ namespace SapphireXE_App.Views
     public SystemControl()
     {
       InitializeComponent();
+
+      DataContext = App.Current.Services.GetService(typeof(SystemControlViewModel));
+
     }
 
     private void HydridCarrirerChange_Click(object sender, RoutedEventArgs e)

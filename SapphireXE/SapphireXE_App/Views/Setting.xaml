@@ -3,7 +3,8 @@
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-      xmlns:local="clr-namespace:SapphireXE_App.Views"
+      xmlns:local="clr-namespace:SapphireXE_App.Views" 
+      xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
       mc:Ignorable="d" 
       d:DesignHeight="787" d:DesignWidth="1320"
       Title="Setting">
@@ -42,8 +43,8 @@
                         </Grid>
                         <Grid Grid.Row="1">
                             <StackPanel Orientation="Horizontal">
-                                <!-- 알람 설정 테이블 -->
-                                <GroupBox Header="Alarm Setting" Width="430"
+                                <!-- 알람(Analog) 설정  -->
+                                <GroupBox Header="Alarm Setting (Analog)" Width="430"
                                           BorderBrush="LightSteelBlue" BorderThickness="2" Margin="2,10,2,0"
                                               FontSize="14">
                                     <Grid>
@@ -54,9 +55,9 @@
                                         </Grid.RowDefinitions>
                                         <StackPanel Grid.Row="0" Orientation="Horizontal">
                                             <TextBlock FontSize="12" Height="25" Width="120" Text="Delay Time(s)"/>
-                                            <TextBox x:Name="AlarmDelayTime" Width="70" Height="20"/>
-                                            <Button x:Name="AlarmSettingSave" Content="Save" Width="70" HorizontalAlignment="Right"
-                                                    Margin="70,0,0,0">
+                                            <TextBox x:Name="tbAlarmDelayTimeA" Text="{Binding Path=dPreSet[AlarmDelayTimeA]}" Width="70" Height="20"/>
+                                            <Button x:Name="btnAlarmSettingSave" Content="Save" Width="70" HorizontalAlignment="Right"
+															Margin="10,0,0,0" Command="{Binding AlarmSettingSaveCommand}">
                                                 <Button.Resources>
                                                     <Style TargetType="Border">
                                                         <Setter Property="CornerRadius" Value="6"/>
@@ -66,13 +67,14 @@
                                         </StackPanel>
                                         <StackPanel Grid.Row="1" Orientation="Horizontal">
                                             <TextBlock FontSize="12" Height="25" Width="120" Text="Alarm Deviation(%)" />
-                                            <TextBox x:Name="AlarmDeviation" Width="70" Height="20"/>
+                                            <TextBox x:Name="tbAlarmDeviatin" Text="{Binding Path=dPreSet[AlarmDeviation]}" Width="70" Height="20"/>
                                             <TextBlock FontSize="12" Height="25" Width="120" Margin="10,0,5,0"
                                                            Text="Warning Deviation(%)" />
-                                            <TextBox x:Name="WarningDeviation" Width="70" Height="20"/>
+                                            <TextBox x:Name="tbWarningDeviation" Text="{Binding Path=dPreSet[WarningDeviation]}" Width="70" Height="20"/>
                                         </StackPanel>
                                         <StackPanel Grid.Row="2">
-                                            <DataGrid x:Name="AlarmSettingTable" AutoGenerateColumns="False" Margin="5,0,5,0">
+                                            <DataGrid x:Name="dgAlarmSettingA" AutoGenerateColumns="False" Margin="5,0,5,0"
+																VerticalScrollBarVisibility="Auto" ItemsSource="{Binding lGasAIO}" CanUserAddRows="False">
                                                 <DataGrid.Resources>
                                                     <Style TargetType="{x:Type DataGridColumnHeader}">
                                                         <Setter Property="HorizontalAlignment" Value="Center"/>
@@ -85,20 +87,20 @@
                                                 </DataGrid.Resources>
                                                 <DataGrid.Columns>
                                                     <DataGridTextColumn Header="ID" CanUserSort="False" CanUserResize="False" Width="50"
-                                                                    Binding="{Binding}"/>
+																							Binding="{Binding Path=ID}"/>
                                                     <DataGridTextColumn Header="Device Name" CanUserSort="False" CanUserResize="False" Width="*"
-                                                                    Binding="{Binding}"/>
-                                                    <DataGridCheckBoxColumn Header="Alarm" Width="50"
-                                                                    Binding="{Binding}"/>
-                                                    <DataGridCheckBoxColumn Header="Warning" Width="50"
-                                                                    Binding="{Binding}"/>
+																							Binding="{Binding Path=Name}"/>
+                                                    <DataGridCheckBoxColumn Header="Alarm" Width="50"	CanUserSort="False"
+																									Binding="{Binding Path=AlarmSet}"/>
+                                                    <DataGridCheckBoxColumn Header="Warning" Width="50"	CanUserSort="False"
+																									Binding="{Binding Path=WarningSet}"/>
                                                 </DataGrid.Columns>
                                             </DataGrid>
                                         </StackPanel>
                                     </Grid>
                                 </GroupBox>
-                                <!-- 이벤트 설정 테이블 -->
-                                <GroupBox Header="Event Setting" Width="430"
+                                <!-- 알람(Digital) 설정 -->
+                                <GroupBox Header="Alarm Setting (Digital)" Width="430"
                                           BorderBrush="LightSteelBlue" BorderThickness="2" Margin="2,10,2,0"
                                           FontSize="14">
                                     <Grid>
@@ -109,8 +111,9 @@
                                         </Grid.RowDefinitions>
                                         <StackPanel Grid.Row="0" Orientation="Horizontal">
                                             <TextBlock FontSize="12" Height="25" Width="120" Text="Delay Time(s)"/>
-                                            <TextBox x:Name="EventDelayTime" Width="70" Height="20"/>
-                                            <Button x:Name="EventSettingSave" Content="Save" Width="70" HorizontalAlignment="Right" Margin="70,0,0,0">
+                                            <TextBox x:Name="tbAlarmDelayTimeD" Text="{Binding Path=dPreSet[AlarmDelayTimeD]}" Width="70" Height="20"/>
+                                            <Button x:Name="btnEventSettingSave" Content="Save" Width="70" HorizontalAlignment="Right"
+															Margin="10,0,0,0" Command="{Binding  AlarmSettingSaveCommand}">
                                                 <Button.Resources>
                                                     <Style TargetType="Border">
                                                         <Setter Property="CornerRadius" Value="6"/>
@@ -119,7 +122,8 @@
                                             </Button>
                                         </StackPanel>
                                         <StackPanel Grid.Row="2">
-                                            <DataGrid x:Name="EventSettingTable" AutoGenerateColumns="False" Margin="5,0,5,0">
+                                            <DataGrid x:Name="dgAlarmSettingD" AutoGenerateColumns="False" Margin="5,0,5,0"
+                                                     VerticalScrollBarVisibility="Auto" ItemsSource="{Binding lSwitchDI}" CanUserAddRows="False">
                                                 <DataGrid.Resources>
                                                     <Style TargetType="{x:Type DataGridColumnHeader}">
                                                         <Setter Property="HorizontalAlignment" Value="Center"/>
@@ -129,15 +133,13 @@
 
                                                 <DataGrid.Columns>
                                                     <DataGridTextColumn Header="ID" CanUserSort="False" CanUserResize="False" Width="50"
-                                                                        Binding="{Binding}"/>
-                                                    <DataGridTextColumn Header="Event" CanUserSort="False" CanUserResize="False" Width="*"
-                                                                        Binding="{Binding}"/>
-                                                    <DataGridTextColumn Header="Alarm" CanUserSort="False" CanUserResize="False" Width="50"
-                                                                        Binding="{Binding}"/>
-                                                    <DataGridTextColumn Header="Warning" CanUserSort="False" CanUserResize="False" Width="50"
-                                                                        Binding="{Binding}"/>
-                                                    <DataGridTextColumn Header="Delay" CanUserSort="False" CanUserResize="False" Width="50"
-                                                                        Binding="{Binding}"/>
+                                                                        Binding="{Binding Path=ID}"/>
+                                                    <DataGridTextColumn Header="Device Name" CanUserSort="False" CanUserResize="False" Width="*"
+                                                                        Binding="{Binding Path=Name}"/>
+                                                    <DataGridCheckBoxColumn Header="Alarm" CanUserSort="False" CanUserResize="False" Width="50"
+                                                                        Binding="{Binding Path=AlarmSet}"/>
+                                                    <DataGridCheckBoxColumn Header="Warning" CanUserSort="False"  CanUserResize="False" Width="50"
+                                                                        Binding="{Binding Path=WarningSet}"/>
                                                 </DataGrid.Columns>
                                             </DataGrid>
                                         </StackPanel>
@@ -229,7 +231,8 @@
                                           BorderBrush="LightSteelBlue" BorderThickness="2" Margin="2,10,2,0"
                                           FontSize="14">
                                     <StackPanel Grid.Column="0">
-                                        <Button x:Name="UserStateSave" Content="Save" Width="70" Margin="5" HorizontalAlignment="Right">
+                                        <Button x:Name="UserStateSave" Content="Save" Width="70" Margin="5" HorizontalAlignment="Right"
+                                                 Command="{Binding AlarmSettingSaveCommand}">
                                             <Button.Resources>
                                                 <Style TargetType="Border">
                                                     <Setter Property="CornerRadius" Value="6"/>
@@ -243,7 +246,8 @@
                                                 <RowDefinition Height="50*"/>
                                             </Grid.RowDefinitions>
                                             <StackPanel Grid.Row="0">
-                                                <DataGrid x:Name="UserStateAnalogSetting" AutoGenerateColumns="False" Margin="5,0,5,0">
+                                                <DataGrid x:Name="dgUserSettingA" AutoGenerateColumns="False" Margin="5,0,5,0" Height="320"
+                                                          VerticalScrollBarVisibility="Auto" ItemsSource="{Binding lGasAIO}" CanUserAddRows="False">
                                                     <DataGrid.Resources>
                                                         <Style TargetType="{x:Type DataGridColumnHeader}">
                                                             <Setter Property="HorizontalAlignment" Value="Center"/>
@@ -256,24 +260,25 @@
                                                     </DataGrid.Resources>
                                                     <DataGrid.Columns>
                                                         <DataGridTextColumn Header="Device Id" CanUserSort="False" CanUserResize="False" Width="60"
-                                                                            Binding="{Binding}"/>
+                                                                            Binding="{Binding Path=ID, Mode=TwoWay}"/>
                                                         <DataGridTextColumn Header="Device Name" CanUserSort="False" CanUserResize="False" Width="*"
-                                                                            Binding="{Binding}"/>
+                                                                            Binding="{Binding Path=Name}"/>
                                                         <DataGridTextColumn Header="State 1" CanUserSort="False" CanUserResize="False" Width="100"
-                                                                            Binding="{Binding}"/>
+                                                                            Binding="{Binding Path=UserState1}"/>
                                                         <DataGridTextColumn Header="State 2" CanUserSort="False" CanUserResize="False" Width="100"
-                                                                            Binding="{Binding}"/>
+                                                                            Binding="{Binding Path=UserState2}"/>
                                                         <DataGridTextColumn Header="State 3" CanUserSort="False" CanUserResize="False" Width="100"
-                                                                            Binding="{Binding}"/>
+                                                                            Binding="{Binding Path=UserState3}"/>
                                                         <DataGridTextColumn Header="State 4" CanUserSort="False" CanUserResize="False" Width="100"
-                                                                            Binding="{Binding}"/>
+                                                                            Binding="{Binding Path=UserState4}"/>
                                                     </DataGrid.Columns>
                                                 </DataGrid>
                                             </StackPanel>
-                                            <GridSplitter Grid.Row="1" HorizontalAlignment="Stretch" VerticalAlignment="Center"  Background="LightSteelBlue"
-                                                            ShowsPreview="True" Height="3"/>
+                                            <StackPanel Grid.Row="1" Height="15">
+                                            </StackPanel>
                                             <StackPanel Grid.Row="2">
-                                                <DataGrid x:Name="UserStateDigitalSetting" AutoGenerateColumns="False" Margin="5,0,5,0">
+                                                <DataGrid x:Name="dgUserSettingD" AutoGenerateColumns="False" Margin="5,0,5,0" Height="320"
+                                                          VerticalScrollBarVisibility="Auto" ItemsSource="{Binding lGasDO}" CanUserAddRows="False">
                                                     <DataGrid.Resources>
                                                         <Style TargetType="{x:Type DataGridColumnHeader}">
                                                             <Setter Property="HorizontalAlignment" Value="Center"/>
@@ -286,17 +291,17 @@
                                                     </DataGrid.Resources>
                                                     <DataGrid.Columns>
                                                         <DataGridTextColumn Header="Device Id" CanUserSort="False" CanUserResize="False" Width="60"
-                                                                            Binding="{Binding}"/>
+                                                                            Binding="{Binding Path=ID, Mode=TwoWay}"/>
                                                         <DataGridTextColumn Header="Device Name" CanUserSort="False" CanUserResize="False" Width="*"
-                                                                            Binding="{Binding}"/>
+                                                                            Binding="{Binding Path=Name}"/>
                                                         <DataGridCheckBoxColumn Header="State 1" CanUserSort="False" CanUserResize="False" Width="100"
-                                                                            Binding="{Binding}"/>
+                                                                            Binding="{Binding Path=UserState1}"/>
                                                         <DataGridCheckBoxColumn Header="State 2" CanUserSort="False" CanUserResize="False" Width="100"
-                                                                            Binding="{Binding}"/>
+                                                                            Binding="{Binding Path=UserState2}"/>
                                                         <DataGridCheckBoxColumn Header="State 3" CanUserSort="False" CanUserResize="False" Width="100"
-                                                                            Binding="{Binding}"/>
+                                                                            Binding="{Binding Path=UserState3}"/>
                                                         <DataGridCheckBoxColumn Header="State 4" CanUserSort="False" CanUserResize="False" Width="100"
-                                                                            Binding="{Binding}"/>
+                                                                            Binding="{Binding Path=UserState4}"/>
                                                     </DataGrid.Columns>
                                                 </DataGrid>
                                             </StackPanel>
@@ -329,132 +334,53 @@
                                             </Grid.RowDefinitions>
                                             <!-- DOR Release -->
                                             <TextBlock Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Text="Double O-Ring Release" FontWeight="Bold" VerticalAlignment="Bottom"/>
-                                            <Button Grid.Row="0" Grid.Column="1" x:Name="InterlockSave" Content="Save" Width="70" HorizontalAlignment="Left">
+                                            <Button Grid.Row="0" Grid.Column="1" x:Name="InterlockSave" Content="Save" Width="70" HorizontalAlignment="Left"
+                                                    Command="{Binding AlarmSettingSaveCommand}">
                                                 <Button.Resources>
                                                     <Style TargetType="Border">
                                                         <Setter Property="CornerRadius" Value="6"/>
                                                     </Style>
                                                 </Button.Resources>
                                             </Button>
-                                            <CheckBox Grid.Row="1" Grid.Column="0" Content="Recipe Not Running" IsChecked="True"
-                                                      VerticalAlignment="Center" Margin="15,0,0,0"/>
-                                            <CheckBox Grid.Row="2" Grid.Column="0" Content="Reactor Pressure(Torr) >=" IsChecked="True"
-                                                      VerticalAlignment="Center" Margin="15,0,0,0"/>
-                                            <TextBox x:Name="DORPressureSet" Grid.Row="2" Grid.Column="1" Width="150" HorizontalAlignment="Left" Margin="2"/>
-                                            <CheckBox Grid.Row="3" Grid.Column="0" Content="Susceptor Temperature" IsChecked="True"
-                                                      VerticalAlignment="Center" Margin="15,0,0,0"/>
-                                            <TextBlock Grid.Row="3" Grid.Column="0" Margin="190,0,0,0" VerticalAlignment="Center">
-                                                &lt;=
-                                            </TextBlock>
+                                            <CheckBox x:Name="cbRecipeNotRunning"  Grid.Row="1" Grid.Column="0" Content="Recipe Not Running" 
+                                                      IsChecked="{Binding Path=dInterLockD[RecipeNotRunning]}" VerticalAlignment="Center" Margin="15,0,0,0"/>
+                                            <CheckBox x:Name="cbReactorPressureLimit" Grid.Row="2" Grid.Column="0" Content="Reactor Pressure(Torr) >="
+                                                      IsChecked="{Binding Path=dInterLockA[DORReactorPressure].IsEnable}" VerticalAlignment="Center" Margin="15,0,0,0"/>
+                                            <TextBox x:Name="tbReactorPressureLimit" Grid.Row="2" Grid.Column="1" Width="150" HorizontalAlignment="Left" Margin="2"
+                                                     Text="{Binding Path=dInterLockA[DORReactorPressure].Treshold}"/>
+                                            <CheckBox x:Name="cbSusceptorTemperature" Grid.Row="3" Grid.Column="0" Content="Susceptor Temperature" 
+                                                      IsChecked="{Binding Path=dInterLockA[DORSusceptorTemperature].IsEnable}" VerticalAlignment="Center" Margin="15,0,0,0"/>
+                                            <TextBox x:Name="DORTemperatureSet" Grid.Row="3" Grid.Column="1" Width="150" HorizontalAlignment="Left" Margin="2"
+                                                     Text="{Binding Path=dInterLockA[DORSusceptorTemperature].Treshold}"/>
+
                                             <!-- DOR Lock -->
                                             <TextBlock Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="2" Text="Double O-Ring Lock" FontWeight="Bold" VerticalAlignment="Bottom"/>
-                                            <TextBox x:Name="DORTemperatureSet" Grid.Row="3" Grid.Column="1" Width="150" HorizontalAlignment="Left" Margin="2"/>
-                                            <CheckBox Grid.Row="5" Grid.Column="0" Content=" Vacuum Valve Close" IsChecked="True"
-                                                      VerticalAlignment="Center" Margin="15,0,0,0"/>
-                                            <CheckBox Grid.Row="6" Grid.Column="0" Content="Pressure Limit" IsChecked="True"
-                                                      VerticalAlignment="Center" Margin="15,0,0,0"/>
-                                            <TextBox x:Name="DORPressureLimit" Grid.Row="6" Grid.Column="1" Width="150" HorizontalAlignment="Left" Margin="2"/>
-                                            <CheckBox Grid.Row="7" Grid.Column="0" Content=" Alarm Limit Value" IsChecked="True"
-                                                      VerticalAlignment="Center" Margin="15,0,0,0"/>
-                                            <TextBox x:Name="DORAlarmLimit" Grid.Row="7" Grid.Column="1" Width="150" HorizontalAlignment="Left" Margin="2"/>
+                                            <CheckBox Grid.Row="5" Grid.Column="0" Content=" Vacuum Valve Close"
+                                                      IsChecked="{Binding Path=dInterLockD[VacuumValveClose]}" VerticalAlignment="Center" Margin="15,0,0,0"/>
+                                            <CheckBox Grid.Row="6" Grid.Column="0" Content="Pressure Limit" 
+                                                      IsChecked="{Binding Path=dInterLockA[DORPressureLimit].IsEnable}" VerticalAlignment="Center" Margin="15,0,0,0"/>
+                                            <TextBox x:Name="DORPressureLimit" Grid.Row="6" Grid.Column="1" Width="150" HorizontalAlignment="Left" Margin="2"
+                                                     Text="{Binding Path=dInterLockA[DORSusceptorTemperature].Treshold}"/>
+                                            <CheckBox Grid.Row="7" Grid.Column="0" Content=" Alarm Limit Value" 
+                                                      IsChecked="{Binding Path=dInterLockA[AlarmLimit].IsEnable}" VerticalAlignment="Center" Margin="15,0,0,0"/>
+                                            <TextBox x:Name="DORAlarmLimit" Grid.Row="7" Grid.Column="1" Width="150" HorizontalAlignment="Left" Margin="2"
+                                                     Text="{Binding Path=dInterLockA[AlarmLimit].Treshold}"/>
                                             <!-- Auto Power ON -->
                                             <TextBlock Grid.Row="8" Grid.Column="0" Grid.ColumnSpan="2" Text="Auto Power ON" FontWeight="Bold" VerticalAlignment="Bottom"/>
-                                            <CheckBox Grid.Row="9" Grid.Column="0" Content=" Induction Power Supply" IsChecked="True"
-                                                      VerticalAlignment="Center" Margin="15,0,0,0"/>
-                                            <CheckBox Grid.Row="10" Grid.Column="0" Content=" Susceptor Rotation Motor" IsChecked="True"
-                                                      VerticalAlignment="Center" Margin="15,0,0,0"/>
-                                            <CheckBox Grid.Row="11" Grid.Column="0" Content=" Reactor Cabinet Lamp" IsChecked="True"
-                                                      VerticalAlignment="Center" Margin="15,0,0,0"/>
-                                            <CheckBox Grid.Row="12" Grid.Column="0" Content=" Gas Control Cabinet Lamp" IsChecked="True"
-                                                      VerticalAlignment="Center" Margin="15,0,0,0"/>
+                                            <CheckBox Grid.Row="9" Grid.Column="0" Content=" Induction Power Supply" 
+                                                     IsChecked="{Binding Path=dInterLockD[InductionPowerSupply]}" VerticalAlignment="Center" Margin="15,0,0,0"/>
+                                            <CheckBox Grid.Row="10" Grid.Column="0" Content=" Susceptor Rotation Motor"
+                                                     IsChecked="{Binding Path=dInterLockD[SusceptorRotationMotor]}" VerticalAlignment="Center" Margin="15,0,0,0"/>
+                                            <CheckBox Grid.Row="11" Grid.Column="0" Content=" Reactor Cabinet Lamp" 
+                                                      IsChecked="{Binding Path=dInterLockD[ReactorCabinetLamp]}" VerticalAlignment="Center" Margin="15,0,0,0"/>
+                                            <CheckBox Grid.Row="12" Grid.Column="0" Content=" Gas Control Cabinet Lamp" 
+                                                      IsChecked="{Binding Path=dInterLockD[GasControlLamp]}" VerticalAlignment="Center" Margin="15,0,0,0"/>
                                         </Grid>
                                     </GroupBox>
                                     <!-- Preset State 설정 -->
                                     <GroupBox Header="Preset State" BorderBrush="LightSteelBlue" BorderThickness="2" Margin="2,10,2,0"
                                               FontSize="14">
                                         <Grid>
-                                            <Grid.Resources>
-                                                <!-- 드롭다운 버튼 외형 변경 -->
-                                                <Style TargetType="{x:Type ToggleButton}">
-                                                    <Setter Property="Template">
-                                                        <Setter.Value>
-                                                            <ControlTemplate TargetType="{x:Type ToggleButton}">
-                                                                <Grid>
-                                                                    <Border BorderBrush="{Binding BorderBrush, RelativeSource={RelativeSource TemplatedParent}}"
-                        BorderThickness="{Binding BorderThickness, RelativeSource={RelativeSource TemplatedParent}}"
-                        Background="White">
-                                                                        <ContentPresenter FlowDirection="RightToLeft"
-                                        VerticalAlignment="Center"
-                                        Margin="0,0,3,0"
-                                        Content="▼" />
-                                                                    </Border>
-                                                                </Grid>
-                                                                <ControlTemplate.Triggers>
-                                                                    <Trigger Property="IsMouseOver"
-                            Value="True">
-                                                                        <Setter Property="BorderBrush"
-                            Value="Blue" />
-                                                                    </Trigger>
-                                                                </ControlTemplate.Triggers>
-                                                            </ControlTemplate>
-                                                        </Setter.Value>
-                                                    </Setter>
-                                                </Style>
-
-                                                <!-- 콤보박스 아이템 외형 변경 -->
-                                                <Style TargetType="{x:Type ComboBoxItem}">
-                                                    <Setter Property="Template">
-                                                        <Setter.Value>
-                                                            <ControlTemplate TargetType="{x:Type ComboBoxItem}">
-                                                                <Border Padding="5,2,2,2"
-                    Background="White"
-                    x:Name="ComboBoxItem_Border">
-                                                                    <ContentPresenter />
-                                                                </Border>
-                                                                <ControlTemplate.Triggers>
-                                                                    <Trigger Property="IsMouseOver"
-                            Value="True">
-                                                                        <Setter TargetName="ComboBoxItem_Border"
-                            Property="Background"
-                            Value="SkyBlue" />
-                                                                    </Trigger>
-                                                                </ControlTemplate.Triggers>
-                                                            </ControlTemplate>
-                                                        </Setter.Value>
-                                                    </Setter>
-                                                </Style>
-
-
-                                                <Style TargetType="{x:Type ComboBox}">
-                                                    <Setter Property="BorderBrush" Value="Black" />
-                                                    <Setter Property="BorderThickness" Value="1" />
-                                                    <Setter Property="MinWidth" Value="120" />
-                                                    <Setter Property="MinHeight" Value="20" />
-                                                    <Setter Property="Template">
-                                                        <Setter.Value>
-                                                            <ControlTemplate TargetType="{x:Type ComboBox}">
-                                                                <Grid>
-                                                                    <!-- 드롭다운 버튼 -->
-                                                                    <ToggleButton IsChecked="{Binding IsDropDownOpen, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}"
-                                                                        Content="▼" />
-                                                                    <!-- 선택된 아이템 표시 -->
-                                                                    <ContentPresenter IsHitTestVisible="False" Content="{TemplateBinding SelectionBoxItem}"
-                                                                        ContentTemplate="{TemplateBinding SelectionBoxItemTemplate}"
-                                                                        ContentTemplateSelector="{TemplateBinding ItemTemplateSelector}"
-                                                                        VerticalAlignment="Center"
-                                                                        Margin="5,0,0,0" />
-                                                                    <!-- 드롭다운 메뉴 -->
-                                                                    <Popup IsOpen="{TemplateBinding IsDropDownOpen}" Placement="Bottom" PopupAnimation="Slide">
-                                                                    <Grid Width="{TemplateBinding ActualWidth}" MaxHeight="{TemplateBinding MaxDropDownHeight}" Background="White">
-                                                                            <Border BorderBrush="Black"  BorderThickness="1,0,1,1"/>
-                                                                        </Grid>
-                                                                    </Popup>
-                                                                </Grid>
-                                                            </ControlTemplate>
-                                                        </Setter.Value>
-                                                    </Setter>
-                                                </Style>
-                                            </Grid.Resources>
                                             <Grid.RowDefinitions>
                                                 <RowDefinition/>
                                                 <RowDefinition/>
@@ -463,21 +389,19 @@
                                             </Grid.RowDefinitions>
                                             <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="2">
                                                 <TextBlock Width="200"  Text="System Start State"/>
-                                                <ComboBox Name="PresetSystemStart" Width="100"
-                                                          Text="User Sate 1" IsReadOnly="True">
-                                                </ComboBox>
+                                                <ComboBox x:Name="comboSystemStart" Width="100" IsReadOnly="True"
+                                                          SelectedIndex="{Binding Path=userstate.StartState}"/>
                                             </StackPanel>
                                             <StackPanel Grid.Row="1" Orientation="Horizontal" Margin="2">
                                                 <TextBlock Width="200"  Text="Alarm State"/>
-                                                <ComboBox Name="PresetAlarmStart" Width="100"
-                                                           Text="User Sate 1" IsReadOnly="True"/>
+                                                <ComboBox Name="comboAlarmStart" Width="100"  IsReadOnly="True" 
+                                                          SelectedIndex="{Binding Path=userstate.AlarmState}"/>
                                             </StackPanel>
                                             <StackPanel Grid.Row="2" Orientation="Horizontal" Margin="2">
-                                                <TextBlock Name="PresetRecipeEnd" Width="200" 
-                                                           Text="Recipe End"/>
-                                                <ComboBox Width="100"/>
+                                                <TextBlock  Width="200" Text="Recipe End"/>
+                                                <ComboBox Name="comboRecipeEnd" Width="100" IsReadOnly="True" 
+                                                          SelectedIndex="{Binding Path=userstate.EndState}" />
                                             </StackPanel>
-
                                         </Grid>
                                     </GroupBox>
                                 </StackPanel>

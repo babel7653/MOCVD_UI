@@ -1,0 +1,65 @@
+$ DeviceNet Configurator Generated Electronic Data Sheet
+$
+
+[File]
+	DescText = "OPP6-2D";
+	CreateDate = 01-21-2003;
+	CreateTime = 08:30:30;
+	ModDate = 06-10-2006;
+	ModTime = 08:30:30;
+	Revision = 1.3;
+
+
+[Device]
+	VendCode = 201;
+	VendName = "CKD Corporation";
+	ProdType = 0;
+	ProdTypeStr = "Generic Device";
+	ProdCode = 61;
+	MajRev = 10;
+	MinRev = 8;
+	ProdName = "OPP6-2D";
+	Catalog = "";
+
+
+[IO_Info]
+	Default	= 0x0001;	$ Default I/OConnection  is Poll
+
+	PollInfo = 0x0003,	$ Strobe can be combined with
+		1,		$ Default Input  = Input1
+		1;		$ Default Output = Output1
+
+	StrobeInfo = 0x0003,	$ Poll can be combined with
+		2,		$ Default Input  = Input2
+		0;		$ Default Output = No data
+
+
+	Input1 = 0,		$ 0 byte
+		0,		$ All bit is significant
+		0x0001,		$ Poll used this data
+		"Input Data",	$ Data name
+		6,		$ Path size
+		"20 04 24 64 30 03",	$Connection Path
+		"";		$ Help string
+
+	Input2 = 0,		$ 0 byte
+		0,		$ All bit is significant
+		0x0002,		$ Strobe used this data
+		"Input Data",	$ Data name
+		6,		$ Path size
+		"20 04 24 64 30 03",	$Connection Path
+		"";		$ Help string
+
+	Output1 = 4,		$ 4 byte
+		0,		$ All bit is significant
+		0x0001,		$ Poll used this data
+		"Output Data",	$ Data name
+		6,		$ Path size
+		"20 04 24 64 30 03",	$Connection Path
+		"";		$ Help string
+
+[ParamClass]
+	MaxInst=0;
+	Descriptor=0;
+	CfgAssembly=0;
+

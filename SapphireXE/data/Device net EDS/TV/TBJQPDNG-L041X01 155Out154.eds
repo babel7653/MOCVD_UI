@@ -1,0 +1,729 @@
+$ EZ-EDS Version 3.27.1.20191218 Generated Electronic Data Sheet
+
+$    DeviceNet Electronic Data Sheet
+$ Electronic Data Sheet generated using SST EDS Editor
+$ Copyright (C) 1998 S-S Technologies Inc.
+
+[File]
+        DescText = "Intellisys IQ-Plus";
+        CreateDate = 09-02-2015;
+        CreateTime = 15:30:00;
+        ModDate = 10-26-2020;
+        ModTime = 14:02:11;
+        Revision = 1.1;
+
+[Device]
+        VendCode = 612;
+        VendName = "Nor-Cal Products";
+        ProdType = 29;
+        ProdTypeStr = "Process Control Valve";
+        ProdCode = 290;
+        MajRev = 1;
+        MinRev = 5;
+        ProdName = "INTELLISYS";
+        Catalog = "IQ-Plus";
+
+[IO_Info]
+        Default = 0x0001;
+
+        PollInfo =
+                0x0001,
+                2,
+                2;
+
+        Input1 =
+                7,
+                0,
+                0x0001,
+                "Input 5",
+                6,
+                "20 04 24 05 30 03",
+                "Assembly Object 5 (0x05)";
+
+        Input2 =
+                9,
+                0,
+                0x0001,
+                "Input 155",
+                6,
+                "20 04 24 9B 30 03",
+                "Input Assembly 155 (0x9B)";
+
+        Output1 =
+                3,
+                0,
+                0x0001,
+                "Output 7",
+                6,
+                "20 04 24 07 30 03",
+                "Assembly Object 7 (0x07)";
+
+        Output2 =
+                4,
+                0,
+                0x0001,
+                "Output 154",
+                6,
+                "20 04 24 9A 30 03",
+                "Assembly Object 154 (0x9A)";
+
+[ParamClass]
+        MaxInst = 46;
+        Descriptor = 0x0001;
+        CfgAssembly = 0;
+
+[Params]
+
+        Param1 =
+                0,
+                6,"20 01 24 01 30 01",
+                0x001C,
+                0xC7,
+                2,
+                "Vendor ID",
+                "",
+                "Vendor ID",
+                0,65535,612,
+                1,1,1,0,
+                0,0,0,0,
+                0;
+
+        Param2 =
+                0,
+                6,"20 01 24 01 30 02",
+                0x001C,
+                0xC7,
+                2,
+                "Device Type",
+                "",
+                "Device Type",
+                0,65535,29,
+                1,1,1,0,
+                0,0,0,0,
+                0;
+
+        Param3 =
+                0,
+                6,"20 01 24 01 30 03",
+                0x001C,
+                0xC7,
+                2,
+                "Product Code",
+                "",
+                "Product Code",
+                0,65535,290,
+                1,1,1,0,
+                0,0,0,0,
+                0;
+
+        Param4 =
+                0,
+                6,"20 01 24 01 30 04",
+                0x001C,
+                0xD2,
+                2,
+                "Revision",
+                "",
+                "Software Revision",
+                0,65535,0,
+                1,1,1,0,
+                0,0,0,0,
+                0;
+
+        Param5 =
+                0,
+                6,"20 01 24 01 30 05",
+                0x001C,
+                0xD2,
+                2,
+                "Status",
+                "",
+                "Status",
+                0,65535,0,
+                1,1,1,0,
+                0,0,0,0,
+                0;
+
+        Param6 =
+                0,
+                6,"20 01 24 01 30 06",
+                0x001C,
+                0xC8,
+                4,
+                "Serial Number",
+                "",
+                "4-byte Serial Number",
+                0,0xFFFFFFFF,0,
+                1,1,1,0,
+                0,0,0,0,
+                0;
+
+        Param7 =
+                0,
+                6,"20 03 24 01 30 01",
+                0x000C,
+                0xC6,
+                1,
+                "MAC ID",
+                "",
+                "Node Address, MAC ID",
+                0,63,63,
+                1,1,1,0,
+                0,0,0,0,
+                0;
+
+        Param8 =
+                0,
+                6,"20 03 24 01 30 02",
+                0x000C,
+                0xC6,
+                1,
+                "Data Rate",
+                "",
+                "Data (baud) Rate",
+                0,2,0,
+                1,1,1,0,
+                0,0,0,0,
+                0;
+
+        Param9 =
+                0,
+                6,"20 30 24 01 30 0B",
+                0x001C,
+                0xC6,
+                1,
+                "Device Status",
+                "",
+                "Status of device",
+                0,255,0,
+                1,1,1,0,
+                0,0,0,0,
+                0;
+
+        Param10 =
+                0,
+                6,"20 30 24 01 30 0C",
+                0x003C,
+                0xD1,
+                1,
+                "Exception Status",
+                "",
+                "Warnings and alarms",
+                0,255,0,
+                1,1,1,0,
+                0,0,0,0,
+                0;
+
+        Param11 =
+                0,
+                6,"20 03 24 01 30 09",
+                0x001C,
+                0xC6,
+                1,
+                "DataRateSwitch",
+                "",
+                "Data rate swtich value",
+                0,2,0,
+                1,1,1,0,
+                0,0,0,0,
+                0;
+
+        Param12 =
+                0,
+                6,"20 31 24 03 30 06",
+                0x003C,
+                0xC7,
+                2,
+                "Valve Position",
+                "",
+                "Valve Position",
+                0,32767,0,
+                1,1,1,0,
+                0,0,0,0,
+                0;
+
+        Param13 =
+                0,
+                6,"20 33 24 01 30 06",
+                0x002C,
+                0xC7,
+                2,
+                "Setpoint",
+                "",
+                "Setpoint - Pressure or Valve Position",
+                0,32767,0,
+                1,1,1,0,
+                0,0,0,0,
+                0;
+
+        Param14 =
+                0,
+                6,"20 33 24 01 30 0A",
+                0x001C,
+                0xD1,
+                1,
+                "Alarm Status",
+                "",
+                "Status",
+                0,0x03,0,
+                1,1,1,0,
+                0,0,0,0,
+                0;
+
+        Param15 =
+                0,
+                6,"20 2E 24 01 30 0E",
+                0x002C,
+                0xC6,
+                1,
+                "Control Instance",
+                "",
+                "Destination used",
+                0,2,1,
+                1,1,1,0,
+                0,0,0,0,
+                0;
+
+        Param16 =
+                0,
+                6,"20 31 24 01 30 03",
+                0x000C,
+                0xC6,
+                1,
+                "Sensor 1 Data Type",
+                "",
+                "Low gauge data type",
+                0xC3,0xCA,0xC3,
+                1,1,1,0,
+                0,0,0,0,
+                0;
+
+        Param17 =
+                0,
+                6,"20 31 24 02 30 03",
+                0x000C,
+                0xC6,
+                1,
+                "Sensor 2 Data Type",
+                "",
+                "High gauge data type",
+                0xC3,0xCA,0xC3,
+                1,1,1,0,
+                0,0,0,0,
+                0;
+
+        Param18 =
+                0,
+                6,"20 31 24 03 30 03",
+                0x000C,
+                0xC6,
+                1,
+                "Sensor Position Data Type",
+                "",
+                "Position data type",
+                0xC3,0xCA,0xC3,
+                1,1,1,0,
+                0,0,0,0,
+                0;
+
+        Param19 =
+                0,
+                6,"20 32 24 01 30 03",
+                0x000C,
+                0xC6,
+                1,
+                "AnaActDataType",
+                "",
+                "Actuator data type",
+                0xC3,0xCA,0xC3,
+                1,1,1,0,
+                0,0,0,0,
+                0;
+
+        Param20 =
+                0,
+                6,"20 33 24 01 30 03",
+                0x000C,
+                0xC6,
+                1,
+                "SglStageContData",
+                "",
+                "Single Stage Controller pressure control data type",
+                0xC3,0xCA,0xC3,
+                1,1,1,0,
+                0,0,0,0,
+                0;
+
+        Param21 =
+                0,
+                6,"20 33 24 02 30 03",
+                0x000C,
+                0xC6,
+                1,
+                "S-SglStageContVlv",
+                "",
+                "Single Stage Controller position control data type",
+                0xC3,0xCA,0xC3,
+                1,1,1,0,
+                0,0,0,0,
+                0;
+
+        Param22 =
+                0,
+                6,"20 31 24 01 30 04",
+                0x000C,
+                0xC7,
+                2,
+                "Sensor 1 Data Units",
+                "",
+                "Low gauge data units",
+                0x1001,0x1301,0x1001,
+                1,1,1,0,
+                0,0,0,0,
+                0;
+
+        Param23 =
+                0,
+                6,"20 31 24 02 30 04",
+                0x000C,
+                0xC7,
+                2,
+                "Sensor 2 Data Units",
+                "",
+                "High gauge data units",
+                0x1001,0x1301,0x1001,
+                1,1,1,0,
+                0,0,0,0,
+                0;
+
+        Param24 =
+                0,
+                6,"20 31 24 03 30 04",
+                0x000C,
+                0xC7,
+                2,
+                "Sensor Position Data Units",
+                "",
+                "Position sensor data units",
+                0x1001,0x1703,0x1001,
+                1,1,1,0,
+                0,0,0,0,
+                0;
+
+        Param25 =
+                0,
+                6,"20 32 24 01 30 04",
+                0x000C,
+                0xC7,
+                2,
+                "AnaActDataUnits",
+                "",
+                "Actuator data units",
+                0x1001,0x1703,0x1001,
+                1,1,1,0,
+                0,0,0,0,
+                0;
+
+        Param26 =
+                0,
+                6,"20 33 24 01 30 04",
+                0x000C,
+                0xC7,
+                2,
+                "S-StageContData",
+                "",
+                "Single Stage Controller pressure control data units",
+                0x1001,0x1301,0x1001,
+                1,1,1,0,
+                0,0,0,0,
+                0;
+
+        Param27 =
+                0,
+                6,"20 33 24 02 30 04",
+                0x000C,
+                0xC7,
+                2,
+                "S-StageContVlv",
+                "",
+                "Single Stage Controller position control data units",
+                0x1001,0x1703,0x1001,
+                1,1,1,0,
+                0,0,0,0,
+                0;
+
+        Param28 =
+                0,
+                6,"20 01 24 01 30 07",
+                0x001C,
+                0xD4,
+                8,
+                "INTELLISYS",
+                "",
+                "Product name",
+                0,0XFF,0,
+                1,1,1,0,
+                0,0,0,0,
+                0;
+
+        Param29 =
+                0,
+                6,"20 03 24 01 30 06",
+                0x000C,
+                0xC1,
+                1,
+                "MACIDChanged",
+                "",
+                "Mac Id switch changed",
+                0,1,0,
+                1,1,1,0,
+                0,0,0,0,
+                0;
+
+        Param30 =
+                0,
+                6,"20 03 24 01 30 07",
+                0x000C,
+                0xC1,
+                1,
+                "BaudRateChanged",
+                "",
+                "Baud rate switch changed",
+                0,1,0,
+                1,1,1,0,
+                0,0,0,0,
+                0;
+
+        Param31 =
+                0,
+                6,"20 03 24 01 30 08",
+                0x001C,
+                0xC6,
+                1,
+                "MACIDSwitchValue",
+                "",
+                "Mac Id swtich value",
+                0,63,63,
+                1,1,1,0,
+                0,0,0,0,
+                0;
+
+        Param32 =
+                0,
+                6,"20 31 24 02 30 C7",
+                0x000C,
+                0xCA,
+                4,
+                "CDG1 Full Scale",
+                "",
+                "Pressure gauge high full scale",
+                0,1000,10,
+                1,1,1,0,
+                0,0,0,0,
+                0;
+
+        Param33 =
+                0,
+                6,"20 31 24 01 30 C7",
+                0x000C,
+                0xCA,
+                4,
+                "CDG2 Full Scale",
+                "",
+                "Pressure gauge low full scale",
+                0,1000,0,
+                1,1,1,0,
+                0,0,0,0,
+                0;
+
+        Param34 =
+                0,
+                6,"20 33 24 01 30 59",
+                0x000C,
+                0xCA,
+                4,
+                "SnsrCrossoverHi",
+                "",
+                "Sensor Crossover High",
+                0,100,1,
+                1,1,1,0,
+                0,0,0,0,
+                0;
+
+        Param35 =
+                0,
+                6,"20 33 24 01 30 5A",
+                0x000C,
+                0xCA,
+                4,
+                "SnsCrossoverLow",
+                "",
+                "Sensor Crossover Low",
+                0,100,100,
+                1,1,1,0,
+                0,0,0,0,
+                0;
+
+        Param36 =
+                0,
+                6,"20 33 24 01 30 60",
+                0x000C,
+                0xD1,
+                1,
+                "ProcVarSource",
+                "",
+                "Process variable source",
+                1,3,1,
+                1,1,1,0,
+                0,0,0,0,
+                0;
+
+        Param37 =
+                0,
+                6,"20 31 24 00 30 5F",
+                0x001C,
+                0xC7,
+                2,
+                "ActiveInstNum",
+                "",
+                "Active instance number",
+                1,2,1,
+                1,1,1,0,
+                0,0,0,0,
+                0;
+
+        Param38 =
+                0,
+                0,"",
+                0x002C,
+                0xC6,
+                1,
+                "Mode",
+                "",
+                "Control Mode Byte",
+                0,0xFF,0,
+                1,1,1,0,
+                0,0,0,0,
+                0;
+
+        Param39 =
+                0,
+                6,"20 08 24 01 30 03",
+                0x001C,
+                0xC2,
+                1,
+                "Discrete Input",
+                "",
+                "Discrete Input Bit 0 - Closed Bit 1 - Open",
+                0,2,0,
+                1,1,1,0,
+                0,0,0,0,
+                0;
+
+        Param40 =
+                0,
+                6,"20 31 24 01 30 06",
+                0x001C,
+                0xC3,
+                2,
+                "Press2",
+                "",
+                "Pressure Low Gauge",
+                0,30000,0,
+                1,1,1,0,
+                0,0,0,0,
+                0;
+
+        Param41 =
+                0,
+                6,"20 31 24 02 30 06",
+                0x001C,
+                0xC3,
+                2,
+                "Press1",
+                "",
+                "Pressure High Gauge",
+                0,24576,0,
+                1,1,1,0,
+                0,0,0,0,
+                0;
+
+        Param42 =
+                0,
+                0,"",
+                0x001C,
+                0xC6,
+                1,
+                "Stat",
+                "",
+                "Status Byte for Input Assy 155",
+                0,0xFF,0,
+                1,1,1,0,
+                0,0,0,0,
+                0;
+
+        Param43 =
+                0,
+                0,"",
+                0x000C,
+                0xC7,
+                2,
+                "Pres Stpt",
+                "",
+                "Pressure Setpoint Output Assy 151 and 156",
+                0,32767,0,
+                1,1,1,0,
+                0,0,0,0,
+                0;
+
+        Param44 =
+                0,
+                0,"",
+                0x000C,
+                0xC7,
+                2,
+                "Valve Stpt",
+                "",
+                "Valve Position Setpoint used in Output Assy 151 and 156",
+                0,32767,0,
+                1,1,1,0,
+                0,0,0,0,
+                0;
+
+[Groups]
+
+        Group1 =
+                "Identity",
+                7,
+                1,2,3,4,5,6,28;
+
+        Group2 =
+                "DeviceNet",
+                6,
+                7,8,11,29,30,31;
+
+        Group3 =
+                "S-Supervisor",
+                2,
+                9,10;
+
+        Group4 =
+                "S-Analog Sensor",
+                10,
+                16,17,18,22,23,24,32,33,40,41;
+
+        Group5 =
+                "S-Analog Actuator",
+                3,
+                12,19,25;
+
+        Group6 =
+                "S-Single Stage Controller",
+                6,
+                13,14,20,21,26,27;
+
+        Group7 =
+                "S-Selection",
+                2,
+                13,15;
+

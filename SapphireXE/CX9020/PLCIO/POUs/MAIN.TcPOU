@@ -1,0 +1,52 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
+  <POU Name="MAIN" Id="{b6fb3822-8acf-4a10-9b4c-9016c8d58a0c}" SpecialFunc="None">
+    <Declaration><![CDATA[PROGRAM MAIN
+VAR
+	test_out : BYTE;
+	OnTimer : TON;
+	OffTimer : TOF;
+	EnableTimer : BOOL;
+	TimerOutPut : BOOL;
+	
+	OnTimerOut : BOOL;
+	ReverseSignal : BOOL;
+	OffTimerOut : BOOL;
+	count : DINT;
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[EnableTimer := TRUE;
+
+IF EnableTimer = TRUE THEN
+	OnTimer(IN:=OffTimerOut, Pt:= INT_TO_TIME(500), Q=>OnTimerOut, ET=>);
+	
+	IF OnTimerOut = TRUE THEN
+		ReverseSignal := FALSE;
+	ELSE
+		ReverseSignal := TRUE;
+	END_IF
+	
+	OffTimer(in:=ReverseSignal, pt:= INT_TO_TIME(500), q=>OffTimerOut,et=>);
+	TimerOutput :=OnTimerOut;
+ELSE
+	TimerOutput:= FALSE;
+END_IF
+
+count := count + 1;
+IF count MOD 64 = 0 THEN
+	test_out := test_out + 1;
+END_IF
+
+GVL.EL2088_OUT:=test_out;
+]]></ST>
+    </Implementation>
+    <LineIds Name="MAIN">
+      <LineId Id="16" Count="16" />
+      <LineId Id="52" Count="1" />
+      <LineId Id="35" Count="2" />
+      <LineId Id="2" Count="0" />
+      <LineId Id="38" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

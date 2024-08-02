@@ -1,0 +1,35 @@
+﻿<UserControl x:Class="SapphireXE_App.Controls.DeviceSelect"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:SapphireXE_App.Controls"
+             mc:Ignorable="d" 
+             d:DesignHeight="600" d:DesignWidth="300">
+	<Grid Background="LightGray">
+		<Grid.RowDefinitions>
+			<RowDefinition Height="30"/>
+			<RowDefinition Height="*"/>
+			<RowDefinition Height="30"/>
+		</Grid.RowDefinitions>
+		<TextBlock Text="Plot Tag Select" TextAlignment="Center" 
+							 Background="LightBlue" Width="290" Height="25"
+							 HorizontalAlignment="Center" VerticalAlignment="Center"
+							 FontSize="16" Margin="5,5,5,0"/>
+		<StackPanel Grid.Row="1" Orientation="Horizontal">
+			<ListBox Width="100" Margin="5"></ListBox>
+			<StackPanel Width="80" VerticalAlignment="Center">
+				<CheckBox>pv</CheckBox>
+				<CheckBox>sv</CheckBox>
+				<CheckBox>etc</CheckBox>
+				<Button Content=">>" Margin="2" Background="White"/>
+				<Button Content="&lt;&lt;" Margin="2" Background="White"/>
+				<Button Content="All >>" Margin="2" Background="White"/>
+				<Button Content="&lt;&lt; All" Margin="2" Background="White"/>
+			</StackPanel>
+			<ListBox Width="100" Margin="5"></ListBox>
+
+		</StackPanel>
+		<Button Grid.Row="2" Content="Select" Background="LightBlue" Width="290" Height="25"
+							 HorizontalAlignment="Center" VerticalAlignment="Center" Margin="5,0,5,5"/>
+	</Grid></UserControl>

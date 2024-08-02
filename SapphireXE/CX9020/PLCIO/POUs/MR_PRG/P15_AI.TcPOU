@@ -1,0 +1,186 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
+  <POU Name="P15_AI" Id="{9067a314-061d-4315-a9af-54f709e2fc25}" SpecialFunc="None">
+    <Declaration><![CDATA[PROGRAM P15_AI
+VAR
+	T1: TON := (PT:=T#100MS);
+	halfRes: REAL := 16383;//0~5V
+	fullRes: REAL := 32767;//0~10V or 4~20mA
+	fullRes_KL3152: REAL := 65535;//4~20mA
+	dorOffset: REAL := 3276;
+	dorResolution: REAL := 13107;
+	dorATM: REAL := 760;			
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[
+T1(IN:= 1);
+IF T1.Q THEN
+	T1(IN:= 0);
+	//---------------------- ANALOG ---------------------------	
+	IF N_MAX[0] > 0 THEN//MFC01 : 0~5V
+	 	pv_M01 := N_MAX[0] * XA_M01 / halfRes ;
+	 	dev_M01 := (100 * (sv_M01 - pv_M01)) / N_MAX[0];
+	END_IF;	
+	IF N_MAX[1] > 0 THEN//MFC02 : 0~5V
+		pv_M02 := N_MAX[1] * XA_M02 / halfRes ;
+	 	dev_M02 := (100 * (sv_M02 - pv_M02)) / N_MAX[1];
+	END_IF;	
+	IF N_MAX[2] > 0 THEN//MFC03 : 0~5V
+		 pv_M03 := N_MAX[2] * XA_M03 / halfRes ;
+		 dev_M03 := (100 * (sv_M03 - pv_M03)) / N_MAX[2];
+	END_IF;	
+	IF N_MAX[3] > 0 THEN//MFC04 : 0~5V
+		 pv_M04 := N_MAX[3] * XA_M04 / halfRes ;
+		 dev_M04 := (100 * (sv_M04 - pv_M04)) / N_MAX[3];
+	END_IF;	
+	IF N_MAX[4] > 0 THEN//MFC05 : 0~5V
+		 pv_M05 := N_MAX[4] * XA_M05 / halfRes ;
+		 dev_M05 := (100 * (sv_M05 - pv_M05)) / N_MAX[4];
+	END_IF;	
+	IF N_MAX[5] > 0 THEN//MFC06 : 0~5V
+		 pv_M06 := N_MAX[5] * XA_M06 / halfRes ;
+		 dev_M06 := (100 * (sv_M06 - pv_M06)) / N_MAX[5];
+	END_IF;	
+	IF N_MAX[6] > 0 THEN//MFC07 : 0~5V
+		 pv_M07 := N_MAX[6] * XA_M07 / halfRes ;
+		 dev_M07 := (100 * (sv_M07 - pv_M07)) / N_MAX[6];
+	END_IF;	
+	IF N_MAX[7] > 0 THEN//MFC08 : 0~5V
+		 pv_M08 := N_MAX[7] * XA_M08 / halfRes ;
+		 dev_M08 := (100 * (sv_M08 - pv_M08)) / N_MAX[7];
+	END_IF;	
+	IF N_MAX[8] > 0 THEN//MFC09 : 0~5V
+		 pv_M09 := N_MAX[8] * XA_M09 / halfRes ;
+		 dev_M09 := (100 * (sv_M09 - pv_M09)) / N_MAX[8];
+	END_IF;	
+	IF N_MAX[9] > 0 THEN//MFC10 : 0~5V
+		 pv_M10 := N_MAX[9] * XA_M10 / halfRes ;
+		 dev_M10 := (100 * (sv_M10 - pv_M10)) / N_MAX[9];
+	END_IF;	
+	IF N_MAX[10] > 0 THEN//MFC11 : 0~5V
+		 pv_M11 := N_MAX[10] * XA_M11 / halfRes ;
+		 dev_M11 := (100 * (sv_M11 - pv_M11)) / N_MAX[10];
+	END_IF;	
+	IF N_MAX[11] > 0 THEN//MFC12 : 0~5V
+		 pv_M12 := N_MAX[11] * XA_M12 / halfRes ;
+		 dev_M12 := (100 * (sv_M12 - pv_M12)) / N_MAX[11];
+	END_IF;	
+	IF N_MAX[12] > 0 THEN//MFC13 : 0~5V
+		 pv_M13 := N_MAX[12] * XA_M13 / halfRes ;
+		 dev_M13 := (100 * (sv_M13 - pv_M13)) / N_MAX[12];
+	END_IF;	
+	IF N_MAX[13] > 0 THEN//MFC14 : 0~5V
+		 pv_M14 := N_MAX[13] * XA_M14 / halfRes ;
+		 dev_M14 := (100 * (sv_M14 - pv_M14)) / N_MAX[13];
+	END_IF;	
+	IF N_MAX[14] > 0 THEN//MFC15 : 0~5V
+		 pv_M15 := N_MAX[14] * XA_M15 / halfRes ;
+		 dev_M15 := (100 * (sv_M15 - pv_M15)) / N_MAX[14];
+	END_IF;	
+	IF N_MAX[15] > 0 THEN//MFC16 : 0~5V
+	 	pv_M16 := N_MAX[15] * XA_M16 / halfRes ;
+	 	dev_M16 := (100 * (sv_M16 - pv_M16)) / N_MAX[15];
+	END_IF;	
+	IF N_MAX[16] > 0 THEN//MFC17 : 0~5V
+		 pv_M17 := N_MAX[16] * XA_M17 / halfRes ;
+		 dev_M17 := (100 * (sv_M17 - pv_M17)) / N_MAX[16];
+	END_IF;	
+	IF N_MAX[17] > 0 THEN//MFC18 : 0~5V
+		 pv_M18 := N_MAX[17] * XA_M18 / halfRes ;
+		 dev_M18 := (100 * (sv_M18 - pv_M18)) / N_MAX[17];
+	END_IF;	
+	IF N_MAX[18] > 0 THEN//MFC19 : 0~5V
+		 pv_M19 := N_MAX[18] * XA_M19 / halfRes ;
+		 dev_M19 := (100 * (sv_M19 - pv_M19)) / N_MAX[18];
+	END_IF;				
+	IF N_MAX[19] > 0 THEN//EPC01 : 0~5V
+		pv_E01 := N_MAX[19] * XA_E01 / halfRes ;
+		dev_E01 := (100 * (sv_E01 - pv_E01)) / N_MAX[19];
+	END_IF;	
+	IF N_MAX[20] > 0 THEN//EPC02 : 0~5V
+		pv_E02 := N_MAX[20] * XA_E02 / halfRes ;
+		dev_E02 := (100 * (sv_E02 - pv_E02)) / N_MAX[20];
+	END_IF;	
+	IF N_MAX[21] > 0 THEN//EPC03 : 0~5V
+		pv_E03 := N_MAX[21] * XA_E03 / halfRes ;
+		dev_E03 := (100 * (sv_E03 - pv_E03)) / N_MAX[21];
+	END_IF;	
+	IF N_MAX[22] > 0 THEN//EPC04 : 0~5V
+		pv_E04 := N_MAX[22] * XA_E04 / halfRes ;
+		dev_E04 := (100 * (sv_E04 - pv_E04)) / N_MAX[22];
+	END_IF;	
+	IF N_MAX[23] > 0 THEN //EPC05 : 0~5V
+		pv_E05 := N_MAX[23] * XA_E05 / halfRes ;
+		dev_E05 := (100 * (sv_E05 - pv_E05)) / N_MAX[23];
+	END_IF;	
+	IF N_MAX[24] > 0 THEN //EPC06 : 0~5V
+		pv_E06 := N_MAX[24] * XA_E06 / halfRes ;
+		dev_E06 := (100 * (sv_E06 - pv_E06)) / N_MAX[24];
+	END_IF;
+	IF N_MAX[25] > 0 THEN//EPC07 : 0~5V
+		pv_E07 := N_MAX[25] * XA_E07 / halfRes ;
+		dev_E07 := (100 * (sv_E07 - pv_E07)) / N_MAX[25];
+	END_IF;			
+	IF N_MAX[26] > 0 THEN//IH Temp - E3508 
+		//pv_IHT := DeviceNet
+		dev_IH := (100 * (sv_IH - pv_IH)) / N_MAX[26];
+	END_IF;	
+	IF N_MAX[27] > 0 THEN//Rotation RPM : 4~20mA      
+	   	 pv_Rot := N_MAX[27] * XA_ROT / fullRes_KL3152;
+		 dev_ROT := (100 * (sv_ROT - pv_ROT)) / N_MAX[27];
+	END_IF;	
+	IF N_MAX[28] > 0 THEN//T/V Position(1~100%) : DeviceNet
+		//pv_TV := DeviceNet
+		dev_POS := (100 * (sv_POS - pv_POS)) / N_MAX[28];
+	END_IF;
+	IF N_MAX[29] > 0 THEN//T/V Pressure(1~1000 Torr) : DeviceNet
+		//pv_P01 := DeviceNet
+		dev_P01 := (100 * (sv_P01 - pv_P01)) / N_MAX[29];
+	END_IF;	
+	IF N_MAX[30] > 0 THEN//Reactor Pressure(10 Torr) : 0~10V
+		pv_P02 := N_MAX[30] * XA_P02 / fullRes;
+	END_IF;	
+	IF N_MAX[31] > 0 THEN//Exhaust Pressure(1000 Torr) : 0~10V   
+	   	 pv_P03 := N_MAX[31] * XA_P03 / fullRes;
+	END_IF;		
+	IF N_MAX[52] > 0 THEN//N2 Pressure : 4~20mA      
+		 pv_S01 := N_MAX[52] * XA_S01 / fullRes;
+	END_IF;	
+	IF N_MAX[53] > 0 THEN//H2 Pressure : 4~20mA      
+		 pv_S02 := N_MAX[53] * XA_S02 / fullRes;
+	END_IF;	
+	IF N_MAX[54] > 0 THEN//NH3 Pressure : 4~20mA       
+		 pv_S03 := N_MAX[54] * XA_S03 / fullRes;
+	END_IF;	 
+	IF N_MAX[55] > 0 THEN//SiH4 Pressure : 4~20mA      
+		 pv_S04 := N_MAX[55] * XA_S04 / fullRes;
+	END_IF;	
+	IF N_MAX[56] > 0 THEN//DOR Pressure : 1~5V      
+		 pv_S05 :=  dorATM - (N_MAX[56] * (XA_S05 - dorOffset) / dorResolution);
+	END_IF;
+				
+	//pv_LHT1 := XA_LHT1 * 0.1 ;
+	//pv_LHT2 := XA_LHT2 * 0.1 ;
+	//pv_LHT3 := XA_LHT3 * 0.1 ;
+	//pv_LHT4 := XA_LHT4 * 0.1 ;
+	//pv_LHT5 := XA_LHT5 * 0.1 ;
+	//pv_LHT6 := XA_LHT6 * 0.1 ;
+	//pv_LHT7 := XA_LHT7 * 0.1 ;
+	//pv_LHT8 := XA_LHT8 * 0.1 ;
+		
+	//Shower Head Temp.
+	pv_SH_CW  := XA_SH_CW * 0.1 ;	
+	//Induction Coil Water Temp
+	pv_IH_CW := XA_IH_CW * 0.1 ;
+		
+    //Induction KW
+
+END_IF;]]></ST>
+    </Implementation>
+    <LineIds Name="P15_AI">
+      <LineId Id="16" Count="162" />
+      <LineId Id="5" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

@@ -1,0 +1,78 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
+  <POU Name="FB_Ramp2" Id="{6c5faaa9-2148-45d8-8739-e85f3319e464}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK FB_Ramp2
+VAR_INPUT
+	bPause: BOOL;
+	bReStart: BOOL;
+	bStop: BOOL;
+	tTimeUnit: TIME;
+	fSV: REAL;	
+	fSV_Step: REAL;
+END_VAR
+VAR_OUTPUT
+	fyOut: REAL;
+END_VAR
+VAR_IN_OUT	
+END_VAR
+VAR
+	T1: TON;
+	fSV_Old: REAL;
+	fSV_Step_Old: REAL;
+	fSV_Inc: REAL;
+	isPlus: BOOL;
+	bT1_Rst: BOOL;
+	bT1_On: BOOL;
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[T1(IN:=bT1_On, PT:=tTimeUnit);
+
+//Check Input Value changed
+IF fSV <> fSV_Old OR fSV_Step <> fSV_Step_Old THEN
+	IF fSV_Step	<= 0 THEN 
+		fSV_Step := 1; 
+	END_IF	
+    isPlus := fSV > fyOut;// Check Inc OR Dec
+	fSV_Inc := (fyOut - fSV) / fSV_Step; //Calc Inc Value
+    bT1_Rst := T1.ET <> T#0MS AND T1.Q = 0; //T1 Reset
+END_IF
+
+fSV_Old := fSV;
+fSV_Step_Old := fSV_Step;
+
+//T1 En Condition
+bT1_On := bT1_Rst = 0 AND fSV <> fyOut;
+
+IF bT1_Rst THEN
+	bT1_Rst := 0;
+ELSE//Ramping
+	IF T1.Q THEN
+		bT1_On := 0;//T1 Init
+		IF bPause = 0 THEN
+			fyOut := fyOut - fSV_Inc;
+		END_IF
+		
+		IF isPlus = 0 AND fyOut < fSV THEN fyOut := fSV; END_IF
+		IF isPlus = 1 AND fyOut > fSV THEN fyOut := fSV; END_IF
+	END_IF
+END_IF
+
+IF fSV_Step = 1 THEN
+	fyOut := fSV;
+END_IF
+
+IF bStop THEN
+	fSV_Step := 1;
+	fSV := fyOut;
+END_IF
+
+
+]]></ST>
+    </Implementation>
+    <LineIds Name="FB_Ramp2">
+      <LineId Id="32" Count="41" />
+      <LineId Id="9" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

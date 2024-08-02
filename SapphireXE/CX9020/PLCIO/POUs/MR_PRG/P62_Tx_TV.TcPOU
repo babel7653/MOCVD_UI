@@ -1,0 +1,49 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
+  <POU Name="P62_Tx_TV" Id="{29ee26e0-f8e6-4cad-bd69-10426ce121c9}" SpecialFunc="None">
+    <Declaration><![CDATA[PROGRAM P62_Tx_TV
+VAR
+	p_TV_RST: R_TRIG;
+	Resolution: REAL := 32767;//0~7FFF	
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[//Throttle Valve - Mode
+IF cm_TV_run THEN
+	 Tx_TV_Mode := 0;
+	 cm_TV_run := 0;
+END_IF;
+IF cm_TV_close THEN
+	 Tx_TV_Mode := 1;
+	 cm_TV_close := 0;
+END_IF;
+IF cm_TV_open THEN
+	 Tx_TV_Mode := 2;
+	 cm_TV_open := 0;
+END_IF;
+IF cm_TV_stop THEN
+	 Tx_TV_Mode := 3;
+	 cm_TV_stop := 0;
+END_IF;
+
+//Throttle Valve - Reset
+p_TV_RST(CLK:= s_cm_RST AND is_TV_fail);
+IF p_TV_RST.Q THEN
+	 Tx_TV_Mode := 4;
+END_IF;
+
+//Throttle Valve - Set Point
+IF en_TV_posMode THEN
+	Tx_TV_SP_Type := 2;//positon
+	Tx_TV_SP := REAL_TO_WORD(sv_POS * Resolution / N_MAX[28]);//TV POS	
+ELSE
+	Tx_TV_SP_Type := 1;//pressure
+	Tx_TV_SP := REAL_TO_WORD(sv_P01 * Resolution / N_MAX[29]);//P01	
+END_IF]]></ST>
+    </Implementation>
+    <LineIds Name="P62_Tx_TV">
+      <LineId Id="11" Count="30" />
+      <LineId Id="5" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

@@ -10,6 +10,7 @@ using OxyPlot;
 using OxyPlot.Series;
 using SapphireXE_App.Views;
 using SapphireXE_App.Commons;
+using SapphireXE_App.Controls;
 using SapphireXE_App.Models;
 using Caliburn.Micro;
 using SapphireXE_App.Commands;
@@ -18,13 +19,12 @@ using System.Linq;
 
 namespace SapphireXE_App.ViewModels
 {
-  class ReportViewModel : ViewModelBase
+  public partial class MainViewModel : ViewModelBase
   {
-    public BindableCollection<RecipeControlData> RecipeCompareData { get; set; } = new();
-    public BindableCollection<RecipeControlData> RecipeCompareData1 { get; set; } = new();
-    public BindableCollection<RecipeControlData> RecipeCompareData2 { get; set; } = new();
-    public PlotModel RecipeComparePlot { get; set; }
-    public List<RecipeRun> RunData { get; set; } = new();
+    public BindableCollection<RecipeControlData> ReportCompareData { get; set; } = new();
+    public BindableCollection<RecipeControlData> ReportCompareData1 { get; set; } = new();
+    public BindableCollection<RecipeControlData> ReportCompareData2 { get; set; } = new();
+    public PlotModel ReportComparePlot { get; set; }
     public string logFilepath1 { get; set; }
     public string logFilepath2 { get; set; }
 
@@ -52,56 +52,56 @@ namespace SapphireXE_App.ViewModels
     /// </summary>
     private void BtnPlotDevice()
     {
-      btnPlotDevice = !btnPlotDevice;
-      RecipeCompareData = btnPlotDevice ? RecipeCompareData1 : RecipeCompareData2;
-      PlotData();
+      //btnPlotDevice = !btnPlotDevice;
+      //ReportCompareData = btnPlotDevice ? ReportCompareData1 : ReportCompareData2;
+      //PlotData();
+
+      DeviceSelect DeviceSelectWindow = new();
+      
+      DeviceSelectWindow.InitializeComponent();
+
+      
+
     }
 
 
     /// <summary>
     /// 생성자
     /// </summary>
-    public ReportViewModel()
-    {
-    }
 
 
     private void BtnPlotData1()
     {
-      if (RecipeCompareData1 == null) return;
+      if (ReportCompareData1 == null) return;
       btnPlotData1 = !btnPlotData1;
       PlotData();
     }
 
     private void BtnPlotData2()
     {
-      if (RecipeCompareData1 == null) return;
+      if (ReportCompareData1 == null) return;
       btnPlotData2 = !btnPlotData2;
       PlotData();
     }
 
     private void BtnPlotData3()
     {
-      if (RecipeCompareData2 == null) return;
+      if (ReportCompareData2 == null) return;
       btnPlotData3 = !btnPlotData3;
       PlotData();
     }
 
     private void BtnPlotData4()
     {
-      if (RecipeCompareData2 == null) return;
+      if (ReportCompareData2 == null) return;
       btnPlotData4 = !btnPlotData4;
       PlotData();
     }
 
     public void InitializePlotModel()
     {
-      RecipeComparePlot = new()
-      {
-        Title = "Demo Live Tracking",
-      };
-
-      RecipeComparePlot.Axes.Add(new DateTimeAxis
+      ReportComparePlot = new();
+      ReportComparePlot.Axes.Add(new DateTimeAxis
       {
         Title = "TimeStamp",
         Position = AxisPosition.Bottom,
@@ -114,7 +114,7 @@ namespace SapphireXE_App.ViewModels
         MinorGridlineStyle = LineStyle.Solid,
       });
 
-      RecipeComparePlot.Axes.Add(new LinearAxis
+      ReportComparePlot.Axes.Add(new LinearAxis
       {
         Title = "Data Value",
         Position = AxisPosition.Left,
@@ -122,61 +122,46 @@ namespace SapphireXE_App.ViewModels
         IsZoomEnabled = true,
       });
 
-      RecipeComparePlot.Series.Add(new LineSeries()
+      string[] lineTitle = { "Data1", "Data2", "Data3", "Data4", "Data5", "Data6", "Data7", "Data8" };
+      OxyColor[] lineColor =
       {
-        MarkerType = MarkerType.Circle,
-      });
-
-      RecipeComparePlot.Series.Add(new LineSeries()
+        OxyColors.Yellow, OxyColors.Red, OxyColors.Green, OxyColors.SkyBlue,
+        OxyColors.DarkRed, OxyColors.DarkCyan, OxyColors.DarkBlue, OxyColors.DarkGreen
+      };
+      MarkerType[] lineMaker =
       {
-        MarkerType = MarkerType.Cross,
-      });
-
-      RecipeComparePlot.Series.Add(new LineSeries()
+        MarkerType.None, MarkerType.None, MarkerType.None, MarkerType.None,
+        MarkerType.None, MarkerType.None, MarkerType.None, MarkerType.None,
+      };
+      for (int i = 0; i < 8; i++)
       {
-        MarkerType = MarkerType.Star,
-      });
-
-      RecipeComparePlot.Series.Add(new LineSeries()
-      {
-        MarkerType = MarkerType.Diamond,
-      });
-      RecipeComparePlot.Series.Add(new LineSeries()
-      {
-        MarkerType = MarkerType.Triangle,
-      });
-
-      RecipeComparePlot.Series.Add(new LineSeries()
-      {
-        MarkerType = MarkerType.Plus,
-      });
-      RecipeComparePlot.Series.Add(new LineSeries()
-      {
-        MarkerType = MarkerType.Square,
-      });
-
-      RecipeComparePlot.Series.Add(new LineSeries()
-      {
-        MarkerType = MarkerType.Star,
-      });
+        ReportComparePlot.Series.Add(new LineSeries()
+        {
+          Title = lineTitle[i],
+          Color = lineColor[i],
+          MarkerStroke = lineColor[i],
+          StrokeThickness = 1,
+          MarkerType = lineMaker[i],
+          MarkerSize = 2,
+        });
+      }
     }
 
     private void PlotData()
     {
-      CultureInfo culture = new CultureInfo("kr-KR");
       InitializePlotModel();
-      var series1 = RecipeComparePlot.Series.OfType<LineSeries>().ElementAt(0);
-      var series2 = RecipeComparePlot.Series.OfType<LineSeries>().ElementAt(1);
-      var series3 = RecipeComparePlot.Series.OfType<LineSeries>().ElementAt(2);
-      var series4 = RecipeComparePlot.Series.OfType<LineSeries>().ElementAt(3);
-      var series5 = RecipeComparePlot.Series.OfType<LineSeries>().ElementAt(4);
-      var series6 = RecipeComparePlot.Series.OfType<LineSeries>().ElementAt(5);
-      var series7 = RecipeComparePlot.Series.OfType<LineSeries>().ElementAt(6);
-      var series8 = RecipeComparePlot.Series.OfType<LineSeries>().ElementAt(7);
+      var series1 = ReportComparePlot.Series.OfType<LineSeries>().ElementAt(0);
+      var series2 = ReportComparePlot.Series.OfType<LineSeries>().ElementAt(1);
+      var series3 = ReportComparePlot.Series.OfType<LineSeries>().ElementAt(2);
+      var series4 = ReportComparePlot.Series.OfType<LineSeries>().ElementAt(3);
+      var series5 = ReportComparePlot.Series.OfType<LineSeries>().ElementAt(4);
+      var series6 = ReportComparePlot.Series.OfType<LineSeries>().ElementAt(5);
+      var series7 = ReportComparePlot.Series.OfType<LineSeries>().ElementAt(6);
+      var series8 = ReportComparePlot.Series.OfType<LineSeries>().ElementAt(7);
 
-      //var dateTimeAxis = RecipeComparePlot.Axes.OfType<DateTimeAxis>().First();
+      //var dateTimeAxis = ReportComparePlot.Axes.OfType<DateTimeAxis>().First();
       double sec = 0;
-      foreach (var compareData in RecipeCompareData1)
+      foreach (var compareData in ReportCompareData1)
       {
         DateTime t = new();
         series1.Points.Add(new DataPoint(DateTimeAxis.ToDouble(t.AddSeconds(sec)), compareData.Data1));
@@ -186,7 +171,7 @@ namespace SapphireXE_App.ViewModels
         sec += 1;
       }
       sec = 0;
-      foreach (var compareData in RecipeCompareData2)
+      foreach (var compareData in ReportCompareData2)
       {
         DateTime t = new();
         series5.Points.Add(new DataPoint(DateTimeAxis.ToDouble(t.AddSeconds(sec)), compareData.Data5));
@@ -204,12 +189,12 @@ namespace SapphireXE_App.ViewModels
       series6.IsVisible = btnPlotData2;
       series7.IsVisible = btnPlotData3;
       series8.IsVisible = btnPlotData4;
-      RecipeComparePlot.InvalidatePlot(true);
+      ReportComparePlot.InvalidatePlot(true);
 
-      OnPropertyChanged(nameof(RecipeCompareData));
-      OnPropertyChanged(nameof(RecipeCompareData1));
-      OnPropertyChanged(nameof(RecipeCompareData2));
-      OnPropertyChanged(nameof(RecipeComparePlot));
+      OnPropertyChanged(nameof(ReportCompareData));
+      OnPropertyChanged(nameof(ReportCompareData1));
+      OnPropertyChanged(nameof(ReportCompareData2));
+      OnPropertyChanged(nameof(ReportComparePlot));
 
     }
 
@@ -284,30 +269,29 @@ namespace SapphireXE_App.ViewModels
 
     public void PlotLogFileOpen1()
     {
-      PlotLogFileRemove1();  //2개 chart를 구현하면 지울 것
-
-      logFilepath1 = OpenFile();
+      PlotLogFileRemove1();  // 이전 데이터 삭제
+      string initDir = "D:\\sysnex\\mocvd\\MocvdNow\\SapphireXE\\data\\datalog\\";
+      logFilepath1 = OpenFile(initDir); OnPropertyChanged(nameof(logFilepath1));
       OnPropertyChanged(nameof(logFilepath1));
-
-      RecipeCompareData1 = LoadData(logFilepath1);
+      ReportCompareData1 = LoadData(logFilepath1);
       PlotData();
 
     }
 
     public void PlotLogFileOpen2()
     {
-      PlotLogFileRemove2();  //2개 chart를 구현하면 지울 것
-      logFilepath2 = OpenFile();
+      PlotLogFileRemove2();  // 이전 데이터 삭제
+      string initDir = "D:\\sysnex\\mocvd\\MocvdNow\\SapphireXE\\data\\datalog\\";
+      logFilepath2 = OpenFile(initDir);
       OnPropertyChanged(nameof(logFilepath2));
-
-      RecipeCompareData2 = LoadData(logFilepath2);
+      ReportCompareData2 = LoadData(logFilepath2);
       PlotData();
     }
 
     private void PlotLogFileRemove1()
     {
       logFilepath1 = "";
-      RecipeCompareData1 = new();
+      ReportCompareData1 = new();
       PlotData();
 
       OnPropertyChanged(nameof(logFilepath1));
@@ -316,7 +300,7 @@ namespace SapphireXE_App.ViewModels
     private void PlotLogFileRemove2()
     {
       logFilepath2 = "";
-      RecipeCompareData2 = new();
+      ReportCompareData2 = new();
       PlotData();
 
       OnPropertyChanged(nameof(logFilepath2));
@@ -326,9 +310,10 @@ namespace SapphireXE_App.ViewModels
     /// Open file
     /// </summary>
     /// <returns></returns>
-    private static string OpenFile()
+    private static string OpenFile(string initDir)
     {
       OpenFileDialog file = new();
+      file.InitialDirectory = initDir;
       return file.ShowDialog() != true ? null : file.FileName;
     }
 

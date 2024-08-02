@@ -1,0 +1,31 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcConfig xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="C:\TwinCAT3\Config\TcConfig.xsd">
+  <Local>
+      <Name>RALFH03</Name>
+      <NetId>172.17.60.215.1.1</NetId>
+      <TcpPort>48898</TcpPort>
+  </Local>
+  <RemoteConnections>
+    <Route>
+      <Name>RALFH-NB03</Name>
+      <Address>RALFH-NB03</Address>
+      <!--<Address>172.17.60.177</Address>-->
+      <NetId>172.17.60.153.1.1</NetId>
+      <Type>TCP_IP</Type>
+    </Route>
+    <Route>
+      <Name>TC3TESTA1-CP67X</Name>
+      <Address>TC3TESTA1-CP67X</Address>
+      <!--<Address>172.17.66.87</Address>-->
+      <NetId>172.17.62.105.1.1</NetId>
+      <Type>TCP_IP</Type>
+    </Route>
+    <Route>
+      <Name>RalfH2</Name>
+      <NetId>14.5.137.176.1.1</NetId>
+      <Address>RalfH2</Address>
+      <!--<Address>172.17.62.104</Address>-->
+      <Type>TCP_IP</Type>
+    </Route>
+  </RemoteConnections>
+</TcConfig>

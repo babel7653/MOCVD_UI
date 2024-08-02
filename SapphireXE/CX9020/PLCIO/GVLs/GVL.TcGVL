@@ -3,8 +3,13 @@
   <GVL Name="GVL" Id="{5c0516a1-dc14-4f57-bb87-ec442e63ea89}">
     <Declaration><![CDATA[{attribute 'qualified_only'}
 VAR_GLOBAL
-	EL1088_IN	AT%I*	:BYTE;
-	EL2088_OUT	AT%Q*	:BYTE;
+	EL1088_IN	AT%I*	: BYTE;
+	EL2088_OUT	AT%Q*	: BYTE;
+	EL3054_IN	AT%I*	: INT;
+	EL4024_OUT	AT%Q*	: INT;
+	
+	gRecipe1 : ST_Recipe1;
+	gArray1 : ST_Array;
 END_VAR]]></Declaration>
   </GVL>
 </TcPlcObject>

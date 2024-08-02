@@ -1,0 +1,46 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
+  <POU Name="TextFieldInputHandler" Id="{7ff09de5-60b9-4f6a-b076-454aa8eb9b19}" SpecialFunc="None">
+    <Declaration><![CDATA[// 텍스트 필드 편집이 완료되었을 때 알림을 받기 위한 FB
+// Recipe Values table에 사용됨
+FUNCTION_BLOCK TextfieldInputHandler
+VAR_INPUT
+		finishedEdit  :BOOL; // 변수가 작성되었을 때 TRUE 설정. 
+                             // 편집하기 전에 FALSE로 설정해야 유용함. write variable action이 있는 텍스트필드의 action에 수행할 수 있음.
+END_VAR
+VAR
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[// no implementation here since Method is where the action happens]]></ST>
+    </Implementation>
+    <Method Name="VariableWritten" Id="{99fec5ce-36ea-4c2d-b50a-39894c8de59e}">
+      <Declaration><![CDATA[ (*이 메서드는 시각화 사용자가 변수를 작성한 후에 호출됨. 변수는 입력필드를 사용하여 작성됨.
+    이 메서드에 대한 호출은 VISU_TASK에서 수행되므로 다른 작업과 동기화가 필요한 작업을 수행할 때는 주의*)
+METHOD VariableWritten : BOOL
+VAR_INPUT
+
+ (*작성된 변수에 대한 포인터. POINT TO BYTE는 사용된 변수의 구체적인 형식에 대한 placeholder로 사용됨 
+   변경된 변수에 접근하려면 이 포인터를 올바른 유형 (예:포인터를 DWORD로 변경)로 캐스팅할 수 있음
+   type에 대한 정보는 <see cref="varType"/>으로 볼 수 있음*)
+ pVar	: POINTER TO BYTE;
+	(* 작성된 변수의 형식*)
+//	varType	: CmpVisuHandler.Visu_Types;
+	(* bytes 사이즈로 변수의 최대 크기 (형식이 stringtype 경우에만 유효함 , 그 이외에 0보다 작음). *)
+	iMaxSize	: INT;
+	(* 이 값을 사용하는 client structured에 대한 포인터*)
+//	pClient	: POINTER TO VisuElemBase.VisuStructClientData;
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[finishedEdit := TRUE;]]></ST>
+      </Implementation>
+    </Method>
+    <LineIds Name="TextFieldInputHandler">
+      <LineId Id="5" Count="0" />
+    </LineIds>
+    <LineIds Name="TextFieldInputHandler.VariableWritten">
+      <LineId Id="5" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

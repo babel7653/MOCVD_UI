@@ -1,0 +1,337 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
+  <POU Name="P49_MO_SRC" Id="{d8db3ac4-9a97-4c76-889a-5e67d3c0dedd}" SpecialFunc="None">
+    <Declaration><![CDATA[PROGRAM P49_MO_SRC
+VAR
+	_1mole_volume: REAL := 22400;//1몰 부피 = 1/22400
+	//_1mole_volume: REAL := 0.0000000744047619;//1.0/22400.0/60.0;//1몰 부피 = 1/22400 * 1/60 미리 계산
+	
+	T_1S: TON := (PT:= T#1S);
+	
+	T1: TON := (PT:= T#1S);
+	ms1_K, ms1_data1, ms1_data2: REAL;
+	
+	T2: TON := (PT:= T#1S);
+	ms2_K, ms2_data1, ms2_data2: REAL;
+	
+	T3: TON := (PT:= T#1S);
+	ms3_K, ms3_data1, ms3_data2: REAL;
+	
+	T4: TON := (PT:= T#1S);
+	ms4_K, ms4_data1, ms4_data2: REAL;
+	
+	T5: TON := (PT:= T#1S);
+	ms5_K, ms5_data1, ms5_data2: REAL;
+	
+	T6: TON := (PT:= T#1S);
+	ms6_K, ms6_data1, ms6_data2: REAL;
+	ms6_ln: REAL;
+	
+(*	//Old
+	t0 : TON;
+	ms0_Vapor : REAL := 1; //설정
+	ms0_Bub_Const : REAL :=1; //설정
+	ms0_data1 : REAL;
+	ms0_data2 : REAL;
+	ms0_data3 : REAL;
+	ms0_inc : REAL;
+	m00_csv : REAL;
+	
+	t1 : TON;
+	ms1_Vapor : REAL := 1; //설정
+	ms1_Bub_Const : REAL :=1; //설정
+	ms1_data1 : REAL;
+	ms1_data2 : REAL;
+	ms1_data3 : REAL;
+	ms1_inc : REAL;
+	m01_csv : REAL;
+	
+	t2 : TON;
+	ms2_Vapor : REAL := 1; //설정
+	ms2_Bub_Const : REAL :=1; //설정
+	ms2_data1 : REAL;
+	ms2_data2 : REAL;
+	ms2_data3 : REAL;
+	ms2_inc : REAL;
+	m02_csv : REAL;
+	
+	t3 : TON;
+	ms3_Vapor : REAL := 1; //설정
+	ms3_Bub_Const : REAL :=1; //설정
+	ms3_data1 : REAL;
+	ms3_data2 : REAL;
+	ms3_data3 : REAL;
+	ms3_inc : REAL;
+	m03_csv : REAL;
+	
+	t4 : TON;
+	ms4_Vapor : REAL := 1; //설정
+	ms4_Bub_Const : REAL :=1; //설정
+	ms4_data1 : REAL;
+	ms4_data2 : REAL;
+	ms4_data3 : REAL;
+	ms4_inc : REAL;
+	m04_csv : REAL;
+*)	
+	
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[T_1S(IN := 1);
+IF T_1S.Q THEN
+	T_1S(IN := 0);
+	
+	//MO1 - TEB : 부분압 구하기  pow(10, (a - ( b / T )))	
+	IF N_MS_SET[0, 0] < 1 THEN// 상수 온도 사용
+		ms1_K := N_MS_SET[0, 3] + 273.16; //절대 온도로 변환
+	ELSE //측정 온도 사용
+		ms1_K := pv_TB1 + 273.16; //절대 온도로 변환	
+	END_IF	
+	pv_MS1_Pres := EXPT(10, (N_MS_SET[0, 1] - ( N_MS_SET[0, 2] / ms1_K)));
+	
+	//MO2 - TMAI : 부분압 구하기  pow(10, (a - ( b / T )))	
+	IF N_MS_SET[1, 0] < 1 THEN// 상수 온도 사용
+		ms2_K := N_MS_SET[1, 3] + 273.16; //절대 온도로 변환
+	ELSE //측정 온도 사용
+		ms2_K := pv_TB2 + 273.16; //절대 온도로 변환	
+	END_IF	
+	pv_MS2_Pres := EXPT(10, (N_MS_SET[1, 1] - ( N_MS_SET[1, 2] / ms2_K)));
+	
+	//MO3 - TMIn : 부분압 구하기  pow(10, (a - ( b / T )))
+	IF N_MS_SET[2, 0] < 1 THEN// 상수 온도 사용
+		ms3_K := N_MS_SET[2, 3] + 273.16; //절대 온도로 변환
+	ELSE //측정 온도 사용
+		ms3_K := pv_TB3 + 273.16; //절대 온도로 변환	
+	END_IF	
+	pv_MS3_Pres := EXPT(10, (N_MS_SET[2, 1] - ( N_MS_SET[2, 2] / ms3_K)));
+	
+	//MO4 - TMGa : 부분압 구하기  pow(10, (a - ( b / T )))	
+	IF N_MS_SET[3, 0] < 1 THEN// 상수 온도 사용
+		ms4_K := N_MS_SET[3, 3] + 273.16; //절대 온도로 변환
+	ELSE //측정 온도 사용
+		ms4_K := pv_TB4 + 273.16; //절대 온도로 변환	
+	END_IF	
+	pv_MS4_Pres := EXPT(10, (N_MS_SET[3, 1] - ( N_MS_SET[3, 2] / ms4_K)));
+	
+	//MO5 - DTMGa : 부분압 구하기  pow(10, (a - ( b / T )))
+	IF N_MS_SET[4, 0] < 1 THEN// 상수 온도 사용
+		ms5_K := N_MS_SET[4, 3] + 273.16; //절대 온도로 변환
+	ELSE //측정 온도 사용
+		ms5_K := pv_TB5 + 273.16; //절대 온도로 변환	
+	END_IF	
+	pv_MS5_Pres := EXPT(10, (N_MS_SET[4, 1] - ( N_MS_SET[4, 2] / ms5_K)));
+	
+
+	//MO6 - Cp2Mg(고체) : 부분압 구하기  pow(10, (a - 2.18LN(T) - ( b / T )))
+	IF N_MS_SET[5, 0] < 1 THEN// 상수 온도 사용
+		ms6_K := N_MS_SET[5, 3] + 273.16; //절대 온도로 변환
+	ELSE //측정 온도 사용
+		ms6_K := pv_TB6 + 273.16; //절대 온도로 변환	
+	END_IF	
+	//LN()
+	//The IEC operator returns the natural logarithm OF a number.
+    //Permitted data types for the input variables: any numeric basic data type
+    //Permitted data types for the output variables: REAL and LREAL
+	ms6_ln := 2.18 * LN(ms6_K);	
+	pv_MS6_Pres := EXPT(10, (N_MS_SET[5, 1] - ms6_ln - ( N_MS_SET[5, 2] / ms6_K))); //
+		
+END_IF
+
+
+//Mo 소스 무게 계산 
+//MO1 - TEB
+T1(IN:= do_V07);
+IF T1.Q THEN
+	T1(IN:= 0);	
+	IF pv_E02 > 10 AND pv_M08 > 0 AND pv_MS1_Pres > 0 THEN				
+		ms1_data1 := pv_M08 * (pv_MS1_Pres / (pv_E02 - pv_MS1_Pres)) / _1mole_volume / 60; //formular2-1		
+		ms1_data2 := ms1_data1 * N_MS_SET[0, 4] * N_MS_SET[0, 5]; //formular2-2		
+		N_MS_SET[0, 7] := N_MS_SET[0, 7] + ms1_data2; //used Weight
+	END_IF	
+END_IF
+pv_MS1 := N_MS_SET[0, 8] := N_MS_SET[0, 6] - N_MS_SET[0, 7]; //remain Weight
+
+
+//MO2 - TMAI
+T2(IN:= do_V10);
+IF T2.Q THEN
+	T2(IN:= 0);
+	IF pv_E03 > 10 AND pv_M09 > 0 AND pv_MS2_Pres > 0 THEN				
+		ms2_data1 := pv_M09 * (pv_MS2_Pres / (pv_E03 - pv_MS2_Pres)) / _1mole_volume / 60; //formular2-1		
+		ms2_data2 := ms2_data1 * N_MS_SET[1, 4] * N_MS_SET[1, 5]; //formular2-2		
+		N_MS_SET[1, 7] := N_MS_SET[1, 7] + ms2_data2; //used Weight
+	END_IF
+END_IF
+pv_MS2 := N_MS_SET[1, 8] := N_MS_SET[1, 6] - N_MS_SET[1, 7]; //remain Weight
+
+
+//MO3 - TMIn
+T3(IN:= do_V13);
+IF T3.Q THEN
+	T3(IN:= 0);
+	IF pv_E04 > 10 AND pv_M10 > 0 AND pv_MS3_Pres > 0 THEN		
+		ms3_data1 := pv_M10 * (pv_MS3_Pres / (pv_E04 - pv_MS3_Pres)) / _1mole_volume / 60; //formular2-1	
+		ms3_data2 := ms3_data1 * N_MS_SET[2, 4] * N_MS_SET[2, 5]; //formular2-2		
+		N_MS_SET[2, 7] := N_MS_SET[2, 7] + ms3_data2; //used Weight
+	END_IF	
+END_IF
+pv_MS3 := N_MS_SET[2, 8] := N_MS_SET[2, 6] - N_MS_SET[2, 7]; //remain Weight
+
+
+//MO4 - TMGa
+T4(IN:= do_V16);
+IF T4.Q THEN
+	T4(IN:= 0);
+	IF pv_E05 > 10 AND pv_M11 > 0 AND pv_MS4_Pres > 0 THEN			
+		ms4_data1 := pv_M11 * (pv_MS4_Pres / (pv_E05 - pv_MS4_Pres)) / _1mole_volume / 60; //formular2-1		
+		ms4_data2 := ms4_data1 * N_MS_SET[3, 4] * N_MS_SET[3, 5]; //formular2-2		
+		N_MS_SET[3, 7] := N_MS_SET[3, 7] + ms4_data2; //used Weight
+	END_IF		
+END_IF
+pv_MS4 := N_MS_SET[3, 8] := N_MS_SET[3, 6] - N_MS_SET[3, 7]; //remain Weight
+
+
+//MO5 - DTMGa -- MFC is 2 More -> Check Formula -> M12 ok
+T5(IN := do_V19);
+IF T5.Q THEN
+	T5(IN:= 0);
+	IF pv_E06 > 10 AND pv_M12 > 0 AND pv_MS5_Pres > 0 THEN			
+		ms5_data1 := pv_M12 * (pv_MS5_Pres / (pv_E06 - pv_MS5_Pres)) / _1mole_volume / 60; //formular2-1		
+		ms5_data2 := ms5_data1 * N_MS_SET[4, 4] * N_MS_SET[4, 5]; //formular2-2		
+		N_MS_SET[4, 7] := N_MS_SET[4, 7] + ms5_data2; //used Weight
+	END_IF		
+END_IF
+pv_MS5 := N_MS_SET[4, 8] := N_MS_SET[4, 6] - N_MS_SET[4, 7]; //remain Weight
+
+
+//MO6 Cp2Mg
+T6(IN := do_V22);
+IF T6.Q THEN
+	T6(IN:= 0);
+	IF pv_E07 > 10 AND pv_M15 > 0 AND pv_MS6_Pres > 0 THEN				
+		ms6_data1 := pv_M15 * (pv_MS6_Pres / (pv_E07 - pv_MS6_Pres)) / _1mole_volume / 60; //formular2-1		
+		ms6_data2 := ms6_data1 * N_MS_SET[5, 4] * N_MS_SET[5, 5]; //formular2-2	
+		N_MS_SET[5, 7] := N_MS_SET[5, 7] + ms6_data2; //used Weight
+	END_IF		
+END_IF
+pv_MS6 := N_MS_SET[5, 8] := N_MS_SET[5, 6] - N_MS_SET[5, 7]; //remain Weight
+
+
+
+
+(* //Old Version
+//Mo 소스 무게 계산 -> 제니컴 모드
+//TMAI
+t0(PT := T#1S);
+t0.IN := DO_V01;
+
+IF DO_V01 THEN
+	m00_csv := tsv_M00;
+	ms0_inc := 0;
+END_IF
+
+IF t0.Q THEN
+	t0.IN := Off;
+	ms0_inc := ms0_inc + 1;	
+	IF tsv_E01 > 10 THEN
+		//ms0_data1 = 8.224 -  2134.83 / (273 + MO_TMAI_Temp)
+		ms0_data1 := ms1_Vapor * tsv_M00/tsv_E01;
+		ms0_data2 := ms0_inc * 0.001;
+		ms0_data3 := 72.10/1.344;
+		pv_MO_SRC1 := pv_MO_SRC1 - ms0_data1 * ms0_data2  * ms0_data3 * ms0_Bub_Const * 0.001;
+	END_IF
+END_IF
+
+
+//TMIn
+t1(PT := T#1S);
+t1.IN := DO_V04;
+
+IF DO_V04 THEN
+	m01_csv := tsv_M01;
+	ms1_inc := 0;
+END_IF
+
+IF t1.Q THEN
+	t1.IN := Off;
+	ms1_inc := ms1_inc + 1;	
+	IF tsv_E02 > 10 THEN
+		ms1_data1 := ms1_Vapor * tsv_M01/tsv_E02;
+		ms1_data2 := ms1_inc * 0.001;
+		ms1_data3 := 159.93/1.344;
+		pv_MO_SRC2 := pv_MO_SRC2 - ms1_data1 * ms1_data2  * ms1_data3 * ms1_Bub_Const * 0.001;
+	END_IF
+END_IF
+
+
+//TMGa1
+t2(PT := T#1S);
+t2.IN := DO_V07;
+
+IF DO_V07 THEN
+	m02_csv := tsv_M02;
+	ms2_inc := 0;
+END_IF
+
+IF t2.Q THEN
+	t2.IN := Off;
+	ms2_inc := ms2_inc + 1;	
+	IF tsv_E03 > 10 THEN
+		ms2_data1 := ms2_Vapor * tsv_M02/tsv_E03;
+		ms2_data2 := ms2_inc * 0.001;
+		ms2_data3 := 114.83/1.344;
+		pv_MO_SRC3 := pv_MO_SRC3 - ms2_data1 * ms2_data2  * ms2_data3 * ms2_Bub_Const * 0.001;
+	END_IF
+END_IF
+
+
+//TMGa2
+t3(PT := T#1S);
+t3.IN := DO_V10;
+
+IF DO_V10 THEN
+	m03_csv := tsv_M03;
+	ms3_inc := 0;
+END_IF
+
+IF t3.Q THEN
+	t3.IN := Off;
+	ms3_inc := ms3_inc + 1;	
+	IF tsv_E04 > 10 THEN
+		//ms3_data1 = 8.07 -  1703 / (273 + MO_TMGa2_Temp)
+		ms3_data1 := ms3_Vapor * tsv_M03/tsv_E04;
+		ms3_data2 := ms3_inc * 0.001;
+		ms3_data3 := 114.83/1.344;
+		pv_MO_SRC4 := pv_MO_SRC4 - ms3_data1 * ms3_data2  * ms3_data3 * ms3_Bub_Const * 0.001;
+	END_IF
+END_IF
+
+
+//Cp2Mg
+t4(PT := T#1S);
+t4.IN := DO_V13;
+
+IF DO_V13 THEN
+	m04_csv := tsv_M06;
+	ms4_inc := 0;
+END_IF
+
+IF t4.Q THEN
+	t4.IN := Off;
+	ms4_inc := ms4_inc + 1;	
+	IF tsv_E05 > 10 THEN
+		//ms4_data1 = 10.452 -  3522 / (273 + MO_Cp2Mg_Temp)
+		ms4_data1 := ms4_Vapor * tsv_M06/tsv_E05;
+		ms4_data2 := ms4_inc * 0.001;
+		ms4_data3 := 154.49/1.344;
+		pv_MO_SRC5 := pv_MO_SRC5 - ms4_data1 * ms4_data2  * ms4_data3 * ms4_Bub_Const * 0.001;
+	END_IF
+END_IF
+*)]]></ST>
+    </Implementation>
+    <LineIds Name="P49_MO_SRC">
+      <LineId Id="80" Count="249" />
+      <LineId Id="5" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

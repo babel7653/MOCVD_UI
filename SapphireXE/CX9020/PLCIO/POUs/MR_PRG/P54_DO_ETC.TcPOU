@@ -1,0 +1,108 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
+  <POU Name="P54_DO_ETC" Id="{3d9302b8-d7b4-428c-8969-c0738b783d77}" SpecialFunc="None">
+    <Declaration><![CDATA[PROGRAM P54_DO_ETC
+VAR
+	is_ROT_ON: BOOL;
+	
+	p_RC_lamp: R_TRIG; //by Button
+	p_GC_lamp: R_TRIG; //by Button
+	on_RC_lamp: BOOL; //by Button
+	on_GC_lamp: BOOL; //by Button
+	
+	//For Blue Signal & Reset Lamp
+	T_BU_on: TON := (PT:= T#1S);
+	T_BU_off: TON := (PT:= T#1S);
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[p_RC_lamp(CLK:= di_RC_lamp);
+p_GC_lamp(CLK:= di_GC_lamp);
+
+IF p_RC_lamp.Q THEN
+	on_RC_lamp := NOT on_RC_lamp;
+END_IF
+
+IF p_GC_lamp.Q THEN
+	on_GC_lamp := NOT on_GC_lamp;
+END_IF
+
+
+IF ing_Maint THEN	 
+	 IF s_EN_DO_TEST THEN // MaintMode -> D/O PC TEST 
+	  	is_ROT_ON := cm_ROT OR s_EN_ROT_JOG OR s_EN_ROT_INCH OR s_EN_EXE_ROT_CALI;// AND b_ALARM_ON; //test
+	 ELSE
+	  	cm_RED := cm_YE := cm_GN := cm_BU := cm_WH := cm_BZ := 0;
+		is_ROT_ON := cm_ROT OR s_EN_ROT_JOG OR s_EN_ROT_INCH OR s_EN_EXE_ROT_CALI;// AND b_ALARM_ON; //test
+	 END_IF  	 
+ELSE
+	 cm_RED := is_AL;
+	 cm_YE := is_WN;
+	 cm_GN := ing_RCP;
+	 //cm_BU := ing_MAINT;	 
+	 //cm_BZ := p_NewAL_Risec -> Cause_N_Effect에서 처리
+	 //END_IF
+	 //IF cm_BZ_OFF THEN
+	 // cm_BZ := Off;
+	  //cm_BZ_OFF := Off; 
+	 //END_IF
+
+ 	//cm_IHT_ON := b_AL = 0; -> Cause_N_Effect에서 처리    
+ 	is_ROT_ON := cm_ROT OR s_EN_ROT_JOG OR s_EN_ROT_INCH OR s_EN_EXE_ROT_CALI;// AND b_ALARM_ON; //test
+END_IF
+
+cm_WH := ing_MAINT;
+
+T_BU_on(IN:= (is_AL OR is_WN) AND T_BU_off.Q = 0);
+T_BU_off(IN:= T_BU_on.Q);
+
+do_RED := cm_RED;
+do_YE := cm_YE;//------------------------------------
+do_GN := cm_GN;
+do_BU := cm_BU OR ((is_AL OR is_WN) AND T_BU_on.Q = 0);//------------------------------------
+do_WH := cm_WH;//------------------------------------
+do_BZ := cm_BZ;
+
+do_SH_up_ry := cm_SH_up_ry;//------------------------------------
+do_SH_dw_ry := cm_SH_dw_ry;//------------------------------------
+
+do_IH := cm_IH;
+do_IH_rst := cm_IH_rst OR (di_IH_fail AND s_cm_RST);
+
+do_VP := cm_VP;
+do_VP_rst := cm_VP_rst OR ((di_VP_fail = 1 OR di_VP_al = 0 OR di_VP_wn = 0) AND s_cm_RST);//------------------------------------
+
+do_SYS_off_lock := cm_SYS_off_lock OR ing_RCP;//----------------------------------------
+
+do_RC_lamp := cm_RC_lamp OR on_RC_lamp OR (e_d_AUTO_RC_LAMP_on AND di_RC_close = 0) ;//----------------------------------------
+do_GC_lamp := cm_GC_lamp OR on_GC_lamp OR (e_d_AUTO_GC_LAMP_on AND di_GC_close = 0);//----------------------------------------
+do_CC_lamp := cm_CC_lamp OR di_CC_close = 0;//----------------------------------------
+
+do_IH_mc := cm_IH_mc;//----------------------------------------
+do_TB_mc := cm_TB_mc;//----------------------------------------
+do_VP_mc := cm_VP_mc;//----------------------------------------
+do_LH_mc := cm_LH_mc;//----------------------------------------
+
+do_ROT := cm_ROT OR is_ROT_ON;// -> 위에서 처리 
+do_ROT_break := do_ROT;//cm_ROT_break;//----------------------------------------
+do_ROT_rst := cm_ROT_rst OR (di_ROT_fail = 0 AND s_cm_RST);//----------------------------------------
+
+do_RST_led := cm_RST_led OR di_RST OR ((is_AL OR is_WN) AND T_BU_on.Q = 0);//----------------------------------------
+do_DOR_VAC_led := cm_DOR_VAC_led OR (s_EN_EXE_DOR_VAC AND is_DOR_VAC_blink) OR (s_EN_EXE_DOR_VAC = 0 AND is_DOR_05ATM);//----------------------------------------
+do_DOR_ATM_led := cm_DOR_ATM_led OR (s_EN_EXE_DOR_ATM AND is_DOR_ATM_blink) OR (s_EN_EXE_DOR_ATM = 0 AND is_DOR_1ATM);//----------------------------------------
+
+do_SH_up_led := cm_SH_up_led;//----------------------------------------
+do_SH_dw_led := cm_SH_dw_led;//----------------------------------------
+
+//Real Output*******************
+%QB0 := BITS1_DO;
+%QB1 := BITS2_DO;
+%QB2 := BITS3_DO;
+%QB3 := BITS4_DO;]]></ST>
+    </Implementation>
+    <LineIds Name="P54_DO_ETC">
+      <LineId Id="19" Count="81" />
+      <LineId Id="5" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

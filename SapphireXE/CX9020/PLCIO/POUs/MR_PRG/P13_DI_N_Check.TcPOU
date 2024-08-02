@@ -1,0 +1,173 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
+  <POU Name="P13_DI_N_Check" Id="{88c1a976-0a17-44c8-9dd2-6b0c4a16b7a3}" SpecialFunc="None">
+    <Declaration><![CDATA[PROGRAM P13_DI_N_Check
+VAR	
+    T_Rst_off: TON := (PT:=T#1S);
+	
+	//for ACT_ROT_JOG_INCH();
+	t_ROT_INCH: TON;
+	pt_ROT_INCH: TIME;
+	p_ROT_INCH: R_TRIG;
+	p_ROT_JOG_OFF: F_TRIG;
+	
+	//for Maint
+	p_MAINT: R_TRIG;
+	p_DO_TEST: R_TRIG;
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[//for PC Display
+BITS1_DI := %IB0;
+BITS2_DI := %IB1;
+BITS3_DI := %IB2;
+BITS4_DI := %IB3;
+BITS5_DI := %IB4;
+BITS6_DI := %IB5;
+BITS7_DI := %IB6;
+BITS8_DI := %IB7;
+BITS9_DI := %IB8;
+
+//전체 Reset 신호 1초 발생
+T_Rst_Off(IN:= cm_RST);
+IF T_Rst_Off.Q THEN
+	cm_RST := 0; 
+END_IF
+s_cm_RST := cm_RST;
+
+//Maint Mode Check
+p_MAINT(CLK:=(di_MAINT OR cm_MAINT));
+IF p_MAINT.Q AND (di_MAINT OR cm_MAINT) AND ing_RCP = 0 AND is_MAKER_login THEN //Maint On
+	ing_MAINT := 1; 
+END_IF 
+IF (di_MAINT = 0 AND cm_MAINT = 0) OR ing_RCP = 1 OR is_MAKER_login = 0 THEN //Maint Off
+	ing_MAINT := 0; 
+END_IF 
+
+//DO Test Check
+p_DO_TEST(CLK:=cm_DO_TEST);	
+IF p_DO_TEST.Q AND ing_MAINT THEN
+	s_EN_DO_TEST := 1; 
+END_IF
+IF ing_MAINT = 0 OR cm_DO_TEST = 0 THEN
+	s_EN_DO_TEST := 0; 
+	cm_DO_TEST := 0;
+END_IF
+ing_DO_TEST := s_EN_DO_TEST;	
+
+//S01 -N2 Low Check
+is_S01_low_al := pv_S01 < N_A_SV_AL[0];
+is_S01_low_wn := pv_S01 < N_A_SV_WN[0];
+
+//S02 -H2 Low Check
+is_S02_low_al := pv_S02 < N_A_SV_AL[1];
+is_S02_low_wn := pv_S02 < N_A_SV_WN[1];
+
+//S03 -NH3 Low Check
+is_S03_low_al := pv_S03 < N_A_SV_AL[2];
+is_S03_low_wn := pv_S03 < N_A_SV_WN[2];
+
+//S04 -SiH4 Low Check
+is_S04_low_al := pv_S04 < N_A_SV_AL[3];
+is_S04_low_wn := pv_S04 < N_A_SV_WN[3];
+
+//P01 Reactor Pressure
+is_P01_overP_al := pv_P01 > N_A_SV_AL[4];
+is_P01_overP_wn := pv_P01 > N_A_SV_WN[4];
+
+//IH Over Temp
+is_IH_overT_al := pv_IH > N_A_SV_AL[5];
+is_IH_overT_wn := pv_IH > N_A_SV_WN[5];
+
+//Shower Head CW Over Temp
+is_SH_CW_overT_al := pv_IH > N_A_SV_AL[6];
+is_SH_CW_overT_wn := pv_IH > N_A_SV_WN[6];
+
+//IH Coil CW Over Temp
+is_IH_CW_overT_al := pv_IH_CW > N_A_SV_AL[7];
+is_IH_CW_overT_wn := pv_IH_CW > N_A_SV_WN[7];
+
+//P03 Exhaust Pressure
+is_P03_overP_al := pv_P03 > N_A_SV_AL[8];
+is_P03_overP_wn := pv_P03 > N_A_SV_WN[8];
+
+//DOR Pressure
+is_DOR_1ATM := pv_S05 >= e_DOR_1ATM;
+is_DOR_05ATM := pv_S05 <= e_DOR_05ATM;
+is_DOR_01ATM := pv_S05 <= e_DOR_01ATM;
+
+is_SH_opend := di_SH_lo_limit = 0;
+
+//Rotation : Jog & Inching
+ACT_ROT_JOG_INCH();
+]]></ST>
+    </Implementation>
+    <Action Name="ACT_ROT_JOG_INCH" Id="{de67af43-6b0f-46f3-9e96-24a267bf8db5}">
+      <Implementation>
+        <ST><![CDATA[
+(*
+
+p_ROT_JOG_OFF(CLK:=EN_ROT_JOG);
+//jog runable check
+EN_ROT_JOG := (di_ROT_Jog OR cm_ROT_JOG) 
+				AND EN_ROT_INCH = 0 
+				AND (ing_RCP = 0 OR is_ROT_caliOn = 0)  
+				AND al_ROT_fail = Off;//jog
+//jog speed set				
+IF EN_ROT_JOG THEN
+	tsv_ROT := s_ROT_JOG_SPD;
+	rtm_ROT := 0;
+END_IF
+
+IF p_ROT_JOG_OFF.Q THEN
+	tsv_ROT := 0;
+	rtm_ROT := 0;
+END_IF
+
+t_ROT_INCH(PT := pt_ROT_INCH);//inching timer				
+//inching runable check				
+p_ROT_INCH(CLK := (di_ROT_60 OR cm_ROT_INCH ) AND EN_ROT_JOG = 0 AND (ing_RCP = 0 OR is_ROT_caliOn = 0) );
+IF p_ROT_INCH.Q AND do_Rot = 0  THEN
+	cm_ROT_INCH := Off;	
+	EN_ROT_INCH := On;
+END_IF
+
+//inching speed set
+IF EN_ROT_INCH THEN
+	tsv_ROT := s_ROT_INCH_SPD;
+	rtm_ROT := 0;
+	pt_ROT_INCH := REAL_TO_TIME(s_ROT_INCH_TM);//inching time set
+	t_ROT_INCH.IN := On;
+END_IF
+
+//inching end
+IF t_ROT_INCH.Q OR al_ROT_fail THEN
+	t_ROT_INCH.IN := Off;
+	EN_ROT_INCH := Off;
+	tsv_ROT := 0;
+	rtm_ROT := 0;
+END_IF
+
+IF cm_ROT_pulseZero THEN
+	cm_ROT_pulseZero := Off;
+	pv_ROT_inchPulse := 0;
+	pv_ROT_1turnPulse := 0;
+END_IF
+
+ing_ROT_jog := EN_ROT_JOG AND do_Rot;
+ing_ROT_inch := EN_ROT_INCH AND do_Rot; 
+
+*)
+]]></ST>
+      </Implementation>
+    </Action>
+    <LineIds Name="P13_DI_N_Check">
+      <LineId Id="20" Count="82" />
+      <LineId Id="5" Count="0" />
+    </LineIds>
+    <LineIds Name="P13_DI_N_Check.ACT_ROT_JOG_INCH">
+      <LineId Id="2" Count="53" />
+      <LineId Id="1" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

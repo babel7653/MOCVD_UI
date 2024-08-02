@@ -1,0 +1,32 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
+  <POU Name="F_Int2Real" Id="{d9c07b1d-1633-4686-8e80-a7018380c54d}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION F_Int2Real : REAL
+VAR_INPUT
+	nIn: INT;
+	nDecimal: INT;
+END_VAR
+VAR
+	rVal: REAL;
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[rVal:= INT_TO_REAL(nIn);	
+CASE nDecimal OF
+	1:  
+		rVal := rVal / 10;
+	2:     
+		rVal := rVal / 100;
+	3:
+		rVal := rVal / 1000;    
+END_CASE;
+F_Int2Real := rVal;
+]]></ST>
+    </Implementation>
+    <LineIds Name="F_Int2Real">
+      <LineId Id="15" Count="8" />
+      <LineId Id="7" Count="0" />
+      <LineId Id="24" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

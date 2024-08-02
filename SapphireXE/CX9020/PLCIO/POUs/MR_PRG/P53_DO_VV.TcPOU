@@ -1,0 +1,208 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
+  <POU Name="P53_DO_VV" Id="{1bb6f058-a3cf-47db-9ce3-ddb37d7ae29c}" SpecialFunc="None">
+    <Declaration><![CDATA[PROGRAM P53_DO_VV
+VAR  
+	p_V05, p_V06: R_TRIG;
+	p_V08, p_V09: R_TRIG;
+	p_V11, p_V12: R_TRIG;
+	p_V14, p_V15: R_TRIG;
+	p_V17, p_V18: R_TRIG;
+	p_V20, p_V21: R_TRIG;
+	
+	n_V05, n_V06: F_TRIG;
+	n_V08, n_V09: F_TRIG;
+	n_V11, n_V12: F_TRIG;
+	n_V14, n_V15: F_TRIG;
+	n_V17, n_V18: F_TRIG;
+	n_V20, n_V21: F_TRIG;
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[p_V05(CLK:= cm_V05); p_V06(CLK:= cm_V06);
+p_V08(CLK:= cm_V08); p_V09(CLK:= cm_V09);
+p_V11(CLK:= cm_V11); p_V12(CLK:= cm_V12);
+p_V14(CLK:= cm_V14); p_V15(CLK:= cm_V15);
+p_V17(CLK:= cm_V17); p_V18(CLK:= cm_V18);
+p_V20(CLK:= cm_V20); p_V21(CLK:= cm_V21);
+
+n_V05(CLK:= cm_V05); n_V06(CLK:= cm_V06);
+n_V08(CLK:= cm_V08); n_V09(CLK:= cm_V09);
+n_V11(CLK:= cm_V11); n_V12(CLK:= cm_V12);
+n_V14(CLK:= cm_V14); n_V15(CLK:= cm_V15);
+n_V17(CLK:= cm_V17); n_V18(CLK:= cm_V18);
+n_V20(CLK:= cm_V20); n_V21(CLK:= cm_V21);
+
+IF ing_MAINT = 0 THEN
+	
+	//interLock Valve Check
+	IF p_V05.Q THEN cm_V06 := 1; END_IF  //V05 Open -> V06 Close
+	IF n_V05.Q THEN cm_V06 := 0; END_IF	
+	IF p_V06.Q THEN cm_V05 := 1; END_IF  //V06 Close -> V05 Open
+	IF n_V06.Q THEN cm_V05 := 0; END_IF
+		
+	IF p_V08.Q THEN cm_V09 := 1; END_IF  //V08 Open -> V09 Close
+	IF n_V08.Q THEN cm_V09 := 0; END_IF
+	IF p_V09.Q THEN cm_V08 := 1; END_IF  //V09 Close -> V08 Open
+	IF n_V09.Q THEN cm_V08 := 0; END_IF
+	
+	IF p_V11.Q THEN cm_V12 := 1; END_IF  //V11 Open -> V12 Close
+	IF n_V11.Q THEN cm_V12 := 0; END_IF
+	IF p_V12.Q THEN cm_V11 := 1; END_IF  //V12 Close -> V11 Open
+	IF n_V12.Q THEN cm_V11 := 0; END_IF
+	
+	IF p_V14.Q THEN cm_V15 := 1; END_IF  //V14 Open -> V15 Close
+	IF n_V14.Q THEN cm_V15 := 0; END_IF
+	IF p_V15.Q THEN cm_V14 := 1; END_IF  //V15 Close -> V14 Open
+	IF n_V15.Q THEN cm_V14 := 0; END_IF
+	
+	IF p_V17.Q THEN cm_V18 := 1; END_IF  //V17 Open -> V18 Close
+	IF n_V17.Q THEN cm_V18 := 0; END_IF
+	IF p_V18.Q THEN cm_V17 := 1; END_IF  //V18 Close -> V17 Open
+	IF n_V18.Q THEN cm_V17 := 0; END_IF
+	
+	IF p_V20.Q THEN cm_V21 := 1; END_IF  //V20 Open -> V21 Close
+	IF n_V20.Q THEN cm_V21 := 0; END_IF
+	IF p_V21.Q THEN cm_V20 := 1; END_IF  //V21 Close -> V20 Open
+	IF n_V21.Q THEN cm_V20 := 0; END_IF
+	
+	// Leak Check Valves Off
+	cm_V36 := cm_V37 := cm_V38 := cm_V39 := 0;
+	cm_V40 := cm_V41 := cm_V42 := cm_V43 := cm_V44 := cm_V45 := 0;
+	cm_V46 := cm_V47 := cm_V48 := cm_V49 := cm_V50 := cm_V51 := cm_V52 := 0;
+	 
+	//Gas Safety Interlock-kjk - Danger Gas Supply Close
+	IF is_DOR_VAC_ok = 0 THEN
+		IF do_V01 THEN cm_V01 := 0; END_IF//H2 Supply
+		IF do_V02 THEN cm_V02 := 0; END_IF//N2 Supply
+		IF do_V03 THEN cm_V03 := 0; END_IF//SiH4 Supply
+		IF do_V04 THEN cm_V04 := 0; END_IF//NH3 Supply	
+	END_IF
+ 	 
+END_IF
+
+do_V01 := cm_V01;
+do_V02 := cm_V02;
+do_V03 := cm_V03;
+do_V04 := cm_V04;
+do_V05 := cm_V05;
+do_V06 := cm_V06;
+do_V07 := cm_V07;
+do_V08 := cm_V08;
+do_V09 := cm_V09;
+do_V10 := cm_V10;
+do_V11 := cm_V11;
+do_V12 := cm_V12;
+do_V13 := cm_V13;
+do_V14 := cm_V14;
+do_V15 := cm_V15;
+do_V16 := cm_V16;
+do_V17 := cm_V17;
+do_V18 := cm_V18;
+do_V19 := cm_V19;
+do_V20 := cm_V20;
+do_V21 := cm_V21;
+do_V22 := cm_V22;
+do_V23 := cm_V23;
+do_V24 := cm_V24;
+do_V25 := cm_V25;
+do_V26 := cm_V26;
+do_V27 := cm_V27;
+do_V28 := cm_V28;
+do_V29 := cm_V29;
+do_V30 := cm_V30;
+do_V31 := cm_V31;
+do_V32 := cm_V32;
+do_V33_1 := cm_V33_1;
+do_V33_2 := cm_V33_2;
+IF di_VP_busy = 0 THEN
+	cm_V34 := 0; //DOR VAC Valve
+END_IF
+do_V34 := cm_V34;
+do_V35 := cm_V35;
+do_V36 := cm_V36;
+do_V37 := cm_V37;
+do_V38 := cm_V38;
+do_V39 := cm_V39;
+do_V40 := cm_V40;
+do_V41 := cm_V41;
+do_V42 := cm_V42;
+do_V43 := cm_V43;
+do_V44 := cm_V44;
+do_V45 := cm_V45;
+do_V46 := cm_V46;
+do_V47 := cm_V47;
+do_V48 := cm_V48;
+do_V49 := cm_V49;
+do_V50 := cm_V50;
+do_V51 := cm_V51;
+do_V52 := cm_V52;
+
+//Solenoid block1
+Tx_SOL1 := CSETBIT32(inVal32:= Tx_SOL1, bitNo:= N_SOL1[0], bitVal:= do_V01);
+Tx_SOL1 := CSETBIT32(inVal32:= Tx_SOL1, bitNo:= N_SOL1[1], bitVal:= do_V02);
+Tx_SOL1 := CSETBIT32(inVal32:= Tx_SOL1, bitNo:= N_SOL1[2], bitVal:= do_V03);
+Tx_SOL1 := CSETBIT32(inVal32:= Tx_SOL1, bitNo:= N_SOL1[3], bitVal:= do_V04);
+Tx_SOL1 := CSETBIT32(inVal32:= Tx_SOL1, bitNo:= N_SOL1[4], bitVal:= do_V05);
+Tx_SOL1 := CSETBIT32(inVal32:= Tx_SOL1, bitNo:= N_SOL1[5], bitVal:= do_V06);
+Tx_SOL1 := CSETBIT32(inVal32:= Tx_SOL1, bitNo:= N_SOL1[6], bitVal:= do_V07);
+Tx_SOL1 := CSETBIT32(inVal32:= Tx_SOL1, bitNo:= N_SOL1[7], bitVal:= do_V08);
+Tx_SOL1 := CSETBIT32(inVal32:= Tx_SOL1, bitNo:= N_SOL1[8], bitVal:= do_V09);
+Tx_SOL1 := CSETBIT32(inVal32:= Tx_SOL1, bitNo:= N_SOL1[9], bitVal:= do_V10);
+
+Tx_SOL1 := CSETBIT32(inVal32:= Tx_SOL1, bitNo:= N_SOL1[10], bitVal:= do_V11);
+Tx_SOL1 := CSETBIT32(inVal32:= Tx_SOL1, bitNo:= N_SOL1[11], bitVal:= do_V12);
+Tx_SOL1 := CSETBIT32(inVal32:= Tx_SOL1, bitNo:= N_SOL1[12], bitVal:= do_V13);
+Tx_SOL1 := CSETBIT32(inVal32:= Tx_SOL1, bitNo:= N_SOL1[13], bitVal:= do_V14);
+Tx_SOL1 := CSETBIT32(inVal32:= Tx_SOL1, bitNo:= N_SOL1[14], bitVal:= do_V15);
+Tx_SOL1 := CSETBIT32(inVal32:= Tx_SOL1, bitNo:= N_SOL1[15], bitVal:= do_V16);
+Tx_SOL1 := CSETBIT32(inVal32:= Tx_SOL1, bitNo:= N_SOL1[16], bitVal:= do_V36);
+Tx_SOL1 := CSETBIT32(inVal32:= Tx_SOL1, bitNo:= N_SOL1[17], bitVal:= do_V37);
+Tx_SOL1 := CSETBIT32(inVal32:= Tx_SOL1, bitNo:= N_SOL1[18], bitVal:= do_V38);
+Tx_SOL1 := CSETBIT32(inVal32:= Tx_SOL1, bitNo:= N_SOL1[19], bitVal:= do_V39);
+
+Tx_SOL1 := CSETBIT32(inVal32:= Tx_SOL1, bitNo:= N_SOL1[20], bitVal:= do_V40);
+Tx_SOL1 := CSETBIT32(inVal32:= Tx_SOL1, bitNo:= N_SOL1[21], bitVal:= do_V41);
+Tx_SOL1 := CSETBIT32(inVal32:= Tx_SOL1, bitNo:= N_SOL1[22], bitVal:= do_V42);
+Tx_SOL1 := CSETBIT32(inVal32:= Tx_SOL1, bitNo:= N_SOL1[23], bitVal:= do_V43);
+Tx_SOL1 := CSETBIT32(inVal32:= Tx_SOL1, bitNo:= N_SOL1[24], bitVal:= do_V44);
+Tx_SOL1 := CSETBIT32(inVal32:= Tx_SOL1, bitNo:= N_SOL1[25], bitVal:= do_V45);
+
+//Solenoid block2
+Tx_SOL2 := CSETBIT32(inVal32:= Tx_SOL2, bitNo:= N_SOL2[0], bitVal:= do_V17);
+Tx_SOL2 := CSETBIT32(inVal32:= Tx_SOL2, bitNo:= N_SOL2[1], bitVal:= do_V18);
+Tx_SOL2 := CSETBIT32(inVal32:= Tx_SOL2, bitNo:= N_SOL2[2], bitVal:= do_V19);
+Tx_SOL2 := CSETBIT32(inVal32:= Tx_SOL2, bitNo:= N_SOL2[3], bitVal:= do_V20);
+Tx_SOL2 := CSETBIT32(inVal32:= Tx_SOL2, bitNo:= N_SOL2[4], bitVal:= do_V21);
+Tx_SOL2 := CSETBIT32(inVal32:= Tx_SOL2, bitNo:= N_SOL2[5], bitVal:= do_V22);
+Tx_SOL2 := CSETBIT32(inVal32:= Tx_SOL2, bitNo:= N_SOL2[6], bitVal:= do_V23);
+Tx_SOL2 := CSETBIT32(inVal32:= Tx_SOL2, bitNo:= N_SOL2[7], bitVal:= do_V24);
+Tx_SOL2 := CSETBIT32(inVal32:= Tx_SOL2, bitNo:= N_SOL2[8], bitVal:= do_V25);
+Tx_SOL2 := CSETBIT32(inVal32:= Tx_SOL2, bitNo:= N_SOL2[9], bitVal:= do_V26);
+
+Tx_SOL2 := CSETBIT32(inVal32:= Tx_SOL2, bitNo:= N_SOL2[10], bitVal:= do_V27);
+Tx_SOL2 := CSETBIT32(inVal32:= Tx_SOL2, bitNo:= N_SOL2[11], bitVal:= do_V28);
+Tx_SOL2 := CSETBIT32(inVal32:= Tx_SOL2, bitNo:= N_SOL2[12], bitVal:= do_V29);
+Tx_SOL2 := CSETBIT32(inVal32:= Tx_SOL2, bitNo:= N_SOL2[13], bitVal:= do_V30);
+Tx_SOL2 := CSETBIT32(inVal32:= Tx_SOL2, bitNo:= N_SOL2[14], bitVal:= do_V31);
+Tx_SOL2 := CSETBIT32(inVal32:= Tx_SOL2, bitNo:= N_SOL2[15], bitVal:= do_V32);
+Tx_SOL2 := CSETBIT32(inVal32:= Tx_SOL2, bitNo:= N_SOL2[16], bitVal:= do_V33_1);
+Tx_SOL2 := CSETBIT32(inVal32:= Tx_SOL2, bitNo:= N_SOL2[17], bitVal:= do_V33_2);
+Tx_SOL2 := CSETBIT32(inVal32:= Tx_SOL2, bitNo:= N_SOL2[18], bitVal:= do_V34);
+Tx_SOL2 := CSETBIT32(inVal32:= Tx_SOL2, bitNo:= N_SOL2[19], bitVal:= do_V35);
+
+Tx_SOL2 := CSETBIT32(inVal32:= Tx_SOL2, bitNo:= N_SOL2[20], bitVal:= do_V46);
+Tx_SOL2 := CSETBIT32(inVal32:= Tx_SOL2, bitNo:= N_SOL2[21], bitVal:= do_V47);
+Tx_SOL2 := CSETBIT32(inVal32:= Tx_SOL2, bitNo:= N_SOL2[22], bitVal:= do_V48);
+Tx_SOL2 := CSETBIT32(inVal32:= Tx_SOL2, bitNo:= N_SOL2[23], bitVal:= do_V49);
+Tx_SOL2 := CSETBIT32(inVal32:= Tx_SOL2, bitNo:= N_SOL2[24], bitVal:= do_V50);
+Tx_SOL2 := CSETBIT32(inVal32:= Tx_SOL2, bitNo:= N_SOL2[25], bitVal:= do_V51);
+Tx_SOL2 := CSETBIT32(inVal32:= Tx_SOL2, bitNo:= N_SOL2[26], bitVal:= do_V52);
+]]></ST>
+    </Implementation>
+    <LineIds Name="P53_DO_VV">
+      <LineId Id="22" Count="178" />
+      <LineId Id="5" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

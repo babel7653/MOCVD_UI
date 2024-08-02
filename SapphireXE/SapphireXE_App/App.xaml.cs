@@ -40,10 +40,6 @@ namespace SapphireXE_App
       //services.AddSingleton<IShareService, ShareService>();
       //services.AddSingleton<IEmailService, EmailService>();
       services.AddTransient(typeof(MainViewModel));
-      services.AddTransient(typeof(SystemControlViewModel));
-      services.AddTransient(typeof(RecipeControlViewModel));
-      services.AddTransient(typeof(ReportViewModel));
-      services.AddTransient(typeof(SettingViewModel));
 
       return services.BuildServiceProvider();
     }

@@ -1,0 +1,45 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
+  <POU Name="F_LH_PV" Id="{3ed61014-9d86-4107-82b4-3663d31d6351}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION F_LH_PV : REAL
+VAR_INPUT
+	hexPV: STRING;
+	nDecimal: INT := 0;
+END_VAR
+VAR
+	data: ARRAY[0..1] OF BYTE;
+	b1: BYTE;
+	cbData: UDINT;
+	ptPV: POINTER TO INT;
+	iPV: INT;
+	i: INT;
+	r1: REAL;
+END_VAR
+
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[
+cbData := HEXSTR_TO_DATA(hexPV, ADR(data), SIZEOF(data));
+		
+//Swap
+b1 := data[0];
+data[0] := data[1];
+data[1] := b1;
+		
+ptPV := ADR(data);
+iPV := ptPV^;
+r1 := INT_TO_REAL(iPV);
+
+//Decimal
+FOR i := 0 TO nDecimal - 1 BY 1 DO
+	r1 := r1 / 10;
+END_FOR
+
+F_LH_PV := r1;]]></ST>
+    </Implementation>
+    <LineIds Name="F_LH_PV">
+      <LineId Id="70" Count="16" />
+      <LineId Id="7" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

@@ -10,11 +10,11 @@ none
 false
 TRACE
 D:\sysnex\mocvd\MocvdNew\SapphirePLC\SapphireXE_App\App.xaml
-111826151097
+12884440690
 10-1259184986
-321921226716
+33305374905
 44-1639434202
-Assets\Icons\Icons.xaml;Views\RecipeControl.xaml;Views\Report.xaml;Views\Setting.xaml;Views\SystemControl.xaml;Styles\ButtonStyle.xaml;Styles\MainStyle.xaml;Styles\RadioButtonStyle.xaml;Themes\DarkTheme.xaml;Themes\LightTheme.xaml;Views\MainView.xaml;
+Assets\Icons\Icons.xaml;Controls\DeviceSelect.xaml;Views\RecipeControl.xaml;Views\Report.xaml;Views\Setting.xaml;Views\SystemControl.xaml;Styles\ButtonStyle.xaml;Styles\MainStyle.xaml;Styles\RadioButtonStyle.xaml;Themes\DarkTheme.xaml;Themes\LightTheme.xaml;Views\MainView.xaml;
 
-False
+True
 

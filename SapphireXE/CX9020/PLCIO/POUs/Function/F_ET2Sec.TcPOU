@@ -1,0 +1,26 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
+  <POU Name="F_ET2Sec" Id="{5668e4dc-eb8a-43e1-ae30-609a32ac6d3d}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION F_ET2Sec : REAL
+VAR_INPUT
+	IN: TIME;
+	SecScale: REAL;
+END_VAR
+VAR
+	r1: REAL;
+END_VAR]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[
+r1:= TIME_TO_REAL(IN);
+IF r1 > 0 THEN
+	F_ET2Sec := r1 / SecScale;
+ELSE
+	F_ET2Sec := 0;	
+END_IF]]></ST>
+    </Implementation>
+    <LineIds Name="F_ET2Sec">
+      <LineId Id="14" Count="5" />
+      <LineId Id="7" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

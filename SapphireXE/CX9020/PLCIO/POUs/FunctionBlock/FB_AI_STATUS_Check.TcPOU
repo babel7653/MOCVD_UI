@@ -1,0 +1,27 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
+  <POU Name="FB_AI_STATUS_Check" Id="{f1fbe4e8-2146-4de9-bc19-f64724e5ea3c}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK FB_AI_STATUS_Check
+VAR_INPUT
+	bEnable: BOOL;
+	dwStatus: DWORD;
+END_VAR
+VAR_OUTPUT
+	underrange: BOOL; 
+	overrange: BOOL; 
+	error: BOOL; 
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[IF bEnable THEN	
+	underrange := GETBIT32(inVal32 := dwStatus, bitNo := 0);
+	overrange := GETBIT32(inVal32 := dwStatus, bitNo := 1);
+	error := GETBIT32(inVal32 := dwStatus, bitNo := 6);
+END_IF]]></ST>
+    </Implementation>
+    <LineIds Name="FB_AI_STATUS_Check">
+      <LineId Id="10" Count="3" />
+      <LineId Id="9" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

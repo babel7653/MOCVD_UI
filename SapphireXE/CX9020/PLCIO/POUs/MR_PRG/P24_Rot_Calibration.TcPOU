@@ -1,0 +1,46 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
+  <POU Name="P24_Rot_Calibration" Id="{2d6f448d-272e-439c-8e84-551521b0ce03}" SpecialFunc="None">
+    <Declaration><![CDATA[PROGRAM P24_Rot_Calibration
+VAR
+	T1: TON := (PT:= T#1S); //For stabilize //T#500MS
+	T2: TON := (PT:= T#1S);; //For Next step//T#200MS
+	P_Run: R_TRIG;
+	P_Next: R_TRIG;
+	Inc_RPM: REAL;
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[T1(IN:= s_EN_EXE_ROT_CALI);//Timer On
+T2(IN:= T1.Q);
+P_Run(CLK:= s_EN_EXE_ROT_CALI);
+P_Next(CLK:= T2.Q);
+
+IF P_Run.Q THEN
+	rtm_ROT := 0;
+	tsv_ROT := 0;
+	Inc_RPM := 1; //2024-02-20 N_MAX[27] / N_MAX[65]; //Rotation Max RPM / BLDC Max 4000RPM = Inc_RPM
+END_IF
+	
+//Wait until it stabilizes.	
+is_ROT_caliStabilized := T1.Q;
+is_ROT_caliOn := s_EN_EXE_ROT_CALI;	
+
+//stabil 1sec -> Next
+IF P_Next.Q THEN	 
+	IF tsv_ROT >= (N_MAX[27]) OR do_ROT = 0 THEN
+ 		tsv_ROT := 0;
+		s_EN_EXE_ROT_CALI := 0;
+ 	ELSE
+		tsv_ROT := tsv_ROT + Inc_RPM;
+	 END_IF
+	T1(IN:= 0);// Timer Reset
+END_IF
+]]></ST>
+    </Implementation>
+    <LineIds Name="P24_Rot_Calibration">
+      <LineId Id="14" Count="24" />
+      <LineId Id="5" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

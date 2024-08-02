@@ -1,0 +1,327 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
+  <POU Name="P22_RCP_Ctrl" Id="{9da5b60e-61b6-417c-aa31-beb6f8593944}" SpecialFunc="None">
+    <Declaration><![CDATA[PROGRAM P22_RCP_Ctrl
+VAR	
+	p_Start, p_EMS: R_TRIG;
+	nCase: INT;
+	T_Ramp, T_Hold, T_Pause, T_Run: TON;	
+	PT_MAX: TIME := T#4294967295MS;
+	PT_RAMP, PT_HOLD: TIME;
+	ET_RAMP, ET_HOLD, ET_RUN, ET_Pause: TIME;
+	PT_RAMP_REMAIN, PT_HOLD_REMAIN: TIME;
+	ET_RAMP_RUN, ET_HOLD_RUN: TIME;
+		
+	nLoop, nJump: INT;
+    stepIdx: INT;
+	nPauseStep: INT;	
+	idx: INT;	
+	
+	nLoop_Cnt: INT;	
+	jumpStart: INT;
+	jumpEnd: INT;	
+	
+	SecScale: REAL;
+	i_RUN_TM: DINT;
+	i_RUN_TM_OLD: DINT;
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[//Timer
+T_Ramp(PT:= PT_RAMP, ET=> ET_RAMP);  (*램핑 타이머 *)
+T_Hold(PT:= PT_HOLD, ET=> ET_HOLD);  (*홀딩 타이머 *)
+T_RUN(IN:= s_EN_EXE_RCP, PT:= PT_MAX , ET=> ET_RUN);  (*홀딩 타이머 *)
+T_Pause(IN:= s_is_RCP_pause, PT:= PT_MAX, ET=> ET_Pause);
+
+p_Start(CLK:= s_EN_EXE_RCP);
+p_EMS(CLK:= (nCase > 0 AND s_EN_EXE_RCP = 0) OR is_AL);
+
+IF p_Start.Q THEN
+	nCase := 1;
+END_IF
+
+IF p_EMS.Q THEN
+	s_EN_EXE_RCP := 0;
+	nCase := 0;
+END_IF
+
+//IF EN_RUN_RCP THEN
+IF nCase = 1 THEN (*Initial Setting*)
+	cm_TV_run := 1;
+	cm_ROT := 1;
+	pv_RCP_RUN_ET := 0;
+	pv_STEP_RTM := 0;
+	pv_STEP_HTM := 0;
+	pv_RCP_PAUSE_ET := 0;
+	pv_STEP_LOOP := 0;
+	sv_STEP_JUMP := 0;
+	cm_RCP_pause := 0;
+	cm_RCP_restart := 0;
+	cm_RCP_skip := 0;
+	is_RCP_ended := 0;
+	s_is_RCP_pause := 0;
+	nLoop := 0;
+	stepIdx	:= 0;
+	SecScale := UINT_TO_REAL(e_RTM_UNIT);						
+	nCase := 10;		
+END_IF
+
+//Data Exchange
+IF nCase = 10 THEN	
+	//Ramp & Hold Time Init
+	sv_STEP_RTM := UINT_TO_REAL(N_RCP_RTM[stepIdx]);
+	sv_STEP_HTM := UINT_TO_REAL(N_RCP_HTM[stepIdx]); 
+	PT_RAMP := REAL_TO_TIME(sv_STEP_RTM * SecScale);//1000;
+	PT_HOLD := REAL_TO_TIME(sv_STEP_HTM * SecScale);//1000;    
+    PT_RAMP_REMAIN := T#0MS;
+	PT_HOLD_REMAIN := T#0MS;
+	ET_RAMP_RUN := T#0MS;
+	ET_HOLD_RUN := T#0MS;
+		
+	FOR idx := 0 TO 29 DO		
+		IF N_EN_RCP_RAMP[idx] THEN	
+			N_TSV_RTM[idx * 2 + 1] := sv_STEP_RTM;
+		ELSE
+			N_TSV_RTM[idx * 2 + 1] := 0;	
+		END_IF				   			
+	END_FOR  
+
+	(*Analog value input *)
+	tsv_M01	:= N_RCP_M01[stepIdx];	tsv_M02	:= N_RCP_M02[stepIdx];							
+	tsv_M03	:= N_RCP_M03[stepIdx];	tsv_M04	:= N_RCP_M04[stepIdx];
+	tsv_M05	:= N_RCP_M05[stepIdx];	tsv_M06	:= N_RCP_M06[stepIdx];
+	tsv_M07	:= N_RCP_M07[stepIdx];	tsv_M08	:= N_RCP_M08[stepIdx];
+	tsv_M09	:= N_RCP_M09[stepIdx];	tsv_M10	:= N_RCP_M10[stepIdx];
+	tsv_M11	:= N_RCP_M11[stepIdx];	tsv_M12	:= N_RCP_M12[stepIdx];
+	tsv_M13	:= N_RCP_M13[stepIdx];	tsv_M14	:= N_RCP_M14[stepIdx];
+	tsv_M15	:= N_RCP_M15[stepIdx];	tsv_M16	:= N_RCP_M16[stepIdx];
+	tsv_M17	:= N_RCP_M17[stepIdx]; 	tsv_M18	:= N_RCP_M18[stepIdx];
+	tsv_M19	:= N_RCP_M19[stepIdx]; 	
+	
+	tsv_IH := N_RCP_IH[stepIdx];
+	tsv_ROT	:= UINT_TO_REAL(N_RCP_ROT[stepIdx]);
+	IF en_TV_posMode THEN
+		tsv_POS := N_RCP_POS[stepIdx];	
+	ELSE
+		tsv_P01 := N_RCP_P01[stepIdx];
+	END_IF	
+				
+	(*Gas valve set*)
+	cm_V01 := N_RCP_V01[stepIdx]; cm_V02 := N_RCP_V02[stepIdx];
+	cm_V03 := N_RCP_V03[stepIdx]; cm_V04 := N_RCP_V04[stepIdx];
+	cm_V05 := N_RCP_V05[stepIdx]; cm_V07 := N_RCP_V07[stepIdx];
+	cm_V08 := N_RCP_V08[stepIdx]; cm_V10 := N_RCP_V10[stepIdx];
+	cm_V11 := N_RCP_V11[stepIdx]; cm_V13 := N_RCP_V13[stepIdx];
+	cm_V14 := N_RCP_V14[stepIdx]; cm_V16 := N_RCP_V16[stepIdx];
+	cm_V17 := N_RCP_V17[stepIdx]; cm_V19 := N_RCP_V19[stepIdx];
+	cm_V20 := N_RCP_V20[stepIdx]; cm_V22 := N_RCP_V22[stepIdx];
+	cm_V23 := N_RCP_V23[stepIdx]; cm_V24 := N_RCP_V24[stepIdx];	
+	cm_V25 := N_RCP_V25[stepIdx]; cm_V26 := N_RCP_V26[stepIdx];
+	cm_V27 := N_RCP_V27[stepIdx]; cm_V28 := N_RCP_V28[stepIdx];	
+	cm_V29 := N_RCP_V29[stepIdx]; cm_V30 := N_RCP_V30[stepIdx];	
+	cm_V31 := N_RCP_V31[stepIdx]; cm_V32 := N_RCP_V32[stepIdx];
+		
+	//Ctemp , Loop. Jump 
+	sv_STEP_CTEMP := N_RCP_CTEMP[stepIdx];			
+	//Jump & Loop
+	IF nLoop = 0 THEN
+		sv_STEP_LOOP := N_RCP_LOOP[stepIdx];
+		sv_STEP_JUMP := N_RCP_JUMP[stepIdx];
+		nLoop := REAL_TO_INT(sv_STEP_LOOP);
+		nJump := REAL_TO_INT(sv_STEP_JUMP);										
+		IF nLoop > 0 AND nJump > 0 THEN	
+			nLoop_Cnt := 0;
+			jumpStart := nJump - 1;
+			jumpEnd := stepIdx;
+		END_IF;
+	END_IF;			
+	nCase := 20;
+END_IF
+
+//Ramping Time || Compare Temp Check
+IF nCase = 20 THEN
+	//pause
+	IF cm_RCP_pause THEN 
+		cm_RCP_pause := 0;
+		IF s_is_RCP_pause = 0 THEN 
+			PT_RAMP_REMAIN := PT_RAMP - ET_RAMP;
+			ET_RAMP_RUN := ET_RAMP_RUN + ET_RAMP;
+			s_is_RCP_pause := 1; 
+		END_IF
+	END_IF
+	//restart
+	IF cm_RCP_restart THEN 
+		cm_RCP_restart := 0;
+		IF s_is_RCP_pause THEN 
+			PT_RAMP := PT_RAMP_REMAIN;
+			s_is_RCP_pause := 0;
+		END_IF
+	END_IF		
+	//skip
+	IF cm_RCP_skip THEN cm_RCP_skip := 0; T_Ramp(IN:= 0); nCase := 40; END_IF
+		
+	T_Ramp(IN:= NOT s_is_RCP_pause);
+	
+	IF 	sv_STEP_CTEMP > 0 THEN//Compare Temp
+		//GIST VLC -> FP00_CTemp > 50;
+		//Genicom VLC -> FP00_CTemp > 0; 				
+		//GIST VLC -> FP00_CTemp -20 < FP00_RTemp_Real   AND   FP00_RTemp_Real < FP00_CTemp + 1;
+		//Genicom VLC -> FP00_CTemp -10 < FP00_RTemp_Real   AND   FP00_RTemp_Real < FP00_CTemp + 1;
+		//온도를 올릴 때도 있고 내릴 때 비교할 수도 있다.
+		//IF IS_RCP_PAUSE = Off AND sv_STEP_CTEMP - 10 < tsv_RTemp AND tsv_RTemp  < sv_STEP_CTEMP + 1  THEN
+		IF s_is_RCP_pause = 0 AND sv_STEP_CTEMP - 10 < pv_IH AND pv_IH < sv_STEP_CTEMP + 1 THEN						
+			nCase := 40;					
+		END_IF				
+	ELSE // Normal Ramp			
+		IF T_Ramp.Q THEN			
+			T_Ramp(IN:= 0);
+			nCase := 30;			
+		END_IF
+	END_IF
+		pv_STEP_RTM := F_ET2Sec(IN:= ET_RAMP, SecScale:= SecScale) + F_ET2Sec(IN:= ET_RAMP_RUN, SecScale:= SecScale);	
+		pv_RCP_RUN_ET := F_ET2Sec(IN:= ET_RUN, SecScale:= SecScale);
+END_IF
+
+//Holding Time
+IF nCase = 30 THEN 
+	//pause
+	IF cm_RCP_pause THEN 
+		cm_RCP_pause := 0;
+		IF s_is_RCP_pause = 0 THEN 
+			PT_HOLD_REMAIN := PT_HOLD - ET_HOLD;
+			ET_HOLD_RUN := ET_HOLD_RUN + ET_HOLD;
+			s_is_RCP_pause := 1; 
+		END_IF
+	END_IF
+	//restart
+	IF cm_RCP_restart THEN 
+		cm_RCP_restart := 0;
+		IF s_is_RCP_pause THEN 
+			PT_HOLD := PT_HOLD_REMAIN;
+			s_is_RCP_pause := 0;
+		END_IF
+	END_IF		
+	//skip
+	IF cm_RCP_skip  THEN cm_RCP_skip := 0; T_Ramp(IN:= 0); nCase := 40; END_IF	
+	//hold time done
+	T_Hold(IN:= NOT s_is_RCP_pause);
+	IF T_Hold.Q THEN			
+		T_Hold(IN:= 0);
+		nCase := 40;						
+	END_IF
+	pv_STEP_HTM := F_ET2Sec(IN:= ET_HOLD, SecScale:= SecScale) + F_ET2Sec(IN:= ET_HOLD_RUN, SecScale:= SecScale);
+	pv_RCP_RUN_ET := F_ET2Sec(IN:= ET_RUN, SecScale:= SecScale);
+END_IF	
+
+//Loop or Normal Condition Check
+IF nCase = 40 THEN
+	IF nLoop = 0 THEN
+		nCase := 100;
+	ELSE
+		nCase := 50;
+	END_IF;
+END_IF
+
+//Loop Next Step Check	
+IF nCase = 50 THEN		
+	IF stepIdx < jumpEnd THEN 
+		stepIdx := stepIdx + 1;
+		nCase := 110;
+	ELSE						
+		IF nLoop <= nLoop_Cnt THEN
+			nLoop := 0;
+			nLoop_Cnt := 0;
+			jumpStart := 0;
+			jumpEnd :=	0;
+			nCase := 100;
+		ELSE
+			stepIdx := jumpStart;
+			nLoop_Cnt := nLoop_Cnt + 1;	
+			nCase := 110;
+		END_IF;							 
+	END_IF		
+END_IF		
+
+//Normal Next Step
+IF nCase = 100 THEN
+	s_is_RCP_pause := 0;
+	stepIdx := stepIdx + 1;
+	nCase := 110;
+END_IF
+
+//End Checking
+IF nCase = 110 THEN
+	IF (N_RCP_RTM[stepIdx] = 0 AND N_RCP_HTM[stepIdx]= 0) OR stepIdx >= 200 THEN
+		is_RCP_ended := 1;
+		s_EN_EXE_RCP := 0;
+		nCase := 0;
+	ELSE
+		T_Ramp(IN:= 0);
+		T_Hold(IN:= 0);			
+		nCase := 10;
+	END_IF
+END_IF
+
+IF s_EN_EXE_RCP THEN
+	//ramp En Check
+	i_RUN_TM := REAL_TO_DINT(pv_RCP_RUN_ET);
+	s_P_RampEN := i_RUN_TM_OLD < i_RUN_TM; //Recipe Ramp Call ************************
+	i_RUN_TM_OLD := i_RUN_TM;
+ELSE // EN_EXE_RCP == 0
+	T_Ramp(IN:= 0);
+	T_Hold(IN:= 0);
+	s_is_RCP_pause := 0;
+	s_P_RampEN := 0;
+	stepIdx := 0;
+	nCase := 0;
+END_IF
+
+IF  nCase > 0 AND (is_AL OR is_RCP_ended OR cm_FC_stop) THEN	
+	//cm_US1 := On;
+	IF is_AL = 0 AND e_US_RCP > 0 THEN
+		CASE e_US_RCP OF
+			1: cm_US1 := 1;
+			2: cm_US2 := 1;
+			3: cm_US3 := 1;
+			4: cm_US4 := 1;
+		END_CASE
+	END_IF
+		
+	pv_STEP_RTM	:= 0;
+	pv_STEP_HTM	:= 0;
+	pv_RCP_PAUSE_ET	:= 0;
+	pv_STEP_LOOP := 0;
+	sv_STEP_JUMP := 0;
+	s_EN_EXE_RCP := 0;
+	//cm_RCP_stop := 0;
+	cm_RCP_pause := 0;
+	cm_RCP_restart := 0;
+	cm_RCP_skip := 0;		
+	//cm_ROT_On := 0;
+	is_RCP_ended := 0;
+	s_is_RCP_pause := 0;
+END_IF
+
+pv_RCP_STEP := INT_TO_REAL(stepIdx) + 1;
+IF nLoop > 0 AND nJump > 0 THEN
+	pv_STEP_JUMP := INT_TO_REAL(jumpStart) + 1;
+	pv_STEP_LOOP := INT_TO_REAL(nLoop_Cnt);	
+ELSE
+	pv_STEP_JUMP := 0;
+	pv_STEP_LOOP := 0;
+END_IF
+ing_RCP_pause := s_is_RCP_pause;
+ing_RCP := nCase <> 0;
+ing_RCP_ramp := nCase = 20;
+ing_RCP_hold := nCase = 30;
+ing_RCP_cTemp := ing_RCP_ramp AND sv_STEP_CTEMP > 0;
+ing_RCP_loop := nLoop > 0;
+pv_RCP_PAUSE_ET := F_ET2Sec(IN:=ET_Pause, SecScale:=SecScale);
+]]></ST>
+    </Implementation>
+    <LineIds Name="P22_RCP_Ctrl">
+      <LineId Id="30" Count="289" />
+      <LineId Id="5" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

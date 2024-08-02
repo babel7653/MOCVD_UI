@@ -11,7 +11,7 @@ using System.Windows.Input;
 
 namespace SapphireXE_App.ViewModels
 {
-    class SettingViewModel : ViewModelBase
+   public partial class MainViewModel : ViewModelBase
     {
         public string fname = AppDomain.CurrentDomain.BaseDirectory + "..\\..\\..\\data\\parameters\\" + @"DeviceIO.json";
 
@@ -29,10 +29,6 @@ namespace SapphireXE_App.ViewModels
         public ICommand AlarmSettingLoadCommand => new RelayCommand(AlarmSettingLoad);
         public ICommand AlarmSettingSaveCommand => new RelayCommand(AlarmSettingSave);
 
-        public SettingViewModel()
-        {
-            AlarmSettingLoad();
-        }
         private void AlarmSettingLoad()
         {
             //Json파일 읽기 및 Pars

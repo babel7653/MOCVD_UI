@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<TcPlcObject Version="1.1.0.1">
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
   <Task Name="PlcTask" Id="{ef2fbe5b-a6b9-4a09-9f30-30d1709d1834}">
     <!--CycleTime in micro seconds.-->
     <CycleTime>10000</CycleTime>
@@ -7,11 +7,13 @@
     <PouCall>
       <Name>MAIN</Name>
     </PouCall>
+    <PouCall>
+      <Name>RecipeHandler</Name>
+    </PouCall>
     <TaskFBGuid>{b29ea68b-ea82-407a-8554-129cf44102dc}</TaskFBGuid>
     <Fb_init>{de40bacf-5d15-4246-a4b8-150ef929244d}</Fb_init>
     <Fb_exit>{839ca0bb-f34e-43ac-b676-748dfef7207d}</Fb_exit>
     <CycleUpdate>{41ce043a-a5c4-4324-ba51-7dfe860c5956}</CycleUpdate>
     <PostCycleUpdate>{fd52bcb1-2d68-47fe-8e55-21299f35f28c}</PostCycleUpdate>
-    <ObjectProperties />
   </Task>
 </TcPlcObject>

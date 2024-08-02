@@ -1,0 +1,89 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
+  <POU Name="P41_DOR_VAC" Id="{536326b9-c9b5-4ea1-a145-c72508388f5f}" SpecialFunc="None">
+    <Declaration><![CDATA[PROGRAM P41_DOR_VAC
+VAR
+	p_Start, p_EMS: R_TRIG;
+	nCase: INT;
+	T1: TON;
+	PT1: TIME := T#1S;
+	T_Blink: TON := (PT:= T#1S);
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[//DOR 진공 잡기
+//is_DOR_05Bar : 약 375Torr
+//is_DOR_01Bar : 약 75Torr
+
+T1(IN:= s_EN_EXE_DOR_VAC, PT:= PT1);
+T_Blink(IN:= nCase > 0);
+p_Start(CLK:= s_EN_EXE_DOR_VAC);
+p_EMS(CLK:= (nCase > 0 AND s_EN_EXE_DOR_VAC = 0) OR is_AL);
+
+IF p_Start.Q THEN
+	nCase := 1;
+END_IF
+
+IF p_EMS.Q THEN
+	s_EN_EXE_DOR_VAC := 0;
+	nCase := 0;
+END_IF
+
+
+CASE nCase OF
+	1://Init
+		is_DOR_ATM_ok := 0;
+		en_SH_UpDw := 0;
+		s_DOR_CNT := 0;
+		cm_V35 := 0;//DOR Vent
+		cm_V34 := 1;//DOR Vacuum
+		PT1 := T#2S;
+		T1(IN:= 0);
+		nCase := 2;
+	2://1st wait
+		IF T1.Q THEN
+			T1(IN:= 0);
+			nCase := 10;
+		END_IF
+	10://1st vac check
+		IF T1.Q THEN//2sec pulse
+			T1(IN:= 0);
+			IF is_DOR_05ATM AND is_DOR_01ATM THEN
+				s_DOR_CNT := 0;
+				nCase := 20;
+			ELSE
+				s_DOR_CNT := s_DOR_CNT + 1;//1st DOR AL&WN Check
+			END_IF
+		END_IF
+	20://2st vac check 
+		IF T1.Q THEN//2sec pulse
+			T1(IN:= 0);
+			IF is_DOR_05ATM AND is_DOR_01ATM THEN				
+				cm_V34 := e_d_V34_keep_on;//DOR VAC				
+				cm_V35 := 0;//DOR ATM				
+				is_DOR_VAC_ok := 1;
+				s_EN_EXE_DOR_VAC := 0;
+				nCase := 0;
+			ELSE
+				s_DOR_CNT := s_DOR_CNT + 1;//2st DOR AL&WN Check
+			END_IF
+		END_IF
+END_CASE
+
+
+IF s_EN_EXE_DOR_VAC THEN
+	IF T_Blink.Q THEN
+		T_Blink(IN := 0);
+		is_DOR_VAC_blink := NOT is_DOR_VAC_blink;
+	END_IF
+ELSE
+	is_DOR_VAC_blink := 0;
+END_IF;
+]]></ST>
+    </Implementation>
+    <LineIds Name="P41_DOR_VAC">
+      <LineId Id="14" Count="67" />
+      <LineId Id="5" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

@@ -1,0 +1,70 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
+  <GVL Name="GVL_Recipe" Id="{02d16a10-0f30-4d01-bb88-bb51395b9e60}">
+    <Declaration><![CDATA[{attribute 'qualified_only'}
+VAR_GLOBAL
+	No			:	INT;
+	rTime		:   INT;
+	hTime		:   INT;
+	rTemp		:   INT;
+	rPressure	:   INT;
+	sRotation	:   INT;
+	cTemp		:   INT;
+	Loop		:   INT; 
+	Jump		:   INT; 
+	M01         :	REAL;
+	M02         :   REAL;
+	M03         :   REAL;
+	M04         :   REAL;
+	M05         :   REAL;
+	M06         :   REAL;
+	M07         :   REAL;
+	M08         :   REAL;
+	M09         :   REAL;
+	M10         :   REAL;
+	M11         :   REAL;
+	M12         :   REAL;
+	M13         :   REAL;
+	M14         :   REAL;
+	M15         :   REAL;
+	M16         :   REAL;
+	M17         :   REAL;
+	M18         :   REAL;
+	M19         :   REAL;
+	E01         :   REAL;
+	E02         :   REAL;
+	E03         :   REAL;
+	E04         :   REAL;
+	E05         :   REAL;
+	E06         :   REAL;
+	E07         :   REAL;
+	V01         :   BOOL;
+	V02         :   BOOL;
+	V03         :   BOOL;
+	V04         :   BOOL;
+	V05         :   BOOL;
+	V07         :   BOOL;
+	V08         :   BOOL;
+	V10         :   BOOL;
+	V11         :   BOOL;
+	V13         :   BOOL;
+	V14         :   BOOL;
+	V16         :   BOOL;
+	V17         :   BOOL;
+	V19         :   BOOL;
+	V20         :   BOOL;
+	V22         :   BOOL;
+	V23         :   BOOL;
+	V24         :   BOOL;
+	V25         :   BOOL;
+	V26         :   BOOL;
+	V27         :   BOOL;
+	V28         :   BOOL;
+	V29         :   BOOL;
+	V30         :   BOOL;
+	V31         :   BOOL;
+	V32         :   BOOL;
+
+END_VAR]]></Declaration>
+  </GVL>
+</TcPlcObject>

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace SapphireXE_App.ViewModels
 {
-  class SystemControlViewModel
+  public partial class MainViewModel : ViewModelBase
   {
   }
 }

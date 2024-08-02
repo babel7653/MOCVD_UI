@@ -1,0 +1,38 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
+  <POU Name="P43_SH_UpDw" Id="{c026f5a9-95a8-4504-b275-32da23ad8036}" SpecialFunc="None">
+    <Declaration><![CDATA[PROGRAM P43_SH_UpDw
+VAR	
+	//For Led Display
+	T_UP: TON := (PT:= T#200MS);
+	T_UP_X: TON := (PT:= T#200MS);
+	T_DW: TON := (PT:= T#200MS);
+	T_DW_X: TON := (PT:= T#200MS);
+	//For S/H Down Delay
+	T_DW_off: TON := (PT:= T#1S);
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[T_UP(IN:= do_SH_up_ry AND T_UP_X.Q = 0);
+T_UP_X(IN:= T_UP.Q);
+
+T_DW(IN:= do_SH_dw_ry AND T_DW_X.Q = 0);
+T_DW_X(IN:= T_DW.Q);
+
+//en_SH_UpDw:= 1;//TEST
+T_DW_off(IN:= di_SH_lo_limit);
+IF en_SH_UpDw THEN
+   cm_SH_up_ry := di_SH_dw = 0 AND di_SH_up AND di_SH_hi_limit = 0;
+   cm_SH_dw_ry := di_SH_up = 0 AND di_SH_dw AND (di_SH_lo_limit = 0 OR T_DW_off.Q = 0);
+END_IF
+
+
+cm_SH_up_led := (T_UP.Q = 0 AND cm_SH_up_ry) OR di_SH_hi_limit;
+cm_SH_dw_led := (T_DW.Q = 0 AND cm_SH_dw_ry) OR di_SH_lo_limit;]]></ST>
+    </Implementation>
+    <LineIds Name="P43_SH_UpDw">
+      <LineId Id="16" Count="14" />
+      <LineId Id="5" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

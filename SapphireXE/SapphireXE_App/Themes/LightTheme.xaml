@@ -3,10 +3,10 @@
 
     <!-- Background Colors -->
     <SolidColorBrush x:Key="PrimaryBackgroundColor" Color="#0F172A"/>
-    <SolidColorBrush x:Key="SideBackgroundColor" Color="#334155"/>
+    <SolidColorBrush x:Key="SideBackgroundColor" Color="#475569"/>
     <SolidColorBrush x:Key="PrimaryFontColor" Color="#F8FAFC"/>
     <SolidColorBrush x:Key="SecondaryFontColor" Color="#E2E8F0"/>
-    
+
     <!-- Primary Colors -->
     <SolidColorBrush x:Key="PrimaryBlueColor" Color="#5B7FFF"/>
     <SolidColorBrush x:Key="PrimaryGrayColor" Color="#BFBFC4"/>

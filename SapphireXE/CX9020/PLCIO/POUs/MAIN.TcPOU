@@ -3,50 +3,239 @@
   <POU Name="MAIN" Id="{b6fb3822-8acf-4a10-9b4c-9016c8d58a0c}" SpecialFunc="None">
     <Declaration><![CDATA[PROGRAM MAIN
 VAR
-	test_out : BYTE;
+	plc_state : BOOL;
+	plc_array : ARRAY [0..7]  OF BOOL;
+	plc_array2 : ARRAY [0..7]  OF BOOL;
+	
+	p_V05, p_V06: R_TRIG;
+	p_V08, p_V09: R_TRIG;
+	p_V11, p_V12: R_TRIG;
+	p_V14, p_V15: R_TRIG;
+	p_V17, p_V18: R_TRIG;
+	p_V20, p_V21: R_TRIG;
+	
+	n_V05, n_V06: F_TRIG;
+	n_V08, n_V09: F_TRIG;
+	n_V11, n_V12: F_TRIG;
+	n_V14, n_V15: F_TRIG;
+	n_V17, n_V18: F_TRIG;
+	n_V20, n_V21: F_TRIG;
+	
+	ctime : TIME :=  T#1D14H30M40S500MS;
+	lctime : LTIME ;
+	cdate : DATE :=  D#2024-07-07;
+	str : STRING ;
+	wstr : STRING;
+	tempstr : STRING;
+
+
 	OnTimer : TON;
 	OffTimer : TOF;
 	EnableTimer : BOOL;
-	TimerOutPut : BOOL;
-	
+	TimerOutPut : BOOL;	
 	OnTimerOut : BOOL;
 	ReverseSignal : BOOL;
 	OffTimerOut : BOOL;
-	count : DINT;
+	count : INT;
+	el2088_out : BYTE;
+	el4024_out : INT;
+	el3054_in : INT;
+	i : INT;
+	j : INT;
+	rtime : INT;
+	hTime : INT;
+	
 END_VAR
 ]]></Declaration>
     <Implementation>
-      <ST><![CDATA[EnableTimer := TRUE;
+      <ST><![CDATA[plc_state := TRUE;
 
+//P00_Main();
+p_V05(CLK:= cm_V05); p_V06(CLK:= cm_V06);
+p_V08(CLK:= cm_V08); p_V09(CLK:= cm_V09);
+p_V11(CLK:= cm_V11); p_V12(CLK:= cm_V12);
+p_V14(CLK:= cm_V14); p_V15(CLK:= cm_V15);
+p_V17(CLK:= cm_V17); p_V18(CLK:= cm_V18);
+p_V20(CLK:= cm_V20); p_V21(CLK:= cm_V21);
+
+n_V05(CLK:= cm_V05); n_V06(CLK:= cm_V06);
+n_V08(CLK:= cm_V08); n_V09(CLK:= cm_V09);
+n_V11(CLK:= cm_V11); n_V12(CLK:= cm_V12);
+n_V14(CLK:= cm_V14); n_V15(CLK:= cm_V15);
+n_V17(CLK:= cm_V17); n_V18(CLK:= cm_V18);
+n_V20(CLK:= cm_V20); n_V21(CLK:= cm_V21);
+
+IF ing_MAINT = 0 THEN
+	
+	//interLock Valve Check
+	IF p_V05.Q THEN cm_V06 := 1; END_IF  //V05 Open -> V06 Close
+	IF n_V05.Q THEN cm_V06 := 0; END_IF	
+	IF p_V06.Q THEN cm_V05 := 1; END_IF  //V06 Close -> V05 Open
+	IF n_V06.Q THEN cm_V05 := 0; END_IF
+		
+	IF p_V08.Q THEN cm_V09 := 1; END_IF  //V08 Open -> V09 Close
+	IF n_V08.Q THEN cm_V09 := 0; END_IF
+	IF p_V09.Q THEN cm_V08 := 1; END_IF  //V09 Close -> V08 Open
+	IF n_V09.Q THEN cm_V08 := 0; END_IF
+	
+	IF p_V11.Q THEN cm_V12 := 1; END_IF  //V11 Open -> V12 Close
+	IF n_V11.Q THEN cm_V12 := 0; END_IF
+	IF p_V12.Q THEN cm_V11 := 1; END_IF  //V12 Close -> V11 Open
+	IF n_V12.Q THEN cm_V11 := 0; END_IF
+	
+	IF p_V14.Q THEN cm_V15 := 1; END_IF  //V14 Open -> V15 Close
+	IF n_V14.Q THEN cm_V15 := 0; END_IF
+	IF p_V15.Q THEN cm_V14 := 1; END_IF  //V15 Close -> V14 Open
+	IF n_V15.Q THEN cm_V14 := 0; END_IF
+	
+	IF p_V17.Q THEN cm_V18 := 1; END_IF  //V17 Open -> V18 Close
+	IF n_V17.Q THEN cm_V18 := 0; END_IF
+	IF p_V18.Q THEN cm_V17 := 1; END_IF  //V18 Close -> V17 Open
+	IF n_V18.Q THEN cm_V17 := 0; END_IF
+	
+	IF p_V20.Q THEN cm_V21 := 1; END_IF  //V20 Open -> V21 Close
+	IF n_V20.Q THEN cm_V21 := 0; END_IF
+	IF p_V21.Q THEN cm_V20 := 1; END_IF  //V21 Close -> V20 Open
+	IF n_V21.Q THEN cm_V20 := 0; END_IF
+	
+	// Leak Check Valves Off
+	cm_V36 := cm_V37 := cm_V38 := cm_V39 := 0;
+	cm_V40 := cm_V41 := cm_V42 := cm_V43 := cm_V44 := cm_V45 := 0;
+	cm_V46 := cm_V47 := cm_V48 := cm_V49 := cm_V50 := cm_V51 := cm_V52 := 0;
+	 
+	//Gas Safety Interlock-kjk - Danger Gas Supply Close
+	IF is_DOR_VAC_ok = 0 THEN
+		IF do_V01 THEN cm_V01 := 0; END_IF//H2 Supply
+		IF do_V02 THEN cm_V02 := 0; END_IF//N2 Supply
+		IF do_V03 THEN cm_V03 := 0; END_IF//SiH4 Supply
+		IF do_V04 THEN cm_V04 := 0; END_IF//NH3 Supply	
+	END_IF
+ 	 
+END_IF
+
+do_V01 := cm_V01;
+do_V02 := cm_V02;
+do_V03 := cm_V03;
+do_V04 := cm_V04;
+do_V05 := cm_V05;
+do_V06 := cm_V06;
+do_V07 := cm_V07;
+do_V08 := cm_V08;
+
+
+EnableTimer := TRUE;
 IF EnableTimer = TRUE THEN
-	OnTimer(IN:=OffTimerOut, Pt:= INT_TO_TIME(500), Q=>OnTimerOut, ET=>);
+	OnTimer(IN:=OffTimerOut, Pt:= INT_TO_TIME(1000), Q=>OnTimerOut, ET=>);
 	
 	IF OnTimerOut = TRUE THEN
 		ReverseSignal := FALSE;
+		do_V01 := TRUE;
+		do_V02 := FALSE;
+		do_V03 := TRUE;
+		do_V04 := FALSE;
+		do_V05 := TRUE;
+		do_V06 := FALSE;
+		do_V07 := TRUE;
+		do_V08 := FALSE;
+		tempstr := wstr;
+
 	ELSE
 		ReverseSignal := TRUE;
+		do_V01 := FALSE;
+		do_V02 := TRUE;
+		do_V03 := FALSE;
+		do_V04 := TRUE;
+		do_V05 := FALSE;
+		do_V06 := TRUE;
+		do_V07 := FALSE;
+		do_V08 := TRUE;
+		tempstr := str;
+
 	END_IF
-	
-	OffTimer(in:=ReverseSignal, pt:= INT_TO_TIME(500), q=>OffTimerOut,et=>);
+	OffTimer(in:=ReverseSignal, pt:= INT_TO_TIME(1000), q=>OffTimerOut,et=>);
 	TimerOutput :=OnTimerOut;
-ELSE
-	TimerOutput:= FALSE;
+	
+	el2088_out.0 := do_V01;
+	el2088_out.1 := do_V02;
+	el2088_out.2 :=	do_V03;
+	el2088_out.3 :=	do_V04;
+	el2088_out.4 :=	do_V05;
+	el2088_out.5 :=	do_V06;
+	el2088_out.6 :=	do_V07;
+	el2088_out.7 :=	do_V08;
+	ctime := ctime + T#10MS;
+
+	
 END_IF
+
+cdate :=  D#2024-07-07;
+str := 'We are the one, let us heading forwards';
 
 count := count + 1;
-IF count MOD 64 = 0 THEN
-	test_out := test_out + 1;
-END_IF
 
-GVL.EL2088_OUT:=test_out;
+GVL.EL4024_OUT := el4024_out;
+el3054_in := GVL.EL3054_IN;
+
+EL2088_OUT.0 := do_V01;
+EL2088_OUT.1 := do_V02;
+EL2088_OUT.2 := do_V03;
+EL2088_OUT.3 := do_V04;
+EL2088_OUT.4 := do_V05;
+EL2088_OUT.5 := do_V06;
+EL2088_OUT.6 := do_V07;
+EL2088_OUT.7 := do_V08;
+plc_array[0] := EL2088_OUT.0;
+plc_array[1] := EL2088_OUT.1;
+plc_array[2] := EL2088_OUT.2;
+plc_array[3] := EL2088_OUT.3;
+plc_array[4] := EL2088_OUT.4;
+plc_array[5] := EL2088_OUT.5;
+plc_array[6] := EL2088_OUT.6;
+plc_array[7] := EL2088_OUT.7;
+
+
 ]]></ST>
     </Implementation>
     <LineIds Name="MAIN">
-      <LineId Id="16" Count="16" />
-      <LineId Id="52" Count="1" />
-      <LineId Id="35" Count="2" />
-      <LineId Id="2" Count="0" />
-      <LineId Id="38" Count="0" />
+      <LineId Id="557" Count="1" />
+      <LineId Id="179" Count="0" />
+      <LineId Id="293" Count="68" />
+      <LineId Id="180" Count="0" />
+      <LineId Id="428" Count="0" />
+      <LineId Id="362" Count="0" />
+      <LineId Id="16" Count="0" />
+      <LineId Id="18" Count="4" />
+      <LineId Id="132" Count="3" />
+      <LineId Id="202" Count="3" />
+      <LineId Id="511" Count="0" />
+      <LineId Id="201" Count="0" />
+      <LineId Id="23" Count="1" />
+      <LineId Id="206" Count="7" />
+      <LineId Id="507" Count="0" />
+      <LineId Id="125" Count="0" />
+      <LineId Id="25" Count="0" />
+      <LineId Id="126" Count="1" />
+      <LineId Id="234" Count="0" />
+      <LineId Id="237" Count="7" />
+      <LineId Id="386" Count="1" />
+      <LineId Id="235" Count="0" />
+      <LineId Id="31" Count="0" />
+      <LineId Id="382" Count="0" />
+      <LineId Id="385" Count="0" />
+      <LineId Id="506" Count="0" />
+      <LineId Id="157" Count="0" />
+      <LineId Id="37" Count="0" />
+      <LineId Id="122" Count="0" />
+      <LineId Id="69" Count="0" />
+      <LineId Id="89" Count="0" />
+      <LineId Id="121" Count="0" />
+      <LineId Id="111" Count="0" />
+      <LineId Id="267" Count="5" />
+      <LineId Id="118" Count="0" />
+      <LineId Id="494" Count="7" />
+      <LineId Id="178" Count="0" />
+      <LineId Id="156" Count="0" />
+      <LineId Id="110" Count="0" />
     </LineIds>
   </POU>
 </TcPlcObject>

@@ -1,0 +1,23 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
+  <POU Name="WORD_TO_USINT_Bit" Id="{d74012c4-c5d6-4668-9e8c-027d00f76e1b}" SpecialFunc="None">
+    <Declaration><![CDATA[// 1-WORD divide to 2-USINT
+FUNCTION WORD_TO_USINT_Bit : outWord
+VAR_INPUT
+	nOutput : WORD;
+END_VAR
+VAR
+	outWord : outWord;
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[outWord.Lower := TO_USINT(nOutput); //Lower Bits
+outWord.Upper := TO_USINT(SHR(nOutput, 8)); //Uppper Bits
+WORD_TO_USINT_Bit := outWord;]]></ST>
+    </Implementation>
+    <LineIds Name="WORD_TO_USINT_Bit">
+      <LineId Id="11" Count="1" />
+      <LineId Id="7" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

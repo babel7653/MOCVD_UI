@@ -1,0 +1,31 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
+  <POU Name="USINT_TO_WORD_Bit" Id="{98d4177f-7d94-4692-a3ac-e5b0b06899af}" SpecialFunc="None">
+    <Declaration><![CDATA[//2-USINT combine to 1-WORD converting using a bit operation
+FUNCTION USINT_TO_WORD_Bit : WORD
+VAR_INPUT
+	aInput_L : USINT; //Lower
+	aInput_U : USINT; //Upper
+END_VAR
+VAR
+	nWord_L : WORD; //Lower
+	nWord_U : WORD; //Upper
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[nWord_L := TO_WORD(aInput_L);
+// 1111_1111
+// 0000_0000_1111_1111
+nWord_U := TO_WORD(aInput_U);
+// 1111_1111
+// 0000_0000_1111_1111
+nWord_U := SHL(nWord_U, 8);
+// 1111_1111_0000_0000
+USINT_TO_WORD_Bit := TO_WORD(nWord_L OR nWord_U);]]></ST>
+    </Implementation>
+    <LineIds Name="USINT_TO_WORD_Bit">
+      <LineId Id="13" Count="7" />
+      <LineId Id="7" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

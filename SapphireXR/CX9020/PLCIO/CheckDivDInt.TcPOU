@@ -1,0 +1,22 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4026.8">
+  <POU Name="CheckDivDInt" Id="{2ca91103-fadc-4886-bc7a-4b1a0e98e17b}" SpecialFunc="CheckDivInt32">
+    <Declaration><![CDATA[// Implicitly generated code : DO NOT EDIT
+FUNCTION CheckDivDInt : DINT
+VAR_INPUT
+	divisor:DINT;
+END_VAR]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[// Implicitly generated code: Only an implementation suggestion
+{noflow}
+IF divisor = 0 THEN
+	CheckDivDInt:=1;
+ELSE
+	CheckDivDInt:=divisor;
+END_IF;]]></ST>
+    </Implementation>
+    <LineIds Name="CheckDivDInt">
+      <LineId Id="1" Count="6" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

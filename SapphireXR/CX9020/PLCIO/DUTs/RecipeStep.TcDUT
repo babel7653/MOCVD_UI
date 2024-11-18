@@ -1,0 +1,14 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4026.8">
+  <DUT Name="RecipeStep" Id="{4fd8cd4a-bb46-407b-8461-1eb3a60a02ce}">
+    <Declaration><![CDATA[TYPE RecipeStep :
+STRUCT
+	iRecipe : ARRAY[1..9] OF INT; //Reactor Condition
+	rRecipe : ARRAY[1..26] OF REAL; //MFC, EPC Data
+	dRecipe : DWORD; //Valve Data
+	sRecipe : STRING(81);
+END_STRUCT
+END_TYPE
+]]></Declaration>
+  </DUT>
+</TcPlcObject>

@@ -1,0 +1,50 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
+  <POU Name="BOOL_TO_STRING_LHeaterON" Id="{ab6dfe8d-8c1e-4695-a9b3-243912508813}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION BOOL_TO_STRING_LHeaterON : STRING
+VAR_INPUT
+	nHeaterNumber	: INT;
+	bON				: BOOL;
+END_VAR
+VAR
+	sString			: STRING;
+	sHeaterNumber	: STRING;
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[//LH: Line Heater x 8EA -> 8Channel TIC 1EA
+//Model: HANYOUNG NUX, MC9-8RD0SS32
+
+//STRING : '$0201DWR,02,0302(CH_NO),0001(CH_1),0501(AT),0001(AT-ON)
+sString := '$0201DWR,02,0302,,0501,000$0D$0A';
+
+//Convert to Channel from Heater Number
+sHeaterNumber := DINT_TO_DECSTR(nHeaterNumber, 4);
+sString := INSERT(sString,sHeaterNumber,15);
+
+IF bON = TRUE THEN
+	sString := INSERT(sString,'1',28);
+ELSE
+	sString := INSERT(sString,'0',28);
+END_IF
+
+BOOL_TO_STRING_LHeaterON := sString;]]></ST>
+    </Implementation>
+    <LineIds Name="BOOL_TO_STRING_LHeaterON">
+      <LineId Id="10" Count="0" />
+      <LineId Id="7" Count="0" />
+      <LineId Id="12" Count="0" />
+      <LineId Id="17" Count="0" />
+      <LineId Id="11" Count="0" />
+      <LineId Id="19" Count="2" />
+      <LineId Id="15" Count="0" />
+      <LineId Id="23" Count="0" />
+      <LineId Id="14" Count="0" />
+      <LineId Id="24" Count="0" />
+      <LineId Id="26" Count="1" />
+      <LineId Id="25" Count="0" />
+      <LineId Id="38" Count="0" />
+      <LineId Id="28" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

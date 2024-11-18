@@ -1,0 +1,22 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
+  <POU Name="P20_BackgroundCom" Id="{e6b0834e-6af3-41cd-a374-5856d6875f1e}" SpecialFunc="None">
+    <Declaration><![CDATA[PROGRAM P20_BackgroundCom
+VAR
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[(* background communication with the EL6031 terminal to *)
+// Thermal Bath x 6
+// Line Heat x 8
+P21_Background_LineHeater();
+P22_Background_ThermalBath();]]></ST>
+    </Implementation>
+    <LineIds Name="P20_BackgroundCom">
+      <LineId Id="6" Count="0" />
+      <LineId Id="9" Count="0" />
+      <LineId Id="8" Count="0" />
+      <LineId Id="10" Count="1" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

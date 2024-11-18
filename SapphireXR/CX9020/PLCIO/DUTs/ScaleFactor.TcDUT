@@ -1,0 +1,12 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
+  <DUT Name="ScaleFactor" Id="{f4c15ca5-7c18-4c26-b32c-f740752529e3}">
+    <Declaration><![CDATA[TYPE ScaleFactor :
+STRUCT
+	MinFactor	: USINT; // Sensor Minimum Range
+	MaxFactor	: USINT; // Sensor Maximum Range
+END_STRUCT
+END_TYPE
+]]></Declaration>
+  </DUT>
+</TcPlcObject>

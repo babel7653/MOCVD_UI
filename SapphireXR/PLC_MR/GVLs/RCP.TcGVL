@@ -1,0 +1,23 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4026.8">
+  <GVL Name="RCP" Id="{f007839c-f4b4-44cc-b006-21ad8dc161e6}">
+    <Declaration><![CDATA[{attribute 'qualified_only'}
+VAR_GLOBAL
+	
+	aRecipe		: ARRAY[1..100] OF RecipeStep; //Recipe Structure
+	iRcpTotalStep			: INT; //Recip Total Number
+	
+	bRcpStart				: BOOL; //From UI Variable
+	iRcpOperationState		: INT; //0: Inital State, 10 : RUN, 20 : PAUSE, 30 : RESTART, 40: STOP, 50: END
+	iRcpStepN				: INT;
+	
+// 	sRcpStepDescription		: STRING;
+// 	bRcpStepN_TaskDone		: BOOL;
+// 	fbRcpStepN_Task_Timer	: TON;
+// 	bRcpStepN_TaskDone_DelayDone: BOOL;
+	
+
+	
+END_VAR]]></Declaration>
+  </GVL>
+</TcPlcObject>

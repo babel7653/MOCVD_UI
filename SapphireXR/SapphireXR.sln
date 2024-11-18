@@ -1,0 +1,61 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.11.35327.3
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SapphireXR_App", "SapphireXR_App\SapphireXR_App.csproj", "{0BA9EC6F-DD39-4047-8539-4517254E6F28}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Debug|TwinCAT OS (ARMV7-A) = Debug|TwinCAT OS (ARMV7-A)
+		Debug|TwinCAT OS (ARMV7-M) = Debug|TwinCAT OS (ARMV7-M)
+		Debug|TwinCAT OS (ARMV8-A) = Debug|TwinCAT OS (ARMV8-A)
+		Debug|TwinCAT OS (x64) = Debug|TwinCAT OS (x64)
+		Debug|TwinCAT RT (x64) = Debug|TwinCAT RT (x64)
+		Debug|TwinCAT RT (x86) = Debug|TwinCAT RT (x86)
+		Release|Any CPU = Release|Any CPU
+		Release|TwinCAT OS (ARMV7-A) = Release|TwinCAT OS (ARMV7-A)
+		Release|TwinCAT OS (ARMV7-M) = Release|TwinCAT OS (ARMV7-M)
+		Release|TwinCAT OS (ARMV8-A) = Release|TwinCAT OS (ARMV8-A)
+		Release|TwinCAT OS (x64) = Release|TwinCAT OS (x64)
+		Release|TwinCAT RT (x64) = Release|TwinCAT RT (x64)
+		Release|TwinCAT RT (x86) = Release|TwinCAT RT (x86)
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{0BA9EC6F-DD39-4047-8539-4517254E6F28}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0BA9EC6F-DD39-4047-8539-4517254E6F28}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0BA9EC6F-DD39-4047-8539-4517254E6F28}.Debug|TwinCAT OS (ARMV7-A).ActiveCfg = Debug|Any CPU
+		{0BA9EC6F-DD39-4047-8539-4517254E6F28}.Debug|TwinCAT OS (ARMV7-A).Build.0 = Debug|Any CPU
+		{0BA9EC6F-DD39-4047-8539-4517254E6F28}.Debug|TwinCAT OS (ARMV7-M).ActiveCfg = Debug|Any CPU
+		{0BA9EC6F-DD39-4047-8539-4517254E6F28}.Debug|TwinCAT OS (ARMV7-M).Build.0 = Debug|Any CPU
+		{0BA9EC6F-DD39-4047-8539-4517254E6F28}.Debug|TwinCAT OS (ARMV8-A).ActiveCfg = Debug|Any CPU
+		{0BA9EC6F-DD39-4047-8539-4517254E6F28}.Debug|TwinCAT OS (ARMV8-A).Build.0 = Debug|Any CPU
+		{0BA9EC6F-DD39-4047-8539-4517254E6F28}.Debug|TwinCAT OS (x64).ActiveCfg = Debug|Any CPU
+		{0BA9EC6F-DD39-4047-8539-4517254E6F28}.Debug|TwinCAT OS (x64).Build.0 = Debug|Any CPU
+		{0BA9EC6F-DD39-4047-8539-4517254E6F28}.Debug|TwinCAT RT (x64).ActiveCfg = Debug|Any CPU
+		{0BA9EC6F-DD39-4047-8539-4517254E6F28}.Debug|TwinCAT RT (x64).Build.0 = Debug|Any CPU
+		{0BA9EC6F-DD39-4047-8539-4517254E6F28}.Debug|TwinCAT RT (x86).ActiveCfg = Debug|Any CPU
+		{0BA9EC6F-DD39-4047-8539-4517254E6F28}.Debug|TwinCAT RT (x86).Build.0 = Debug|Any CPU
+		{0BA9EC6F-DD39-4047-8539-4517254E6F28}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0BA9EC6F-DD39-4047-8539-4517254E6F28}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0BA9EC6F-DD39-4047-8539-4517254E6F28}.Release|TwinCAT OS (ARMV7-A).ActiveCfg = Release|Any CPU
+		{0BA9EC6F-DD39-4047-8539-4517254E6F28}.Release|TwinCAT OS (ARMV7-A).Build.0 = Release|Any CPU
+		{0BA9EC6F-DD39-4047-8539-4517254E6F28}.Release|TwinCAT OS (ARMV7-M).ActiveCfg = Release|Any CPU
+		{0BA9EC6F-DD39-4047-8539-4517254E6F28}.Release|TwinCAT OS (ARMV7-M).Build.0 = Release|Any CPU
+		{0BA9EC6F-DD39-4047-8539-4517254E6F28}.Release|TwinCAT OS (ARMV8-A).ActiveCfg = Release|Any CPU
+		{0BA9EC6F-DD39-4047-8539-4517254E6F28}.Release|TwinCAT OS (ARMV8-A).Build.0 = Release|Any CPU
+		{0BA9EC6F-DD39-4047-8539-4517254E6F28}.Release|TwinCAT OS (x64).ActiveCfg = Release|Any CPU
+		{0BA9EC6F-DD39-4047-8539-4517254E6F28}.Release|TwinCAT OS (x64).Build.0 = Release|Any CPU
+		{0BA9EC6F-DD39-4047-8539-4517254E6F28}.Release|TwinCAT RT (x64).ActiveCfg = Release|Any CPU
+		{0BA9EC6F-DD39-4047-8539-4517254E6F28}.Release|TwinCAT RT (x64).Build.0 = Release|Any CPU
+		{0BA9EC6F-DD39-4047-8539-4517254E6F28}.Release|TwinCAT RT (x86).ActiveCfg = Release|Any CPU
+		{0BA9EC6F-DD39-4047-8539-4517254E6F28}.Release|TwinCAT RT (x86).Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {DF6DC0A9-19EC-45FC-980A-8D168C5B3141}
+	EndGlobalSection
+EndGlobal

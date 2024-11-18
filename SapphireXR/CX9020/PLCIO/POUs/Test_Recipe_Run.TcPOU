@@ -1,0 +1,133 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4026.8">
+  <POU Name="Test_Recipe_Run" Id="{9e2ad549-cd8d-4b6c-8e7b-85d08aecb6cd}" SpecialFunc="None">
+    <Declaration><![CDATA[PROGRAM Test_Recipe_Run
+VAR
+// 	fb_RecipeSequencer : FB_RecipeSequencer;
+	bMaintKey : BOOL;
+	bPc2Plc	: BOOL;
+	
+	plc_state	: BOOL;
+	plc_array	: BYTE;
+	
+	iRcpCurrNum : INT := 1;
+	iTimerCount	: INT;
+
+	timeTrigOn	: r_trig;
+	bTrigOn		: BOOL;
+	bRcpInit	: BOOL;
+	bRcpEnable	: BOOL;
+	fb_RecipeSequencer : FB_RecipeSequencer;
+
+	ctime : TIME :=  T#1D14H30M40S500MS;
+	lctime : LTIME ;
+	
+	cdate : DATE :=  D#2024-07-07;
+	str : STRING ;
+	wstr : STRING;
+	tempstr : STRING;
+
+	OnTimer : TON;
+	OffTimer : TOF;
+	EnableTimer : BOOL;
+	TimerOutPut : BOOL;	
+	OnTimerOut : BOOL := FALSE;
+	ReverseSignal : BOOL;
+	OffTimerOut : BOOL;
+	count : INT;
+	el2088_out : BYTE;
+	el4024_out : INT;
+	el3054_in : INT;
+	
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[// Load current recipe of recipes array 
+bMaintKey := GVL_IO.aDigitalInputIO[1].0;
+
+// Connect PLC varibaes to PC variables
+IF bPc2Plc = TRUE THEN
+	GVL_IO.aDigitalInputIO := GVL_IO.stDeviceIO.aDigitalInputIO;
+	GVL_IO.aDigitalOutputIO := GVL_IO.stDeviceIO.aDigitalOutputIO;
+	GVL_IO.aAnalogInputIO := GVL_IO.stDeviceIO.aAnalogInputIO;
+	GVL_IO.aAnalogOutputIO := GVL_IO.stDeviceIO.aAnalogOutputIO;
+	GVL_IO.aAnalogInputIO2 := GVL_IO.stDeviceIO.aAnalogInputIO2;
+	GVL_IO.aOutputSolValve := GVL_IO.stDeviceIO.aOutputSolValve;
+	bPc2Plc := FALSE;
+ELSE
+	GVL_IO.stDeviceIO.aDigitalInputIO  := GVL_IO.aDigitalInputIO; 
+	GVL_IO.stDeviceIO.aDigitalOutputIO := GVL_IO.aDigitalOutputIO;
+	GVL_IO.stDeviceIO.aAnalogInputIO   := GVL_IO.aAnalogInputIO;
+	GVL_IO.stDeviceIO.aAnalogOutputIO  := GVL_IO.aAnalogOutputIO; 
+	GVL_IO.stDeviceIO.aAnalogInputIO2  := GVL_IO.aAnalogInputIO2; 
+	GVL_IO.stDeviceIO.aOutputSolValve  := GVL_IO.aOutputSolValve;
+END_IF
+
+IF bRcpInit THEN
+	(* reset the init flag *)
+	iTimerCount := 0;
+	iRcpCurrNum := 1;
+	bRcpInit := FALSE;
+END_IF
+
+IF iRcpCurrNum <= 50 THEN
+	OnTimer(IN:=OffTimerOut, Pt:= INT_TO_TIME(500), Q=>OnTimerOut, ET=>);
+	timeTrigOn(clk:=OnTimerout, Q=>bTrigOn);
+	IF (bTrigOn AND GVL.bRunRecipe) THEN
+		iTimerCount := iTimerCount +1;
+		bTrigOn := FALSE;
+		
+		IF iTimerCount <= RCP.aRecipe[iRcpCurrNum].iRecipe[2] THEN
+			fb_RecipeSequencer(nRcpIndex:=iRcpCurrNum);
+			
+		ELSIF iTimerCount > RCP.aRecipe[iRcpCurrNum].iRecipe[2] + RCP.aRecipe[iRcpCurrNum].iRecipe[3] THEN
+			iTimerCount := 0;
+			iRcpCurrNum := iRcpCurrNum + 1;
+		END_IF
+	END_IF
+	IF OnTimerOut = TRUE THEN
+		ReverseSignal := FALSE;
+	ELSE
+		ReverseSignal := TRUE;
+	END_IF
+
+	OffTimer(in:=ReverseSignal, pt:= INT_TO_TIME(500), q=>OffTimerOut,et=>);
+END_IF
+
+
+cdate :=  D#2024-07-07;
+str := 'We are the one, let us heading forwards';
+
+count := count + 1;
+
+GVL.EL4024_OUT := el4024_out;
+el3054_in := GVL.EL3054_IN;
+
+plc_array := EL2088_OUT;
+
+]]></ST>
+    </Implementation>
+    <LineIds Name="Test_Recipe_Run">
+      <LineId Id="1" Count="0" />
+      <LineId Id="3" Count="0" />
+      <LineId Id="123" Count="0" />
+      <LineId Id="5" Count="18" />
+      <LineId Id="34" Count="3" />
+      <LineId Id="40" Count="1" />
+      <LineId Id="43" Count="0" />
+      <LineId Id="224" Count="0" />
+      <LineId Id="221" Count="0" />
+      <LineId Id="201" Count="0" />
+      <LineId Id="48" Count="1" />
+      <LineId Id="132" Count="0" />
+      <LineId Id="162" Count="1" />
+      <LineId Id="210" Count="0" />
+      <LineId Id="165" Count="2" />
+      <LineId Id="228" Count="1" />
+      <LineId Id="206" Count="3" />
+      <LineId Id="203" Count="1" />
+      <LineId Id="226" Count="0" />
+      <LineId Id="108" Count="13" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

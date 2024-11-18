@@ -1,0 +1,116 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4026.8">
+  <POU Name="P15_RotationOperation" Id="{7f828812-d1bb-49a4-a03d-f3e347855c39}" SpecialFunc="None">
+    <Declaration><![CDATA[PROGRAM P15_RotationOperation
+VAR_INPUT
+	bStart_Stop				: BOOL := TRUE;
+	bAlarmReset				: BOOL; //Motor Driver Alarm
+	nRotationTV_rpm			: SINT(0..100); //Input Range 0~100 rpm
+	nRampTime				: INT := 1; // Second
+END_VAR
+VAR_OUTPUT
+	isRotationErr			: BOOL; //Motor Driver
+	bRotationCP			: BOOL;
+	nRotationPV_rpm			: INT; //PV 0~100 rpm
+END_VAR
+VAR
+	// for FB_CTRL_RAMP_GENERATOR Variable
+	(* input *)
+	bEnable					: BOOL; // Reference
+	rRotationPV				: REAL;
+	rRotationTV				: REAL;
+	(* output *)
+	rRotationSV				: LREAL;
+	bValueReached			: BOOL;
+	(* function block *)
+	fbCTRL_RAMP_GENERATOR		: FB_CTRL_RAMP_GENERATOR;
+	stCTRL_RAMP_GENERATOR_PARAMS: ST_CTRL_RAMP_GENERATOR_PARAMS;
+
+	eErrorId				: E_CTRL_ERRORCODES;
+	bError					: BOOL;
+	bInit					: BOOL := TRUE;
+	(* Motor Driver *)
+	bBrake_Run				: BOOL;
+	nRotationPV				: UINT;
+	(* Rotation Operation Parameter*)
+	rRampingRatio			: REAL;	
+END_VAR
+
+VAR CONSTANT
+	KL4404MaxValueP		: REAL := 13106; //0~4V, 0~2500RPM, BLHM230K-GFS
+	//Motor Max Rotation RPM 2,500rpm, Gear Ratio 15, Belt Ratio 1.5
+	ConversionFactor 	: REAL :=117.9585; //KL4404MaxValueP*15*1.5/2500
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[// Oriental Motor Driver : BLHM230K-GFS, 0~4V
+
+(* Read from Power Distribution Pannel *)
+bRotationCP :=  GVL_IO.aDigitalInputIO[5].3;
+
+//from Device Value
+isRotationErr := NOT(GVL_IO.aDigitalInputIO[2].5);
+nRotationPV := GVL_IO.aAnalogInputIO2[1];
+nRotationPV_rpm := REAL_TO_INT(nRotationPV/(5*ConversionFactor));
+
+rRotationTV := nRotationTV_rpm * ConversionFactor; // Convert from RPM to control value
+
+IF (rRotationTV > 0) OR (rRotationPV > 0) THEN // Motor Driver RUN
+	bBrake_Run := TRUE;
+	bInit := TRUE;
+ELSIF (rRotationTV = 0) AND (rRotationPV = 0) THEN
+	bBrake_Run := FALSE;
+	bInit := TRUE;
+END_IF
+
+IF nRampTime <> 0 THEN
+rRampingRatio := ABS(rRotationTV - rRotationPV) / INT_TO_REAL(nRampTime) * 0.1; //Second
+END_IF
+
+IF bInit THEN
+	(* init parameter struct *)
+	stCTRL_RAMP_GENERATOR_PARAMS.tTaskCycleTime		:= T#100MS;
+	stCTRL_RAMP_GENERATOR_PARAMS.tCtrlCycleTime		:= T#100MS;
+	stCTRL_RAMP_GENERATOR_PARAMS.fVeloPos			:= rRampingRatio; (* in units per second *)
+	stCTRL_RAMP_GENERATOR_PARAMS.fVeloNeg			:= rRampingRatio; (* in units per second *)
+
+	(* reset the init flag *)
+	bInit := FALSE;
+END_IF
+
+IF rRotationTV <> rRotationPV THEN
+	bEnable := TRUE;
+	(* call function block *)
+	fbCTRL_RAMP_GENERATOR(	bEnable			:= bEnable,
+							fStart			:= rRotationPV,
+							fTarget			:= rRotationTV,
+							stParams		:= stCTRL_RAMP_GENERATOR_PARAMS,
+							fOut			=> rRotationSV,
+							bValueReached	=> bValueReached,
+							bError			=> bError,
+							eErrorId		=> eErrorId);
+ELSE
+	fbCTRL_RAMP_GENERATOR.bEnable := FALSE;
+END_IF
+
+IF bValueReached THEN
+	rRotationPV := LREAL_TO_REAL(rRotationSV);
+END_IF
+
+//to Device Value
+GVL_IO.aDigitalOutputIO[3].4 	:= bStart_Stop;
+GVL_IO.aDigitalOutputIO[3].5 	:= bBrake_Run;
+GVL_IO.aDigitalOutputIO[3].6 	:= bAlarmReset;
+GVL_IO.aAnalogOutputIO[28] 		:= LREAL_TO_INT(rRotationSV);]]></ST>
+    </Implementation>
+    <LineIds Name="P15_RotationOperation">
+      <LineId Id="44" Count="0" />
+      <LineId Id="142" Count="0" />
+      <LineId Id="45" Count="0" />
+      <LineId Id="140" Count="1" />
+      <LineId Id="46" Count="1" />
+      <LineId Id="49" Count="50" />
+      <LineId Id="5" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

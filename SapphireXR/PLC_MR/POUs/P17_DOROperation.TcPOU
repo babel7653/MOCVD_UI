@@ -1,0 +1,236 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
+  <POU Name="P17_DOROperation" Id="{47a43ac8-2dfa-477f-bf65-90da71792e7e}" SpecialFunc="None">
+    <Declaration><![CDATA[PROGRAM P17_DOROperation
+VAR_INPUT
+	bDOROn				: BOOL; //UI Input Button
+	bDOROff				: BOOL; //UI Input Button
+END_VAR
+VAR_OUTPUT
+	isDOROnState		: BOOL := FALSE; //DOR ON State
+	bError				: INT; //0: No Err, 1: Vacuum Fail, 2: Vacuum Release, 3: Try out
+	nWaitCounter		: INT;
+END_VAR
+VAR
+	(* Input *)
+	bVacSwitch			: BOOL; //Push Switch
+	bAtmSwitch			: BOOL; //Push Switch
+	(* Pressure Transducer *)
+	nPressurePV			: INT;
+	rPressurePV_kPa		: REAL;
+	(* Output *)
+	bVacLED				: BOOL;
+	bAtmLED				: BOOL;
+	bV_DORVac			: BOOL; //V34 Valve
+	bV_DORFill			: BOOL; //V35 Valve
+	
+	(* DOR Condition Operation Parameter *)
+	rTrigSwitch			: R_TRIG;
+	TimerOnLED			: TON;
+	TimerVacSwitch		: TON;
+	TimerAtmSwitch		: TON;
+	TimerWaitCheck		: TON;
+	TimerVacRealease	: TON;
+	nCase				: INT := 0;
+	nTryCount			: INT;
+	bVacuumRealse		: BOOL;
+	//Temperatur Variable
+	bTest				: BOOL;
+	nTest				: INT;
+END_VAR
+
+VAR CONSTANT
+	KL3464MaxValueP		: REAL := 16383; //1 ~ 5VDC, 0 ~ 100kPa(1bar), PG35
+	SlopeFactor			: REAL := 0.007617887; //100kPa/(16383-3256)
+END_VAR
+
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[// Double O-Ring Vacuum Condition
+
+(* Read from Device Value *)
+// DOR Operation Switch
+bVacSwitch := GVL_IO.aDigitalInputIO[1].4; //Switch Input
+bAtmSwitch := GVL_IO.aDigitalInputIO[1].5; //Switch Input
+nPressurePV := GVL_IO.aAnalogInputIO[29];
+rPressurePV_kPa := (nPressurePV-3256)*SlopeFactor;
+
+(* If Vacuum 'ON' Switch Press, Change DOR Vacuum State *)
+//DOR Operation Signal generation
+TimerVacSwitch(IN:=bVacSwitch OR bDOROn, PT:=T#100MS);
+rTrigSwitch(CLK:=TimerVacSwitch.Q);
+
+IF rTrigSwitch.Q AND P90_Interlock.bDORVacEnable THEN
+	nCase 		:= 1;
+	nTryCount 	:= 0; //Try One more Vacuum 
+END_IF
+
+CASE nCase OF
+	1: //Initialize
+		isDOROnState := FALSE;
+		//P90_Interlock.bCoverOperationEnable := FALSE; // Cover Operation Disable
+		bV_DORVac 	:= TRUE; //V34 Open
+		bV_DORFill	:= FALSE; //V35 Close
+		bAtmLED		:= FALSE;
+		TimerWaitCheck(IN:=FALSE);	
+		nCase := 10;
+	10: //Wait and Vacuum Check
+		(* Blink Switch LED *)
+		TimerOnLED(IN:=TRUE, PT:=T#500MS);
+		IF TimerOnLED.Q THEN
+			TimerOnLED(IN:=FALSE);
+			bVacLED := NOT(bVacLED);
+		END_IF
+
+		TimerWaitCheck(IN:=TRUE, PT:=T#5S);
+		IF TimerWaitCheck.Q THEN
+			IF rPressurePV_kPa > 70 THEN
+				bV_DORVac 		:= FALSE; //V34 Close
+				isDOROnState 	:= TRUE;
+				bVacLED 			:= TRUE; //Switch LED
+				bError			:= 0;
+				nCase 			:= 0;
+			ELSIF nTryCount < 2 THEN
+				TimerWaitCheck(IN:=FALSE);
+				nTryCount 		:= nTryCount + 1;				
+				nCase 			:= 1;
+			ELSE
+				bV_DORVac 		:= FALSE; //V34 Close
+				isDOROnState 	:= FALSE;
+				bVacLED			:= FALSE; //Switch LED
+				bError			:= 1; // Vacuum Fail
+				nCase			:= 0;
+			END_IF
+		END_IF
+END_CASE
+
+(* If Vacuum 'OFF' Switch Press, Change DOR Vent(Fill, Atm) State *)
+//DOR Operation Signal generation
+TimerAtmSwitch(IN:=bAtmSwitch OR bDOROff, PT:=T#100MS);
+rTrigSwitch(CLK:=TimerAtmSwitch.Q);
+
+IF rTrigSwitch.Q AND P90_Interlock.bDORAtmEnable THEN
+	nCase := 2;
+END_IF
+
+CASE nCase OF
+	2:
+		(* Blink Switch LED *)
+		TimerOnLED(IN:=TRUE, PT:=T#500MS);
+		IF TimerOnLED.Q THEN
+			TimerOnLED(IN:=FALSE);
+			bAtmLED := NOT(bAtmLED);
+		END_IF
+		
+		TimerWaitCheck(IN:=TRUE, PT:=T#10S);
+		nWaitCounter := TIME_TO_INT(TimerWaitCheck.ET/1000);
+		IF TimerWaitCheck.Q THEN
+			TimerWaitCheck(IN:=FALSE);
+			bVacLED			:= FALSE;
+			bV_DORVac 		:= FALSE; //V34 Close
+			bV_DORFill		:= TRUE; //V35 Open
+			nCase			:= 20;
+		END_IF
+	20:
+		TimerWaitCheck(IN:=TRUE, PT:=T#5S);
+		IF TimerWaitCheck.Q THEN
+			bVacLED			:= FALSE;
+			bV_DORFill		:= FALSE;
+			isDOROnState 	:= FALSE;
+			bAtmLED			:= TRUE;
+			nCase			:= 0;
+		END_IF
+END_CASE
+
+(* If Vacuum 'ON' State, Check the Vacuum range *)
+IF isDOROnState AND rPressurePV_kPa <50 AND nTryCount < 3 THEN
+	bError := 2; // Vacuum release
+	TimerVacRealease(IN:=TRUE, PT:=T#2S);
+	
+	(* Blink Vac Switch LED *)
+	TimerOnLED(IN:=TRUE, PT:=T#500MS);
+	IF TimerOnLED.Q THEN
+		TimerOnLED(IN:=FALSE);
+		bVacLED := NOT(bVacLED);
+	END_IF
+
+	IF TimerVacRealease.Q  THEN
+		TimerVacRealease(IN:=FALSE);
+		nTryCount 		:= nTryCount + 1;
+		bV_DORVac 		:= FALSE;//Vacuum Valve OFF
+		bVacLED := TRUE;
+	ELSE
+		bV_DORVac 		:= TRUE;//Vacuum Valve ON
+	END_IF
+	
+ELSIF bError = 2 THEN
+	bV_DORVac := FALSE;
+	bError := 0;
+	
+ELSIF nTryCount >= 3 THEN
+	bV_DORVac := FALSE;
+	bError := 3; //Vacuum Released
+	
+END_IF
+
+(* Write to Device Value *)
+// Cover Operation Switch Lamp
+GVL_IO.aOutputSolValve[2].18 := bV_DORVac; //V34
+GVL_IO.aOutputSolValve[2].19 := bV_DORFill; //V35
+GVL_IO.aDigitalOutputIO[4].0 := bVacLED;
+GVL_IO.aDigitalOutputIO[4].1 := bAtmLED;]]></ST>
+    </Implementation>
+    <LineIds Name="P17_DOROperation">
+      <LineId Id="21" Count="5" />
+      <LineId Id="28" Count="0" />
+      <LineId Id="69" Count="0" />
+      <LineId Id="458" Count="0" />
+      <LineId Id="123" Count="0" />
+      <LineId Id="122" Count="0" />
+      <LineId Id="119" Count="0" />
+      <LineId Id="267" Count="1" />
+      <LineId Id="120" Count="0" />
+      <LineId Id="215" Count="0" />
+      <LineId Id="377" Count="0" />
+      <LineId Id="353" Count="0" />
+      <LineId Id="496" Count="0" />
+      <LineId Id="459" Count="5" />
+      <LineId Id="536" Count="0" />
+      <LineId Id="465" Count="30" />
+      <LineId Id="269" Count="0" />
+      <LineId Id="497" Count="21" />
+      <LineId Id="533" Count="0" />
+      <LineId Id="519" Count="6" />
+      <LineId Id="572" Count="0" />
+      <LineId Id="526" Count="1" />
+      <LineId Id="535" Count="0" />
+      <LineId Id="529" Count="2" />
+      <LineId Id="271" Count="0" />
+      <LineId Id="538" Count="0" />
+      <LineId Id="540" Count="0" />
+      <LineId Id="597" Count="0" />
+      <LineId Id="599" Count="0" />
+      <LineId Id="606" Count="0" />
+      <LineId Id="601" Count="4" />
+      <LineId Id="600" Count="0" />
+      <LineId Id="616" Count="0" />
+      <LineId Id="609" Count="3" />
+      <LineId Id="624" Count="0" />
+      <LineId Id="613" Count="1" />
+      <LineId Id="607" Count="0" />
+      <LineId Id="625" Count="0" />
+      <LineId Id="582" Count="0" />
+      <LineId Id="584" Count="0" />
+      <LineId Id="586" Count="0" />
+      <LineId Id="626" Count="0" />
+      <LineId Id="618" Count="0" />
+      <LineId Id="620" Count="1" />
+      <LineId Id="627" Count="0" />
+      <LineId Id="367" Count="0" />
+      <LineId Id="41" Count="2" />
+      <LineId Id="51" Count="1" />
+      <LineId Id="44" Count="0" />
+      <LineId Id="5" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

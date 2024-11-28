@@ -241,6 +241,7 @@
     <Compile Include="Controls\DeviceSelect.xaml.cs">
       <DependentUpon>DeviceSelect.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Enums\ValveOperationExResult.cs" />
     <Compile Include="Models\RecipeTest.cs" />
     <Compile Include="Models\RecipeShort.cs" />
     <Compile Include="Models\DeviceE.cs" />
@@ -250,11 +251,13 @@
     <Compile Include="Models\Recipe.cs" />
     <Compile Include="Models\RecipeRun.cs" />
     <Compile Include="Models\RecipeControlData.cs" />
+    <Compile Include="Models\ValveOperationEx.cs" />
     <Compile Include="ViewModels\AdsFunctions.cs" />
     <Compile Include="ViewModels\RecipeControlViewModel.cs" />
     <Compile Include="ViewModels\ReportViewModel.cs" />
     <Compile Include="ViewModels\SettingViewModel.cs" />
     <Compile Include="ViewModels\SystemControlViewModel.cs" />
+    <Compile Include="ViewModels\ValveOperationViewModel.cs" />
     <Compile Include="ViewModels\ViewModelBase.cs" />
     <Compile Include="Settings.cs" />
     <Compile Include="Styles\ButtonStyle.xaml.cs">
@@ -272,6 +275,9 @@
     <Compile Include="ViewModels\MainViewModel.cs" />
     <Compile Include="Views\MainView.xaml.cs">
       <DependentUpon>MainView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\ValveOperationView.xaml.cs">
+      <DependentUpon>ValveOperationView.xaml</DependentUpon>
     </Compile>
     <Page Include="Assets\Icons\Icons.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -297,11 +303,19 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Themes\Generic.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Themes\LightTheme.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Views\MainView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\ValveOperationView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

@@ -539,74 +539,74 @@
 
                                 <!-- Button for Valve Control -->
                                 <Button x:Name="HydridCarrirerChange" Content="Button"
-                Canvas.Left="110" Canvas.Top="145" Width="40" Height="22">
+                Canvas.Left="110" Canvas.Top="145" Width="40" Height="22" Click="ValveOperationViewPopup">
                                     <Button.RenderTransform>
                                         <RotateTransform Angle="270"/>
                                     </Button.RenderTransform>
 
                                 </Button>
 
-                                <Button x:Name="MOCarrierChange" Content="Button" Canvas.Left="110" Canvas.Top="330" Width="40" Height="22">
+                                <Button x:Name="MOCarrierChange" Content="Button" Canvas.Left="110" Canvas.Top="330" Width="40" Height="22" Click="ValveOperationViewPopup">
                                     <Button.RenderTransform>
                                         <RotateTransform Angle="270"/>
                                     </Button.RenderTransform>
                                 </Button>
 
-                                <Button x:Name="SourceAmmoniaChange" Content="Button" Canvas.Left="290" Canvas.Top="126" Width="40" Height="22">
+                                <Button x:Name="SourceAmmoniaChange" Content="Button" Canvas.Left="290" Canvas.Top="126" Width="40" Height="22" Click="ValveOperationViewPopup">
                                 </Button>
 
-                                <Button x:Name="SourceSilaneChange" Content="Button" Canvas.Left="654" Canvas.Top="126" Width="40" Height="22">
+                                <Button x:Name="SourceSilaneChange" Content="Button" Canvas.Left="654" Canvas.Top="126" Width="40" Height="22" Click="ValveOperationViewPopup">
                                 </Button>
 
-                                <Button x:Name="ManifoldHyd1Run" Content="Button" Canvas.Left="290" Canvas.Top="258" Width="40" Height="22">
+                                <Button x:Name="ManifoldHyd1Run" Content="Button" Canvas.Left="290" Canvas.Top="258" Width="40" Height="22" Click="ValveOperationViewPopup">
                                 </Button>
-                                <Button x:Name="ManifoldHyd2Run" Content="Button" Canvas.Left="430" Canvas.Top="258" Width="40" Height="22">
+                                <Button x:Name="ManifoldHyd2Run" Content="Button" Canvas.Left="430" Canvas.Top="258" Width="40" Height="22" Click="ValveOperationViewPopup">
                                 </Button>
-                                <Button x:Name="ManifoldHyd3Run" Content="Button" Canvas.Left="570" Canvas.Top="258" Width="40" Height="22">
-                                </Button>
-
-                                <Button x:Name="ManifoldMO1Run" Content="Button" Canvas.Left="290" Canvas.Top="408" Width="40" Height="22">
-                                </Button>
-                                <Button x:Name="ManifoldMO2Run" Content="Button" Canvas.Left="430" Canvas.Top="408" Width="40" Height="22">
-                                </Button>
-                                <Button x:Name="ManifoldMO3Run" Content="Button" Canvas.Left="570" Canvas.Top="408" Width="40" Height="22">
-                                </Button>
-                                <Button x:Name="ManifoldMO4Run" Content="Button" Canvas.Left="710" Canvas.Top="408" Width="40" Height="22">
-                                </Button>
-                                <Button x:Name="ManifoldMO5Run" Content="Button" Canvas.Left="850" Canvas.Top="408" Width="40" Height="22">
-                                </Button>
-                                <Button x:Name="ManifoldMO6Run" Content="Button" Canvas.Left="990" Canvas.Top="408" Width="40" Height="22">
+                                <Button x:Name="ManifoldHyd3Run" Content="Button" Canvas.Left="570" Canvas.Top="258" Width="40" Height="22" Click="ValveOperationViewPopup">
                                 </Button>
 
-                                <Button x:Name="BubblerCarrier1Change" Content="Button" Canvas.Left="270" Canvas.Top="522" Width="40" Height="22">
+                                <Button x:Name="ManifoldMO1Run" Content="Button" Canvas.Left="290" Canvas.Top="408" Width="40" Height="22" Click="ValveOperationViewPopup">
                                 </Button>
-                                <Button x:Name="BubblerCarrier2Change" Content="Button" Canvas.Left="410" Canvas.Top="522" Width="40" Height="22">
+                                <Button x:Name="ManifoldMO2Run" Content="Button" Canvas.Left="430" Canvas.Top="408" Width="40" Height="22" Click="ValveOperationViewPopup">
                                 </Button>
-                                <Button x:Name="BubblerCarrier3Change" Content="Button" Canvas.Left="550" Canvas.Top="522" Width="40" Height="22">
+                                <Button x:Name="ManifoldMO3Run" Content="Button" Canvas.Left="570" Canvas.Top="408" Width="40" Height="22" Click="ValveOperationViewPopup">
                                 </Button>
-                                <Button x:Name="BubblerCarrier4Change" Content="Button" Canvas.Left="690" Canvas.Top="522" Width="40" Height="22">
+                                <Button x:Name="ManifoldMO4Run" Content="Button" Canvas.Left="710" Canvas.Top="408" Width="40" Height="22" Click="ValveOperationViewPopup">
                                 </Button>
-                                <Button x:Name="BubblerCarrier5Change" Content="Button" Canvas.Left="830" Canvas.Top="522" Width="40" Height="22">
+                                <Button x:Name="ManifoldMO5Run" Content="Button" Canvas.Left="850" Canvas.Top="408" Width="40" Height="22" Click="ValveOperationViewPopup">
                                 </Button>
-                                <Button x:Name="BubblerCarrier6Change" Content="Button" Canvas.Left="970" Canvas.Top="522" Width="40" Height="22">
-                                </Button>
-
-                                <Button x:Name="Bubbler1Bypass" Content="Button" Canvas.Left="290" Canvas.Top="654" Width="40" Height="22">
-                                </Button>
-                                <Button x:Name="Bubbler2Bypass" Content="Button" Canvas.Left="430" Canvas.Top="654" Width="40" Height="22">
-                                </Button>
-                                <Button x:Name="Bubbler3Bypass" Content="Button" Canvas.Left="570" Canvas.Top="654" Width="40" Height="22">
-                                </Button>
-                                <Button x:Name="Bubbler4Bypass" Content="Button" Canvas.Left="710" Canvas.Top="654" Width="40" Height="22">
-                                </Button>
-                                <Button x:Name="Bubbler5Bypass" Content="Button" Canvas.Left="850" Canvas.Top="654" Width="40" Height="22">
-                                </Button>
-                                <Button x:Name="Bubbler6Bypass" Content="Button" Canvas.Left="990" Canvas.Top="654" Width="40" Height="22">
+                                <Button x:Name="ManifoldMO6Run" Content="Button" Canvas.Left="990" Canvas.Top="408" Width="40" Height="22" Click="ValveOperationViewPopup">
                                 </Button>
 
-                                <Button x:Name="DORVacuum" Content="Button" Canvas.Left="1220" Canvas.Top="163" Width="40" Height="22">
+                                <Button x:Name="BubblerCarrier1Change" Content="Button" Canvas.Left="270" Canvas.Top="522" Width="40" Height="22" Click="ValveOperationViewPopup">
                                 </Button>
-                                <Button x:Name="VentToScrubber" Content="Button" Canvas.Left="1090" Canvas.Top="408" Width="40" Height="22">
+                                <Button x:Name="BubblerCarrier2Change" Content="Button" Canvas.Left="410" Canvas.Top="522" Width="40" Height="22" Click="ValveOperationViewPopup">
+                                </Button>
+                                <Button x:Name="BubblerCarrier3Change" Content="Button" Canvas.Left="550" Canvas.Top="522" Width="40" Height="22" Click="ValveOperationViewPopup">
+                                </Button>
+                                <Button x:Name="BubblerCarrier4Change" Content="Button" Canvas.Left="690" Canvas.Top="522" Width="40" Height="22" Click="ValveOperationViewPopup">
+                                </Button>
+                                <Button x:Name="BubblerCarrier5Change" Content="Button" Canvas.Left="830" Canvas.Top="522" Width="40" Height="22" Click="ValveOperationViewPopup">
+                                </Button>
+                                <Button x:Name="BubblerCarrier6Change" Content="Button" Canvas.Left="970" Canvas.Top="522" Width="40" Height="22" Click="ValveOperationViewPopup">
+                                </Button>
+
+                                <Button x:Name="Bubbler1Bypass" Content="Button" Canvas.Left="290" Canvas.Top="654" Width="40" Height="22" Click="ValveOperationViewPopup">
+                                </Button>
+                                <Button x:Name="Bubbler2Bypass" Content="Button" Canvas.Left="430" Canvas.Top="654" Width="40" Height="22" Click="ValveOperationViewPopup">
+                                </Button>
+                                <Button x:Name="Bubbler3Bypass" Content="Button" Canvas.Left="570" Canvas.Top="654" Width="40" Height="22" Click="ValveOperationViewPopup">
+                                </Button>
+                                <Button x:Name="Bubbler4Bypass" Content="Button" Canvas.Left="710" Canvas.Top="654" Width="40" Height="22" Click="ValveOperationViewPopup">
+                                </Button>
+                                <Button x:Name="Bubbler5Bypass" Content="Button" Canvas.Left="850" Canvas.Top="654" Width="40" Height="22" Click="ValveOperationViewPopup">
+                                </Button>
+                                <Button x:Name="Bubbler6Bypass" Content="Button" Canvas.Left="990" Canvas.Top="654" Width="40" Height="22" Click="ValveOperationViewPopup">
+                                </Button>
+
+                                <Button x:Name="DORVacuum" Content="Button" Canvas.Left="1220" Canvas.Top="163" Width="40" Height="22" Click="ValveOperationViewPopup">
+                                </Button>
+                                <Button x:Name="VentToScrubber" Content="Button" Canvas.Left="1090" Canvas.Top="408" Width="40" Height="22" Click="ValveOperationViewPopup">
                                 </Button>
 
                                 <!-- Button for Leak Test Valve -->
@@ -698,7 +698,7 @@
                                     </Button.RenderTransform>
                                 </Button>
 
-                                <Button x:Name="ThrottleValveControl" Content="Button" Canvas.Left="1140" Canvas.Top="610" Width="40" Height="22">
+                                <Button x:Name="ThrottleValveControl" Content="Button" Canvas.Left="1140" Canvas.Top="610" Width="40" Height="22" Click="ValveOperationViewPopup">
                                 </Button>
                                 <!-- 수소가스 공급 상태 -->
                                 <StackPanel Canvas.Left="60" Canvas.Top="46" Width="90" Height="34">

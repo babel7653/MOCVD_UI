@@ -14,6 +14,7 @@ using System.Windows.Shapes;
 using SapphireXE_App.ViewModels;
 using SapphireXE_App.Models;
 using System.Reflection;
+using SapphireXE_App.Enums;
 
 namespace SapphireXE_App.Views
 {
@@ -63,12 +64,29 @@ namespace SapphireXE_App.Views
       }
     }
 
-    /// <summary>
-    /// RecipeControl page : button controls
-    /// </summary>
-    #region control event
 
-    private void ScrollChanged(object sender, ScrollChangedEventArgs e)
+    private void ValveOperationViewPopup(object sender, RoutedEventArgs e)
+    {
+        var result = ValveOperationEx.Show("Valve Operation", "밸브를 여시겠습니까?");
+        switch (result)
+        {
+            case ValveOperationExResult.Ok:
+                MessageBox.Show("밸브 열음");
+                break;
+            case ValveOperationExResult.Canel:
+
+                MessageBox.Show("취소됨");
+                break;
+                //TODO : 밸브 열림/닫힘 상태 확인 후 메세지 뛰우고 닫혔을 때 -> 열고, 열렸을 때 -> 담음
+        }
+    }
+
+        /// <summary>
+        /// RecipeControl page : button controls
+        /// </summary>
+        #region control event
+
+        private void ScrollChanged(object sender, ScrollChangedEventArgs e)
     {
       if (e.VerticalChange != 0.0f)
       {

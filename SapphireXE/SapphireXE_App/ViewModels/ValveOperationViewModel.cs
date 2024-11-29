@@ -58,3 +58,4 @@ namespace SapphireXE_App.ViewModels
         }
     }
 }
+

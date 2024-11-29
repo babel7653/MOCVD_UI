@@ -10,8 +10,8 @@
   <Style x:Key="MetroTextBoxStyle" TargetType="TextBox">
     <Setter Property="Background" Value="#FFFFFFFF" />
     <Setter Property="BorderBrush" Value="#FFCCCCCC" />
-    <Setter Property="BorderThickness" Value="1" />
-    <Setter Property="Foreground" Value="#FF333333" />
+        <Setter Property="BorderThickness" Value="1" />
+        <Setter Property="Foreground" Value="#FF333333" />
     <Setter Property="Padding" Value="5,2,5,2" />
     <Setter Property="Template">
       <Setter.Value>

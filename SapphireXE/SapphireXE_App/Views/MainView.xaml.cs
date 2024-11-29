@@ -134,3 +134,4 @@ namespace SapphireXE_App.Views
     #endregion
   }
 }
+

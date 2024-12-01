@@ -4,17 +4,17 @@
 winexe
 C#
 .cs
-D:\Design\MOCVD\MR\SapphireXR_1110\SapphireXR\SapphireXR_App\obj\Debug\net8.0-windows\
+D:\Design\MOCVD\MR\SapphireXR\SapphireXR_App\obj\Debug\net8.0-windows\
 SapphireXR_App
 none
 false
 TRACE;DEBUG;NET;NET8_0;NETCOREAPP
-D:\Design\MOCVD\MR\SapphireXR_1110\SapphireXR\SapphireXR_App\App.xaml
-14-61284578
+D:\Design\MOCVD\MR\SapphireXR\SapphireXR_App\App.xaml
+14213214283
 
-46-1451357971
-214-413551052
-Controls\DeviceSelect.xaml;Controls\HomeControl.xaml;Controls\SourceControl.xaml;Styles\MainStyle.xaml;Themes\LightTheme.xaml;Views\AnalogDeviceControl.xaml;Views\BottomDashboard.xaml;Views\HomePage.xaml;Views\LeftDashboard.xaml;Views\MainWindow.xaml;Views\RecipePage.xaml;Views\ReportPage.xaml;Views\RightDashboard.xaml;Views\SettingPage.xaml;
+35299525857
+21217347039
+Controls\BlockValve.xaml;Styles\Colors.xaml;Themes\Generic.xaml;Views\BottomDashboard.xaml;Views\FlowControlView.xaml;Views\HomePage.xaml;Views\LeftDashboard.xaml;Views\MainWindow.xaml;Views\RecipeEditPage.xaml;Views\RecipeRunPage.xaml;Views\ReportPage.xaml;Views\RightDashboard.xaml;Views\SettingPage.xaml;Views\ValveOperationView.xaml;
 
-False
+True
 

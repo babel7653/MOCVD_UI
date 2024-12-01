@@ -3,138 +3,25 @@
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-			xmlns:oxy="http://oxyplot.org/wpf"
       xmlns:local="clr-namespace:SapphireXR_App.Views"
-			xmlns:vm="clr-namespace:SapphireXR_App.ViewModels"
       mc:Ignorable="d" 
       d:DesignHeight="240" d:DesignWidth="1320"
-			d:DataContext="{d:DesignInstance Type={x:Type vm:BottomViewModel}}"
-
       Title="BottomDashboard">
-	<Grid>
-		<Frame  x:Name="frBottom"/>
-		<Grid Background="#3e4a4b">
-			<Grid.ColumnDefinitions>
-				<ColumnDefinition Width="800"/>
-				<ColumnDefinition Width=" *"/>
-			</Grid.ColumnDefinitions>
-			<Grid.RowDefinitions>
-				<RowDefinition Height="20"/>
-				<RowDefinition/>
-			</Grid.RowDefinitions>
-			<!-- Signal PLOT 머리말 Title -->
-			<Grid Grid.Column="0" Background="LightGray" Grid.Row="0">
-				<StackPanel Orientation="Horizontal">
-					<StackPanel.Resources>
-						<Style TargetType="{x:Type Button}">
-							<Setter Property="Foreground" Value="Black"/>
-							<Setter Property="Width" Value="76"/>
-							<Setter Property="Margin" Value="3,0,3,0"/>
-							<Setter Property="HorizontalAlignment" Value="Center"/>
-							<Setter Property="VerticalAlignment" Value="Center"/>
-							<Style.Resources>
-								<Style TargetType="{x:Type Border}">
-									<Setter Property="CornerRadius" Value="8"/>
-								</Style>
-							</Style.Resources>
-						</Style>
-					</StackPanel.Resources>
-					<TextBlock Width="150" FontSize="14" Text="SIGNAL PLOT" Margin="20,0,0,0"/>
-					<Button x:Name="BtnRecipeLive" Content="RecipeLive" Background="AliceBlue" 
-											Command="{Binding BtnRecipeLiveVisibleCommand}"/>
-					<Button x:Name="BtnRecipeProgress" Content="RecipeProgress" Background="AliceBlue"
-											Command="{Binding BtnRecipeProgressVisibleCommand}"/>
-					<Button x:Name="BtnPlotAnalog" Content="Analog" Background="Yellow" Margin="100,0,0,0"
-											Command="{Binding BtnPlotAnalogCommand}"/>
-					<Button x:Name="BtnPlotTemperatue" Content="Temperature" Background="red"
-											Command="{Binding BtnPlotTemperatureCommand}"/>
-					<Button x:Name="BtnPlotPessure" Content="Pressure" Background="Green"
-											Command="{Binding BtnPlotPressureCommand}"/>
-					<Button x:Name="BtnPlotTotalFlow" Content="TotalFlow" Background="SkyBlue"
-											Command="{Binding BtnPlotTotalFlowCommand}"/>
-				</StackPanel>
-			</Grid>
-			<!-- 그래프 그리는 영역  background="##0f9ed5" -->
-			<Grid Grid.Column="0" Background="White" Grid.Row="1">
-				<Grid.ColumnDefinitions>
-					<ColumnDefinition Width="57*"/>
-					<ColumnDefinition Width="7*"/>
-					<ColumnDefinition Width="29*"/>
-					<ColumnDefinition Width="13*"/>
-					<ColumnDefinition Width="54*"/>
-				</Grid.ColumnDefinitions>
-				<TabControl x:Name="tabChart" Grid.ColumnSpan="5" >
-					<Grid>
-						<!-- Recipe Live chart -->
-						<oxy:PlotView x:Name="RecipeLive"
-													Visibility="{Binding btnRecipeLiveVisible}"
-													Model="{Binding RecipeLivePlot}">
-						</oxy:PlotView>
-						<!-- Recipe Progress chart-->
-						<oxy:PlotView x:Name="RecipeProgress"
-													Visibility="{Binding btnRecipeProgressVisible}"
-													Model="{Binding RecipeProgressPlot}">
-						</oxy:PlotView>
-					</Grid>
-				</TabControl>
-
-			</Grid>
-			<!-- 이벤트 로그 머리말 Title -->
-			<Grid Grid.Column="1" Grid.Row="0" Background="LightGray" Margin="2,0,2,0">
-				<StackPanel Orientation="Horizontal">
-					<StackPanel.Resources>
-						<Style TargetType="{x:Type Button}">
-							<Setter Property="Foreground" Value="White"/>
-							<Setter Property="Width" Value="76"/>
-							<Setter Property="Margin" Value="3,0,3,0"/>
-							<Setter Property="HorizontalAlignment" Value="Center"/>
-							<Setter Property="VerticalAlignment" Value="Center"/>
-							<Style.Resources>
-								<Style TargetType="{x:Type Border}">
-									<Setter Property="CornerRadius" Value="8"/>
-								</Style>
-							</Style.Resources>
-
-						</Style>
-					</StackPanel.Resources>
-					<TextBlock Width="150" Foreground="Black" FontSize="14" Text="EVENT LOG" Margin="20,0,0,0"/>
-					<Button x:Name="FilterAlarm" Content="Alarm" Background="OrangeRed"/>
-					<Button x:Name="FilterWarning" Content="Waring"  Background="Orange"/>
-					<Button x:Name="FilterInformation" Content="Information" Background="LimeGreen"/>
-					<Button x:Name="FilterClear" Content="Clear" Background="DarkGray"/>
-				</StackPanel>
-			</Grid>
-			<Grid Grid.Row="1" Grid.Column="1">
-				<Grid.Resources>
-					<Style TargetType="DataGrid">
-						<Setter Property="HorizontalGridLinesBrush" Value="red"/>
-						<Setter Property="VerticalGridLinesBrush" Value="Blue" />
-					</Style>
-					<Style TargetType="DataGridColumnHeader">
-						<Setter Property="HorizontalContentAlignment" Value="Center"/>
-						<Setter Property="BorderBrush" Value="blue" />
-						<Setter Property="BorderThickness" Value="1" />
-						<Setter Property="Background" Value="Yellow" />
-						<Setter Property="SeparatorVisibility" Value="Visible" />
-					</Style>
-					<Style TargetType="DataGridCell">
-						<Style.Triggers>
-							<Trigger Property="IsSelected" Value="True">
-								<Setter Property="Background" Value="Beige"/>
-								<Setter Property="Foreground" Value="Brown"/>
-							</Trigger>
-						</Style.Triggers>
-					</Style>
-				</Grid.Resources>
-				<DataGrid x:Name="dataGrid" AutoGenerateColumns="True" SelectionMode="Extended"
-											CanUserAddRows="False" AlternationCount="2" AlternatingRowBackground="LightGray"
-											ItemsSource="{Binding EventData}">
-					<DataGrid.Resources>
-
-					</DataGrid.Resources>
-				</DataGrid>
-			</Grid>
-
-		</Grid>
-	</Grid>
+    <Grid Background="#3e4a4b">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="20"/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+            <StackPanel Grid.Row="0" Grid.Column="0" Orientation="Horizontal">
+                <ComboBox x:Name="cmbPlotItem" SelectedIndex="0">
+                    <ComboBoxItem Content="Recipe"/>
+                    <ComboBoxItem Content="Current"/>
+                </ComboBox>
+                <Button Content="Read" Width="70"/>
+            </StackPanel>
+    </Grid> 
 </Page>

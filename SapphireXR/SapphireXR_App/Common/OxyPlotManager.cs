@@ -2,10 +2,15 @@
 using OxyPlot.Axes;
 using OxyPlot.Legends;
 using OxyPlot.Series;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace SapphireXR_App.Common
 {
-  public class OxyPlotManager
+    public class OxyPlotManager
     {
         private readonly PlotModel _plotModel = new PlotModel();
         private IList<OxyColor>? _oxyColors;

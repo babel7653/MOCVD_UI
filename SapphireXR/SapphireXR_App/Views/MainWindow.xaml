@@ -6,68 +6,56 @@
         xmlns:behaviors="clr-namespace:SapphireXR_App.Behavior"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:SapphireXR_App.Views"
-				xmlns:control="clr-namespace:SapphireXR_App.Controls"
-				xmlns:vm="clr-namespace:SapphireXR_App.ViewModels"
         xmlns:oxy="http://oxyplot.org/wpf"
         mc:Ignorable="d"
-				d:DataContext="{d:DesignInstance Type={x:Type vm:MainViewModel}}"
-        Title="Sapphire XE" Height="1080" Width="1920"
-        WindowStartupLocation="CenterScreen"
-        ResizeMode="CanResizeWithGrip" WindowState="Normal" WindowStyle="None"
-				MouseLeftButtonDown="Window_MouseLeftButtonDown"
-				MouseRightButtonUp="Window_MouseRightButtonUp">
-	<Window.Resources>
+        Title="Sapphire -&gt; MainWindow" Height="1080" Width="1920">
+    <Window.Resources>
         <Style x:Key="BaseStyle" TargetType="{x:Type Control}">
-            <Setter Property="FontSize" Value="10"/>
-            <Setter Property="Margin" Value="2"/>
+            <Setter Property="FontSize" Value="11"/>
             <Setter Property="FontFamily" Value="Pretendard"/>
         </Style>
         <Style TargetType="{x:Type ComboBox}" BasedOn="{StaticResource BaseStyle}"/>
         <Style TargetType="{x:Type Button}" BasedOn="{StaticResource BaseStyle}"/>
         <Style TargetType="{x:Type DataGrid}" BasedOn="{StaticResource BaseStyle}"/>
     </Window.Resources>
-	<Border CornerRadius="8" Background="White">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="300"/>
+            <ColumnDefinition/>
+            <ColumnDefinition Width="300"/>
+        </Grid.ColumnDefinitions>
+        <Frame Source="/Views/LeftDashboard.xaml" Grid.Column="0" NavigationUIVisibility="Hidden"/>
+        <Grid Grid.Column="1">
+                <Grid.RowDefinitions>
+                    <RowDefinition/>
+                    <RowDefinition Height="240" />
+                </Grid.RowDefinitions>
+                <TabControl Grid.Row="0">
+                    <TabItem Header="System Control">
+                        <Frame Source="/Views/HomePage.xaml" NavigationUIVisibility="Hidden"/>
+                    </TabItem>
+                    
+                    <TabItem Header="Recipe Control">
+                        <Frame NavigationUIVisibility="Hidden" >
+                        <b:Interaction.Behaviors>
+                            <behaviors:FrameBehavior NavigationSource="{Binding NavigationSource, Mode=TwoWay}" />
+                        </b:Interaction.Behaviors>
+                    </Frame>
 
-		<Grid>
-			<Grid.ColumnDefinitions>
-				<ColumnDefinition Width="300"/>
-				<ColumnDefinition/>
-				<ColumnDefinition Width="300"/>
-			</Grid.ColumnDefinitions>
-			<Grid>
-				<Frame Source="/Views/LeftDashboard.xaml"/>
-			</Grid>
-
-			<Grid Grid.Column="1">
-				<Grid.RowDefinitions>
-					<RowDefinition/>
-					<RowDefinition Height="240" />
-				</Grid.RowDefinitions>
-				<TabControl Grid.Row="0">
-					<TabItem Header="System Control">
-						<Frame Source="/Views/HomePage.xaml"/>
-					</TabItem>
-
-					<TabItem Header="Recipe Control">
-						<Frame Source="/Views/RecipePage.xaml"/>
-					</TabItem>
-
-					<TabItem Header="Report">
-						<Frame Source="/Views/ReportPage.xaml"/>
-					</TabItem>
-
-					<TabItem Header="Setting">
-						<Frame Source="/Views/SettingPage.xaml"/>
-					</TabItem>
-
-				</TabControl>
-				<Frame Grid.Row="1" Source="/Views/BottomDashboard.xaml"/>
-
-			</Grid>
-			<Grid Grid.Column="2">
-				<Frame Source="/Views/RightDashboard.xaml"/>
-			</Grid>
-
-		</Grid>
-	</Border>
+                </TabItem>
+                    
+                    <TabItem Header="Report">
+                        <Frame Source="/Views/ReportPage.xaml" NavigationUIVisibility="Hidden"/>
+                    </TabItem>
+                    
+                    <TabItem Header="Setting">
+                        <Frame Source="/Views/SettingPage.xaml" NavigationUIVisibility="Hidden"/>
+                    </TabItem>
+                    
+                </TabControl>
+                <Frame Source="/Views/BottomDashboard.xaml" Grid.Row="1"  NavigationUIVisibility="Hidden"/>
+            </Grid>
+        <Frame Source="/Views/RightDashboard.xaml" Grid.Column="2" NavigationUIVisibility="Hidden"/>
+        
+    </Grid>
 </Window>

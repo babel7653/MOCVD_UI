@@ -1,0 +1,35 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <SolidColorBrush x:Key="ColorOkButton" Color="#FF008CBA"/>
+    <SolidColorBrush x:Key="ColorCancelButton" Color="#ff7f50"/>
+    <SolidColorBrush x:Key="ColorTitleBar" Color="RoyalBlue"/>
+    <SolidColorBrush x:Key="ColorTag" Color="MidnightBlue"/>
+    
+    <!-- Background Colors -->
+    <SolidColorBrush x:Key="HomePageBackground" Color="#0F172A"/>
+    <SolidColorBrush x:Key="DashboardBackground" Color="#475569"/>
+
+    <SolidColorBrush x:Key="RecipeRunPageBackground" Color="#003366"/>
+    <SolidColorBrush x:Key="RecipeEditPageBackground" Color="#004C39"/>
+    
+    
+    <SolidColorBrush x:Key="SourceDisplayColor1" Color="#ff7f50"/>
+    <SolidColorBrush x:Key="SourceDisplayColor2" Color="#F7D5CD"/>
+
+    <SolidColorBrush x:Key="ReactorDisplayColor1" Color="#A02B93"/>
+    <SolidColorBrush x:Key="ReactorDisplayColor2" Color="#DFCDDC"/>
+
+    <SolidColorBrush x:Key="MFCDisplayColor1" Color="#0F9ED5"/>
+    <SolidColorBrush x:Key="MFCDisplayColor2" Color="#CCDFEF"/>
+
+    <SolidColorBrush x:Key="EPCDisplayColor1" Color="#4EA72E"/>
+    <SolidColorBrush x:Key="EPCDisplayColor2" Color="#D0E1CD"/>
+
+    <!-- Foreground Colors -->
+    <SolidColorBrush x:Key="PrimaryFontColor" Color="#F8FAFC"/>
+    <SolidColorBrush x:Key="SecondaryFontColor" Color="#E2E8F0"/>
+
+    <!-- Controller Colors -->
+
+
+</ResourceDictionary>

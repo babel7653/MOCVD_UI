@@ -1,26 +1,26 @@
-﻿using System.Windows;
-using System.Windows.Controls;
+﻿using SapphireXR_App.Controls;
+using SapphireXR_App.Models;
 using SapphireXR_App.ViewModels;
+using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Input;
+
+
 
 namespace SapphireXR_App.Views
 {
-  /// <summary>
-  /// HomePage.xaml에 대한 상호 작용 논리
-  /// </summary>``
-  public partial class HomePage : Page
-  {
-    public HomePage()
+    public partial class HomePage : Page
     {
-      InitializeComponent();
+        public HomePage()
+        {
+            InitializeComponent();
+            DataContext = App.Current.Services.GetService(typeof(HomeViewModel));
+        }
 
-      DataContext = App.Current.Services.GetService(typeof(HomeViewModel));
-
+        private void BlockValve_Click(object sender, MouseButtonEventArgs e)
+        {
+            BlockValve blockValve = (BlockValve)sender;
+            ValveOperationEx.Show("Valve Operation", " 질소가스로 변경하시겠습니까?");
+        }
     }
-
-    private void SourceControl_Click(object sender, System.Windows.Input.MouseButtonEventArgs e)
-    {
-      AnalogDeviceControl MfcControl = new();
-      MfcControl.Show();
-    }
-  }
 }

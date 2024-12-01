@@ -5,7 +5,7 @@ namespace SapphireXR_App.Models
 {
     public class Recipe : ObservableObject
     {
-        public string Name { get; set; }
+        public string? Name { get; set; }
         // RecipeInt Array
         public short No { get; set; }
         public short rTime { get; set; }

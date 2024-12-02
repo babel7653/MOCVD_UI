@@ -11,6 +11,7 @@ namespace SapphireXR_App
         {
             Services = ConfigureServices();
             Startup += App_Startup;
+
         }
         private void App_Startup(object sender, StartupEventArgs e)
         {
@@ -41,8 +42,9 @@ namespace SapphireXR_App
            Viewmodels
            의존성이 추가된 MainView를 만듬
            */
-            services.AddSingleton<MainWindow>();
-            services.AddSingleton<HomePage>();
+            services.AddTransient<MainWindow>();
+
+            services.AddTransient(typeof(HomePage));
 
             services.AddTransient(typeof(MainViewModel));
             services.AddTransient(typeof(HomeViewModel));

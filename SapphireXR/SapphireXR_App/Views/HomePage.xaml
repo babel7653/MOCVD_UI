@@ -250,12 +250,13 @@
         <Line X1="1020" Y1="260" X2="1290" Y2="260" Stroke="LightBlue" StrokeThickness="8" />
 
         <!-- Button for Valve Control -->
-        <control:BlockValve Canvas.Left="111" Canvas.Top="105"
+        <control:BlockValve x:Name="V01" Canvas.Left="111" Canvas.Top="105"
                     MouseLeftButtonDown="BlockValve_Click"
                     ValveID="{Binding Path=V01}"
-                    IsOpen="{Binding Path=IsOpen}"/>
+                    IsOpen="False" Height="58" Width="29" HorizontalAlignment="Left" VerticalAlignment="Top" />
 
-        <Button x:Name="MOCarrierChange" Content="Button" Canvas.Left="110" Canvas.Top="330" Width="40" Height="22">
+        <Button x:Name="MOCarrierChange" Content="Button" Canvas.Left="110" Canvas.Top="330" Width="40" Height="22"
+                >
             <Button.RenderTransform>
                 <RotateTransform Angle="270"/>
             </Button.RenderTransform>

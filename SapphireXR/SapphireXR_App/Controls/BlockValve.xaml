@@ -6,7 +6,7 @@
              xmlns:local="clr-namespace:SapphireXR_App.Controls"
              x:Name="ucBlockValve"
              mc:Ignorable="d" 
-             d:DesignHeight="48" d:DesignWidth="24">
+             d:DesignHeight="60" d:DesignWidth="30">
     <UserControl.Resources>
         <Style x:Key="BlockValveStyle" TargetType="{x:Type Button}">
             <Setter Property="Template">
@@ -14,12 +14,12 @@
                     <ControlTemplate TargetType="{x:Type Button}">
                         <Border Background="LightGray" CornerRadius="3">
                             <Grid Height="60" Width="30">
-                            <Grid.RowDefinitions>
-                                <RowDefinition/>
-                                <RowDefinition/>
-                            </Grid.RowDefinitions>
-                            <Ellipse x:Name="on" Grid.Row="0" Width="20" Height="20"/>
-                            <Ellipse x:Name="off" Grid.Row="1" Width="20" Height="20"/>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition/>
+                                    <RowDefinition/>
+                                </Grid.RowDefinitions>
+                                <Ellipse x:Name="on" Grid.Row="0" Width="20" Height="20"/>
+                                <Ellipse x:Name="off" Grid.Row="1" Width="20" Height="20"/>
                             </Grid>
                         </Border>
                         <ControlTemplate.Triggers>
@@ -39,7 +39,6 @@
     </UserControl.Resources>
     <Canvas>
         <Button VerticalAlignment="Center" Style="{StaticResource BlockValveStyle}"/>
-        <TextBlock Text="{Binding Path=ValveID}" Foreground="Purple" FontSize="15"
-                Canvas.Top="13"></TextBlock>
+        <TextBlock Text="V" Foreground="Purple" FontSize="15" Height="60" Width="30" HorizontalAlignment="Center" VerticalAlignment="Center"/>
     </Canvas>
 </UserControl>

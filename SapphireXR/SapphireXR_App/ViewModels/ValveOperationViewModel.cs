@@ -19,7 +19,7 @@ namespace SapphireXR_App.ViewModels
         private void Ok(Window window)
         {
             ValveOperationExResult = ValveOperationExResult.Ok;
-            window.DialogResult = true;
+            //window.DialogResult = true;
         }
 
         [RelayCommand]

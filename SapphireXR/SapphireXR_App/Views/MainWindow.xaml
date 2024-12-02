@@ -18,7 +18,7 @@
         <Style TargetType="{x:Type Button}" BasedOn="{StaticResource BaseStyle}"/>
         <Style TargetType="{x:Type DataGrid}" BasedOn="{StaticResource BaseStyle}"/>
     </Window.Resources>
-    <Grid>
+    <Grid Background="{StaticResource HomePageBackground}">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="300"/>
             <ColumnDefinition/>

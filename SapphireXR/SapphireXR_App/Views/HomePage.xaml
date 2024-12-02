@@ -144,8 +144,8 @@
         <!-- Drawing Leak Test Gas Line -->
         <Polyline Points="410, 93 410, 26 50, 26 50, 760 1130,760 1130, 665 1160, 665" Stroke="RoyalBlue" StrokeThickness="2" />
         <Line X1="328" Y1="93" X2="676" Y2="93" Stroke="RoyalBlue" StrokeThickness="2" />
-        <Polyline Points="50, 522 160, 522 160, 510" Stroke="RoyalBlue" StrokeThickness="2" />
-        <Line X1="120" Y1="522" X2="120" Y2="498" Stroke="RoyalBlue" StrokeThickness="2" />
+        <Polyline Points="50, 522 160, 522 160, 510" Stroke="RoyalBlue" StrokeThickness="2" Canvas.Left="10" Canvas.Top="32" />
+        <Line X1="120" Y1="522" X2="120" Y2="498" Stroke="RoyalBlue" StrokeThickness="2" HorizontalAlignment="Left" Canvas.Top="28" VerticalAlignment="Top" Canvas.Left="10" />
 
         <Polyline Points="38, 0 0, 0 0, 70" Stroke="RoyalBlue" StrokeThickness="2"  Canvas.Left="254" Canvas.Top="690"/>
         <Polyline Points="0, 0 38, 0 38, 70" Stroke="RoyalBlue" StrokeThickness="2"  Canvas.Left="328" Canvas.Top="690"/>
@@ -163,7 +163,7 @@
         <!-- Drawing Exhaust Gas Line -->
         <Line X1="1100" Y1="430" X2="1100" Y2="649" Stroke="Cyan" StrokeThickness="2" />
         <Line X1="1160" Y1="260" X2="1160" Y2="704" Stroke="Cyan" StrokeThickness="6" />
-        <Line X1="1100" Y1="577" X2="1160" Y2="577" Stroke="Cyan" StrokeThickness="2" />
+        <Line X1="1100" Y1="577" X2="1160" Y2="577" Stroke="Cyan" StrokeThickness="2" HorizontalAlignment="Center" Canvas.Top="-15" VerticalAlignment="Top" />
         <Polyline Points="1240 726 1260, 726 1260, 681" Stroke="Cyan" StrokeThickness="2" />
 
         <Path Canvas.Left="1100" Canvas.Top="652" Fill="Cyan">
@@ -250,166 +250,222 @@
         <Line X1="1020" Y1="260" X2="1290" Y2="260" Stroke="LightBlue" StrokeThickness="8" />
 
         <!-- Button for Valve Control -->
-        <control:BlockValve x:Name="V01" Canvas.Left="111" Canvas.Top="105"
-                    MouseLeftButtonDown="BlockValve_Click"
-                    ValveID="{Binding Path=V01}"
-                    IsOpen="False" Height="58" Width="29" HorizontalAlignment="Left" VerticalAlignment="Top" />
+        <control:SwitchingValve  x:Name="V01" Canvas.Left="140" Canvas.Top="105" Height="30" Width="60"
+            MouseLeftButtonDown="SwitchingValve_Click"
+            ValveID="V01" IsOpen="False" RenderTransformOrigin="0,0">
+            <control:SwitchingValve.RenderTransform>
+                <TransformGroup>
+                    <RotateTransform Angle="90"/>
+                </TransformGroup>
+            </control:SwitchingValve.RenderTransform>
+        </control:SwitchingValve>
 
-        <Button x:Name="MOCarrierChange" Content="Button" Canvas.Left="110" Canvas.Top="330" Width="40" Height="22"
-                >
-            <Button.RenderTransform>
-                <RotateTransform Angle="270"/>
-            </Button.RenderTransform>
-        </Button>
+        <control:SwitchingValve x:Name="V02" Canvas.Left="140" Canvas.Top="290" Height="30" Width="60"
+            MouseLeftButtonDown="SwitchingValve_Click"
+            ValveID="V02" IsOpen="False" RenderTransformOrigin="0,0">
+            <control:SwitchingValve.RenderTransform>
+                <TransformGroup>
+                    <RotateTransform Angle="90"/>
+                </TransformGroup>
+            </control:SwitchingValve.RenderTransform>
+        </control:SwitchingValve>
+        <control:SwitchingValve x:Name="V03" Canvas.Left="290" Canvas.Top="125" Height="30" Width="60"
+            MouseLeftButtonDown="SwitchingValve_Click"
+            ValveID="V03" IsOpen="False" />
+        <control:SwitchingValve x:Name="V04" Canvas.Left="654" Canvas.Top="125" Height="30" Width="60"
+            MouseLeftButtonDown="SwitchingValve_Click"
+            ValveID="V04" IsOpen="False" />
 
-        <Button x:Name="SourceAmmoniaChange" Content="Button" Canvas.Left="290" Canvas.Top="126" Width="40" Height="22">
-        </Button>
+        <control:SwitchingValve x:Name="V05" Canvas.Left="250" Canvas.Top="515" Height="30" Width="60"
+                             MouseLeftButtonDown="SwitchingValve_Click"
+                             ValveID="V05" IsOpen="True" Visibility="{Binding IsMaintenanceMode}"/>
+        <control:SwitchingValve x:Name="V08" Canvas.Left="390" Canvas.Top="515" Height="30" Width="60"
+                             MouseLeftButtonDown="SwitchingValve_Click"
+                             ValveID="V08" IsOpen="True" Visibility="{Binding IsMaintenanceMode}"/>
+        <control:SwitchingValve x:Name="V11" Canvas.Left="530" Canvas.Top="515" Height="30" Width="60"
+                             MouseLeftButtonDown="SwitchingValve_Click"
+                             ValveID="V11" IsOpen="True" Visibility="{Binding IsMaintenanceMode}"/>
+        <control:SwitchingValve x:Name="V14" Canvas.Left="670" Canvas.Top="515" Height="30" Width="60"
+                            MouseLeftButtonDown="SwitchingValve_Click"
+                            ValveID="V14" IsOpen="True" Visibility="{Binding IsMaintenanceMode}"/>
+        <control:SwitchingValve x:Name="V17" Canvas.Left="810" Canvas.Top="515" Height="30" Width="60"
+                            MouseLeftButtonDown="SwitchingValve_Click"
+                            ValveID="V17" IsOpen="True" Visibility="{Binding IsMaintenanceMode}"/>
+        <control:SwitchingValve x:Name="V20" Canvas.Left="950" Canvas.Top="515" Height="30" Width="60"
+                            MouseLeftButtonDown="SwitchingValve_Click"
+                            ValveID="V20" IsOpen="True" Visibility="{Binding IsMaintenanceMode}"/>
+        <control:SwitchingValve x:Name="V32" Canvas.Left="1080" Canvas.Top="400" Height="30" Width="60"
+                            MouseLeftButtonDown="SwitchingValve_Click"
+                            ValveID="V32" IsOpen="True" Visibility="{Binding IsMaintenanceMode}"/>
 
-        <Button x:Name="SourceSilaneChange" Content="Button" Canvas.Left="654" Canvas.Top="126" Width="40" Height="22">
-        </Button>
+        <control:SwitchingValve x:Name="V23" Canvas.Left="280" Canvas.Top="400" Height="30" Width="60"
+            MouseLeftButtonDown="SwitchingValve_Click"
+            ValveID="V23" IsOpen="False" />
+        <control:SwitchingValve x:Name="V24" Canvas.Left="420" Canvas.Top="400" Height="30" Width="60"
+            MouseLeftButtonDown="SwitchingValve_Click"
+            ValveID="V24" IsOpen="False" />
+        <control:SwitchingValve x:Name="V25" Canvas.Left="560" Canvas.Top="400" Height="30" Width="60"
+            MouseLeftButtonDown="SwitchingValve_Click"
+            ValveID="V25" IsOpen="False" />
+        <control:SwitchingValve x:Name="V26" Canvas.Left="700" Canvas.Top="400" Height="30" Width="60"
+            MouseLeftButtonDown="SwitchingValve_Click"
+            ValveID="V26" IsOpen="False" />
+        <control:SwitchingValve x:Name="V27" Canvas.Left="840" Canvas.Top="400" Height="30" Width="60"
+            MouseLeftButtonDown="SwitchingValve_Click"
+            ValveID="V27" IsOpen="False" />
+        <control:SwitchingValve x:Name="V28" Canvas.Left="980" Canvas.Top="400" Height="30" Width="60"
+            MouseLeftButtonDown="SwitchingValve_Click"
+            ValveID="V28" IsOpen="False" />
 
-        <Button x:Name="ManifoldHyd1Run" Content="Button" Canvas.Left="290" Canvas.Top="258" Width="40" Height="22">
-        </Button>
-        <Button x:Name="ManifoldHyd2Run" Content="Button" Canvas.Left="430" Canvas.Top="258" Width="40" Height="22">
-        </Button>
-        <Button x:Name="ManifoldHyd3Run" Content="Button" Canvas.Left="570" Canvas.Top="258" Width="40" Height="22">
-        </Button>
+        <control:SwitchingValve x:Name="V29" Canvas.Left="280" Canvas.Top="258" Height="30" Width="60"
+            MouseLeftButtonDown="SwitchingValve_Click"
+            ValveID="V29" IsOpen="False" />
+        <control:SwitchingValve x:Name="V30" Canvas.Left="420" Canvas.Top="258" Height="30" Width="60"
+            MouseLeftButtonDown="SwitchingValve_Click"
+            ValveID="V30" IsOpen="False" />
+        <control:SwitchingValve x:Name="V31" Canvas.Left="560" Canvas.Top="258" Height="30" Width="60"
+            MouseLeftButtonDown="SwitchingValve_Click"
+            ValveID="V31" IsOpen="False" />
 
-        <Button x:Name="ManifoldMO1Run" Content="Button" Canvas.Left="290" Canvas.Top="408" Width="40" Height="22">
-        </Button>
-        <Button x:Name="ManifoldMO2Run" Content="Button" Canvas.Left="430" Canvas.Top="408" Width="40" Height="22">
-        </Button>
-        <Button x:Name="ManifoldMO3Run" Content="Button" Canvas.Left="570" Canvas.Top="408" Width="40" Height="22">
-        </Button>
-        <Button x:Name="ManifoldMO4Run" Content="Button" Canvas.Left="710" Canvas.Top="408" Width="40" Height="22">
-        </Button>
-        <Button x:Name="ManifoldMO5Run" Content="Button" Canvas.Left="850" Canvas.Top="408" Width="40" Height="22">
-        </Button>
-        <Button x:Name="ManifoldMO6Run" Content="Button" Canvas.Left="990" Canvas.Top="408" Width="40" Height="22">
-        </Button>
+        <control:BypassValve x:Name="V07" Canvas.Left="280" Canvas.Top="640" Height="40" Width="60"
+                             MouseLeftButtonDown="BypassValve_Click"
+                             ValveID="V07" IsOpen="False"/>
+        <control:BypassValve x:Name="V10" Canvas.Left="420" Canvas.Top="640" Height="40" Width="60"
+                             MouseLeftButtonDown="BypassValve_Click"
+                             ValveID="V10" IsOpen="False"/>
+        <control:BypassValve x:Name="V13" Canvas.Left="560" Canvas.Top="640" Height="40" Width="60"
+                             MouseLeftButtonDown="BypassValve_Click"
+                             ValveID="V13" IsOpen="False"/>
+        <control:BypassValve x:Name="V16" Canvas.Left="700" Canvas.Top="640" Height="40" Width="60"
+                             MouseLeftButtonDown="BypassValve_Click"
+                             ValveID="V16" IsOpen="False"/>
+        <control:BypassValve x:Name="V19" Canvas.Left="840" Canvas.Top="640" Height="40" Width="60"
+                             MouseLeftButtonDown="BypassValve_Click"
+                             ValveID="V19" IsOpen="False"/>
+        <control:BypassValve x:Name="V22" Canvas.Left="980" Canvas.Top="640" Height="40" Width="60"
+                             MouseLeftButtonDown="BypassValve_Click"
+                             ValveID="V22" IsOpen="False"/>
 
-        <Button x:Name="BubblerCarrier1Change" Content="Button" Canvas.Left="270" Canvas.Top="522" Width="40" Height="22">
-        </Button>
-        <Button x:Name="BubblerCarrier2Change" Content="Button" Canvas.Left="410" Canvas.Top="522" Width="40" Height="22">
-        </Button>
-        <Button x:Name="BubblerCarrier3Change" Content="Button" Canvas.Left="550" Canvas.Top="522" Width="40" Height="22">
-        </Button>
-        <Button x:Name="BubblerCarrier4Change" Content="Button" Canvas.Left="690" Canvas.Top="522" Width="40" Height="22">
-        </Button>
-        <Button x:Name="BubblerCarrier5Change" Content="Button" Canvas.Left="830" Canvas.Top="522" Width="40" Height="22">
-        </Button>
-        <Button x:Name="BubblerCarrier6Change" Content="Button" Canvas.Left="970" Canvas.Top="522" Width="40" Height="22">
-        </Button>
+        <control:SingleValve x:Name="V33" Canvas.Left="1200" Canvas.Top="160" Height="30" Width="30"
+                        MouseLeftButtonDown="SingleValve_Click"
+                        ValveID="V33" IsOpen="False"/>
+        <control:SingleValve x:Name="V34" Canvas.Left="1115" Canvas.Top="548" Height="30" Width="30"
+                        MouseLeftButtonDown="SingleValve_Click"
+                        ValveID="V34" IsOpen="False"/>
+        <control:SingleValve x:Name="V35" Canvas.Left="1240" Canvas.Top="160" Height="30" Width="30"
+                      MouseLeftButtonDown="SingleValve_Click"
+                      ValveID="V35" IsOpen="False"/>
+        <control:SingleValve x:Name="V52" Canvas.Left="1086" Canvas.Top="745" Height="30" Width="30"
+                      MouseLeftButtonDown="SingleValve_Click"
+                      ValveID="V52" IsOpen="False" HorizontalAlignment="Left" VerticalAlignment="Center"/>
 
-        <Button x:Name="Bubbler1Bypass" Content="Button" Canvas.Left="290" Canvas.Top="654" Width="40" Height="22">
-        </Button>
-        <Button x:Name="Bubbler2Bypass" Content="Button" Canvas.Left="430" Canvas.Top="654" Width="40" Height="22">
-        </Button>
-        <Button x:Name="Bubbler3Bypass" Content="Button" Canvas.Left="570" Canvas.Top="654" Width="40" Height="22">
-        </Button>
-        <Button x:Name="Bubbler4Bypass" Content="Button" Canvas.Left="710" Canvas.Top="654" Width="40" Height="22">
-        </Button>
-        <Button x:Name="Bubbler5Bypass" Content="Button" Canvas.Left="850" Canvas.Top="654" Width="40" Height="22">
-        </Button>
-        <Button x:Name="Bubbler6Bypass" Content="Button" Canvas.Left="990" Canvas.Top="654" Width="40" Height="22">
-        </Button>
+        <control:ButterflyValve x:Name="ButterflyValve" Canvas.Left="1145" Canvas.Top="590" Height="60" Width="30"
+                      MouseLeftButtonDown="ButterflyValve_Click"
+                      ValveID="V35" IsOpen="False" />
 
-        <Button x:Name="DORVacuum" Content="Button" Canvas.Left="1220" Canvas.Top="163" Width="40" Height="22">
-        </Button>
-        <Button x:Name="VentToScrubber" Content="Button" Canvas.Left="1090" Canvas.Top="408" Width="40" Height="22">
-        </Button>
 
         <!-- Button for Leak Test Valve -->
-        <Button x:Name="LeakTestSilane" Content="Button" Canvas.Left="676" Canvas.Top="100" Width="14" Height="10">
-            <Button.RenderTransform>
-                <RotateTransform Angle="270"/>
-            </Button.RenderTransform>
-        </Button>
-        <Button x:Name="LeakTestAmmonia" Content="Button" Canvas.Left="318" Canvas.Top="100" Width="14" Height="10">
-            <Button.RenderTransform>
-                <RotateTransform Angle="270"/>
-            </Button.RenderTransform>
-        </Button>
-        <Button x:Name="LeakTestNitrogen" Content="Button" Canvas.Left="113" Canvas.Top="488" Width="14" Height="10">
-        </Button>
-        <Button x:Name="LeakTestHydrogen" Content="Button" Canvas.Left="153" Canvas.Top="500" Width="14" Height="10">
-        </Button>
+        <control:LeakTestValve x:Name="V36" Canvas.Left="645" Canvas.Top="82" Width="45" Height="30"
+                      MouseLeftButtonDown="LeakTestValve_Click"
+                      ValveID="V36" IsOpen="False" HorizontalAlignment="Left" VerticalAlignment="Center" />
+        <control:LeakTestValve x:Name="V37" Canvas.Left="313" Canvas.Top="85" Width="46" Height="30"
+                      MouseLeftButtonDown="LeakTestValve_Click"
+                      ValveID="V37" IsOpen="False" HorizontalAlignment="Left" VerticalAlignment="Center" RenderTransformOrigin="0.5,0.5" >
+            <control:LeakTestValve.RenderTransform>
+                <RotateTransform Angle="180"/>
+            </control:LeakTestValve.RenderTransform>
+        </control:LeakTestValve>
+        <control:LeakTestValve x:Name="V38" Canvas.Left="145" Canvas.Top="500" Width="50" Height="30"
+                      MouseLeftButtonDown="LeakTestValve_Click"
+                      ValveID="V38" IsOpen="False" HorizontalAlignment="Left" VerticalAlignment="Center" RenderTransformOrigin="0.5,0.5" >
+            <control:LeakTestValve.RenderTransform>
+                <TransformGroup>
+                    <RotateTransform Angle="-90"/>
+                </TransformGroup>
+            </control:LeakTestValve.RenderTransform>
+        </control:LeakTestValve>
+        <control:LeakTestValve x:Name="V39" Canvas.Left="100" Canvas.Top="486" Width="50" Height="30"
+                      MouseLeftButtonDown="LeakTestValve_Click"
+                      ValveID="V39" IsOpen="False" HorizontalAlignment="Left" VerticalAlignment="Center" RenderTransformOrigin="0.5,0.5" >
+            <control:LeakTestValve.RenderTransform>
+                <TransformGroup>
+                    <RotateTransform Angle="-90"/>
+                </TransformGroup>
+            </control:LeakTestValve.RenderTransform>
+        </control:LeakTestValve>
+        <control:LeakTestValve x:Name="V40" Canvas.Left="254" Canvas.Top="680" Width="44" Height="30"
+                      MouseLeftButtonDown="LeakTestValve_Click"
+                      ValveID="V40" IsOpen="False" HorizontalAlignment="Left" VerticalAlignment="Top" />
+        <control:LeakTestValve x:Name="V41" Canvas.Left="324" Canvas.Top="680" Width="44" Height="30" 
+                      MouseLeftButtonDown="LeakTestValve_Click"
+                      ValveID="V41" IsOpen="False" HorizontalAlignment="Left" VerticalAlignment="Center" RenderTransformOrigin="0.5,0.5">
+            <control:LeakTestValve.RenderTransform>
+                <TransformGroup>
+                    <RotateTransform Angle="180"/>
+                </TransformGroup>
+            </control:LeakTestValve.RenderTransform>
+        </control:LeakTestValve>
+        <control:LeakTestValve x:Name="V42" Canvas.Left="394" Canvas.Top="678" Width="44" Height="30"
+                      MouseLeftButtonDown="LeakTestValve_Click"
+                      ValveID="V42" IsOpen="False" HorizontalAlignment="Left" VerticalAlignment="Top" />
+        <control:LeakTestValve x:Name="V43" Canvas.Left="465" Canvas.Top="680" Width="44" Height="30" 
+                      MouseLeftButtonDown="LeakTestValve_Click"
+                      ValveID="V43" IsOpen="False" HorizontalAlignment="Left" VerticalAlignment="Center" RenderTransformOrigin="0.5,0.5">
+            <control:LeakTestValve.RenderTransform>
+                <TransformGroup>
+                    <RotateTransform Angle="180"/>
+                </TransformGroup>
+            </control:LeakTestValve.RenderTransform>
+        </control:LeakTestValve>
+        <control:LeakTestValve x:Name="V44" Canvas.Left="534" Canvas.Top="679" Width="44" Height="30"
+              MouseLeftButtonDown="LeakTestValve_Click"
+              ValveID="V44" IsOpen="False" HorizontalAlignment="Left" VerticalAlignment="Top" />
+        <control:LeakTestValve x:Name="V45" Canvas.Left="606" Canvas.Top="680" Width="44" Height="30" 
+              MouseLeftButtonDown="LeakTestValve_Click"
+              ValveID="V45" IsOpen="False" HorizontalAlignment="Left" VerticalAlignment="Center" RenderTransformOrigin="0.5,0.5">
+            <control:LeakTestValve.RenderTransform>
+                <TransformGroup>
+                    <RotateTransform Angle="180"/>
+                </TransformGroup>
+            </control:LeakTestValve.RenderTransform>
+        </control:LeakTestValve>
+        <control:LeakTestValve x:Name="V46" Canvas.Left="674" Canvas.Top="678" Width="44" Height="30"
+      MouseLeftButtonDown="LeakTestValve_Click"
+      ValveID="V46" IsOpen="False" HorizontalAlignment="Left" VerticalAlignment="Top" />
+        <control:LeakTestValve x:Name="V47" Canvas.Left="746" Canvas.Top="680" Width="44" Height="30" 
+      MouseLeftButtonDown="LeakTestValve_Click"
+      ValveID="V47" IsOpen="False" HorizontalAlignment="Left" VerticalAlignment="Center" RenderTransformOrigin="0.5,0.5">
+            <control:LeakTestValve.RenderTransform>
+                <TransformGroup>
+                    <RotateTransform Angle="180"/>
+                </TransformGroup>
+            </control:LeakTestValve.RenderTransform>
+        </control:LeakTestValve>
+        <control:LeakTestValve x:Name="V48" Canvas.Left="814" Canvas.Top="680" Width="44" Height="30"
+    MouseLeftButtonDown="LeakTestValve_Click"
+    ValveID="V48" IsOpen="False" HorizontalAlignment="Left" VerticalAlignment="Top" />
+        <control:LeakTestValve x:Name="V49" Canvas.Left="886" Canvas.Top="680" Width="44" Height="30" 
+    MouseLeftButtonDown="LeakTestValve_Click"
+    ValveID="V49" IsOpen="False" HorizontalAlignment="Left" VerticalAlignment="Center" RenderTransformOrigin="0.5,0.5">
+            <control:LeakTestValve.RenderTransform>
+                <TransformGroup>
+                    <RotateTransform Angle="180"/>
+                </TransformGroup>
+            </control:LeakTestValve.RenderTransform>
+        </control:LeakTestValve>
+        <control:LeakTestValve x:Name="V50" Canvas.Left="954" Canvas.Top="679" Width="44" Height="30"
+  MouseLeftButtonDown="LeakTestValve_Click"
+  ValveID="V50" IsOpen="False" HorizontalAlignment="Left" VerticalAlignment="Top" />
+        <control:LeakTestValve x:Name="V51" Canvas.Left="1026" Canvas.Top="680" Width="44" Height="30" 
+  MouseLeftButtonDown="LeakTestValve_Click"
+  ValveID="V51" IsOpen="False" HorizontalAlignment="Left" VerticalAlignment="Center" RenderTransformOrigin="0.5,0.5">
+            <control:LeakTestValve.RenderTransform>
+                <TransformGroup>
+                    <RotateTransform Angle="180"/>
+                </TransformGroup>
+            </control:LeakTestValve.RenderTransform>
+        </control:LeakTestValve>
 
-        <Button x:Name="LeakTestBubbler1In" Content="Button" Canvas.Left="302" Canvas.Top="683" Width="14" Height="10">
-            <Button.RenderTransform>
-                <RotateTransform Angle="90"/>
-            </Button.RenderTransform>
-        </Button>
-        <Button x:Name="LeakTestBubbler1Out" Content="Button" Canvas.Left="318" Canvas.Top="697" Width="14" Height="10">
-            <Button.RenderTransform>
-                <RotateTransform Angle="270"/>
-            </Button.RenderTransform>
-        </Button>
-        <Button x:Name="LeakTestBubbler2In" Content="Button" Canvas.Left="442" Canvas.Top="683" Width="14" Height="10">
-            <Button.RenderTransform>
-                <RotateTransform Angle="90"/>
-            </Button.RenderTransform>
-        </Button>
-        <Button x:Name="LeakTestBubbler2Out" Content="Button" Canvas.Left="458" Canvas.Top="697" Width="14" Height="10">
-            <Button.RenderTransform>
-                <RotateTransform Angle="270"/>
-            </Button.RenderTransform>
-        </Button>
-        <Button x:Name="LeakTestBubbler3In" Content="Button" Canvas.Left="582" Canvas.Top="683" Width="14" Height="10">
-            <Button.RenderTransform>
-                <RotateTransform Angle="90"/>
-            </Button.RenderTransform>
-        </Button>
-        <Button x:Name="LeakTestBubbler3Out" Content="Button" Canvas.Left="598" Canvas.Top="697" Width="14" Height="10">
-            <Button.RenderTransform>
-                <RotateTransform Angle="270"/>
-            </Button.RenderTransform>
-        </Button>
-        <Button x:Name="LeakTestBubbler4In" Content="Button" Canvas.Left="722" Canvas.Top="683" Width="14" Height="10">
-            <Button.RenderTransform>
-                <RotateTransform Angle="90"/>
-            </Button.RenderTransform>
-        </Button>
-        <Button x:Name="LeakTestBubbler4Out" Content="Button" Canvas.Left="738" Canvas.Top="697" Width="14" Height="10">
-            <Button.RenderTransform>
-                <RotateTransform Angle="270"/>
-            </Button.RenderTransform>
-        </Button>
-        <Button x:Name="LeakTestBubbler5In" Content="Button" Canvas.Left="862" Canvas.Top="683" Width="14" Height="10">
-            <Button.RenderTransform>
-                <RotateTransform Angle="90"/>
-            </Button.RenderTransform>
-        </Button>
-        <Button x:Name="LeakTestBubbler5Out" Content="Button" Canvas.Left="878" Canvas.Top="697" Width="14" Height="10">
-            <Button.RenderTransform>
-                <RotateTransform Angle="270"/>
-            </Button.RenderTransform>
-        </Button>
-        <Button x:Name="LeakTestBubbler6In" Content="Button" Canvas.Left="1002" Canvas.Top="683" Width="14" Height="10">
-            <Button.RenderTransform>
-                <RotateTransform Angle="90"/>
-            </Button.RenderTransform>
-        </Button>
-        <Button x:Name="LeakTestBubbler6Out" Content="Button" Canvas.Left="1018" Canvas.Top="697" Width="14" Height="10">
-            <Button.RenderTransform>
-                <RotateTransform Angle="270"/>
-            </Button.RenderTransform>
-        </Button>
-
-        <Button x:Name="LeakVacuumOpen" Content="Button" Canvas.Left="1091" Canvas.Top="753" Width="14" Height="10">
-            <Button.RenderTransform>
-                <RotateTransform Angle="90"/>
-            </Button.RenderTransform>
-        </Button>
-
-        <Button x:Name="OverPressureOpen" Content="Button" Canvas.Left="1108" Canvas.Top="570" Width="14" Height="10">
-            <Button.RenderTransform>
-                <RotateTransform Angle="90"/>
-            </Button.RenderTransform>
-        </Button>
-
-        <Button x:Name="ThrottleValveControl" Content="Button" Canvas.Left="1140" Canvas.Top="610" Width="40" Height="22">
-        </Button>
         <!-- 수소가스 공급 상태 -->
         <StackPanel Canvas.Left="60" Canvas.Top="46" Width="90" Height="34">
             <TextBlock Height="22"  Background="{StaticResource SourceDisplayColor1}" Foreground="White" FontSize="16" TextAlignment="Center" VerticalAlignment="Center">H2</TextBlock>

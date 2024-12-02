@@ -5,6 +5,7 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using SapphireXR_App.Enums;
 using System.Windows;
+using TwinCAT.TypeSystem;
 
 
 
@@ -12,43 +13,92 @@ namespace SapphireXR_App.Views
 {
     public partial class HomePage : Page
     {
+        public static bool IsMaintenanceMode { get; set; } = false;
         public HomePage()
         {
             InitializeComponent();
             DataContext = App.Current.Services.GetService(typeof(HomeViewModel));
         }
 
-        private void BlockValve_Click(object sender, MouseButtonEventArgs e)
+        private void SwitchingValve_Click(object sender, MouseButtonEventArgs e)
         {
-            BlockValve blockValve = (BlockValve)sender;
-            if (blockValve.IsOpen == true)
+            SwitchingValve Valve = (SwitchingValve)sender;
+            if (Valve.IsOpen == true)
             {
-                var result = ValveOperationEx.Show("Valve Operation", $"{blockValve.ValveID} 밸브를 질소가스로 변경하시겠습니까?");
+                var result = ValveOperationEx.Show("Valve Operation", $"{Valve.ValveID} 밸브를 질소가스로 변경하시겠습니까?");
                 switch (result)
                 {
                     case ValveOperationExResult.Ok:
-                        blockValve.IsOpen = false;
-                        MessageBox.Show($"{blockValve.ValveID} 밸브 닫음");
+                        Valve.IsOpen = !(Valve.IsOpen);
+                        MessageBox.Show($"{Valve.ValveID} 밸브 닫음");
                         break;
                     case ValveOperationExResult.Cancel:
-                        MessageBox.Show($"{blockValve.ValveID} 취소됨");
+                        MessageBox.Show($"{Valve.ValveID} 취소됨1");
                         break;
                 }
             }
             else
             {
-                var result = ValveOperationEx.Show("Valve Operation", $"{blockValve.ValveID} 밸브를 공정가스로 변경하시겠습니까?");
+                var result = ValveOperationEx.Show("Valve Operation", $"{Valve.ValveID} 밸브를 공정가스로 변경하시겠습니까?");
                 switch (result)
                 {
                     case ValveOperationExResult.Ok:
-                        blockValve.IsOpen = true;
-                        MessageBox.Show($"{blockValve.ValveID} 밸브 열음");
+                        Valve.IsOpen = !(Valve.IsOpen);
+                        MessageBox.Show($"{Valve.ValveID} 밸브 열음");
                         break;
                     case ValveOperationExResult.Cancel:
-                        MessageBox.Show($"{blockValve.ValveID} 취소됨");
+                        MessageBox.Show($"{Valve.ValveID} 취소됨2");
                         break;
                 }
             }
+        }
+
+        private void BypassValve_Click(object sender, MouseButtonEventArgs e)
+        {
+            SwitchingValve Valve = (SwitchingValve)sender;
+            if (Valve.IsOpen == true)
+            {
+                var result = ValveOperationEx.Show("Valve Operation", $"{Valve.ValveID} 밸브를 질소가스로 변경하시겠습니까?");
+                switch (result)
+                {
+                    case ValveOperationExResult.Ok:
+                        Valve.IsOpen = !(Valve.IsOpen);
+                        MessageBox.Show($"{Valve.ValveID} 밸브 닫음");
+                        break;
+                    case ValveOperationExResult.Cancel:
+                        MessageBox.Show($"{Valve.ValveID} 취소됨1");
+                        break;
+                }
+            }
+            else
+            {
+                var result = ValveOperationEx.Show("Valve Operation", $"{Valve.ValveID} 밸브를 공정가스로 변경하시겠습니까?");
+                switch (result)
+                {
+                    case ValveOperationExResult.Ok:
+                        Valve.IsOpen = !(Valve.IsOpen);
+                        MessageBox.Show($"{Valve.ValveID} 밸브 열음");
+                        break;
+                    case ValveOperationExResult.Cancel:
+                        MessageBox.Show($"{Valve.ValveID} 취소됨2");
+                        break;
+                }
+            }
+        }
+
+        private void SingleValve_Click(object sender, MouseButtonEventArgs e)
+        {
+
+        }
+
+        private void ButterflyValve_Click(object sender, MouseButtonEventArgs e)
+        {
+
+        }
+
+        private void LeakTestValve_Click(object sender, MouseButtonEventArgs e)
+        {
+
         }
     }
 }

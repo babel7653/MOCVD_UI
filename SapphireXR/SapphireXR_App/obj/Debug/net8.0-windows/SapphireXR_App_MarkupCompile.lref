@@ -1,6 +1,9 @@
 ﻿
 FD:\Design\MOCVD\MR\SapphireXR\SapphireXR_App\App.xaml;;
-FD:\Design\MOCVD\MR\SapphireXR\SapphireXR_App\Controls\BlockValve.xaml;;
+FD:\Design\MOCVD\MR\SapphireXR\SapphireXR_App\Controls\ButterflyValve.xaml;;
+FD:\Design\MOCVD\MR\SapphireXR\SapphireXR_App\Controls\BypassValve.xaml;;
+FD:\Design\MOCVD\MR\SapphireXR\SapphireXR_App\Controls\SingleValve.xaml;;
+FD:\Design\MOCVD\MR\SapphireXR\SapphireXR_App\Controls\SwitchingValve.xaml;;
 FD:\Design\MOCVD\MR\SapphireXR\SapphireXR_App\Views\BottomDashboard.xaml;;
 FD:\Design\MOCVD\MR\SapphireXR\SapphireXR_App\Views\FlowControlView.xaml;;
 FD:\Design\MOCVD\MR\SapphireXR\SapphireXR_App\Views\HomePage.xaml;;
@@ -12,4 +15,5 @@ FD:\Design\MOCVD\MR\SapphireXR\SapphireXR_App\Views\ReportPage.xaml;;
 FD:\Design\MOCVD\MR\SapphireXR\SapphireXR_App\Views\RightDashboard.xaml;;
 FD:\Design\MOCVD\MR\SapphireXR\SapphireXR_App\Views\SettingPage.xaml;;
 FD:\Design\MOCVD\MR\SapphireXR\SapphireXR_App\Views\ValveOperationView.xaml;;
+FD:\Design\MOCVD\MR\SapphireXR\SapphireXR_App\Controls\LeakTestValve.xaml;;
 

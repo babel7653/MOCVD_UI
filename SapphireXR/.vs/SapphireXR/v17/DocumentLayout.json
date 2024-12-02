@@ -3,20 +3,80 @@
   "WorkspaceRootPath": "D:\\Design\\MOCVD\\MR\\SapphireXR\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{0BA9EC6F-DD39-4047-8539-4517254E6F28}|SapphireXR_App\\SapphireXR_App.csproj|d:\\design\\mocvd\\mr\\sapphirexr\\sapphirexr_app\\viewmodels\\mainviewmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{0BA9EC6F-DD39-4047-8539-4517254E6F28}|SapphireXR_App\\SapphireXR_App.csproj|solutionrelative:sapphirexr_app\\viewmodels\\mainviewmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{0BA9EC6F-DD39-4047-8539-4517254E6F28}|SapphireXR_App\\SapphireXR_App.csproj|d:\\design\\mocvd\\mr\\sapphirexr\\sapphirexr_app\\models\\valveoperationex.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{0BA9EC6F-DD39-4047-8539-4517254E6F28}|SapphireXR_App\\SapphireXR_App.csproj|solutionrelative:sapphirexr_app\\models\\valveoperationex.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{0BA9EC6F-DD39-4047-8539-4517254E6F28}|SapphireXR_App\\SapphireXR_App.csproj|d:\\design\\mocvd\\mr\\sapphirexr\\sapphirexr_app\\views\\homepage.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}",
+      "RelativeMoniker": "D:0:0:{0BA9EC6F-DD39-4047-8539-4517254E6F28}|SapphireXR_App\\SapphireXR_App.csproj|solutionrelative:sapphirexr_app\\views\\homepage.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{0BA9EC6F-DD39-4047-8539-4517254E6F28}|SapphireXR_App\\SapphireXR_App.csproj|d:\\design\\mocvd\\mr\\sapphirexr\\sapphirexr_app\\views\\homepage.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{0BA9EC6F-DD39-4047-8539-4517254E6F28}|SapphireXR_App\\SapphireXR_App.csproj|solutionrelative:sapphirexr_app\\views\\homepage.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{0BA9EC6F-DD39-4047-8539-4517254E6F28}|SapphireXR_App\\SapphireXR_App.csproj|d:\\design\\mocvd\\mr\\sapphirexr\\sapphirexr_app\\views\\homepage.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}",
-      "RelativeMoniker": "D:0:0:{0BA9EC6F-DD39-4047-8539-4517254E6F28}|SapphireXR_App\\SapphireXR_App.csproj|solutionrelative:sapphirexr_app\\views\\homepage.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}"
+      "AbsoluteMoniker": "D:0:0:{0BA9EC6F-DD39-4047-8539-4517254E6F28}|SapphireXR_App\\SapphireXR_App.csproj|d:\\design\\mocvd\\mr\\sapphirexr\\sapphirexr_app\\views\\flowcontrolview.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}",
+      "RelativeMoniker": "D:0:0:{0BA9EC6F-DD39-4047-8539-4517254E6F28}|SapphireXR_App\\SapphireXR_App.csproj|solutionrelative:sapphirexr_app\\views\\flowcontrolview.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{0BA9EC6F-DD39-4047-8539-4517254E6F28}|SapphireXR_App\\SapphireXR_App.csproj|d:\\design\\mocvd\\mr\\sapphirexr\\sapphirexr_app\\controls\\leaktestvalve.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}",
+      "RelativeMoniker": "D:0:0:{0BA9EC6F-DD39-4047-8539-4517254E6F28}|SapphireXR_App\\SapphireXR_App.csproj|solutionrelative:sapphirexr_app\\controls\\leaktestvalve.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{0BA9EC6F-DD39-4047-8539-4517254E6F28}|SapphireXR_App\\SapphireXR_App.csproj|d:\\design\\mocvd\\mr\\sapphirexr\\sapphirexr_app\\controls\\leaktestvalve.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{0BA9EC6F-DD39-4047-8539-4517254E6F28}|SapphireXR_App\\SapphireXR_App.csproj|solutionrelative:sapphirexr_app\\controls\\leaktestvalve.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{0BA9EC6F-DD39-4047-8539-4517254E6F28}|SapphireXR_App\\SapphireXR_App.csproj|d:\\design\\mocvd\\mr\\sapphirexr\\sapphirexr_app\\viewmodels\\homeviewmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{0BA9EC6F-DD39-4047-8539-4517254E6F28}|SapphireXR_App\\SapphireXR_App.csproj|solutionrelative:sapphirexr_app\\viewmodels\\homeviewmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{0BA9EC6F-DD39-4047-8539-4517254E6F28}|SapphireXR_App\\SapphireXR_App.csproj|d:\\design\\mocvd\\mr\\sapphirexr\\sapphirexr_app\\controls\\butterflyvalve.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}",
+      "RelativeMoniker": "D:0:0:{0BA9EC6F-DD39-4047-8539-4517254E6F28}|SapphireXR_App\\SapphireXR_App.csproj|solutionrelative:sapphirexr_app\\controls\\butterflyvalve.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{0BA9EC6F-DD39-4047-8539-4517254E6F28}|SapphireXR_App\\SapphireXR_App.csproj|d:\\design\\mocvd\\mr\\sapphirexr\\sapphirexr_app\\controls\\butterflyvalve.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{0BA9EC6F-DD39-4047-8539-4517254E6F28}|SapphireXR_App\\SapphireXR_App.csproj|solutionrelative:sapphirexr_app\\controls\\butterflyvalve.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{0BA9EC6F-DD39-4047-8539-4517254E6F28}|SapphireXR_App\\SapphireXR_App.csproj|d:\\design\\mocvd\\mr\\sapphirexr\\sapphirexr_app\\viewmodels\\valveoperationviewmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{0BA9EC6F-DD39-4047-8539-4517254E6F28}|SapphireXR_App\\SapphireXR_App.csproj|solutionrelative:sapphirexr_app\\viewmodels\\valveoperationviewmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{0BA9EC6F-DD39-4047-8539-4517254E6F28}|SapphireXR_App\\SapphireXR_App.csproj|d:\\design\\mocvd\\mr\\sapphirexr\\sapphirexr_app\\controls\\singlevalve.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}",
+      "RelativeMoniker": "D:0:0:{0BA9EC6F-DD39-4047-8539-4517254E6F28}|SapphireXR_App\\SapphireXR_App.csproj|solutionrelative:sapphirexr_app\\controls\\singlevalve.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{0BA9EC6F-DD39-4047-8539-4517254E6F28}|SapphireXR_App\\SapphireXR_App.csproj|d:\\design\\mocvd\\mr\\sapphirexr\\sapphirexr_app\\controls\\singlevalve.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{0BA9EC6F-DD39-4047-8539-4517254E6F28}|SapphireXR_App\\SapphireXR_App.csproj|solutionrelative:sapphirexr_app\\controls\\singlevalve.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{0BA9EC6F-DD39-4047-8539-4517254E6F28}|SapphireXR_App\\SapphireXR_App.csproj|d:\\design\\mocvd\\mr\\sapphirexr\\sapphirexr_app\\controls\\bypassvalve.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}",
+      "RelativeMoniker": "D:0:0:{0BA9EC6F-DD39-4047-8539-4517254E6F28}|SapphireXR_App\\SapphireXR_App.csproj|solutionrelative:sapphirexr_app\\controls\\bypassvalve.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{0BA9EC6F-DD39-4047-8539-4517254E6F28}|SapphireXR_App\\SapphireXR_App.csproj|d:\\design\\mocvd\\mr\\sapphirexr\\sapphirexr_app\\controls\\bypassvalve.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{0BA9EC6F-DD39-4047-8539-4517254E6F28}|SapphireXR_App\\SapphireXR_App.csproj|solutionrelative:sapphirexr_app\\controls\\bypassvalve.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{0BA9EC6F-DD39-4047-8539-4517254E6F28}|SapphireXR_App\\SapphireXR_App.csproj|d:\\design\\mocvd\\mr\\sapphirexr\\sapphirexr_app\\views\\mainwindow.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}",
+      "RelativeMoniker": "D:0:0:{0BA9EC6F-DD39-4047-8539-4517254E6F28}|SapphireXR_App\\SapphireXR_App.csproj|solutionrelative:sapphirexr_app\\views\\mainwindow.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{0BA9EC6F-DD39-4047-8539-4517254E6F28}|SapphireXR_App\\SapphireXR_App.csproj|d:\\design\\mocvd\\mr\\sapphirexr\\sapphirexr_app\\viewmodels\\mainviewmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{0BA9EC6F-DD39-4047-8539-4517254E6F28}|SapphireXR_App\\SapphireXR_App.csproj|solutionrelative:sapphirexr_app\\viewmodels\\mainviewmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{0BA9EC6F-DD39-4047-8539-4517254E6F28}|SapphireXR_App\\SapphireXR_App.csproj|d:\\design\\mocvd\\mr\\sapphirexr\\sapphirexr_app\\controls\\switchingvalve.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}",
+      "RelativeMoniker": "D:0:0:{0BA9EC6F-DD39-4047-8539-4517254E6F28}|SapphireXR_App\\SapphireXR_App.csproj|solutionrelative:sapphirexr_app\\controls\\switchingvalve.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{0BA9EC6F-DD39-4047-8539-4517254E6F28}|SapphireXR_App\\SapphireXR_App.csproj|d:\\design\\mocvd\\mr\\sapphirexr\\sapphirexr_app\\controls\\switchingvalve.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{0BA9EC6F-DD39-4047-8539-4517254E6F28}|SapphireXR_App\\SapphireXR_App.csproj|solutionrelative:sapphirexr_app\\controls\\switchingvalve.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{0BA9EC6F-DD39-4047-8539-4517254E6F28}|SapphireXR_App\\SapphireXR_App.csproj|d:\\design\\mocvd\\mr\\sapphirexr\\sapphirexr_app\\models\\valveoperationex.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{0BA9EC6F-DD39-4047-8539-4517254E6F28}|SapphireXR_App\\SapphireXR_App.csproj|solutionrelative:sapphirexr_app\\models\\valveoperationex.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{0BA9EC6F-DD39-4047-8539-4517254E6F28}|SapphireXR_App\\SapphireXR_App.csproj|d:\\design\\mocvd\\mr\\sapphirexr\\sapphirexr_app\\enums\\valveoperationexresult.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{0BA9EC6F-DD39-4047-8539-4517254E6F28}|SapphireXR_App\\SapphireXR_App.csproj|solutionrelative:sapphirexr_app\\enums\\valveoperationexresult.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -26,7 +86,7 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 9,
+          "SelectedChildIndex": 26,
           "Children": [
             {
               "$type": "Bookmark",
@@ -66,7 +126,194 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 0,
+              "DocumentIndex": 4,
+              "Title": "LeakTestValve.xaml.cs",
+              "DocumentMoniker": "D:\\Design\\MOCVD\\MR\\SapphireXR\\SapphireXR_App\\Controls\\LeakTestValve.xaml.cs",
+              "RelativeDocumentMoniker": "SapphireXR_App\\Controls\\LeakTestValve.xaml.cs",
+              "ToolTip": "D:\\Design\\MOCVD\\MR\\SapphireXR\\SapphireXR_App\\Controls\\LeakTestValve.xaml.cs",
+              "RelativeToolTip": "SapphireXR_App\\Controls\\LeakTestValve.xaml.cs",
+              "ViewState": "AgIAAAcAAAAAAAAAAAAwwCUAAAA0AAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-12-02T08:30:46.297Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "LeakTestValve.xaml",
+              "DocumentMoniker": "D:\\Design\\MOCVD\\MR\\SapphireXR\\SapphireXR_App\\Controls\\LeakTestValve.xaml",
+              "RelativeDocumentMoniker": "SapphireXR_App\\Controls\\LeakTestValve.xaml",
+              "ToolTip": "D:\\Design\\MOCVD\\MR\\SapphireXR\\SapphireXR_App\\Controls\\LeakTestValve.xaml",
+              "RelativeToolTip": "SapphireXR_App\\Controls\\LeakTestValve.xaml",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003549|",
+              "WhenOpened": "2024-12-02T08:13:22.854Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 7,
+              "Title": "ButterflyValve.xaml.cs",
+              "DocumentMoniker": "D:\\Design\\MOCVD\\MR\\SapphireXR\\SapphireXR_App\\Controls\\ButterflyValve.xaml.cs",
+              "RelativeDocumentMoniker": "SapphireXR_App\\Controls\\ButterflyValve.xaml.cs",
+              "ToolTip": "D:\\Design\\MOCVD\\MR\\SapphireXR\\SapphireXR_App\\Controls\\ButterflyValve.xaml.cs",
+              "RelativeToolTip": "SapphireXR_App\\Controls\\ButterflyValve.xaml.cs",
+              "ViewState": "AgIAABkAAAAAAAAAAAAIwDkAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-12-02T07:53:40.779Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "ButterflyValve.xaml",
+              "DocumentMoniker": "D:\\Design\\MOCVD\\MR\\SapphireXR\\SapphireXR_App\\Controls\\ButterflyValve.xaml",
+              "RelativeDocumentMoniker": "SapphireXR_App\\Controls\\ButterflyValve.xaml",
+              "ToolTip": "D:\\Design\\MOCVD\\MR\\SapphireXR\\SapphireXR_App\\Controls\\ButterflyValve.xaml",
+              "RelativeToolTip": "SapphireXR_App\\Controls\\ButterflyValve.xaml",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003549|",
+              "WhenOpened": "2024-12-02T07:43:52.798Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 10,
+              "Title": "SingleValve.xaml.cs",
+              "DocumentMoniker": "D:\\Design\\MOCVD\\MR\\SapphireXR\\SapphireXR_App\\Controls\\SingleValve.xaml.cs",
+              "RelativeDocumentMoniker": "SapphireXR_App\\Controls\\SingleValve.xaml.cs",
+              "ToolTip": "D:\\Design\\MOCVD\\MR\\SapphireXR\\SapphireXR_App\\Controls\\SingleValve.xaml.cs",
+              "RelativeToolTip": "SapphireXR_App\\Controls\\SingleValve.xaml.cs",
+              "ViewState": "AgIAAAYAAAAAAAAAAAAYwCoAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-12-02T07:11:42.029Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 12,
+              "Title": "BypassValve.xaml.cs",
+              "DocumentMoniker": "D:\\Design\\MOCVD\\MR\\SapphireXR\\SapphireXR_App\\Controls\\BypassValve.xaml.cs",
+              "RelativeDocumentMoniker": "SapphireXR_App\\Controls\\BypassValve.xaml.cs",
+              "ToolTip": "D:\\Design\\MOCVD\\MR\\SapphireXR\\SapphireXR_App\\Controls\\BypassValve.xaml.cs",
+              "RelativeToolTip": "SapphireXR_App\\Controls\\BypassValve.xaml.cs",
+              "ViewState": "AgIAAAkAAAAAAAAAAAAAACEAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-12-02T06:11:44.394Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 13,
+              "Title": "MainWindow.xaml",
+              "DocumentMoniker": "D:\\Design\\MOCVD\\MR\\SapphireXR\\SapphireXR_App\\Views\\MainWindow.xaml",
+              "RelativeDocumentMoniker": "SapphireXR_App\\Views\\MainWindow.xaml",
+              "ToolTip": "D:\\Design\\MOCVD\\MR\\SapphireXR\\SapphireXR_App\\Views\\MainWindow.xaml",
+              "RelativeToolTip": "SapphireXR_App\\Views\\MainWindow.xaml",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003549|",
+              "WhenOpened": "2024-12-02T06:11:13.636Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 11,
+              "Title": "BypassValve.xaml",
+              "DocumentMoniker": "D:\\Design\\MOCVD\\MR\\SapphireXR\\SapphireXR_App\\Controls\\BypassValve.xaml",
+              "RelativeDocumentMoniker": "SapphireXR_App\\Controls\\BypassValve.xaml",
+              "ToolTip": "D:\\Design\\MOCVD\\MR\\SapphireXR\\SapphireXR_App\\Controls\\BypassValve.xaml",
+              "RelativeToolTip": "SapphireXR_App\\Controls\\BypassValve.xaml",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003549|",
+              "WhenOpened": "2024-12-02T06:00:36.08Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 8,
+              "Title": "ValveOperationViewModel.cs",
+              "DocumentMoniker": "D:\\Design\\MOCVD\\MR\\SapphireXR\\SapphireXR_App\\ViewModels\\ValveOperationViewModel.cs",
+              "RelativeDocumentMoniker": "SapphireXR_App\\ViewModels\\ValveOperationViewModel.cs",
+              "ToolTip": "D:\\Design\\MOCVD\\MR\\SapphireXR\\SapphireXR_App\\ViewModels\\ValveOperationViewModel.cs",
+              "RelativeToolTip": "SapphireXR_App\\ViewModels\\ValveOperationViewModel.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAB0AAAAJAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-12-02T03:12:37.894Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 18,
+              "Title": "ValveOperationExResult.cs",
+              "DocumentMoniker": "D:\\Design\\MOCVD\\MR\\SapphireXR\\SapphireXR_App\\Enums\\ValveOperationExResult.cs",
+              "RelativeDocumentMoniker": "SapphireXR_App\\Enums\\ValveOperationExResult.cs",
+              "ToolTip": "D:\\Design\\MOCVD\\MR\\SapphireXR\\SapphireXR_App\\Enums\\ValveOperationExResult.cs",
+              "RelativeToolTip": "SapphireXR_App\\Enums\\ValveOperationExResult.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-12-02T03:11:10.707Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "HomeViewModel.cs",
+              "DocumentMoniker": "D:\\Design\\MOCVD\\MR\\SapphireXR\\SapphireXR_App\\ViewModels\\HomeViewModel.cs",
+              "RelativeDocumentMoniker": "SapphireXR_App\\ViewModels\\HomeViewModel.cs",
+              "ToolTip": "D:\\Design\\MOCVD\\MR\\SapphireXR\\SapphireXR_App\\ViewModels\\HomeViewModel.cs",
+              "RelativeToolTip": "SapphireXR_App\\ViewModels\\HomeViewModel.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABEAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-12-02T02:29:51.908Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 16,
+              "Title": "SwitchingValve.xaml.cs",
+              "DocumentMoniker": "D:\\Design\\MOCVD\\MR\\SapphireXR\\SapphireXR_App\\Controls\\SwitchingValve.xaml.cs",
+              "RelativeDocumentMoniker": "SapphireXR_App\\Controls\\SwitchingValve.xaml.cs",
+              "ToolTip": "D:\\Design\\MOCVD\\MR\\SapphireXR\\SapphireXR_App\\Controls\\SwitchingValve.xaml.cs",
+              "RelativeToolTip": "SapphireXR_App\\Controls\\SwitchingValve.xaml.cs",
+              "ViewState": "AgIAABYAAAAAAAAAAAA7wDUAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-12-02T02:28:51.285Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 9,
+              "Title": "SingleValve.xaml",
+              "DocumentMoniker": "D:\\Design\\MOCVD\\MR\\SapphireXR\\SapphireXR_App\\Controls\\SingleValve.xaml",
+              "RelativeDocumentMoniker": "SapphireXR_App\\Controls\\SingleValve.xaml",
+              "ToolTip": "D:\\Design\\MOCVD\\MR\\SapphireXR\\SapphireXR_App\\Controls\\SingleValve.xaml",
+              "RelativeToolTip": "SapphireXR_App\\Controls\\SingleValve.xaml",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003549|",
+              "WhenOpened": "2024-12-02T02:26:30.149Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 15,
+              "Title": "SwitchingValve.xaml",
+              "DocumentMoniker": "D:\\Design\\MOCVD\\MR\\SapphireXR\\SapphireXR_App\\Controls\\SwitchingValve.xaml",
+              "RelativeDocumentMoniker": "SapphireXR_App\\Controls\\SwitchingValve.xaml",
+              "ToolTip": "D:\\Design\\MOCVD\\MR\\SapphireXR\\SapphireXR_App\\Controls\\SwitchingValve.xaml",
+              "RelativeToolTip": "SapphireXR_App\\Controls\\SwitchingValve.xaml",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003549|",
+              "WhenOpened": "2024-12-02T02:26:14.449Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "FlowControlView.xaml",
+              "DocumentMoniker": "D:\\Design\\MOCVD\\MR\\SapphireXR\\SapphireXR_App\\Views\\FlowControlView.xaml",
+              "RelativeDocumentMoniker": "SapphireXR_App\\Views\\FlowControlView.xaml",
+              "ToolTip": "D:\\Design\\MOCVD\\MR\\SapphireXR\\SapphireXR_App\\Views\\FlowControlView.xaml",
+              "RelativeToolTip": "SapphireXR_App\\Views\\FlowControlView.xaml",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003549|",
+              "WhenOpened": "2024-12-02T01:49:29.675Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 14,
               "Title": "MainViewModel.cs",
               "DocumentMoniker": "D:\\Design\\MOCVD\\MR\\SapphireXR\\SapphireXR_App\\ViewModels\\MainViewModel.cs",
               "RelativeDocumentMoniker": "SapphireXR_App\\ViewModels\\MainViewModel.cs",
@@ -79,20 +326,19 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 17,
               "Title": "ValveOperationEx.cs",
               "DocumentMoniker": "D:\\Design\\MOCVD\\MR\\SapphireXR\\SapphireXR_App\\Models\\ValveOperationEx.cs",
               "RelativeDocumentMoniker": "SapphireXR_App\\Models\\ValveOperationEx.cs",
               "ToolTip": "D:\\Design\\MOCVD\\MR\\SapphireXR\\SapphireXR_App\\Models\\ValveOperationEx.cs",
               "RelativeToolTip": "SapphireXR_App\\Models\\ValveOperationEx.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA4AAAAOAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-12-02T00:41:39.016Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-12-02T00:41:39.016Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 3,
+              "DocumentIndex": 0,
               "Title": "HomePage.xaml",
               "DocumentMoniker": "D:\\Design\\MOCVD\\MR\\SapphireXR\\SapphireXR_App\\Views\\HomePage.xaml",
               "RelativeDocumentMoniker": "SapphireXR_App\\Views\\HomePage.xaml",
@@ -104,13 +350,13 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 1,
               "Title": "HomePage.xaml.cs",
               "DocumentMoniker": "D:\\Design\\MOCVD\\MR\\SapphireXR\\SapphireXR_App\\Views\\HomePage.xaml.cs",
               "RelativeDocumentMoniker": "SapphireXR_App\\Views\\HomePage.xaml.cs",
               "ToolTip": "D:\\Design\\MOCVD\\MR\\SapphireXR\\SapphireXR_App\\Views\\HomePage.xaml.cs",
               "RelativeToolTip": "SapphireXR_App\\Views\\HomePage.xaml.cs",
-              "ViewState": "AgIAAAwAAAAAAAAAAAAAAB8AAAAeAAAAAAAAAA==",
+              "ViewState": "AgIAAD4AAAAAAAAAAIAywFwAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2024-12-02T00:40:53.468Z",
               "EditorCaption": ""

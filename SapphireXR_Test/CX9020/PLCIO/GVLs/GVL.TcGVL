@@ -1,0 +1,18 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4026.8">
+  <GVL Name="GVL" Id="{5c0516a1-dc14-4f57-bb87-ec442e63ea89}">
+    <Declaration><![CDATA[{attribute 'qualified_only'}
+VAR_GLOBAL
+	bRunRecipe			: BOOL;
+	
+	EL1088_IN	AT%I*	: BYTE;
+	EL2088_OUT	AT%Q*	: BYTE;
+	EL3054_IN	AT%I*	: INT;
+	EL4024_OUT	AT%Q*	: INT;
+	
+	stRecipe		: RecipeStep;
+	aRecipe			: ARRAY[1..100] OF RecipeStep;
+
+END_VAR]]></Declaration>
+  </GVL>
+</TcPlcObject>

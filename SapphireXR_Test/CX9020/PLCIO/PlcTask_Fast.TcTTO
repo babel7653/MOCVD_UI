@@ -1,0 +1,16 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
+  <Task Name="PlcTask_Fast" Id="{102a298e-773d-4dfd-a9a1-6a7dca4e538f}">
+    <!--CycleTime in micro seconds.-->
+    <CycleTime>2000</CycleTime>
+    <Priority>19</Priority>
+    <PouCall>
+      <Name>P20_BackgroundCom</Name>
+    </PouCall>
+    <TaskFBGuid>{9529eb8a-7f77-4bf0-a5a9-5ae0791b0737}</TaskFBGuid>
+    <Fb_init>{977d9702-588e-471a-9e24-84dd8bc906ae}</Fb_init>
+    <Fb_exit>{4eefead5-8173-49cf-aab0-4597b08cb022}</Fb_exit>
+    <CycleUpdate>{cd3c34c5-81bc-4a58-a288-c2d8ab9247d4}</CycleUpdate>
+    <PostCycleUpdate>{3a5a5872-ea68-4d7f-adb2-6c1eaac66a9a}</PostCycleUpdate>
+  </Task>
+</TcPlcObject>

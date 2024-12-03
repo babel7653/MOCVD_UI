@@ -1,0 +1,159 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4026.8">
+  <POU Name="FB_RecipeSequencer" Id="{eaa1ede0-1851-426e-9c35-61099dc6c976}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK FB_RecipeSequencer
+VAR_INPUT
+	nRcpIndex	: INT :=1;
+END_VAR
+VAR_OUTPUT
+END_VAR
+VAR
+	nRampTime	: INT;
+
+	// for FB_Sequencer Variable
+	aMFC : ARRAY[1..19] OF FB_RampGeneration_Gas; //MFC 0 ~ 5V
+	aEPC : ARRAY[1..7] OF FB_RampGeneration_Gas; //EPC 0 ~ 5V
+	//aMFC_TV : ARRAY[1..19] OF INT;
+	//aMFC_RampTime : ARRAY[1..19] OF INT;
+	aMFC_PV : ARRAY[1..19] OF INT;
+	//aEPC_TV : ARRAY[1..7] OF INT;
+	//aEPC_RampTime : ARRAY[1..7] OF INT;
+	aEPC_PV	: ARRAY[1..7] OF INT;
+	i 	: INT;
+	j 	: INT;
+	nRcpRampTime	: INT;
+END_VAR
+
+VAR CONSTANT
+	KL3464MaxValueH	: REAL := 16383; //0~5V Half Input
+	//KL4404MaxValueH	: REAL := 16383; //0~5V Half Output
+END_VAR]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[//Tempeary Value for TEST
+
+GVL_IO.aMaxValue[1] :=4000;  //MFC1 MO Manifold RUN
+GVL_IO.aMaxValue[2] := 4000; //MFC2 HYD Manifold RUN
+GVL_IO.aMaxValue[3] := 4000; //MFC3 NH3 #1
+GVL_IO.aMaxValue[4] := 4000; //MFC4 NH3 #2
+GVL_IO.aMaxValue[8] := 50; //MFC4 NH3 #2
+GVL_IO.aMaxValue[20] := 2000; //EPC
+GVL_IO.aMaxValue[21] := 2250; //EPC
+GVL_IO.aMaxValue[22] := 2250; //EPC
+GVL_IO.aMaxValue[23] := 2250; //EPC
+GVL_IO.aMaxValue[24] := 2250; //EPC
+GVL_IO.aMaxValue[25] := 2250; //EPC
+GVL_IO.aMaxValue[26] := 2250; //EPC
+
+//aMFC_RampTime[i]; <-- Frome UI
+//aMFC_TV[i] <-- From UI
+
+//IF bMaxValueChanged THEN
+//	FOR i:=1 TO 4 DO
+//		aMFC[i].rMaxValue := GVL_IO.aMaxValue[i];
+//	END_FOR								
+//END_IF
+
+nRampTime := RCP.aRecipe[nRcpIndex].iRecipe[2]; // Current Recipe Step Ramp Time 
+
+(* Read from Device*)
+(* Heater Write *)
+P11_E3508.nTemperatureTargetValue := RCP.aRecipe[nRcpIndex].iRecipe[4];
+P11_E3508.nRampTime := nRampTime;
+
+(* Pressure  Write *)
+P12_IQ_PLUS.nPressureTargetValue := INT_TO_WORD(RCP.aRecipe[nRcpIndex].iRecipe[5]);
+P12_IQ_PLUS.nRampTime := nRampTime;
+
+(* Susceptor Rotation Value  Write *)
+P15_RotationOperation.nRotationTV_rpm := INT_TO_SINT(RCP.aRecipe[nRcpIndex].iRecipe[6]);
+P15_RotationOperation.nRampTime := nRampTime;
+
+(* MFC Write *)
+FOR i:=1 TO 19 DO
+	IF GVL_IO.aMaxValue[i] <> 0 THEN
+		aMFC[i].nState := 1;
+		aMFC[i].nRampTime := nRampTime;
+		//aMFC[i].rTargetValue := aMFC_TV[i] / GVL_IO.aMaxValue[i] * KL3464MaxValueH; //Input Set Value
+		aMFC[i].rTargetValue := RCP.aRecipe[nRcpIndex].rRecipe[i] / GVL_IO.aMaxValue[i] * KL3464MaxValueH; //Input Set Value
+		GVL_IO.aAnalogOutputIO[i] := LREAL_TO_INT(aMFC[i].rControlValue);
+		
+		aMFC_PV[i] := REAL_TO_INT(GVL_IO.aAnalogInputIO[i] / KL3464MaxValueH * GVL_IO.aMaxValue[i]);
+		aMFC[i]();
+	END_IF
+END_FOR
+
+(* EPC Write *)
+FOR i:=1 TO 7 DO
+	j := i + 19; //Offset Analog Input Output Card
+	IF GVL_IO.aMaxValue[j] <> 0 THEN
+		aEPC[i].nState := 1;
+		aEPC[i].nRampTime := nRampTime;
+		//aEPC[i].rTargetValue := aEPC_TV[i] / GVL_IO.aMaxValue[j] * KL3464MaxValueH; //Input Set Value
+		aEPC[i].rTargetValue := RCP.aRecipe[nRcpIndex].rRecipe[j] / GVL_IO.aMaxValue[j] * KL3464MaxValueH; //Input Set Value
+		GVL_IO.aAnalogOutputIO[j] := LREAL_TO_INT(aEPC[i].rControlValue);
+		
+		aEPC_PV[i] := REAL_TO_INT(GVL_IO.aAnalogInputIO[j] / KL3464MaxValueH * GVL_IO.aMaxValue[j]);
+		
+		aEPC[i]();
+	END_IF
+END_FOR
+
+(* Solenoid Valve Mapping *)
+GVL_IO.aOutputSolValve[1].0 := RCP.aRecipe[nRcpIndex].dRecipe.0; //V01 Hyd. Carrier
+GVL_IO.aOutputSolValve[1].1 := RCP.aRecipe[nRcpIndex].dRecipe.1; //V02
+GVL_IO.aOutputSolValve[1].2 := RCP.aRecipe[nRcpIndex].dRecipe.2; //V03
+GVL_IO.aOutputSolValve[1].3 := RCP.aRecipe[nRcpIndex].dRecipe.3; //V04
+GVL_IO.aOutputSolValve[1].4 := RCP.aRecipe[nRcpIndex].dRecipe.4; //V05
+GVL_IO.aOutputSolValve[1].6 := RCP.aRecipe[nRcpIndex].dRecipe.5; //V07
+GVL_IO.aOutputSolValve[1].7 := RCP.aRecipe[nRcpIndex].dRecipe.6; //V08
+GVL_IO.aOutputSolValve[1].9 := RCP.aRecipe[nRcpIndex].dRecipe.7; //V10
+GVL_IO.aOutputSolValve[1].10 := RCP.aRecipe[nRcpIndex].dRecipe.8; //V11
+GVL_IO.aOutputSolValve[1].12 := RCP.aRecipe[nRcpIndex].dRecipe.9; //V13
+GVL_IO.aOutputSolValve[1].13 := RCP.aRecipe[nRcpIndex].dRecipe.10; //V14
+GVL_IO.aOutputSolValve[1].15 := RCP.aRecipe[nRcpIndex].dRecipe.11; //V16
+GVL_IO.aOutputSolValve[2].0 := RCP.aRecipe[nRcpIndex].dRecipe.12; //V17
+GVL_IO.aOutputSolValve[2].2 := RCP.aRecipe[nRcpIndex].dRecipe.13; //V19
+GVL_IO.aOutputSolValve[2].3 := RCP.aRecipe[nRcpIndex].dRecipe.14; //V20
+GVL_IO.aOutputSolValve[2].5 := RCP.aRecipe[nRcpIndex].dRecipe.15; //V22
+GVL_IO.aOutputSolValve[2].6 := RCP.aRecipe[nRcpIndex].dRecipe.16; //V23
+GVL_IO.aOutputSolValve[2].7 := RCP.aRecipe[nRcpIndex].dRecipe.17; //V24
+GVL_IO.aOutputSolValve[2].8 := RCP.aRecipe[nRcpIndex].dRecipe.18; //V25
+GVL_IO.aOutputSolValve[2].9 := RCP.aRecipe[nRcpIndex].dRecipe.19; //V26
+GVL_IO.aOutputSolValve[2].10 := RCP.aRecipe[nRcpIndex].dRecipe.20; //V27
+GVL_IO.aOutputSolValve[2].11 := RCP.aRecipe[nRcpIndex].dRecipe.21; //V28
+GVL_IO.aOutputSolValve[2].12 := RCP.aRecipe[nRcpIndex].dRecipe.22; //V29
+GVL_IO.aOutputSolValve[2].13 := RCP.aRecipe[nRcpIndex].dRecipe.23; //V30
+GVL_IO.aOutputSolValve[2].14 := RCP.aRecipe[nRcpIndex].dRecipe.24; //V31
+GVL_IO.aOutputSolValve[2].15 := RCP.aRecipe[nRcpIndex].dRecipe.25; //V32
+]]></ST>
+    </Implementation>
+    <LineIds Name="FB_RecipeSequencer">
+      <LineId Id="1" Count="13" />
+      <LineId Id="16" Count="8" />
+      <LineId Id="179" Count="0" />
+      <LineId Id="25" Count="0" />
+      <LineId Id="183" Count="0" />
+      <LineId Id="26" Count="0" />
+      <LineId Id="160" Count="1" />
+      <LineId Id="165" Count="0" />
+      <LineId Id="182" Count="0" />
+      <LineId Id="166" Count="0" />
+      <LineId Id="162" Count="0" />
+      <LineId Id="175" Count="0" />
+      <LineId Id="181" Count="0" />
+      <LineId Id="177" Count="1" />
+      <LineId Id="176" Count="0" />
+      <LineId Id="180" Count="0" />
+      <LineId Id="30" Count="5" />
+      <LineId Id="129" Count="0" />
+      <LineId Id="36" Count="5" />
+      <LineId Id="57" Count="0" />
+      <LineId Id="42" Count="6" />
+      <LineId Id="130" Count="0" />
+      <LineId Id="49" Count="6" />
+      <LineId Id="132" Count="26" />
+      <LineId Id="131" Count="0" />
+      <LineId Id="159" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

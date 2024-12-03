@@ -1,0 +1,13 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
+  <GVL Name="GVL_Serial" Id="{2afc1db8-fe54-41af-ae6c-fb678da14042}">
+    <Declaration><![CDATA[//{attribute 'qualified_only'}
+VAR_GLOBAL
+	TxBufferTB : ComBuffer; (* Receive data buffer; used with all receive function blocks *)
+	RxBufferTB : ComBuffer; (* Transmit data buffer; used with all receive function blocks *)
+	
+	TxBufferLH : ComBuffer; //잘동작되면 TB도 지역변수로 변경
+	RxBufferLH : ComBuffer;	
+END_VAR]]></Declaration>
+  </GVL>
+</TcPlcObject>

@@ -1,0 +1,587 @@
+﻿<Page x:Class="SapphireXR_App.Views.SettingPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:SapphireXR_App.Views" 
+      xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
+			xmlns:vm="clr-namespace:SapphireXR_App.ViewModels"
+      mc:Ignorable="d"
+			d:DataContext="{d:DesignInstance Type={x:Type vm:SettingViewModel}}"
+      d:DesignHeight="787" d:DesignWidth="1320"
+      Title="Setting">
+
+	<Grid>
+		<TabControl TabStripPlacement="Left">
+			<TabControl.Resources>
+				<Style TargetType="{x:Type TabItem}">
+					<Setter Property="HeaderTemplate">
+						<Setter.Value>
+							<DataTemplate>
+								<ContentPresenter Content="{TemplateBinding Content}">
+									<ContentPresenter.LayoutTransform>
+										<RotateTransform Angle="270"/>
+									</ContentPresenter.LayoutTransform>
+								</ContentPresenter>
+							</DataTemplate>
+						</Setter.Value>
+					</Setter>
+					<Setter Property="Width" Value="20"/>
+					<Setter Property="Height" Value="90"/>
+					<Setter Property="Padding" Value="3"/>
+				</Style>
+			</TabControl.Resources>
+			<!--Tab for Alarm Setting -->
+			<TabItem Name="AlarmSetting" Header="Alarm Setting">
+				<TabItem.Content>
+					<Grid Width="1290">
+						<Grid.RowDefinitions>
+							<RowDefinition Height="30"/>
+							<RowDefinition Height="*"/>
+						</Grid.RowDefinitions>
+						<Grid Grid.Row="0" Background="Orange">
+							<TextBlock FontSize="14" Text="Alarm / Warning Setting" FontWeight="Bold" Foreground="White"
+                                           VerticalAlignment="Center" HorizontalAlignment="Center"/>
+						</Grid>
+						<Grid Grid.Row="1">
+							<StackPanel Orientation="Horizontal">
+								<!-- 알람(Analog) 설정  -->
+								<GroupBox Header="Alarm Setting (Analog)" Width="430"
+                                          BorderBrush="LightSteelBlue" BorderThickness="2" Margin="2,10,2,0"
+                                              FontSize="14">
+									<Grid>
+										<Grid.RowDefinitions>
+											<RowDefinition Height="25"/>
+											<RowDefinition Height="25"/>
+											<RowDefinition Height="35*"/>
+											<RowDefinition Height="17*"/>
+											<RowDefinition Height="613*"/>
+										</Grid.RowDefinitions>
+										<StackPanel Grid.Row="0" Orientation="Horizontal">
+											<TextBlock FontSize="12" Height="25" Width="120" Text="Delay Time(s)"/>
+											<TextBox x:Name="tbAlarmDelayTimeA" Text="{Binding Path=dPreSet[AlarmDelayTimeA]}" Width="70" Height="20"/>
+											<Button x:Name="btnAlarmSettingLoad" Content="Load" Width="70" HorizontalAlignment="Right"
+															Margin="10,0,0,0" Command="{Binding AlarmSettingLoadCommand}">
+												<Button.Resources>
+													<Style TargetType="Border">
+														<Setter Property="CornerRadius" Value="6"/>
+													</Style>
+												</Button.Resources>
+											</Button>
+											<Button x:Name="btnAlarmSettingSave" Content="Save" Width="70" HorizontalAlignment="Right"
+															Margin="10,0,0,0" Command="{Binding AlarmSettingSaveCommand}">
+												<Button.Resources>
+													<Style TargetType="Border">
+														<Setter Property="CornerRadius" Value="6"/>
+													</Style>
+												</Button.Resources>
+											</Button>
+										</StackPanel>
+										<StackPanel Grid.Row="1" Orientation="Horizontal">
+											<TextBlock FontSize="12" Height="25" Width="120" Text="Alarm Deviation(%)" />
+											<TextBox x:Name="tbAlarmDeviatin" Text="{Binding Path=dPreSet[AlarmDeviation]}" Width="70" Height="20"/>
+											<TextBlock FontSize="12" Height="25" Width="120" Margin="10,0,5,0"
+                                                           Text="Warning Deviation(%)" />
+											<TextBox x:Name="tbWarningDeviation" Text="{Binding Path=dPreSet[WarningDeviation]}" Width="70" Height="20"/>
+										</StackPanel>
+										<StackPanel Grid.Row="2" Grid.RowSpan="3">
+											<DataGrid x:Name="dgAlarmSettingA" AutoGenerateColumns="False" Margin="5,0,5,0"
+																VerticalScrollBarVisibility="Auto" ItemsSource="{Binding lGasAIO}" CanUserAddRows="False">
+												<DataGrid.Resources>
+													<Style TargetType="{x:Type DataGridColumnHeader}">
+														<Setter Property="HorizontalAlignment" Value="Center"/>
+														<Setter Property="Background" Value="Transparent"/>
+													</Style>
+													<Style TargetType="{x:Type DataGrid}">
+														<Setter Property="BorderBrush" Value="Black"/>
+														<Setter Property="BorderThickness" Value="1"/>
+													</Style>
+												</DataGrid.Resources>
+												<DataGrid.Columns>
+													<DataGridTextColumn Header="ID" CanUserSort="False" CanUserResize="False" Width="50"
+																							Binding="{Binding Path=ID}"/>
+													<DataGridTextColumn Header="Device Name" CanUserSort="False" CanUserResize="False" Width="*"
+																							Binding="{Binding Path=Name}"/>
+													<DataGridCheckBoxColumn Header="Alarm" Width="50"	CanUserSort="False"
+																									Binding="{Binding Path=AlarmSet}"/>
+													<DataGridCheckBoxColumn Header="Warning" Width="50"	CanUserSort="False"
+																									Binding="{Binding Path=WarningSet}"/>
+												</DataGrid.Columns>
+											</DataGrid>
+										</StackPanel>
+									</Grid>
+								</GroupBox>
+								<!-- 알람(Digital) 설정 -->
+								<GroupBox Header="Alarm Setting (Digital)" Width="430"
+                                          BorderBrush="LightSteelBlue" BorderThickness="2" Margin="2,10,2,0"
+                                          FontSize="14">
+									<Grid>
+										<Grid.RowDefinitions>
+											<RowDefinition Height="25"/>
+											<RowDefinition Height="25"/>
+											<RowDefinition/>
+										</Grid.RowDefinitions>
+										<StackPanel Grid.Row="0" Orientation="Horizontal">
+											<TextBlock FontSize="12" Height="25" Width="120" Text="Delay Time(s)"/>
+											<TextBox x:Name="tbAlarmDelayTimeD" Text="{Binding Path=dPreSet[AlarmDelayTimeD]}" Width="70" Height="20"/>
+											<Button x:Name="btnEventSettingSave" Content="Save" Width="70" HorizontalAlignment="Right"
+															Margin="10,0,0,0" Command="{Binding  AlarmSettingSaveCommand}">
+												<Button.Resources>
+													<Style TargetType="Border">
+														<Setter Property="CornerRadius" Value="6"/>
+													</Style>
+												</Button.Resources>
+											</Button>
+										</StackPanel>
+										<StackPanel Grid.Row="2">
+											<DataGrid x:Name="dgAlarmSettingD" AutoGenerateColumns="False" Margin="5,0,5,0"
+																VerticalScrollBarVisibility="Auto" ItemsSource="{Binding lSwitchDI}" CanUserAddRows="False">
+												<DataGrid.Resources>
+													<Style TargetType="{x:Type DataGridColumnHeader}">
+														<Setter Property="HorizontalAlignment" Value="Center"/>
+														<Setter Property="Background" Value="Transparent"/>
+													</Style>
+												</DataGrid.Resources>
+
+												<DataGrid.Columns>
+													<DataGridTextColumn Header="ID" CanUserSort="False" CanUserResize="False" Width="50"
+                                                                        Binding="{Binding Path=ID}"/>
+													<DataGridTextColumn Header="Device Name" CanUserSort="False" CanUserResize="False" Width="*"
+                                                                        Binding="{Binding Path=Name}"/>
+													<DataGridCheckBoxColumn Header="Alarm" CanUserSort="False" CanUserResize="False" Width="50"
+                                                                        Binding="{Binding Path=AlarmSet}"/>
+													<DataGridCheckBoxColumn Header="Warning" CanUserSort="False"  CanUserResize="False" Width="50"
+                                                                        Binding="{Binding Path=WarningSet}"/>
+												</DataGrid.Columns>
+											</DataGrid>
+										</StackPanel>
+									</Grid>
+								</GroupBox>
+								<!-- LogBook 테이블 -->
+								<GroupBox Header="LogBook" Width="420"
+                                          BorderBrush="LightSteelBlue" BorderThickness="2" Margin="2,10,2,0"
+                                          FontSize="14">
+									<Grid>
+										<Grid.RowDefinitions>
+											<RowDefinition Height="25"/>
+											<RowDefinition Height="25"/>
+											<RowDefinition/>
+										</Grid.RowDefinitions>
+										<StackPanel Grid.Row="0">
+											<StackPanel.Resources>
+												<Style TargetType="{x:Type Button}">
+													<Style.Resources>
+														<Style TargetType="{x:Type Border}">
+															<Setter Property="CornerRadius" Value="4"/>
+														</Style>
+													</Style.Resources>
+												</Style>
+											</StackPanel.Resources>
+											<Button x:Name="LogFileRead" Content="Read" Width="70" Margin="25,0,0,0">
+											</Button>
+										</StackPanel>
+
+										<StackPanel Grid.Row="1" Orientation="Horizontal" >
+											<TextBlock FontSize="12" Height="25" Width="70" Text="Filter"/>
+											<Button x:Name="LogFilterAlarm" Content="Alarm" Width="50" Margin="25,0,0,0" Background="red"/>
+											<Button x:Name="LogFilterWarning" Content="Warning" Width="50" Margin="25,0,0,0" Background="Orange"/>
+											<Button x:Name="LogFilterInformation" Content="Information" Width="50" Margin="25,0,0,0" Background="Green"/>
+											<Button x:Name="LogFilterClear" Content="Clear" Width="50" Margin="25,0,0,0" Background="LightGray"/>
+										</StackPanel>
+										<StackPanel Grid.Row="2">
+											<DataGrid x:Name="LogbookTable" AutoGenerateColumns="False" Margin="5,0,5,0">
+												<DataGrid.Resources>
+													<Style TargetType="{x:Type DataGridColumnHeader}">
+														<Setter Property="HorizontalAlignment" Value="Center"/>
+														<Setter Property="Background" Value="Transparent"/>
+													</Style>
+												</DataGrid.Resources>
+												<DataGrid.Columns>
+													<DataGridTextColumn Header="Type" CanUserSort="False" CanUserResize="False" Width="60"
+                                                                        Binding="{Binding}"/>
+													<DataGridTextColumn Header="Massage" CanUserSort="False" CanUserResize="False" Width="*"
+                                                                        Binding="{Binding}"/>
+													<DataGridTextColumn Header="Date" CanUserSort="False" CanUserResize="False" Width="100"
+                                                                        Binding="{Binding Date, StringFormat=d}"/>
+													<DataGridTextColumn Header="Time" CanUserSort="False" CanUserResize="False" Width="100"
+                                                                        Binding="{Binding Time}"/>
+												</DataGrid.Columns>
+											</DataGrid>
+										</StackPanel>
+									</Grid>
+								</GroupBox>
+							</StackPanel>
+						</Grid>
+					</Grid>
+				</TabItem.Content>
+
+			</TabItem>
+			<!--Tab for Safety Setting-->
+			<TabItem Name="UserStateSetting" Header="Safety Setting">
+				<TabItem.Content>
+					<Grid>
+						<Grid.RowDefinitions>
+							<RowDefinition Height="30"/>
+							<RowDefinition/>
+						</Grid.RowDefinitions>
+						<Grid Grid.Row="0" Background="Green">
+							<TextBlock FontSize="14" Text="Safety Setting" FontWeight="Bold" Foreground="White"
+                                           VerticalAlignment="Center" HorizontalAlignment="Center"/>
+						</Grid>
+						<Grid Grid.Row="1">
+							<Grid.RowDefinitions>
+								<RowDefinition Height="28*"/>
+								<RowDefinition Height="723*"/>
+							</Grid.RowDefinitions>
+							<Grid.ColumnDefinitions>
+								<ColumnDefinition Width="21*"/>
+								<ColumnDefinition Width="13*"/>
+							</Grid.ColumnDefinitions>
+							<StackPanel Orientation="Horizontal" Grid.ColumnSpan="2" Grid.RowSpan="2">
+								<!-- User State 설정 테이블 -->
+								<GroupBox Header="User State Setting" Width="640" 
+                                          BorderBrush="LightSteelBlue" BorderThickness="2" Margin="2,10,2,0"
+                                          FontSize="14">
+									<StackPanel Grid.Column="0">
+										<Button x:Name="UserStateSave" Content="Save" Width="70" Margin="5" HorizontalAlignment="Right"
+                                                 Command="{Binding AlarmSettingSaveCommand}">
+											<Button.Resources>
+												<Style TargetType="Border">
+													<Setter Property="CornerRadius" Value="6"/>
+												</Style>
+											</Button.Resources>
+										</Button>
+										<Grid Height="670">
+											<Grid.RowDefinitions>
+												<RowDefinition Height="50*"/>
+												<RowDefinition Height="Auto"/>
+												<RowDefinition Height="50*"/>
+											</Grid.RowDefinitions>
+											<StackPanel Grid.Row="0">
+												<DataGrid x:Name="dgUserSettingA" AutoGenerateColumns="False" Margin="5,0,5,0" Height="320"
+                                                          VerticalScrollBarVisibility="Auto" ItemsSource="{Binding lGasAIO}" CanUserAddRows="False">
+													<DataGrid.Resources>
+														<Style TargetType="{x:Type DataGridColumnHeader}">
+															<Setter Property="HorizontalAlignment" Value="Center"/>
+															<Setter Property="Background" Value="Transparent"/>
+														</Style>
+														<Style TargetType="{x:Type DataGrid}">
+															<Setter Property="BorderBrush" Value="Black"/>
+															<Setter Property="BorderThickness" Value="1"/>
+														</Style>
+													</DataGrid.Resources>
+													<DataGrid.Columns>
+														<DataGridTextColumn Header="Device Id" CanUserSort="False" CanUserResize="False" Width="60"
+                                                                            Binding="{Binding Path=ID, Mode=TwoWay}"/>
+														<DataGridTextColumn Header="Device Name" CanUserSort="False" CanUserResize="False" Width="*"
+                                                                            Binding="{Binding Path=Name}"/>
+														<DataGridTextColumn Header="State 1" CanUserSort="False" CanUserResize="False" Width="100"
+                                                                            Binding="{Binding Path=UserState1}"/>
+														<DataGridTextColumn Header="State 2" CanUserSort="False" CanUserResize="False" Width="100"
+                                                                            Binding="{Binding Path=UserState2}"/>
+														<DataGridTextColumn Header="State 3" CanUserSort="False" CanUserResize="False" Width="100"
+                                                                            Binding="{Binding Path=UserState3}"/>
+														<DataGridTextColumn Header="State 4" CanUserSort="False" CanUserResize="False" Width="100"
+                                                                            Binding="{Binding Path=UserState4}"/>
+													</DataGrid.Columns>
+												</DataGrid>
+											</StackPanel>
+											<StackPanel Grid.Row="1" Height="15">
+											</StackPanel>
+											<StackPanel Grid.Row="2">
+												<DataGrid x:Name="dgUserSettingD" AutoGenerateColumns="False" Margin="5,0,5,0" Height="320"
+                                                          VerticalScrollBarVisibility="Auto" ItemsSource="{Binding lGasDO}" CanUserAddRows="False">
+													<DataGrid.Resources>
+														<Style TargetType="{x:Type DataGridColumnHeader}">
+															<Setter Property="HorizontalAlignment" Value="Center"/>
+															<Setter Property="Background" Value="Transparent"/>
+														</Style>
+														<Style TargetType="{x:Type DataGrid}">
+															<Setter Property="BorderBrush" Value="Black"/>
+															<Setter Property="BorderThickness" Value="1"/>
+														</Style>
+													</DataGrid.Resources>
+													<DataGrid.Columns>
+														<DataGridTextColumn Header="Device Id" CanUserSort="False" CanUserResize="False" Width="60"
+                                                                            Binding="{Binding Path=ID, Mode=TwoWay}"/>
+														<DataGridTextColumn Header="Device Name" CanUserSort="False" CanUserResize="False" Width="*"
+                                                                            Binding="{Binding Path=Name}"/>
+														<DataGridCheckBoxColumn Header="State 1" CanUserSort="False" CanUserResize="False" Width="100"
+                                                                            Binding="{Binding Path=UserState1}"/>
+														<DataGridCheckBoxColumn Header="State 2" CanUserSort="False" CanUserResize="False" Width="100"
+                                                                            Binding="{Binding Path=UserState2}"/>
+														<DataGridCheckBoxColumn Header="State 3" CanUserSort="False" CanUserResize="False" Width="100"
+                                                                            Binding="{Binding Path=UserState3}"/>
+														<DataGridCheckBoxColumn Header="State 4" CanUserSort="False" CanUserResize="False" Width="100"
+                                                                            Binding="{Binding Path=UserState4}"/>
+													</DataGrid.Columns>
+												</DataGrid>
+											</StackPanel>
+										</Grid>
+									</StackPanel>
+								</GroupBox>
+								<StackPanel>
+									<!-- Interlock 설정 테이블 -->
+									<GroupBox Header="Interlock Setting" Width="640" BorderBrush="LightSteelBlue" BorderThickness="2" Margin="2,10,2,0"
+                                              FontSize="14">
+										<Grid>
+											<Grid.ColumnDefinitions>
+												<ColumnDefinition/>
+												<ColumnDefinition/>
+											</Grid.ColumnDefinitions>
+											<Grid.RowDefinitions>
+												<RowDefinition Height="35"/>
+												<RowDefinition Height="30"/>
+												<RowDefinition Height="30"/>
+												<RowDefinition Height="30"/>
+												<RowDefinition Height="30"/>
+												<RowDefinition Height="30"/>
+												<RowDefinition Height="30"/>
+												<RowDefinition Height="30"/>
+												<RowDefinition Height="30"/>
+												<RowDefinition Height="30"/>
+												<RowDefinition Height="30"/>
+												<RowDefinition Height="30"/>
+												<RowDefinition Height="30"/>
+											</Grid.RowDefinitions>
+											<!-- DOR Release -->
+											<TextBlock Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Text="Double O-Ring Release" FontWeight="Bold" VerticalAlignment="Bottom"/>
+											<Button Grid.Row="0" Grid.Column="1" x:Name="InterlockSave" Content="Save" Width="70" HorizontalAlignment="Left"
+                                                    Command="{Binding AlarmSettingSaveCommand}">
+												<Button.Resources>
+													<Style TargetType="Border">
+														<Setter Property="CornerRadius" Value="6"/>
+													</Style>
+												</Button.Resources>
+											</Button>
+											<CheckBox x:Name="cbRecipeNotRunning"  Grid.Row="1" Grid.Column="0" Content="Recipe Not Running" 
+                                                      IsChecked="{Binding Path=dInterLockD[RecipeNotRunning]}" VerticalAlignment="Center" Margin="15,0,0,0"/>
+											<CheckBox x:Name="cbReactorPressureLimit" Grid.Row="2" Grid.Column="0" Content="Reactor Pressure(Torr) >="
+                                                      IsChecked="{Binding Path=dInterLockA[DORReactorPressure].IsEnable}" VerticalAlignment="Center" Margin="15,0,0,0"/>
+											<TextBox x:Name="tbReactorPressureLimit" Grid.Row="2" Grid.Column="1" Width="150" HorizontalAlignment="Left" Margin="2"
+                                                     Text="{Binding Path=dInterLockA[DORReactorPressure].Treshold}"/>
+											<CheckBox x:Name="cbSusceptorTemperature" Grid.Row="3" Grid.Column="0" Content="Susceptor Temperature" 
+                                                      IsChecked="{Binding Path=dInterLockA[DORSusceptorTemperature].IsEnable}" VerticalAlignment="Center" Margin="15,0,0,0"/>
+											<TextBox x:Name="DORTemperatureSet" Grid.Row="3" Grid.Column="1" Width="150" HorizontalAlignment="Left" Margin="2"
+                                                     Text="{Binding Path=dInterLockA[DORSusceptorTemperature].Treshold}"/>
+
+											<!-- DOR Lock -->
+											<TextBlock Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="2" Text="Double O-Ring Lock" FontWeight="Bold" VerticalAlignment="Bottom"/>
+											<CheckBox Grid.Row="5" Grid.Column="0" Content=" Vacuum Valve Close"
+                                                      IsChecked="{Binding Path=dInterLockD[VacuumValveClose]}" VerticalAlignment="Center" Margin="15,0,0,0"/>
+											<CheckBox Grid.Row="6" Grid.Column="0" Content="Pressure Limit" 
+                                                      IsChecked="{Binding Path=dInterLockA[DORPressureLimit].IsEnable}" VerticalAlignment="Center" Margin="15,0,0,0"/>
+											<TextBox x:Name="DORPressureLimit" Grid.Row="6" Grid.Column="1" Width="150" HorizontalAlignment="Left" Margin="2"
+                                                     Text="{Binding Path=dInterLockA[DORSusceptorTemperature].Treshold}"/>
+											<CheckBox Grid.Row="7" Grid.Column="0" Content=" Alarm Limit Value" 
+                                                      IsChecked="{Binding Path=dInterLockA[AlarmLimit].IsEnable}" VerticalAlignment="Center" Margin="15,0,0,0"/>
+											<TextBox x:Name="DORAlarmLimit" Grid.Row="7" Grid.Column="1" Width="150" HorizontalAlignment="Left" Margin="2"
+                                                     Text="{Binding Path=dInterLockA[AlarmLimit].Treshold}"/>
+											<!-- Auto Power ON -->
+											<TextBlock Grid.Row="8" Grid.Column="0" Grid.ColumnSpan="2" Text="Auto Power ON" FontWeight="Bold" VerticalAlignment="Bottom"/>
+											<CheckBox Grid.Row="9" Grid.Column="0" Content=" Induction Power Supply" 
+                                                     IsChecked="{Binding Path=dInterLockD[InductionPowerSupply]}" VerticalAlignment="Center" Margin="15,0,0,0"/>
+											<CheckBox Grid.Row="10" Grid.Column="0" Content=" Susceptor Rotation Motor"
+                                                     IsChecked="{Binding Path=dInterLockD[SusceptorRotationMotor]}" VerticalAlignment="Center" Margin="15,0,0,0"/>
+											<CheckBox Grid.Row="11" Grid.Column="0" Content=" Reactor Cabinet Lamp" 
+                                                      IsChecked="{Binding Path=dInterLockD[ReactorCabinetLamp]}" VerticalAlignment="Center" Margin="15,0,0,0"/>
+											<CheckBox Grid.Row="12" Grid.Column="0" Content=" Gas Control Cabinet Lamp" 
+                                                      IsChecked="{Binding Path=dInterLockD[GasControlLamp]}" VerticalAlignment="Center" Margin="15,0,0,0"/>
+										</Grid>
+									</GroupBox>
+									<!-- Preset State 설정 -->
+									<GroupBox Header="Preset State" BorderBrush="LightSteelBlue" BorderThickness="2" Margin="2,10,2,0"
+                                              FontSize="14">
+										<Grid>
+											<Grid.RowDefinitions>
+												<RowDefinition/>
+												<RowDefinition/>
+												<RowDefinition/>
+												<RowDefinition/>
+											</Grid.RowDefinitions>
+											<StackPanel Grid.Row="0" Orientation="Horizontal" Margin="2">
+												<TextBlock Width="200"  Text="System Start State"/>
+												<ComboBox x:Name="comboSystemStart" Width="100" IsReadOnly="True"
+                                                          SelectedIndex="{Binding Path=userstate.StartState}"/>
+											</StackPanel>
+											<StackPanel Grid.Row="1" Orientation="Horizontal" Margin="2">
+												<TextBlock Width="200"  Text="Alarm State"/>
+												<ComboBox Name="comboAlarmStart" Width="100"  IsReadOnly="True" 
+                                                          SelectedIndex="{Binding Path=userstate.AlarmState}"/>
+											</StackPanel>
+											<StackPanel Grid.Row="2" Orientation="Horizontal" Margin="2">
+												<TextBlock  Width="200" Text="Recipe End"/>
+												<ComboBox Name="comboRecipeEnd" Width="100" IsReadOnly="True" 
+                                                          SelectedIndex="{Binding Path=userstate.EndState}" />
+											</StackPanel>
+										</Grid>
+									</GroupBox>
+								</StackPanel>
+							</StackPanel>
+						</Grid>
+					</Grid>
+				</TabItem.Content>
+			</TabItem>
+			<!-- Tab for Device Setting -->
+			<TabItem Name="DeviceSetting" Header="Device Setting">
+				<TabItem.Content>
+					<Grid>
+						<Grid.RowDefinitions>
+							<RowDefinition Height="30"/>
+							<RowDefinition />
+						</Grid.RowDefinitions>
+						<Grid Grid.Row="0" Background="Blue">
+							<TextBlock FontSize="14" Text="Device Setting" FontWeight="Bold" Foreground="White"
+                                           VerticalAlignment="Center" HorizontalAlignment="Center"/>
+						</Grid>
+						<Grid Grid.Row="1">
+							<StackPanel Orientation="Horizontal">
+								<!-- Device Name 설정 테이블-->
+								<GroupBox Header="Device Naming" Width="620"
+                                          BorderBrush="LightSteelBlue" BorderThickness="2" Margin="2,10,2,0"
+                                          FontSize="14">
+									<StackPanel>
+										<Button x:Name="DeviceNameSave" Content="Save" Width="70" HorizontalAlignment="Right" Margin="0,0,50,0">
+											<Button.Resources>
+												<Style TargetType="Border">
+													<Setter Property="CornerRadius" Value="6"/>
+												</Style>
+											</Button.Resources>
+										</Button>
+										<Grid Height="670">
+											<Grid.RowDefinitions>
+												<RowDefinition Height="50*"/>
+												<RowDefinition Height="Auto"/>
+												<RowDefinition Height="50*"/>
+											</Grid.RowDefinitions>
+											<!-- Analog Device Name 설정 테이블-->
+											<StackPanel>
+												<DataGrid x:Name="MaxValueSetting" AutoGenerateColumns="False" Margin="5,0,5,0">
+													<DataGrid.Resources>
+														<Style TargetType="{x:Type DataGridColumnHeader}">
+															<Setter Property="HorizontalAlignment" Value="Center"/>
+															<Setter Property="Background" Value="Transparent"/>
+														</Style>
+														<Style TargetType="{x:Type DataGrid}">
+															<Setter Property="BorderBrush" Value="Black"/>
+															<Setter Property="BorderThickness" Value="1"/>
+														</Style>
+													</DataGrid.Resources>
+													<DataGrid.Columns>
+														<DataGridTextColumn Header="Device ID" CanUserSort="False" CanUserResize="False" Width="60"
+                                                                        Binding="{Binding}"/>
+														<DataGridTextColumn Header="Device Name" CanUserSort="False" CanUserResize="False" Width="*"
+                                                                        Binding="{Binding}"/>
+														<DataGridTextColumn Header="Max Value" CanUserSort="False" CanUserResize="False" Width="120"
+                                                                        Binding="{Binding}"/>
+														<DataGridTextColumn Header="Ramping" CanUserSort="False" CanUserResize="False" Width="60"
+                                                                        Binding="{Binding}"/>
+														<DataGridTextColumn Header="Accuracy" CanUserSort="False" CanUserResize="False" Width="60"
+                                                                        Binding="{Binding}"/>
+														<DataGridTextColumn Header="Units" CanUserSort="False" CanUserResize="False" Width="60"
+                                                                        Binding="{Binding}"/>
+													</DataGrid.Columns>
+												</DataGrid>
+											</StackPanel>
+											<GridSplitter Grid.Row="1" HorizontalAlignment="Stretch" VerticalAlignment="Center"  Background="LightSteelBlue"
+                                                      ShowsPreview="True" Height="3"/>
+											<!-- Digital Device Name 설정 테이블-->
+											<StackPanel Grid.Row="2" Orientation="Horizontal">
+												<StackPanel>
+													<DataGrid x:Name="DigitalMappingSetting" Width="405" AutoGenerateColumns="False" Margin="5,0,5,0">
+														<DataGrid.Resources>
+															<Style TargetType="{x:Type DataGridColumnHeader}">
+																<Setter Property="HorizontalAlignment" Value="Center"/>
+																<Setter Property="Background" Value="Transparent"/>
+															</Style>
+															<Style TargetType="{x:Type DataGrid}">
+																<Setter Property="BorderBrush" Value="Black"/>
+																<Setter Property="BorderThickness" Value="1"/>
+															</Style>
+														</DataGrid.Resources>
+														<DataGrid.Columns>
+															<DataGridTextColumn Header="Device ID" CanUserSort="False" CanUserResize="False" Width="60"
+                                                                                    Binding="{Binding}"/>
+															<DataGridTextColumn Header="Device Name" CanUserSort="False" CanUserResize="False" Width="*"
+                                                                                    Binding="{Binding}"/>
+															<DataGridTextColumn Header="Sol. ID" CanUserSort="False" CanUserResize="False" Width="120"
+                                                                                    Binding="{Binding}"/>
+														</DataGrid.Columns>
+													</DataGrid>
+												</StackPanel>
+												<ListBox x:Name="SolenoidValveID" Width="190">
+													<!-- 솔레노이드밸브 리스트 추가-->
+												</ListBox>
+
+											</StackPanel>
+										</Grid>
+									</StackPanel>
+								</GroupBox>
+								<!-- Component I/O List 테이블-->
+								<GroupBox Header="Component I/O List" Width="660"
+                                          BorderBrush="LightSteelBlue" BorderThickness="2" Margin="2,10,2,0"
+                                          FontSize="14">
+									<StackPanel>
+										<DataGrid x:Name="IOList" AutoGenerateColumns="False" Margin="5,0,5,0">
+											<DataGrid.Resources>
+												<Style TargetType="{x:Type DataGridColumnHeader}">
+													<Setter Property="HorizontalAlignment" Value="Center"/>
+													<Setter Property="Background" Value="Transparent"/>
+												</Style>
+												<Style TargetType="{x:Type DataGrid}">
+													<Setter Property="BorderBrush" Value="Black"/>
+													<Setter Property="BorderThickness" Value="1"/>
+												</Style>
+											</DataGrid.Resources>
+											<DataGrid.Columns>
+												<DataGridTextColumn Header="ID" CanUserSort="False" CanUserResize="False" Width="60"
+                                                                Binding="{Binding}"/>
+												<DataGridTextColumn Header="Name" CanUserSort="False" CanUserResize="False" Width="*"
+                                                                Binding="{Binding}"/>
+												<DataGridTextColumn Header="Component" CanUserSort="False" CanUserResize="False" Width="120"
+                                                                Binding="{Binding}"/>
+												<DataGridTextColumn Header="Type" CanUserSort="False" CanUserResize="False" Width="60"
+                                                                Binding="{Binding}"/>
+												<DataGridTextColumn Header="Signal" CanUserSort="False" CanUserResize="False" Width="60"
+                                                                Binding="{Binding}"/>
+												<DataGridTextColumn Header="Terminal" CanUserSort="False" CanUserResize="False" Width="100"
+                                                                Binding="{Binding}"/>
+												<DataGridTextColumn Header="Pin No." CanUserSort="False" CanUserResize="False" Width="100"
+                                                                Binding="{Binding}"/>
+												<DataGridTextColumn Header="Org.Value" CanUserSort="False" CanUserResize="False" Width="60"
+                                                                Binding="{Binding}"/>
+												<DataGridTextColumn Header="Cal. Value" CanUserSort="False" CanUserResize="False" Width="60"
+                                                                Binding="{Binding}"/>
+											</DataGrid.Columns>
+										</DataGrid>
+
+									</StackPanel>
+								</GroupBox>
+							</StackPanel>
+						</Grid>
+					</Grid>
+				</TabItem.Content>
+			</TabItem>
+			<!-- Tab for I/O List -->
+			<TabItem Name="IO_List" Header="I/O List">
+				<TabItem.Content>
+					<Grid>
+						<Grid.RowDefinitions>
+							<RowDefinition Height="30"/>
+							<RowDefinition/>
+						</Grid.RowDefinitions>
+						<Grid Grid.Row="0" Background="Yellow">
+							<TextBlock FontSize="14" Text="I/O List" FontWeight="Bold" Foreground="Black"
+                                           VerticalAlignment="Center" HorizontalAlignment="Center"/>
+						</Grid>
+						<Grid Grid.Row="1">
+							<DataGrid Name="IO_ListTable"
+                              Padding="5">
+							</DataGrid>
+						</Grid>
+					</Grid>
+				</TabItem.Content>
+			</TabItem>
+		</TabControl>
+	</Grid>
+</Page>

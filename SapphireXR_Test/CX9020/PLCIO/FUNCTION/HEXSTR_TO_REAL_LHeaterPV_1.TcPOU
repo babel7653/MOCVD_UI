@@ -1,0 +1,41 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
+  <POU Name="HEXSTR_TO_REAL_LHeaterPV_1" Id="{c6498de2-5588-4978-933c-6d71c6d15ec0}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION HEXSTR_TO_REAL_LHeaterPV_1 : REAL
+VAR_INPUT
+	hStrTemperaturePV : STRING;
+END_VAR
+VAR
+	hData			:UDINT;
+	aData	: ARRAY[0..1]OF BYTE;
+	bSwap	: BYTE;
+	ptStrTemperature : POINTER TO INT;
+	nTemperaturePV : INT;
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[// Convert to Data Array from HexString
+hData := HEXSTR_TO_DATA(hStrTemperaturePV, ADR(aData), SIZEOF(aData));
+
+//Swap Data
+bSwap := aData[0];
+aData[0] := aData[1];
+aData[1] := bSwap;
+
+ptStrTemperature := ADR(aData);
+nTemperaturePV := ptStrTemperature^;
+HEXSTR_TO_REAL_LHeaterPV := INT_TO_REAL(nTemperaturePV);]]></ST>
+    </Implementation>
+    <LineIds Name="HEXSTR_TO_REAL_LHeaterPV_1">
+      <LineId Id="7" Count="0" />
+      <LineId Id="10" Count="0" />
+      <LineId Id="14" Count="0" />
+      <LineId Id="12" Count="0" />
+      <LineId Id="17" Count="2" />
+      <LineId Id="21" Count="0" />
+      <LineId Id="20" Count="0" />
+      <LineId Id="23" Count="0" />
+      <LineId Id="26" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

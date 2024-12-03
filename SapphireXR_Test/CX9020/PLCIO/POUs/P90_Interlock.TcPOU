@@ -1,0 +1,107 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4026.8">
+  <POU Name="P90_Interlock" Id="{c8b81d81-de46-4c7a-a894-4387b2cd9bf7}" SpecialFunc="None">
+    <Declaration><![CDATA[PROGRAM P90_Interlock
+VAR_INPUT
+	bRecipeRunning : BOOL;
+	RecipeStopped : BOOL;
+	ManualOperation : BOOL;
+	AlarmState : BOOL;
+	WarningState : BOOL;
+	
+	bInductionHeaterMC	: BOOL;
+	bThermalBathMC		: BOOL;
+	bVacuumPumpMC 		: BOOL;
+	bLineHeaterMC 		: BOOL; 
+END_VAR
+VAR_OUTPUT
+	bCoverOperationEnable	: BOOL;
+	bDORVacEnable			: BOOL;
+	bDORAtmEnable			: BOOL;
+	bMaintKey				: BOOL;
+	bPowerResetSwitch		: BOOL;
+	bMainPowerMonitor		: BOOL;
+	bRecipeEnable			: BOOL;
+END_VAR	
+VAR
+	bSafetyGasState			: BOOL;
+	bAlarmState				: BOOL;
+	bPowerResetLED			: BOOL;
+	bUPSMode				: BOOL;
+
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[(* Read from Device*)
+bMaintKey := GVL_IO.aDigitalInputIO[1].0;
+bPowerResetSwitch := GVL_IO.aDigitalInputIO[1].1;
+bMainPowerMonitor := GVL_IO.aDigitalInputIO[7].5;
+
+
+
+IF ManualOperation THEN
+	P92_Maintenance.nCaseSignalTower := 4;
+	GVL_IO.aDigitalOutputIO[3].0 := bInductionHeaterMC;
+	GVL_IO.aDigitalOutputIO[3].1 := bThermalBathMC;
+	GVL_IO.aDigitalOutputIO[3].2 := bVacuumPumpMC;
+	GVL_IO.aDigitalOutputIO[3].3 := bLineHeaterMC;
+END_IF
+
+// For Test Value
+bSafetyGasState := TRUE;
+
+// AND Valve01 = FALSE(H2) AND Valve02 = FALSE(H2) AND Valve03(SiH4) AND Valve04(NH2)
+// All MO-Source ByPass Stat
+bAlarmState := TRUE;
+
+bCoverOperationEnable := bSafetyGasState AND bAlarmState AND P17_DOROperation.isDOROnState = FALSE; //For Test -P16
+// bCoverOpenEnable := ing_Racipe AND bAlarmClear AND isInductionHeater = FAULSE
+
+bDORVacEnable := P16_CoverOperation.isCoverClosed AND bAlarmState AND bSafetyGasState AND P17_DOROperation.isDOROnState = FALSE; //For Test -P17
+// add : Vacuum Pump ON
+bDORAtmEnable := bAlarmState AND bSafetyGasState AND P17_DOROperation.isDOROnState = TRUE;
+// Susceptor Temperature, Vacuum Range > 700Torr
+
+//bRecipeEnable := bMaintKey=FALSE AND bRecipeRunning=FALSE AND P16_CoverOperation.isCoverClosed AND P12_IQ_PLUS.bPumpOn;
+bRecipeEnable := TRUE;
+
+(* Out to Device*)
+GVL_IO.aDigitalOutputIO[3].7 := bPowerResetLED;
+GVL_IO.aDigitalOutputIO[2].4 := bUPSMode;]]></ST>
+    </Implementation>
+    <LineIds Name="P90_Interlock">
+      <LineId Id="139" Count="0" />
+      <LineId Id="141" Count="0" />
+      <LineId Id="140" Count="0" />
+      <LineId Id="211" Count="0" />
+      <LineId Id="208" Count="0" />
+      <LineId Id="145" Count="0" />
+      <LineId Id="144" Count="0" />
+      <LineId Id="20" Count="0" />
+      <LineId Id="273" Count="0" />
+      <LineId Id="21" Count="0" />
+      <LineId Id="149" Count="0" />
+      <LineId Id="23" Count="2" />
+      <LineId Id="138" Count="0" />
+      <LineId Id="50" Count="0" />
+      <LineId Id="33" Count="0" />
+      <LineId Id="242" Count="0" />
+      <LineId Id="51" Count="2" />
+      <LineId Id="83" Count="0" />
+      <LineId Id="31" Count="0" />
+      <LineId Id="34" Count="0" />
+      <LineId Id="43" Count="0" />
+      <LineId Id="38" Count="0" />
+      <LineId Id="58" Count="0" />
+      <LineId Id="56" Count="0" />
+      <LineId Id="42" Count="0" />
+      <LineId Id="275" Count="0" />
+      <LineId Id="178" Count="0" />
+      <LineId Id="274" Count="0" />
+      <LineId Id="276" Count="0" />
+      <LineId Id="135" Count="0" />
+      <LineId Id="179" Count="0" />
+      <LineId Id="210" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

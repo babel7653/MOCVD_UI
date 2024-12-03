@@ -1,0 +1,52 @@
+﻿<UserControl x:Class="SapphireXR_App.Controls.BypassValve"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:SapphireXR_App.Controls"
+             mc:Ignorable="d" 
+             x:Name="bypassValve"
+             d:DesignHeight="40" d:DesignWidth="60">
+    <UserControl.Resources>
+        <Style x:Key="BlockValveStyle" TargetType="{x:Type Button}">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type Button}">
+                        <Border Background="LightGray" CornerRadius="3">
+                            <Grid Height="40" Width="60">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition/>
+                                    <RowDefinition/>
+                                </Grid.RowDefinitions>
+                                <Line X1="10" Y1="11" X2="50" Y2="11" Stroke="Magenta" StrokeThickness="2"/>
+                                <Line X1="10" Y1="0" X2="10" Y2="20" Stroke="Magenta" StrokeThickness="2"/>
+                                <Line X1="50" Y1="0" X2="50" Y2="20" Stroke="Magenta" StrokeThickness="2"/>
+
+                                <Ellipse x:Name="bypass" Grid.Row="0" Width="20" Height="20"/>
+                                <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Center">
+                                    <Ellipse x:Name="in" Width="20" Height="20" Margin="0,0,10,0"/>
+                                    <Ellipse x:Name="out" Width="20" Height="20" Margin="10,0,0,0"/>
+                                </StackPanel>
+                            </Grid>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsEnabled" Value="False">
+                                <Setter TargetName="bypass" Property="Fill" Value="White"/>
+                                <Setter TargetName="in" Property="Fill" Value="Red"/>
+                                <Setter TargetName="out" Property="Fill" Value="Red"/>
+                            </Trigger>
+                            <Trigger Property="IsEnabled" Value="True">
+                                <Setter TargetName="bypass" Property="Fill" Value="Lime"/>
+                                <Setter TargetName="in" Property="Fill" Value="White"/>
+                                <Setter TargetName="out" Property="Fill" Value="White"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </UserControl.Resources>
+    <Canvas>
+        <Button VerticalAlignment="Center" Style="{StaticResource BlockValveStyle}"/>
+    </Canvas>
+</UserControl>

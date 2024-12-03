@@ -1,0 +1,58 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4026.8">
+  <POU Name="P50_RecipeControl" Id="{e332a806-fd31-4290-a7c3-27f42c11d38e}" SpecialFunc="None">
+    <Declaration><![CDATA[PROGRAM P50_RecipeControl  // copy from backup1
+VAR
+	RcpIndex	: INT;
+	
+	iTimerCount: INT;
+	OnTimer: TON;
+	OffTimerOut: BOOL;
+	OnTimerOut: BOOL;
+	timeTrigOn: R_TRIG;
+	
+	bTrigOn: BOOL;
+	ReverseSignal: BOOL;
+	OffTimer: TOF;
+	fb_RecipeSequencer : FB_RecipeSequencer;
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[IF RCP.bRcpInit THEN
+	(* reset the init flag *)
+	iTimerCount := 0;
+	RcpIndex := 1;
+	RCP.bRcpInit := FALSE;
+END_IF
+
+IF RcpIndex <= RCP.iRcpTotalStep THEN
+	OnTimer(IN:=OffTimerOut, Pt:= INT_TO_TIME(500), Q=>OnTimerOut, ET=>);
+	timeTrigOn(clk:=OnTimerout, Q=>bTrigOn);
+	IF (bTrigOn AND RCP.iRcpOperationState=10) THEN
+		iTimerCount := iTimerCount +1;
+		bTrigOn := FALSE;
+		
+		IF iTimerCount <= RCP.aRecipe[RcpIndex].iRecipe[2] THEN
+			fb_RecipeSequencer(nRcpIndex:=RcpIndex);
+			
+		ELSIF iTimerCount > RCP.aRecipe[RcpIndex].iRecipe[2] + RCP.aRecipe[RcpIndex].iRecipe[3] THEN
+			iTimerCount := 0;
+			RcpIndex := RcpIndex + 1;
+		END_IF
+	END_IF
+	IF OnTimerOut = TRUE THEN
+		ReverseSignal := FALSE;
+	ELSE
+		ReverseSignal := TRUE;
+	END_IF
+
+	OffTimer(in:=ReverseSignal, pt:= INT_TO_TIME(500), q=>OffTimerOut,et=>);
+END_IF
+]]></ST>
+    </Implementation>
+    <LineIds Name="P50_RecipeControl">
+      <LineId Id="251" Count="29" />
+      <LineId Id="13" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

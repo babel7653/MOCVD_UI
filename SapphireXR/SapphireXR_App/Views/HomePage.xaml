@@ -250,7 +250,7 @@
         <Line X1="1020" Y1="260" X2="1290" Y2="260" Stroke="LightBlue" StrokeThickness="8" />
 
         <!-- Button for Valve Control -->
-        <control:SwitchingValve  x:Name="V01" Canvas.Left="140" Canvas.Top="105" Height="30" Width="60"
+        <control:SwitchingValve  x:Name="V01" Canvas.Left="140" Canvas.Top="105" 
             MouseLeftButtonDown="SwitchingValve_Click"
             ValveID="V01" IsOpen="False" RenderTransformOrigin="0,0">
             <control:SwitchingValve.RenderTransform>
@@ -260,7 +260,7 @@
             </control:SwitchingValve.RenderTransform>
         </control:SwitchingValve>
 
-        <control:SwitchingValve x:Name="V02" Canvas.Left="140" Canvas.Top="290" Height="30" Width="60"
+        <control:SwitchingValve x:Name="V02" Canvas.Left="140" Canvas.Top="290" 
             MouseLeftButtonDown="SwitchingValve_Click"
             ValveID="V02" IsOpen="False" RenderTransformOrigin="0,0">
             <control:SwitchingValve.RenderTransform>
@@ -269,97 +269,97 @@
                 </TransformGroup>
             </control:SwitchingValve.RenderTransform>
         </control:SwitchingValve>
-        <control:SwitchingValve x:Name="V03" Canvas.Left="290" Canvas.Top="125" Height="30" Width="60"
+        <control:SwitchingValve x:Name="V03" Canvas.Left="290" Canvas.Top="125" 
             MouseLeftButtonDown="SwitchingValve_Click"
             ValveID="V03" IsOpen="False" />
-        <control:SwitchingValve x:Name="V04" Canvas.Left="654" Canvas.Top="125" Height="30" Width="60"
+        <control:SwitchingValve x:Name="V04" Canvas.Left="654" Canvas.Top="125" 
             MouseLeftButtonDown="SwitchingValve_Click"
             ValveID="V04" IsOpen="False" />
 
-        <control:SwitchingValve x:Name="V05" Canvas.Left="250" Canvas.Top="515" Height="30" Width="60"
+        <control:SwitchingValve x:Name="V05" Canvas.Left="250" Canvas.Top="515" 
                              MouseLeftButtonDown="SwitchingValve_Click"
                              ValveID="V05" IsOpen="True" Visibility="{Binding IsMaintenanceMode}"/>
-        <control:SwitchingValve x:Name="V08" Canvas.Left="390" Canvas.Top="515" Height="30" Width="60"
+        <control:SwitchingValve x:Name="V08" Canvas.Left="390" Canvas.Top="515" 
                              MouseLeftButtonDown="SwitchingValve_Click"
                              ValveID="V08" IsOpen="True" Visibility="{Binding IsMaintenanceMode}"/>
-        <control:SwitchingValve x:Name="V11" Canvas.Left="530" Canvas.Top="515" Height="30" Width="60"
+        <control:SwitchingValve x:Name="V11" Canvas.Left="530" Canvas.Top="515"
                              MouseLeftButtonDown="SwitchingValve_Click"
                              ValveID="V11" IsOpen="True" Visibility="{Binding IsMaintenanceMode}"/>
-        <control:SwitchingValve x:Name="V14" Canvas.Left="670" Canvas.Top="515" Height="30" Width="60"
+        <control:SwitchingValve x:Name="V14" Canvas.Left="670" Canvas.Top="515"
                             MouseLeftButtonDown="SwitchingValve_Click"
                             ValveID="V14" IsOpen="True" Visibility="{Binding IsMaintenanceMode}"/>
-        <control:SwitchingValve x:Name="V17" Canvas.Left="810" Canvas.Top="515" Height="30" Width="60"
+        <control:SwitchingValve x:Name="V17" Canvas.Left="810" Canvas.Top="515"
                             MouseLeftButtonDown="SwitchingValve_Click"
                             ValveID="V17" IsOpen="True" Visibility="{Binding IsMaintenanceMode}"/>
-        <control:SwitchingValve x:Name="V20" Canvas.Left="950" Canvas.Top="515" Height="30" Width="60"
+        <control:SwitchingValve x:Name="V20" Canvas.Left="950" Canvas.Top="515" 
                             MouseLeftButtonDown="SwitchingValve_Click"
                             ValveID="V20" IsOpen="True" Visibility="{Binding IsMaintenanceMode}"/>
-        <control:SwitchingValve x:Name="V32" Canvas.Left="1080" Canvas.Top="400" Height="30" Width="60"
+        <control:SwitchingValve x:Name="V32" Canvas.Left="1080" Canvas.Top="400" 
                             MouseLeftButtonDown="SwitchingValve_Click"
                             ValveID="V32" IsOpen="True" Visibility="{Binding IsMaintenanceMode}"/>
 
-        <control:SwitchingValve x:Name="V23" Canvas.Left="280" Canvas.Top="400" Height="30" Width="60"
+        <control:SwitchingValve x:Name="V23" Canvas.Left="280" Canvas.Top="400" 
             MouseLeftButtonDown="SwitchingValve_Click"
             ValveID="V23" IsOpen="False" />
-        <control:SwitchingValve x:Name="V24" Canvas.Left="420" Canvas.Top="400" Height="30" Width="60"
+        <control:SwitchingValve x:Name="V24" Canvas.Left="420" Canvas.Top="400" 
             MouseLeftButtonDown="SwitchingValve_Click"
             ValveID="V24" IsOpen="False" />
-        <control:SwitchingValve x:Name="V25" Canvas.Left="560" Canvas.Top="400" Height="30" Width="60"
+        <control:SwitchingValve x:Name="V25" Canvas.Left="560" Canvas.Top="400"
             MouseLeftButtonDown="SwitchingValve_Click"
             ValveID="V25" IsOpen="False" />
-        <control:SwitchingValve x:Name="V26" Canvas.Left="700" Canvas.Top="400" Height="30" Width="60"
+        <control:SwitchingValve x:Name="V26" Canvas.Left="700" Canvas.Top="400"
             MouseLeftButtonDown="SwitchingValve_Click"
             ValveID="V26" IsOpen="False" />
-        <control:SwitchingValve x:Name="V27" Canvas.Left="840" Canvas.Top="400" Height="30" Width="60"
+        <control:SwitchingValve x:Name="V27" Canvas.Left="840" Canvas.Top="400" 
             MouseLeftButtonDown="SwitchingValve_Click"
             ValveID="V27" IsOpen="False" />
-        <control:SwitchingValve x:Name="V28" Canvas.Left="980" Canvas.Top="400" Height="30" Width="60"
+        <control:SwitchingValve x:Name="V28" Canvas.Left="980" Canvas.Top="400" 
             MouseLeftButtonDown="SwitchingValve_Click"
             ValveID="V28" IsOpen="False" />
 
-        <control:SwitchingValve x:Name="V29" Canvas.Left="280" Canvas.Top="258" Height="30" Width="60"
+        <control:SwitchingValve x:Name="V29" Canvas.Left="280" Canvas.Top="258" 
             MouseLeftButtonDown="SwitchingValve_Click"
             ValveID="V29" IsOpen="False" />
-        <control:SwitchingValve x:Name="V30" Canvas.Left="420" Canvas.Top="258" Height="30" Width="60"
+        <control:SwitchingValve x:Name="V30" Canvas.Left="420" Canvas.Top="258" 
             MouseLeftButtonDown="SwitchingValve_Click"
             ValveID="V30" IsOpen="False" />
-        <control:SwitchingValve x:Name="V31" Canvas.Left="560" Canvas.Top="258" Height="30" Width="60"
+        <control:SwitchingValve x:Name="V31" Canvas.Left="560" Canvas.Top="258" 
             MouseLeftButtonDown="SwitchingValve_Click"
             ValveID="V31" IsOpen="False" />
 
-        <control:BypassValve x:Name="V07" Canvas.Left="280" Canvas.Top="640" Height="40" Width="60"
+        <control:BypassValve x:Name="V07" Canvas.Left="280" Canvas.Top="640" 
                              MouseLeftButtonDown="BypassValve_Click"
                              ValveID="V07" IsOpen="False"/>
-        <control:BypassValve x:Name="V10" Canvas.Left="420" Canvas.Top="640" Height="40" Width="60"
+        <control:BypassValve x:Name="V10" Canvas.Left="420" Canvas.Top="640" 
                              MouseLeftButtonDown="BypassValve_Click"
                              ValveID="V10" IsOpen="False"/>
-        <control:BypassValve x:Name="V13" Canvas.Left="560" Canvas.Top="640" Height="40" Width="60"
+        <control:BypassValve x:Name="V13" Canvas.Left="560" Canvas.Top="640" 
                              MouseLeftButtonDown="BypassValve_Click"
                              ValveID="V13" IsOpen="False"/>
-        <control:BypassValve x:Name="V16" Canvas.Left="700" Canvas.Top="640" Height="40" Width="60"
+        <control:BypassValve x:Name="V16" Canvas.Left="700" Canvas.Top="640" 
                              MouseLeftButtonDown="BypassValve_Click"
                              ValveID="V16" IsOpen="False"/>
-        <control:BypassValve x:Name="V19" Canvas.Left="840" Canvas.Top="640" Height="40" Width="60"
+        <control:BypassValve x:Name="V19" Canvas.Left="840" Canvas.Top="640" 
                              MouseLeftButtonDown="BypassValve_Click"
                              ValveID="V19" IsOpen="False"/>
-        <control:BypassValve x:Name="V22" Canvas.Left="980" Canvas.Top="640" Height="40" Width="60"
+        <control:BypassValve x:Name="V22" Canvas.Left="980" Canvas.Top="640" 
                              MouseLeftButtonDown="BypassValve_Click"
                              ValveID="V22" IsOpen="False"/>
 
-        <control:SingleValve x:Name="V33" Canvas.Left="1200" Canvas.Top="160" Height="30" Width="30"
+        <control:SingleValve x:Name="V33" Canvas.Left="1200" Canvas.Top="160" 
                         MouseLeftButtonDown="SingleValve_Click"
                         ValveID="V33" IsOpen="False"/>
-        <control:SingleValve x:Name="V34" Canvas.Left="1115" Canvas.Top="548" Height="30" Width="30"
+        <control:SingleValve x:Name="V34" Canvas.Left="1115" Canvas.Top="548" 
                         MouseLeftButtonDown="SingleValve_Click"
                         ValveID="V34" IsOpen="False"/>
-        <control:SingleValve x:Name="V35" Canvas.Left="1240" Canvas.Top="160" Height="30" Width="30"
+        <control:SingleValve x:Name="V35" Canvas.Left="1240" Canvas.Top="160" 
                       MouseLeftButtonDown="SingleValve_Click"
                       ValveID="V35" IsOpen="False"/>
-        <control:SingleValve x:Name="V52" Canvas.Left="1086" Canvas.Top="745" Height="30" Width="30"
+        <control:SingleValve x:Name="V52" Canvas.Left="1086" Canvas.Top="745" 
                       MouseLeftButtonDown="SingleValve_Click"
                       ValveID="V52" IsOpen="False" HorizontalAlignment="Left" VerticalAlignment="Center"/>
 
-        <control:ButterflyValve x:Name="ButterflyValve" Canvas.Left="1145" Canvas.Top="590" Height="60" Width="30"
+        <control:ButterflyValve x:Name="ButterflyValve" Canvas.Left="1145" Canvas.Top="590" 
                       MouseLeftButtonDown="ButterflyValve_Click"
                       ValveID="V35" IsOpen="False" />
 
@@ -557,267 +557,86 @@
         </StackPanel>
 
         <!--MFC Contol Box!-->
-        <StackPanel Canvas.Left="182" Canvas.Top="355" Width="54" Height="22">
-            <StackPanel Background="{StaticResource MFCDisplayColor1}" Height="11">
-                <Ellipse Width="7" Height="7" Fill="LawnGreen" HorizontalAlignment="Right" Margin="0,3,3,0"/>
-                <Label x:Name="DisplaySetValueMFC101" Foreground="Black" HorizontalAlignment="Left" />
-            </StackPanel>
-            <StackPanel Background="{StaticResource MFCDisplayColor2}">
-                <Label x:Name="DisplayCurrentValueMFC101" Foreground="Black" HorizontalAlignment="Right" />
-            </StackPanel>
-        </StackPanel>
-
-        <StackPanel Canvas.Left="182" Canvas.Top="311" Width="54" Height="22">
-            <StackPanel Background="{StaticResource MFCDisplayColor1}" Height="11">
-                <Ellipse Width="7" Height="7" Fill="LawnGreen" HorizontalAlignment="Right" Margin="0,3,3,0"/>
-                <Label x:Name="DisplaySetValueMFC102" Foreground="Black" HorizontalAlignment="Left" />
-            </StackPanel>
-            <StackPanel Background="{StaticResource MFCDisplayColor2}">
-                <Label x:Name="DisplayCurrentValueMFC102" Foreground="Black" HorizontalAlignment="Right" />
-            </StackPanel>
-        </StackPanel>
-
-        <StackPanel Canvas.Left="423" Canvas.Top="214" Width="54" Height="22">
-            <StackPanel Background="{StaticResource MFCDisplayColor1}" Height="11">
-                <Ellipse Width="7" Height="7" Fill="LawnGreen" HorizontalAlignment="Right" Margin="0,3,3,0"/>
-                <Label x:Name="DisplaySetValueMFC103" Foreground="Black" HorizontalAlignment="Left" />
-            </StackPanel>
-            <StackPanel Background="{StaticResource MFCDisplayColor2}">
-                <Label x:Name="DisplayCurrentValueMFC103" Foreground="Black" HorizontalAlignment="Right" />
-            </StackPanel>
-        </StackPanel>
-
-        <StackPanel Canvas.Left="283" Canvas.Top="214" Width="54" Height="22">
-            <StackPanel Background="{StaticResource MFCDisplayColor1}" Height="11">
-                <Ellipse Width="7" Height="7" Fill="LawnGreen" HorizontalAlignment="Right" Margin="0,3,3,0"/>
-                <Label x:Name="DisplaySetValueMFC104" Foreground="Black" HorizontalAlignment="Left" />
-            </StackPanel>
-            <StackPanel Background="{StaticResource MFCDisplayColor2}">
-                <Label x:Name="DisplayCurrentValueMFC104" Foreground="Black" HorizontalAlignment="Right" />
-            </StackPanel>
-        </StackPanel>
-
-        <StackPanel Canvas.Left="627" Canvas.Top="170" Width="54" Height="22">
-            <StackPanel Background="{StaticResource MFCDisplayColor1}" Height="11">
-                <Ellipse Width="7" Height="7" Fill="LawnGreen" HorizontalAlignment="Right" Margin="0,3,3,0"/>
-                <Label x:Name="DisplaySetValueMFC105" Foreground="Black" HorizontalAlignment="Left" />
-            </StackPanel>
-            <StackPanel Background="{StaticResource MFCDisplayColor2}">
-                <Label x:Name="DisplayCurrentValueMFC105" Foreground="Black" HorizontalAlignment="Right" />
-            </StackPanel>
-        </StackPanel>
-
-        <StackPanel Canvas.Left="563" Canvas.Top="170" Width="54" Height="22">
-            <StackPanel Background="{StaticResource MFCDisplayColor1}" Height="11">
-                <Ellipse Width="7" Height="7" Fill="LawnGreen" HorizontalAlignment="Right" Margin="0,3,3,0"/>
-                <Label x:Name="DisplaySetValueMFC106" Foreground="Black" HorizontalAlignment="Left" />
-            </StackPanel>
-            <StackPanel Background="{StaticResource MFCDisplayColor2}">
-                <Label x:Name="DisplayCurrentValueMFC106" Foreground="Black" HorizontalAlignment="Right" />
-            </StackPanel>
-        </StackPanel>
-
-        <StackPanel Canvas.Left="563" Canvas.Top="214" Width="54" Height="22">
-            <StackPanel Background="{StaticResource MFCDisplayColor1}" Height="11">
-                <Ellipse Width="7" Height="7" Fill="LawnGreen" HorizontalAlignment="Right" Margin="0,3,3,0"/>
-                <Label x:Name="DisplaySetValueMFC107" Foreground="Black" HorizontalAlignment="Left" />
-            </StackPanel>
-            <StackPanel Background="{StaticResource MFCDisplayColor2}">
-                <Label x:Name="DisplayCurrentValueMFC107" Foreground="Black" HorizontalAlignment="Right" />
-            </StackPanel>
-        </StackPanel>
-
-        <StackPanel Canvas.Left="251" Canvas.Top="610" Width="54" Height="22">
-            <StackPanel Background="{StaticResource MFCDisplayColor1}" Height="11">
-                <Ellipse Width="7" Height="7" Fill="LawnGreen" HorizontalAlignment="Right" Margin="0,3,3,0"/>
-                <Label x:Name="DisplaySetValueMFC108" Foreground="Black" HorizontalAlignment="Left" />
-            </StackPanel>
-            <StackPanel Background="{StaticResource MFCDisplayColor2}">
-                <Label x:Name="DisplayCurrentValueMFC108" Foreground="Black" HorizontalAlignment="Right" />
-            </StackPanel>
-        </StackPanel>
-
-        <StackPanel Canvas.Left="391" Canvas.Top="610" Width="54" Height="22">
-            <StackPanel Background="{StaticResource MFCDisplayColor1}" Height="11">
-                <Ellipse Width="7" Height="7" Fill="LawnGreen" HorizontalAlignment="Right" Margin="0,3,3,0"/>
-                <Label x:Name="DisplaySetValueMFC109" Foreground="Black" HorizontalAlignment="Left" />
-            </StackPanel>
-            <StackPanel Background="{StaticResource MFCDisplayColor2}">
-                <Label x:Name="DisplayCurrentValueMFC109" Foreground="Black" HorizontalAlignment="Right" />
-            </StackPanel>
-        </StackPanel>
-
-        <StackPanel Canvas.Left="531" Canvas.Top="610" Width="54" Height="22">
-            <StackPanel Background="{StaticResource MFCDisplayColor1}" Height="11">
-                <Ellipse Width="7" Height="7" Fill="LawnGreen" HorizontalAlignment="Right" Margin="0,3,3,0"/>
-                <Label x:Name="DisplaySetValueMFC110" Foreground="Black" HorizontalAlignment="Left" />
-            </StackPanel>
-            <StackPanel Background="{StaticResource MFCDisplayColor2}">
-                <Label x:Name="DisplayCurrentValueMFC110" Foreground="Black" HorizontalAlignment="Right" />
-            </StackPanel>
-        </StackPanel>
-
-        <StackPanel Canvas.Left="671" Canvas.Top="610" Width="54" Height="22">
-            <StackPanel Background="{StaticResource MFCDisplayColor1}" Height="11">
-                <Ellipse Width="7" Height="7" Fill="LawnGreen" HorizontalAlignment="Right" Margin="0,3,3,0"/>
-                <Label x:Name="DisplaySetValueMFC111" Foreground="Black" HorizontalAlignment="Left" />
-            </StackPanel>
-            <StackPanel Background="{StaticResource MFCDisplayColor2}">
-                <Label x:Name="DisplayCurrentValueMFC111" Foreground="Black" HorizontalAlignment="Right" />
-            </StackPanel>
-        </StackPanel>
-
-        <StackPanel Canvas.Left="811" Canvas.Top="610" Width="54" Height="22">
-            <StackPanel Background="{StaticResource MFCDisplayColor1}" Height="11">
-                <Ellipse Width="7" Height="7" Fill="LawnGreen" HorizontalAlignment="Right" Margin="0,3,3,0"/>
-                <Label x:Name="DisplaySetValueMFC112" Foreground="Black" HorizontalAlignment="Left" />
-            </StackPanel>
-            <StackPanel Background="{StaticResource MFCDisplayColor2}">
-                <Label x:Name="DisplayCurrentValueMFC112" Foreground="Black" HorizontalAlignment="Right" />
-            </StackPanel>
-        </StackPanel>
-
-        <StackPanel Canvas.Left="811" Canvas.Top="566" Width="54" Height="22">
-            <StackPanel Background="{StaticResource MFCDisplayColor1}" Height="11">
-                <Ellipse Width="7" Height="7" Fill="LawnGreen" HorizontalAlignment="Right" Margin="0,3,3,0"/>
-                <Label x:Name="DisplaySetValueMFC113" Foreground="Black" HorizontalAlignment="Left" />
-            </StackPanel>
-            <StackPanel Background="{StaticResource MFCDisplayColor2}">
-                <Label x:Name="DisplayCurrentValueMFC113" Foreground="Black" HorizontalAlignment="Right" />
-            </StackPanel>
-        </StackPanel>
-
-        <StackPanel Canvas.Left="875" Canvas.Top="566" Width="54" Height="22">
-            <StackPanel Background="{StaticResource MFCDisplayColor1}" Height="11">
-                <Ellipse Width="7" Height="7" Fill="LawnGreen" HorizontalAlignment="Right" Margin="0,3,3,0"/>
-                <Label x:Name="DisplaySetValueMFC114" Foreground="Black" HorizontalAlignment="Left" />
-            </StackPanel>
-            <StackPanel Background="{StaticResource MFCDisplayColor2}">
-                <Label x:Name="DisplayCurrentValueMFC114" Foreground="Black" HorizontalAlignment="Right" />
-            </StackPanel>
-        </StackPanel>
-
-        <StackPanel Canvas.Left="951" Canvas.Top="610" Width="54" Height="22">
-            <StackPanel Background="{StaticResource MFCDisplayColor1}" Height="11">
-                <Ellipse Width="7" Height="7" Fill="LawnGreen" HorizontalAlignment="Right" Margin="0,3,3,0"/>
-                <Label x:Name="DisplaySetValueMFC115" Foreground="Black" HorizontalAlignment="Left" />
-            </StackPanel>
-            <StackPanel Background="{StaticResource MFCDisplayColor2}">
-                <Label x:Name="DisplayCurrentValueMFC115" Foreground="Black" HorizontalAlignment="Right" />
-            </StackPanel>
-        </StackPanel>
-
-        <StackPanel Canvas.Left="772" Canvas.Top="231" Width="54" Height="22">
-            <StackPanel Background="{StaticResource MFCDisplayColor1}" Height="11">
-                <Ellipse Width="7" Height="7" Fill="LawnGreen" HorizontalAlignment="Right" Margin="0,3,3,0"/>
-                <Label x:Name="DisplaySetValueMFC116" Foreground="Black" HorizontalAlignment="Left" />
-            </StackPanel>
-            <StackPanel Background="{StaticResource MFCDisplayColor2}">
-                <Label x:Name="DisplayCurrentValueMFC116" Foreground="Black" HorizontalAlignment="Right" />
-            </StackPanel>
-        </StackPanel>
-
-        <StackPanel Canvas.Left="772" Canvas.Top="259" Width="54" Height="22">
-            <StackPanel Background="{StaticResource MFCDisplayColor1}" Height="11">
-                <Ellipse Width="7" Height="7" Fill="LawnGreen" HorizontalAlignment="Right" Margin="0,3,3,0"/>
-                <Label x:Name="DisplaySetValueMFC117" Foreground="Black" HorizontalAlignment="Left" />
-            </StackPanel>
-            <StackPanel Background="{DynamicResource MFCDisplayColor2}">
-                <Label x:Name="DisplayCurrentValueMFC117" Foreground="Black" HorizontalAlignment="Right" />
-            </StackPanel>
-        </StackPanel>
-
-        <StackPanel Canvas.Left="182" Canvas.Top="383" Width="54" Height="22">
-            <StackPanel Background="{StaticResource MFCDisplayColor1}" Height="11">
-                <Ellipse Width="7" Height="7" Fill="LawnGreen" HorizontalAlignment="Right" Margin="0,3,3,0"/>
-                <Label x:Name="DisplaySetValueMFC118" Foreground="Black" HorizontalAlignment="Left" />
-            </StackPanel>
-            <StackPanel Background="{StaticResource MFCDisplayColor2}">
-                <Label x:Name="DisplayCurrentValueMFC118" Foreground="Black" HorizontalAlignment="Right" />
-            </StackPanel>
-        </StackPanel>
-
-        <StackPanel Canvas.Left="182" Canvas.Top="283" Width="54" Height="22">
-            <StackPanel Background="{StaticResource MFCDisplayColor1}" Height="11">
-                <Ellipse Width="7" Height="7" Fill="LawnGreen" HorizontalAlignment="Right" Margin="0,3,3,0"/>
-                <Label x:Name="DisplaySetValueMFC119" Foreground="Black" HorizontalAlignment="Left" />
-            </StackPanel>
-            <StackPanel Background="{StaticResource MFCDisplayColor2}">
-                <Label x:Name="DisplayCurrentValueMFC119" Foreground="Black" HorizontalAlignment="Right" />
-            </StackPanel>
-        </StackPanel>
+        <control:FlowController x:Name="MFC01" 
+                                Canvas.Left="180" Canvas.Top="345" 
+                                ControllerID="MFC01"/>
+        <control:FlowController x:Name="MFC02" 
+                                Canvas.Left="180" Canvas.Top="295" 
+                                ControllerID="MFC02" />
+        <control:FlowController x:Name="MFC03" Background="{StaticResource MFCDisplayColor1}"
+                                Canvas.Left="406" Canvas.Top="211" 
+                                ControllerID="MFC03" />
+        <control:FlowController x:Name="MFC04" Background="{StaticResource MFCDisplayColor1}"
+                            Canvas.Left="262" Canvas.Top="213" 
+                            ControllerID="MFC04" />
+        <control:FlowController x:Name="MFC05" Background="{StaticResource MFCDisplayColor1}"
+                            Canvas.Left="547" Canvas.Top="157" 
+                            ControllerID="MFC05" />
+        <control:FlowController x:Name="MFC06" Background="{StaticResource MFCDisplayColor1}"
+                            Canvas.Left="628" Canvas.Top="157" 
+                            ControllerID="MFC06" />
+        <control:FlowController x:Name="MFC07" Background="{StaticResource MFCDisplayColor1}"
+                            Canvas.Left="549" Canvas.Top="213" 
+                            ControllerID="MFC07"/>
+        <control:FlowController x:Name="MFC08" Background="{StaticResource MFCDisplayColor1}"
+                            Canvas.Left="238" Canvas.Top="585" 
+                            ControllerID="MFC08" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+        <control:FlowController x:Name="MFC09" Background="{StaticResource MFCDisplayColor1}"
+                            Canvas.Left="374" Canvas.Top="585" 
+                            ControllerID="MFC09" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+        <control:FlowController x:Name="MFC10" Background="{StaticResource MFCDisplayColor1}"
+                            Canvas.Left="514" Canvas.Top="585" 
+                            ControllerID="MFC10" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+        <control:FlowController x:Name="MFC11" Background="{StaticResource MFCDisplayColor1}"
+                            Canvas.Left="659" Canvas.Top="585" 
+                            ControllerID="MFC11" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+        <control:FlowController x:Name="MFC12" Background="{StaticResource MFCDisplayColor1}"
+                            Canvas.Left="794" Canvas.Top="588" 
+                            ControllerID="MFC12" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+        <control:FlowController x:Name="MFC13" Background="{StaticResource MFCDisplayColor1}"
+                            Canvas.Left="770" Canvas.Top="543" 
+                            ControllerID="MFC13" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+        <control:FlowController x:Name="MFC14" Background="{StaticResource MFCDisplayColor1}"
+                            Canvas.Left="875" Canvas.Top="543" 
+                            ControllerID="MFC14" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+        <control:FlowController x:Name="MFC15" Background="{StaticResource MFCDisplayColor1}"
+                            Canvas.Left="938" Canvas.Top="591" 
+                            ControllerID="MFC15" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+        <control:FlowController x:Name="MFC16" Background="{StaticResource MFCDisplayColor1}"
+                            Canvas.Left="770" Canvas.Top="204" 
+                            ControllerID="MFC16" HorizontalAlignment="Center" VerticalAlignment="Top"/>
+        <control:FlowController x:Name="MFC17" Background="{StaticResource MFCDisplayColor1}"
+                            Canvas.Left="770" Canvas.Top="251" 
+                            ControllerID="MFC17" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+        <control:FlowController x:Name="MFC18" Background="{StaticResource MFCDisplayColor1}"
+                            Canvas.Left="180" Canvas.Top="396" 
+                            ControllerID="MFC18" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+        <control:FlowController x:Name="MFC19" Background="{StaticResource MFCDisplayColor1}"
+                            Canvas.Left="180" Canvas.Top="249" 
+                            ControllerID="MFC19" HorizontalAlignment="Left" VerticalAlignment="Top"/>
 
         <!--EPC Contol Box!-->
-        <StackPanel Canvas.Left="627" Canvas.Top="214" Width="54" Height="22">
-            <StackPanel Background="{StaticResource EPCDisplayColor1}" Height="11">
-                <Ellipse Width="7" Height="7" Fill="LawnGreen" HorizontalAlignment="Right" Margin="0,3,3,0"/>
-                <Label x:Name="DisplaySetValueEPC201" Foreground="Black" HorizontalAlignment="Left" />
-            </StackPanel>
-            <StackPanel Background="{StaticResource EPCDisplayColor2}">
-                <Label x:Name="DisplayCurrentValueEPC201" Foreground="Black" HorizontalAlignment="Right" />
-            </StackPanel>
-        </StackPanel>
-
-        <StackPanel Canvas.Left="315" Canvas.Top="610" Width="54" Height="22">
-            <StackPanel Background="{StaticResource EPCDisplayColor1}" Height="11">
-                <Ellipse Width="7" Height="7" Fill="LawnGreen" HorizontalAlignment="Right" Margin="0,3,3,0"/>
-                <Label x:Name="DisplaySetValueEPC202" Foreground="Black" HorizontalAlignment="Left" />
-            </StackPanel>
-            <StackPanel Background="{StaticResource EPCDisplayColor2}">
-                <Label x:Name="DisplayCurrentValueEPC202" Foreground="Black" HorizontalAlignment="Right" />
-            </StackPanel>
-        </StackPanel>
-
-        <StackPanel Canvas.Left="455" Canvas.Top="610" Width="54" Height="22">
-            <StackPanel Background="{StaticResource EPCDisplayColor1}" Height="11">
-                <Ellipse Width="7" Height="7" Fill="LawnGreen" HorizontalAlignment="Right" Margin="0,3,3,0"/>
-                <Label x:Name="DisplaySetValueEPC203" Foreground="Black" HorizontalAlignment="Left" />
-            </StackPanel>
-            <StackPanel Background="{StaticResource EPCDisplayColor2}">
-                <Label x:Name="DisplayCurrentValueEPC203" Foreground="Black" HorizontalAlignment="Right" />
-            </StackPanel>
-        </StackPanel>
-
-        <StackPanel Canvas.Left="595" Canvas.Top="610" Width="54" Height="22">
-            <StackPanel Background="{StaticResource EPCDisplayColor1}" Height="11">
-                <Ellipse Width="7" Height="7" Fill="LawnGreen" HorizontalAlignment="Right" Margin="0,3,3,0"/>
-                <Label x:Name="DisplaySetValueEPC204" Foreground="Black" HorizontalAlignment="Left" />
-            </StackPanel>
-            <StackPanel Background="{StaticResource EPCDisplayColor2}">
-                <Label x:Name="DisplayCurrentValueEPC204" Foreground="Black" HorizontalAlignment="Right" />
-            </StackPanel>
-        </StackPanel>
-
-        <StackPanel Canvas.Left="735" Canvas.Top="610" Width="54" Height="22">
-            <StackPanel Background="{StaticResource EPCDisplayColor1}" Height="11">
-                <Ellipse Width="7" Height="7" Fill="LawnGreen" HorizontalAlignment="Right" Margin="0,3,3,0"/>
-                <Label x:Name="DisplaySetValueEPC205" Foreground="Black" HorizontalAlignment="Left" />
-            </StackPanel>
-            <StackPanel Background="{StaticResource EPCDisplayColor2}">
-                <Label x:Name="DisplayCurrentValueEPC205" Foreground="Black" HorizontalAlignment="Right" />
-            </StackPanel>
-        </StackPanel>
-
-        <StackPanel Canvas.Left="875" Canvas.Top="610" Width="54" Height="22">
-            <StackPanel Background="{StaticResource EPCDisplayColor1}" Height="11">
-                <Ellipse Width="7" Height="7" Fill="LawnGreen" HorizontalAlignment="Right" Margin="0,3,3,0"/>
-                <Label x:Name="DisplaySetValueEPC206" Foreground="Black" HorizontalAlignment="Left" />
-            </StackPanel>
-            <StackPanel Background="{StaticResource EPCDisplayColor2}">
-                <Label x:Name="DisplayCurrentValueEPC206" Foreground="Black" HorizontalAlignment="Right" />
-            </StackPanel>
-        </StackPanel>
-
-        <StackPanel Canvas.Left="1015" Canvas.Top="610" Width="54" Height="22">
-            <StackPanel Background="{StaticResource EPCDisplayColor1}" Height="11">
-                <Ellipse Width="7" Height="7" Fill="LawnGreen" HorizontalAlignment="Right" Margin="0,3,3,0"/>
-                <Label x:Name="DisplaySetValueEPC207" Foreground="Black" HorizontalAlignment="Left" />
-            </StackPanel>
-            <StackPanel Background="{StaticResource EPCDisplayColor2}">
-                <Label x:Name="DisplayCurrentValueEPC207" Foreground="Black" HorizontalAlignment="Right" />
-            </StackPanel>
-        </StackPanel>
-
+        <control:FlowController x:Name="EPC01" Background="{StaticResource EPCDisplayColor1}"
+                            Canvas.Left="643" Canvas.Top="215" 
+                            ControllerID="EPC01" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+        <control:FlowController x:Name="EPC02" Background="{StaticResource EPCDisplayColor1}"
+                            Canvas.Left="307" Canvas.Top="543" 
+                            ControllerID="EPC02" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+        <control:FlowController x:Name="EPC03" Background="{StaticResource EPCDisplayColor1}"
+                            Canvas.Left="446" Canvas.Top="543" 
+                            ControllerID="EPC03" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+        <control:FlowController x:Name="EPC04" Background="{StaticResource EPCDisplayColor1}"
+                            Canvas.Left="590" Canvas.Top="544" 
+                            ControllerID="EPC04" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+        <control:FlowController x:Name="EPC05" Background="{StaticResource EPCDisplayColor1}"
+                            Canvas.Left="723" Canvas.Top="543" 
+                            ControllerID="EPC05" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+        <control:FlowController x:Name="EPC06" Background="{StaticResource EPCDisplayColor1}"
+                            Canvas.Left="872" Canvas.Top="591" 
+                            ControllerID="EPC06" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+        <control:FlowController x:Name="EPC07" Background="{StaticResource EPCDisplayColor1}"
+                            Canvas.Left="1012" Canvas.Top="538" 
+                            ControllerID="EPC07" HorizontalAlignment="Left" VerticalAlignment="Top"/>
         <!-- Reactor State Display -->
         <StackPanel Canvas.Left="1222" Canvas.Top="94" Width="36" Height="47">
             <TextBlock Foreground="LightSkyBlue" FontSize="10" TextAlignment="Center">

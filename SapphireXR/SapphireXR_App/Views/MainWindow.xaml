@@ -8,17 +8,10 @@
         xmlns:local="clr-namespace:SapphireXR_App.Views"
         xmlns:oxy="http://oxyplot.org/wpf"
         mc:Ignorable="d"
-        Title="Sapphire -&gt; MainWindow" Height="1080" Width="1920">
-    <Window.Resources>
-        <Style x:Key="BaseStyle" TargetType="{x:Type Control}">
-            <Setter Property="FontSize" Value="11"/>
-            <Setter Property="FontFamily" Value="Pretendard"/>
-        </Style>
-        <Style TargetType="{x:Type ComboBox}" BasedOn="{StaticResource BaseStyle}"/>
-        <Style TargetType="{x:Type Button}" BasedOn="{StaticResource BaseStyle}"/>
-        <Style TargetType="{x:Type DataGrid}" BasedOn="{StaticResource BaseStyle}"/>
-    </Window.Resources>
-    <Grid Background="{StaticResource HomePageBackground}">
+        Background="Transparent"
+        x:Name="mainWindow"
+        Title="Sapphire XR" Height="1080" Width="1920">
+    <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="300"/>
             <ColumnDefinition/>
@@ -30,7 +23,7 @@
                     <RowDefinition/>
                     <RowDefinition Height="240" />
                 </Grid.RowDefinitions>
-                <TabControl Grid.Row="0">
+                <TabControl Grid.Row="0" Background="Transparent">
                     <TabItem Header="System Control">
                         <Frame Source="/Views/HomePage.xaml" NavigationUIVisibility="Hidden"/>
                     </TabItem>
@@ -56,6 +49,5 @@
                 <Frame Source="/Views/BottomDashboard.xaml" Grid.Row="1"  NavigationUIVisibility="Hidden"/>
             </Grid>
         <Frame Source="/Views/RightDashboard.xaml" Grid.Column="2" NavigationUIVisibility="Hidden"/>
-        
     </Grid>
 </Window>

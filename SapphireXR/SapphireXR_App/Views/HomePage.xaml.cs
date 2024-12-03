@@ -22,7 +22,7 @@ namespace SapphireXR_App.Views
 
         private void SwitchingValve_Click(object sender, MouseButtonEventArgs e)
         {
-            SwitchingValve Valve = (SwitchingValve)sender;
+            SwitchingValve Valve = (SwitchingValve)((Button)e.OriginalSource).Parent;
             if (Valve.IsOpen == true)
             {
                 var result = ValveOperationEx.Show("Valve Operation", $"{Valve.ValveID} 밸브를 질소가스로 변경하시겠습니까?");

@@ -9,7 +9,7 @@
       d:DesignHeight="810" d:DesignWidth="1320"
       Title="HomePage">
 
-    <Canvas Background="{StaticResource HomePageBackground}">
+    <Canvas Background="{StaticResource HomePageBackground}" control:SwitchingValve.PreviewMouseUp="SwitchingValve_Click">
         <!-- Drawing Nitrogen Gas Line -->
         <Polyline Points="196,80 196,93 90,93 90,502 1000,502 1000,522" Stroke="Lime" StrokeThickness="2" />
         <Line X1="0" Y1="0" X2="0" Y2="20" Stroke="Lime" StrokeThickness="2" Canvas.Left="300" Canvas.Top="502" />

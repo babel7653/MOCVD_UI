@@ -62,7 +62,7 @@
                 IsDefault="True"
                   Content="확인"
                   Command="{Binding OkCommand}"
-                  CommandParameter="{Binding ElementName=valve}"/>
+                  CommandParameter="{Binding ElementName=valveDialog}"/>
                 <Button Grid.Column="1"
              FontSize="15"
              Margin="5" 
@@ -70,8 +70,8 @@
              Style="{StaticResource MetroOrangeButtonStyle}" 
               IsCancel="True"
               Content="취소"
-              Command="{Binding CanelCommand}"
-              CommandParameter="{Binding ElementName=valve}"/>
+              Command="{Binding CancelCommand}"
+              CommandParameter="{Binding ElementName=valveDialog}"/>
             </Grid>
         </Grid>
     </Border>

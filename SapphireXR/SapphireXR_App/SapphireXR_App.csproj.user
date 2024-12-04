@@ -16,6 +16,9 @@
     <Compile Update="Controls\FlowController.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Update="Controls\GasMonitor.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Update="Controls\LeakTestValve.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -67,6 +70,9 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Update="Controls\FlowController.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Controls\GasMonitor.xaml">
       <SubType>Designer</SubType>
     </Page>
     <Page Update="Controls\LeakTestValve.xaml">

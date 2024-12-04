@@ -68,7 +68,7 @@ namespace SapphireXR_App.Controls
         }
 
         public static readonly DependencyProperty HeadColorProperty =
-            DependencyProperty.Register("HeadColor", typeof(string), typeof(FlowController), new PropertyMetadata(0));
+            DependencyProperty.Register("HeadColor", typeof(string), typeof(FlowController), new PropertyMetadata(default));
 
 
     }

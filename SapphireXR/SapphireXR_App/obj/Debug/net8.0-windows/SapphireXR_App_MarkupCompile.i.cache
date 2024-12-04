@@ -10,11 +10,11 @@ none
 false
 TRACE;DEBUG;NET;NET8_0;NETCOREAPP
 D:\Design\MOCVD\MR\SapphireXR\SapphireXR_App\App.xaml
-19-1580431018
+202138629565
 
-40508106984
+41625863199
 21217347039
-Controls\ButterflyValve.xaml;Controls\BypassValve.xaml;Controls\FlowController.xaml;Controls\LeakTestValve.xaml;Controls\SingleValve.xaml;Controls\SwitchingValve.xaml;Styles\Colors.xaml;Themes\Generic.xaml;Views\BottomDashboard.xaml;Views\FlowControlView.xaml;Views\HomePage.xaml;Views\LeftDashboard.xaml;Views\MainWindow.xaml;Views\RecipeEditPage.xaml;Views\RecipeRunPage.xaml;Views\ReportPage.xaml;Views\RightDashboard.xaml;Views\SettingPage.xaml;Views\ValveOperationView.xaml;
+Controls\ButterflyValve.xaml;Controls\BypassValve.xaml;Controls\FlowController.xaml;Controls\GasMonitor.xaml;Controls\LeakTestValve.xaml;Controls\SingleValve.xaml;Controls\SwitchingValve.xaml;Styles\Colors.xaml;Themes\Generic.xaml;Views\BottomDashboard.xaml;Views\FlowControlView.xaml;Views\HomePage.xaml;Views\LeftDashboard.xaml;Views\MainWindow.xaml;Views\RecipeEditPage.xaml;Views\RecipeRunPage.xaml;Views\ReportPage.xaml;Views\RightDashboard.xaml;Views\SettingPage.xaml;Views\ValveOperationView.xaml;
 
 True
 

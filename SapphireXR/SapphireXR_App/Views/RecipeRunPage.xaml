@@ -5,8 +5,9 @@
       xmlns:b="http://schemas.microsoft.com/xaml/behaviors"
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:SapphireXR_App.Views"
+      xmlns:control="clr-namespace:SapphireXR_App.Controls"
       mc:Ignorable="d" 
-      d:DesignHeight="810" d:DesignWidth="1320"
+      d:DesignHeight="776" d:DesignWidth="1300"
       Title="RecipeRunPage">
     <Page.Resources>
         <Style x:Key="BaseStyle" TargetType="{x:Type Control}">
@@ -144,82 +145,57 @@
                 <TextBlock Foreground="LightSkyBlue" FontSize="10" Canvas.Left="1050" Canvas.Top="179" Width="100" Height="12" Text="Rotation Seal Purge" TextAlignment="Right"/>
                 <TextBlock Foreground="LightSkyBlue" FontSize="10" Canvas.Left="1050" Canvas.Top="196" Width="100" Height="12" Text="Shower Head(MO)" TextAlignment="Right"/>
 
-                <!-- 수소가스 공급 상태 -->
-                <StackPanel Canvas.Left="60" Canvas.Top="31" Width="90" Height="34">
-                    <TextBlock Height="22"  Background="{StaticResource SourceDisplayColor1}" Foreground="White" FontSize="16" TextAlignment="Center" VerticalAlignment="Center">H2</TextBlock>
-                    <StackPanel Background="{StaticResource SourceDisplayColor2}" Orientation="Horizontal">
-                        <Ellipse Width="7" Height="7" Fill="LawnGreen"  Margin="5,2,10,2"/>
-                        <Label x:Name="PressureValueHydrogneR" HorizontalAlignment="Right" HorizontalContentAlignment="Right" Width="65" />
-                    </StackPanel>
-                </StackPanel>
-                <!-- 질소가스 공급 상태 -->
-                <StackPanel Canvas.Left="165" Canvas.Top="31" Width="90" Height="34">
-                    <TextBlock Height="22"  Background="{StaticResource SourceDisplayColor1}" Foreground="White" FontSize="16" TextAlignment="Center" VerticalAlignment="Center">N2</TextBlock>
-                    <StackPanel Background="{StaticResource SourceDisplayColor2}" Orientation="Horizontal">
-                        <Ellipse Width="7" Height="7" Fill="LawnGreen"  Margin="5,2,10,2"/>
-                        <Label x:Name="PressureValueNitrogenR" HorizontalAlignment="Right" HorizontalContentAlignment="Right" Width="65" />
-                    </StackPanel>
-                </StackPanel>
-                <!-- 암모니아가스 공급 상태 -->
-                <StackPanel Canvas.Left="340" Canvas.Top="31" Width="90" Height="34">
-                    <TextBlock Height="22"  Background="{StaticResource SourceDisplayColor1}" Foreground="White" FontSize="16" TextAlignment="Center" VerticalAlignment="Center">NH3</TextBlock>
-                    <StackPanel Background="{StaticResource SourceDisplayColor2}" Orientation="Horizontal">
-                        <Ellipse Width="7" Height="7" Fill="LawnGreen"  Margin="5,2,10,2"/>
-                        <Label x:Name="PressureValueAmmoniaR" HorizontalAlignment="Right" HorizontalContentAlignment="Right" Width="65" />
-                    </StackPanel>
-                </StackPanel>
-                <!-- 실란가스 공급 상태 -->
-                <StackPanel Canvas.Left="704" Canvas.Top="31" Width="90" Height="34">
-                    <TextBlock Height="22"  Background="{StaticResource SourceDisplayColor1}" Foreground="White" FontSize="16" TextAlignment="Center" VerticalAlignment="Center">SiH4</TextBlock>
-                    <StackPanel Background="{StaticResource SourceDisplayColor2}" Orientation="Horizontal">
-                        <Ellipse Width="7" Height="7" Fill="LawnGreen"  Margin="5,2,10,2"/>
-                        <Label x:Name="PressureValueSilaneR" HorizontalAlignment="Right" HorizontalContentAlignment="Right" Width="65" />
-                    </StackPanel>
-                </StackPanel>
+                <!-- 공정가스 공급 모니터링 -->
+                <control:GasMonitor x:Name="gasMonitor_H2" Canvas.Left="60" Canvas.Top="30"  Width="70" Height="34" MonitorID="H2"/>
+                <control:GasMonitor x:Name="gasMonitor_N2" Canvas.Left="150" Canvas.Top="30"  Width="70" Height="34" MonitorID="N2"/>
+                <control:GasMonitor x:Name="gasMonitor_NH3" Canvas.Left="350" Canvas.Top="30"  Width="70" Height="34" MonitorID="NH3"/>
+                <control:GasMonitor x:Name="gasMonitor_SiH4" Canvas.Left="700" Canvas.Top="30"  Width="70" Height="34" MonitorID="SiH4"/>
+                
+               
                 <!-- Thermal Bath for MO-Source -->
                 <StackPanel Canvas.Left="265" Canvas.Top="380" Width="90" Height="34">
-                    <TextBlock Height="22"  Background="{StaticResource SourceDisplayColor1}" Foreground="White" FontSize="16" TextAlignment="Center" >TEB</TextBlock>
-                    <StackPanel Background="{StaticResource SourceDisplayColor2}" Orientation="Horizontal">
+                    <TextBlock Height="22"  Background="{StaticResource SourceMonitorColor1}" Foreground="White" FontSize="16" TextAlignment="Center" >TEB</TextBlock>
+                    <StackPanel Background="{StaticResource SourceMonitorColor2}" Orientation="Horizontal">
                         <Label x:Name="BathTemperature1R" HorizontalAlignment="Right" HorizontalContentAlignment="Left" Width="45"/>
                         <Label x:Name="SourceRemainingAmount1R" HorizontalAlignment="Right" HorizontalContentAlignment="Right" Width="45" />
                     </StackPanel>
                 </StackPanel>
 
                 <StackPanel Canvas.Left="405" Canvas.Top="380" Width="90" Height="34">
-                    <TextBlock Height="22"  Background="{StaticResource SourceDisplayColor1}" Foreground="White" FontSize="16" TextAlignment="Center" >TMAl</TextBlock>
-                    <StackPanel Background="{StaticResource SourceDisplayColor2}" Orientation="Horizontal">
+                    <TextBlock Height="22"  Background="{StaticResource SourceMonitorColor1}" Foreground="White" FontSize="16" TextAlignment="Center" >TMAl</TextBlock>
+                    <StackPanel Background="{StaticResource SourceMonitorColor2}" Orientation="Horizontal">
                         <Label x:Name="BathTemperature2R" HorizontalAlignment="Right" HorizontalContentAlignment="Left" Width="45"/>
                         <Label x:Name="SourceRemainingAmount2R" HorizontalAlignment="Right" HorizontalContentAlignment="Right" Width="45" />
                     </StackPanel>
                 </StackPanel>
 
                 <StackPanel Canvas.Left="545" Canvas.Top="380" Width="90" Height="34">
-                    <TextBlock Height="22"  Background="{StaticResource SourceDisplayColor1}" Foreground="White" FontSize="16" TextAlignment="Center" >TMIn</TextBlock>
-                    <StackPanel Background="{StaticResource SourceDisplayColor2}" Orientation="Horizontal">
+                    <TextBlock Height="22"  Background="{StaticResource SourceMonitorColor1}" Foreground="White" FontSize="16" TextAlignment="Center" >TMIn</TextBlock>
+                    <StackPanel Background="{StaticResource SourceMonitorColor2}" Orientation="Horizontal">
                         <Label x:Name="BathTemperature3R" HorizontalAlignment="Right" HorizontalContentAlignment="Left" Width="45"/>
                         <Label x:Name="SourceRemainingAmount3R" HorizontalAlignment="Right" HorizontalContentAlignment="Right" Width="45" />
                     </StackPanel>
                 </StackPanel>
 
                 <StackPanel Canvas.Left="685" Canvas.Top="380" Width="90" Height="34">
-                    <TextBlock Height="22"  Background="{StaticResource SourceDisplayColor1}" Foreground="White" FontSize="16" TextAlignment="Center" >TMGa</TextBlock>
-                    <StackPanel Background="{StaticResource SourceDisplayColor2}" Orientation="Horizontal">
+                    <TextBlock Height="22"  Background="{StaticResource SourceMonitorColor1}" Foreground="White" FontSize="16" TextAlignment="Center" >TMGa</TextBlock>
+                    <StackPanel Background="{StaticResource SourceMonitorColor2}" Orientation="Horizontal">
                         <Label x:Name="BathTemperature4R" HorizontalAlignment="Right" HorizontalContentAlignment="Left" Width="45"/>
                         <Label x:Name="SourceRemainingAmount4R" HorizontalAlignment="Right" HorizontalContentAlignment="Right" Width="45" />
                     </StackPanel>
                 </StackPanel>
 
                 <StackPanel Canvas.Left="825" Canvas.Top="380" Width="90" Height="34">
-                    <TextBlock Height="22"  Background="{StaticResource SourceDisplayColor1}" Foreground="White" FontSize="16" TextAlignment="Center" >DTMGa</TextBlock>
-                    <StackPanel Background="{StaticResource SourceDisplayColor2}" Orientation="Horizontal">
+                    <TextBlock Height="22"  Background="{StaticResource SourceMonitorColor1}" Foreground="White" FontSize="16" TextAlignment="Center" >DTMGa</TextBlock>
+                    <StackPanel Background="{StaticResource SourceMonitorColor2}" Orientation="Horizontal">
                         <Label x:Name="BathTemperature5R" HorizontalAlignment="Right" HorizontalContentAlignment="Left" Width="45"/>
                         <Label x:Name="SourceRemainingAmount5R" HorizontalAlignment="Right" HorizontalContentAlignment="Right" Width="45" />
                     </StackPanel>
                 </StackPanel>
 
                 <StackPanel Canvas.Left="965" Canvas.Top="380" Width="90" Height="34">
-                    <TextBlock Height="22"  Background="{StaticResource SourceDisplayColor1}" Foreground="White" FontSize="16" TextAlignment="Center" >Cp2Mg</TextBlock>
-                    <StackPanel Background="{StaticResource SourceDisplayColor2}" Orientation="Horizontal">
+                    <TextBlock Height="22"  Background="{StaticResource SourceMonitorColor1}" Foreground="White" FontSize="16" TextAlignment="Center" >Cp2Mg</TextBlock>
+                    <StackPanel Background="{StaticResource SourceMonitorColor2}" Orientation="Horizontal">
                         <Label x:Name="BathTemperature6R" HorizontalAlignment="Right" HorizontalContentAlignment="Left" Width="45"/>
                         <Label x:Name="SourceRemainingAmount6R" HorizontalAlignment="Right" HorizontalContentAlignment="Right" Width="45" />
                     </StackPanel>
@@ -495,11 +471,11 @@
                                             Flowrate
                         </TextBlock>
                     </StackPanel>
-                    <StackPanel Background="{StaticResource ReactorDisplayColor1}" Orientation="Horizontal">
+                    <StackPanel Background="{StaticResource ReactorMonitorColor1}" Orientation="Horizontal">
                         <Label x:Name="DisplayTotalFlowrateSETR" Foreground="Black" HorizontalAlignment="Left" Width=" 35"/>
                         <Ellipse Width="7" Height="7" Fill="LawnGreen" Margin="6,0,0,0"/>
                     </StackPanel>
-                    <StackPanel Background="{StaticResource ReactorDisplayColor2}" >
+                    <StackPanel Background="{StaticResource ReactorMonitorColor2}" >
                         <Label x:Name="DisplayTotalFlowrateCurrentR" Foreground="Black" HorizontalAlignment="Right"/>
                     </StackPanel>
                 </StackPanel>
@@ -511,11 +487,11 @@
                                             Temperature
                         </TextBlock>
                     </StackPanel>
-                    <StackPanel Background="{StaticResource ReactorDisplayColor1}" Orientation="Horizontal">
+                    <StackPanel Background="{StaticResource ReactorMonitorColor1}" Orientation="Horizontal">
                         <Label x:Name="DisplaySusceptorTemperatureSETR" Foreground="Black" HorizontalAlignment="Left" Width=" 35"/>
                         <Ellipse Width="7" Height="7" Fill="LawnGreen" Margin="6,0,0,0"/>
                     </StackPanel>
-                    <StackPanel Background="{StaticResource ReactorDisplayColor2}" >
+                    <StackPanel Background="{StaticResource ReactorMonitorColor2}" >
                         <Label x:Name="DisplaySusceptorTemperatureCurrentR" Foreground="Black" HorizontalAlignment="Right"/>
                     </StackPanel>
                 </StackPanel>
@@ -527,11 +503,11 @@
                                             Pressure
                         </TextBlock>
                     </StackPanel>
-                    <StackPanel Background="{StaticResource ReactorDisplayColor1}" Orientation="Horizontal" >
+                    <StackPanel Background="{StaticResource ReactorMonitorColor1}" Orientation="Horizontal" >
                         <Label x:Name="DisplayReactorPressureSETR" Foreground="Black" HorizontalAlignment="Left" Width=" 35"/>
                         <Ellipse Width="7" Height="7" Fill="LawnGreen" Margin="6,0,0,0"/>
                     </StackPanel>
-                    <StackPanel Background="{StaticResource ReactorDisplayColor2}" Margin="0,0,0,0" >
+                    <StackPanel Background="{StaticResource ReactorMonitorColor2}" Margin="0,0,0,0" >
                         <Label x:Name="DisplayReactorPressureCurrentR" Foreground="Black" HorizontalAlignment="Right"/>
                     </StackPanel>
                 </StackPanel>
@@ -542,11 +518,11 @@
                                             Rotation
                         </TextBlock>
                     </StackPanel>
-                    <StackPanel Background="{StaticResource ReactorDisplayColor1}" Orientation="Horizontal" >
+                    <StackPanel Background="{StaticResource ReactorMonitorColor1}" Orientation="Horizontal" >
                         <Label x:Name="DisplaySusceptorRotationSETR" Foreground="Black" HorizontalAlignment="Left" Width=" 35"/>
                         <Ellipse Width="7" Height="7" Fill="LawnGreen" Margin="6,0,0,0"/>
                     </StackPanel>
-                    <StackPanel Background="{StaticResource ReactorDisplayColor2}" Margin="0,0,0,0" >
+                    <StackPanel Background="{StaticResource ReactorMonitorColor2}" Margin="0,0,0,0" >
                         <Label x:Name="DisplaySusceptorRotationCurrentR" Foreground="Black" HorizontalAlignment="Right"/>
                     </StackPanel>
                 </StackPanel>
@@ -558,10 +534,10 @@
                                             Pressure
                         </TextBlock>
                     </StackPanel>
-                    <StackPanel Background="{StaticResource ReactorDisplayColor1}" Height="11">
+                    <StackPanel Background="{StaticResource ReactorMonitorColor1}" Height="11">
                         <Ellipse Width="7" Height="7" Fill="LawnGreen" HorizontalAlignment="Center" Margin="0,3,0,0"/>
                     </StackPanel>
-                    <StackPanel Background="{StaticResource ReactorDisplayColor2}">
+                    <StackPanel Background="{StaticResource ReactorMonitorColor2}">
                         <Label x:Name="DisplayExhaustPressureR" Foreground="Black" HorizontalAlignment="Right" />
                     </StackPanel>
                 </StackPanel>
@@ -573,10 +549,10 @@
                                             Valve
                         </TextBlock>
                     </StackPanel>
-                    <StackPanel Background="{StaticResource ReactorDisplayColor1}" Height="11">
+                    <StackPanel Background="{StaticResource ReactorMonitorColor1}" Height="11">
                         <Ellipse Width="7" Height="7" Fill="LawnGreen" HorizontalAlignment="Center" Margin="0,3,0,0"/>
                     </StackPanel>
-                    <StackPanel Background="{StaticResource ReactorDisplayColor2}">
+                    <StackPanel Background="{StaticResource ReactorMonitorColor2}">
                         <Label x:Name="DisplayThrottleValvePositionR" Foreground="Black" HorizontalAlignment="Right" />
                     </StackPanel>
                 </StackPanel>
@@ -586,10 +562,10 @@
                                         DOR<LineBreak/>
                                         Pressure
                     </TextBlock>
-                    <StackPanel Background="{StaticResource ReactorDisplayColor1}" Height="11">
+                    <StackPanel Background="{StaticResource ReactorMonitorColor1}" Height="11">
                         <Ellipse Width="7" Height="7" Fill="LawnGreen" HorizontalAlignment="Center" Margin="0,3,0,0"/>
                     </StackPanel>
-                    <StackPanel Background="{StaticResource ReactorDisplayColor2}">
+                    <StackPanel Background="{StaticResource ReactorMonitorColor2}">
                         <Label x:Name="DisplayDORPressureR" Foreground="Black" HorizontalAlignment="Right" />
                     </StackPanel>
                 </StackPanel>

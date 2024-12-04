@@ -23,12 +23,12 @@
                     <RowDefinition/>
                     <RowDefinition Height="240" />
                 </Grid.RowDefinitions>
-                <TabControl Grid.Row="0" Background="Transparent">
-                    <TabItem Header="System Control">
+                <TabControl Grid.Row="0" Background="Transparent" >
+                    <TabItem Header="System Control" Width="110" >
                         <Frame Source="/Views/HomePage.xaml" NavigationUIVisibility="Hidden"/>
                     </TabItem>
-                    
-                    <TabItem Header="Recipe Control">
+
+                <TabItem Header="Recipe Control" Width="110">
                         <Frame NavigationUIVisibility="Hidden" >
                         <b:Interaction.Behaviors>
                             <behaviors:FrameBehavior NavigationSource="{Binding NavigationSource, Mode=TwoWay}" />
@@ -36,12 +36,12 @@
                     </Frame>
 
                 </TabItem>
-                    
-                    <TabItem Header="Report">
+
+                <TabItem Header="Report" Width="110">
                         <Frame Source="/Views/ReportPage.xaml" NavigationUIVisibility="Hidden"/>
                     </TabItem>
-                    
-                    <TabItem Header="Setting">
+
+                <TabItem Header="Setting" Width="110">
                         <Frame Source="/Views/SettingPage.xaml" NavigationUIVisibility="Hidden"/>
                     </TabItem>
                     

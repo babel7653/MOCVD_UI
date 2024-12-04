@@ -231,3 +231,5 @@ D:\Design\MOCVD\MR\SapphireXR\SapphireXR_App\obj\Debug\net8.0-windows\Controls\L
 D:\Design\MOCVD\MR\SapphireXR\SapphireXR_App\obj\Debug\net8.0-windows\Controls\LeakTestValve.baml
 D:\Design\MOCVD\MR\SapphireXR\SapphireXR_App\obj\Debug\net8.0-windows\Controls\FlowController.g.cs
 D:\Design\MOCVD\MR\SapphireXR\SapphireXR_App\obj\Debug\net8.0-windows\Controls\FlowController.baml
+D:\Design\MOCVD\MR\SapphireXR\SapphireXR_App\obj\Debug\net8.0-windows\Controls\GasMonitor.g.cs
+D:\Design\MOCVD\MR\SapphireXR\SapphireXR_App\obj\Debug\net8.0-windows\Controls\GasMonitor.baml

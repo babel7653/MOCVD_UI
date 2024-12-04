@@ -23,14 +23,14 @@
                             </Grid>
                         </Border>
                         <ControlTemplate.Triggers>
-                            <Trigger Property="IsEnabled" Value="True">
+                            <DataTrigger Binding="{Binding IsOpen, RelativeSource={RelativeSource AncestorType={x:Type local:SwitchingValve}}}" Value="True">
                                 <Setter TargetName="on" Property="Fill" Value="White"/>
                                 <Setter TargetName="off" Property="Fill" Value="orangered"/>
-                            </Trigger>
-                            <Trigger Property="IsEnabled" Value="False">
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding IsOpen, RelativeSource={RelativeSource AncestorType={x:Type local:SwitchingValve}}}" Value="False">
                                 <Setter TargetName="on" Property="Fill" Value="Lime"/>
                                 <Setter TargetName="off" Property="Fill" Value="White"/>
-                            </Trigger>
+                            </DataTrigger>
                         </ControlTemplate.Triggers>
                     </ControlTemplate>
                 </Setter.Value>

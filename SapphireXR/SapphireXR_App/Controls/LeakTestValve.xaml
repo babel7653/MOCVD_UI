@@ -38,6 +38,6 @@
         </Style>
     </UserControl.Resources>
     <Canvas>
-        <Button VerticalAlignment="Center" Style="{StaticResource BlockValveStyle}"/>
+        <Button VerticalAlignment="Center" Style="{StaticResource BlockValveStyle}" Click="LeakTestValve_Click"/>
     </Canvas>
 </UserControl>

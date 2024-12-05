@@ -60,5 +60,10 @@ namespace SapphireXR_App.Controls
         public static readonly DependencyProperty setValueProperty =
             DependencyProperty.Register("setValue", typeof(int), typeof(ButterflyValve), new PropertyMetadata(0));
 
+        private void ButterflyValve_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
     }
 }

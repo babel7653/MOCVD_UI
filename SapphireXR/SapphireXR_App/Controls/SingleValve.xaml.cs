@@ -51,6 +51,9 @@ namespace SapphireXR_App.Controls
         public static readonly DependencyProperty IsNormallyOpenProperty =
             DependencyProperty.Register("IsNormallyOpen", typeof(bool), typeof(SingleValve), new PropertyMetadata(default));
 
+        private void SingleValve_Click(object sender, RoutedEventArgs e)
+        {
 
+        }
     }
 }

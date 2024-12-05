@@ -40,5 +40,10 @@ namespace SapphireXR_App.Controls
 
         public static readonly DependencyProperty IsOpenProperty =
             DependencyProperty.Register("IsOpen", typeof(bool), typeof(LeakTestValve), new PropertyMetadata(default));
+
+        private void LeakTestValve_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 }

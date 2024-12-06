@@ -6,16 +6,14 @@
              xmlns:local="clr-namespace:SapphireXR_App.Controls"
              mc:Ignorable="d"
              x:Name="singleValve"
-             d:DesignHeight="30" d:DesignWidth="30">
+             d:DesignHeight="24" d:DesignWidth="24">
     <local:Valve.Resources>
         <Style x:Key="BlockValveStyle" TargetType="{x:Type Button}">
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="{x:Type Button}">
-                        <Border Background="LightGray" CornerRadius="3">
-                            <Grid Height="30" Width="30">
-                                <Ellipse x:Name="on" Width="20" Height="20"/>
-                            </Grid>
+                        <Border BorderBrush="LightGray" BorderThickness="1" Background="{StaticResource DashboardBackground}"  CornerRadius="3">
+                                <Ellipse x:Name="on" Width="16" Height="16"/>
                         </Border>
                         <ControlTemplate.Triggers>
                             <Trigger Property="IsEnabled" Value="False">
@@ -31,6 +29,6 @@
         </Style>
     </local:Valve.Resources>
     <Canvas>
-        <Button VerticalAlignment="Center" Style="{StaticResource BlockValveStyle}" Click="SingleValve_Click"/>
+        <Button Height="24" Width="24" Style="{StaticResource BlockValveStyle}"/>
     </Canvas>
 </local:Valve>

@@ -13,11 +13,11 @@
     <SolidColorBrush x:Key="RecipeEditPageBackground" Color="#004C39"/>
     
     
-    <SolidColorBrush x:Key="SourceDisplayColor1" Color="#ff7f50"/>
-    <SolidColorBrush x:Key="SourceDisplayColor2" Color="#F7D5CD"/>
+    <SolidColorBrush x:Key="SourceMonitorColor1" Color="#ff7f50"/>
+    <SolidColorBrush x:Key="SourceMonitorColor2" Color="#F7D5CD"/>
 
-    <SolidColorBrush x:Key="ReactorDisplayColor1" Color="#A02B93"/>
-    <SolidColorBrush x:Key="ReactorDisplayColor2" Color="#DFCDDC"/>
+    <SolidColorBrush x:Key="ReactorMonitorColor1" Color="#A02B93"/>
+    <SolidColorBrush x:Key="ReactorMonitorColor2" Color="#DFCDDC"/>
 
     <SolidColorBrush x:Key="MFCDisplayColor1" Color="#0F9ED5"/>
     <SolidColorBrush x:Key="MFCDisplayColor2" Color="#CCDFEF"/>
@@ -29,7 +29,12 @@
     <SolidColorBrush x:Key="PrimaryFontColor" Color="#F8FAFC"/>
     <SolidColorBrush x:Key="SecondaryFontColor" Color="#E2E8F0"/>
 
-    <!-- Controller Colors -->
-
+    <!-- Line Colors -->
+    <SolidColorBrush x:Key="LeakTestLineColor" Color="#66ffff"/>
+    <SolidColorBrush x:Key="HydrogenLineColor" Color="#ff0033"/>
+    <SolidColorBrush x:Key="NitrogenLineColor" Color="#33ff00"/>
+    <SolidColorBrush x:Key="HydrideLineColor" Color="#ffcc33"/>
+    <SolidColorBrush x:Key="ProcessLineColor" Color="#cc6600"/>
+    <SolidColorBrush x:Key="ExhaustLineColor" Color="#ccffff"/>
 
 </ResourceDictionary>

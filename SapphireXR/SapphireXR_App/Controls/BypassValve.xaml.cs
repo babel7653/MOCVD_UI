@@ -12,8 +12,8 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-using SapphireXR_App.Enums;
 using SapphireXR_App.Models;
+using SapphireXR_App.Enums;
 
 namespace SapphireXR_App.Controls
 {

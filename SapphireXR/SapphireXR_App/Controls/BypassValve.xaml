@@ -6,27 +6,27 @@
              xmlns:local="clr-namespace:SapphireXR_App.Controls"
              mc:Ignorable="d" 
              x:Name="bypassValve"
-             d:DesignHeight="40" d:DesignWidth="60">
+             d:DesignHeight="36" Width="52">
     <local:Valve.Resources>
         <Style x:Key="BlockValveStyle" TargetType="{x:Type Button}">
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="{x:Type Button}">
-                        <Border Background="LightGray" CornerRadius="3">
-                            <Grid Height="40" Width="60">
+                        <Border BorderBrush="LightGray" BorderThickness="1" Background="{StaticResource DashboardBackground}" CornerRadius="3">
+                            <Grid>
                                 <Grid.RowDefinitions>
                                     <RowDefinition/>
                                     <RowDefinition/>
                                 </Grid.RowDefinitions>
-                                <Line X1="10" Y1="11" X2="50" Y2="11" Stroke="Magenta" StrokeThickness="2"/>
-                                <Line X1="10" Y1="0" X2="10" Y2="20" Stroke="Magenta" StrokeThickness="2"/>
-                                <Line X1="50" Y1="0" X2="50" Y2="20" Stroke="Magenta" StrokeThickness="2"/>
-
-                                <Ellipse x:Name="bypass" Grid.Row="0" Width="20" Height="20"/>
+                                <Line X1="9" Y1="9" X2="42" Y2="9" Stroke="Magenta" StrokeThickness="2"/>
+                                <Line X1="9" Y1="0" X2="9" Y2="18" Stroke="Magenta" StrokeThickness="2"/>
+                                <Line X1="41" Y1="0" X2="41" Y2="18" Stroke="Magenta" StrokeThickness="2"/>
+                                <Ellipse x:Name="bypass" Grid.Row="0" Width="16" Height="16"/>
                                 <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Center">
-                                    <Ellipse x:Name="in" Width="20" Height="20" Margin="0,0,10,0"/>
-                                    <Ellipse x:Name="out" Width="20" Height="20" Margin="10,0,0,0"/>
+                                    <Ellipse x:Name="in" Width="16" Height="16" />
+                                    <Ellipse x:Name="out" Width="16" Height="16" Margin="16,0,0,0"/>
                                 </StackPanel>
+
                             </Grid>
                         </Border>
                         <ControlTemplate.Triggers>
@@ -47,6 +47,6 @@
         </Style>
     </local:Valve.Resources>
     <Canvas>
-        <Button VerticalAlignment="Center" Style="{StaticResource BlockValveStyle}" Click="BypassValve_Click"/>
+        <Button Width="52" Height="36" Style="{StaticResource BlockValveStyle}" Click="BypassValve_Click"/>
     </Canvas>
 </local:Valve>

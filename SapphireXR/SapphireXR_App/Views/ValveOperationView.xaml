@@ -70,7 +70,7 @@
              Style="{StaticResource MetroOrangeButtonStyle}" 
               IsCancel="True"
               Content="취소"
-              Command="{Binding CanelCommand}"
+              Command="{Binding CancelCommand}"
               CommandParameter="{Binding ElementName=valveDialog}"/>
             </Grid>
         </Grid>

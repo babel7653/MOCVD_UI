@@ -69,7 +69,7 @@ namespace SapphireXR_App.Controls {
                 return;
             }
             _contentLoaded = true;
-            System.Uri resourceLocater = new System.Uri("/SapphireXR_App;component/controls/ucgasstate.xaml", System.UriKind.Relative);
+            System.Uri resourceLocater = new System.Uri("/SapphireXR_App;V1.0.0.0;component/controls/ucgasstate.xaml", System.UriKind.Relative);
             
             #line 1 "..\..\..\..\Controls\UcGasState.xaml"
             System.Windows.Application.LoadComponent(this, resourceLocater);

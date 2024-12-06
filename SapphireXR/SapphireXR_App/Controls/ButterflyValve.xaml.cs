@@ -18,28 +18,12 @@ namespace SapphireXR_App.Controls
     /// <summary>
     /// ButterflyValve.xaml에 대한 상호 작용 논리
     /// </summary>
-    public partial class ButterflyValve : UserControl
+    public partial class ButterflyValve : Valve
     {
         public ButterflyValve()
         {
             InitializeComponent();
         }
-        public string ValveID
-        {
-            get { return (string)GetValue(ValveIDProperty); }
-            set { SetValue(ValveIDProperty, value); }
-        }
-        public static readonly DependencyProperty ValveIDProperty =
-            DependencyProperty.Register("ValveID", typeof(string), typeof(ButterflyValve), new PropertyMetadata(default));
-
-        public bool IsOpen
-        {
-            get { return (bool)GetValue(IsOpenProperty); }
-            set { SetValue(IsOpenProperty, value); }
-        }
-
-        public static readonly DependencyProperty IsOpenProperty =
-            DependencyProperty.Register("IsOpen", typeof(bool), typeof(ButterflyValve), new PropertyMetadata(default));
 
         public bool IsControl
         {
@@ -64,6 +48,5 @@ namespace SapphireXR_App.Controls
         {
 
         }
-
     }
 }

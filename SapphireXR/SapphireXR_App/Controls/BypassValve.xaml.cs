@@ -20,28 +20,12 @@ namespace SapphireXR_App.Controls
     /// <summary>
     /// BypassValve.xaml에 대한 상호 작용 논리
     /// </summary>
-    public partial class BypassValve : UserControl
+    public partial class BypassValve : Valve
     {
         public BypassValve()
         {
             InitializeComponent();
         }
-        public string ValveID
-        {
-            get { return (string)GetValue(ValveIDProperty); }
-            set { SetValue(ValveIDProperty, value); }
-        }
-        public static readonly DependencyProperty ValveIDProperty =
-            DependencyProperty.Register("ValveID", typeof(string), typeof(BypassValve), new PropertyMetadata(default));
-
-        public bool IsOpen
-        {
-            get { return (bool)GetValue(IsOpenProperty); }
-            set { SetValue(IsOpenProperty, value); }
-        }
-
-        public static readonly DependencyProperty IsOpenProperty =
-            DependencyProperty.Register("IsOpen", typeof(bool), typeof(BypassValve), new PropertyMetadata(default));
 
         private void BypassValve_Click(object sender, RoutedEventArgs e)
         {

@@ -10,6 +10,12 @@
       Title="HomePage">
 
     <Canvas Background="{StaticResource HomePageBackground}">
+        <Canvas.ContextMenu>
+            <ContextMenu>
+                <MenuItem Header="{Binding SwitchableValveModeStr}" Command="{Binding SwitchValveModeCommand}" CommandParameter="{Binding Header,  RelativeSource={RelativeSource Mode=Self}}"></MenuItem>
+                <MenuItem Header="{Binding LeakTestModeStr}"></MenuItem>
+            </ContextMenu>
+        </Canvas.ContextMenu>
         <!-- Drawing Nitrogen Gas Line -->
         <Polyline Points="196,80 196,93 90,93 90,502 1000,502 1000,522" Stroke="Lime" StrokeThickness="2" />
         <Line X1="0" Y1="0" X2="0" Y2="20" Stroke="Lime" StrokeThickness="2" Canvas.Left="300" Canvas.Top="502" />

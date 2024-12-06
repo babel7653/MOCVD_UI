@@ -1,4 +1,6 @@
-﻿using System;
+﻿using SapphireXR_App.Enums;
+using SapphireXR_App.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -24,7 +26,7 @@ namespace SapphireXR_App.Controls
         {
             InitializeComponent();
         }
-
+       
         public bool IsNormallyOpen
         {
             get { return (bool)GetValue(IsNormallyOpenProperty); }
@@ -35,6 +37,37 @@ namespace SapphireXR_App.Controls
         public static readonly DependencyProperty IsNormallyOpenProperty =
             DependencyProperty.Register("IsNormallyOpen", typeof(bool), typeof(SingleValve), new PropertyMetadata(default));
 
-
+        private void SingleValve_Click(object sender, RoutedEventArgs e)
+        {
+            SingleValve Valve = (SingleValve)((Button)e.OriginalSource).Parent;
+            if (Valve.IsOpen == true)
+            {
+                var result = ValveOperationEx.Show("Valve Operation", $"{Valve.ValveID} 밸브를 닫으시겠습니까?");
+                switch (result)
+                {
+                    case ValveOperationExResult.Ok:
+                        Valve.IsOpen = !(Valve.IsOpen);
+                        MessageBox.Show($"{Valve.ValveID} 밸브 닫음");
+                        break;
+                    case ValveOperationExResult.Cancel:
+                        MessageBox.Show($"{Valve.ValveID} 취소됨1");
+                        break;
+                }
+            }
+            else
+            {
+                var result = ValveOperationEx.Show("Valve Operation", $"{Valve.ValveID} 밸브를 열겠습니까?");
+                switch (result)
+                {
+                    case ValveOperationExResult.Ok:
+                        Valve.IsOpen = !(Valve.IsOpen);
+                        MessageBox.Show($"{Valve.ValveID} 밸브 열음");
+                        break;
+                    case ValveOperationExResult.Cancel:
+                        MessageBox.Show($"{Valve.ValveID} 취소됨2");
+                        break;
+                }
+            }
+        }
     }
 }

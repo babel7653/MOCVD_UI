@@ -1,17 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
+﻿using System.Windows;
 
 namespace SapphireXR_App.Controls
 {
@@ -24,7 +11,7 @@ namespace SapphireXR_App.Controls
         {
             InitializeComponent();
         }
-
+        
         public bool IsControl
         {
             get { return (bool)GetValue(IsControlProperty); }
@@ -40,7 +27,6 @@ namespace SapphireXR_App.Controls
             set { SetValue(setValueProperty, value); }
         }
 
-        // Using a DependencyProperty as the backing store for setValue.  This enables animation, styling, binding, etc...
         public static readonly DependencyProperty setValueProperty =
             DependencyProperty.Register("setValue", typeof(int), typeof(ButterflyValve), new PropertyMetadata(0));
 

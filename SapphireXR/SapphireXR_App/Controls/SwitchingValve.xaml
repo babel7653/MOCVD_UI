@@ -8,23 +8,23 @@
              x:Name="switchingValve"
              d:DesignWidth="48" Height="24">
     <local:Valve.Resources>
-        <SolidColorBrush x:Key="BorderBrushOnMouseEnter" Color="OrangeRed" />
+        <SolidColorBrush x:Key="BorderBrushOnMouseEnter" Color="#9dbce8" />
         <SolidColorBrush x:Key="BorderBrushOnMouseLeave" Color="#475569" />
         <Storyboard x:Key="ChangeBackgroundColorOnMouseEnter">
-            <ObjectAnimationUsingKeyFrames Storyboard.TargetName="switchingValveBorder" Storyboard.TargetProperty="Background">
+            <ObjectAnimationUsingKeyFrames Storyboard.TargetName="valveBorder" Storyboard.TargetProperty="Background">
                 <DiscreteObjectKeyFrame KeyTime="0:0:0" Value="{StaticResource BorderBrushOnMouseEnter}" />
             </ObjectAnimationUsingKeyFrames>
         </Storyboard>
         <Storyboard x:Key="ChangeBackgroundColorOnMouseLeave">
-            <ObjectAnimationUsingKeyFrames Storyboard.TargetName="switchingValveBorder" Storyboard.TargetProperty="Background">
+            <ObjectAnimationUsingKeyFrames Storyboard.TargetName="valveBorder" Storyboard.TargetProperty="Background">
                 <DiscreteObjectKeyFrame KeyTime="0:0:0" Value="{StaticResource BorderBrushOnMouseLeave}" />
             </ObjectAnimationUsingKeyFrames>
         </Storyboard>
-        <Style x:Key="SwitchingValveStyle" TargetType="{x:Type Button}">
+        <Style x:Key="ValveStyle" TargetType="{x:Type Button}">
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="{x:Type Button}">
-                        <Border x:Name="switchingValveBorder" BorderBrush="LightGray" BorderThickness="1" Background="{StaticResource DashboardBackground}" CornerRadius="3">
+                        <Border  BorderBrush="LightGray" BorderThickness="1" Background="{StaticResource DashboardBackground}" CornerRadius="2" x:Name="valveBorder">
                             <Grid>
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition/>
@@ -35,11 +35,11 @@
                             </Grid>
                         </Border>
                         <ControlTemplate.Triggers>
-                            <DataTrigger Binding="{Binding IsOpen, RelativeSource={RelativeSource AncestorType={x:Type local:SwitchingValve}}}" Value="True">
+                            <DataTrigger Binding="{Binding IsOpen, RelativeSource={RelativeSource AncestorType={x:Type local:SwitchingValve}}, Mode=TwoWay}" Value="True">
                                 <Setter TargetName="on" Property="Fill" Value="White"/>
                                 <Setter TargetName="off" Property="Fill" Value="orangered"/>
                             </DataTrigger>
-                            <DataTrigger Binding="{Binding IsOpen, RelativeSource={RelativeSource AncestorType={x:Type local:SwitchingValve}}}" Value="False">
+                            <DataTrigger Binding="{Binding IsOpen, RelativeSource={RelativeSource AncestorType={x:Type local:SwitchingValve}}, Mode=TwoWay}" Value="False">
                                 <Setter TargetName="on" Property="Fill" Value="Lime"/>
                                 <Setter TargetName="off" Property="Fill" Value="White"/>
                             </DataTrigger>
@@ -53,7 +53,8 @@
                     </ControlTemplate>
                 </Setter.Value>
             </Setter>
+            <Setter Property="Cursor" Value="Hand"/>
         </Style>
     </local:Valve.Resources>
-    <Button Style="{StaticResource SwitchingValveStyle}" Width="48" Height="24" Click="SwitchingValve_Click"/>
+    <Button Style="{StaticResource ValveStyle}" Width="48" Height="24" Click="SwitchingValve_Click"/>
 </local:Valve>

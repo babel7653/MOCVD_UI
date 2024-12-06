@@ -8,27 +8,44 @@
              x:Name="singleValve"
              d:DesignHeight="24" d:DesignWidth="24">
     <local:Valve.Resources>
+        <SolidColorBrush x:Key="BorderBrushOnMouseEnter" Color="#9dbce8" />
+        <SolidColorBrush x:Key="BorderBrushOnMouseLeave" Color="#475569" />
+        <Storyboard x:Key="ChangeBackgroundColorOnMouseEnter">
+            <ObjectAnimationUsingKeyFrames Storyboard.TargetName="valveBorder" Storyboard.TargetProperty="Background">
+                <DiscreteObjectKeyFrame KeyTime="0:0:0" Value="{StaticResource BorderBrushOnMouseEnter}" />
+            </ObjectAnimationUsingKeyFrames>
+        </Storyboard>
+        <Storyboard x:Key="ChangeBackgroundColorOnMouseLeave">
+            <ObjectAnimationUsingKeyFrames Storyboard.TargetName="valveBorder" Storyboard.TargetProperty="Background">
+                <DiscreteObjectKeyFrame KeyTime="0:0:0" Value="{StaticResource BorderBrushOnMouseLeave}" />
+            </ObjectAnimationUsingKeyFrames>
+        </Storyboard>
         <Style x:Key="BlockValveStyle" TargetType="{x:Type Button}">
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="{x:Type Button}">
-                        <Border BorderBrush="LightGray" BorderThickness="1" Background="{StaticResource DashboardBackground}"  CornerRadius="3">
+                        <Border BorderBrush="LightGray" BorderThickness="1" Background="{StaticResource DashboardBackground}"  CornerRadius="2" x:Name="valveBorder">
                                 <Ellipse x:Name="on" Width="16" Height="16"/>
                         </Border>
                         <ControlTemplate.Triggers>
-                            <Trigger Property="IsEnabled" Value="False">
-                                <Setter TargetName="on" Property="Fill" Value="White"/>
-                                </Trigger>
-                            <Trigger Property="IsEnabled" Value="True">
+                            <DataTrigger Binding="{Binding IsOpen, RelativeSource={RelativeSource AncestorType={x:Type local:SingleValve}}, Mode=TwoWay}" Value="True">
                                 <Setter TargetName="on" Property="Fill" Value="Lime"/>
-                            </Trigger>
+                             </DataTrigger>
+                            <DataTrigger Binding="{Binding IsOpen, RelativeSource={RelativeSource AncestorType={x:Type local:SingleValve}}, Mode=TwoWay}"  Value="False">
+                                <Setter TargetName="on" Property="Fill" Value="White"/>
+                            </DataTrigger>
+                            <EventTrigger RoutedEvent="MouseEnter">
+                                <BeginStoryboard Storyboard="{StaticResource ChangeBackgroundColorOnMouseEnter}" />
+                            </EventTrigger>
+                            <EventTrigger RoutedEvent="MouseLeave">
+                                <BeginStoryboard Storyboard="{StaticResource ChangeBackgroundColorOnMouseLeave}" />
+                            </EventTrigger>
                         </ControlTemplate.Triggers>
                     </ControlTemplate>
                 </Setter.Value>
             </Setter>
+            <Setter Property="Cursor" Value="Hand"/>
         </Style>
     </local:Valve.Resources>
-    <Canvas>
-        <Button Height="24" Width="24" Style="{StaticResource BlockValveStyle}"/>
-    </Canvas>
+    <Button Height="24" Width="24" Style="{StaticResource BlockValveStyle}" Click="SingleValve_Click"/>
 </local:Valve>

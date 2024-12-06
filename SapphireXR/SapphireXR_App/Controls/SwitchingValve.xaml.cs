@@ -5,16 +5,12 @@ using SapphireXR_App.Models;
 
 namespace SapphireXR_App.Controls
 {
-    /// <summary>
-    /// SwitchingValve.xaml에 대한 상호 작용 논리
-    /// </summary>
     public partial class SwitchingValve : Valve
     {
         public SwitchingValve()
         {
             InitializeComponent();
         }
-
         public bool IsMaintenanceMode
         {
             get { return (bool)GetValue(IsMaintenanceModeProperty); }
@@ -23,7 +19,6 @@ namespace SapphireXR_App.Controls
 
         public static readonly DependencyProperty IsMaintenanceModeProperty =
             DependencyProperty.Register("IsMaintenanceMode", typeof(bool), typeof(SwitchingValve), new PropertyMetadata(default));
-
         private void SwitchingValve_Click(object sender, RoutedEventArgs e)
         {
             SwitchingValve Valve = (SwitchingValve)((Button)e.OriginalSource).Parent;

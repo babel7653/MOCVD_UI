@@ -8,45 +8,61 @@
              x:Name="bypassValve"
              d:DesignHeight="36" Width="52">
     <local:Valve.Resources>
-        <Style x:Key="BlockValveStyle" TargetType="{x:Type Button}">
+        <SolidColorBrush x:Key="BorderBrushOnMouseEnter" Color="#9dbce8" />
+        <SolidColorBrush x:Key="BorderBrushOnMouseLeave" Color="#475569" />
+        <Storyboard x:Key="ChangeBackgroundColorOnMouseEnter">
+            <ObjectAnimationUsingKeyFrames Storyboard.TargetName="valveBorder" Storyboard.TargetProperty="Background">
+                <DiscreteObjectKeyFrame KeyTime="0:0:0" Value="{StaticResource BorderBrushOnMouseEnter}" />
+            </ObjectAnimationUsingKeyFrames>
+        </Storyboard>
+        <Storyboard x:Key="ChangeBackgroundColorOnMouseLeave">
+            <ObjectAnimationUsingKeyFrames Storyboard.TargetName="valveBorder" Storyboard.TargetProperty="Background">
+                <DiscreteObjectKeyFrame KeyTime="0:0:0" Value="{StaticResource BorderBrushOnMouseLeave}" />
+            </ObjectAnimationUsingKeyFrames>
+        </Storyboard>
+        <Style x:Key="ValveStyle" TargetType="{x:Type Button}">
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="{x:Type Button}">
-                        <Border BorderBrush="LightGray" BorderThickness="1" Background="{StaticResource DashboardBackground}" CornerRadius="3">
+                        <Border BorderBrush="LightGray" BorderThickness="1" Background="{StaticResource DashboardBackground}" CornerRadius="2" x:Name="valveBorder">
                             <Grid>
                                 <Grid.RowDefinitions>
                                     <RowDefinition/>
                                     <RowDefinition/>
                                 </Grid.RowDefinitions>
-                                <Line X1="9" Y1="9" X2="42" Y2="9" Stroke="Magenta" StrokeThickness="2"/>
-                                <Line X1="9" Y1="0" X2="9" Y2="18" Stroke="Magenta" StrokeThickness="2"/>
-                                <Line X1="41" Y1="0" X2="41" Y2="18" Stroke="Magenta" StrokeThickness="2"/>
+                                <Line X1="8" Y1="8" X2="42" Y2="8" Stroke="Magenta" StrokeThickness="2"/>
+                                <Line X1="8" Y1="0" X2="8" Y2="18" Stroke="Magenta" StrokeThickness="2"/>
+                                <Line X1="42" Y1="0" X2="42" Y2="18" Stroke="Magenta" StrokeThickness="2"/>
                                 <Ellipse x:Name="bypass" Grid.Row="0" Width="16" Height="16"/>
                                 <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Center">
                                     <Ellipse x:Name="in" Width="16" Height="16" />
                                     <Ellipse x:Name="out" Width="16" Height="16" Margin="16,0,0,0"/>
                                 </StackPanel>
-
                             </Grid>
                         </Border>
                         <ControlTemplate.Triggers>
-                            <Trigger Property="IsEnabled" Value="False">
+                            <DataTrigger Binding="{Binding IsOpen, RelativeSource={RelativeSource AncestorType={x:Type local:BypassValve}}, Mode=TwoWay}" Value="True">
                                 <Setter TargetName="bypass" Property="Fill" Value="White"/>
                                 <Setter TargetName="in" Property="Fill" Value="Red"/>
                                 <Setter TargetName="out" Property="Fill" Value="Red"/>
-                            </Trigger>
-                            <Trigger Property="IsEnabled" Value="True">
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding IsOpen, RelativeSource={RelativeSource AncestorType={x:Type local:BypassValve}}, Mode=TwoWay}" Value="False">
                                 <Setter TargetName="bypass" Property="Fill" Value="Lime"/>
                                 <Setter TargetName="in" Property="Fill" Value="White"/>
                                 <Setter TargetName="out" Property="Fill" Value="White"/>
-                            </Trigger>
+                            </DataTrigger>
+                            <EventTrigger RoutedEvent="MouseEnter">
+                                <BeginStoryboard Storyboard="{StaticResource ChangeBackgroundColorOnMouseEnter}" />
+                            </EventTrigger>
+                            <EventTrigger RoutedEvent="MouseLeave">
+                                <BeginStoryboard Storyboard="{StaticResource ChangeBackgroundColorOnMouseLeave}" />
+                            </EventTrigger>
                         </ControlTemplate.Triggers>
                     </ControlTemplate>
                 </Setter.Value>
             </Setter>
+            <Setter Property="Cursor" Value="Hand"/>
         </Style>
     </local:Valve.Resources>
-    <Canvas>
-        <Button Width="52" Height="36" Style="{StaticResource BlockValveStyle}" Click="BypassValve_Click"/>
-    </Canvas>
+    <Button Style="{StaticResource ValveStyle}" Height="36" Width="52"  Click="BypassValve_Click" />
 </local:Valve>

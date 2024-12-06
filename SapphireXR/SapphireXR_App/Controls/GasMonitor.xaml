@@ -8,7 +8,7 @@
              x:Name="gasMonitor"
              Loaded="gasMonitor_Loaded"
              d:DesignHeight="34" d:DesignWidth="70">
-    <Grid>
+    <Grid Height="34" Width="70">
         <Grid.RowDefinitions>
             <RowDefinition/>
             <RowDefinition Height="14"/>

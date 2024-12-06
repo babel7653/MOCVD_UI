@@ -1,4 +1,4 @@
-﻿<UserControl x:Class="SapphireXR_App.Controls.SingleValve"
+﻿<local:Valve x:Class="SapphireXR_App.Controls.SingleValve"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
@@ -7,7 +7,7 @@
              mc:Ignorable="d"
              x:Name="singleValve"
              d:DesignHeight="24" d:DesignWidth="24">
-    <UserControl.Resources>
+    <local:Valve.Resources>
         <Style x:Key="BlockValveStyle" TargetType="{x:Type Button}">
             <Setter Property="Template">
                 <Setter.Value>
@@ -27,8 +27,8 @@
                 </Setter.Value>
             </Setter>
         </Style>
-    </UserControl.Resources>
+    </local:Valve.Resources>
     <Canvas>
         <Button Height="24" Width="24" Style="{StaticResource BlockValveStyle}"/>
     </Canvas>
-</UserControl>
+</local:Valve>

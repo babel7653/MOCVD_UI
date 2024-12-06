@@ -10,8 +10,13 @@
       Title="HomePage">
     <Page.Resources>
     </Page.Resources>
-    <Canvas Background="{StaticResource HomePageBackground}" control:LeakTestValve.PreviewMouseUp="LeakTestValve_Click"
->
+    <Canvas Background="{StaticResource HomePageBackground}">
+        <Canvas.ContextMenu>
+            <ContextMenu>
+                <MenuItem Header="{Binding SwitchableValveModeStr}" Command="{Binding SwitchValveModeCommand}" CommandParameter="{Binding Header,  RelativeSource={RelativeSource Mode=Self}}"></MenuItem>
+                <MenuItem Header="{Binding LeakTestModeStr}"></MenuItem>
+            </ContextMenu>
+        </Canvas.ContextMenu>
         <Rectangle Stroke="White" StrokeThickness="1" Width="1300" Height="776"/>
         <Line Stroke="White" StrokeThickness="2" Canvas.Left="90" Canvas.Top="105" X1="0" Y1="0" X2="100" Y2="0"/>
 
@@ -311,53 +316,52 @@
         <control:SwitchingValve x:Name="V31" Canvas.Left="573" Canvas.Top="237" ValveID="V31" />
 
         <control:BypassValve x:Name="V07" Canvas.Left="235" Canvas.Top="631" 
-                             MouseLeftButtonDown="BypassValve_Click"
+                             
                              ValveID="V07" IsOpen="False" />
         <control:BypassValve x:Name="V10" Canvas.Left="420" Canvas.Top="640" 
-                             MouseLeftButtonDown="BypassValve_Click"
+                             
                              ValveID="V10" IsOpen="False"/>
         <control:BypassValve x:Name="V13" Canvas.Left="560" Canvas.Top="640" 
-                             MouseLeftButtonDown="BypassValve_Click"
+                             
                              ValveID="V13" IsOpen="False"/>
         <control:BypassValve x:Name="V16" Canvas.Left="700" Canvas.Top="640" 
-                             MouseLeftButtonDown="BypassValve_Click"
+                             
                              ValveID="V16" IsOpen="False"/>
         <control:BypassValve x:Name="V19" Canvas.Left="840" Canvas.Top="640" 
-                             MouseLeftButtonDown="BypassValve_Click"
+                             
                              ValveID="V19" IsOpen="False"/>
         <control:BypassValve x:Name="V22" Canvas.Left="980" Canvas.Top="640" 
-                             MouseLeftButtonDown="BypassValve_Click"
+                             
                              ValveID="V22" IsOpen="False"/>
 
         <control:SingleValve x:Name="V33" Canvas.Left="1200" Canvas.Top="160" 
-                        MouseLeftButtonDown="SingleValve_Click"
+                        
                         ValveID="V33" IsOpen="False"/>
         <control:SingleValve x:Name="V34" Canvas.Left="1115" Canvas.Top="548" 
-                        MouseLeftButtonDown="SingleValve_Click"
+                        
                         ValveID="V34" IsOpen="False"/>
         <control:SingleValve x:Name="V35" Canvas.Left="1240" Canvas.Top="160" 
-                      MouseLeftButtonDown="SingleValve_Click"
+                      
                       ValveID="V35" IsOpen="False"/>
         <control:SingleValve x:Name="V52" Canvas.Left="1086" Canvas.Top="745" 
-                      MouseLeftButtonDown="SingleValve_Click"
+                      
                       ValveID="V52" IsOpen="False" HorizontalAlignment="Left" VerticalAlignment="Center"/>
 
         <control:ButterflyValve x:Name="ButterflyValve" Canvas.Left="1145" Canvas.Top="590" 
-                      MouseLeftButtonDown="ButterflyValve_Click"
                       ValveID="V35" IsOpen="False" />
 
 
         <!-- Button for Leak Test Valve -->
         <control:LeakTestValve x:Name="V36" Canvas.Left="579" Canvas.Top="62" 
-                      MouseLeftButtonUp="LeakTestValve_Click"
+                      
                       ValveID="V36" IsOpen="False" />
         <control:LeakTestValve x:Name="V37" Canvas.Left="285" Canvas.Top="62"
-                      MouseLeftButtonDown="LeakTestValve_Click"
+                      
                       ValveID="V37" IsOpen="False"  >
 
         </control:LeakTestValve>
         <control:LeakTestValve x:Name="V38" Canvas.Left="108" Canvas.Top="506" 
-                      MouseLeftButtonDown="LeakTestValve_Click"
+                      
                       ValveID="V38" IsOpen="False" RenderTransformOrigin="0,0" >
             <control:LeakTestValve.RenderTransform>
                 <TransformGroup>
@@ -366,7 +370,7 @@
             </control:LeakTestValve.RenderTransform>
         </control:LeakTestValve>
         <control:LeakTestValve x:Name="V39" Canvas.Left="102" Canvas.Top="424" 
-                      MouseLeftButtonDown="LeakTestValve_Click"
+                      
                       ValveID="V39" IsOpen="False" RenderTransformOrigin="0,0">
             <control:LeakTestValve.RenderTransform>
                 <TransformGroup>
@@ -375,10 +379,10 @@
             </control:LeakTestValve.RenderTransform>
         </control:LeakTestValve>
         <control:LeakTestValve x:Name="V40" Canvas.Left="254" Canvas.Top="680" 
-                      MouseLeftButtonDown="LeakTestValve_Click"
+                      
                       ValveID="V40" IsOpen="False" HorizontalAlignment="Left" VerticalAlignment="Top" />
         <control:LeakTestValve x:Name="V41" Canvas.Left="324" Canvas.Top="680" Width="44" Height="30" 
-                      MouseLeftButtonDown="LeakTestValve_Click"
+                      
                       ValveID="V41" IsOpen="False" HorizontalAlignment="Left" VerticalAlignment="Center" RenderTransformOrigin="0.5,0.5">
             <control:LeakTestValve.RenderTransform>
                 <TransformGroup>
@@ -387,10 +391,10 @@
             </control:LeakTestValve.RenderTransform>
         </control:LeakTestValve>
         <control:LeakTestValve x:Name="V42" Canvas.Left="394" Canvas.Top="678" Width="44" Height="30"
-                      MouseLeftButtonDown="LeakTestValve_Click"
+                      
                       ValveID="V42" IsOpen="False" HorizontalAlignment="Left" VerticalAlignment="Top" />
         <control:LeakTestValve x:Name="V43" Canvas.Left="465" Canvas.Top="680" Width="44" Height="30" 
-                      MouseLeftButtonDown="LeakTestValve_Click"
+                      
                       ValveID="V43" IsOpen="False" HorizontalAlignment="Left" VerticalAlignment="Center" RenderTransformOrigin="0.5,0.5">
             <control:LeakTestValve.RenderTransform>
                 <TransformGroup>
@@ -399,10 +403,10 @@
             </control:LeakTestValve.RenderTransform>
         </control:LeakTestValve>
         <control:LeakTestValve x:Name="V44" Canvas.Left="534" Canvas.Top="679" Width="44" Height="30"
-              MouseLeftButtonDown="LeakTestValve_Click"
+              
               ValveID="V44" IsOpen="False" HorizontalAlignment="Left" VerticalAlignment="Top" />
         <control:LeakTestValve x:Name="V45" Canvas.Left="606" Canvas.Top="680" Width="44" Height="30" 
-              MouseLeftButtonDown="LeakTestValve_Click"
+              
               ValveID="V45" IsOpen="False" HorizontalAlignment="Left" VerticalAlignment="Center" RenderTransformOrigin="0.5,0.5">
             <control:LeakTestValve.RenderTransform>
                 <TransformGroup>
@@ -411,10 +415,10 @@
             </control:LeakTestValve.RenderTransform>
         </control:LeakTestValve>
         <control:LeakTestValve x:Name="V46" Canvas.Left="674" Canvas.Top="678" Width="44" Height="30"
-      MouseLeftButtonDown="LeakTestValve_Click"
+      
       ValveID="V46" IsOpen="False" HorizontalAlignment="Left" VerticalAlignment="Top" />
         <control:LeakTestValve x:Name="V47" Canvas.Left="746" Canvas.Top="680" Width="44" Height="30" 
-      MouseLeftButtonDown="LeakTestValve_Click"
+      
       ValveID="V47" IsOpen="False" HorizontalAlignment="Left" VerticalAlignment="Center" RenderTransformOrigin="0.5,0.5">
             <control:LeakTestValve.RenderTransform>
                 <TransformGroup>
@@ -423,10 +427,10 @@
             </control:LeakTestValve.RenderTransform>
         </control:LeakTestValve>
         <control:LeakTestValve x:Name="V48" Canvas.Left="814" Canvas.Top="680" Width="44" Height="30"
-    MouseLeftButtonDown="LeakTestValve_Click"
+    
     ValveID="V48" IsOpen="False" HorizontalAlignment="Left" VerticalAlignment="Top" />
         <control:LeakTestValve x:Name="V49" Canvas.Left="886" Canvas.Top="680" Width="44" Height="30" 
-    MouseLeftButtonDown="LeakTestValve_Click"
+    
     ValveID="V49" IsOpen="False" HorizontalAlignment="Left" VerticalAlignment="Center" RenderTransformOrigin="0.5,0.5">
             <control:LeakTestValve.RenderTransform>
                 <TransformGroup>
@@ -435,10 +439,10 @@
             </control:LeakTestValve.RenderTransform>
         </control:LeakTestValve>
         <control:LeakTestValve x:Name="V50" Canvas.Left="954" Canvas.Top="679" Width="44" Height="30"
-  MouseLeftButtonDown="LeakTestValve_Click"
+  
   ValveID="V50" IsOpen="False" HorizontalAlignment="Left" VerticalAlignment="Top" />
         <control:LeakTestValve x:Name="V51" Canvas.Left="1026" Canvas.Top="680" Width="44" Height="30" 
-  MouseLeftButtonDown="LeakTestValve_Click"
+  
   ValveID="V51" IsOpen="False" HorizontalAlignment="Left" VerticalAlignment="Center" RenderTransformOrigin="0.5,0.5">
             <control:LeakTestValve.RenderTransform>
                 <TransformGroup>

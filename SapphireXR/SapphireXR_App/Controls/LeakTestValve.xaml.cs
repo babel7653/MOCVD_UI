@@ -18,27 +18,16 @@ namespace SapphireXR_App.Controls
     /// <summary>
     /// LeakTestValve.xaml에 대한 상호 작용 논리
     /// </summary>
-    public partial class LeakTestValve : UserControl
+    public partial class LeakTestValve : Valve
     {
         public LeakTestValve()
         {
             InitializeComponent();
         }
-        public string ValveID
-        {
-            get { return (string)GetValue(ValveIDProperty); }
-            set { SetValue(ValveIDProperty, value); }
-        }
-        public static readonly DependencyProperty ValveIDProperty =
-            DependencyProperty.Register("ValveID", typeof(string), typeof(LeakTestValve), new PropertyMetadata(default));
 
-        public bool IsOpen
+        private void LeakTestValve_Click(object sender, RoutedEventArgs e)
         {
-            get { return (bool)GetValue(IsOpenProperty); }
-            set { SetValue(IsOpenProperty, value); }
-        }
 
-        public static readonly DependencyProperty IsOpenProperty =
-            DependencyProperty.Register("IsOpen", typeof(bool), typeof(LeakTestValve), new PropertyMetadata(default));
+        }
     }
 }

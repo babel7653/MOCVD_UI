@@ -18,28 +18,12 @@ namespace SapphireXR_App.Controls
     /// <summary>
     /// SingleValve.xaml에 대한 상호 작용 논리
     /// </summary>
-    public partial class SingleValve : UserControl
+    public partial class SingleValve : Valve
     {
         public SingleValve()
         {
             InitializeComponent();
         }
-        public string ValveID
-        {
-            get { return (string)GetValue(ValveIDProperty); }
-            set { SetValue(ValveIDProperty, value); }
-        }
-        public static readonly DependencyProperty ValveIDProperty =
-            DependencyProperty.Register("ValveID", typeof(string), typeof(SingleValve), new PropertyMetadata(default));
-
-        public bool IsOpen
-        {
-            get { return (bool)GetValue(IsOpenProperty); }
-            set { SetValue(IsOpenProperty, value); }
-        }
-
-        public static readonly DependencyProperty IsOpenProperty =
-            DependencyProperty.Register("IsOpen", typeof(bool), typeof(SingleValve), new PropertyMetadata(default));
 
         public bool IsNormallyOpen
         {

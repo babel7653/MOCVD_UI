@@ -1,4 +1,4 @@
-﻿<UserControl x:Class="SapphireXR_App.Controls.LeakTestValve"
+﻿<local:Valve x:Class="SapphireXR_App.Controls.LeakTestValve"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
@@ -6,7 +6,7 @@
              xmlns:local="clr-namespace:SapphireXR_App.Controls"
              mc:Ignorable="d"
              x:Name="leakTestValve" Width="36" Height="24">
-    <UserControl.Resources>
+    <local:Valve.Resources>
         <Style x:Key="ValveStyle" TargetType="{x:Type Button}">
             <Setter Property="Template">
                 <Setter.Value>
@@ -35,6 +35,6 @@
                 </Setter.Value>
             </Setter>
         </Style>
-    </UserControl.Resources>
-        <Button Width="36" Height="24" Style="{StaticResource ValveStyle}"/>
-</UserControl>
+    </local:Valve.Resources>
+        <Button Width="36" Height="24" Style="{StaticResource ValveStyle}" Click="LeakTestValve_Click"/>
+</local:Valve>

@@ -4,16 +4,16 @@
 winexe
 C#
 .cs
-D:\Design\MOCVD\MR\SapphireXR_1125\SapphireXR\SapphireXR_App\obj\Debug\net8.0-windows\
+C:\Users\함석환\source\repos\MOCVD_UI\SapphireXR_Test\SapphireXR_App\obj\Debug\net8.0-windows\
 SapphireXR_App
 none
 false
 TRACE;DEBUG;NET;NET8_0;NETCOREAPP
-D:\Design\MOCVD\MR\SapphireXR_1125\SapphireXR\SapphireXR_App\App.xaml
+C:\Users\함석환\source\repos\MOCVD_UI\SapphireXR_Test\SapphireXR_App\App.xaml
 16-821452811
 
 471474795545
-214-42094942
+214-1611841057
 Controls\UcDeviceSelect.xaml;Controls\UcFlowControl.xaml;Controls\UcFlowSetting.xaml;Controls\UcGasState.xaml;Styles\MainStyle.xaml;Themes\Generic.xaml;Themes\LightTheme.xaml;Views\BottomDashboard.xaml;Views\FlowControlDialog.xaml;Views\HomePage.xaml;Views\LeftDashboard.xaml;Views\MainWindow.xaml;Views\RecipePage.xaml;Views\ReportPage.xaml;Views\RightDashboard.xaml;Views\SettingPage.xaml;
 
 False

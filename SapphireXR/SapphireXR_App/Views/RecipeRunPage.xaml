@@ -7,7 +7,7 @@
       xmlns:local="clr-namespace:SapphireXR_App.Views"
       xmlns:control="clr-namespace:SapphireXR_App.Controls"
       mc:Ignorable="d" 
-      d:DesignHeight="776" d:DesignWidth="1300"
+      d:DesignHeight="836" d:DesignWidth="1300"
       Title="RecipeRunPage">
     <Page.Resources>
         <Style x:Key="BaseStyle" TargetType="{x:Type Control}">
@@ -22,614 +22,365 @@
         <Frame x:Name="frRecipeRun"/>
         <Grid>
             <Grid.RowDefinitions>
-                <RowDefinition Height="430"/>
+                <RowDefinition Height="490"/>
                 <RowDefinition Height="20"/>
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
 
-            <!-- 레시피 가스배관 그림  -->
             <Canvas Grid.Row="0" Background="{StaticResource RecipeRunPageBackground}" Grid.ColumnSpan="4">
-                <!-- Drawing Nitrogen Gas Line -->
-                <Polyline Points="176,65 176,78 90,78 90,262 1000,262 1000,268" Stroke="Lime" StrokeThickness="2" />
-                <Line X1="0" Y1="0" X2="0" Y2="6" Stroke="Lime" StrokeThickness="2" Canvas.Left="300" Canvas.Top="262" />
-                <Line X1="0" Y1="0" X2="0" Y2="6" Stroke="Lime" StrokeThickness="2" Canvas.Left="440" Canvas.Top="262" />
-                <Line X1="0" Y1="0" X2="0" Y2="6" Stroke="Lime" StrokeThickness="2" Canvas.Left="580" Canvas.Top="262" />
-                <Line X1="0" Y1="0" X2="0" Y2="6" Stroke="Lime" StrokeThickness="2" Canvas.Left="720" Canvas.Top="262" />
-                <Line X1="0" Y1="0" X2="0" Y2="6" Stroke="Lime" StrokeThickness="2" Canvas.Left="860" Canvas.Top="262" />
+                <Rectangle Stroke="White" StrokeThickness="1" Width="1300" Height="490"/>
 
-                <Line X1="0" Y1="0" X2="20" Y2="0" Stroke="Lime" StrokeThickness="2" Canvas.Left="90" Canvas.Top="100" />
-                <Line X1="0" Y1="0" X2="20" Y2="0" Stroke="Lime" StrokeThickness="2" Canvas.Left="90" Canvas.Top="155" />
-                <!-- Drawing Hydrogen Gas Line -->
-                <Polyline Points="70, 65 70, 256 980, 256 980,268" Stroke="Red" StrokeThickness="2" />
-                <Line X1="0" Y1="0" X2="0" Y2="12" Stroke="Red" StrokeThickness="2" Canvas.Left="280" Canvas.Top="256" />
-                <Line X1="0" Y1="0" X2="0" Y2="12" Stroke="Red" StrokeThickness="2" Canvas.Left="420" Canvas.Top="256" />
-                <Line X1="0" Y1="0" X2="0" Y2="12" Stroke="Red" StrokeThickness="2" Canvas.Left="560" Canvas.Top="256" />
-                <Line X1="0" Y1="0" X2="0" Y2="12" Stroke="Red" StrokeThickness="2" Canvas.Left="700" Canvas.Top="256" />
-                <Line X1="0" Y1="0" X2="0" Y2="12" Stroke="Red" StrokeThickness="2" Canvas.Left="840" Canvas.Top="256" />
 
-                <Line X1="0" Y1="0" X2="40" Y2="0" Stroke="Red" StrokeThickness="2" Canvas.Left="70" Canvas.Top="120" />
-                <Line X1="0" Y1="0" X2="40" Y2="0" Stroke="Red" StrokeThickness="2" Canvas.Left="70" Canvas.Top="175" />
-                <!-- Drawing Ammonia Gas Line -->
-                <Polyline Points="350, 31 350, 20 320, 20 320,31" Stroke="Yellow" StrokeThickness="2" />
-                <!-- Drawing Silane Gas Line -->
-                <Polyline Points="714, 31 714, 20 684, 20 684,31" Stroke="Orange" StrokeThickness="2" />
-                <!-- Drawing Process Gas Line -->
-                <Polyline Points="132,100 273,100 273,10 664,10 664,109" Stroke="Magenta" StrokeThickness="2" />
-                <Polyline Points="300,98 440,98 440,143" Stroke="Magenta" StrokeThickness="2" />
+                <!-- #region 1. 프로세스 매니폴드 가스배관 -->
+                <Polyline Points="82,86 254,86 254,10 735,10 735,33" Stroke="{StaticResource ProcessLineColor}" StrokeThickness="2" />
+                <Line X1="331" Y1="10" X2="331" Y2="33" Stroke="{StaticResource ProcessLineColor}" StrokeThickness="2" />
+                <Line X1="579" Y1="10" X2="579" Y2="23" Stroke="{StaticResource ProcessLineColor}" StrokeThickness="2" />
+                <Line X1="355" Y1="57" X2="355" Y2="73" Stroke="{StaticResource ProcessLineColor}" StrokeThickness="2" />
+                <Polyline Points="355,65 445,65 445,73" Stroke="{StaticResource ProcessLineColor}" StrokeThickness="2" />
+                <Line X1="355" Y1="107" X2="355" Y2="119" Stroke="{StaticResource ProcessLineColor}" StrokeThickness="2" />
+                <Line X1="355" Y1="143" X2="355" Y2="155" Stroke="{StaticResource ProcessLineColor}" StrokeThickness="2" />
+                <Line X1="445" Y1="107" X2="445" Y2="119" Stroke="{StaticResource ProcessLineColor}" StrokeThickness="2" />
+                <Line X1="445" Y1="143" X2="445" Y2="155" Stroke="{StaticResource ProcessLineColor}" StrokeThickness="2" />
+                <Polyline Points="759,57 759,65 708,65 708,15 669,15 669,23" Stroke="{StaticResource ProcessLineColor}" StrokeThickness="2" />
+                <Polyline Points="579,57 579,65 669,65" Stroke="{StaticResource ProcessLineColor}" StrokeThickness="2" />
+                <Line X1="669" Y1="57" X2="669" Y2="73" Stroke="{StaticResource ProcessLineColor}" StrokeThickness="2" />
+                <Line X1="669" Y1="57" X2="669" Y2="73" Stroke="{StaticResource ProcessLineColor}" StrokeThickness="2" />
+                <Line X1="669" Y1="107" X2="669" Y2="119" Stroke="{StaticResource ProcessLineColor}" StrokeThickness="2" />
+                <Line X1="645" Y1="143" X2="645" Y2="155" Stroke="{StaticResource ProcessLineColor}" StrokeThickness="2" />
 
-                <Line X1="0" Y1="0" X2="0" Y2="135" Stroke="Magenta" StrokeThickness="2" Canvas.Left="300" Canvas.Top="10"/>
-                <Line X1="0" Y1="0" X2="0" Y2="135" Stroke="Magenta" StrokeThickness="2" Canvas.Left="580" Canvas.Top="10"/>
-                <Line X1="0" Y1="0" X2="84" Y2="0" Stroke="Magenta" StrokeThickness="2" Canvas.Left="580" Canvas.Top="98"/>
+                <Line X1="82" Y1="155" X2="106" Y2="155" Stroke="{StaticResource ProcessLineColor}" StrokeThickness="2" />
+                <Line X1="176" Y1="155" X2="1258" Y2="155" Stroke="{StaticResource ProcessLineColor}" StrokeThickness="2" />
+                <Polyline Points="94,155 94,199 106,199" Stroke="{StaticResource ProcessLineColor}" StrokeThickness="2" />
+                <Polyline Points="176,199 1060,199 1060,263 1258,263" Stroke="{StaticResource ProcessLineColor}" StrokeThickness="2" />
+                <Line X1="94" Y1="177" X2="1105" Y2="177" Stroke="{StaticResource ProcessLineColor}" StrokeThickness="2" />
+                <Line X1="1175" Y1="177" X2="1258" Y2="177" Stroke="{StaticResource ProcessLineColor}" StrokeThickness="2" />
+                <Line X1="1175" Y1="221" X2="1258" Y2="221" Stroke="{StaticResource ProcessLineColor}" StrokeThickness="2" />
+                <Polyline Points="1080,177 1080,221 1105,221" Stroke="{StaticResource ProcessLineColor}" StrokeThickness="2" />
 
-                <Line X1="0" Y1="0" X2="0" Y2="12" Stroke="Magenta" StrokeThickness="2" Canvas.Left="320" Canvas.Top="165"/>
-                <Line X1="0" Y1="0" X2="0" Y2="12" Stroke="Magenta" StrokeThickness="2" Canvas.Left="460" Canvas.Top="165"/>
-                <Line X1="0" Y1="0" X2="0" Y2="12" Stroke="Magenta" StrokeThickness="2" Canvas.Left="600" Canvas.Top="165"/>
+                <Line X1="181" Y1="302" X2="181" Y2="356" Stroke="{StaticResource ProcessLineColor}" StrokeThickness="2" />
+                <Line X1="331" Y1="302" X2="331" Y2="356" Stroke="{StaticResource ProcessLineColor}" StrokeThickness="2" />
+                <Line X1="481" Y1="302" X2="481" Y2="356" Stroke="{StaticResource ProcessLineColor}" StrokeThickness="2" />
+                <Line X1="631" Y1="302" X2="631" Y2="356" Stroke="{StaticResource ProcessLineColor}" StrokeThickness="2" />
+                <Line X1="781" Y1="302" X2="781" Y2="356" Stroke="{StaticResource ProcessLineColor}" StrokeThickness="2" />
+                <Line X1="989" Y1="302" X2="989" Y2="356" Stroke="{StaticResource ProcessLineColor}" StrokeThickness="2" />
 
-                <Line X1="0" Y1="0" X2="0" Y2="90" Stroke="Magenta" StrokeThickness="2" Canvas.Left="300" Canvas.Top="290"/>
-                <Line X1="0" Y1="0" X2="0" Y2="90" Stroke="Magenta" StrokeThickness="2" Canvas.Left="440" Canvas.Top="290"/>
-                <Line X1="0" Y1="0" X2="0" Y2="90" Stroke="Magenta" StrokeThickness="2" Canvas.Left="580" Canvas.Top="290"/>
-                <Line X1="0" Y1="0" X2="0" Y2="90" Stroke="Magenta" StrokeThickness="2" Canvas.Left="720" Canvas.Top="290"/>
-                <Line X1="0" Y1="0" X2="0" Y2="90" Stroke="Magenta" StrokeThickness="2" Canvas.Left="860" Canvas.Top="290"/>
-                <Line X1="0" Y1="0" X2="0" Y2="90" Stroke="Magenta" StrokeThickness="2" Canvas.Left="1000" Canvas.Top="290"/>
+                <Line X1="181" Y1="390" X2="181" Y2="446" Stroke="{StaticResource ProcessLineColor}" StrokeThickness="2" />
+                <Line X1="331" Y1="390" X2="331" Y2="446" Stroke="{StaticResource ProcessLineColor}" StrokeThickness="2" />
+                <Line X1="481" Y1="390" X2="481" Y2="446" Stroke="{StaticResource ProcessLineColor}" StrokeThickness="2" />
+                <Line X1="631" Y1="390" X2="631" Y2="446" Stroke="{StaticResource ProcessLineColor}" StrokeThickness="2" />
+                <Line X1="781" Y1="390" X2="781" Y2="446" Stroke="{StaticResource ProcessLineColor}" StrokeThickness="2" />
+                <Line X1="989" Y1="390" X2="989" Y2="446" Stroke="{StaticResource ProcessLineColor}" StrokeThickness="2" />
 
-                <Line X1="0" Y1="0" X2="0" Y2="135" Stroke="Magenta" StrokeThickness="2" Canvas.Left="320" Canvas.Top="245"/>
-                <Line X1="0" Y1="0" X2="0" Y2="135" Stroke="Magenta" StrokeThickness="2" Canvas.Left="460" Canvas.Top="245"/>
-                <Line X1="0" Y1="0" X2="0" Y2="135" Stroke="Magenta" StrokeThickness="2" Canvas.Left="600" Canvas.Top="245"/>
-                <Line X1="0" Y1="0" X2="0" Y2="135" Stroke="Magenta" StrokeThickness="2" Canvas.Left="740" Canvas.Top="245"/>
-                <Line X1="0" Y1="0" X2="0" Y2="135" Stroke="Magenta" StrokeThickness="2" Canvas.Left="880" Canvas.Top="245"/>
-                <Line X1="0" Y1="0" X2="0" Y2="135" Stroke="Magenta" StrokeThickness="2" Canvas.Left="1020" Canvas.Top="245"/>
+                <Line X1="215" Y1="346" X2="215" Y2="446" Stroke="{StaticResource ProcessLineColor}" StrokeThickness="2" />
+                <Line X1="365" Y1="346" X2="365" Y2="446" Stroke="{StaticResource ProcessLineColor}" StrokeThickness="2" />
+                <Line X1="519" Y1="346" X2="519" Y2="446" Stroke="{StaticResource ProcessLineColor}" StrokeThickness="2" />
+                <Line X1="665" Y1="346" X2="665" Y2="446" Stroke="{StaticResource ProcessLineColor}" StrokeThickness="2" />
+                <Line X1="815" Y1="346" X2="815" Y2="446" Stroke="{StaticResource ProcessLineColor}" StrokeThickness="2" />
+                <Line X1="1023" Y1="346" X2="1023" Y2="446" Stroke="{StaticResource ProcessLineColor}" StrokeThickness="2" />
 
-                <Polyline Points="132,155 160,155 160,233 182,233" Stroke="Magenta" StrokeThickness="2" />
-                <Line X1="0" Y1="0" X2="22" Y2="0" Stroke="Magenta" StrokeThickness="2" Canvas.Left="160" Canvas.Top="155"/>
-                <Polyline Points="160,177 861,177 861,137 1165,137 " Stroke="Magenta" StrokeThickness="2" />
-                <Polyline Points="160,194 891,194 891,160 1165,160 " Stroke="Magenta" StrokeThickness="2" />
-                <Line X1="0" Y1="0" X2="274" Y2="0" Stroke="Magenta" StrokeThickness="2" Canvas.Left="891" Canvas.Top="194"/>
-                <Line X1="0" Y1="0" X2="1005" Y2="0" Stroke="Magenta" StrokeThickness="2" Canvas.Left="160" Canvas.Top="211"/>
-                <Line X1="0" Y1="0" X2="22" Y2="0" Stroke="Magenta" StrokeThickness="2" Canvas.Left="160" Canvas.Top="233"/>
+                <Polyline Points="355,235 355,248 215,248 215,312" Stroke="{StaticResource ProcessLineColor}" StrokeThickness="2" />
+                <Polyline Points="475,235 475,248 365,248 365,312" Stroke="{StaticResource ProcessLineColor}" StrokeThickness="2" />
+                <Polyline Points="595,235 595,248 515,248 515,312" Stroke="{StaticResource ProcessLineColor}" StrokeThickness="2" />
+                <Polyline Points="715,235 715,248 665,248 665,312" Stroke="{StaticResource ProcessLineColor}" StrokeThickness="2" />
+                <Polyline Points="835,235 835,248 897,248 897,356" Stroke="{StaticResource ProcessLineColor}" StrokeThickness="2" />
+                <Polyline Points="955,235 955,248 1023,248 1023,312" Stroke="{StaticResource ProcessLineColor}" StrokeThickness="2" />
+                <Polyline Points="781,307 815,307 815,312" Stroke="{StaticResource ProcessLineColor}" StrokeThickness="2" />
+                <Line X1="815" Y1="395" X2="897" Y2="395" Stroke="{StaticResource ProcessLineColor}" StrokeThickness="2" />
+                <Line X1="897" Y1="390" X2="897" Y2="400" Stroke="{StaticResource ProcessLineColor}" StrokeThickness="2" />
 
-                <Line X1="0" Y1="0" X2="0" Y2="12" Stroke="Magenta" StrokeThickness="2" Canvas.Left="300" Canvas.Top="211"/>
-                <Line X1="0" Y1="0" X2="0" Y2="12" Stroke="Magenta" StrokeThickness="2" Canvas.Left="440" Canvas.Top="211"/>
-                <Line X1="0" Y1="0" X2="0" Y2="12" Stroke="Magenta" StrokeThickness="2" Canvas.Left="580" Canvas.Top="211"/>
-                <Line X1="0" Y1="0" X2="0" Y2="12" Stroke="Magenta" StrokeThickness="2" Canvas.Left="720" Canvas.Top="211"/>
-                <Line X1="0" Y1="0" X2="0" Y2="12" Stroke="Magenta" StrokeThickness="2" Canvas.Left="860" Canvas.Top="211"/>
-                <Line X1="0" Y1="0" X2="0" Y2="12" Stroke="Magenta" StrokeThickness="2" Canvas.Left="1000" Canvas.Top="211"/>
+                <Line X1="355" Y1="199" X2="355" Y2="211" Stroke="{StaticResource ProcessLineColor}" StrokeThickness="2" />
+                <Line X1="475" Y1="199" X2="475" Y2="211" Stroke="{StaticResource ProcessLineColor}" StrokeThickness="2" />
+                <Line X1="595" Y1="199" X2="595" Y2="211" Stroke="{StaticResource ProcessLineColor}" StrokeThickness="2" />
+                <Line X1="715" Y1="199" X2="715" Y2="211" Stroke="{StaticResource ProcessLineColor}" StrokeThickness="2" />
+                <Line X1="835" Y1="199" X2="835" Y2="211" Stroke="{StaticResource ProcessLineColor}" StrokeThickness="2" />
+                <Line X1="955" Y1="199" X2="955" Y2="211" Stroke="{StaticResource ProcessLineColor}" StrokeThickness="2" />
 
-                <!-- 샤워헤드 IN Arrow  -->
-                <Path Canvas.Left="1165" Canvas.Top="137" Fill="Magenta">
+                <Polyline Points="1141,350 1141,443 1258,443" Stroke="{StaticResource ProcessLineColor}" StrokeThickness="2" />
+                <Polyline Points="1117,424 1117,469 1258,469" Stroke="{StaticResource ProcessLineColor}" StrokeThickness="2" />
+
+                <Line X1="254" Y1="140" X2="287" Y2="140" Stroke="{StaticResource ProcessLineColor}" StrokeThickness="2" />
+                <Line X1="254" Y1="234" X2="287" Y2="234" Stroke="{StaticResource ProcessLineColor}" StrokeThickness="2" />
+                <Line X1="782" Y1="100" X2="815" Y2="100" Stroke="{StaticResource ProcessLineColor}" StrokeThickness="2" />
+                <Line X1="920" Y1="427" X2="953" Y2="427" Stroke="{StaticResource ProcessLineColor}" StrokeThickness="2" />
+
+                <!-- 샤워헤드(HYD) 화살표  -->
+                <Path Canvas.Left="1270" Canvas.Top="155" Fill="{StaticResource ProcessLineColor}">
                     <Path.Data>
                         <PathGeometry>
                             <PathFigure StartPoint="0 0" IsClosed="True">
-                                <LineSegment Point="-10 -5"/>
-                                <LineSegment Point="-10 5"/>
+                                <LineSegment Point="-12 -4"/>
+                                <LineSegment Point="-12 4"/>
                             </PathFigure>
                         </PathGeometry>
                     </Path.Data>
                 </Path>
-                <!-- 라이너 IN Arrow  -->
-                <Path Canvas.Left="1165" Canvas.Top="160" Fill="Magenta">
+                <!-- Reactor Purge 화살표  -->
+                <Path Canvas.Left="1270" Canvas.Top="177" Fill="{StaticResource ProcessLineColor}">
                     <Path.Data>
                         <PathGeometry>
                             <PathFigure StartPoint="0 0" IsClosed="True">
-                                <LineSegment Point="-10 -5"/>
-                                <LineSegment Point="-10 5"/>
+                                <LineSegment Point="-12 -4"/>
+                                <LineSegment Point="-12 4"/>
                             </PathFigure>
                         </PathGeometry>
                     </Path.Data>
                 </Path>
-                <!-- Rotation IN Arrow  -->
-                <Path Canvas.Left="1165" Canvas.Top="194" Fill="Magenta">
+                <!-- Rotation Seal 화살표  -->
+                <Path Canvas.Left="1270" Canvas.Top="221" Fill="{StaticResource ProcessLineColor}">
                     <Path.Data>
                         <PathGeometry>
                             <PathFigure StartPoint="0 0" IsClosed="True">
-                                <LineSegment Point="-10 -5"/>
-                                <LineSegment Point="-10 5"/>
+                                <LineSegment Point="-12 -4"/>
+                                <LineSegment Point="-12 4"/>
                             </PathFigure>
                         </PathGeometry>
                     </Path.Data>
                 </Path>
-                <!-- 샤워헤드 IN Arrow  -->
-                <Path Canvas.Left="1165" Canvas.Top="211" Fill="Magenta">
+                <!-- Shower Head (MO) 화살표  -->
+                <Path Canvas.Left="1270" Canvas.Top="263" Fill="{StaticResource ProcessLineColor}">
                     <Path.Data>
                         <PathGeometry>
                             <PathFigure StartPoint="0 0" IsClosed="True">
-                                <LineSegment Point="-10 -5"/>
-                                <LineSegment Point="-10 5"/>
+                                <LineSegment Point="-12 -4"/>
+                                <LineSegment Point="-12 4"/>
                             </PathFigure>
                         </PathGeometry>
                     </Path.Data>
                 </Path>
-                
-                <!-- 레시피 시작 간략버전 가스라인 Text -->
-                <TextBlock Foreground="LightSkyBlue" FontSize="10" Canvas.Left="1050" Canvas.Top="122" Width="100" Height="12" Text="Shower Head(HYD)" TextAlignment="Right"/>
-                <TextBlock Foreground="LightSkyBlue" FontSize="10" Canvas.Left="1050" Canvas.Top="145" Width="100" Height="12" Text="Out Liner Purge" TextAlignment="Right"/>
-                <TextBlock Foreground="LightSkyBlue" FontSize="10" Canvas.Left="1050" Canvas.Top="179" Width="100" Height="12" Text="Rotation Seal Purge" TextAlignment="Right"/>
-                <TextBlock Foreground="LightSkyBlue" FontSize="10" Canvas.Left="1050" Canvas.Top="196" Width="100" Height="12" Text="Shower Head(MO)" TextAlignment="Right"/>
+                <!-- To Reactor 화살표  -->
+                <Path Canvas.Left="1270" Canvas.Top="443" Fill="{StaticResource ProcessLineColor}">
+                    <Path.Data>
+                        <PathGeometry>
+                            <PathFigure StartPoint="0 0" IsClosed="True">
+                                <LineSegment Point="-12 -4"/>
+                                <LineSegment Point="-12 4"/>
+                            </PathFigure>
+                        </PathGeometry>
+                    </Path.Data>
+                </Path>
+                <!-- To Scrubber 화살표  -->
+                <Path Canvas.Left="1270" Canvas.Top="469" Fill="{StaticResource ProcessLineColor}">
+                    <Path.Data>
+                        <PathGeometry>
+                            <PathFigure StartPoint="0 0" IsClosed="True">
+                                <LineSegment Point="-12 -4"/>
+                                <LineSegment Point="-12 4"/>
+                            </PathFigure>
+                        </PathGeometry>
+                    </Path.Data>
+                </Path>
+                <!-- To Scrubber 화살표  -->
+                <Path Canvas.Left="1141" Canvas.Top="353" Fill="{StaticResource ProcessLineColor}">
+                    <Path.Data>
+                        <PathGeometry>
+                            <PathFigure StartPoint="0 0" IsClosed="True">
+                                <LineSegment Point="-4 -12"/>
+                                <LineSegment Point="4 -12"/>
+                            </PathFigure>
+                        </PathGeometry>
+                    </Path.Data>
+                </Path>
+                <!-- Vent 1 화살표  -->
+                <Path Canvas.Left="299" Canvas.Top="140" Fill="{StaticResource ProcessLineColor}">
+                    <Path.Data>
+                        <PathGeometry>
+                            <PathFigure StartPoint="0 0" IsClosed="True">
+                                <LineSegment Point="-12 -4"/>
+                                <LineSegment Point="-12 4"/>
+                            </PathFigure>
+                        </PathGeometry>
+                    </Path.Data>
+                </Path>
+                <!-- Vent 2 화살표  -->
+                <Path Canvas.Left="299" Canvas.Top="234" Fill="{StaticResource ProcessLineColor}">
+                    <Path.Data>
+                        <PathGeometry>
+                            <PathFigure StartPoint="0 0" IsClosed="True">
+                                <LineSegment Point="-12 -4"/>
+                                <LineSegment Point="-12 4"/>
+                            </PathFigure>
+                        </PathGeometry>
+                    </Path.Data>
+                </Path>
+                <!-- Vent 3 화살표  -->
+                <Path Canvas.Left="827" Canvas.Top="100" Fill="{StaticResource ProcessLineColor}">
+                    <Path.Data>
+                        <PathGeometry>
+                            <PathFigure StartPoint="0 0" IsClosed="True">
+                                <LineSegment Point="-12 -4"/>
+                                <LineSegment Point="-12 4"/>
+                            </PathFigure>
+                        </PathGeometry>
+                    </Path.Data>
+                </Path>
+                <!-- Vent 4 화살표  -->
+                <Path Canvas.Left="965" Canvas.Top="427" Fill="{StaticResource ProcessLineColor}">
+                    <Path.Data>
+                        <PathGeometry>
+                            <PathFigure StartPoint="0 0" IsClosed="True">
+                                <LineSegment Point="-12 -4"/>
+                                <LineSegment Point="-12 4"/>
+                            </PathFigure>
+                        </PathGeometry>
+                    </Path.Data>
+                </Path>
+                <!--#endregion-->
 
-                <!-- 공정가스 공급 모니터링 -->
-                <control:GasMonitor x:Name="gasMonitor_H2" Canvas.Left="60" Canvas.Top="30"  Width="70" Height="34" MonitorID="H2"/>
-                <control:GasMonitor x:Name="gasMonitor_N2" Canvas.Left="150" Canvas.Top="30"  Width="70" Height="34" MonitorID="N2"/>
-                <control:GasMonitor x:Name="gasMonitor_NH3" Canvas.Left="350" Canvas.Top="30"  Width="70" Height="34" MonitorID="NH3"/>
-                <control:GasMonitor x:Name="gasMonitor_SiH4" Canvas.Left="700" Canvas.Top="30"  Width="70" Height="34" MonitorID="SiH4"/>
-                
-               
-                <!-- Thermal Bath for MO-Source -->
-                <StackPanel Canvas.Left="265" Canvas.Top="380" Width="90" Height="34">
-                    <TextBlock Height="22"  Background="{StaticResource SourceMonitorColor1}" Foreground="White" FontSize="16" TextAlignment="Center" >TEB</TextBlock>
-                    <StackPanel Background="{StaticResource SourceMonitorColor2}" Orientation="Horizontal">
-                        <Label x:Name="BathTemperature1R" HorizontalAlignment="Right" HorizontalContentAlignment="Left" Width="45"/>
-                        <Label x:Name="SourceRemainingAmount1R" HorizontalAlignment="Right" HorizontalContentAlignment="Right" Width="45" />
-                    </StackPanel>
-                </StackPanel>
+                <!-- #Region 1. 상태 모니터링(가스압력, 항온조, 반응기)-->
+                    <!-- 가스압력 모니터링 -->
+                    <control:GasMonitor x:Name="gasMonitor_H2" Canvas.Left="30" Canvas.Top="20"  Width="70" Height="34" MonitorID="H2"/>
+                    <control:GasMonitor x:Name="gasMonitor_N2" Canvas.Left="155" Canvas.Top="20"  Width="70" Height="34" MonitorID="N2"/>
+                    <control:GasMonitor x:Name="gasMonitor_NH3" Canvas.Left="398" Canvas.Top="20"  Width="70" Height="34" MonitorID="NH3"/>
+                    <control:GasMonitor x:Name="gasMonitor_SiH4" Canvas.Left="802" Canvas.Top="20"  Width="70" Height="34" MonitorID="SiH4"/>
 
-                <StackPanel Canvas.Left="405" Canvas.Top="380" Width="90" Height="34">
-                    <TextBlock Height="22"  Background="{StaticResource SourceMonitorColor1}" Foreground="White" FontSize="16" TextAlignment="Center" >TMAl</TextBlock>
-                    <StackPanel Background="{StaticResource SourceMonitorColor2}" Orientation="Horizontal">
-                        <Label x:Name="BathTemperature2R" HorizontalAlignment="Right" HorizontalContentAlignment="Left" Width="45"/>
-                        <Label x:Name="SourceRemainingAmount2R" HorizontalAlignment="Right" HorizontalContentAlignment="Right" Width="45" />
-                    </StackPanel>
-                </StackPanel>
+                    <!-- 항온조 온도 모니터링 -->
+                    <control:SourceMonitor x:Name="sourceMonitor_1" Canvas.Left="163" Canvas.Top="446" MonitorID="TEB"/>
+                    <control:SourceMonitor x:Name="sourceMonitor_2" Canvas.Left="313" Canvas.Top="446" MonitorID="TMAl"/>
+                    <control:SourceMonitor x:Name="sourceMonitor_3" Canvas.Left="463" Canvas.Top="446" MonitorID="TMIn"/>
+                    <control:SourceMonitor x:Name="sourceMonitor_4" Canvas.Left="613" Canvas.Top="446" MonitorID="TMGa"/>
+                    <control:SourceMonitor x:Name="sourceMonitor_5" Canvas.Left="763" Canvas.Top="446" MonitorID="DTMGa"/>
+                    <control:SourceMonitor x:Name="sourceMonitor_6" Canvas.Left="971" Canvas.Top="446" MonitorID="Cp2Mg"/>
 
-                <StackPanel Canvas.Left="545" Canvas.Top="380" Width="90" Height="34">
-                    <TextBlock Height="22"  Background="{StaticResource SourceMonitorColor1}" Foreground="White" FontSize="16" TextAlignment="Center" >TMIn</TextBlock>
-                    <StackPanel Background="{StaticResource SourceMonitorColor2}" Orientation="Horizontal">
-                        <Label x:Name="BathTemperature3R" HorizontalAlignment="Right" HorizontalContentAlignment="Left" Width="45"/>
-                        <Label x:Name="SourceRemainingAmount3R" HorizontalAlignment="Right" HorizontalContentAlignment="Right" Width="45" />
-                    </StackPanel>
-                </StackPanel>
+                    <!-- 반응기 콘트롤러 -->
+                    <Rectangle Canvas.Left="965" Canvas.Top="5" Width="330" Height="120" Stroke="#3d495a" StrokeThickness="2" />
 
-                <StackPanel Canvas.Left="685" Canvas.Top="380" Width="90" Height="34">
-                    <TextBlock Height="22"  Background="{StaticResource SourceMonitorColor1}" Foreground="White" FontSize="16" TextAlignment="Center" >TMGa</TextBlock>
-                    <StackPanel Background="{StaticResource SourceMonitorColor2}" Orientation="Horizontal">
-                        <Label x:Name="BathTemperature4R" HorizontalAlignment="Right" HorizontalContentAlignment="Left" Width="45"/>
-                        <Label x:Name="SourceRemainingAmount4R" HorizontalAlignment="Right" HorizontalContentAlignment="Right" Width="45" />
-                    </StackPanel>
-                </StackPanel>
+                    <TextBlock Canvas.Left="1018" Canvas.Top="52" Width="70" Height="20" Foreground="{StaticResource PrimaryFontColor}"
+                            FontSize="10" TextAlignment="Center">  Temperature</TextBlock>
+                    <TextBlock Canvas.Left="1098" Canvas.Top="52" Width="70" Height="20" Foreground="{StaticResource PrimaryFontColor}"
+                            FontSize="10" TextAlignment="Center"> Pressure</TextBlock>
+                    <TextBlock Canvas.Left="1178" Canvas.Top="52" Width="70" Height="20" Foreground="{StaticResource PrimaryFontColor}"
+                            FontSize="10" TextAlignment="Center"> Rotation</TextBlock>
+                    <control:ReactorController x:Name="susceptorTemperature" Canvas.Left="1018" Canvas.Top="72"/>
+                    <control:ReactorController x:Name="reactorPressure" Canvas.Left="1098" Canvas.Top="72"/>
+                <control:ReactorController x:Name="susceptorRotation" Canvas.Left="1178" Canvas.Top="72"/>
+                <!--#endregion-->
 
-                <StackPanel Canvas.Left="825" Canvas.Top="380" Width="90" Height="34">
-                    <TextBlock Height="22"  Background="{StaticResource SourceMonitorColor1}" Foreground="White" FontSize="16" TextAlignment="Center" >DTMGa</TextBlock>
-                    <StackPanel Background="{StaticResource SourceMonitorColor2}" Orientation="Horizontal">
-                        <Label x:Name="BathTemperature5R" HorizontalAlignment="Right" HorizontalContentAlignment="Left" Width="45"/>
-                        <Label x:Name="SourceRemainingAmount5R" HorizontalAlignment="Right" HorizontalContentAlignment="Right" Width="45" />
-                    </StackPanel>
-                </StackPanel>
+                <!-- #Region 2. 가스제어용 밸브 -->
+                <control:SwitchingValve  x:Name="V01" Canvas.Left="58" Canvas.Top="122" ValveID="V01" 
+                    RenderTransformOrigin="0,0">
+                    <control:SwitchingValve.RenderTransform>
+                        <TransformGroup>
+                            <RotateTransform Angle="270"/>
+                        </TransformGroup>
+                    </control:SwitchingValve.RenderTransform>
+                </control:SwitchingValve>
+                <control:SwitchingValve x:Name="V02" Canvas.Left="58" Canvas.Top="191" ValveID="V02"
+                    RenderTransformOrigin="0,0">
+                    <control:SwitchingValve.RenderTransform>
+                        <TransformGroup>
+                            <RotateTransform Angle="270"/>
+                        </TransformGroup>
+                    </control:SwitchingValve.RenderTransform>
+                </control:SwitchingValve>
+                <control:SwitchingValve x:Name="V03" Canvas.Left="723" Canvas.Top="33" ValveID="V03"/>
+                <control:SwitchingValve x:Name="V04" Canvas.Left="319" Canvas.Top="33" ValveID="V04"/>
+                <control:SwitchingValve x:Name="V05" Canvas.Left="145" Canvas.Top="278" ValveID="V05"/>
+                <control:SwitchingValve x:Name="V08" Canvas.Left="295" Canvas.Top="278" ValveID="V08"/>
+                <control:SwitchingValve x:Name="V11" Canvas.Left="445" Canvas.Top="278" ValveID="V11"/>
+                <control:SwitchingValve x:Name="V14" Canvas.Left="595" Canvas.Top="278" ValveID="V14"/>
+                <control:SwitchingValve x:Name="V17" Canvas.Left="745" Canvas.Top="278" ValveID="V17" />
+                <control:SwitchingValve x:Name="V20" Canvas.Left="953" Canvas.Top="278" ValveID="V20" />
+                <control:SwitchingValve x:Name="V32" Canvas.Left="1105" Canvas.Top="400" ValveID="V32"/>
+                <control:SwitchingValve x:Name="V23" Canvas.Left="319" Canvas.Top="211" ValveID="V23" />
+                <control:SwitchingValve x:Name="V24" Canvas.Left="439" Canvas.Top="211" ValveID="V24" />
+                <control:SwitchingValve x:Name="V25" Canvas.Left="559" Canvas.Top="211" ValveID="V25" />
+                <control:SwitchingValve x:Name="V26" Canvas.Left="679" Canvas.Top="211" ValveID="V26" />
+                <control:SwitchingValve x:Name="V27" Canvas.Left="799" Canvas.Top="211" ValveID="V27" />
+                <control:SwitchingValve x:Name="V28" Canvas.Left="919" Canvas.Top="211" ValveID="V28" />
+                <control:SwitchingValve x:Name="V29" Canvas.Left="319" Canvas.Top="119" ValveID="V29" />
+                <control:SwitchingValve x:Name="V30" Canvas.Left="409" Canvas.Top="119" ValveID="V30" />
+                <control:SwitchingValve x:Name="V31" Canvas.Left="633" Canvas.Top="119" ValveID="V31" />
 
-                <StackPanel Canvas.Left="965" Canvas.Top="380" Width="90" Height="34">
-                    <TextBlock Height="22"  Background="{StaticResource SourceMonitorColor1}" Foreground="White" FontSize="16" TextAlignment="Center" >Cp2Mg</TextBlock>
-                    <StackPanel Background="{StaticResource SourceMonitorColor2}" Orientation="Horizontal">
-                        <Label x:Name="BathTemperature6R" HorizontalAlignment="Right" HorizontalContentAlignment="Left" Width="45"/>
-                        <Label x:Name="SourceRemainingAmount6R" HorizontalAlignment="Right" HorizontalContentAlignment="Right" Width="45" />
-                    </StackPanel>
-                </StackPanel>
+                <control:BypassValve x:Name="V07" Canvas.Left="172" Canvas.Top="400" ValveID="V07" />
+                <control:BypassValve x:Name="V10" Canvas.Left="322" Canvas.Top="400" ValveID="V10" />
+                <control:BypassValve x:Name="V13" Canvas.Left="472" Canvas.Top="400" ValveID="V13" />
+                <control:BypassValve x:Name="V16" Canvas.Left="622" Canvas.Top="400" ValveID="V16" />
+                <control:BypassValve x:Name="V19" Canvas.Left="772" Canvas.Top="400" ValveID="V19" />
+                <control:BypassValve x:Name="V22" Canvas.Left="980" Canvas.Top="400" ValveID="V22" />
+                <!--#endregion-->
 
-                <!--MFC Contol Box!-->
-                <StackPanel Canvas.Left="182" Canvas.Top="200" Width="54" Height="22">
-                    <StackPanel Background="{StaticResource MFCDisplayColor1}" Height="11">
-                        <Ellipse Width="7" Height="7" Fill="LawnGreen" HorizontalAlignment="Right" Margin="0,3,3,0"/>
-                        <Label x:Name="DisplaySetValueMFC101R" Foreground="Black" HorizontalAlignment="Left" />
-                    </StackPanel>
-                    <StackPanel Background="{StaticResource MFCDisplayColor2}">
-                        <Label x:Name="DisplayCurrentValueMFC101R" Foreground="Black" HorizontalAlignment="Right" />
-                    </StackPanel>
-                </StackPanel>
+                <!-- #Region 3. 가스제어(MFC, EPC) -->
+                <!-- MFC -->
+                <control:FlowController x:Name="MFC01" Canvas.Left="106" Canvas.Top="192" ControllerID="MFC01" />
+                <control:FlowController x:Name="MFC02" Canvas.Left="106" Canvas.Top="128" ControllerID="MFC02" />
+                <control:FlowController x:Name="MFC03" Canvas.Left="398" Canvas.Top="73" ControllerID="MFC03" />
+                <control:FlowController x:Name="MFC04" Canvas.Left="308" Canvas.Top="73" ControllerID="MFC04" />
+                <control:FlowController x:Name="MFC05" Canvas.Left="622" Canvas.Top="23" ControllerID="MFC05" />
+                <control:FlowController x:Name="MFC06" Canvas.Left="532" Canvas.Top="23" ControllerID="MFC06" />
+                <control:FlowController x:Name="MFC07" Canvas.Left="622" Canvas.Top="73" ControllerID="MFC07"/>
+                <control:FlowController x:Name="MFC08" Canvas.Left="134" Canvas.Top="356" ControllerID="MFC08" />
+                <control:FlowController x:Name="MFC09" Canvas.Left="284" Canvas.Top="356" ControllerID="MFC09" />
+                <control:FlowController x:Name="MFC10" Canvas.Left="434" Canvas.Top="356" ControllerID="MFC10" />
+                <control:FlowController x:Name="MFC11" Canvas.Left="584" Canvas.Top="356" ControllerID="MFC11" />
+                <control:FlowController x:Name="MFC12" Canvas.Left="734" Canvas.Top="356" ControllerID="MFC12" />
+                <control:FlowController x:Name="MFC13" Canvas.Left="792" Canvas.Top="312" ControllerID="MFC13" />
+                <control:FlowController x:Name="MFC14" Canvas.Left="850" Canvas.Top="356" ControllerID="MFC14" />
+                <control:FlowController x:Name="MFC15" Canvas.Left="942" Canvas.Top="356" ControllerID="MFC15" />
+                <control:FlowController x:Name="MFC16" Canvas.Left="1105" Canvas.Top="170" ControllerID="MFC16" />
+                <control:FlowController x:Name="MFC17" Canvas.Left="1105" Canvas.Top="214" ControllerID="MFC17" />
+                <control:FlowController x:Name="MFC18" Canvas.Left="184" Canvas.Top="207" ControllerID="MFC18" />
+                <control:FlowController x:Name="MFC19" Canvas.Left="184" Canvas.Top="113" ControllerID="MFC19" />
 
-                <StackPanel Canvas.Left="182" Canvas.Top="166" Width="54" Height="22">
-                    <StackPanel Background="{StaticResource MFCDisplayColor1}" Height="11">
-                        <Ellipse Width="7" Height="7" Fill="LawnGreen" HorizontalAlignment="Right" Margin="0,3,3,0"/>
-                        <Label x:Name="DisplaySetValueMFC102R" Foreground="Black" HorizontalAlignment="Left" />
-                    </StackPanel>
-                    <StackPanel Background="{StaticResource MFCDisplayColor2}">
-                        <Label x:Name="DisplayCurrentValueMFC102R" Foreground="Black" HorizontalAlignment="Right" />
-                    </StackPanel>
-                </StackPanel>
-
-                <StackPanel Canvas.Left="423" Canvas.Top="109" Width="54" Height="22">
-                    <StackPanel Background="{StaticResource MFCDisplayColor1}" Height="11">
-                        <Ellipse Width="7" Height="7" Fill="LawnGreen" HorizontalAlignment="Right" Margin="0,3,3,0"/>
-                        <Label x:Name="DisplaySetValueMFC103R" Foreground="Black" HorizontalAlignment="Left" />
-                    </StackPanel>
-                    <StackPanel Background="{StaticResource MFCDisplayColor2}">
-                        <Label x:Name="DisplayCurrentValueMFC103R" Foreground="Black" HorizontalAlignment="Right" />
-                    </StackPanel>
-                </StackPanel>
-
-                <StackPanel Canvas.Left="283" Canvas.Top="109" Width="54" Height="22">
-                    <StackPanel Background="{StaticResource MFCDisplayColor1}" Height="11">
-                        <Ellipse Width="7" Height="7" Fill="LawnGreen" HorizontalAlignment="Right" Margin="0,3,3,0"/>
-                        <Label x:Name="DisplaySetValueMFC104R" Foreground="Black" HorizontalAlignment="Left" />
-                    </StackPanel>
-                    <StackPanel Background="{StaticResource MFCDisplayColor2}">
-                        <Label x:Name="DisplayCurrentValueMFC104R" Foreground="Black" HorizontalAlignment="Right" />
-                    </StackPanel>
-                </StackPanel>
-
-                <StackPanel Canvas.Left="627" Canvas.Top="65" Width="54" Height="22">
-                    <StackPanel Background="{StaticResource MFCDisplayColor1}" Height="11">
-                        <Ellipse Width="7" Height="7" Fill="LawnGreen" HorizontalAlignment="Right" Margin="0,3,3,0"/>
-                        <Label x:Name="DisplaySetValueMFC105R" Foreground="Black" HorizontalAlignment="Left" />
-                    </StackPanel>
-                    <StackPanel Background="{StaticResource MFCDisplayColor2}">
-                        <Label x:Name="DisplayCurrentValueMFC105R" Foreground="Black" HorizontalAlignment="Right" />
-                    </StackPanel>
-                </StackPanel>
-
-                <StackPanel Canvas.Left="563" Canvas.Top="65" Width="54" Height="22">
-                    <StackPanel Background="{StaticResource MFCDisplayColor1}" Height="11">
-                        <Ellipse Width="7" Height="7" Fill="LawnGreen" HorizontalAlignment="Right" Margin="0,3,3,0"/>
-                        <Label x:Name="DisplaySetValueMFC106R" Foreground="Black" HorizontalAlignment="Left" />
-                    </StackPanel>
-                    <StackPanel Background="{StaticResource MFCDisplayColor2}">
-                        <Label x:Name="DisplayCurrentValueMFC106R" Foreground="Black" HorizontalAlignment="Right" />
-                    </StackPanel>
-                </StackPanel>
-
-                <StackPanel Canvas.Left="563" Canvas.Top="109" Width="54" Height="22">
-                    <StackPanel Background="{StaticResource MFCDisplayColor1}" Height="11">
-                        <Ellipse Width="7" Height="7" Fill="LawnGreen" HorizontalAlignment="Right" Margin="0,3,3,0"/>
-                        <Label x:Name="DisplaySetValueMFC107R" Foreground="Black" HorizontalAlignment="Left" />
-                    </StackPanel>
-                    <StackPanel Background="{StaticResource MFCDisplayColor2}">
-                        <Label x:Name="DisplayCurrentValueMFC107R" Foreground="Black" HorizontalAlignment="Right" />
-                    </StackPanel>
-                </StackPanel>
-
-                <StackPanel Canvas.Left="251" Canvas.Top="324" Width="54" Height="22">
-                    <StackPanel Background="{StaticResource MFCDisplayColor1}" Height="11">
-                        <Ellipse Width="7" Height="7" Fill="LawnGreen" HorizontalAlignment="Right" Margin="0,3,3,0"/>
-                        <Label x:Name="DisplaySetValueMFC108R" Foreground="Black" HorizontalAlignment="Left" />
-                    </StackPanel>
-                    <StackPanel Background="{StaticResource MFCDisplayColor2}">
-                        <Label x:Name="DisplayCurrentValueMFC108R" Foreground="Black" HorizontalAlignment="Right" />
-                    </StackPanel>
-                </StackPanel>
-
-                <StackPanel Canvas.Left="391" Canvas.Top="324" Width="54" Height="22">
-                    <StackPanel Background="{StaticResource MFCDisplayColor1}" Height="11">
-                        <Ellipse Width="7" Height="7" Fill="LawnGreen" HorizontalAlignment="Right" Margin="0,3,3,0"/>
-                        <Label x:Name="DisplaySetValueMFC109R" Foreground="Black" HorizontalAlignment="Left" />
-                    </StackPanel>
-                    <StackPanel Background="{StaticResource MFCDisplayColor2}">
-                        <Label x:Name="DisplayCurrentValueMFC109R" Foreground="Black" HorizontalAlignment="Right" />
-                    </StackPanel>
-                </StackPanel>
-
-                <StackPanel Canvas.Left="531" Canvas.Top="324" Width="54" Height="22">
-                    <StackPanel Background="{StaticResource MFCDisplayColor1}" Height="11">
-                        <Ellipse Width="7" Height="7" Fill="LawnGreen" HorizontalAlignment="Right" Margin="0,3,3,0"/>
-                        <Label x:Name="DisplaySetValueMFC110R" Foreground="Black" HorizontalAlignment="Left" />
-                    </StackPanel>
-                    <StackPanel Background="{StaticResource MFCDisplayColor2}">
-                        <Label x:Name="DisplayCurrentValueMFC110R" Foreground="Black" HorizontalAlignment="Right" />
-                    </StackPanel>
-                </StackPanel>
-
-                <StackPanel Canvas.Left="671" Canvas.Top="324" Width="54" Height="22">
-                    <StackPanel Background="{StaticResource MFCDisplayColor1}" Height="11">
-                        <Ellipse Width="7" Height="7" Fill="LawnGreen" HorizontalAlignment="Right" Margin="0,3,3,0"/>
-                        <Label x:Name="DisplaySetValueMFC111R" Foreground="Black" HorizontalAlignment="Left" />
-                    </StackPanel>
-                    <StackPanel Background="{StaticResource MFCDisplayColor2}">
-                        <Label x:Name="DisplayCurrentValueMFC111R" Foreground="Black" HorizontalAlignment="Right" />
-                    </StackPanel>
-                </StackPanel>
-
-                <StackPanel Canvas.Left="811" Canvas.Top="324" Width="54" Height="22">
-                    <StackPanel Background="{StaticResource MFCDisplayColor1}" Height="11">
-                        <Ellipse Width="7" Height="7" Fill="LawnGreen" HorizontalAlignment="Right" Margin="0,3,3,0"/>
-                        <Label x:Name="DisplaySetValueMFC112R" Foreground="Black" HorizontalAlignment="Left" />
-                    </StackPanel>
-                    <StackPanel Background="{StaticResource MFCDisplayColor2}">
-                        <Label x:Name="DisplayCurrentValueMFC112R" Foreground="Black" HorizontalAlignment="Right" />
-                    </StackPanel>
-                </StackPanel>
-
-                <StackPanel Canvas.Left="811" Canvas.Top="296" Width="54" Height="22">
-                    <StackPanel Background="{StaticResource MFCDisplayColor1}" Height="11">
-                        <Ellipse Width="7" Height="7" Fill="LawnGreen" HorizontalAlignment="Right" Margin="0,3,3,0"/>
-                        <Label x:Name="DisplaySetValueMFC113R" Foreground="Black" HorizontalAlignment="Left" />
-                    </StackPanel>
-                    <StackPanel Background="{StaticResource MFCDisplayColor2}">
-                        <Label x:Name="DisplayCurrentValueMFC113R" Foreground="Black" HorizontalAlignment="Right" />
-                    </StackPanel>
-                </StackPanel>
-
-                <StackPanel Canvas.Left="875" Canvas.Top="296" Width="54" Height="22">
-                    <StackPanel Background="{StaticResource MFCDisplayColor1}" Height="11">
-                        <Ellipse Width="7" Height="7" Fill="LawnGreen" HorizontalAlignment="Right" Margin="0,3,3,0"/>
-                        <Label x:Name="DisplaySetValueMFC114R" Foreground="Black" HorizontalAlignment="Left" />
-                    </StackPanel>
-                    <StackPanel Background="{StaticResource MFCDisplayColor2}">
-                        <Label x:Name="DisplayCurrentValueMFC114R" Foreground="Black" HorizontalAlignment="Right" />
-                    </StackPanel>
-                </StackPanel>
-
-                <StackPanel Canvas.Left="951" Canvas.Top="324" Width="54" Height="22">
-                    <StackPanel Background="{StaticResource MFCDisplayColor1}" Height="11">
-                        <Ellipse Width="7" Height="7" Fill="LawnGreen" HorizontalAlignment="Right" Margin="0,3,3,0"/>
-                        <Label x:Name="DisplaySetValueMFC115R" Foreground="Black" HorizontalAlignment="Left" />
-                    </StackPanel>
-                    <StackPanel Background="{StaticResource MFCDisplayColor2}">
-                        <Label x:Name="DisplayCurrentValueMFC115R" Foreground="Black" HorizontalAlignment="Right" />
-                    </StackPanel>
-                </StackPanel>
-
-                <StackPanel Canvas.Left="913" Canvas.Top="149" Width="54" Height="22">
-                    <StackPanel Background="{StaticResource MFCDisplayColor1}" Height="11">
-                        <Ellipse Width="7" Height="7" Fill="LawnGreen" HorizontalAlignment="Right" Margin="0,3,3,0"/>
-                        <Label x:Name="DisplaySetValueMFC116R" Foreground="Black" HorizontalAlignment="Left" />
-                    </StackPanel>
-                    <StackPanel Background="{StaticResource MFCDisplayColor2}">
-                        <Label x:Name="DisplayCurrentValueMFC116R" Foreground="Black" HorizontalAlignment="Right" />
-                    </StackPanel>
-                </StackPanel>
-
-                <StackPanel Canvas.Left="913" Canvas.Top="183" Width="54" Height="22">
-                    <StackPanel Background="{StaticResource MFCDisplayColor1}" Height="11">
-                        <Ellipse Width="7" Height="7" Fill="LawnGreen" HorizontalAlignment="Right" Margin="0,3,3,0"/>
-                        <Label x:Name="DisplaySetValueMFC117R" Foreground="Black" HorizontalAlignment="Left" />
-                    </StackPanel>
-                    <StackPanel Background="{StaticResource MFCDisplayColor2}">
-                        <Label x:Name="DisplayCurrentValueMFC117R" Foreground="Black" HorizontalAlignment="Right" />
-                    </StackPanel>
-                </StackPanel>
-
-                <StackPanel Canvas.Left="182" Canvas.Top="228" Width="54" Height="22">
-                    <StackPanel Background="{StaticResource MFCDisplayColor1}" Height="11">
-                        <Ellipse Width="7" Height="7" Fill="LawnGreen" HorizontalAlignment="Right" Margin="0,3,3,0"/>
-                        <Label x:Name="DisplaySetValueMFC118R" Foreground="Black" HorizontalAlignment="Left" />
-                    </StackPanel>
-                    <StackPanel Background="{StaticResource MFCDisplayColor2}">
-                        <Label x:Name="DisplayCurrentValueMFC118R" Foreground="Black" HorizontalAlignment="Right" />
-                    </StackPanel>
-                </StackPanel>
-
-                <StackPanel Canvas.Left="182" Canvas.Top="138" Width="54" Height="22">
-                    <StackPanel Background="{StaticResource MFCDisplayColor1}" Height="11">
-                        <Ellipse Width="7" Height="7" Fill="LawnGreen" HorizontalAlignment="Right" Margin="0,3,3,0"/>
-                        <Label x:Name="DisplaySetValueMFC119R" Foreground="Black" HorizontalAlignment="Left" />
-                    </StackPanel>
-                    <StackPanel Background="{StaticResource MFCDisplayColor2}">
-                        <Label x:Name="DisplayCurrentValueMFC119R" Foreground="Black" HorizontalAlignment="Right" />
-                    </StackPanel>
-                </StackPanel>
-                
                 <!--EPC Contol Box!-->
-                <StackPanel Canvas.Left="627" Canvas.Top="109" Width="54" Height="22">
-                    <StackPanel Background="{StaticResource EPCDisplayColor1}" Height="11">
-                        <Ellipse Width="7" Height="7" Fill="LawnGreen" HorizontalAlignment="Right" Margin="0,3,3,0"/>
-                        <Label x:Name="DisplaySetValueEPC201R" Foreground="Black" HorizontalAlignment="Left" />
-                    </StackPanel>
-                    <StackPanel Background="{StaticResource EPCDisplayColor2}">
-                        <Label x:Name="DisplayCurrentValueEPC201R" Foreground="Black" HorizontalAlignment="Right" />
-                    </StackPanel>
-                </StackPanel>
-
-                <StackPanel Canvas.Left="315" Canvas.Top="324" Width="54" Height="22">
-                    <StackPanel Background="{StaticResource EPCDisplayColor1}" Height="11">
-                        <Ellipse Width="7" Height="7" Fill="LawnGreen" HorizontalAlignment="Right" Margin="0,3,3,0"/>
-                        <Label x:Name="DisplaySetValueEPC202R" Foreground="Black" HorizontalAlignment="Left" />
-                    </StackPanel>
-                    <StackPanel Background="{StaticResource EPCDisplayColor2}">
-                        <Label x:Name="DisplayCurrentValueEPC202R" Foreground="Black" HorizontalAlignment="Right" />
-                    </StackPanel>
-                </StackPanel>
-
-                <StackPanel Canvas.Left="455" Canvas.Top="324" Width="54" Height="22">
-                    <StackPanel Background="{StaticResource EPCDisplayColor1}" Height="11">
-                        <Ellipse Width="7" Height="7" Fill="LawnGreen" HorizontalAlignment="Right" Margin="0,3,3,0"/>
-                        <Label x:Name="DisplaySetValueEPC203R" Foreground="Black" HorizontalAlignment="Left" />
-                    </StackPanel>
-                    <StackPanel Background="{StaticResource EPCDisplayColor2}">
-                        <Label x:Name="DisplayCurrentValueEPC203R" Foreground="Black" HorizontalAlignment="Right" />
-                    </StackPanel>
-                </StackPanel>
-
-                <StackPanel Canvas.Left="595" Canvas.Top="324" Width="54" Height="22">
-                    <StackPanel Background="{StaticResource EPCDisplayColor1}" Height="11">
-                        <Ellipse Width="7" Height="7" Fill="LawnGreen" HorizontalAlignment="Right" Margin="0,3,3,0"/>
-                        <Label x:Name="DisplaySetValueEPC204R" Foreground="Black" HorizontalAlignment="Left" />
-                    </StackPanel>
-                    <StackPanel Background="{StaticResource EPCDisplayColor2}">
-                        <Label x:Name="DisplayCurrentValueEPC204R" Foreground="Black" HorizontalAlignment="Right" />
-                    </StackPanel>
-                </StackPanel>
-
-                <StackPanel Canvas.Left="735" Canvas.Top="324" Width="54" Height="22">
-                    <StackPanel Background="{StaticResource EPCDisplayColor1}" Height="11">
-                        <Ellipse Width="7" Height="7" Fill="LawnGreen" HorizontalAlignment="Right" Margin="0,3,3,0"/>
-                        <Label x:Name="DisplaySetValueEPC205R" Foreground="Black" HorizontalAlignment="Left" />
-                    </StackPanel>
-                    <StackPanel Background="{StaticResource EPCDisplayColor2}">
-                        <Label x:Name="DisplayCurrentValueEPC205R" Foreground="Black" HorizontalAlignment="Right" />
-                    </StackPanel>
-                </StackPanel>
-
-                <StackPanel Canvas.Left="875" Canvas.Top="324" Width="54" Height="22">
-                    <StackPanel Background="{StaticResource EPCDisplayColor1}" Height="11">
-                        <Ellipse Width="7" Height="7" Fill="LawnGreen" HorizontalAlignment="Right" Margin="0,3,3,0"/>
-                        <Label x:Name="DisplaySetValueEPC206R" Foreground="Black" HorizontalAlignment="Left" />
-                    </StackPanel>
-                    <StackPanel Background="{StaticResource EPCDisplayColor2}">
-                        <Label x:Name="DisplayCurrentValueEPC206R" Foreground="Black" HorizontalAlignment="Right" />
-                    </StackPanel>
-                </StackPanel>
-
-                <StackPanel Canvas.Left="1015" Canvas.Top="324" Width="54" Height="22">
-                    <StackPanel Background="{StaticResource EPCDisplayColor1}" Height="11">
-                        <Ellipse Width="7" Height="7" Fill="LawnGreen" HorizontalAlignment="Right" Margin="0,3,3,0"/>
-                        <Label x:Name="DisplaySetValueEPC207R" Foreground="Black" HorizontalAlignment="Left" />
-                    </StackPanel>
-                    <StackPanel Background="{StaticResource EPCDisplayColor2}">
-                        <Label x:Name="DisplayCurrentValueEPC207R" Foreground="Black" HorizontalAlignment="Right" />
-                    </StackPanel>
-                </StackPanel>
+                <control:FlowController x:Name="EPC01" Canvas.Left="192" Canvas.Top="312" ControllerID="EPC01" />
+                <control:FlowController x:Name="EPC02" Canvas.Left="342" Canvas.Top="312" ControllerID="EPC02" />
+                <control:FlowController x:Name="EPC03" Canvas.Left="492" Canvas.Top="312" ControllerID="EPC03" />
+                <control:FlowController x:Name="EPC04" Canvas.Left="642" Canvas.Top="312" ControllerID="EPC04" />
+                <control:FlowController x:Name="EPC05" Canvas.Left="850" Canvas.Top="400" ControllerID="EPC05" />
+                <control:FlowController x:Name="EPC06" Canvas.Left="1000" Canvas.Top="312" ControllerID="EPC06" />
+                <control:FlowController x:Name="EPC07" Canvas.Left="721" Canvas.Top="73" ControllerID="EPC07"/>
+                <!--#endregion-->
                 
-                <!-- Display Value for Reactor State -->
-                <StackPanel Canvas.Left="900" Canvas.Top="40" Width="54" Height="47">
-                    <StackPanel VerticalAlignment="Center">
-                        <TextBlock Foreground="LightSkyBlue" FontSize="10" TextAlignment="Center">
-                                            Total <LineBreak/>
-                                            Flowrate
-                        </TextBlock>
-                    </StackPanel>
-                    <StackPanel Background="{StaticResource ReactorMonitorColor1}" Orientation="Horizontal">
-                        <Label x:Name="DisplayTotalFlowrateSETR" Foreground="Black" HorizontalAlignment="Left" Width=" 35"/>
-                        <Ellipse Width="7" Height="7" Fill="LawnGreen" Margin="6,0,0,0"/>
-                    </StackPanel>
-                    <StackPanel Background="{StaticResource ReactorMonitorColor2}" >
-                        <Label x:Name="DisplayTotalFlowrateCurrentR" Foreground="Black" HorizontalAlignment="Right"/>
-                    </StackPanel>
-                </StackPanel>
+                <!-- #Region 4. 메인 공급 배관 -->
+                <!-- Nitrogen Gas Line -->
+                <Polyline Points="165,54 165,65 40,65 40,266 965,266 965,278" Stroke="{StaticResource NitrogenLineColor}" StrokeThickness="2" />
+                <Line X1="40" Y1="110" X2="58" Y2="110" Stroke="{StaticResource NitrogenLineColor}" StrokeThickness="2" />
+                <Line X1="40" Y1="179" X2="58" Y2="179" Stroke="{StaticResource NitrogenLineColor}" StrokeThickness="2" />
+                <Line X1="157" Y1="266" X2="157" Y2="278" Stroke="{StaticResource NitrogenLineColor}" StrokeThickness="2" />
+                <Line X1="307" Y1="266" X2="307" Y2="278" Stroke="{StaticResource NitrogenLineColor}" StrokeThickness="2" />
+                <Line X1="457" Y1="266" X2="457" Y2="278" Stroke="{StaticResource NitrogenLineColor}" StrokeThickness="2" />
+                <Line X1="607" Y1="266" X2="607" Y2="278" Stroke="{StaticResource NitrogenLineColor}" StrokeThickness="2" />
+                <Line X1="757" Y1="266" X2="757" Y2="278" Stroke="{StaticResource NitrogenLineColor}" StrokeThickness="2" />
+                
+                <!--  Hydrogen Gas Line -->
+                <Polyline Points="30,25 20,25 20,256 989,256 989,278" Stroke="{StaticResource HydrogenLineColor}"  StrokeThickness="2" />
+                <Line X1="20" Y1="86" X2="58" Y2="86" Stroke="{StaticResource HydrogenLineColor}" StrokeThickness="2" />
+                <Line X1="20" Y1="155" X2="58" Y2="155" Stroke="{StaticResource HydrogenLineColor}" StrokeThickness="2" />
+                <Line X1="181" Y1="256" X2="181" Y2="278" Stroke="{StaticResource HydrogenLineColor}" StrokeThickness="2" />
+                <Line X1="331" Y1="256" X2="331" Y2="278" Stroke="{StaticResource HydrogenLineColor}" StrokeThickness="2" />
+                <Line X1="481" Y1="256" X2="481" Y2="278" Stroke="{StaticResource HydrogenLineColor}" StrokeThickness="2" />
+                <Line X1="631" Y1="256" X2="631" Y2="278" Stroke="{StaticResource HydrogenLineColor}" StrokeThickness="2" />
+                <Line X1="781" Y1="256" X2="781" Y2="278" Stroke="{StaticResource HydrogenLineColor}" StrokeThickness="2" />
 
-                <StackPanel Canvas.Left="970" Canvas.Top="40" Width="54" Height="47">
-                    <StackPanel VerticalAlignment="Center">
-                        <TextBlock Foreground="LightSkyBlue" FontSize="10" TextAlignment="Center">
-                                            Susceptor<LineBreak/>
-                                            Temperature
-                        </TextBlock>
-                    </StackPanel>
-                    <StackPanel Background="{StaticResource ReactorMonitorColor1}" Orientation="Horizontal">
-                        <Label x:Name="DisplaySusceptorTemperatureSETR" Foreground="Black" HorizontalAlignment="Left" Width=" 35"/>
-                        <Ellipse Width="7" Height="7" Fill="LawnGreen" Margin="6,0,0,0"/>
-                    </StackPanel>
-                    <StackPanel Background="{StaticResource ReactorMonitorColor2}" >
-                        <Label x:Name="DisplaySusceptorTemperatureCurrentR" Foreground="Black" HorizontalAlignment="Right"/>
-                    </StackPanel>
-                </StackPanel>
+                <!-- Ammonia Gas Line -->
+                <Polyline Points="398,25 355,25 355,33" Stroke="{StaticResource HydrideLineColor}"  StrokeThickness="2" />
 
-                <StackPanel Canvas.Left="1040" Canvas.Top="40" Width="54" Height="47">
-                    <StackPanel VerticalAlignment="Center">
-                        <TextBlock Foreground="LightSkyBlue" FontSize="10" TextAlignment="Center">
-                                            Reactor<LineBreak/>
-                                            Pressure
-                        </TextBlock>
-                    </StackPanel>
-                    <StackPanel Background="{StaticResource ReactorMonitorColor1}" Orientation="Horizontal" >
-                        <Label x:Name="DisplayReactorPressureSETR" Foreground="Black" HorizontalAlignment="Left" Width=" 35"/>
-                        <Ellipse Width="7" Height="7" Fill="LawnGreen" Margin="6,0,0,0"/>
-                    </StackPanel>
-                    <StackPanel Background="{StaticResource ReactorMonitorColor2}" Margin="0,0,0,0" >
-                        <Label x:Name="DisplayReactorPressureCurrentR" Foreground="Black" HorizontalAlignment="Right"/>
-                    </StackPanel>
-                </StackPanel>
-                <StackPanel Canvas.Left="1110" Canvas.Top="40" Width="54" Height="47">
-                    <StackPanel VerticalAlignment="Center">
-                        <TextBlock Foreground="LightSkyBlue" FontSize="10" TextAlignment="Center">
-                                            Susceptor<LineBreak/>
-                                            Rotation
-                        </TextBlock>
-                    </StackPanel>
-                    <StackPanel Background="{StaticResource ReactorMonitorColor1}" Orientation="Horizontal" >
-                        <Label x:Name="DisplaySusceptorRotationSETR" Foreground="Black" HorizontalAlignment="Left" Width=" 35"/>
-                        <Ellipse Width="7" Height="7" Fill="LawnGreen" Margin="6,0,0,0"/>
-                    </StackPanel>
-                    <StackPanel Background="{StaticResource ReactorMonitorColor2}" Margin="0,0,0,0" >
-                        <Label x:Name="DisplaySusceptorRotationCurrentR" Foreground="Black" HorizontalAlignment="Right"/>
-                    </StackPanel>
-                </StackPanel>
+                <!-- Silane Gas Line -->
+                <Polyline Points="802,25 759,25 759,33" Stroke="{StaticResource HydrideLineColor}"  StrokeThickness="2" />
+                <!--#endregion-->
 
-                <StackPanel Canvas.Left="1136" Canvas.Top="243" Width="36" Height="47">
-                    <StackPanel VerticalAlignment="Center">
-                        <TextBlock Foreground="LightSkyBlue" FontSize="10" TextAlignment="Center">
-                                            Exhaust<LineBreak/>
-                                            Pressure
-                        </TextBlock>
-                    </StackPanel>
-                    <StackPanel Background="{StaticResource ReactorMonitorColor1}" Height="11">
-                        <Ellipse Width="7" Height="7" Fill="LawnGreen" HorizontalAlignment="Center" Margin="0,3,0,0"/>
-                    </StackPanel>
-                    <StackPanel Background="{StaticResource ReactorMonitorColor2}">
-                        <Label x:Name="DisplayExhaustPressureR" Foreground="Black" HorizontalAlignment="Right" />
-                    </StackPanel>
-                </StackPanel>
-
-                <StackPanel Canvas.Left="1080" Canvas.Top="243" Width="36" Height="47">
-                    <StackPanel VerticalAlignment="Center">
-                        <TextBlock Foreground="LightSkyBlue" FontSize="10" TextAlignment="Center">
-                                            Throttle<LineBreak/>
-                                            Valve
-                        </TextBlock>
-                    </StackPanel>
-                    <StackPanel Background="{StaticResource ReactorMonitorColor1}" Height="11">
-                        <Ellipse Width="7" Height="7" Fill="LawnGreen" HorizontalAlignment="Center" Margin="0,3,0,0"/>
-                    </StackPanel>
-                    <StackPanel Background="{StaticResource ReactorMonitorColor2}">
-                        <Label x:Name="DisplayThrottleValvePositionR" Foreground="Black" HorizontalAlignment="Right" />
-                    </StackPanel>
-                </StackPanel>
-
-                <StackPanel Canvas.Left="1188" Canvas.Top="243" Width="36" Height="47">
-                    <TextBlock Foreground="LightSkyBlue" FontSize="10" TextAlignment="Center">
-                                        DOR<LineBreak/>
-                                        Pressure
-                    </TextBlock>
-                    <StackPanel Background="{StaticResource ReactorMonitorColor1}" Height="11">
-                        <Ellipse Width="7" Height="7" Fill="LawnGreen" HorizontalAlignment="Center" Margin="0,3,0,0"/>
-                    </StackPanel>
-                    <StackPanel Background="{StaticResource ReactorMonitorColor2}">
-                        <Label x:Name="DisplayDORPressureR" Foreground="Black" HorizontalAlignment="Right" />
-                    </StackPanel>
-                </StackPanel>
-
-                <!-- Button for Valve Control -->
-                <Button x:Name="HydridCarrirerChangeR" Content="Button" Canvas.Left="110" Canvas.Top="130" Width="40" Height="22">
-                    <Button.RenderTransform>
-                        <RotateTransform Angle="270"/>
-                    </Button.RenderTransform>
-                </Button>
-                <Button x:Name="MOCarrierChangeR" Content="Button" Canvas.Left="110" Canvas.Top="185" Width="40" Height="22">
-                    <Button.RenderTransform>
-                        <RotateTransform Angle="270"/>
-                    </Button.RenderTransform>
-                </Button>
-                <Button x:Name="SourceAmmoniaChangeR" Content="Button" Canvas.Left="290" Canvas.Top="31" Width="40" Height="22">
-                </Button>
-                <Button x:Name="SourceSilaneChangeR" Content="Button" Canvas.Left="654" Canvas.Top="31" Width="40" Height="22">
-                </Button>
-                <Button x:Name="ManifoldHyd1RunR" Content="Button" Canvas.Left="290" Canvas.Top="143" Width="40" Height="22">
-                </Button>
-                <Button x:Name="ManifoldHyd2RunR" Content="Button" Canvas.Left="430" Canvas.Top="143" Width="40" Height="22">
-                </Button>
-                <Button x:Name="ManifoldHyd3RunR" Content="Button" Canvas.Left="570" Canvas.Top="143" Width="40" Height="22">
-                </Button>
-                <Button x:Name="ManifoldMO1RunR" Content="Button" Canvas.Left="290" Canvas.Top="223" Width="40" Height="22">
-                </Button>
-                <Button x:Name="ManifoldMO2RunR" Content="Button" Canvas.Left="430" Canvas.Top="223" Width="40" Height="22">
-                </Button>
-                <Button x:Name="ManifoldMO3RunR" Content="Button" Canvas.Left="570" Canvas.Top="223" Width="40" Height="22">
-                </Button>
-                <Button x:Name="ManifoldMO4RunR" Content="Button" Canvas.Left="710" Canvas.Top="223" Width="40" Height="22">
-                </Button>
-                <Button x:Name="ManifoldMO5RunR" Content="Button" Canvas.Left="850" Canvas.Top="223" Width="40" Height="22">
-                </Button>
-                <Button x:Name="ManifoldMO6RunR" Content="Button" Canvas.Left="990" Canvas.Top="223" Width="40" Height="22">
-                </Button>
-
-                <Button x:Name="BubblerCarrier1ChangeR" Content="Button" Canvas.Left="270" Canvas.Top="268" Width="40" Height="22">
-                </Button>
-                <Button x:Name="BubblerCarrier2ChangeR" Content="Button" Canvas.Left="410" Canvas.Top="268" Width="40" Height="22">
-                </Button>
-                <Button x:Name="BubblerCarrier3ChangeR" Content="Button" Canvas.Left="550" Canvas.Top="268" Width="40" Height="22">
-                </Button>
-                <Button x:Name="BubblerCarrier4ChangeR" Content="Button" Canvas.Left="690" Canvas.Top="268" Width="40" Height="22">
-                </Button>
-                <Button x:Name="BubblerCarrier5ChangeR" Content="Button" Canvas.Left="830" Canvas.Top="268" Width="40" Height="22">
-                </Button>
-                <Button x:Name="BubblerCarrier6ChangeR" Content="Button" Canvas.Left="970" Canvas.Top="268" Width="40" Height="22">
-                </Button>
-
-                <Button x:Name="Bubbler1BypassR" Content="Button" Canvas.Left="290" Canvas.Top="352" Width="40" Height="22">
-                </Button>
-                <Button x:Name="Bubbler2BypassR" Content="Button" Canvas.Left="430" Canvas.Top="352" Width="40" Height="22">
-                </Button>
-                <Button x:Name="Bubbler3BypassR" Content="Button" Canvas.Left="570" Canvas.Top="352" Width="40" Height="22">
-                </Button>
-                <Button x:Name="Bubbler4BypassR" Content="Button" Canvas.Left="710" Canvas.Top="352" Width="40" Height="22">
-                </Button>
-                <Button x:Name="Bubbler5BypassR" Content="Button" Canvas.Left="850" Canvas.Top="352" Width="40" Height="22">
-                </Button>
-                <Button x:Name="Bubbler6BypassR" Content="Button" Canvas.Left="990" Canvas.Top="352" Width="40" Height="22">
-                </Button>
-
+                <TextBlock Canvas.Left="1185" Canvas.Top="135"
+                    Foreground="{StaticResource PrimaryFontColor}" FontSize="12" Width="110" Text="Shower Head(HYD)"/>
+                <TextBlock Canvas.Left="1185" Canvas.Top="157"
+                    Foreground="{StaticResource PrimaryFontColor}" FontSize="12" Width="110" Text="Reactor Purge"/>
+                <TextBlock Canvas.Left="1185" Canvas.Top="201"
+                    Foreground="{StaticResource PrimaryFontColor}" FontSize="12" Width="110" Text="Base Purge"/>
+                <TextBlock Canvas.Left="1185" Canvas.Top="243"
+                    Foreground="{StaticResource PrimaryFontColor}" FontSize="12" Width="110" Text="Shower Head(MO)"/>
+                <TextBlock Canvas.Left="1185" Canvas.Top="423"
+                    Foreground="{StaticResource PrimaryFontColor}" FontSize="12" Width="110" Text="to Reactor"/>
+                <TextBlock Canvas.Left="1185" Canvas.Top="449"
+                    Foreground="{StaticResource PrimaryFontColor}" FontSize="12" Width="110" Text="to Scrubber"/>
+                <TextBlock Canvas.Left="1116" Canvas.Top="320" TextAlignment="Center"
+                    Foreground="{StaticResource PrimaryFontColor}" FontSize="12" Width="50" Text="Vent"/>
+                <TextBlock Canvas.Left="256" Canvas.Top="120" TextAlignment="Center"
+               Foreground="{StaticResource PrimaryFontColor}" FontSize="12" Width="33" Text="Vent"/>
+                <TextBlock Canvas.Left="256" Canvas.Top="214" TextAlignment="Center"
+               Foreground="{StaticResource PrimaryFontColor}" FontSize="12" Width="33" Text="Vent"/>
+                <TextBlock Canvas.Left="784" Canvas.Top="80" TextAlignment="Center"
+               Foreground="{StaticResource PrimaryFontColor}" FontSize="12" Width="33" Text="Vent"/>
+                <TextBlock Canvas.Left="922" Canvas.Top="407" TextAlignment="Center"
+               Foreground="{StaticResource PrimaryFontColor}" FontSize="12" Width="33" Text="Vent"/>
 
             </Canvas>
 

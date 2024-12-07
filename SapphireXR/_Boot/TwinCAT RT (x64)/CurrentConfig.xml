@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<TcBootProject CreateTime="2024-11-29T10:24:05" Platform="TwinCAT RT (x64)">
+<TcBootProject CreateTime="2024-12-07T07:32:10" Platform="TwinCAT RT (x64)">
 	<System>
 		<LockedMemSize>33554432</LockedMemSize>
 		<AffinityMask>#x800</AffinityMask>
@@ -135,7 +135,7 @@
 	<ProjectInfo>
 		<ProjectName>SapphireXR</ProjectName>
 		<ProjectGuid>{3D06573F-FA21-4D81-AB6B-ED6B30724E66}</ProjectGuid>
-		<ConfigurationFile>D:\Design\MOCVD\MR\SapphireXR\SapphireXR.tsproj</ConfigurationFile>
+		<ConfigurationFile>D:\Workspace\MOCVD_UI\SapphireXR\SapphireXR.tsproj</ConfigurationFile>
 		<DataTypes/>
 		<PlcProjects/>
 		<Tasks/>

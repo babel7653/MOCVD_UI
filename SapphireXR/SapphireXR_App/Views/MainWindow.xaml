@@ -21,7 +21,7 @@
         <Grid Grid.Column="1">
                 <Grid.RowDefinitions>
                     <RowDefinition/>
-                    <RowDefinition Height="240" />
+                    <RowDefinition Height="180" />
                 </Grid.RowDefinitions>
                 <TabControl Grid.Row="0" Background="Transparent" >
                     <TabItem Header="System Control" Width="110" >

@@ -17,7 +17,7 @@
         </Style>
     </Page.Resources>
     <Canvas Background="{StaticResource HomePageBackground}">
-        <Rectangle Stroke="White" StrokeThickness="1" Width="1300" Height="776"/>
+        <Rectangle Stroke="White" StrokeThickness="1" Width="1300" Height="836"/>
 
         <!-- #Region 메인 공급 가스배관-->
         <!-- Nitrogen Gas Line -->
@@ -230,8 +230,8 @@
         </Path>
 
         <!-- DOR 가스 배관 -->
-        <Line X1="1190" Y1="130" X2="1222" Y2="130" Stroke="{StaticResource ExhaustLineColor}" StrokeThickness="2" />
-        <Line X1="1240" Y1="141" X2="1240" Y2="337" Stroke="{StaticResource ExhaustLineColor}" StrokeThickness="2" />
+        <Line X1="1190" Y1="130" X2="1228" Y2="130" Stroke="{StaticResource ExhaustLineColor}" StrokeThickness="2" />
+        <Line X1="1240" Y1="142" X2="1240" Y2="337" Stroke="{StaticResource ExhaustLineColor}" StrokeThickness="2" />
         <Polyline Points="1240,166 1269,166 1269,222" Stroke="{StaticResource ExhaustLineColor}" StrokeThickness="2"/>
 
         <Path Canvas.Left="1269" Canvas.Top="220" Fill="{StaticResource ExhaustLineColor}">
@@ -252,9 +252,7 @@
             <Rectangle Canvas.Left="2" Canvas.Top="2" Width="90" Height="40" Stroke="{StaticResource ExhaustLineColor}" StrokeThickness="3"/>
             <Ellipse Width="16" Height="16" Canvas.Left="14" Canvas.Top="39" Fill="{StaticResource ExhaustLineColor}" />
             <Ellipse Width="16" Height="16" Canvas.Left="66" Canvas.Top="39" Fill="{StaticResource ExhaustLineColor}" />
-            <Ellipse x:Name="on" Width="24" Height="24" Canvas.Left="35" Canvas.Top="8" Fill="Lime"/>
-            <Line X1="42" Y1="11" X2="37" Y2="28" Stroke="Black" StrokeThickness="1"/>
-            <Line X1="52" Y1="11" X2="57" Y2="29" Stroke="Black" StrokeThickness="1"/>
+            <control:OnSwitch x:Name="PumpState" Canvas.Left="35" Canvas.Top="10"/>
         </Canvas>
 
         <Border Canvas.Left="1137" Canvas.Top="470" BorderThickness="1" BorderBrush="{StaticResource ExhaustLineColor}" Width="46" Height="24">
@@ -332,6 +330,7 @@
         <control:BypassValve x:Name="V07" Canvas.Left="222" Canvas.Top="629" ValveID="V07" />
         <control:BypassValve x:Name="V10" Canvas.Left="362" Canvas.Top="629" ValveID="V10" />
         <control:BypassValve x:Name="V13" Canvas.Left="502" Canvas.Top="629" ValveID="V13" />
+        <control:BypassValve x:Name="V16" Canvas.Left="502" Canvas.Top="629" ValveID="V16" />
         <control:BypassValve x:Name="V19" Canvas.Left="782" Canvas.Top="629" ValveID="V19" />
         <control:BypassValve x:Name="V22" Canvas.Left="980" Canvas.Top="629" ValveID="V22" />
         <control:SingleValve x:Name="V33" Canvas.Left="1116" Canvas.Top="534" ValveID="V33" />
@@ -428,65 +427,23 @@
         
         <TextBlock Canvas.Left="773" Canvas.Top="61" Width="70" Height="20" Foreground="{StaticResource PrimaryFontColor}"
                    FontSize="10" TextAlignment="Center">  Temperature</TextBlock>
+        <control:ReactorController x:Name="susceptorTemperature" Canvas.Left="773" Canvas.Top="81"/>
         <TextBlock Canvas.Left="853" Canvas.Top="61" Width="70" Height="20" Foreground="{StaticResource PrimaryFontColor}"
                    FontSize="10" TextAlignment="Center"> Pressure</TextBlock>
+        <control:ReactorController x:Name="reactorPressure" Canvas.Left="853" Canvas.Top="81"/>
         <TextBlock Canvas.Left="933" Canvas.Top="61" Width="70" Height="20" Foreground="{StaticResource PrimaryFontColor}"
                    FontSize="10" TextAlignment="Center"> Rotation</TextBlock>
-        <control:ReactorController x:Name="susceptorTemperature" Canvas.Left="773" Canvas.Top="81"/>
-        <control:ReactorController x:Name="reactorPressure" Canvas.Left="853" Canvas.Top="81"/>
         <control:ReactorController x:Name="susceptorRotation" Canvas.Left="933" Canvas.Top="81"/>
-
-        <!-- Reactor State Display -->
-        <StackPanel Canvas.Left="1222" Canvas.Top="94" Width="36" Height="47">
-            <TextBlock Foreground="LightSkyBlue" FontSize="10" TextAlignment="Center">
-                                 DOR<LineBreak/>
-                                 Pressure
-            </TextBlock>
-            <StackPanel Background="{StaticResource ReactorMonitorColor1}" Height="11">
-                <Ellipse Width="7" Height="7" Fill="LawnGreen" HorizontalAlignment="Center" Margin="0,3,0,0"/>
-            </StackPanel>
-            <StackPanel Background="{StaticResource ReactorMonitorColor2}">
-                <Label x:Name="DisplayDORPressure" Foreground="Black" HorizontalAlignment="Right" />
-            </StackPanel>
-        </StackPanel>
-
-        <StackPanel Canvas.Left="1172" Canvas.Top="526" Width="36" Height="47">
-            <StackPanel VerticalAlignment="Center">
-                <TextBlock Foreground="LightSkyBlue" FontSize="10" TextAlignment="Center">
-                                     Exhaust<LineBreak/>
-                                     Pressure
-                </TextBlock>
-            </StackPanel>
-            <StackPanel Background="{StaticResource ReactorMonitorColor1}" Height="11">
-                <Ellipse Width="7" Height="7" Fill="LawnGreen" HorizontalAlignment="Center" Margin="0,3,0,0"/>
-            </StackPanel>
-            <StackPanel Background="{StaticResource ReactorMonitorColor2}">
-                <Label x:Name="DisplayExhaustPressure" Foreground="Black" HorizontalAlignment="Right" />
-            </StackPanel>
-        </StackPanel>
-
-        <StackPanel Canvas.Left="1200" Canvas.Top="585" Width="36" Height="47">
-            <StackPanel VerticalAlignment="Center">
-                <TextBlock Foreground="LightSkyBlue" FontSize="10" TextAlignment="Center">
-                                     Butterfly<LineBreak/>
-                                     Valve
-                </TextBlock>
-            </StackPanel>
-            <StackPanel Background="{StaticResource ReactorMonitorColor1}" Height="11">
-                <Ellipse Width="7" Height="7" Fill="LawnGreen" HorizontalAlignment="Center" Margin="0,3,0,0"/>
-            </StackPanel>
-            <StackPanel Background="{StaticResource ReactorMonitorColor2}">
-                <Label x:Name="DisplayThrottleValvePosition" Foreground="Black" HorizontalAlignment="Right" />
-            </StackPanel>
-        </StackPanel>
-
+        <TextBlock Canvas.Left="1216" Canvas.Top="98" Width="48" Height="20" Foreground="{StaticResource PrimaryFontColor}"
+                    FontSize="10" TextAlignment="Center"> DOR</TextBlock>
+        <control:OnSwitch x:Name="dorState" Canvas.Left="1228" Canvas.Top="118"/>
         <!--#endregion-->
 
         <!-- #Region 가스 제어(MFC, EPC) -->
         <!--MFC Contol Box!-->
         <control:FlowController x:Name="MFC01" 
                                 Canvas.Left="126" Canvas.Top="344" 
-                                ControllerID="MFC01" HeadColor="Red"/>
+                                ControllerID="MFC01" />
         <control:FlowController x:Name="MFC02" 
                                 Canvas.Left="126" Canvas.Top="290" 
                                 ControllerID="MFC02" />
@@ -567,9 +524,8 @@
                             ControllerID="EPC07"/>
         <!--#endregion-->
 
-
         <!-- Control Window Text -->
-        <TextBlock Foreground="LightSkyBlue" FontSize="10" Canvas.Left="1075" Canvas.Top="678" Width="50" Height="12" Text="Scrubber" TextAlignment="Center"/>
+        <TextBlock Foreground="LightSkyBlue" FontSize="10" Canvas.Left="1071" Canvas.Top="678" Width="50" Height="12" Text="Scrubber" TextAlignment="Center"/>
         <TextBlock Foreground="LightSkyBlue" FontSize="10" Canvas.Left="1235" Canvas.Top="620" Width="50" Height="12" Text="Scrubber" TextAlignment="Center"/>
         <TextBlock Foreground="LightSkyBlue" FontSize="10" Canvas.Left="890" Canvas.Top="185" Height="12" Text="Out Liner Purge" HorizontalAlignment="Center" VerticalAlignment="Top" />
         <TextBlock Foreground="LightSkyBlue" FontSize="10" Canvas.Left="890" Canvas.Top="227" Height="12" Text="Rotation Seal Purge" />

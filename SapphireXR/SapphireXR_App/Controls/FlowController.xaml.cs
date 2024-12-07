@@ -61,15 +61,20 @@ namespace SapphireXR_App.Controls
         public static readonly DependencyProperty CurrentValueProperty =
             DependencyProperty.Register("CurrentValue", typeof(float), typeof(FlowController), new PropertyMetadata(default));
 
-        public string HeadColor
+        public string buttonBackground
         {
-            get { return (string)GetValue(HeadColorProperty); }
-            set { SetValue(HeadColorProperty, value); }
+            get { return (string)GetValue(buttonBackgroundProperty); }
+            set { SetValue(buttonBackgroundProperty, value); }
         }
 
-        public static readonly DependencyProperty HeadColorProperty =
-            DependencyProperty.Register("HeadColor", typeof(string), typeof(FlowController), new PropertyMetadata(default));
+        public static readonly DependencyProperty buttonBackgroundProperty =
+            DependencyProperty.Register("buttonBackground", typeof(string), typeof(FlowController), new PropertyMetadata(default));
 
+
+        private void ControllerButton_Loaded(object sender, RoutedEventArgs e)
+        {
+            FlowController display = (FlowController)sender;
+        }
 
     }
 }

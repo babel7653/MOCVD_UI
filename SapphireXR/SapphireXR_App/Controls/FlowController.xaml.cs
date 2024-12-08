@@ -74,6 +74,14 @@ namespace SapphireXR_App.Controls
         {
             FlowController display = (FlowController)sender;
         }
+        private void FlowController_Click(object sender, RoutedEventArgs e) 
+        {
+            FlowController flowController = (FlowController)((Button)e.OriginalSource).Parent;
+            if (flowController != null)
+            {
+
+            }
+        }
 
     }
 }

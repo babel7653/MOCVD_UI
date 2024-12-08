@@ -43,5 +43,5 @@
             </Setter>
         </Style>
     </UserControl.Resources>
-    <Button Height="34" Width="70" Style="{StaticResource ControllerStyle}"/>
+    <Button Height="34" Width="70" Style="{StaticResource ControllerStyle}" Click="FlowController_Click"/>
 </UserControl>

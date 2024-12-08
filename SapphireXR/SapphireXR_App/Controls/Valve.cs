@@ -14,7 +14,7 @@ namespace SapphireXR_App.Controls
             set { SetValue(ValveIDProperty, value); }
         }
         public static readonly DependencyProperty ValveIDProperty =
-            DependencyProperty.Register("ValveID", typeof(string), typeof(SwitchingValve), new PropertyMetadata(default));
+            DependencyProperty.Register("ValveID", typeof(string), typeof(Valve), new PropertyMetadata(default));
 
         public bool IsOpen
         {
@@ -23,6 +23,6 @@ namespace SapphireXR_App.Controls
         }
 
         public static readonly DependencyProperty IsOpenProperty =
-            DependencyProperty.Register("IsOpen", typeof(bool), typeof(SwitchingValve), new PropertyMetadata(default));
+            DependencyProperty.Register("IsOpen", typeof(bool), typeof(Valve), new PropertyMetadata(default));
     }
 }

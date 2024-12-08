@@ -24,24 +24,24 @@
                     <RowDefinition Height="180" />
                 </Grid.RowDefinitions>
                 <TabControl Grid.Row="0" Background="Transparent" >
+                    
                     <TabItem Header="System Control" Width="110" >
                         <Frame Source="/Views/HomePage.xaml" NavigationUIVisibility="Hidden"/>
                     </TabItem>
 
-                <TabItem Header="Recipe Control" Width="110">
-                        <Frame NavigationUIVisibility="Hidden" >
-                        <b:Interaction.Behaviors>
-                            <behaviors:FrameBehavior NavigationSource="{Binding NavigationSource, Mode=TwoWay}" />
-                        </b:Interaction.Behaviors>
-                    </Frame>
-
-                </TabItem>
-
-                <TabItem Header="Report" Width="110">
-                        <Frame Source="/Views/ReportPage.xaml" NavigationUIVisibility="Hidden"/>
+                    <TabItem Header="Recipe Control" Width="110">
+                        <Frame Source="/Views/RecipeRunPage.xaml" NavigationUIVisibility="Hidden"/>
                     </TabItem>
 
-                <TabItem Header="Setting" Width="110">
+                    <TabItem Header="Recipe Editor" Width="110" >
+                        <Frame Source="/Views/RecipeEditPage.xaml" NavigationUIVisibility="Hidden"/>
+                    </TabItem>
+            
+                    <TabItem Header="Report" Width="110">
+                        <Frame Source="/Views/ReportPage.xaml" NavigationUIVisibility="Hidden"/>
+                    </TabItem>
+                    
+                    <TabItem Header="Setting" Width="110">
                         <Frame Source="/Views/SettingPage.xaml" NavigationUIVisibility="Hidden"/>
                     </TabItem>
                     

@@ -30,8 +30,35 @@
             <Canvas Grid.Row="0" Background="{StaticResource RecipeRunPageBackground}" Grid.ColumnSpan="4">
                 <Rectangle Stroke="White" StrokeThickness="1" Width="1300" Height="490"/>
 
+                <!-- #Region 1. 메인 공급 배관 -->
+                <!-- Nitrogen Gas Line -->
+                <Polyline Points="165,54 165,65 40,65 40,266 965,266 965,278" Stroke="{StaticResource NitrogenLineColor}" StrokeThickness="2" />
+                <Line X1="40" Y1="110" X2="58" Y2="110" Stroke="{StaticResource NitrogenLineColor}" StrokeThickness="2" />
+                <Line X1="40" Y1="179" X2="58" Y2="179" Stroke="{StaticResource NitrogenLineColor}" StrokeThickness="2" />
+                <Line X1="157" Y1="266" X2="157" Y2="278" Stroke="{StaticResource NitrogenLineColor}" StrokeThickness="2" />
+                <Line X1="307" Y1="266" X2="307" Y2="278" Stroke="{StaticResource NitrogenLineColor}" StrokeThickness="2" />
+                <Line X1="457" Y1="266" X2="457" Y2="278" Stroke="{StaticResource NitrogenLineColor}" StrokeThickness="2" />
+                <Line X1="607" Y1="266" X2="607" Y2="278" Stroke="{StaticResource NitrogenLineColor}" StrokeThickness="2" />
+                <Line X1="757" Y1="266" X2="757" Y2="278" Stroke="{StaticResource NitrogenLineColor}" StrokeThickness="2" />
 
-                <!-- #region 1. 프로세스 매니폴드 가스배관 -->
+                <!--  Hydrogen Gas Line -->
+                <Polyline Points="30,25 20,25 20,256 989,256 989,278" Stroke="{StaticResource HydrogenLineColor}"  StrokeThickness="2" />
+                <Line X1="20" Y1="86" X2="58" Y2="86" Stroke="{StaticResource HydrogenLineColor}" StrokeThickness="2" />
+                <Line X1="20" Y1="155" X2="58" Y2="155" Stroke="{StaticResource HydrogenLineColor}" StrokeThickness="2" />
+                <Line X1="181" Y1="256" X2="181" Y2="278" Stroke="{StaticResource HydrogenLineColor}" StrokeThickness="2" />
+                <Line X1="331" Y1="256" X2="331" Y2="278" Stroke="{StaticResource HydrogenLineColor}" StrokeThickness="2" />
+                <Line X1="481" Y1="256" X2="481" Y2="278" Stroke="{StaticResource HydrogenLineColor}" StrokeThickness="2" />
+                <Line X1="631" Y1="256" X2="631" Y2="278" Stroke="{StaticResource HydrogenLineColor}" StrokeThickness="2" />
+                <Line X1="781" Y1="256" X2="781" Y2="278" Stroke="{StaticResource HydrogenLineColor}" StrokeThickness="2" />
+
+                <!-- Ammonia Gas Line -->
+                <Polyline Points="398,25 355,25 355,33" Stroke="{StaticResource HydrideLineColor}"  StrokeThickness="2" />
+
+                <!-- Silane Gas Line -->
+                <Polyline Points="802,25 759,25 759,33" Stroke="{StaticResource HydrideLineColor}"  StrokeThickness="2" />
+                <!--#endregion-->
+
+                <!-- #region 2. 프로세스 매니폴드 가스배관 -->
                 <Polyline Points="82,86 254,86 254,10 735,10 735,33" Stroke="{StaticResource ProcessLineColor}" StrokeThickness="2" />
                 <Line X1="331" Y1="10" X2="331" Y2="33" Stroke="{StaticResource ProcessLineColor}" StrokeThickness="2" />
                 <Line X1="579" Y1="10" X2="579" Y2="23" Stroke="{StaticResource ProcessLineColor}" StrokeThickness="2" />
@@ -226,7 +253,7 @@
                 </Path>
                 <!--#endregion-->
 
-                <!-- #Region 1. 상태 모니터링(가스압력, 항온조, 반응기)-->
+                <!-- #Region 3. 상태 모니터링(가스압력, 항온조, 반응기)-->
                     <!-- 가스압력 모니터링 -->
                     <control:GasMonitor x:Name="gasMonitor_H2" Canvas.Left="30" Canvas.Top="20"  Width="70" Height="34" MonitorID="H2"/>
                     <control:GasMonitor x:Name="gasMonitor_N2" Canvas.Left="155" Canvas.Top="20"  Width="70" Height="34" MonitorID="N2"/>
@@ -255,7 +282,7 @@
                 <control:ReactorController x:Name="susceptorRotation" Canvas.Left="1178" Canvas.Top="72"/>
                 <!--#endregion-->
 
-                <!-- #Region 2. 가스제어용 밸브 -->
+                <!-- #Region 4. 가스제어용 밸브 -->
                 <control:SwitchingValve  x:Name="V01" Canvas.Left="58" Canvas.Top="122" ValveID="V01" 
                     RenderTransformOrigin="0,0">
                     <control:SwitchingValve.RenderTransform>
@@ -299,7 +326,7 @@
                 <control:BypassValve x:Name="V22" Canvas.Left="980" Canvas.Top="400" ValveID="V22" />
                 <!--#endregion-->
 
-                <!-- #Region 3. 가스제어(MFC, EPC) -->
+                <!-- #Region 5. 가스제어(MFC, EPC) -->
                 <!-- MFC -->
                 <control:FlowController x:Name="MFC01" Canvas.Left="106" Canvas.Top="192" ControllerID="MFC01" />
                 <control:FlowController x:Name="MFC02" Canvas.Left="106" Canvas.Top="128" ControllerID="MFC02" />
@@ -331,34 +358,6 @@
                 <control:FlowController x:Name="EPC07" Canvas.Left="721" Canvas.Top="73" ControllerID="EPC07"/>
                 <!--#endregion-->
                 
-                <!-- #Region 4. 메인 공급 배관 -->
-                <!-- Nitrogen Gas Line -->
-                <Polyline Points="165,54 165,65 40,65 40,266 965,266 965,278" Stroke="{StaticResource NitrogenLineColor}" StrokeThickness="2" />
-                <Line X1="40" Y1="110" X2="58" Y2="110" Stroke="{StaticResource NitrogenLineColor}" StrokeThickness="2" />
-                <Line X1="40" Y1="179" X2="58" Y2="179" Stroke="{StaticResource NitrogenLineColor}" StrokeThickness="2" />
-                <Line X1="157" Y1="266" X2="157" Y2="278" Stroke="{StaticResource NitrogenLineColor}" StrokeThickness="2" />
-                <Line X1="307" Y1="266" X2="307" Y2="278" Stroke="{StaticResource NitrogenLineColor}" StrokeThickness="2" />
-                <Line X1="457" Y1="266" X2="457" Y2="278" Stroke="{StaticResource NitrogenLineColor}" StrokeThickness="2" />
-                <Line X1="607" Y1="266" X2="607" Y2="278" Stroke="{StaticResource NitrogenLineColor}" StrokeThickness="2" />
-                <Line X1="757" Y1="266" X2="757" Y2="278" Stroke="{StaticResource NitrogenLineColor}" StrokeThickness="2" />
-                
-                <!--  Hydrogen Gas Line -->
-                <Polyline Points="30,25 20,25 20,256 989,256 989,278" Stroke="{StaticResource HydrogenLineColor}"  StrokeThickness="2" />
-                <Line X1="20" Y1="86" X2="58" Y2="86" Stroke="{StaticResource HydrogenLineColor}" StrokeThickness="2" />
-                <Line X1="20" Y1="155" X2="58" Y2="155" Stroke="{StaticResource HydrogenLineColor}" StrokeThickness="2" />
-                <Line X1="181" Y1="256" X2="181" Y2="278" Stroke="{StaticResource HydrogenLineColor}" StrokeThickness="2" />
-                <Line X1="331" Y1="256" X2="331" Y2="278" Stroke="{StaticResource HydrogenLineColor}" StrokeThickness="2" />
-                <Line X1="481" Y1="256" X2="481" Y2="278" Stroke="{StaticResource HydrogenLineColor}" StrokeThickness="2" />
-                <Line X1="631" Y1="256" X2="631" Y2="278" Stroke="{StaticResource HydrogenLineColor}" StrokeThickness="2" />
-                <Line X1="781" Y1="256" X2="781" Y2="278" Stroke="{StaticResource HydrogenLineColor}" StrokeThickness="2" />
-
-                <!-- Ammonia Gas Line -->
-                <Polyline Points="398,25 355,25 355,33" Stroke="{StaticResource HydrideLineColor}"  StrokeThickness="2" />
-
-                <!-- Silane Gas Line -->
-                <Polyline Points="802,25 759,25 759,33" Stroke="{StaticResource HydrideLineColor}"  StrokeThickness="2" />
-                <!--#endregion-->
-
                 <TextBlock Canvas.Left="1185" Canvas.Top="135"
                     Foreground="{StaticResource PrimaryFontColor}" FontSize="12" Width="110" Text="Shower Head(HYD)"/>
                 <TextBlock Canvas.Left="1185" Canvas.Top="157"

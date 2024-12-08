@@ -329,34 +329,34 @@
 
                 <!-- #Region 5. 가스제어(MFC, EPC) -->
                 <!-- MFC -->
-                <control:FlowController x:Name="MFC01" Canvas.Left="106" Canvas.Top="192" ControllerID="MFC01" />
-                <control:FlowController x:Name="MFC02" Canvas.Left="106" Canvas.Top="128" ControllerID="MFC02" />
-                <control:FlowController x:Name="MFC03" Canvas.Left="398" Canvas.Top="73" ControllerID="MFC03" />
-                <control:FlowController x:Name="MFC04" Canvas.Left="308" Canvas.Top="73" ControllerID="MFC04" />
-                <control:FlowController x:Name="MFC05" Canvas.Left="622" Canvas.Top="23" ControllerID="MFC05" />
-                <control:FlowController x:Name="MFC06" Canvas.Left="532" Canvas.Top="23" ControllerID="MFC06" />
-                <control:FlowController x:Name="MFC07" Canvas.Left="622" Canvas.Top="73" ControllerID="MFC07"/>
-                <control:FlowController x:Name="MFC08" Canvas.Left="134" Canvas.Top="356" ControllerID="MFC08" />
-                <control:FlowController x:Name="MFC09" Canvas.Left="284" Canvas.Top="356" ControllerID="MFC09" />
-                <control:FlowController x:Name="MFC10" Canvas.Left="434" Canvas.Top="356" ControllerID="MFC10" />
-                <control:FlowController x:Name="MFC11" Canvas.Left="584" Canvas.Top="356" ControllerID="MFC11" />
-                <control:FlowController x:Name="MFC12" Canvas.Left="734" Canvas.Top="356" ControllerID="MFC12" />
-                <control:FlowController x:Name="MFC13" Canvas.Left="792" Canvas.Top="312" ControllerID="MFC13" />
-                <control:FlowController x:Name="MFC14" Canvas.Left="850" Canvas.Top="356" ControllerID="MFC14" />
-                <control:FlowController x:Name="MFC15" Canvas.Left="942" Canvas.Top="356" ControllerID="MFC15" />
-                <control:FlowController x:Name="MFC16" Canvas.Left="1105" Canvas.Top="170" ControllerID="MFC16" />
-                <control:FlowController x:Name="MFC17" Canvas.Left="1105" Canvas.Top="214" ControllerID="MFC17" />
-                <control:FlowController x:Name="MFC18" Canvas.Left="184" Canvas.Top="207" ControllerID="MFC18" />
-                <control:FlowController x:Name="MFC19" Canvas.Left="184" Canvas.Top="113" ControllerID="MFC19" />
+                <control:FlowEditor x:Name="eMFC01" Canvas.Left="106" Canvas.Top="192" ContentLabel="MFC01" />
+                <control:FlowEditor x:Name="eMFC02" Canvas.Left="106" Canvas.Top="128" ContentLabel="MFC02" />
+                <control:FlowEditor x:Name="eMFC03" Canvas.Left="398" Canvas.Top="73" ContentLabel="MFC03" />
+                <control:FlowEditor x:Name="eMFC04" Canvas.Left="308" Canvas.Top="73" ContentLabel="MFC04" />
+                <control:FlowEditor x:Name="eMFC05" Canvas.Left="622" Canvas.Top="23" ContentLabel="MFC05" />
+                <control:FlowEditor x:Name="eMFC06" Canvas.Left="532" Canvas.Top="23" ContentLabel="MFC06" />
+                <control:FlowEditor x:Name="eMFC07" Canvas.Left="622" Canvas.Top="73" ContentLabel="MFC07"/>
+                <control:FlowEditor x:Name="eMFC08" Canvas.Left="134" Canvas.Top="356" ContentLabel="MFC08" />
+                <control:FlowEditor x:Name="eMFC09" Canvas.Left="284" Canvas.Top="356" ContentLabel="MFC09" />
+                <control:FlowEditor x:Name="eMFC10" Canvas.Left="434" Canvas.Top="356" ContentLabel="MFC10" />
+                <control:FlowEditor x:Name="eMFC11" Canvas.Left="584" Canvas.Top="356" ContentLabel="MFC11" />
+                <control:FlowEditor x:Name="eMFC12" Canvas.Left="734" Canvas.Top="356" ContentLabel="MFC12" />
+                <control:FlowEditor x:Name="eMFC13" Canvas.Left="792" Canvas.Top="312" ContentLabel="MFC13" />
+                <control:FlowEditor x:Name="eMFC14" Canvas.Left="850" Canvas.Top="356" ContentLabel="MFC14" />
+                <control:FlowEditor x:Name="eMFC15" Canvas.Left="942" Canvas.Top="356" ContentLabel="MFC15" />
+                <control:FlowEditor x:Name="eMFC16" Canvas.Left="1105" Canvas.Top="170" ContentLabel="MFC16" />
+                <control:FlowEditor x:Name="eMFC17" Canvas.Left="1105" Canvas.Top="214" ContentLabel="MFC17" />
+                <control:FlowEditor x:Name="eMFC18" Canvas.Left="184" Canvas.Top="207" ContentLabel="MFC18" />
+                <control:FlowEditor x:Name="eMFC19" Canvas.Left="184" Canvas.Top="113" ContentLabel="MFC19" />
 
                 <!--EPC Contol Box!-->
-                <control:FlowController x:Name="EPC01" Canvas.Left="192" Canvas.Top="312" ControllerID="EPC01" />
-                <control:FlowController x:Name="EPC02" Canvas.Left="342" Canvas.Top="312" ControllerID="EPC02" />
-                <control:FlowController x:Name="EPC03" Canvas.Left="492" Canvas.Top="312" ControllerID="EPC03" />
-                <control:FlowController x:Name="EPC04" Canvas.Left="642" Canvas.Top="312" ControllerID="EPC04" />
-                <control:FlowController x:Name="EPC05" Canvas.Left="850" Canvas.Top="400" ControllerID="EPC05" />
-                <control:FlowController x:Name="EPC06" Canvas.Left="1000" Canvas.Top="312" ControllerID="EPC06" />
-                <control:FlowController x:Name="EPC07" Canvas.Left="721" Canvas.Top="73" ControllerID="EPC07"/>
+                <control:FlowEditor x:Name="eEPC01" Canvas.Left="192" Canvas.Top="312" ContentLabel="EPC01" />
+                <control:FlowEditor x:Name="eEPC02" Canvas.Left="342" Canvas.Top="312" ContentLabel="EPC02" />
+                <control:FlowEditor x:Name="eEPC03" Canvas.Left="492" Canvas.Top="312" ContentLabel="EPC03" />
+                <control:FlowEditor x:Name="eEPC04" Canvas.Left="642" Canvas.Top="312" ContentLabel="EPC04" />
+                <control:FlowEditor x:Name="eEPC05" Canvas.Left="850" Canvas.Top="400" ContentLabel="EPC05" />
+                <control:FlowEditor x:Name="eEPC06" Canvas.Left="1000" Canvas.Top="312" ContentLabel="EPC06" />
+                <control:FlowEditor x:Name="eEPC07" Canvas.Left="721" Canvas.Top="73" ContentLabel="EPC07"/>
                 <!--#endregion-->
 
 

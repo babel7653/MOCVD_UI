@@ -70,7 +70,6 @@ namespace SapphireXR_App.Controls
         public static readonly DependencyProperty buttonBackgroundProperty =
             DependencyProperty.Register("buttonBackground", typeof(string), typeof(FlowController), new PropertyMetadata(default));
 
-
         private void ControllerButton_Loaded(object sender, RoutedEventArgs e)
         {
             FlowController display = (FlowController)sender;

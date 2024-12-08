@@ -17,8 +17,14 @@ namespace SapphireXR_App.ViewModels
   public class HomeViewModel : ViewModelBase
   {
     public static DispatcherTimer? _timer;
-    public FlowConData FlowConData { get; set; }
     public List<GasAIO> GasSets { get; set; }
+
+    #region Gs Data property 
+    public int GsH2Value { get; set; }
+    public int GsN2Value { get; set; }
+    public int GsNH3Value { get; set; }
+    public int GsSiH4Value { get; set; }
+    #endregion
 
     #region Fc Data property 
     public float FcSetVal01 { get; set; }
@@ -90,8 +96,6 @@ namespace SapphireXR_App.ViewModels
         Console.WriteLine(err.Message);
       }
     }
-
-
 
     private void ValveStateUpdate()
     {
@@ -220,7 +224,18 @@ namespace SapphireXR_App.ViewModels
         }
       }
 
+      GsH2Value += 20;
+      GsN2Value += 22;
+      GsNH3Value += 24;
+      GsSiH4Value += 26;
+
+
       #region onpropertyChanged
+      OnPropertyChanged(nameof(GsH2Value));
+      OnPropertyChanged(nameof(GsN2Value));
+      OnPropertyChanged(nameof(GsNH3Value));
+      OnPropertyChanged(nameof(GsSiH4Value));
+
       OnPropertyChanged(nameof(FcSetVal01));
       OnPropertyChanged(nameof(FcSetVal02));
       OnPropertyChanged(nameof(FcSetVal03));

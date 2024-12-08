@@ -1,0 +1,40 @@
+﻿<UserControl x:Class="SapphireXR_App.Controls.UcValve"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:SapphireXR_App.Controls"
+             mc:Ignorable="d" 
+             d:DesignHeight="28" d:DesignWidth="52"
+						 x:Name="ucv">
+	<UserControl.Resources>
+		<Style TargetType="{x:Type ToggleButton}">
+			<Setter Property="Template">
+				<Setter.Value>
+					<ControlTemplate TargetType="{x:Type ToggleButton}">
+						<Border Background="LightGray" CornerRadius="2">
+							<StackPanel Orientation="Horizontal">
+								<Border x:Name="on" Width="16" Height="16" Margin="3" CornerRadius="8"/>
+								<Border x:Name="off" Width="16" Height="16" Margin="3" CornerRadius="8"/>
+							</StackPanel>
+						</Border>
+						<ControlTemplate.Triggers>
+							<Trigger Property="IsChecked" Value="True">
+								<Setter TargetName="on"  Property="Background" Value="Lime" />
+								<Setter TargetName="off" Property="Background" Value="White"/>
+							</Trigger>
+							<Trigger Property="IsChecked" Value="False">
+								<Setter TargetName="on"  Property="Background" Value="White"/>
+								<Setter TargetName="off" Property="Background" Value="red"/>
+							</Trigger>
+						</ControlTemplate.Triggers>
+					</ControlTemplate>
+				</Setter.Value>
+			</Setter>
+		</Style>
+	</UserControl.Resources>
+	<Grid>
+		<ToggleButton x:Name="V01" VerticalAlignment="Center"  Margin="3"
+									Checked="V_Checked" Unchecked="V_UnChecked"/>
+	</Grid>
+</UserControl>

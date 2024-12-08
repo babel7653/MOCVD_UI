@@ -86,36 +86,4 @@
 
 		</Grid>
 	</Grid>
-
-	<!--UI data binding Test ~11월 23일-->
-	<!--<Grid>-->
-	<!--<Grid.RowDefinitions>
-			<RowDefinition />
-			<RowDefinition Height="40"/>
-		</Grid.RowDefinitions>-->
-	<!--<control:UcFlowSetting x:Name="ucFlowSettingDialog"
-													 UcTargetVal="{Binding FsTarVal}"
-													 UcRampTime="{Binding FsRampTime}"
-													 UcDeviation="{Binding FsDeviation}"
-													 UcCurVal="{Binding FsCurVal}"
-													 UcConVal="{Binding FsSetVal}"
-													 UcMaxVal="{Binding FsMaxVal}"/>-->
-	<!--<Grid Grid.Row="1" Grid.ColumnSpan="2" Grid.RowSpan="2" Height="40">
-			<Grid.ColumnDefinitions>
-				<ColumnDefinition/>
-				<ColumnDefinition/>
-			</Grid.ColumnDefinitions>
-			<Button x:Name="OK" Grid.Row="1" Content="확인" FontSize="15" Margin="5"
-							IsDefault="True" Cursor="Hand"
-							Style="{StaticResource MetroBlueButtonStyle}"
-							Click="Ok_Click"/>
-			<Button x:Name="Cancel" Grid.Row="1" Grid.Column="1" Content="취소" FontSize="15" Margin="5"
-							IsCancel="True" Cursor="Hand"
-							Style="{StaticResource MetroOrangeButtonStyle}"
-							Click="Cancel_Click"/>
-
-		</Grid>-->
-	<!--</Grid>-->
-
-
 </Window>

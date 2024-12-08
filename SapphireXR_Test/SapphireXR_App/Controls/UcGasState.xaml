@@ -6,17 +6,20 @@
              xmlns:local="clr-namespace:SapphireXR_App.Controls"
              mc:Ignorable="d" 
              d:DesignHeight="38" d:DesignWidth="90"
-						 Loaded="UserControl_Loaded">
-	
+						 x:Name="ucgs">
+
 	<StackPanel Height="38" Width="90">
-		<TextBlock x:Name="GasName" Height="22" Width="94" Margin="-2"
-							 Background="{DynamicResource SourceMainColor}" Foreground="White"
-							 FontSize="16" TextAlignment="Center" VerticalAlignment="Center"/>
-		<StackPanel Height="22" Width="90" Background="{DynamicResource SourceSecondaryColor}" Orientation="Horizontal">
-			<Ellipse Width="7" Height="7" Fill="LawnGreen" Margin="5,0,0,0"/>
-			<Label x:Name="PressureValue" HorizontalAlignment="Right" FontSize="14" Height="25" Width="76" Margin="0 -8 0 -1"
-						 Content="5555"
-						 HorizontalContentAlignment="Right"/>
+		<Label x:Name="GasName" Height="22" Width="90" Foreground="White" FontSize="16"  Padding="0"
+					 VerticalContentAlignment="Center" HorizontalContentAlignment="Center"
+					 Background="{DynamicResource SourceMainColor}"
+					 Content="{Binding ElementName=ucgs, Path=UcGasName}"/>
+		
+		<StackPanel Height="16" Width="90" Background="{DynamicResource SourceSecondaryColor}" Orientation="Horizontal">
+			<Ellipse Width="8" Height="8" Fill="LawnGreen" Margin="4 0 4 0"/>
+			<Label x:Name="GasPressure" FontSize="14" Padding="0" Width="72" Margin="0 -2 4 0"
+						 HorizontalContentAlignment="Right"
+						 Content="{Binding ElementName=ucgs, Path=UcGasPressure}"/>
+
 		</StackPanel>
 	</StackPanel>
 </UserControl>

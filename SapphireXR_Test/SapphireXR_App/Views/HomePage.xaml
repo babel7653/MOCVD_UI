@@ -253,78 +253,162 @@
 		<Line X1="1020" Y1="260" X2="1290" Y2="260" Stroke="LightBlue" StrokeThickness="8" />
 
 		<!-- Button for Valve Control -->
-		<Button x:Name="HydridCarrirerChange" Content="Button"
+		<control:UcValve x:Name="HydridCarrirerChange" Canvas.Left="107" Canvas.Top="150" Height="28" Width="52"
+										 MouseDown="UcValve_Click">
+			<control:UcValve.RenderTransform>
+				<RotateTransform Angle="270"/>
+			</control:UcValve.RenderTransform>
+		</control:UcValve>
+		<!--<Button x:Name="HydridCarrirerChange" Content="Button"
 						Command="{Binding BtnMsgBoxShowCommand}" CommandParameter="1"
 						Canvas.Left="110" Canvas.Top="145" Width="40" Height="22">
 			<Button.RenderTransform>
 				<RotateTransform Angle="270"/>
 			</Button.RenderTransform>
 
-		</Button>
+		</Button>-->
 
-		<Button x:Name="MOCarrierChange" Content="Btn" Canvas.Left="110" Canvas.Top="330" Width="40" Height="22"
+
+		<control:UcValve x:Name="MOCarrierChange" Canvas.Left="107" Canvas.Top="335" Height="28" Width="52"
+										 MouseDown="UcValve_Click">
+			<control:UcValve.RenderTransform>
+				<RotateTransform Angle="270"/>
+			</control:UcValve.RenderTransform>
+		</control:UcValve>
+		<!--<Button x:Name="MOCarrierChange" Content="Btn" Canvas.Left="110" Canvas.Top="330" Width="40" Height="22"
 						Command="{Binding BtnMsgBoxShowCommand}" CommandParameter="2">
 			<Button.RenderTransform>
 				<RotateTransform Angle="270"/>
 			</Button.RenderTransform>
-		</Button>
+		</Button>-->
 
-		<Button x:Name="SourceAmmoniaChange" Content="Button" Canvas.Left="290" Canvas.Top="126" Width="40" Height="22"/>
+		<control:UcValve x:Name="SourceAmmoniaChange" Canvas.Left="285" Canvas.Top="123" Height="58" Width="30"
+										 MouseDown="UcValve_Click" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+		<!--<Button x:Name="SourceAmmoniaChange" Content="Button" Canvas.Left="290" Canvas.Top="126" Width="40" Height="22"/>-->
 
+		<control:UcValve x:Name="SourceSilaneChange" Canvas.Left="643" Canvas.Top="126" Height="28" Width="52"
+										 MouseDown="UcValve_Click" HorizontalAlignment="Center" VerticalAlignment="Top"/>
+		<!--<Button x:Name="SourceSilaneChange" Content="Button" Canvas.Left="654" Canvas.Top="126" Width="40" Height="22">
+		</Button>-->
 
-		<Button x:Name="SourceSilaneChange" Content="Button" Canvas.Left="654" Canvas.Top="126" Width="40" Height="22">
-		</Button>
+		<control:UcValve x:Name="ManifoldHyd1Run" Canvas.Left="285" Canvas.Top="256" Height="28" Width="52"
+										 MouseDown="UcValve_Click" HorizontalAlignment="Center" VerticalAlignment="Top"/>
+		<!--<Button x:Name="ManifoldHyd1Run" Content="Button" Canvas.Left="290" Canvas.Top="258" Width="40" Height="22">
+		</Button>-->
 
-		<Button x:Name="ManifoldHyd1Run" Content="Button" Canvas.Left="290" Canvas.Top="258" Width="40" Height="22">
-		</Button>
-		<Button x:Name="ManifoldHyd2Run" Content="Button" Canvas.Left="430" Canvas.Top="258" Width="40" Height="22">
-		</Button>
-		<Button x:Name="ManifoldHyd3Run" Content="Button" Canvas.Left="570" Canvas.Top="258" Width="40" Height="22">
-		</Button>
+		<control:UcValve x:Name="ManifoldHyd2Run" Canvas.Left="424" Canvas.Top="256" Height="28" Width="52"
+										 MouseDown="UcValve_Click" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+		<!--<Button x:Name="ManifoldHyd2Run" Content="Button" Canvas.Left="430" Canvas.Top="258" Width="40" Height="22">
+		</Button>-->
 
-		<Button x:Name="ManifoldMO1Run" Content="Button" Canvas.Left="290" Canvas.Top="408" Width="40" Height="22">
-		</Button>
-		<Button x:Name="ManifoldMO2Run" Content="Button" Canvas.Left="430" Canvas.Top="408" Width="40" Height="22">
-		</Button>
-		<Button x:Name="ManifoldMO3Run" Content="Button" Canvas.Left="570" Canvas.Top="408" Width="40" Height="22">
-		</Button>
-		<Button x:Name="ManifoldMO4Run" Content="Button" Canvas.Left="710" Canvas.Top="408" Width="40" Height="22">
-		</Button>
-		<Button x:Name="ManifoldMO5Run" Content="Button" Canvas.Left="850" Canvas.Top="408" Width="40" Height="22">
-		</Button>
-		<Button x:Name="ManifoldMO6Run" Content="Button" Canvas.Left="990" Canvas.Top="408" Width="40" Height="22">
-		</Button>
+		<control:UcValve x:Name="ManifoldHyd3Run" Canvas.Left="565" Canvas.Top="256" Height="28" Width="52"
+										 MouseDown="UcValve_Click" HorizontalAlignment="Center" VerticalAlignment="Top"/>
+		<!--<Button x:Name="ManifoldHyd3Run" Content="Button" Canvas.Left="570" Canvas.Top="258" Width="40" Height="22">
+		</Button>-->
 
-		<Button x:Name="BubblerCarrier1Change" Content="Button" Canvas.Left="270" Canvas.Top="522" Width="40" Height="22">
-		</Button>
-		<Button x:Name="BubblerCarrier2Change" Content="Button" Canvas.Left="410" Canvas.Top="522" Width="40" Height="22">
-		</Button>
-		<Button x:Name="BubblerCarrier3Change" Content="Button" Canvas.Left="550" Canvas.Top="522" Width="40" Height="22">
-		</Button>
-		<Button x:Name="BubblerCarrier4Change" Content="Button" Canvas.Left="690" Canvas.Top="522" Width="40" Height="22">
-		</Button>
-		<Button x:Name="BubblerCarrier5Change" Content="Button" Canvas.Left="830" Canvas.Top="522" Width="40" Height="22">
-		</Button>
-		<Button x:Name="BubblerCarrier6Change" Content="Button" Canvas.Left="970" Canvas.Top="522" Width="40" Height="22">
-		</Button>
+		<control:UcValve x:Name="ManifoldMO1Run" Canvas.Left="286" Canvas.Top="405" Height="28" Width="52"
+										 MouseDown="UcValve_Click" HorizontalAlignment="Center" VerticalAlignment="Top"/>
+		<!--<Button x:Name="ManifoldMO1Run" Content="Button" Canvas.Left="290" Canvas.Top="408" Width="40" Height="22">
+		</Button>-->
 
-		<Button x:Name="Bubbler1Bypass" Content="Button" Canvas.Left="290" Canvas.Top="654" Width="40" Height="22">
-		</Button>
-		<Button x:Name="Bubbler2Bypass" Content="Button" Canvas.Left="430" Canvas.Top="654" Width="40" Height="22">
-		</Button>
-		<Button x:Name="Bubbler3Bypass" Content="Button" Canvas.Left="570" Canvas.Top="654" Width="40" Height="22">
-		</Button>
-		<Button x:Name="Bubbler4Bypass" Content="Button" Canvas.Left="710" Canvas.Top="654" Width="40" Height="22">
-		</Button>
-		<Button x:Name="Bubbler5Bypass" Content="Button" Canvas.Left="850" Canvas.Top="654" Width="40" Height="22">
-		</Button>
-		<Button x:Name="Bubbler6Bypass" Content="Button" Canvas.Left="990" Canvas.Top="654" Width="40" Height="22">
-		</Button>
+		<control:UcValve x:Name="ManifoldMO2Run" Canvas.Left="425" Canvas.Top="405" Height="28" Width="52"
+										 MouseDown="UcValve_Click" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+		<!--<Button x:Name="ManifoldMO2Run" Content="Button" Canvas.Left="430" Canvas.Top="408" Width="40" Height="22">
+		</Button>-->
 
-		<Button x:Name="DORVacuum" Content="Button" Canvas.Left="1220" Canvas.Top="163" Width="40" Height="22">
-		</Button>
-		<Button x:Name="VentToScrubber" Content="Button" Canvas.Left="1090" Canvas.Top="408" Width="40" Height="22">
-		</Button>
+		<control:UcValve x:Name="ManifoldMO3Run" Canvas.Left="565" Canvas.Top="405" Height="28" Width="52"
+										 MouseDown="UcValve_Click" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+		<!--<Button x:Name="ManifoldMO3Run" Content="Button" Canvas.Left="570" Canvas.Top="408" Width="40" Height="22">
+		</Button>-->
+
+		<control:UcValve x:Name="ManifoldMO4Run" Canvas.Left="705" Canvas.Top="405" Height="28" Width="52"
+										 MouseDown="UcValve_Click" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+		<!--<Button x:Name="ManifoldMO4Run" Content="Button" Canvas.Left="710" Canvas.Top="408" Width="40" Height="22">
+		</Button>-->
+
+		<control:UcValve x:Name="ManifoldMO5Run" Canvas.Left="845" Canvas.Top="405" Height="28" Width="52"
+										 MouseDown="UcValve_Click" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+		<!--<Button x:Name="ManifoldMO5Run" Content="Button" Canvas.Left="850" Canvas.Top="408" Width="40" Height="22">
+		</Button>-->
+
+		<control:UcValve x:Name="ManifoldMO6Run" Canvas.Left="985" Canvas.Top="405" Height="28" Width="52"
+										 MouseDown="UcValve_Click" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+		<!--<Button x:Name="ManifoldMO6Run" Content="Button" Canvas.Left="990" Canvas.Top="408" Width="40" Height="22">
+		</Button>-->
+
+		<control:UcValve x:Name="BubblerCarrier1Change" Canvas.Left="265" Canvas.Top="520" Height="28" Width="52"
+										 MouseDown="UcValve_Click" HorizontalAlignment="Center" VerticalAlignment="Top"/>
+		<!--<Button x:Name="BubblerCarrier1Change" Content="Button" Canvas.Left="270" Canvas.Top="522" Width="40" Height="22">
+		</Button>-->
+
+		<control:UcValve x:Name="BubblerCarrier2Change" Canvas.Left="405" Canvas.Top="520" Height="28" Width="52"
+										 MouseDown="UcValve_Click" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+
+		<!--<Button x:Name="BubblerCarrier2Change" Content="Button" Canvas.Left="410" Canvas.Top="522" Width="40" Height="22">
+		</Button>-->
+
+		<control:UcValve x:Name="BubblerCarrier3Change" Canvas.Left="545" Canvas.Top="520" Height="28" Width="52"
+										 MouseDown="UcValve_Click" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+
+		<!--<Button x:Name="BubblerCarrier3Change" Content="Button" Canvas.Left="550" Canvas.Top="522" Width="40" Height="22">
+		</Button>-->
+
+		<control:UcValve x:Name="BubblerCarrier4Change" Canvas.Left="685" Canvas.Top="520" Height="28" Width="52"
+										 MouseDown="UcValve_Click" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+
+		<!--<Button x:Name="BubblerCarrier4Change" Content="Button" Canvas.Left="690" Canvas.Top="522" Width="40" Height="22">
+		</Button>-->
+
+		<control:UcValve x:Name="BubblerCarrier5Change" Canvas.Left="825" Canvas.Top="520" Height="28" Width="52"
+										 MouseDown="UcValve_Click" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+
+		<!--<Button x:Name="BubblerCarrier5Change" Content="Button" Canvas.Left="830" Canvas.Top="522" Width="40" Height="22">
+		</Button>-->
+
+		<control:UcValve x:Name="BubblerCarrier6Change" Canvas.Left="965" Canvas.Top="520" Height="28" Width="52"
+										 MouseDown="UcValve_Click" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+		<!--<Button x:Name="BubblerCarrier6Change" Content="Button" Canvas.Left="970" Canvas.Top="522" Width="40" Height="22">
+		</Button>-->
+
+		<control:UcValve x:Name="Bubbler1Bypass" Canvas.Left="285" Canvas.Top="652" Height="28" Width="52"
+										 MouseDown="UcValve_Click" HorizontalAlignment="Center" VerticalAlignment="Top"/>
+		<!--<Button x:Name="Bubbler1Bypass" Content="Button" Canvas.Left="290" Canvas.Top="654" Width="40" Height="22">
+		</Button>-->
+
+		<control:UcValve x:Name="Bubbler2Bypass" Canvas.Left="425" Canvas.Top="652" Height="28" Width="52"
+										 MouseDown="UcValve_Click" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+		<!--<Button x:Name="Bubbler2Bypass" Content="Button" Canvas.Left="430" Canvas.Top="654" Width="40" Height="22">
+		</Button>-->
+
+		<control:UcValve x:Name="Bubbler3Bypass" Canvas.Left="565" Canvas.Top="652" Height="28" Width="52"
+										 MouseDown="UcValve_Click" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+		<!--<Button x:Name="Bubbler3Bypass" Content="Button" Canvas.Left="570" Canvas.Top="654" Width="40" Height="22">
+		</Button>-->
+
+		<control:UcValve x:Name="Bubbler4Bypass" Canvas.Left="705" Canvas.Top="652" Height="28" Width="52"
+										 MouseDown="UcValve_Click" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+		<!--<Button x:Name="Bubbler4Bypass" Content="Button" Canvas.Left="710" Canvas.Top="654" Width="40" Height="22">
+		</Button>-->
+
+		<control:UcValve x:Name="Bubbler5Bypass" Canvas.Left="845" Canvas.Top="652" Height="28" Width="52"
+										 MouseDown="UcValve_Click" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+		<!--<Button x:Name="Bubbler5Bypass" Content="Button" Canvas.Left="850" Canvas.Top="654" Width="40" Height="22">
+		</Button>-->
+
+		<control:UcValve x:Name="Bubbler6Bypass" Canvas.Left="985" Canvas.Top="652" Height="28" Width="52"
+										 MouseDown="UcValve_Click" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+		<!--<Button x:Name="Bubbler6Bypass" Content="Button" Canvas.Left="990" Canvas.Top="654" Width="40" Height="22">
+		</Button>-->
+
+		<control:UcValve x:Name="DORVacuum" Canvas.Left="1215" Canvas.Top="160" Height="28" Width="52"
+										 MouseDown="UcValve_Click" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+		<!--<Button x:Name="DORVacuum" Content="Button" Canvas.Left="1220" Canvas.Top="163" Width="40" Height="22">
+		</Button>-->
+
+		<control:UcValve x:Name="VentToScrubber" Canvas.Left="1085" Canvas.Top="405" Height="28" Width="52"
+										 MouseDown="UcValve_Click" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+		<!--<Button x:Name="VentToScrubber" Content="Button" Canvas.Left="1090" Canvas.Top="408" Width="40" Height="22">
+		</Button>-->
 
 		<!-- Button for Leak Test Valve -->
 		<Button x:Name="LeakTestSilane" Content="Button" Canvas.Left="676" Canvas.Top="100" Width="14" Height="10">
@@ -332,11 +416,13 @@
 				<RotateTransform Angle="270"/>
 			</Button.RenderTransform>
 		</Button>
-		<Button x:Name="LeakTestAmmonia" Content="Button" Canvas.Left="318" Canvas.Top="100" Width="14" Height="10">
+
+		<Button x:Name="LeakTestAmmonia" Content="Button" Canvas.Left="318" Canvas.Top="100" Width="14" Height="10" HorizontalAlignment="Left" VerticalAlignment="Top">
 			<Button.RenderTransform>
 				<RotateTransform Angle="270"/>
 			</Button.RenderTransform>
 		</Button>
+		
 		<Button x:Name="LeakTestNitrogen" Content="Button" Canvas.Left="113" Canvas.Top="488" Width="14" Height="10">
 		</Button>
 		<Button x:Name="LeakTestHydrogen" Content="Button" Canvas.Left="153" Canvas.Top="500" Width="14" Height="10">
@@ -415,24 +501,35 @@
 			</Button.RenderTransform>
 		</Button>
 
-		<Button x:Name="ThrottleValveControl" Content="Button" Canvas.Left="1140" Canvas.Top="610" Width="40" Height="22">
-		</Button>
+		<control:UcValve x:Name="ThrottleValveControl" Canvas.Left="1140" Canvas.Top="610" Height="28" Width="52"
+										 MouseDown="UcValve_Click" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+
+		<!--<Button x:Name="ThrottleValveControl" Content="Button" Canvas.Left="1140" Canvas.Top="610" Width="40" Height="22">
+		</Button>-->
 
 		<!-- 수소가스 공급 상태 -->
-		<control:UcGasState x:Name="H2" Canvas.Left="60" Canvas.Top="46"
-													MouseLeftButtonUp="UcGasState_Click"/>
+		<control:UcGasState x:Name="H2" Canvas.Left="60" Canvas.Top="38"
+														UcGasName="H2 Gas"
+														UcGasPressure="{Binding GsH2Value}"
+														MouseLeftButtonUp="UcGasState_Click" HorizontalAlignment="Center" VerticalAlignment="Top"/>
 
 		<!-- 질소가스 공급 상태 -->
-		<control:UcGasState x:Name="N2" Canvas.Left="185" Canvas.Top="46"
-													MouseLeftButtonUp="UcGasState_Click"/>
+		<control:UcGasState x:Name="N2" Canvas.Left="185" Canvas.Top="38"
+														UcGasName="N2 Gas"
+														UcGasPressure="{Binding GsN2Value}"
+														MouseLeftButtonUp="UcGasState_Click" HorizontalAlignment="Center" VerticalAlignment="Top"/>
 
 		<!-- 암모니아가스 공급 상태 -->
-		<control:UcGasState x:Name="NH3" Canvas.Left="310" Canvas.Top="46"
-													MouseLeftButtonUp="UcGasState_Click"/>
+		<control:UcGasState x:Name="NH3" Canvas.Left="310" Canvas.Top="38"
+														UcGasName="NH3 Gas"
+														UcGasPressure="{Binding GsNH3Value}"
+														MouseLeftButtonUp="UcGasState_Click" HorizontalAlignment="Center" VerticalAlignment="Top"/>
 
 		<!-- 실란가스 공급 상태 -->
-		<control:UcGasState x:Name="SiH" Canvas.Left="604" Canvas.Top="46"
-													MouseLeftButtonUp="UcGasState_Click"/>
+		<control:UcGasState x:Name="SiH" Canvas.Left="604" Canvas.Top="38"
+														UcGasName="SiH4 Gas"
+														UcGasPressure="{Binding GsSiH4Value}"
+														MouseLeftButtonUp="UcGasState_Click" HorizontalAlignment="Center" VerticalAlignment="Top"/>
 
 
 		<!-- Display Value for Reactor State -->
@@ -494,7 +591,7 @@
 
 		<!--MFC Contol Box!-->
 		<control:UcFlowControl x:Name="M01" Canvas.Left="182" Canvas.Top="355" Background="{DynamicResource MFCMainColor}"
-													 MouseLeftButtonUp="UcFlowControl_Click"
+													 MouseLeftButtonUp="UcFlowControl_Click" 
 													 UcName="MFC01"
 													 UcSetVal="{Binding FcSetVal01}"
 													 UcCurVal="{Binding FcCurVal01}"/>

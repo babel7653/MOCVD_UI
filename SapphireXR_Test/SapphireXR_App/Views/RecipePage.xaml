@@ -146,23 +146,32 @@
 
 				<!-- 수소가스 공급 상태 -->
 				<control:UcGasState x:Name="H2" Canvas.Left="60" Canvas.Top="31"
-													MouseLeftButtonUp="UcGasState_Click"/>
+														UcGasName="H2 Gas"
+														UcGasPressure="{Binding GsH2Value}"
+														MouseLeftButtonUp="UcGasState_Click"/>
 
 				<!-- 질소가스 공급 상태 -->
 				<control:UcGasState x:Name="N2" Canvas.Left="165" Canvas.Top="31"
-													MouseLeftButtonUp="UcGasState_Click"/>
+														UcGasName="N2 Gas"
+														UcGasPressure="{Binding GsN2Value}"
+														MouseLeftButtonUp="UcGasState_Click"/>
 
 				<!-- 암모니아가스 공급 상태 -->
 				<control:UcGasState x:Name="NH3" Canvas.Left="340" Canvas.Top="31"
-													MouseLeftButtonUp="UcGasState_Click"/>
+														UcGasName="NH3 Gas"
+														UcGasPressure="{Binding GsNH3Value}"
+														MouseLeftButtonUp="UcGasState_Click"/>
 
 				<!-- 실란가스 공급 상태 -->
 				<control:UcGasState x:Name="SiH4" Canvas.Left="704" Canvas.Top="31"
-													MouseLeftButtonUp="UcGasState_Click"/>
+														UcGasName="SiH4 Gas"
+														UcGasPressure="{Binding GsSiH4Value}"
+														MouseLeftButtonUp="UcGasState_Click"/>
 
 				<!-- Thermal Bath for MO-Source -->
 				<control:UcGasState x:Name="TEB" Canvas.Left="265" Canvas.Top="380"
-													MouseLeftButtonUp="UcGasState_Click"/>
+														UcGasName="TEB"
+														MouseLeftButtonUp="UcGasState_Click"/>
 
 				<!--<StackPanel Canvas.Left="265" Canvas.Top="380" Width="90" Height="34">
 					<TextBlock Height="22"  Background="{DynamicResource SourceMainColor}" Foreground="White" FontSize="16" TextAlignment="Center" >TEB</TextBlock>
@@ -173,7 +182,8 @@
 				</StackPanel>-->
 
 				<control:UcGasState x:Name="TMAl" Canvas.Left="405" Canvas.Top="380"
-													MouseLeftButtonUp="UcGasState_Click"/>
+														UcGasName="TMAl"
+														MouseLeftButtonUp="UcGasState_Click"/>
 
 				<!--<StackPanel Canvas.Left="405" Canvas.Top="380" Width="90" Height="34">
 					<TextBlock Height="22"  Background="{DynamicResource SourceMainColor}" Foreground="White" FontSize="16" TextAlignment="Center" >TMAl</TextBlock>
@@ -184,7 +194,8 @@
 				</StackPanel>-->
 
 				<control:UcGasState x:Name="TMIn" Canvas.Left="545" Canvas.Top="380"
-													MouseLeftButtonUp="UcGasState_Click"/>
+														UcGasName="TMIn"
+														MouseLeftButtonUp="UcGasState_Click"/>
 
 				<!--<StackPanel Canvas.Left="545" Canvas.Top="380" Width="90" Height="34">
 					<TextBlock Height="22"  Background="{DynamicResource SourceMainColor}" Foreground="White" FontSize="16" TextAlignment="Center" >TMIn</TextBlock>
@@ -195,7 +206,8 @@
 				</StackPanel>-->
 
 				<control:UcGasState x:Name="TMGa" Canvas.Left="685" Canvas.Top="380"
-													MouseLeftButtonUp="UcGasState_Click"/>
+														UcGasName="TMGa"
+														MouseLeftButtonUp="UcGasState_Click"/>
 
 				<!--<StackPanel Canvas.Left="685" Canvas.Top="380" Width="90" Height="34">
 					<TextBlock Height="22"  Background="{DynamicResource SourceMainColor}" Foreground="White" FontSize="16" TextAlignment="Center" >TMGa</TextBlock>
@@ -206,7 +218,8 @@
 				</StackPanel>-->
 
 				<control:UcGasState x:Name="DTMGa" Canvas.Left="825" Canvas.Top="380"
-													MouseLeftButtonUp="UcGasState_Click"/>
+														UcGasName="DTMGa"
+														MouseLeftButtonUp="UcGasState_Click"/>
 
 				<!--<StackPanel Canvas.Left="825" Canvas.Top="380" Width="90" Height="34">
 					<TextBlock Height="22"  Background="{DynamicResource SourceMainColor}" Foreground="White" FontSize="16" TextAlignment="Center" >DTMGa</TextBlock>
@@ -217,7 +230,8 @@
 				</StackPanel>-->
 
 				<control:UcGasState x:Name="Cp2Mg" Canvas.Left="965" Canvas.Top="380"
-													MouseLeftButtonUp="UcGasState_Click"/>
+														UcGasName="Cp2Mg"
+														MouseLeftButtonUp="UcGasState_Click"/>
 
 				<!--<StackPanel Canvas.Left="965" Canvas.Top="380" Width="90" Height="34">
 					<TextBlock Height="22"  Background="{DynamicResource SourceMainColor}" Foreground="White" FontSize="16" TextAlignment="Center" >Cp2Mg</TextBlock>
@@ -228,158 +242,158 @@
 				</StackPanel>-->
 
 				<!--MFC Contol Box!-->
-				<control:UcFlowControl x:Name="ucMfc01" Canvas.Left="182" Canvas.Top="200" Background="{DynamicResource MFCMainColor}"
+				<control:UcFlowControl x:Name="M01" Canvas.Left="182" Canvas.Top="200" Background="{DynamicResource MFCMainColor}"
 															 MouseLeftButtonUp="UcFlowControl_Click"
 															 UcName="MFC01"
 															 UcSetVal="{Binding FcSetVal01}"
 															 UcCurVal="{Binding FcCurVal01}"/>
 
-				<control:UcFlowControl x:Name="ucMfc02" Canvas.Left="182" Canvas.Top="166" Background="{DynamicResource MFCMainColor}"
+				<control:UcFlowControl x:Name="M02" Canvas.Left="182" Canvas.Top="166" Background="{DynamicResource MFCMainColor}"
 															 MouseLeftButtonUp="UcFlowControl_Click"
 															 UcName="MFC02"
 															 UcSetVal="{Binding FcSetVal02}"
 															 UcCurVal="{Binding FcCurVal02}"/>
 
-				<control:UcFlowControl x:Name="ucMfc03"  Canvas.Left="423" Canvas.Top="109" Background="{DynamicResource MFCMainColor}"
+				<control:UcFlowControl x:Name="M03"  Canvas.Left="423" Canvas.Top="109" Background="{DynamicResource MFCMainColor}"
 															 MouseLeftButtonUp="UcFlowControl_Click"
 															 UcName="MFC03"
 															 UcSetVal="{Binding FcSetVal03}"
 															 UcCurVal="{Binding FcCurVal03}"/>
 
-				<control:UcFlowControl x:Name="ucMfc04"  Canvas.Left="283" Canvas.Top="109" Background="{DynamicResource MFCMainColor}"
+				<control:UcFlowControl x:Name="M04"  Canvas.Left="283" Canvas.Top="109" Background="{DynamicResource MFCMainColor}"
 															 MouseLeftButtonUp="UcFlowControl_Click"
 															 UcName="MFC04"
 															 UcSetVal="{Binding FcSetVal04}"
 															 UcCurVal="{Binding FcCurVal04}"/>
 
-				<control:UcFlowControl x:Name="ucMfc05"  Canvas.Left="627" Canvas.Top="65" Background="{DynamicResource MFCMainColor}"
+				<control:UcFlowControl x:Name="M05"  Canvas.Left="627" Canvas.Top="65" Background="{DynamicResource MFCMainColor}"
 															 MouseLeftButtonUp="UcFlowControl_Click"
 															 UcName="MFC05"
 															 UcSetVal="{Binding FcSetVal05}"
 															 UcCurVal="{Binding FcCurVal05}"/>
 
-				<control:UcFlowControl x:Name="ucMfc06"  Canvas.Left="563" Canvas.Top="65" Background="{DynamicResource MFCMainColor}"
+				<control:UcFlowControl x:Name="M06"  Canvas.Left="563" Canvas.Top="65" Background="{DynamicResource MFCMainColor}"
 															 MouseLeftButtonUp="UcFlowControl_Click"
 															 UcName="MFC06"
 															 UcSetVal="{Binding FcSetVal06}"
 															 UcCurVal="{Binding FcCurVal06}"/>
 
-				<control:UcFlowControl x:Name="ucMfc07"  Canvas.Left="563" Canvas.Top="109" Background="{DynamicResource MFCMainColor}"
+				<control:UcFlowControl x:Name="M07"  Canvas.Left="563" Canvas.Top="109" Background="{DynamicResource MFCMainColor}"
 															 MouseLeftButtonUp="UcFlowControl_Click"
 															 UcName="MFC07"
 															 UcSetVal="{Binding FcSetVal07}"
 															 UcCurVal="{Binding FcCurVal07}"/>
 
-				<control:UcFlowControl x:Name="ucMfc08"  Canvas.Left="251" Canvas.Top="324" Background="{DynamicResource MFCMainColor}"
+				<control:UcFlowControl x:Name="M08"  Canvas.Left="251" Canvas.Top="324" Background="{DynamicResource MFCMainColor}"
 															 MouseLeftButtonUp="UcFlowControl_Click"
 															 UcName="MFC08"
 															 UcSetVal="{Binding FcSetVal08}"
 															 UcCurVal="{Binding FcCurVal08}"/>
 
-				<control:UcFlowControl x:Name="ucMfc09"  Canvas.Left="391" Canvas.Top="324" Background="{DynamicResource MFCMainColor}"
+				<control:UcFlowControl x:Name="M09"  Canvas.Left="391" Canvas.Top="324" Background="{DynamicResource MFCMainColor}"
 															 MouseLeftButtonUp="UcFlowControl_Click"
 															 UcName="MFC09"
 															 UcSetVal="{Binding FcSetVal09}"
 															 UcCurVal="{Binding FcCurVal09}"/>
 
-				<control:UcFlowControl x:Name="ucMfc10"  Canvas.Left="531" Canvas.Top="324" Background="{DynamicResource MFCMainColor}"
+				<control:UcFlowControl x:Name="M10"  Canvas.Left="531" Canvas.Top="324" Background="{DynamicResource MFCMainColor}"
 															 MouseLeftButtonUp="UcFlowControl_Click"
 															 UcName="MFC10"
 															 UcSetVal="{Binding FcSetVal10}"
 															 UcCurVal="{Binding FcCurVal10}"/>
 
-				<control:UcFlowControl x:Name="ucMfc11"  Canvas.Left="671" Canvas.Top="324" Background="{DynamicResource MFCMainColor}"
+				<control:UcFlowControl x:Name="M11"  Canvas.Left="671" Canvas.Top="324" Background="{DynamicResource MFCMainColor}"
 															 MouseLeftButtonUp="UcFlowControl_Click"
 															 UcName="MFC11"
 															 UcSetVal="{Binding FcSetVal11}"
 															 UcCurVal="{Binding FcCurVal11}"/>
 
-				<control:UcFlowControl x:Name="ucMfc12"  Canvas.Left="811" Canvas.Top="324" Background="{DynamicResource MFCMainColor}"
+				<control:UcFlowControl x:Name="M12"  Canvas.Left="811" Canvas.Top="324" Background="{DynamicResource MFCMainColor}"
 															 MouseLeftButtonUp="UcFlowControl_Click"
 															 UcName="MFC12"
 															 UcSetVal="{Binding FcSetVal12}"
 															 UcCurVal="{Binding FcCurVal12}"/>
 
-				<control:UcFlowControl x:Name="ucMfc13"  Canvas.Left="811" Canvas.Top="296" Background="{DynamicResource MFCMainColor}"
+				<control:UcFlowControl x:Name="M13"  Canvas.Left="811" Canvas.Top="296" Background="{DynamicResource MFCMainColor}"
 															 MouseLeftButtonUp="UcFlowControl_Click"
 															 UcName="MFC13"
 															 UcSetVal="{Binding FcSetVal13}"
 															 UcCurVal="{Binding FcCurVal13}"/>
 
-				<control:UcFlowControl x:Name="ucMfc14"   Canvas.Left="875" Canvas.Top="296" Background="{DynamicResource MFCMainColor}"
+				<control:UcFlowControl x:Name="M14"   Canvas.Left="875" Canvas.Top="296" Background="{DynamicResource MFCMainColor}"
 															 MouseLeftButtonUp="UcFlowControl_Click"
 															 UcName="MFC14"
 															 UcSetVal="{Binding FcSetVal14}"
 															 UcCurVal="{Binding FcCurVal14}"/>
 
-				<control:UcFlowControl x:Name="ucMfc15"  Canvas.Left="951" Canvas.Top="324" Background="{DynamicResource MFCMainColor}"
+				<control:UcFlowControl x:Name="M15"  Canvas.Left="951" Canvas.Top="324" Background="{DynamicResource MFCMainColor}"
 															 MouseLeftButtonUp="UcFlowControl_Click"
 															 UcName="MFC15"
 															 UcSetVal="{Binding FcSetVal15}"
 															 UcCurVal="{Binding FcCurVal15}"/>
 
-				<control:UcFlowControl x:Name="ucMfc16"  Canvas.Left="772" Canvas.Top="149" Background="{DynamicResource MFCMainColor}"
+				<control:UcFlowControl x:Name="M16"  Canvas.Left="772" Canvas.Top="149" Background="{DynamicResource MFCMainColor}"
 															 MouseLeftButtonUp="UcFlowControl_Click"
 															 UcName="MFC16"
 															 UcSetVal="{Binding FcSetVal16}"
 															 UcCurVal="{Binding FcCurVal16}"/>
 
-				<control:UcFlowControl x:Name="ucMfc17"  Canvas.Left="772" Canvas.Top="183" Background="{DynamicResource MFCMainColor}"
+				<control:UcFlowControl x:Name="M17"  Canvas.Left="772" Canvas.Top="183" Background="{DynamicResource MFCMainColor}"
 															 MouseLeftButtonUp="UcFlowControl_Click"
 															 UcName="MFC17"
 															 UcSetVal="{Binding FcSetVal17}"
 															 UcCurVal="{Binding FcCurVal17}"/>
 
-				<control:UcFlowControl x:Name="ucMfc18"  Canvas.Left="182" Canvas.Top="228" Background="{DynamicResource MFCMainColor}"
+				<control:UcFlowControl x:Name="M18"  Canvas.Left="182" Canvas.Top="228" Background="{DynamicResource MFCMainColor}"
 															 MouseLeftButtonUp="UcFlowControl_Click"
 															 UcName="MFC18"
 															 UcSetVal="{Binding FcSetVal18}"
 															 UcCurVal="{Binding FcCurVal18}"/>
 
-				<control:UcFlowControl x:Name="ucMfc19"  Canvas.Left="182" Canvas.Top="138" Background="{DynamicResource MFCMainColor}"
+				<control:UcFlowControl x:Name="M19"  Canvas.Left="182" Canvas.Top="138" Background="{DynamicResource MFCMainColor}"
 															 MouseLeftButtonUp="UcFlowControl_Click"
 															 UcName="MFC19"
 															 UcSetVal="{Binding FcSetVal19}"
 															 UcCurVal="{Binding FcCurVal19}"/>
 
 				<!--EPC Contol Box!-->
-				<control:UcFlowControl x:Name="ucEpc01"  Canvas.Left="627" Canvas.Top="109" Background="{DynamicResource EPCMainColor}"
+				<control:UcFlowControl x:Name="E01"  Canvas.Left="627" Canvas.Top="109" Background="{DynamicResource EPCMainColor}"
 															 MouseLeftButtonUp="UcFlowControl_Click"
 															 UcName="EPC01"
 															 UcSetVal="{Binding FcSetVal20}"
 															 UcCurVal="{Binding FcCurVal20}"/>
 
-				<control:UcFlowControl x:Name="ucEpc02"  Canvas.Left="324" Canvas.Top="610" Background="{DynamicResource EPCMainColor}"
+				<control:UcFlowControl x:Name="E02"  Canvas.Left="324" Canvas.Top="610" Background="{DynamicResource EPCMainColor}"
 															 MouseLeftButtonUp="UcFlowControl_Click"
 															 UcName="EPC02"
 															 UcSetVal="{Binding FcSetVal21}"
 															 UcCurVal="{Binding FcCurVal21}"/>
 
-				<control:UcFlowControl x:Name="ucEpc03"  Canvas.Left="455" Canvas.Top="324" Background="{DynamicResource EPCMainColor}"
+				<control:UcFlowControl x:Name="E03"  Canvas.Left="455" Canvas.Top="324" Background="{DynamicResource EPCMainColor}"
 															 MouseLeftButtonUp="UcFlowControl_Click"
 															 UcName="EPC03"
 															 UcSetVal="{Binding FcSetVal22}"
 															 UcCurVal="{Binding FcCurVal22}"/>
 
-				<control:UcFlowControl x:Name="ucEpc04"  Canvas.Left="595" Canvas.Top="324" Background="{DynamicResource EPCMainColor}"
+				<control:UcFlowControl x:Name="E04"  Canvas.Left="595" Canvas.Top="324" Background="{DynamicResource EPCMainColor}"
 															 MouseLeftButtonUp="UcFlowControl_Click"
 															 UcName="EPC04"
 															 UcSetVal="{Binding FcSetVal23}"
 															 UcCurVal="{Binding FcCurVal23}"/>
 
-				<control:UcFlowControl x:Name="ucEpc05"  Canvas.Left="735" Canvas.Top="324" Background="{DynamicResource EPCMainColor}"
+				<control:UcFlowControl x:Name="E05"  Canvas.Left="735" Canvas.Top="324" Background="{DynamicResource EPCMainColor}"
 															 MouseLeftButtonUp="UcFlowControl_Click"
 															 UcName="EPC05"
 															 UcSetVal="{Binding FcSetVal24}"
 															 UcCurVal="{Binding FcCurVal24}"/>
 
-				<control:UcFlowControl x:Name="ucEpc06"  Canvas.Left="875" Canvas.Top="324" Background="{DynamicResource EPCMainColor}"
+				<control:UcFlowControl x:Name="E06"  Canvas.Left="875" Canvas.Top="324" Background="{DynamicResource EPCMainColor}"
 															 MouseLeftButtonUp="UcFlowControl_Click"
 															 UcName="EPC06"
 															 UcSetVal="{Binding FcSetVal25}"
 															 UcCurVal="{Binding FcCurVal25}"/>
 
-				<control:UcFlowControl x:Name="ucEpc07"  Canvas.Left="1015" Canvas.Top="324" Background="{DynamicResource EPCMainColor}"
+				<control:UcFlowControl x:Name="E07"  Canvas.Left="1015" Canvas.Top="324" Background="{DynamicResource EPCMainColor}"
 															 MouseLeftButtonUp="UcFlowControl_Click"
 															 UcName="EPC07"
 															 UcSetVal="{Binding FcSetVal26}"

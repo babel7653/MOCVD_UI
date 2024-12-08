@@ -30,7 +30,7 @@ namespace SapphireXR_App.Views
     {
       InitializeComponent();
       DataContext = this;
-
+      //DataContext = App.Current.Services.GetService(typeof(FlowControlDialogViewModel));
       GasSets = SettingViewModel.sGasAIO;
     }
 
@@ -137,20 +137,19 @@ namespace SapphireXR_App.Views
       }
     }
 
-
     private void Ok_Click(object sender, RoutedEventArgs e)
     {
       if (FcDialog == null) return;
 
-      foreach (var AIO in GasSets)
+      foreach (var gasSet in GasSets)
       {
-        if (AIO.ID == FcDialog.Name)
+        if (gasSet.ID == FcDialog.Name)
         {
-          AIO.TargetValue = FcDialog.FsTarVal;
+          gasSet.TargetValue = FcDialog.FsTarVal;
           //gasAIO.RampTime = FcDialog.FsRampTime;
-          AIO.CurrentValue = FcDialog.FsCurVal;
+          gasSet.CurrentValue = FcDialog.FsCurVal;
           //gasAIO.ControlValue = FcDialog.FsConVal;
-          AIO.MaxValue = FcDialog.FsMaxVal;
+          gasSet.MaxValue = FcDialog.FsMaxVal;
         }
       }
 

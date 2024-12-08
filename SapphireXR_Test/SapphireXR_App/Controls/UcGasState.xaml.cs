@@ -26,12 +26,31 @@ namespace SapphireXR_App.Controls
       InitializeComponent();
     }
 
-    private void UserControl_Loaded(object sender, RoutedEventArgs e)
-    {
-      UcGasState fc = e.Source as UcGasState;
-      GasName.Text = fc.Name;
-      PressureValue.Content = 55555.ToString();
 
+
+
+    public string UcGasName
+    {
+      get { return (string)GetValue(UcGasNameProperty); }
+      set { SetValue(UcGasNameProperty, value); }
     }
+
+    // Using a DependencyProperty as the backing store for UcGasName.  This enables animation, styling, binding, etc...
+    public static readonly DependencyProperty UcGasNameProperty =
+        DependencyProperty.Register("UcGasName", typeof(string), typeof(UcGasState), new PropertyMetadata(default));
+
+
+
+    public int UcGasPressure
+    {
+      get { return (int)GetValue(UcGasPressureProperty); }
+      set { SetValue(UcGasPressureProperty, value); }
+    }
+
+    // Using a DependencyProperty as the backing store for GasPressure.  This enables animation, styling, binding, etc...
+    public static readonly DependencyProperty UcGasPressureProperty =
+        DependencyProperty.Register("UcGasPressure", typeof(int), typeof(UcGasState), new PropertyMetadata(default));
+
+
   }
 }

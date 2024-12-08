@@ -11,7 +11,6 @@ using CsvHelper;
 using CsvHelper.Configuration;
 using Microsoft.Win32;
 using OxyPlot;
-using SapphireXR_App.Bases;
 using SapphireXR_App.Models;
 using OxyPlot.Axes;
 using OxyPlot.Series;
@@ -208,7 +207,6 @@ namespace SapphireXR_App.ViewModels
     public static string RecipeCsvFile = "";
 
     public int CurrRcpNum { get; set; } = 0;
-    public List<GasAIO> GasSets { get; set; }
 
 
     // TcRecipes (for debugging) : plc recipe data to be loaded from csv file
@@ -610,7 +608,14 @@ namespace SapphireXR_App.ViewModels
     }
 
     public static DispatcherTimer? _timer;
-    public FlowConData FlowConData { get; set; }
+    public List<GasAIO> GasSets { get; set; }
+
+    #region Gs Data property 
+    public int GsH2Value { get; set; }
+    public int GsN2Value { get; set; }
+    public int GsNH3Value { get; set; }
+    public int GsSiH4Value { get; set; }
+    #endregion
 
     #region Fc Data property 
     public float FcSetVal01 { get; set; }
@@ -808,7 +813,18 @@ namespace SapphireXR_App.ViewModels
         }
       }
 
+      GsH2Value += 10;
+      GsN2Value += 12;
+      GsNH3Value += 14;
+      GsSiH4Value += 16;
+
+
       #region onpropertyChanged
+      OnPropertyChanged(nameof(GsH2Value));
+      OnPropertyChanged(nameof(GsN2Value));
+      OnPropertyChanged(nameof(GsNH3Value));
+      OnPropertyChanged(nameof(GsSiH4Value));
+
       OnPropertyChanged(nameof(FcSetVal01));
       OnPropertyChanged(nameof(FcSetVal02));
       OnPropertyChanged(nameof(FcSetVal03));

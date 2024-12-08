@@ -21,19 +21,6 @@ namespace SapphireXR_App.ViewModels
   {
 
 
-    public ICommand OkCommand => new RelayCommand<Button>(Ok);
-
-
-    private void Ok(Button btn)
-    {
-      if (btn != null)
-      {
-
-      }
-
-
-    }
-
     public int FsTarVal { get; set; } = 0;
     public int FsRampTime { get; set; } = 0;
     public int FsDeviation { get; set; } = 0;
@@ -41,52 +28,47 @@ namespace SapphireXR_App.ViewModels
     public int FsSetVal { get; set; } = 0;
     public int FsMaxVal { get; set; } = 0;
 
-    //public int TbValveNum { get; set; }
-    //public string TbValveState { get; set; }
+    public int TbValveNum { get; set; }
+    public string TbValveState { get; set; }
 
-    ////public ICommand TestWindowShowCommand => new RelayCommand(BtnTestWindowShow);
-    //public ICommand MfcOkCommand => new RelayCommand<object>(MfcOk);
-    //public ICommand MfcCancelCommand => new RelayCommand<object>(MfcCancel);
-
-
-    //public FlowControlDialogViewModel(IServiceProvider service)
-    //{
-    //  TbValveNum = HomeViewModel.MfcNo;
-    //  OnPropertyChanged(nameof(TbValveNum));
-
-    //  FlowControlDialog FCV = new(TbValveNum.ToString());
-    //  FCV.ShowDialog();
-
-    //}
+    //public ICommand TestWindowShowCommand => new RelayCommand(BtnTestWindowShow);
+    public ICommand FlowSettingOkCommand => new RelayCommand<object>(FlowSettingOk);
+    public ICommand FlowSettingCancelCommand => new RelayCommand<object>(FlowSettingCancel);
 
 
-    //private void MfcOk(object? parameter)
-    //{
-    //  TbValveState = parameter as string;
-    //  OnPropertyChanged(nameof(TbValveState));
-    //  MessageBoxResult re = MessageBox.Show($"MFC {TbValveNum}번을 " + TbValveState + " 으로 설정했습니다.", "MFC1", MessageBoxButton.OKCancel);
-    //  if (re == MessageBoxResult.OK)
-    //  {
-    //    if (parameter is System.Windows.Window)
-    //    {
-    //      CurrWinClose(parameter);
-    //    }
+    public FlowControlDialogViewModel(IServiceProvider service)
+    {
 
-    //  }
-    //}
+    }
 
-    //private void MfcCancel(object? parameter)
-    //{
-    //  MessageBox.Show("밸브 1번을 닫았습니다.");
-    //  CurrWinClose(parameter);
-    //}
 
-    //private void CurrWinClose(object? param)
-    //{
-    //  if (param is System.Windows.Window)
-    //  {
-    //    ((System.Windows.Window)param).Close();
-    //  }
-    //}
+    private void FlowSettingOk(object win)
+    {
+      Window window = (Window)win;
+      //TbValveState = parameter as string;
+      //OnPropertyChanged(nameof(TbValveState));
+      //MessageBoxResult re = MessageBox.Show($"MFC {TbValveNum}번을 " + TbValveState + " 으로 설정했습니다.", "MFC1", MessageBoxButton.OKCancel);
+      //if (re == MessageBoxResult.OK)
+      //{
+      //  if (parameter is System.Windows.Window)
+      //  {
+      //    CurrWinClose(parameter);
+      //  }
+
+      //}
+      MessageBox.Show("밸브 1번을 열었습니다.");
+
+      window.Close();
+
+    }
+
+    private void FlowSettingCancel(object win)
+    {
+      Window window = (Window)win;
+
+      MessageBox.Show("밸브 1번을 닫았습니다.");
+      window.Close();
+    }
+
   }
 }

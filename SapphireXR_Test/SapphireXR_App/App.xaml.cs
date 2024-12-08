@@ -54,7 +54,6 @@ namespace SapphireXR_App
       services.AddTransient(typeof(LeftViewModel));
       services.AddTransient(typeof(RightViewModel));
       services.AddTransient(typeof(FlowControlDialogViewModel));
-      //services.AddTransient(typeof(UcFlowControlViewModel));
 
       return services.BuildServiceProvider();
     }

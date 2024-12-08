@@ -3,6 +3,7 @@ using System.Reflection.Emit;
 using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Controls.Primitives;
 using System.Windows.Threading;
 using SapphireXR_App.Controls;
 using SapphireXR_App.ViewModels;
@@ -26,7 +27,7 @@ namespace SapphireXR_App.Views
 
     private void UcFlowControl_Click(object sender, System.Windows.Input.MouseButtonEventArgs e)
     {
-      UcFlowControl fc = e.Source as UcFlowControl;
+      var fc = e.Source as UcFlowControl;
       FlowControlDialog fcDialog = new FlowControlDialog(fc.Name);
       fcDialog.Name = fc.Name;
       fcDialog.ShowDialog();
@@ -36,11 +37,23 @@ namespace SapphireXR_App.Views
 
     private void UcGasState_Click(object sender, System.Windows.Input.MouseButtonEventArgs e)
     {
-      MessageBox.Show("Gas 상태를 확인합니다.");
+      UcGasState ucGs = sender as UcGasState;
+      MessageBoxResult result = MessageBox.Show($" {ucGs.Name} 상태입니다.", $"{ucGs.Name}");
+
     }
 
+    private void UcValve_Click(object sender, System.Windows.Input.MouseButtonEventArgs e)
+    {
+      UcValve ucValve = e.Source as UcValve;
+      MessageBoxResult result = MessageBox.Show($"{ucValve.Name} 밸브를 여시겠습니까?", $"밸브", MessageBoxButton.OKCancel);
+      if (result == MessageBoxResult.Cancel)
+      {
 
+        MessageBox.Show($"밸브를 열었습니다.");
+      }
+    }
 
 
   }
 }
+

@@ -11,7 +11,6 @@ using CsvHelper.Configuration;
 using OxyPlot;
 using OxyPlot.Axes;
 using OxyPlot.Series;
-using SapphireXR_App.Bases;
 using SapphireXR_App.Models;
 
 

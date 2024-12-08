@@ -15,7 +15,6 @@ namespace SapphireXR_App.Controls
     public UcFlowControl()
     {
       InitializeComponent();
-      //DataContext = App.Current.Services.GetService(typeof(UcFlowControlViewModel)) as UcFlowControlViewModel;
     }
 
 

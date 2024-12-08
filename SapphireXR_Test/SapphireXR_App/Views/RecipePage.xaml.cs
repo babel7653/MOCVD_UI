@@ -67,7 +67,7 @@ namespace SapphireXR_App.Views
     {
       var fc = e.Source as UcFlowControl;
       FlowControlDialog fcDialog = new FlowControlDialog(fc.Name);
-
+      fcDialog.Name = fc.Name;
       fcDialog.ShowDialog();
 
       }

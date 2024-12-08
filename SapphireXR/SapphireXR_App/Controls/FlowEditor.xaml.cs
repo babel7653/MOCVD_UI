@@ -1,28 +1,39 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using OxyPlot;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace SapphireXR_App.Controls
 {
-    /// <summary>
-    /// FlowEditor.xaml에 대한 상호 작용 논리
-    /// </summary>
     public partial class FlowEditor : UserControl
     {
+        static uint Count = 0;
         public FlowEditor()
         {
             InitializeComponent();
         }
+        public string ControllerID
+        {
+            get { return (string)GetValue(ControllerIDProperty); }
+            set { SetValue(ControllerIDProperty, value); }
+        }
+        public static readonly DependencyProperty ControllerIDProperty =
+           DependencyProperty.Register("ControllerID", typeof(string), typeof(FlowEditor), new PropertyMetadata(default));
+
+        public float EditValue
+        {
+            get { return (float)GetValue(EditValueProperty); }
+            set { SetValue(EditValueProperty, value); }
+        }
+
+        public static readonly DependencyProperty EditValueProperty =
+            DependencyProperty.Register("EditValue", typeof(float), typeof(FlowEditor), new PropertyMetadata(default));
+
+        public string ContentLabel
+        {
+            get { return (string)GetValue(contentLabelProperty); }
+            set { SetValue(contentLabelProperty, value); }
+        }
+        public readonly DependencyProperty contentLabelProperty = 
+            DependencyProperty.Register("ContentLabelProperty" + (Count++), typeof(string), typeof(FlowEditor), new PropertyMetadata(default));
     }
 }

@@ -1,12 +1,21 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using SapphireXR_App.Enums;
+using SapphireXR_App.ViewModels;
+using SapphireXR_App.Views;
 
 namespace SapphireXR_App.Models
 {
-    class FlowControllerEx
+    public static class FlowControllerEx
     {
+        public static PopupExResult Show(string title, string message)
+        {
+            var viewModel = new FlowControlViewModel(title, message);
+            FlowControlView view = new FlowControlView
+            {
+                DataContext = viewModel
+            };
+            view.ShowDialog();
+
+            return viewModel.PopupExResult;
+        }
     }
 }

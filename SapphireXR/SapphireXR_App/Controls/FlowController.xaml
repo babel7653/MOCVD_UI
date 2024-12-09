@@ -6,9 +6,21 @@
              xmlns:local="clr-namespace:SapphireXR_App.Controls"
              mc:Ignorable="d"
              x:Name="flowController"
-             Loaded="ControllerButton_Loaded"
              d:DesignHeight="34" d:DesignWidth="70">
     <UserControl.Resources>
+        <SolidColorBrush x:Key="BorderBrushOnMouseEnter" Color="#9dbce8" />
+        <SolidColorBrush x:Key="BorderBrushOnMouseLeave" Color="#CCDFEF" />
+        <Storyboard x:Key="ChangeBackgroundColorOnMouseEnter">
+            <ObjectAnimationUsingKeyFrames Storyboard.TargetName="controllerBorder" Storyboard.TargetProperty="Background">
+                <DiscreteObjectKeyFrame KeyTime="0:0:0" Value="{StaticResource BorderBrushOnMouseEnter}" />
+            </ObjectAnimationUsingKeyFrames>
+        </Storyboard>
+        <Storyboard x:Key="ChangeBackgroundColorOnMouseLeave">
+            <ObjectAnimationUsingKeyFrames Storyboard.TargetName="controllerBorder" Storyboard.TargetProperty="Background">
+                <DiscreteObjectKeyFrame KeyTime="0:0:0" Value="{StaticResource BorderBrushOnMouseLeave}" />
+            </ObjectAnimationUsingKeyFrames>
+
+        </Storyboard>
         <Style x:Key="ControllerStyle" TargetType="{x:Type Button}">
             <Setter Property="Template">
                 <Setter.Value>
@@ -22,10 +34,10 @@
                                 <StackPanel Orientation="Horizontal" >
                                     <Label x:Name="flowSet"  Height="16" Width="50" FontSize="12" HorizontalContentAlignment="Right" VerticalAlignment="Center" Padding="0"
                                            Content="1234.5" Foreground="Lime" />
-                                    <Ellipse Width="10" Height="10" Fill="Lime" HorizontalAlignment="Right"  Margin="5,0,0,0"/>
+                                    <Ellipse x:Name="LampWarning" Width="10" Height="10" Fill="Lime" HorizontalAlignment="Right"  Margin="5,0,0,0"/>
                                 </StackPanel>
                             </Border>
-                            <Border Grid.Row="1" BorderBrush="LightGray"  BorderThickness="1,0,1,1"  Background="{StaticResource MFCDisplayColor2}" CornerRadius="0,0,3,3">
+                            <Border Grid.Row="1" BorderBrush="LightGray"  BorderThickness="1,0,1,1"  Background="{StaticResource MFCDisplayColor2}" CornerRadius="0,0,3,3" x:Name="controllerBorder">
                                 <StackPanel   Orientation="Horizontal">
                                     <Label x:Name="flowCurrent" Height="28" Width="68" FontSize="20" HorizontalContentAlignment="Right" 
                             VerticalAlignment="Center" Padding="0" Content="1234.5"/>
@@ -33,14 +45,23 @@
                             </Border>
                         </Grid>
                         <ControlTemplate.Triggers>
-                            <Trigger Property="IsEnabled" Value="True">
-                            </Trigger>
-                            <Trigger Property="IsEnabled" Value="False">
-                            </Trigger>
+                            <DataTrigger Binding="{Binding IsDeviationLimit, RelativeSource={RelativeSource AncestorType={x:Type local:FlowController}}, Mode=TwoWay}" Value="True">
+                                <Setter TargetName="LampWarning" Property="Fill" Value="Orangered"/>
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding IsDeviationLimit, RelativeSource={RelativeSource AncestorType={x:Type local:FlowController}}, Mode=TwoWay}" Value="False">
+                                <Setter TargetName="LampWarning" Property="Fill" Value="Lime"/>
+                            </DataTrigger>
+                            <EventTrigger RoutedEvent="MouseEnter">
+                                <BeginStoryboard Storyboard="{StaticResource ChangeBackgroundColorOnMouseEnter}" />
+                            </EventTrigger>
+                            <EventTrigger RoutedEvent="MouseLeave">
+                                <BeginStoryboard Storyboard="{StaticResource ChangeBackgroundColorOnMouseLeave}" />
+                            </EventTrigger>
                         </ControlTemplate.Triggers>
                     </ControlTemplate>
                 </Setter.Value>
             </Setter>
+            <Setter Property="Cursor" Value="Hand"/>
         </Style>
     </UserControl.Resources>
     <Button Height="34" Width="70" Style="{StaticResource ControllerStyle}" Click="FlowController_Click"/>

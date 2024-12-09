@@ -1,17 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace SapphireXR_App.Controls
 {
@@ -74,6 +62,16 @@ namespace SapphireXR_App.Controls
         {
             FlowController display = (FlowController)sender;
         }
+
+        public string Type
+        {
+            get { return (string)GetValue(typeProperty);  }
+            set { SetValue(typeProperty, value); }
+        }
+
+        static uint TypeCount = 0;
+        public readonly DependencyProperty typeProperty =
+            DependencyProperty.Register("TypeProperty" + (TypeCount++), typeof(string), typeof(FlowController), new PropertyMetadata(""));
 
     }
 }

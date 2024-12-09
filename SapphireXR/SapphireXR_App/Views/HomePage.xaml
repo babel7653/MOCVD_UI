@@ -7,7 +7,8 @@
       mc:Ignorable="d" 
       xmlns:control="clr-namespace:SapphireXR_App.Controls"
       d:DesignHeight="776" d:DesignWidth="1300"
-      Title="HomePage">
+      Title="HomePage"
+      x:Name="homePage">
     <Page.Resources>
         <Style x:Key="deviceControlButtonStyle" TargetType="{x:Type Button}">
             <Setter Property="Cursor" Value="Hand"/>
@@ -17,6 +18,11 @@
         </Style>
     </Page.Resources>
     <Canvas Background="{StaticResource HomePageBackground}">
+        <Canvas.ContextMenu>
+            <ContextMenu>
+                <MenuItem Header="{Binding LeakTestModeStr}" Command="{Binding EnableLeakTestCommand}" CommandParameter="{Binding Header,  RelativeSource={RelativeSource Mode=Self}}" />
+            </ContextMenu>
+        </Canvas.ContextMenu>
         <Rectangle Stroke="White" StrokeThickness="1" Width="1300" Height="836"/>
 
         <!-- #Region 메인 공급 가스배관-->
@@ -181,7 +187,8 @@
             </Rectangle.Fill>
         </Rectangle>
 
-        <Line X1="1020" Y1="260" X2="1290" Y2="260" Stroke="LightBlue" StrokeThickness="8" />
+        <Line X1="1020" Y1="260" X2="1290" Y2="260" Stroke="LightBlue" StrokeThickness="8" 
+              Visibility="{Binding OnLeakTestVisibility}"/>
         <!--#endregion-->
 
         <!-- #Region Vent 가스라인 -->
@@ -262,24 +269,24 @@
         <!--#endregion-->
 
         <!-- #region Leak Test 배관 -->
-        <Polyline Points="579,74 549,74 549,10 20,10 20,750 1130,750 1130,655 1160,655" Stroke="{StaticResource LeakTestLineColor}" StrokeThickness="2" />
-        <Polyline Points="285,74 255,74 255,10" Stroke="{StaticResource LeakTestLineColor}" StrokeThickness="2"/>
-        <Polyline Points="20,415 90,415 90,425" Stroke="{StaticResource LeakTestLineColor}" StrokeThickness="2"/>
-        <Polyline Points="20,515 120,515 120,505" Stroke="{StaticResource LeakTestLineColor}" StrokeThickness="2"/>
+        <Polyline Points="579,74 549,74 549,10 20,10 20,750 1130,750 1130,655 1160,655" Stroke="{StaticResource LeakTestLineColor}" Visibility="{Binding OnLeakTestVisibility}"  StrokeThickness="2" />
+        <Polyline Points="285,74 255,74 255,10" Stroke="{StaticResource LeakTestLineColor}" Visibility="{Binding OnLeakTestVisibility}"  StrokeThickness="2"/>
+        <Polyline Points="20,415 90,415 90,425" Stroke="{StaticResource LeakTestLineColor}" Visibility="{Binding OnLeakTestVisibility}"  StrokeThickness="2"/>
+        <Polyline Points="20,515 120,515 120,505" Stroke="{StaticResource LeakTestLineColor}" Visibility="{Binding OnLeakTestVisibility}"  StrokeThickness="2"/>
 
-        <Polyline Points="201,685 193,685 193,750" Stroke="{StaticResource LeakTestLineColor}" StrokeThickness="2"/>
-        <Polyline Points="341,685 333,685 333,750" Stroke="{StaticResource LeakTestLineColor}" StrokeThickness="2"/>
-        <Polyline Points="481,685 473,685 473,750" Stroke="{StaticResource LeakTestLineColor}" StrokeThickness="2"/>
-        <Polyline Points="621,685 613,685 613,750" Stroke="{StaticResource LeakTestLineColor}" StrokeThickness="2"/>
-        <Polyline Points="761,685 753,685 753,750" Stroke="{StaticResource LeakTestLineColor}" StrokeThickness="2"/>
-        <Polyline Points="959,685 951,685 951,750" Stroke="{StaticResource LeakTestLineColor}" StrokeThickness="2"/>
+        <Polyline Points="201,685 193,685 193,750" Stroke="{StaticResource LeakTestLineColor}" Visibility="{Binding OnLeakTestVisibility}"  StrokeThickness="2"/>
+        <Polyline Points="341,685 333,685 333,750" Stroke="{StaticResource LeakTestLineColor}" Visibility="{Binding OnLeakTestVisibility}"  StrokeThickness="2"/>
+        <Polyline Points="481,685 473,685 473,750" Stroke="{StaticResource LeakTestLineColor}" Visibility="{Binding OnLeakTestVisibility}"  StrokeThickness="2"/>
+        <Polyline Points="621,685 613,685 613,750" Stroke="{StaticResource LeakTestLineColor}" Visibility="{Binding OnLeakTestVisibility}"  StrokeThickness="2"/>
+        <Polyline Points="761,685 753,685 753,750" Stroke="{StaticResource LeakTestLineColor}" Visibility="{Binding OnLeakTestVisibility}"  StrokeThickness="2"/>
+        <Polyline Points="959,685 951,685 951,750" Stroke="{StaticResource LeakTestLineColor}" Visibility="{Binding OnLeakTestVisibility}"  StrokeThickness="2"/>
 
-        <Polyline Points="295,685 303,685 303,750" Stroke="{StaticResource LeakTestLineColor}" StrokeThickness="2"/>
-        <Polyline Points="435,685 443,685 443,750" Stroke="{StaticResource LeakTestLineColor}" StrokeThickness="2"/>
-        <Polyline Points="575,685 583,685 583,750" Stroke="{StaticResource LeakTestLineColor}" StrokeThickness="2"/>
-        <Polyline Points="715,685 723,685 723,750" Stroke="{StaticResource LeakTestLineColor}" StrokeThickness="2"/>
-        <Polyline Points="855,685 863,685 863,750" Stroke="{StaticResource LeakTestLineColor}" StrokeThickness="2"/>
-        <Polyline Points="1053,685 1061,685 1061,750" Stroke="{StaticResource LeakTestLineColor}" StrokeThickness="2"/>
+        <Polyline Points="295,685 303,685 303,750" Stroke="{StaticResource LeakTestLineColor}" Visibility="{Binding OnLeakTestVisibility}"  StrokeThickness="2"/>
+        <Polyline Points="435,685 443,685 443,750" Stroke="{StaticResource LeakTestLineColor}" Visibility="{Binding OnLeakTestVisibility}"  StrokeThickness="2"/>
+        <Polyline Points="575,685 583,685 583,750" Stroke="{StaticResource LeakTestLineColor}" Visibility="{Binding OnLeakTestVisibility}"  StrokeThickness="2"/>
+        <Polyline Points="715,685 723,685 723,750" Stroke="{StaticResource LeakTestLineColor}" Visibility="{Binding OnLeakTestVisibility}"  StrokeThickness="2"/>
+        <Polyline Points="855,685 863,685 863,750" Stroke="{StaticResource LeakTestLineColor}" Visibility="{Binding OnLeakTestVisibility}"  StrokeThickness="2"/>
+        <Polyline Points="1053,685 1061,685 1061,750" Stroke="{StaticResource LeakTestLineColor}" Visibility="{Binding OnLeakTestVisibility}"  StrokeThickness="2"/>
         <!--#endregion-->
 
         <!-- #Region 가스제어용 밸브 -->
@@ -303,20 +310,31 @@
         </control:SwitchingValve>
         <control:SwitchingValve x:Name="V03" Canvas.Left="279" Canvas.Top="105" ValveID="V03"/>
         <control:SwitchingValve x:Name="V04" Canvas.Left="573" Canvas.Top="105" ValveID="V04"/>
-        <control:SwitchingValve x:Name="V05" Canvas.Left="195" Canvas.Top="487" ValveID="V05"
-                              Visibility="{Binding IsMaintenanceMode}"/>
+        <control:SwitchingValve x:Name="V05" Canvas.Left="195" Canvas.Top="487" ValveID="V05" 
+                                Visibility="{Binding OffLeakTestVisibility}"/>
+        <control:SingleValve x:Name="V06" Canvas.Left="195" Canvas.Top="487" ValveID="V06"
+                              Visibility="{Binding OnLeakTestVisibility}"/>
         <control:SwitchingValve x:Name="V08" Canvas.Left="335" Canvas.Top="487" ValveID="V08"
-                              Visibility="{Binding IsMaintenanceMode}"/>
+                              Visibility="{Binding OffLeakTestVisibility}"/>
+        <control:SingleValve x:Name="V09" Canvas.Left="335" Canvas.Top="487" ValveID="V09"
+                       Visibility="{Binding OnLeakTestVisibility}"/>
         <control:SwitchingValve x:Name="V11" Canvas.Left="475" Canvas.Top="487" ValveID="V11"
-                             Visibility="{Binding IsMaintenanceMode}"/>
+                             Visibility="{Binding OffLeakTestVisibility}"/>
+        <control:SingleValve x:Name="V12" Canvas.Left="475" Canvas.Top="487" ValveID="V12"
+                     Visibility="{Binding OnLeakTestVisibility}"/>
         <control:SwitchingValve x:Name="V14" Canvas.Left="615" Canvas.Top="487" ValveID="V14" 
-                          Visibility="{Binding IsMaintenanceMode}"/>
+                          Visibility="{Binding OffLeakTestVisibility}"/>
+        <control:SingleValve x:Name="V15" Canvas.Left="615" Canvas.Top="487" ValveID="V15" 
+                   Visibility="{Binding OnLeakTestVisibility}"/>
         <control:SwitchingValve x:Name="V17" Canvas.Left="755" Canvas.Top="487" ValveID="V17" 
-                            Visibility="{Binding IsMaintenanceMode}"/>
+                            Visibility="{Binding OffLeakTestVisibility}"/>
+        <control:SingleValve x:Name="V18" Canvas.Left="755" Canvas.Top="487" ValveID="V18" 
+                     Visibility="{Binding OnLeakTestVisibility}"/>
         <control:SwitchingValve x:Name="V20" Canvas.Left="953" Canvas.Top="487" ValveID="V20" 
-                            Visibility="{Binding IsMaintenanceMode}"/>
-        <control:SwitchingValve x:Name="V32" Canvas.Left="1084" Canvas.Top="407" ValveID="V32"
-                            Visibility="{Binding IsMaintenanceMode}"/>
+                            Visibility="{Binding OffLeakTestVisibility}"/>
+        <control:SingleValve x:Name="V21" Canvas.Left="953" Canvas.Top="487" ValveID="V21" 
+                      Visibility="{Binding OnLeakTestVisibility}"/>
+        <control:SwitchingValve x:Name="V32" Canvas.Left="1084" Canvas.Top="407" ValveID="V32" />
         <control:SwitchingValve x:Name="V23" Canvas.Left="229" Canvas.Top="407" ValveID="V23" />
         <control:SwitchingValve x:Name="V24" Canvas.Left="369" Canvas.Top="407" ValveID="V24" />
         <control:SwitchingValve x:Name="V25" Canvas.Left="509" Canvas.Top="407" ValveID="V25" />
@@ -340,65 +358,65 @@
         <control:ButterflyValve x:Name="ButterflyValve" Canvas.Left="1145" Canvas.Top="599" ValveID="V35" />
 
         <!-- Button for Leak Test Valve -->
-        <control:LeakTestValve x:Name="V36" Canvas.Left="579" Canvas.Top="62" ValveID="V36"/>
-        <control:LeakTestValve x:Name="V37" Canvas.Left="285" Canvas.Top="62" ValveID="V37"/>
+        <control:LeakTestValve Visibility="{Binding OnLeakTestVisibility}" x:Name="V36" Canvas.Left="579" Canvas.Top="62" ValveID="V36"/>
+        <control:LeakTestValve Visibility="{Binding OnLeakTestVisibility}" x:Name="V37" Canvas.Left="285" Canvas.Top="62" ValveID="V37"/>
         
-        <control:LeakTestValve x:Name="V38" Canvas.Left="108" Canvas.Top="506" ValveID="V38">
+        <control:LeakTestValve Visibility="{Binding OnLeakTestVisibility}" x:Name="V38" Canvas.Left="108" Canvas.Top="506" ValveID="V38">
             <control:LeakTestValve.RenderTransform>
                 <TransformGroup>
                     <RotateTransform Angle="270"/>
                 </TransformGroup>
             </control:LeakTestValve.RenderTransform>
         </control:LeakTestValve>
-        <control:LeakTestValve x:Name="V39" Canvas.Left="102" Canvas.Top="424" ValveID="V39">
+        <control:LeakTestValve Visibility="{Binding OnLeakTestVisibility}" x:Name="V39" Canvas.Left="102" Canvas.Top="424" ValveID="V39">
             <control:LeakTestValve.RenderTransform>
                 <TransformGroup>
                     <RotateTransform Angle="90"/>
                 </TransformGroup>
             </control:LeakTestValve.RenderTransform>
         </control:LeakTestValve>
-        <control:LeakTestValve x:Name="V40" Canvas.Left="200" Canvas.Top="673" ValveID="V40"/>
-        <control:LeakTestValve x:Name="V41" Canvas.Left="296" Canvas.Top="697" ValveID="V41">
+        <control:LeakTestValve Visibility="{Binding OnLeakTestVisibility}" x:Name="V40" Canvas.Left="200" Canvas.Top="673" ValveID="V40"/>
+        <control:LeakTestValve Visibility="{Binding OnLeakTestVisibility}" x:Name="V41" Canvas.Left="296" Canvas.Top="697" ValveID="V41">
             <control:LeakTestValve.RenderTransform>
                 <TransformGroup>
                     <RotateTransform Angle="180"/>
                 </TransformGroup>
             </control:LeakTestValve.RenderTransform>
         </control:LeakTestValve>
-        <control:LeakTestValve x:Name="V42" Canvas.Left="340" Canvas.Top="673" ValveID="V42"/>
-        <control:LeakTestValve x:Name="V43" Canvas.Left="436" Canvas.Top="697" ValveID="V43">
+        <control:LeakTestValve Visibility="{Binding OnLeakTestVisibility}" x:Name="V42" Canvas.Left="340" Canvas.Top="673" ValveID="V42"/>
+        <control:LeakTestValve Visibility="{Binding OnLeakTestVisibility}" x:Name="V43" Canvas.Left="436" Canvas.Top="697" ValveID="V43">
             <control:LeakTestValve.RenderTransform>
                 <TransformGroup>
                     <RotateTransform Angle="180"/>
                 </TransformGroup>
             </control:LeakTestValve.RenderTransform>
         </control:LeakTestValve>
-        <control:LeakTestValve x:Name="V44" Canvas.Left="480" Canvas.Top="673" ValveID="V44"/>
-        <control:LeakTestValve x:Name="V45" Canvas.Left="576" Canvas.Top="697" ValveID="V45">
+        <control:LeakTestValve Visibility="{Binding OnLeakTestVisibility}" x:Name="V44" Canvas.Left="480" Canvas.Top="673" ValveID="V44"/>
+        <control:LeakTestValve Visibility="{Binding OnLeakTestVisibility}" x:Name="V45" Canvas.Left="576" Canvas.Top="697" ValveID="V45">
             <control:LeakTestValve.RenderTransform>
                 <TransformGroup>
                     <RotateTransform Angle="180"/>
                 </TransformGroup>
             </control:LeakTestValve.RenderTransform>
         </control:LeakTestValve>
-        <control:LeakTestValve x:Name="V46" Canvas.Left="620" Canvas.Top="673" ValveID="V46"/>
-        <control:LeakTestValve x:Name="V47" Canvas.Left="716" Canvas.Top="697" ValveID="V47">
+        <control:LeakTestValve Visibility="{Binding OnLeakTestVisibility}" x:Name="V46" Canvas.Left="620" Canvas.Top="673" ValveID="V46"/>
+        <control:LeakTestValve Visibility="{Binding OnLeakTestVisibility}" x:Name="V47" Canvas.Left="716" Canvas.Top="697" ValveID="V47">
             <control:LeakTestValve.RenderTransform>
                 <TransformGroup>
                     <RotateTransform Angle="180"/>
                 </TransformGroup>
             </control:LeakTestValve.RenderTransform>
         </control:LeakTestValve>
-        <control:LeakTestValve x:Name="V48" Canvas.Left="760" Canvas.Top="673" ValveID="V48"/>
-        <control:LeakTestValve x:Name="V49" Canvas.Left="856" Canvas.Top="697" ValveID="V49">
+        <control:LeakTestValve Visibility="{Binding OnLeakTestVisibility}" x:Name="V48" Canvas.Left="760" Canvas.Top="673" ValveID="V48"/>
+        <control:LeakTestValve Visibility="{Binding OnLeakTestVisibility}" x:Name="V49" Canvas.Left="856" Canvas.Top="697" ValveID="V49">
             <control:LeakTestValve.RenderTransform>
                 <TransformGroup>
                     <RotateTransform Angle="180"/>
                 </TransformGroup>
             </control:LeakTestValve.RenderTransform>
         </control:LeakTestValve>
-        <control:LeakTestValve x:Name="V50" Canvas.Left="958" Canvas.Top="673" ValveID="V50"/>
-        <control:LeakTestValve x:Name="V51" Canvas.Left="1054" Canvas.Top="697" ValveID="V51">
+        <control:LeakTestValve Visibility="{Binding OnLeakTestVisibility}" x:Name="V50" Canvas.Left="958" Canvas.Top="673" ValveID="V50"/>
+        <control:LeakTestValve Visibility="{Binding OnLeakTestVisibility}" x:Name="V51" Canvas.Left="1054" Canvas.Top="697" ValveID="V51">
             <control:LeakTestValve.RenderTransform>
                 <TransformGroup>
                     <RotateTransform Angle="180"/>
@@ -415,12 +433,12 @@
         <control:GasMonitor x:Name="gasMonitor_SiH4" Canvas.Left="574" Canvas.Top="20"  MonitorID="SiH4"/>
 
         <!-- 항온조 온도 모니터링 -->
-        <control:SourceMonitor x:Name="sourceMonitor_1" Canvas.Left="213" Canvas.Top="705" MonitorID="TEB"/>
-        <control:SourceMonitor x:Name="sourceMonitor_2" Canvas.Left="353" Canvas.Top="705" MonitorID="TMAl"/>
-        <control:SourceMonitor x:Name="sourceMonitor_3" Canvas.Left="493" Canvas.Top="705" MonitorID="TMIn"/>
-        <control:SourceMonitor x:Name="sourceMonitor_4" Canvas.Left="633" Canvas.Top="705" MonitorID="TMGa"/>
-        <control:SourceMonitor x:Name="sourceMonitor_5" Canvas.Left="773" Canvas.Top="705" MonitorID="DTMGa"/>
-        <control:SourceMonitor x:Name="sourceMonitor_6" Canvas.Left="971" Canvas.Top="705" MonitorID="Cp2Mg"/>
+        <control:SourceMonitor x:Name="sourceMonitor_1" Canvas.Left="213" Canvas.Top="705" MonitorID="TEB" />
+        <control:SourceMonitor x:Name="sourceMonitor_2" Canvas.Left="353" Canvas.Top="705" MonitorID="TMAl" />
+        <control:SourceMonitor x:Name="sourceMonitor_3" Canvas.Left="493" Canvas.Top="705" MonitorID="TMIn" />
+        <control:SourceMonitor x:Name="sourceMonitor_4" Canvas.Left="633" Canvas.Top="705" MonitorID="TMGa" />
+        <control:SourceMonitor x:Name="sourceMonitor_5" Canvas.Left="773" Canvas.Top="705" MonitorID="DTMGa" />
+        <control:SourceMonitor x:Name="sourceMonitor_6" Canvas.Left="971" Canvas.Top="705" MonitorID="Cp2Mg" />
 
         <!-- 반응기 콘트롤러 -->
         <Rectangle Canvas.Left="723" Canvas.Top="0" Width="330" Height="140" Stroke="#3d495a" StrokeThickness="2" />
@@ -443,85 +461,84 @@
         <!--MFC Contol Box!-->
         <control:FlowController x:Name="MFC01" 
                                 Canvas.Left="126" Canvas.Top="344" 
-                                ControllerID="MFC01" />
+                                ControllerID="MFC01" Type="MFC" />
         <control:FlowController x:Name="MFC02" 
                                 Canvas.Left="126" Canvas.Top="290" 
-                                ControllerID="MFC02" />
+                                ControllerID="MFC02" Type="MFC" />
         <control:FlowController x:Name="MFC03" 
                                 Canvas.Left="348" Canvas.Top="191" 
-                                ControllerID="MFC03" />
+                                ControllerID="MFC03" Type="MFC" />
         <control:FlowController x:Name="MFC04" 
                             Canvas.Left="268" Canvas.Top="191" 
-                            ControllerID="MFC04" />
+                            ControllerID="MFC04" Type="MFC" />
         <control:FlowController x:Name="MFC05" 
                             Canvas.Left="562" Canvas.Top="141" 
-                            ControllerID="MFC05" />
+                            ControllerID="MFC05" Type="MFC" />
         <control:FlowController x:Name="MFC06"
                             Canvas.Left="482" Canvas.Top="141" 
-                            ControllerID="MFC06" />
+                            ControllerID="MFC06" Type="MFC" />
         <control:FlowController x:Name="MFC07" 
                             Canvas.Left="562" Canvas.Top="191" 
-                            ControllerID="MFC07"/>
+                            ControllerID="MFC07" Type="MFC" />
         <control:FlowController x:Name="MFC08" 
                             Canvas.Left="184" Canvas.Top="575" 
-                            ControllerID="MFC08" />
+                            ControllerID="MFC08" Type="MFC" />
         <control:FlowController x:Name="MFC09" 
                             Canvas.Left="324" Canvas.Top="575" 
-                            ControllerID="MFC09" />
+                            ControllerID="MFC09" Type="MFC" />
         <control:FlowController x:Name="MFC10" 
                             Canvas.Left="464" Canvas.Top="575" 
-                            ControllerID="MFC10" />
+                            ControllerID="MFC10" Type="MFC" />
         <control:FlowController x:Name="MFC11" 
                             Canvas.Left="604" Canvas.Top="575" 
-                            ControllerID="MFC11" />
+                            ControllerID="MFC11" Type="MFC" />
         <control:FlowController x:Name="MFC12" 
                             Canvas.Left="744" Canvas.Top="575" 
-                            ControllerID="MFC12" />
+                            ControllerID="MFC12" Type="MFC" />
         <control:FlowController x:Name="MFC13" 
                             Canvas.Left="802" Canvas.Top="531" 
-                            ControllerID="MFC13" />
+                            ControllerID="MFC13" Type="MFC" />
         <control:FlowController x:Name="MFC14" 
                             Canvas.Left="860" Canvas.Top="575" 
-                            ControllerID="MFC14" />
+                            ControllerID="MFC14" Type="MFC" />
         <control:FlowController x:Name="MFC15" 
                             Canvas.Left="942" Canvas.Top="575" 
-                            ControllerID="MFC15" />
+                            ControllerID="MFC15" Type="MFC" />
         <control:FlowController x:Name="MFC16"
                             Canvas.Left="802" Canvas.Top="183" 
-                            ControllerID="MFC16" />
+                            ControllerID="MFC16" Type="MFC" />
         <control:FlowController x:Name="MFC17"
-                            Canvas.Left="802" Canvas.Top="227
-                                " 
-                            ControllerID="MFC17" />
+                            Canvas.Left="802" Canvas.Top="227"
+                            ControllerID="MFC17" Type="MFC" />
         <control:FlowController x:Name="MFC18"
                             Canvas.Left="126" Canvas.Top="388" 
-                            ControllerID="MFC18" />
+                            ControllerID="MFC18" Type="MFC" />
         <control:FlowController x:Name="MFC19" 
                             Canvas.Left="126" Canvas.Top="246" 
-                            ControllerID="MFC19" />
+                            ControllerID="MFC19" Type="MFC" />
 
         <!--EPC Contol Box!-->
         <control:FlowController x:Name="EPC01" 
                             Canvas.Left="642" Canvas.Top="191" 
-                            ControllerID="EPC01" />
+                            ControllerID="EPC01" Type="EPC"/>
         <control:FlowController x:Name="EPC02" 
                             Canvas.Left="242" Canvas.Top="531" 
-                            ControllerID="EPC02" />
+                            ControllerID="EPC02" Type="EPC"/>
         <control:FlowController x:Name="EPC03" 
                             Canvas.Left="382" Canvas.Top="531" 
-                            ControllerID="EPC03" />
+                            ControllerID="EPC03" Type="EPC"/>
         <control:FlowController x:Name="EPC04" 
                             Canvas.Left="522" Canvas.Top="531" 
-                            ControllerID="EPC04" />
+                            ControllerID="EPC04" Type="EPC"/>
         <control:FlowController x:Name="EPC05" 
                             Canvas.Left="662" Canvas.Top="531" 
-                            ControllerID="EPC05" />
+                            ControllerID="EPC05" Type="EPC" />
         <control:FlowController x:Name="EPC06" 
                             Canvas.Left="860" Canvas.Top="633" 
-                            ControllerID="EPC06" />
+                            ControllerID="EPC06" Type="EPC"/>
         <control:FlowController x:Name="EPC07" 
                             Canvas.Left="1000" Canvas.Top="531" 
-                            ControllerID="EPC07"/>
+                            ControllerID="EPC07" Type="EPC" />
         <!--#endregion-->
 
         <!-- Control Window Text -->

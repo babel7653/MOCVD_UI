@@ -1,12 +1,13 @@
 ﻿using OxyPlot;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Data;
+using System.Windows.Media;
 
 namespace SapphireXR_App.Controls
 {
     public partial class FlowEditor : UserControl
-    {
-        static uint Count = 0;
+    {   
         public FlowEditor()
         {
             InitializeComponent();
@@ -33,7 +34,8 @@ namespace SapphireXR_App.Controls
             get { return (string)GetValue(contentLabelProperty); }
             set { SetValue(contentLabelProperty, value); }
         }
+        static uint ContentLabelCount = 0;
         public readonly DependencyProperty contentLabelProperty = 
-            DependencyProperty.Register("ContentLabelProperty" + (Count++), typeof(string), typeof(FlowEditor), new PropertyMetadata(default));
+            DependencyProperty.Register("ContentLabelProperty" + (ContentLabelCount++), typeof(string), typeof(FlowEditor), new PropertyMetadata(default));
     }
 }

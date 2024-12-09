@@ -25,7 +25,7 @@
                                     <Ellipse Width="10" Height="10" Fill="Lime" HorizontalAlignment="Right"  Margin="5,0,0,0"/>
                                 </StackPanel>
                             </Border>
-                            <Border Grid.Row="1" BorderBrush="LightGray"  BorderThickness="1,0,1,1"  Background="{StaticResource MFCDisplayColor2}" CornerRadius="0,0,3,3">
+                            <Border x:Name="panelBorder" Grid.Row="1" BorderBrush="LightGray"  BorderThickness="1,0,1,1"  Background="AliceBlue" CornerRadius="0,0,3,3">
                                 <StackPanel   Orientation="Horizontal">
                                     <Label x:Name="flowCurrent" Height="28" Width="68" FontSize="20" HorizontalContentAlignment="Right" 
                             VerticalAlignment="Center" Padding="0" Content="1234.5"/>
@@ -33,10 +33,12 @@
                             </Border>
                         </Grid>
                         <ControlTemplate.Triggers>
-                            <Trigger Property="IsEnabled" Value="True">
-                            </Trigger>
-                            <Trigger Property="IsEnabled" Value="False">
-                            </Trigger>
+                            <DataTrigger Binding="{Binding Type, ElementName=flowController}" Value="MFC">
+                                <Setter TargetName="panelBorder" Property="Background" Value="{StaticResource MFCDisplayColor2}" />
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding Type, ElementName=flowController}" Value="EPC">
+                                <Setter TargetName="panelBorder" Property="Background" Value="{StaticResource EPCDisplayColor1}" />
+                            </DataTrigger>
                         </ControlTemplate.Triggers>
                     </ControlTemplate>
                 </Setter.Value>

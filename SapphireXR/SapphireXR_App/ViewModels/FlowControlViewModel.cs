@@ -12,19 +12,20 @@ namespace SapphireXR_App.ViewModels
         [ObservableProperty]
         private string _message = string.Empty;
 
-        public PopupExResult PopupExResult { get; internal set; } = PopupExResult.Cancel;
+        public PopupExResult PopupExResult { get; internal set; } = PopupExResult.Close;
 
         [RelayCommand]
-        private void Ok(Window window)
+        private void Confirm(Window window)
         {
-            PopupExResult = PopupExResult.Ok;
-            window.DialogResult = true;
+            //PopupExResult = PopupExResult.Confirm;
+            //window.DialogResult = true;
+            // TO DO - 확인시 Target Value, RampTime 변경
         }
 
         [RelayCommand]
-        private void Cancel(Window window)
+        private void Close(Window window)
         {
-            PopupExResult = PopupExResult.Cancel;
+            PopupExResult = PopupExResult.Close;
             window.DialogResult = false;
         }
         public FlowControlViewModel(string title, string message)

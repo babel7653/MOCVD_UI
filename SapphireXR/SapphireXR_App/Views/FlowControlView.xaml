@@ -88,14 +88,21 @@
                         <ColumnDefinition/>
                         <ColumnDefinition/>
                     </Grid.ColumnDefinitions>
+                    <Button Grid.Row="2" Grid.Column="0"
+                        Content="확인"
+                        FontSize="15"
+                        Margin="5"
+                        IsDefault="True"
+                        Style="{StaticResource MetroBlueButtonStyle}"
+                        Command="{Binding ConfirmCommand}"
+                        CommandParameter="{Binding ElementName=FlowControlDialog}"/>
                     <Button Grid.Row="2" Grid.Column="1" 
                         Content="닫기"
                         FontSize="15"
                         Margin="5" 
                         IsCancel="True" 
-                        Cursor="Hand"
                         Style="{StaticResource MetroOrangeButtonStyle}"
-                        Command="{Binding CancelCommand}"
+                        Command="{Binding CloseCommand}"
                         CommandParameter="{Binding ElementName=FlowControlDialog}"/>
                 </Grid>
             </Grid>

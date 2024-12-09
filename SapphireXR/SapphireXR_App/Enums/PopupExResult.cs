@@ -2,6 +2,6 @@
 {
     public enum PopupExResult
     {
-        Ok=0, Cancel=1
+        Confirm=0, Close=1
     }
 }

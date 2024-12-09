@@ -1,5 +1,7 @@
 ﻿using System.Windows;
 using System.Windows.Controls;
+using SapphireXR_App.Enums;
+using SapphireXR_App.Models;
 
 namespace SapphireXR_App.Controls
 {
@@ -58,9 +60,11 @@ namespace SapphireXR_App.Controls
         public static readonly DependencyProperty buttonBackgroundProperty =
             DependencyProperty.Register("buttonBackground", typeof(string), typeof(FlowController), new PropertyMetadata(default));
 
-        private void ControllerButton_Loaded(object sender, RoutedEventArgs e)
+
+        public bool IsDeviationLimit
         {
-            FlowController display = (FlowController)sender;
+            get { return (bool)GetValue(IsDeviationLimitProperty); }
+            set { SetValue(IsDeviationLimitProperty, value); }
         }
 
         public string Type
@@ -69,9 +73,21 @@ namespace SapphireXR_App.Controls
             set { SetValue(typeProperty, value); }
         }
 
+        public static readonly DependencyProperty IsDeviationLimitProperty =
+            DependencyProperty.Register("IsDeviationLimit", typeof(bool), typeof(FlowController), new PropertyMetadata(default));
+
         static uint TypeCount = 0;
         public readonly DependencyProperty typeProperty =
             DependencyProperty.Register("TypeProperty" + (TypeCount++), typeof(string), typeof(FlowController), new PropertyMetadata(""));
+
+        private void FlowController_Click(object sender, RoutedEventArgs e) 
+        {
+            FlowController flowController = (FlowController)((Button)e.OriginalSource).Parent;
+            if (flowController != null)
+            {
+                FlowControllerEx.Show("Flow Controller", $"{flowController.ControllerID} 유량을 변경하시겠습니까?");
+            }
+        }
 
     }
 }

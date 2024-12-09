@@ -52,8 +52,7 @@
                     <RowDefinition />
                     <RowDefinition Height="40"/>
                 </Grid.RowDefinitions>
-                <Label Grid.Row="0" Content="{Binding Prompt}" Margin="5 5"/>
-
+                <TextBlock Grid.Row="0" Height="40"  Text="{Binding Message}" Margin="5 5"/>
                 <Grid Grid.Row="1">
                     <Grid.RowDefinitions>
                         <RowDefinition/>
@@ -67,52 +66,46 @@
                         <ColumnDefinition/>
                     </Grid.ColumnDefinitions>
                     <Label Grid.Row="0" Grid.Column="0">Target Value</Label>
-                    <TextBox Grid.Row="0" Grid.Column="1" x:Name="txtInput" Margin="5" Text="{Binding Response}"/>
+                    <TextBox Grid.Row="0" Grid.Column="1" x:Name="txtInput" Margin="5" Text="{Binding TargetValue}"/>
 
                     <Label Grid.Row="1" Grid.Column="0">Ramp Time(s)</Label>
-                    <TextBox Grid.Row="1" Grid.Column="1" x:Name="txtInput1" Margin="5" Text="{Binding Response}"/>
+                    <TextBox Grid.Row="1" Grid.Column="1" x:Name="txtInput1" Margin="5" Text="{Binding RampTime}"/>
 
                     <Label Grid.Row="2" Grid.Column="0">Deviation</Label>
-                    <TextBox Grid.Row="2" Grid.Column="1" x:Name="txtInput2" Margin="5" Text="{Binding Response}"/>
+                    <TextBox Grid.Row="2" Grid.Column="1" x:Name="txtInput2" Margin="5" Text="{Binding Deviation}"/>
 
                     <Label Grid.Row="0" Grid.Column="2">Current Value</Label>
-                    <TextBox Grid.Row="0" Grid.Column="3" x:Name="txtInput3" Margin="5" Text="{Binding Response}"/>
+                    <TextBox Grid.Row="0" Grid.Column="3" x:Name="txtInput3" Margin="5" Text="{Binding CurrentValue}"/>
 
                     <Label Grid.Row="1" Grid.Column="2">Control Value</Label>
-                    <TextBox Grid.Row="1" Grid.Column="3" x:Name="txtInput4" Margin="5" Text="{Binding Response}"/>
+                    <TextBox Grid.Row="1" Grid.Column="3" x:Name="txtInput4" Margin="5" Text="{Binding ControlValue}"/>
 
                     <Label Grid.Row="2" Grid.Column="2">Max. Value</Label>
-                    <TextBox Grid.Row="2" Grid.Column="3" x:Name="txtInput5" Margin="5" Text="{Binding Response}"/>
-
+                    <TextBox Grid.Row="2" Grid.Column="3" x:Name="txtInput5" Margin="5" Text="{Binding MaxValue}"/>
                 </Grid>
-
                 <Grid Grid.Row="2">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition/>
                         <ColumnDefinition/>
                     </Grid.ColumnDefinitions>
-                    <Button Grid.Row="2"
-    Content="확인"
-    FontSize="15"
-    Margin="5" 
-    IsDefault="True"
-    Cursor="Hand"              
-    Style="{StaticResource MetroBlueButtonStyle}" 
-    Command="{Binding OkCommand}"
-    CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=Window}}"/>
+                    <Button Grid.Row="2" Grid.Column="0"
+                        Content="확인"
+                        FontSize="15"
+                        Margin="5"
+                        IsDefault="True"
+                        Style="{StaticResource MetroBlueButtonStyle}"
+                        Command="{Binding ConfirmCommand}"
+                        CommandParameter="{Binding ElementName=FlowControlDialog}"/>
                     <Button Grid.Row="2" Grid.Column="1" 
-    Content="취소"
-    FontSize="15"
-    Margin="5" 
-    IsCancel="True" 
-    Cursor="Hand"
-    Style="{StaticResource MetroOrangeButtonStyle}"/>
+                        Content="닫기"
+                        FontSize="15"
+                        Margin="5" 
+                        IsCancel="True" 
+                        Style="{StaticResource MetroOrangeButtonStyle}"
+                        Command="{Binding CloseCommand}"
+                        CommandParameter="{Binding ElementName=FlowControlDialog}"/>
                 </Grid>
             </Grid>
-
-
-
         </Grid>
     </Border>
-
 </Window>

@@ -264,6 +264,5 @@ namespace SapphireXR_App.ViewModels
         {
             NavigationSource = pageUri;
         }
-       
     }
 }

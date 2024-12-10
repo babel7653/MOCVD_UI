@@ -348,7 +348,7 @@
         <control:BypassValve x:Name="V07" Canvas.Left="222" Canvas.Top="629" ValveID="V07" />
         <control:BypassValve x:Name="V10" Canvas.Left="362" Canvas.Top="629" ValveID="V10" />
         <control:BypassValve x:Name="V13" Canvas.Left="502" Canvas.Top="629" ValveID="V13" />
-        <control:BypassValve x:Name="V16" Canvas.Left="502" Canvas.Top="629" ValveID="V16" />
+        <control:BypassValve x:Name="V16" Canvas.Left="642" Canvas.Top="629" ValveID="V16" />
         <control:BypassValve x:Name="V19" Canvas.Left="782" Canvas.Top="629" ValveID="V19" />
         <control:BypassValve x:Name="V22" Canvas.Left="980" Canvas.Top="629" ValveID="V22" />
         <control:SingleValve x:Name="V33" Canvas.Left="1116" Canvas.Top="534" ValveID="V33" />

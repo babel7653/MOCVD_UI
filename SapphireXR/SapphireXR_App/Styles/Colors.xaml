@@ -37,4 +37,7 @@
     <SolidColorBrush x:Key="ProcessLineColor" Color="#cc6600"/>
     <SolidColorBrush x:Key="ExhaustLineColor" Color="#ccffff"/>
 
+    <!-- Button Colors -->
+    <SolidColorBrush x:Key="BtnBackground" Color="#003366"/>
+    
 </ResourceDictionary>

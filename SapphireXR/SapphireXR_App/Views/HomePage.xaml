@@ -6,7 +6,7 @@
       xmlns:local="clr-namespace:SapphireXR_App.Views"
       mc:Ignorable="d" 
       xmlns:control="clr-namespace:SapphireXR_App.Controls"
-      d:DesignHeight="776" d:DesignWidth="1300"
+      d:DesignHeight="836" d:DesignWidth="1300"
       Title="HomePage"
       x:Name="homePage">
     <Page.Resources>
@@ -187,8 +187,7 @@
             </Rectangle.Fill>
         </Rectangle>
 
-        <Line X1="1020" Y1="260" X2="1290" Y2="260" Stroke="LightBlue" StrokeThickness="8" 
-              Visibility="{Binding OnLeakTestVisibility}"/>
+        <Line X1="1020" Y1="260" X2="1290" Y2="260" Stroke="LightBlue" StrokeThickness="8" />
         <!--#endregion-->
 
         <!-- #Region Vent 가스라인 -->
@@ -310,30 +309,49 @@
         </control:SwitchingValve>
         <control:SwitchingValve x:Name="V03" Canvas.Left="279" Canvas.Top="105" ValveID="V03"/>
         <control:SwitchingValve x:Name="V04" Canvas.Left="573" Canvas.Top="105" ValveID="V04"/>
+        
         <control:SwitchingValve x:Name="V05" Canvas.Left="195" Canvas.Top="487" ValveID="V05" 
                                 Visibility="{Binding OffLeakTestVisibility}"/>
-        <control:SingleValve x:Name="V06" Canvas.Left="195" Canvas.Top="487" ValveID="V06"
+        <control:SingleValve x:Name="V05N" Canvas.Left="195" Canvas.Top="487" ValveID="V05"
                               Visibility="{Binding OnLeakTestVisibility}"/>
+        <control:SingleValve x:Name="V06H" Canvas.Left="219" Canvas.Top="487" ValveID="V06"
+                              Visibility="{Binding OnLeakTestVisibility}"/>
+        
         <control:SwitchingValve x:Name="V08" Canvas.Left="335" Canvas.Top="487" ValveID="V08"
                               Visibility="{Binding OffLeakTestVisibility}"/>
-        <control:SingleValve x:Name="V09" Canvas.Left="335" Canvas.Top="487" ValveID="V09"
+        <control:SingleValve x:Name="V08N" Canvas.Left="335" Canvas.Top="487" ValveID="V08"
                        Visibility="{Binding OnLeakTestVisibility}"/>
+        <control:SingleValve x:Name="V09H" Canvas.Left="359" Canvas.Top="487" ValveID="V09"
+                       Visibility="{Binding OnLeakTestVisibility}"/>
+        
         <control:SwitchingValve x:Name="V11" Canvas.Left="475" Canvas.Top="487" ValveID="V11"
                              Visibility="{Binding OffLeakTestVisibility}"/>
-        <control:SingleValve x:Name="V12" Canvas.Left="475" Canvas.Top="487" ValveID="V12"
+        <control:SingleValve x:Name="V11N" Canvas.Left="475" Canvas.Top="487" ValveID="V11"
                      Visibility="{Binding OnLeakTestVisibility}"/>
+        <control:SingleValve x:Name="V12H" Canvas.Left="499" Canvas.Top="487" ValveID="V12"
+                     Visibility="{Binding OnLeakTestVisibility}"/>
+        
         <control:SwitchingValve x:Name="V14" Canvas.Left="615" Canvas.Top="487" ValveID="V14" 
                           Visibility="{Binding OffLeakTestVisibility}"/>
-        <control:SingleValve x:Name="V15" Canvas.Left="615" Canvas.Top="487" ValveID="V15" 
+        <control:SingleValve x:Name="V14N" Canvas.Left="615" Canvas.Top="487" ValveID="V14" 
                    Visibility="{Binding OnLeakTestVisibility}"/>
+        <control:SingleValve x:Name="V15" Canvas.Left="639" Canvas.Top="487" ValveID="V15" 
+                   Visibility="{Binding OnLeakTestVisibility}"/>
+        
         <control:SwitchingValve x:Name="V17" Canvas.Left="755" Canvas.Top="487" ValveID="V17" 
                             Visibility="{Binding OffLeakTestVisibility}"/>
-        <control:SingleValve x:Name="V18" Canvas.Left="755" Canvas.Top="487" ValveID="V18" 
+        <control:SingleValve x:Name="V17N" Canvas.Left="755" Canvas.Top="487" ValveID="V17" 
                      Visibility="{Binding OnLeakTestVisibility}"/>
+        <control:SingleValve x:Name="V18H" Canvas.Left="779" Canvas.Top="487" ValveID="V18" 
+             Visibility="{Binding OnLeakTestVisibility}"/>
+
         <control:SwitchingValve x:Name="V20" Canvas.Left="953" Canvas.Top="487" ValveID="V20" 
                             Visibility="{Binding OffLeakTestVisibility}"/>
-        <control:SingleValve x:Name="V21" Canvas.Left="953" Canvas.Top="487" ValveID="V21" 
+        <control:SingleValve x:Name="V20N" Canvas.Left="953" Canvas.Top="487" ValveID="V20" 
                       Visibility="{Binding OnLeakTestVisibility}"/>
+        <control:SingleValve x:Name="V21H" Canvas.Left="977" Canvas.Top="487" ValveID="V21" 
+                      Visibility="{Binding OnLeakTestVisibility}"/>
+        
         <control:SwitchingValve x:Name="V32" Canvas.Left="1084" Canvas.Top="407" ValveID="V32" />
         <control:SwitchingValve x:Name="V23" Canvas.Left="229" Canvas.Top="407" ValveID="V23" />
         <control:SwitchingValve x:Name="V24" Canvas.Left="369" Canvas.Top="407" ValveID="V24" />
@@ -354,7 +372,7 @@
         <control:SingleValve x:Name="V33" Canvas.Left="1116" Canvas.Top="534" ValveID="V33" />
         <control:SingleValve x:Name="V34" Canvas.Left="1228" Canvas.Top="178" ValveID="V34" />
         <control:SingleValve x:Name="V35" Canvas.Left="1257" Canvas.Top="178" ValveID="V35" />
-        <control:SingleValve x:Name="V52" Canvas.Left="1084" Canvas.Top="738" ValveID="V52" />
+        <control:SingleValve Visibility="{Binding OnLeakTestVisibility}" x:Name="V52" Canvas.Left="1084" Canvas.Top="738" ValveID="V52" />
         <control:ButterflyValve x:Name="ButterflyValve" Canvas.Left="1145" Canvas.Top="599" ValveID="V35" />
 
         <!-- Button for Leak Test Valve -->

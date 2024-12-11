@@ -2,12 +2,15 @@
 using System.Windows.Input;
 using CommunityToolkit.Mvvm.Input;
 using System.ComponentModel;
+using System.Collections;
 
 namespace SapphireXR_App.ViewModels
 {
     public class HomeViewModel : DependencyObject, INotifyPropertyChanged
     {
-        public uint[]? aSolValvePLC { get; set; }
+        public static uint[]? aSolValvePLC { get; set; }
+        public static uint hValve { get; set; }
+        public static BitArray bValveState { get; set; }
         public HomeViewModel()
         {
             EnableLeakTestCommand = new RelayCommand<object>((object? menuName) => {
@@ -81,8 +84,10 @@ namespace SapphireXR_App.ViewModels
             // Solenoid Valve State Read (Update)
             try
             {
-                uint hValve = MainViewModel.Ads.CreateVariableHandle("GVL_IO.aOutputSolValve");
+                hValve = MainViewModel.Ads.CreateVariableHandle("GVL_IO.aOutputSolValve");
                 aSolValvePLC = (uint[])MainViewModel.Ads.ReadAny(hValve, typeof(uint[]), new int[] { 2 });
+                //bValveState =  
+                Console.WriteLine("aSolValvePLC");
             }
             catch (Exception ex)
             {

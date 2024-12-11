@@ -2,6 +2,7 @@
 using System.Windows.Controls;
 using SapphireXR_App.Enums;
 using SapphireXR_App.Models;
+using SapphireXR_App.ViewModels;
 
 namespace SapphireXR_App.Controls
 {
@@ -29,7 +30,11 @@ namespace SapphireXR_App.Controls
                 {
                     case ValveOperationExResult.Ok:
                         Valve.IsOpen = !(Valve.IsOpen);
+                       
+                        var ValveStateValue = HomeViewModel.aSolValvePLC;
                         MessageBox.Show($"{Valve.ValveID} 밸브 닫음");
+                        //TODO
+
                         break;
                     case ValveOperationExResult.Cancel:
                         MessageBox.Show($"{Valve.ValveID} 취소됨1");

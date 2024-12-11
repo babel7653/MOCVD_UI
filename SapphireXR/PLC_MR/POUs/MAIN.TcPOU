@@ -34,11 +34,11 @@ VAR
 	RecipeNumber		: INT;
 
 	
+	GVL_I: INT;
 END_VAR
 ]]></Declaration>
     <Implementation>
-      <ST><![CDATA[
-(* Modify Program *)
+      <ST><![CDATA[(* Modify Program *)
 P11_E3508(); //Temp Controller
 P12_IQ_PLUS(); //Throttle Valve Controller
 P13_LineHeater();
@@ -56,10 +56,16 @@ P30_GasFlowControl();
 (* Recipe RUN *)
 P50_RecipeControl();
 
-
 P90_Interlock();
 P91_Monitoring();
 P92_Maintenance();
+
+GVL_IO.aOutputSolValve[1].1 := 1;
+GVL_IO.aOutputSolValve[1].2 := 1;
+
+GVL_IO.aOutputSolValve[2].0 := 1;
+GVL_IO.aOutputSolValve[2].26 := 1;
+
 
 // RecipeNumber := GVL_IO.NumOfRecipe;
 // 
@@ -80,7 +86,6 @@ P92_Maintenance();
 ]]></ST>
     </Implementation>
     <LineIds Name="MAIN">
-      <LineId Id="239" Count="0" />
       <LineId Id="217" Count="0" />
       <LineId Id="216" Count="0" />
       <LineId Id="240" Count="0" />
@@ -93,11 +98,18 @@ P92_Maintenance();
       <LineId Id="346" Count="0" />
       <LineId Id="341" Count="0" />
       <LineId Id="353" Count="0" />
-      <LineId Id="349" Count="2" />
+      <LineId Id="349" Count="1" />
       <LineId Id="345" Count="0" />
       <LineId Id="282" Count="1" />
       <LineId Id="291" Count="0" />
+      <LineId Id="354" Count="0" />
       <LineId Id="333" Count="0" />
+      <LineId Id="356" Count="0" />
+      <LineId Id="359" Count="0" />
+      <LineId Id="357" Count="0" />
+      <LineId Id="360" Count="0" />
+      <LineId Id="358" Count="0" />
+      <LineId Id="355" Count="0" />
       <LineId Id="332" Count="0" />
       <LineId Id="323" Count="0" />
       <LineId Id="313" Count="0" />

@@ -12,18 +12,31 @@
     <Page.Resources>
         <Style x:Key="BaseStyle" TargetType="{x:Type Control}">
             <Setter Property="FontSize" Value="11"/>
-            <Setter Property="FontFamily" Value="Pretendard"/>
+            <Setter Property="FontFamily" Value="NanumGothic"/>
         </Style>
         <Style TargetType="{x:Type ComboBox}" BasedOn="{StaticResource BaseStyle}"/>
         <Style TargetType="{x:Type Button}" BasedOn="{StaticResource BaseStyle}"/>
         <Style TargetType="{x:Type DataGrid}" BasedOn="{StaticResource BaseStyle}"/>
+        <Style x:Key="RecipeOperationStyle" TargetType="{x:Type Button}">
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Height" Value="30"/>
+            <Setter Property="Width" Value="64"/>
+            <Setter Property="Margin" Value="4"/>
+            <Setter Property="HorizontalContentAlignment" Value="Center"/>
+            <Style.Resources>
+                <Style TargetType="{x:Type Border}">
+                    <Setter Property="CornerRadius" Value="4"/>
+                </Style>
+            </Style.Resources>
+        </Style>
     </Page.Resources>
-    <Grid Background="#c9d7f5">
+
+    <Grid Background="Transparent">
         <Frame x:Name="frRecipeRun"/>
         <Grid>
             <Grid.RowDefinitions>
                 <RowDefinition Height="490"/>
-                <RowDefinition Height="20"/>
+                <RowDefinition Height="40"/>
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
 
@@ -357,45 +370,68 @@
                 <control:FlowController x:Name="EPC06" Canvas.Left="1000" Canvas.Top="312" ControllerID="EPC06" />
                 <control:FlowController x:Name="EPC07" Canvas.Left="721" Canvas.Top="73" ControllerID="EPC07"/>
                 <!--#endregion-->
-                
-                <TextBlock Canvas.Left="1185" Canvas.Top="135"
-                    Foreground="{StaticResource PrimaryFontColor}" FontSize="12" Width="110" Text="Shower Head(HYD)"/>
-                <TextBlock Canvas.Left="1185" Canvas.Top="157"
-                    Foreground="{StaticResource PrimaryFontColor}" FontSize="12" Width="110" Text="Reactor Purge"/>
-                <TextBlock Canvas.Left="1185" Canvas.Top="201"
-                    Foreground="{StaticResource PrimaryFontColor}" FontSize="12" Width="110" Text="Base Purge"/>
-                <TextBlock Canvas.Left="1185" Canvas.Top="243"
-                    Foreground="{StaticResource PrimaryFontColor}" FontSize="12" Width="110" Text="Shower Head(MO)"/>
-                <TextBlock Canvas.Left="1185" Canvas.Top="423"
-                    Foreground="{StaticResource PrimaryFontColor}" FontSize="12" Width="110" Text="to Reactor"/>
-                <TextBlock Canvas.Left="1185" Canvas.Top="449"
-                    Foreground="{StaticResource PrimaryFontColor}" FontSize="12" Width="110" Text="to Scrubber"/>
-                <TextBlock Canvas.Left="1116" Canvas.Top="320" TextAlignment="Center"
-                    Foreground="{StaticResource PrimaryFontColor}" FontSize="12" Width="50" Text="Vent"/>
-                <TextBlock Canvas.Left="256" Canvas.Top="120" TextAlignment="Center"
-               Foreground="{StaticResource PrimaryFontColor}" FontSize="12" Width="33" Text="Vent"/>
-                <TextBlock Canvas.Left="256" Canvas.Top="214" TextAlignment="Center"
-               Foreground="{StaticResource PrimaryFontColor}" FontSize="12" Width="33" Text="Vent"/>
-                <TextBlock Canvas.Left="784" Canvas.Top="80" TextAlignment="Center"
-               Foreground="{StaticResource PrimaryFontColor}" FontSize="12" Width="33" Text="Vent"/>
-                <TextBlock Canvas.Left="922" Canvas.Top="407" TextAlignment="Center"
-               Foreground="{StaticResource PrimaryFontColor}" FontSize="12" Width="33" Text="Vent"/>
+
+                <!-- #Region 6. Text -->
+                <Label Canvas.Left="1185" Canvas.Top="135" Foreground="{StaticResource PrimaryFontColor}" Content="Shower Head(HYD)"/>
+                <Label Canvas.Left="1185" Canvas.Top="157" Foreground="{StaticResource PrimaryFontColor}" Content="Reactor Purge"/>
+                <Label Canvas.Left="1185" Canvas.Top="201" Foreground="{StaticResource PrimaryFontColor}" Content="Base Purge"/>
+                <Label Canvas.Left="1185" Canvas.Top="243" Foreground="{StaticResource PrimaryFontColor}" Content="Shower Head(MO)"/>
+                <Label Canvas.Left="1185" Canvas.Top="423" Foreground="{StaticResource PrimaryFontColor}" Content="to Reactor"/>
+                <Label Canvas.Left="1185" Canvas.Top="449" Foreground="{StaticResource PrimaryFontColor}" Content="to Scrubber"/>
+                <Label Canvas.Left="1116" Canvas.Top="320" Foreground="{StaticResource PrimaryFontColor}" Content="Vent"
+                        Width="50" HorizontalContentAlignment="Center" />
+                <Label Canvas.Left="256" Canvas.Top="120" Foreground="{StaticResource PrimaryFontColor}" Content="Vent"
+                       Width="33" HorizontalContentAlignment="Center"/>
+                <Label Canvas.Left="256" Canvas.Top="214" Foreground="{StaticResource PrimaryFontColor}" Content="Vent"
+                       Width="33" HorizontalContentAlignment="Center"/>
+                <Label Canvas.Left="784" Canvas.Top="80" Foreground="{StaticResource PrimaryFontColor}" Content="Vent"
+                       Width="33" HorizontalContentAlignment="Center"/>
+                <Label Canvas.Left="922" Canvas.Top="407" Foreground="{StaticResource PrimaryFontColor}" Content="Vent"
+                       Width="33" HorizontalContentAlignment="Center" />
+                <!--#endregion-->
+               
 
             </Canvas>
 
             <!-- Recipe Command Buttons  -->
-            <StackPanel Grid.Row="1" Orientation="Horizontal">
-                <Button x:Name="btnEditPage" Content="EditMode" Width="70" Command="{Binding NavigateCommand}" CommandParameter="Views/RecipeEditPage.xaml" />
-                <Button x:Name="btnRecipeOpen" Content="Open" Width="70" Command="{Binding RecipeOpenCommand}"/>
-                <Button x:Name="btnRecipeStart" Content="Start" Width="70" Command="{Binding RecipeStartCommand}"/>
-                <Button x:Name="btnRecipeStop" Content="Stop" Width="70" Command="{Binding RecipeStopCommand}"/>
-            </StackPanel>
+            <Grid Grid.Row="1" >
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="500"/>
+                    <ColumnDefinition/>
+                    <ColumnDefinition Width="500"/>
+                </Grid.ColumnDefinitions>
+                <StackPanel Grid.Column="0" Orientation="Horizontal">
+                    <Button x:Name="btnRecipeOpen" Content="Open" Style="{StaticResource RecipeOperationStyle}" Command="{Binding RecipeOpenCommand}"/>
+                    <Button x:Name="btnRecipeStart" Content="Start"  Style="{StaticResource RecipeOperationStyle}" Command="{Binding RecipeStartCommand}"/>
+                    <Button x:Name="btnRecipePause" Content="Pause"   Style="{StaticResource RecipeOperationStyle}" Command="{Binding RecipePauseCommand}"/>
+                    <Button x:Name="btnRecipeReStart" Content="ReStart"  Style="{StaticResource RecipeOperationStyle}" Command="{Binding RecipeReStartCommand}"/>
+                    <Button x:Name="btnRecipeSkip" Content="Skip"  Style="{StaticResource RecipeOperationStyle}" Command="{Binding RecipeSkipCommand}"/>
+                    <Button x:Name="btnRecipeStop" Content="Stop"  Style="{StaticResource RecipeOperationStyle}" Command="{Binding RecipeStopCommand}"/>
+                </StackPanel>
+                <StackPanel Grid.Column="1" Orientation="Horizontal">
+                    <Button x:Name="btnRecipeEdit" Content="Edit" Style="{StaticResource RecipeOperationStyle}" Command="{Binding RecipeEditCommand}"/>
+                    <Button x:Name="btnRecipeRefresh" Content="Refresht" Style="{StaticResource RecipeOperationStyle}" Command="{Binding RecipeRefreshCommand}"/>
+                    <Button x:Name="btnRecipeTransfer" Content="Transfer" Style="{StaticResource RecipeOperationStyle}" Command="{Binding RecipeTransferCommand}"/>
+                </StackPanel>
+                <Grid Grid.Column="2">
+                    <StackPanel>
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Width="80" Height="20" Foreground="Lime">Loaded File</TextBlock>
+                            <TextBox x:Name="tbRecipeLoadedFile" Width="415" Height="18" Margin="1"/>
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Width="80" Height="20" Foreground="Lime">Log File</TextBlock>
+                            <TextBox x:Name="tbRecipeLogFile" Width="415" Height="18" Margin="1"/>
+                        </StackPanel>
+                    </StackPanel>
+                </Grid>
+            </Grid>
             <!-- Recipe Data Grid  -->
             <DataGrid Grid.Row="2" x:Name="dtgRecipes" AutoGenerateColumns="False" Padding="5"
-       CanUserSortColumns="False"
-       CanUserAddRows="False"
-       IsReadOnly="True"
-       ItemsSource="{Binding Recipes}">
+                   CanUserSortColumns="False"
+                   CanUserAddRows="False"
+                   IsReadOnly="True"
+                   ItemsSource="{Binding Recipes}"> 
                 <b:Interaction.Triggers>
                     <b:EventTrigger EventName="SelectedChanged">
                         <b:InvokeCommandAction Command="{Binding SelectionChangedcommand}" PassEventArgsToCommand="True"/>

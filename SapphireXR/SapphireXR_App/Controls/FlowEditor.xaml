@@ -25,8 +25,8 @@
                             </Border>
                             <Border Grid.Row="1" BorderBrush="LightGray"  BorderThickness="1,0,1,1"  Background="{StaticResource MFCDisplayColor2}" CornerRadius="0,0,3,3">
                                 <StackPanel   Orientation="Horizontal">
-                                    <Label x:Name="flowCurrent" Height="28" Width="68" FontSize="20" HorizontalContentAlignment="Right" 
-                        VerticalAlignment="Center" Padding="0" Content="1234.5"/>
+                                    <TextBox x:Name="flowCurrent" Height="28" Width="68" FontSize="20" HorizontalContentAlignment="Right" 
+                        VerticalAlignment="Center" Padding="0" />
                                 </StackPanel>
                             </Border>
                         </Grid>

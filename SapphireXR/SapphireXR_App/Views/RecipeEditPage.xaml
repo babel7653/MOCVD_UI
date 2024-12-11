@@ -359,16 +359,38 @@
                 <control:FlowEditor x:Name="eEPC07" Canvas.Left="721" Canvas.Top="73" ContentLabel="EPC07"/>
                 <!--#endregion-->
 
+                <!-- #Region 6. Text -->
+                <Label Canvas.Left="1185" Canvas.Top="135" Foreground="{StaticResource PrimaryFontColor}" Content="Shower Head(HYD)"/>
+                <Label Canvas.Left="1185" Canvas.Top="157" Foreground="{StaticResource PrimaryFontColor}" Content="Reactor Purge"/>
+                <Label Canvas.Left="1185" Canvas.Top="201" Foreground="{StaticResource PrimaryFontColor}" Content="Base Purge"/>
+                <Label Canvas.Left="1185" Canvas.Top="243" Foreground="{StaticResource PrimaryFontColor}" Content="Shower Head(MO)"/>
+                <Label Canvas.Left="1185" Canvas.Top="423" Foreground="{StaticResource PrimaryFontColor}" Content="to Reactor"/>
+                <Label Canvas.Left="1185" Canvas.Top="449" Foreground="{StaticResource PrimaryFontColor}" Content="to Scrubber"/>
+                <Label Canvas.Left="1116" Canvas.Top="320" Foreground="{StaticResource PrimaryFontColor}" Content="Vent"
+                        Width="50" HorizontalContentAlignment="Center" />
+                <Label Canvas.Left="256" Canvas.Top="120" Foreground="{StaticResource PrimaryFontColor}" Content="Vent"
+                       Width="33" HorizontalContentAlignment="Center"/>
+                <Label Canvas.Left="256" Canvas.Top="214" Foreground="{StaticResource PrimaryFontColor}" Content="Vent"
+                       Width="33" HorizontalContentAlignment="Center"/>
+                <Label Canvas.Left="784" Canvas.Top="80" Foreground="{StaticResource PrimaryFontColor}" Content="Vent"
+                       Width="33" HorizontalContentAlignment="Center"/>
+                <Label Canvas.Left="922" Canvas.Top="407" Foreground="{StaticResource PrimaryFontColor}" Content="Vent"
+                       Width="33" HorizontalContentAlignment="Center" />
+                <!--#endregion-->
+
 
             </Canvas>
-            
+            <!-- #Region 6. 제어 버턴) -->
             <!-- Recipe Command Buttons  -->
+            
             <StackPanel Grid.Row="1" Orientation="Horizontal">
-                <Button x:Name="btnRunPage" Content="New" Width="70" Command="{Binding GoRunPageCommand}"/>
                 <Button x:Name="btnRecipeOpen" Content="Open" Width="70" Command="{Binding RecipeOpenCommand}"/>
                 <Button x:Name="btnRecipeSave" Content="Save" Width="70" Command="{Binding RecipeStartCommand}"/>
                 <Button x:Name="btnRecipeSaveAs" Content="SaveAs" Width="70"/>
             </StackPanel>
+            
+            <!--#endregion-->
+            
             
             <!-- Recipe Data Grid  -->
             <DataGrid Grid.Row="2" x:Name="dtgRecipes" AutoGenerateColumns="False" Padding="5"

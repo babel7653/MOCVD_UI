@@ -1,7 +1,13 @@
-﻿using System.Windows;
+﻿using System.Reflection.Emit;
+using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Media;
+using CommunityToolkit.Mvvm.Input;
+using SapphireXR_App.Common;
 using SapphireXR_App.Enums;
 using SapphireXR_App.Models;
+using SapphireXR_App.ViewModels;
+using SapphireXR_App.Views;
 
 namespace SapphireXR_App.Controls
 {
@@ -10,9 +16,14 @@ namespace SapphireXR_App.Controls
     /// </summary>
     public partial class FlowController : UserControl
     {
+        static FlowController()
+        {
+            MouseEnterColor = new SolidColorBrush(Color.FromRgb(0x9d, 0xbc, 0xe8));
+        }
         public FlowController()
         {
             InitializeComponent();
+            ControllerBorderBackground = new SolidColorBrush(Color.FromRgb(0xCC, 0xDF, 0xEF));
         }
 
         public string ControllerID
@@ -70,7 +81,21 @@ namespace SapphireXR_App.Controls
         public string Type
         {
             get { return (string)GetValue(typeProperty);  }
-            set { SetValue(typeProperty, value); }
+            set { 
+                SetValue(typeProperty, value);
+                switch (Type)
+                {
+                    case "MFC":
+                        ControllerBorderBackground = Application.Current.Resources.MergedDictionaries[0]["MFCDisplayColor2"] as SolidColorBrush
+                            ?? ControllerBorderBackground;
+                        break;
+
+                    case "EPC":
+                        ControllerBorderBackground = Application.Current.Resources.MergedDictionaries[0]["EPCDisplayColor1"] as SolidColorBrush
+                            ?? ControllerBorderBackground;
+                        break;
+                }
+            }
         }
 
         public static readonly DependencyProperty IsDeviationLimitProperty =
@@ -80,14 +105,71 @@ namespace SapphireXR_App.Controls
         public readonly DependencyProperty typeProperty =
             DependencyProperty.Register("TypeProperty" + (TypeCount++), typeof(string), typeof(FlowController), new PropertyMetadata(""));
 
+        static private bool SetMouseEnterColor = false;
+        public static SolidColorBrush MouseEnterColor
+        {
+            get; set;
+        }
+        public SolidColorBrush ControllerBorderBackground
+        {
+            get; set;
+        }
+
+        private FlowControlView? flowControlView = null;
+
         private void FlowController_Click(object sender, RoutedEventArgs e) 
         {
-            FlowController flowController = (FlowController)((Button)e.OriginalSource).Parent;
-            if (flowController != null)
+            if (flowControlView == null)
             {
-                FlowControllerEx.Show("Flow Controller", $"{flowController.ControllerID} 유량을 변경하시겠습니까?");
+                flowController = (FlowController)((Button)e.OriginalSource).Parent;
+                if (flowController != null)
+                {
+                    flowControlView = FlowControllerEx.Show("Flow Controller", $"{flowController.ControllerID} 유량을 변경하시겠습니까?");
+                    Point p = TransformToAncestor(Util.FindParent<Window>(this, "mainWindow")).Transform(new Point(0, 0));
+                    flowControlView.Left = p.X;
+                    flowControlView.Top = p.Y;
+                    flowControlView.Topmost = true;
+                    ((FlowControlViewModel)(flowControlView.DataContext)).Confirmed += 
+                        (PopupExResult result, FlowControlViewModel.ControlValues controlValues) => 
+                        {
+                            //여기에서 FlowControlView에서 설정한 속성값들(Targe Value, Current Value ...)을 얻어온다.
+                        };
+                    flowControlView.Closed += (object? sender, EventArgs e) =>
+                    {
+                        flowControlView = null; 
+                    };
+                
+                }
+            }
+            else
+            {
+                flowControlView.Focus();
             }
         }
 
+        private void flowController_Loaded(object sender, RoutedEventArgs e)
+        {
+            if (SetMouseEnterColor == false)
+            {
+                MouseEnterColor = Application.Current.Resources.MergedDictionaries[0]["ValeOnMouseEnterColor"] as SolidColorBrush ?? MouseEnterColor;
+                SetMouseEnterColor = true;
+            }
+        }
+
+        private void controllerBorder_MouseLeave(object sender, System.Windows.Input.MouseEventArgs e)
+        {
+            if(sender is Border)
+            {
+                ((Border)sender).Background = ControllerBorderBackground;
+            }
+        }
+
+        private void controllerBorder_MouseEnter(object sender, System.Windows.Input.MouseEventArgs e)
+        {
+            if (sender is Border)
+            {
+                ((Border)sender).Background = MouseEnterColor;
+            }
+        }
     }
 }

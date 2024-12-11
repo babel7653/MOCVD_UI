@@ -25,6 +25,8 @@
     <SolidColorBrush x:Key="EPCDisplayColor1" Color="#4EA72E"/>
     <SolidColorBrush x:Key="EPCDisplayColor2" Color="#D0E1CD"/>
 
+    <SolidColorBrush x:Key="ValeOnMouseEnterColor" Color="#9dbce8" />
+
     <!-- Foreground Colors -->
     <SolidColorBrush x:Key="PrimaryFontColor" Color="#F8FAFC"/>
     <SolidColorBrush x:Key="SecondaryFontColor" Color="#E2E8F0"/>

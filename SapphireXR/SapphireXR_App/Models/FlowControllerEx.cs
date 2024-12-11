@@ -6,16 +6,16 @@ namespace SapphireXR_App.Models
 {
     public static class FlowControllerEx
     {
-        public static PopupExResult Show(string title, string message)
+        public static FlowControlView Show(string title, string message)
         {
             var viewModel = new FlowControlViewModel(title, message);
             FlowControlView view = new FlowControlView
             {
                 DataContext = viewModel
             };
-            view.ShowDialog();
+            view.Show();
 
-            return viewModel.PopupExResult;
+            return view;
         }
     }
 }

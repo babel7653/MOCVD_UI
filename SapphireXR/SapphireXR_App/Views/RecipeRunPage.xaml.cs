@@ -9,8 +9,7 @@ namespace SapphireXR_App.Views
         public RecipeRunPage()
         {
             InitializeComponent();
-            DataContext = App.Current.Services.GetService(typeof(MainViewModel));
-
+            DataContext = App.Current.Services.GetService(typeof(RecipeViewModel));
 
             if (RecipeViewModel.bRecipeStart == false)
             {

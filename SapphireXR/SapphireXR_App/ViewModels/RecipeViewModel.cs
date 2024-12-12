@@ -7,7 +7,6 @@ using SapphireXR_App.Models;
 using System.Collections;
 using System.Globalization;
 using System.IO;
-using System.Windows.Media;
 
 namespace SapphireXR_App.ViewModels
 {

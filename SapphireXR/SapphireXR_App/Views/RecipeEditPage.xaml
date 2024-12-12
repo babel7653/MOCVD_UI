@@ -13,23 +13,57 @@
     <Page.Resources>
         <Style x:Key="BaseStyle" TargetType="{x:Type Control}">
             <Setter Property="FontSize" Value="11"/>
-            <Setter Property="FontFamily" Value="Pretendard"/>
+            <Setter Property="FontFamily" Value="NanumGothic"/>
         </Style>
-        <Style TargetType="{x:Type ComboBox}" BasedOn="{StaticResource BaseStyle}"/>
-        <Style TargetType="{x:Type Button}" BasedOn="{StaticResource BaseStyle}"/>
-        <Style TargetType="{x:Type DataGrid}" BasedOn="{StaticResource BaseStyle}"/>
+        <Style x:Key="RecipeOperationStyle" TargetType="{x:Type Button}">
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Height" Value="30"/>
+            <Setter Property="Width" Value="64"/>
+            <Setter Property="Margin" Value="4"/>
+            <Setter Property="HorizontalContentAlignment" Value="Center"/>
+            <Style.Resources>
+                <Style TargetType="{x:Type Border}">
+                    <Setter Property="CornerRadius" Value="4"/>
+                </Style>
+            </Style.Resources>
+        </Style>
+        <Style TargetType="{x:Type DataGrid}">
+            <Setter Property="AutoGenerateColumns" Value="False"/>
+            <Setter Property="Padding" Value="5"/>
+            <Setter Property="CanUserSortColumns" Value="False"/>
+            <Setter Property="CanUserAddRows" Value="False"/>
+        </Style>
+        <Style TargetType="{x:Type DataGridColumnHeader}">
+            <Setter Property="HorizontalContentAlignment" Value="Center"/>
+        </Style>
+        <Style TargetType="{x:Type TabItem}">
+            <Setter Property="HeaderTemplate">
+                <Setter.Value>
+                    <DataTemplate>
+                        <ContentPresenter Content="{TemplateBinding Content}">
+                            <ContentPresenter.LayoutTransform>
+                                <RotateTransform Angle="270"/>
+                            </ContentPresenter.LayoutTransform>
+                        </ContentPresenter>
+                    </DataTemplate>
+                </Setter.Value>
+            </Setter>
+            <Setter Property="Width" Value="20"/>
+            <Setter Property="Height" Value="90"/>
+            <Setter Property="Padding" Value="3"/>
+        </Style>
     </Page.Resources>
-    <Grid Background="#e3edfc">
+    
+    <Grid Background="Transparent">
         <Frame x:Name="frRecipeEdit"/>
         <Grid>
             <Grid.RowDefinitions>
                 <RowDefinition Height="490"/>
-                <RowDefinition Height="20"/>
+                <RowDefinition Height="40"/>
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
 
-            <!-- 레시피 작성 가스배관 그림  -->
-            <Canvas Grid.Row="0" Background="{StaticResource RecipeEditPageBackground}" Grid.ColumnSpan="4">
+            <Canvas Grid.Row="0" Background="{StaticResource RecipeEditPageBackground}" >
 
                 <!-- #Region 1. 메인 공급 배관 -->
                 <!-- Nitrogen Gas Line -->
@@ -272,12 +306,12 @@
                 <!-- 반응기 콘트롤러 -->
                 <Rectangle Canvas.Left="965" Canvas.Top="5" Width="330" Height="120" Stroke="#3d495a" StrokeThickness="2" />
 
-                <TextBlock Canvas.Left="1018" Canvas.Top="52" Width="70" Height="20" Foreground="{StaticResource PrimaryFontColor}"
-                            FontSize="10" TextAlignment="Center">  Temperature</TextBlock>
-                <TextBlock Canvas.Left="1098" Canvas.Top="52" Width="70" Height="20" Foreground="{StaticResource PrimaryFontColor}"
-                            FontSize="10" TextAlignment="Center"> Pressure</TextBlock>
-                <TextBlock Canvas.Left="1178" Canvas.Top="52" Width="70" Height="20" Foreground="{StaticResource PrimaryFontColor}"
-                            FontSize="10" TextAlignment="Center"> Rotation</TextBlock>
+                <Label Canvas.Left="1018" Canvas.Top="50" Foreground="{StaticResource PrimaryFontColor}" Content="Temperature"
+                            Width="70" HorizontalContentAlignment="Center"/>
+                <Label Canvas.Left="1098" Canvas.Top="50" Foreground="{StaticResource PrimaryFontColor}" Content="Pressure"
+                            Width="70" HorizontalContentAlignment="Center"/>
+                <Label Canvas.Left="1178" Canvas.Top="50" Foreground="{StaticResource PrimaryFontColor}" Content="Rotation"
+                            Width="70" HorizontalContentAlignment="Center"/>
                 <control:ReactorController x:Name="susceptorTemperature" Canvas.Left="1018" Canvas.Top="72"/>
                 <control:ReactorController x:Name="reactorPressure" Canvas.Left="1098" Canvas.Top="72"/>
                 <control:ReactorController x:Name="susceptorRotation" Canvas.Left="1178" Canvas.Top="72"/>
@@ -378,45 +412,133 @@
                        Width="33" HorizontalContentAlignment="Center" />
                 <!--#endregion-->
 
-
             </Canvas>
-            <!-- #Region 6. 제어 버턴) -->
-            <!-- Recipe Command Buttons  -->
-            
-            <StackPanel Grid.Row="1" Orientation="Horizontal">
-                <Button x:Name="btnRecipeOpen" Content="Open" Width="70" Command="{Binding RecipeOpenCommand}"/>
-                <Button x:Name="btnRecipeSave" Content="Save" Width="70" Command="{Binding RecipeStartCommand}"/>
-                <Button x:Name="btnRecipeSaveAs" Content="SaveAs" Width="70"/>
-            </StackPanel>
-            
+            <!-- #Region 7. 레시피 작성 커맨드 버턴) -->
+            <Grid Grid.Row="1">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="500"/>
+                    <ColumnDefinition/>
+                    <ColumnDefinition Width="500"/>
+                </Grid.ColumnDefinitions>
+                <StackPanel Grid.Column="0" Orientation="Horizontal">
+                    <Button x:Name="btnRecipeNew" Content="New" Style="{StaticResource RecipeOperationStyle}" Command="{Binding RecipeNewCommand}"/>
+                    <Button x:Name="btnRecipeOpen" Content="Open" Style="{StaticResource RecipeOperationStyle}" Command="{Binding RecipeOpenCommand}"/>
+                    <Button x:Name="btnRecipeSave" Content="Save" Style="{StaticResource RecipeOperationStyle}" Command="{Binding RecipeSaveCommand}"/>
+                    <Button x:Name="btnRecipeSaveAs" Content="SaveAs" Style="{StaticResource RecipeOperationStyle}" Command="{Binding RecipeSaveAsCommand}"/>
+                </StackPanel>
+                <StackPanel Grid.Column="2" Orientation="Horizontal" VerticalAlignment="Bottom">
+                    <Label Width="80" Foreground="Lime" Content="Recipe File"/>
+                    <TextBox x:Name="tbRecipeEditFile" Foreground="Lime" Width="415" Height="18" Margin="1"/>
+                </StackPanel>
+            </Grid>
+            <!--#endregion-->
+
+            <!-- #Region 8. Recipe Edit 데이터 테이블 -->
+            <Grid Grid.Row="2" Background="Transparent">
+                <!-- 수직형 탭 설정-->
+                <TabControl TabStripPlacement="Left">
+
+                    <TabItem Header="Reactor Data">
+                        <TabItem.Content>
+                            <DataGrid
+                                  SelectedIndex="{Binding CurrRecipeStep, Mode=TwoWay}"
+                                  ItemsSource="{Binding Recipes}">  
+                                <b:Interaction.Triggers>
+                                    <b:EventTrigger EventName="SelectedChanged">
+                                        <b:InvokeCommandAction Command="{Binding SelectionChangedcommand}" PassEventArgsToCommand="True"/>
+                                    </b:EventTrigger>
+                                </b:Interaction.Triggers>
+                                <DataGrid.Columns>
+                                    <DataGridTextColumn Header="No" Width="30" Binding="{Binding No}" />
+                                    <DataGridTextColumn Header="Name" Width="200" Binding="{Binding Name}" />
+                                    <DataGridTextColumn Header="Ramp" Width="100" Binding="{Binding rTime}" />
+                                    <DataGridTextColumn Header="Hold" Width="100" Binding="{Binding hTime}" />
+                                    <DataGridTextColumn Header="Loop" Width="100" Binding="{Binding Loop}" />
+                                    <DataGridTextColumn Header="Jump" Width="100" Binding="{Binding Jump}" />
+                                    <DataGridTextColumn Header="Susceptor Temp." Width="100" Binding="{Binding sTemp}" />
+                                    <DataGridTextColumn Header="Reactor Press." Width="100" Binding="{Binding rPress}" />
+                                    <DataGridTextColumn Header="Sus. Rotation" Width="100" Binding="{Binding sRotation}" />
+                                    <DataGridTextColumn Header="Compare Temp." Width="100" Binding="{Binding cTemp}" />
+                                </DataGrid.Columns>
+                            </DataGrid>
+                        </TabItem.Content>
+                    </TabItem>
+
+                    <TabItem Header="FlowData">
+                        <TabItem.Content>
+                            <DataGrid HorizontalScrollBarVisibility="Visible"
+                                SelectedIndex="{Binding CurrRecipeStep, Mode=TwoWay}"
+                                ItemsSource="{Binding Recipes}">
+                                <DataGrid.Columns>
+                                    <DataGridTextColumn Header="No" Width="30" Binding="{Binding No}" />
+                                    <DataGridTextColumn Header="Name" Width="200" Binding="{Binding Name}" />
+                                    <DataGridTextColumn Header="Ramp" Width="100" Binding="{Binding rTime}" />
+                                    <DataGridTextColumn Header="Hold" Width="100" Binding="{Binding hTime}" />
+                                    <DataGridTextColumn Header="M01" Width="70" Binding="{Binding M01}" />
+                                    <DataGridTextColumn Header="M02" Width="70" Binding="{Binding M02}" />
+                                    <DataGridTextColumn Header="M03" Width="70" Binding="{Binding M03}" />
+                                    <DataGridTextColumn Header="M04" Width="70" Binding="{Binding M04}" />
+                                    <DataGridTextColumn Header="M05" Width="70" Binding="{Binding M05}" />
+                                    <DataGridTextColumn Header="M06" Width="70" Binding="{Binding M06}" />
+                                    <DataGridTextColumn Header="M07" Width="70" Binding="{Binding M07}" />
+                                    <DataGridTextColumn Header="M08" Width="70" Binding="{Binding M08}" />
+                                    <DataGridTextColumn Header="M09" Width="70" Binding="{Binding M09}" />
+                                    <DataGridTextColumn Header="M10" Width="70" Binding="{Binding M10}" />
+                                    <DataGridTextColumn Header="M11" Width="70" Binding="{Binding M11}" />
+                                    <DataGridTextColumn Header="M12" Width="70" Binding="{Binding M12}" />
+                                    <DataGridTextColumn Header="M13" Width="70" Binding="{Binding M13}" />
+                                    <DataGridTextColumn Header="M14" Width="70" Binding="{Binding M14}" />
+                                    <DataGridTextColumn Header="M15" Width="70" Binding="{Binding M15}" />
+                                    <DataGridTextColumn Header="M16" Width="70" Binding="{Binding M16}" />
+                                    <DataGridTextColumn Header="M17" Width="70" Binding="{Binding M17}" />
+                                    <DataGridTextColumn Header="M18" Width="70" Binding="{Binding M18}" />
+                                    <DataGridTextColumn Header="M19" Width="70" Binding="{Binding M19}" />
+                                </DataGrid.Columns>
+                            </DataGrid>
+                        </TabItem.Content>
+                    </TabItem>
+
+                    <TabItem Header="ValveData">
+                        <TabItem.Content>
+                            <DataGrid HorizontalScrollBarVisibility="Visible"
+                                SelectedIndex="{Binding CurrRecipeStep, Mode=TwoWay}"
+                                ItemsSource="{Binding Recipes}">
+                                <DataGrid.Columns>
+                                    <DataGridTextColumn Header="No" Width="30" Binding="{Binding No}" />
+                                    <DataGridTextColumn Header="Name" Width="200" Binding="{Binding Name}" />
+                                    <DataGridTextColumn Header="V01" Width="50" Binding="{Binding V01}" />
+                                    <DataGridTextColumn Header="V02" Width="50" Binding="{Binding V02}" />
+                                    <DataGridTextColumn Header="V03" Width="50" Binding="{Binding V03}" />
+                                    <DataGridTextColumn Header="V04" Width="50" Binding="{Binding V04}" />
+                                    <DataGridTextColumn Header="V05" Width="50" Binding="{Binding V05}" />
+                                    <DataGridTextColumn Header="V07" Width="50" Binding="{Binding V07}" />
+                                    <DataGridTextColumn Header="V08" Width="50" Binding="{Binding V08}" />
+                                    <DataGridTextColumn Header="V10" Width="50" Binding="{Binding V10}" />
+                                    <DataGridTextColumn Header="V11" Width="50" Binding="{Binding V11}" />
+                                    <DataGridTextColumn Header="V13" Width="50" Binding="{Binding V13}" />
+                                    <DataGridTextColumn Header="V14" Width="50" Binding="{Binding V14}" />
+                                    <DataGridTextColumn Header="V16" Width="50" Binding="{Binding V16}" />
+                                    <DataGridTextColumn Header="V17" Width="50" Binding="{Binding V17}" />
+                                    <DataGridTextColumn Header="V19" Width="50" Binding="{Binding V19}" />
+                                    <DataGridTextColumn Header="V20" Width="50" Binding="{Binding V20}" />
+                                    <DataGridTextColumn Header="V22" Width="50" Binding="{Binding V22}" />
+                                    <DataGridTextColumn Header="V23" Width="50" Binding="{Binding V23}" />
+                                    <DataGridTextColumn Header="V25" Width="50" Binding="{Binding V25}" />
+                                    <DataGridTextColumn Header="V26" Width="50" Binding="{Binding V26}" />
+                                    <DataGridTextColumn Header="V28" Width="50" Binding="{Binding V28}" />
+                                    <DataGridTextColumn Header="V29" Width="50" Binding="{Binding V29}" />
+                                    <DataGridTextColumn Header="V30" Width="50" Binding="{Binding V30}" />
+                                    <DataGridTextColumn Header="V31" Width="50" Binding="{Binding V31}" />
+                                    <DataGridTextColumn Header="V32" Width="50" Binding="{Binding V32}" />
+                                </DataGrid.Columns>
+                            </DataGrid>
+                        </TabItem.Content>
+                    </TabItem>
+
+                </TabControl>
+            </Grid>
             <!--#endregion-->
             
-            
-            <!-- Recipe Data Grid  -->
-            <DataGrid Grid.Row="2" x:Name="dtgRecipes" AutoGenerateColumns="False" Padding="5"
-                   CanUserSortColumns="False"
-                   CanUserAddRows="False"
-                   IsReadOnly="True"
-                   ItemsSource="{Binding Recipes}">
-                <b:Interaction.Triggers>
-                    <b:EventTrigger EventName="SelectedChanged">
-                        <b:InvokeCommandAction Command="{Binding SelectionChangedcommand}" PassEventArgsToCommand="True"/>
-                    </b:EventTrigger>
-                </b:Interaction.Triggers>
-                
-                <DataGrid.Columns>
-                    <DataGridTextColumn Header="No" Width="30" Binding="{Binding No}" />
-                    <DataGridTextColumn Header="Name" Width="150" Binding="{Binding Name}" />
-                    <DataGridTextColumn Header="Ramp" Width="50" Binding="{Binding rTime}" />
-                    <DataGridTextColumn Header="Hold" Width="50" Binding="{Binding hTime}" />
-                    <DataGridTextColumn Header="Susceptor Temp." Width="100" Binding="{Binding sTemp}" />
-                    <DataGridTextColumn Header="Reactor Press." Width="100" Binding="{Binding rPress}" />
-                    <DataGridTextColumn Header="Susceptor Rotation" Width="100" Binding="{Binding sRotation}" />
-                    <DataGridTextColumn Header="Compare Temp." Width="100" Binding="{Binding cTemp}" />
-                    <DataGridTextColumn Header="Loop" Width="50" Binding="{Binding Loop}" />
-                    <DataGridTextColumn Header="Jump" Width="50" Binding="{Binding Jump}" />
-                </DataGrid.Columns>
-            </DataGrid>
         </Grid>
     </Grid>
 </Page>

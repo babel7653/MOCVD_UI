@@ -69,7 +69,7 @@ namespace SapphireXR_App.Common
             {
                 hReadValveStatePLC = Ads.CreateVariableHandle("GVL_IO.aOutputSolValve");
                 aReadValveStatePLC = (uint[])Ads.ReadAny(hReadValveStatePLC, typeof(uint[]), new int[] { 2 }); // Convert to Array
-
+             
                 BitArray baReadValveStatePLC1 = new BitArray(new int[] { (int)aReadValveStatePLC[0] });
                 BitArray baReadValveStatePLC2 = new BitArray(new int[] { (int)aReadValveStatePLC[1] });
 

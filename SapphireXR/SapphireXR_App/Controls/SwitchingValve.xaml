@@ -5,6 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:SapphireXR_App.Controls"
              mc:Ignorable="d" 
+             Loaded="switchingValve_Loaded"
              x:Name="switchingValve"
              d:DesignWidth="48" Height="24">
     <local:Valve.Resources>

@@ -15,14 +15,27 @@ namespace SapphireXR_App.ViewModels
         private string _message = string.Empty;
         [ObservableProperty]
         private string _targetValue = string.Empty;
+        [ObservableProperty]
+        private string _rampTime = string.Empty;
+        [ObservableProperty]
+        private string _deviation = string.Empty;
+        [ObservableProperty]
+        private string _currentValue = string.Empty;
+        [ObservableProperty]
+        private string _controlValue = string.Empty;
+        [ObservableProperty]
+        private string _maxValue = string.Empty;
 
         public PopupExResult PopupExResult { get; internal set; } = PopupExResult.Close;
+
+        
 
         [RelayCommand]
         private void Confirm(Window window)
         {
             PopupExResult = PopupExResult.Confirm;
-            Confirmed!(PopupExResult.Confirm, new ControlValues { targetValue = double.Parse(TargetValue == null || TargetValue == "" ? "0.0": TargetValue) });
+            Confirmed!(PopupExResult.Confirm, new ControlValues { targetValue = uint.Parse(TargetValue), rampTime = uint.Parse(RampTime), controlValue = uint.Parse(ControlValue), 
+                currentValue = uint.Parse(CurrentValue), deviation = uint.Parse(Deviation), maxValue = uint.Parse(MaxValue) });
             window.Close();
         }
 
@@ -37,12 +50,22 @@ namespace SapphireXR_App.ViewModels
         {
             Title = title;
             Message = message;
-            TargetValue = "";
+            TargetValue = string.Empty;
+            RampTime = string.Empty;
+            Deviation = string.Empty;
+            CurrentValue = string.Empty;
+            ControlValue = string.Empty;
+            MaxValue = string.Empty;
         }
 
         public struct ControlValues
         {
-            public double targetValue;
+            public uint targetValue;
+            public uint rampTime;
+            public uint deviation;
+            public uint currentValue;
+            public uint controlValue;
+            public uint maxValue;
         }
 
         public delegate void ConfiredEventHandler(PopupExResult result, ControlValues controlValues);

@@ -1,5 +1,5 @@
 ﻿using CommunityToolkit.Mvvm.Input;
-using SapphireXR_App.Common;
+using SapphireXR_App.Models;
 using System.Collections;
 using System.ComponentModel;
 using System.Windows;

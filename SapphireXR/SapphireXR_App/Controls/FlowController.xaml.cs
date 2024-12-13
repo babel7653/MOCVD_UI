@@ -129,11 +129,10 @@ namespace SapphireXR_App.Controls
                     flowControlView.Left = p.X;
                     flowControlView.Top = p.Y;
                     flowControlView.Topmost = true;
-                    ((FlowControlViewModel)(flowControlView.DataContext)).Confirmed += 
-                        (PopupExResult result, FlowControlViewModel.ControlValues controlValues) => 
-                        {
+                    ((FlowControlViewModel)(flowControlView.DataContext)).Confirmed += (PopupExResult result, FlowControlViewModel.ControlValues controlValues) => {
                             //여기에서 FlowControlView에서 설정한 속성값들(Targe Value, Current Value ...)을 얻어온다.
                         };
+                    ((FlowControlViewModel)(flowControlView.DataContext)).Canceled += (PopupExResult result) => { };
                     flowControlView.Closed += (object? sender, EventArgs e) =>
                     {
                         flowControlView = null; 

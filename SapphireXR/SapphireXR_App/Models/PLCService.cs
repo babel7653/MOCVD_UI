@@ -9,10 +9,10 @@ using System.Threading.Tasks;
 using System.Windows;
 using TwinCAT.Ads;
 
-namespace SapphireXR_App.Common
+namespace SapphireXR_App.Models
 {
     static class PLCService
-    {   
+    {
         // Connect to PLC
         public static string AddressPLC { get; set; } = "PLC Address : ";
         public static string ModePLC { get; set; } = "System Mode : ";
@@ -25,7 +25,7 @@ namespace SapphireXR_App.Common
         public static AdsClient Ads { get; set; }
         static AmsNetId amsNetId = new("10.10.10.10.1.1");
 
-        static PLCService() 
+        static PLCService()
         {
             Ads = new AdsClient();
             try
@@ -81,7 +81,7 @@ namespace SapphireXR_App.Common
             }
 
         }
-        
+
 
 
 

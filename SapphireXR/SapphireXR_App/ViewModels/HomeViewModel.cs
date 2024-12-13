@@ -1,8 +1,9 @@
-﻿using System.Windows; 
-using System.Windows.Input;
-using CommunityToolkit.Mvvm.Input;
-using System.ComponentModel;
+﻿using CommunityToolkit.Mvvm.Input;
+using SapphireXR_App.Common;
 using System.Collections;
+using System.ComponentModel;
+using System.Windows;
+using System.Windows.Input;
 
 namespace SapphireXR_App.ViewModels
 {
@@ -10,7 +11,6 @@ namespace SapphireXR_App.ViewModels
     {
         public static uint[]? aSolValvePLC { get; set; }
         public static uint hValve { get; set; }
-        public static BitArray bValveState { get; set; }
         public HomeViewModel()
         {
             EnableLeakTestCommand = new RelayCommand<object>((object? menuName) => {
@@ -28,8 +28,7 @@ namespace SapphireXR_App.ViewModels
                         break;
                 }
             });
-            ReadSolValveState(); // 초기 로드시 PLC Valve상태 읽음
-
+            PLCService.ReadValveState(); // 초기 로드시 PLC Valve상태 읽음
         }
 
         public event PropertyChangedEventHandler? PropertyChanged;
@@ -79,20 +78,6 @@ namespace SapphireXR_App.ViewModels
         static readonly DependencyProperty OffLeakTestVisibilityProperty = DependencyProperty.Register("OffLeakTestVisibility", typeof(Visibility),
            typeof(HomeViewModel), new PropertyMetadata(Visibility.Visible));
 
-        private void ReadSolValveState()
-        {
-            // Solenoid Valve State Read (Update)
-            try
-            {
-                hValve = MainViewModel.Ads.CreateVariableHandle("GVL_IO.aOutputSolValve");
-                aSolValvePLC = (uint[])MainViewModel.Ads.ReadAny(hValve, typeof(uint[]), new int[] { 2 });
-                //bValveState =  
-                Console.WriteLine("aSolValvePLC");
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message);
-            }
-        }
+      
     }
 }

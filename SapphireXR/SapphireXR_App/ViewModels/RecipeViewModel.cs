@@ -3,6 +3,7 @@ using CommunityToolkit.Mvvm.Messaging;
 using CsvHelper;
 using Microsoft.Win32;
 using SapphireXR_App.Bases;
+using SapphireXR_App.Common;
 using SapphireXR_App.Models;
 using System.Collections;
 using System.Globalization;
@@ -88,21 +89,21 @@ namespace SapphireXR_App.ViewModels
                     nRecipeOperationState = 0;
                     try
                     {
-                        uint hRcp = MainViewModel.Ads.CreateVariableHandle("RCP.aRecipe");
-                        uint hRcpTotalStep = MainViewModel.Ads.CreateVariableHandle("RCP.iRcpTotalStep");
-                        uint hRcpStart = MainViewModel.Ads.CreateVariableHandle("RCP.bRcpStart");
-                        uint hRcpState = MainViewModel.Ads.CreateVariableHandle("RCP.iRcpOperationState");
+                        uint hRcp = PLCService.Ads.CreateVariableHandle("RCP.aRecipe");
+                        uint hRcpTotalStep = PLCService.Ads.CreateVariableHandle("RCP.iRcpTotalStep");
+                        uint hRcpStart = PLCService.Ads.CreateVariableHandle("RCP.bRcpStart");
+                        uint hRcpState = PLCService.Ads.CreateVariableHandle("RCP.iRcpOperationState");
 
 
-                        MainViewModel.Ads.WriteAny(hRcp, aRecipePLC);
-                        MainViewModel.Ads.WriteAny(hRcpTotalStep, iRcpTotalStep);
-                        MainViewModel.Ads.WriteAny(hRcpStart, bRecipeStart);
-                        MainViewModel.Ads.WriteAny(hRcpState, nRecipeOperationState);
+                        PLCService.Ads.WriteAny(hRcp, aRecipePLC);
+                        PLCService.Ads.WriteAny(hRcpTotalStep, iRcpTotalStep);
+                        PLCService.Ads.WriteAny(hRcpStart, bRecipeStart);
+                        PLCService.Ads.WriteAny(hRcpState, nRecipeOperationState);
 
-                        MainViewModel.Ads.DeleteVariableHandle(hRcp);
-                        MainViewModel.Ads.DeleteVariableHandle(hRcpTotalStep);
-                        MainViewModel.Ads.DeleteVariableHandle(hRcpStart);
-                        MainViewModel.Ads.DeleteVariableHandle(hRcpState);
+                        PLCService.Ads.DeleteVariableHandle(hRcp);
+                        PLCService.Ads.DeleteVariableHandle(hRcpTotalStep);
+                        PLCService.Ads.DeleteVariableHandle(hRcpStart);
+                        PLCService.Ads.DeleteVariableHandle(hRcpState);
                     }
 
                     catch (Exception err)
@@ -120,14 +121,14 @@ namespace SapphireXR_App.ViewModels
             nRecipeOperationState = 10;
             try
             {
-                uint hRcpStart = MainViewModel.Ads.CreateVariableHandle("RCP.bRcpStart");
-                uint hRcpState = MainViewModel.Ads.CreateVariableHandle("RCP.iRcpOperationState");
+                uint hRcpStart = PLCService.Ads.CreateVariableHandle("RCP.bRcpStart");
+                uint hRcpState = PLCService.Ads.CreateVariableHandle("RCP.iRcpOperationState");
 
-                MainViewModel.Ads.WriteAny(hRcpStart, bRecipeStart);
-                MainViewModel.Ads.WriteAny(hRcpState, nRecipeOperationState);
+                PLCService.Ads.WriteAny(hRcpStart, bRecipeStart);
+                PLCService.Ads.WriteAny(hRcpState, nRecipeOperationState);
 
-                MainViewModel.Ads.DeleteVariableHandle(hRcpStart);
-                MainViewModel.Ads.DeleteVariableHandle(hRcpState);
+                PLCService.Ads.DeleteVariableHandle(hRcpStart);
+                PLCService.Ads.DeleteVariableHandle(hRcpState);
             }
 
             catch (Exception err)
@@ -141,14 +142,14 @@ namespace SapphireXR_App.ViewModels
             nRecipeOperationState = 40;
             try
             {
-                uint hRcpStart = MainViewModel.Ads.CreateVariableHandle("RCP.bRcpStart");
-                uint hRcpState = MainViewModel.Ads.CreateVariableHandle("RCP.iRcpOperationState");
+                uint hRcpStart = PLCService.Ads.CreateVariableHandle("RCP.bRcpStart");
+                uint hRcpState = PLCService.Ads.CreateVariableHandle("RCP.iRcpOperationState");
 
-                MainViewModel.Ads.WriteAny(hRcpStart, bRecipeStart);
-                MainViewModel.Ads.WriteAny(hRcpState, nRecipeOperationState);
+                PLCService.Ads.WriteAny(hRcpStart, bRecipeStart);
+                PLCService.Ads.WriteAny(hRcpState, nRecipeOperationState);
 
-                MainViewModel.Ads.DeleteVariableHandle(hRcpStart);
-                MainViewModel.Ads.DeleteVariableHandle(hRcpState);
+                PLCService.Ads.DeleteVariableHandle(hRcpStart);
+                PLCService.Ads.DeleteVariableHandle(hRcpState);
             }
 
             catch (Exception err)

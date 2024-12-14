@@ -6,62 +6,19 @@ using SapphireXR_App.ViewModels;
 
 namespace SapphireXR_App.Controls
 {
-    public partial class SwitchingValve : Valve
+    public partial class SwitchingValve : UserControl
     {
         public SwitchingValve()
         {
             InitializeComponent();
+            DataContext = new SwitchingValveViewModel();
         }
-        public bool IsMaintenanceMode
+
+        public string ValveID
         {
-            get { return (bool)GetValue(IsMaintenanceModeProperty); }
-            set { SetValue(IsMaintenanceModeProperty, value); }
-        }
-
-        private SwitchingValveModel? model;
-
-        public static readonly DependencyProperty IsMaintenanceModeProperty =
-            DependencyProperty.Register("IsMaintenanceMode", typeof(bool), typeof(SwitchingValve), new PropertyMetadata(default));
-        private void SwitchingValve_Click(object sender, RoutedEventArgs e)
-        {
-            SwitchingValve Valve = (SwitchingValve)((Button)e.OriginalSource).Parent;
-            if (Valve.IsOpen == true)
-            {
-                var result = ValveOperationEx.Show("Valve Operation", $"{Valve.ValveID} 밸브를 질소가스로 변경하시겠습니까?");
-                switch (result)
-                {
-                    case ValveOperationExResult.Ok:
-                        Valve.IsOpenObservable = !(Valve.IsOpen);
-                       
-                        var ValveStateValue = HomeViewModel.aSolValvePLC;
-                        MessageBox.Show($"{Valve.ValveID} 밸브 닫음");
-                        //TODO
-
-                        break;
-                    case ValveOperationExResult.Cancel:
-                        MessageBox.Show($"{Valve.ValveID} 취소됨1");
-                        break;
-                }
-            }
-            else
-            {
-                var result = ValveOperationEx.Show("Valve Operation", $"{Valve.ValveID} 밸브를 공정가스로 변경하시겠습니까?");
-                switch (result)
-                {
-                    case ValveOperationExResult.Ok:
-                        Valve.IsOpenObservable = !(Valve.IsOpen);
-                        MessageBox.Show($"{Valve.ValveID} 밸브 열음");
-                        break;
-                    case ValveOperationExResult.Cancel:
-                        MessageBox.Show($"{Valve.ValveID} 취소됨2");
-                        break;
-                }
-            }
-        }
-
-        private void switchingValve_Loaded(object sender, RoutedEventArgs e)
-        {
-            model = new SwitchingValveModel(ValveID);
-        }
+            get;
+            set;
+        } = "";
+       
     }
 }

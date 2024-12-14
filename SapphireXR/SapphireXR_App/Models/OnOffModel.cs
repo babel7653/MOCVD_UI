@@ -1,27 +1,22 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using SapphireXR_App.Common;
+﻿using SapphireXR_App.Common;
 
 namespace SapphireXR_App.Models
 {
-    public class SwitchingValveModel: IObserver<bool>
+    public class OnOffModel : IObserver<bool>
     {
-        public SwitchingValveModel(string vid)
+        public OnOffModel(string vid)
         {
             try
             {
                 dataIssuer = ObservableManager<bool>.Get(vid + ".IsOpen.Read");
             }
-            catch(ObservableManager<bool>.DataIssuerBaseCreateException) 
+            catch (ObservableManager<bool>.DataIssuerBaseCreateException)
             {
-                    
+
             }
             ObservableManager<bool>.Subscribe(vid + ".IsOpen.Write", this);
         }
-      
+
         private ObservableManager<bool>.DataIssuerBase? dataIssuer;
 
         //PLC에서 Bool값을 읽어와서 이 메소드를 호출하면, UI가 변경 됨.

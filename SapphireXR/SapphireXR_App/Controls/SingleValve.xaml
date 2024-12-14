@@ -1,13 +1,19 @@
-﻿<local:Valve x:Class="SapphireXR_App.Controls.SingleValve"
+﻿<UserControl x:Class="SapphireXR_App.Controls.SingleValve"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:i="clr-namespace:Microsoft.Xaml.Behaviors;assembly=Microsoft.Xaml.Behaviors"
              xmlns:local="clr-namespace:SapphireXR_App.Controls"
              mc:Ignorable="d"
              x:Name="singleValve"
              d:DesignHeight="24" d:DesignWidth="24">
-    <local:Valve.Resources>
+    <i:Interaction.Triggers>
+        <i:EventTrigger EventName="Loaded">
+            <i:InvokeCommandAction Command="{Binding LoadedCommand}" CommandParameter="{Binding ValveID, RelativeSource={RelativeSource AncestorType=UserControl}}"/>
+        </i:EventTrigger>
+    </i:Interaction.Triggers>
+    <UserControl.Resources>
         <SolidColorBrush x:Key="BorderBrushOnMouseEnter" Color="#9dbce8" />
         <SolidColorBrush x:Key="BorderBrushOnMouseLeave" Color="#475569" />
         <Storyboard x:Key="ChangeBackgroundColorOnMouseEnter">
@@ -28,10 +34,10 @@
                                 <Ellipse x:Name="on" Width="16" Height="16"/>
                         </Border>
                         <ControlTemplate.Triggers>
-                            <DataTrigger Binding="{Binding IsOpen, RelativeSource={RelativeSource AncestorType={x:Type local:SingleValve}}, Mode=TwoWay}" Value="True">
+                            <DataTrigger Binding="{Binding IsOpen, Mode=TwoWay}" Value="True">
                                 <Setter TargetName="on" Property="Fill" Value="Lime"/>
                              </DataTrigger>
-                            <DataTrigger Binding="{Binding IsOpen, RelativeSource={RelativeSource AncestorType={x:Type local:SingleValve}}, Mode=TwoWay}"  Value="False">
+                            <DataTrigger Binding="{Binding IsOpen, Mode=TwoWay}"  Value="False">
                                 <Setter TargetName="on" Property="Fill" Value="White"/>
                             </DataTrigger>
                             <EventTrigger RoutedEvent="MouseEnter">
@@ -46,6 +52,12 @@
             </Setter>
             <Setter Property="Cursor" Value="Hand"/>
         </Style>
-    </local:Valve.Resources>
-    <Button Height="24" Width="24" Style="{StaticResource BlockValveStyle}" Click="SingleValve_Click"/>
-</local:Valve>
+    </UserControl.Resources>
+    <Button Height="24" Width="24" Style="{StaticResource BlockValveStyle}">
+        <i:Interaction.Triggers>
+            <i:EventTrigger EventName="Click">
+                <i:InvokeCommandAction Command="{Binding OnClickCommand}" />
+            </i:EventTrigger>
+        </i:Interaction.Triggers>
+    </Button>
+</UserControl>

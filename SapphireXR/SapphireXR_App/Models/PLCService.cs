@@ -1,4 +1,6 @@
-﻿using SapphireXR_App.Controls;
+﻿using SapphireXR_App.Common;
+using SapphireXR_App.Controls;
+using SapphireXR_App.Enums;
 using SapphireXR_App.ViewModels;
 using System;
 using System.Collections;
@@ -27,6 +29,7 @@ namespace SapphireXR_App.Models
 
         static PLCService()
         {
+            connectedNotifier = ObservableManager<PLCConnection>.Get("PLCService.Connected");
             Ads = new AdsClient();
             try
             {
@@ -37,6 +40,7 @@ namespace SapphireXR_App.Models
                     TcStatePLC = (bool)Ads.ReadAny(hStatePLC, typeof(bool));
                     AddressPLC = $"PLC Address : {Ads.Address}";
                     ModePLC = "System Mode : Ready";
+                    connectedNotifier.Issue(PLCConnection.Connecrted);
                 }
             }
             catch
@@ -82,7 +86,7 @@ namespace SapphireXR_App.Models
 
         }
 
-
+        private static ObservableManager<PLCConnection>.DataIssuerBase connectedNotifier;
 
 
         public static Dictionary<string, uint> ValveIDtoOutputSolValveIdx

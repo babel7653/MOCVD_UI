@@ -18,6 +18,8 @@ namespace SapphireXR_App.Controls
             set { SetValue(IsMaintenanceModeProperty, value); }
         }
 
+        private SwitchingValveModel? model;
+
         public static readonly DependencyProperty IsMaintenanceModeProperty =
             DependencyProperty.Register("IsMaintenanceMode", typeof(bool), typeof(SwitchingValve), new PropertyMetadata(default));
         private void SwitchingValve_Click(object sender, RoutedEventArgs e)
@@ -29,7 +31,7 @@ namespace SapphireXR_App.Controls
                 switch (result)
                 {
                     case ValveOperationExResult.Ok:
-                        Valve.IsOpen = !(Valve.IsOpen);
+                        Valve.IsOpenObservable = !(Valve.IsOpen);
                        
                         var ValveStateValue = HomeViewModel.aSolValvePLC;
                         MessageBox.Show($"{Valve.ValveID} 밸브 닫음");
@@ -47,7 +49,7 @@ namespace SapphireXR_App.Controls
                 switch (result)
                 {
                     case ValveOperationExResult.Ok:
-                        Valve.IsOpen = !(Valve.IsOpen);
+                        Valve.IsOpenObservable = !(Valve.IsOpen);
                         MessageBox.Show($"{Valve.ValveID} 밸브 열음");
                         break;
                     case ValveOperationExResult.Cancel:
@@ -55,6 +57,11 @@ namespace SapphireXR_App.Controls
                         break;
                 }
             }
+        }
+
+        private void switchingValve_Loaded(object sender, RoutedEventArgs e)
+        {
+            model = new SwitchingValveModel(ValveID);
         }
     }
 }

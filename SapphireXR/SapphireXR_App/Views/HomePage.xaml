@@ -268,24 +268,24 @@
         <!--#endregion-->
 
         <!-- #region Leak Test 배관 -->
-        <Polyline Points="579,74 549,74 549,10 20,10 20,750 1130,750 1130,655 1160,655" Stroke="{StaticResource LeakTestLineColor}" Visibility="{Binding OnLeakTestVisibility}"  StrokeThickness="2" />
-        <Polyline Points="285,74 255,74 255,10" Stroke="{StaticResource LeakTestLineColor}" Visibility="{Binding OnLeakTestVisibility}"  StrokeThickness="2"/>
-        <Polyline Points="20,415 90,415 90,425" Stroke="{StaticResource LeakTestLineColor}" Visibility="{Binding OnLeakTestVisibility}"  StrokeThickness="2"/>
-        <Polyline Points="20,515 120,515 120,505" Stroke="{StaticResource LeakTestLineColor}" Visibility="{Binding OnLeakTestVisibility}"  StrokeThickness="2"/>
+        <Polyline Points="579,74 549,74 549,10 20,10 20,750 1130,750 1130,655 1160,655" Stroke="{StaticResource LeakTestLineColor}" Visibility="{Binding DataContext.OnLeakTestVisibility, ElementName=homePage}"  StrokeThickness="2" />
+        <Polyline Points="285,74 255,74 255,10" Stroke="{StaticResource LeakTestLineColor}" Visibility="{Binding DataContext.OnLeakTestVisibility, ElementName=homePage}"  StrokeThickness="2"/>
+        <Polyline Points="20,415 90,415 90,425" Stroke="{StaticResource LeakTestLineColor}" Visibility="{Binding DataContext.OnLeakTestVisibility, ElementName=homePage}"  StrokeThickness="2"/>
+        <Polyline Points="20,515 120,515 120,505" Stroke="{StaticResource LeakTestLineColor}" Visibility="{Binding DataContext.OnLeakTestVisibility, ElementName=homePage}"  StrokeThickness="2"/>
 
-        <Polyline Points="201,685 193,685 193,750" Stroke="{StaticResource LeakTestLineColor}" Visibility="{Binding OnLeakTestVisibility}"  StrokeThickness="2"/>
-        <Polyline Points="341,685 333,685 333,750" Stroke="{StaticResource LeakTestLineColor}" Visibility="{Binding OnLeakTestVisibility}"  StrokeThickness="2"/>
-        <Polyline Points="481,685 473,685 473,750" Stroke="{StaticResource LeakTestLineColor}" Visibility="{Binding OnLeakTestVisibility}"  StrokeThickness="2"/>
-        <Polyline Points="621,685 613,685 613,750" Stroke="{StaticResource LeakTestLineColor}" Visibility="{Binding OnLeakTestVisibility}"  StrokeThickness="2"/>
-        <Polyline Points="761,685 753,685 753,750" Stroke="{StaticResource LeakTestLineColor}" Visibility="{Binding OnLeakTestVisibility}"  StrokeThickness="2"/>
-        <Polyline Points="959,685 951,685 951,750" Stroke="{StaticResource LeakTestLineColor}" Visibility="{Binding OnLeakTestVisibility}"  StrokeThickness="2"/>
+        <Polyline Points="201,685 193,685 193,750" Stroke="{StaticResource LeakTestLineColor}" Visibility="{Binding DataContext.OnLeakTestVisibility, ElementName=homePage}"  StrokeThickness="2"/>
+        <Polyline Points="341,685 333,685 333,750" Stroke="{StaticResource LeakTestLineColor}" Visibility="{Binding DataContext.OnLeakTestVisibility, ElementName=homePage}"  StrokeThickness="2"/>
+        <Polyline Points="481,685 473,685 473,750" Stroke="{StaticResource LeakTestLineColor}" Visibility="{Binding DataContext.OnLeakTestVisibility, ElementName=homePage}"  StrokeThickness="2"/>
+        <Polyline Points="621,685 613,685 613,750" Stroke="{StaticResource LeakTestLineColor}" Visibility="{Binding DataContext.OnLeakTestVisibility, ElementName=homePage}"  StrokeThickness="2"/>
+        <Polyline Points="761,685 753,685 753,750" Stroke="{StaticResource LeakTestLineColor}" Visibility="{Binding DataContext.OnLeakTestVisibility, ElementName=homePage}"  StrokeThickness="2"/>
+        <Polyline Points="959,685 951,685 951,750" Stroke="{StaticResource LeakTestLineColor}" Visibility="{Binding DataContext.OnLeakTestVisibility, ElementName=homePage}"  StrokeThickness="2"/>
 
-        <Polyline Points="295,685 303,685 303,750" Stroke="{StaticResource LeakTestLineColor}" Visibility="{Binding OnLeakTestVisibility}"  StrokeThickness="2"/>
-        <Polyline Points="435,685 443,685 443,750" Stroke="{StaticResource LeakTestLineColor}" Visibility="{Binding OnLeakTestVisibility}"  StrokeThickness="2"/>
-        <Polyline Points="575,685 583,685 583,750" Stroke="{StaticResource LeakTestLineColor}" Visibility="{Binding OnLeakTestVisibility}"  StrokeThickness="2"/>
-        <Polyline Points="715,685 723,685 723,750" Stroke="{StaticResource LeakTestLineColor}" Visibility="{Binding OnLeakTestVisibility}"  StrokeThickness="2"/>
-        <Polyline Points="855,685 863,685 863,750" Stroke="{StaticResource LeakTestLineColor}" Visibility="{Binding OnLeakTestVisibility}"  StrokeThickness="2"/>
-        <Polyline Points="1053,685 1061,685 1061,750" Stroke="{StaticResource LeakTestLineColor}" Visibility="{Binding OnLeakTestVisibility}"  StrokeThickness="2"/>
+        <Polyline Points="295,685 303,685 303,750" Stroke="{StaticResource LeakTestLineColor}" Visibility="{Binding DataContext.OnLeakTestVisibility, ElementName=homePage}"  StrokeThickness="2"/>
+        <Polyline Points="435,685 443,685 443,750" Stroke="{StaticResource LeakTestLineColor}" Visibility="{Binding DataContext.OnLeakTestVisibility, ElementName=homePage}"  StrokeThickness="2"/>
+        <Polyline Points="575,685 583,685 583,750" Stroke="{StaticResource LeakTestLineColor}" Visibility="{Binding DataContext.OnLeakTestVisibility, ElementName=homePage}"  StrokeThickness="2"/>
+        <Polyline Points="715,685 723,685 723,750" Stroke="{StaticResource LeakTestLineColor}" Visibility="{Binding DataContext.OnLeakTestVisibility, ElementName=homePage}"  StrokeThickness="2"/>
+        <Polyline Points="855,685 863,685 863,750" Stroke="{StaticResource LeakTestLineColor}" Visibility="{Binding DataContext.OnLeakTestVisibility, ElementName=homePage}"  StrokeThickness="2"/>
+        <Polyline Points="1053,685 1061,685 1061,750" Stroke="{StaticResource LeakTestLineColor}" Visibility="{Binding DataContext.OnLeakTestVisibility, ElementName=homePage}"  StrokeThickness="2"/>
         <!--#endregion-->
 
         <!-- #Region 가스제어용 밸브 -->
@@ -376,65 +376,65 @@
         <control:ButterflyValve x:Name="ButterflyValve" Canvas.Left="1145" Canvas.Top="599" ValveID="V35" />
 
         <!-- Button for Leak Test Valve -->
-        <control:LeakTestValve Visibility="{Binding OnLeakTestVisibility}" x:Name="V36" Canvas.Left="579" Canvas.Top="62" ValveID="V36"/>
-        <control:LeakTestValve Visibility="{Binding OnLeakTestVisibility}" x:Name="V37" Canvas.Left="285" Canvas.Top="62" ValveID="V37"/>
+        <control:LeakTestValve Visibility="{Binding DataContext.OnLeakTestVisibility, ElementName=homePage}" x:Name="V36" Canvas.Left="579" Canvas.Top="62" ValveID="V36"/>
+        <control:LeakTestValve Visibility="{Binding DataContext.OnLeakTestVisibility, ElementName=homePage}" x:Name="V37" Canvas.Left="285" Canvas.Top="62" ValveID="V37"/>
         
-        <control:LeakTestValve Visibility="{Binding OnLeakTestVisibility}" x:Name="V38" Canvas.Left="108" Canvas.Top="506" ValveID="V38">
+        <control:LeakTestValve Visibility="{Binding DataContext.OnLeakTestVisibility, ElementName=homePage}" x:Name="V38" Canvas.Left="108" Canvas.Top="506" ValveID="V38">
             <control:LeakTestValve.RenderTransform>
                 <TransformGroup>
                     <RotateTransform Angle="270"/>
                 </TransformGroup>
             </control:LeakTestValve.RenderTransform>
         </control:LeakTestValve>
-        <control:LeakTestValve Visibility="{Binding OnLeakTestVisibility}" x:Name="V39" Canvas.Left="102" Canvas.Top="424" ValveID="V39">
+        <control:LeakTestValve Visibility="{Binding DataContext.OnLeakTestVisibility, ElementName=homePage}" x:Name="V39" Canvas.Left="102" Canvas.Top="424" ValveID="V39">
             <control:LeakTestValve.RenderTransform>
                 <TransformGroup>
                     <RotateTransform Angle="90"/>
                 </TransformGroup>
             </control:LeakTestValve.RenderTransform>
         </control:LeakTestValve>
-        <control:LeakTestValve Visibility="{Binding OnLeakTestVisibility}" x:Name="V40" Canvas.Left="200" Canvas.Top="673" ValveID="V40"/>
-        <control:LeakTestValve Visibility="{Binding OnLeakTestVisibility}" x:Name="V41" Canvas.Left="296" Canvas.Top="697" ValveID="V41">
+        <control:LeakTestValve Visibility="{Binding DataContext.OnLeakTestVisibility, ElementName=homePage}" x:Name="V40" Canvas.Left="200" Canvas.Top="673" ValveID="V40"/>
+        <control:LeakTestValve Visibility="{Binding DataContext.OnLeakTestVisibility, ElementName=homePage}" x:Name="V41" Canvas.Left="296" Canvas.Top="697" ValveID="V41">
             <control:LeakTestValve.RenderTransform>
                 <TransformGroup>
                     <RotateTransform Angle="180"/>
                 </TransformGroup>
             </control:LeakTestValve.RenderTransform>
         </control:LeakTestValve>
-        <control:LeakTestValve Visibility="{Binding OnLeakTestVisibility}" x:Name="V42" Canvas.Left="340" Canvas.Top="673" ValveID="V42"/>
-        <control:LeakTestValve Visibility="{Binding OnLeakTestVisibility}" x:Name="V43" Canvas.Left="436" Canvas.Top="697" ValveID="V43">
+        <control:LeakTestValve Visibility="{Binding DataContext.OnLeakTestVisibility, ElementName=homePage}" x:Name="V42" Canvas.Left="340" Canvas.Top="673" ValveID="V42"/>
+        <control:LeakTestValve Visibility="{Binding DataContext.OnLeakTestVisibility, ElementName=homePage}" x:Name="V43" Canvas.Left="436" Canvas.Top="697" ValveID="V43">
             <control:LeakTestValve.RenderTransform>
                 <TransformGroup>
                     <RotateTransform Angle="180"/>
                 </TransformGroup>
             </control:LeakTestValve.RenderTransform>
         </control:LeakTestValve>
-        <control:LeakTestValve Visibility="{Binding OnLeakTestVisibility}" x:Name="V44" Canvas.Left="480" Canvas.Top="673" ValveID="V44"/>
-        <control:LeakTestValve Visibility="{Binding OnLeakTestVisibility}" x:Name="V45" Canvas.Left="576" Canvas.Top="697" ValveID="V45">
+        <control:LeakTestValve Visibility="{Binding DataContext.OnLeakTestVisibility, ElementName=homePage}" x:Name="V44" Canvas.Left="480" Canvas.Top="673" ValveID="V44"/>
+        <control:LeakTestValve Visibility="{Binding DataContext.OnLeakTestVisibility, ElementName=homePage}" x:Name="V45" Canvas.Left="576" Canvas.Top="697" ValveID="V45">
             <control:LeakTestValve.RenderTransform>
                 <TransformGroup>
                     <RotateTransform Angle="180"/>
                 </TransformGroup>
             </control:LeakTestValve.RenderTransform>
         </control:LeakTestValve>
-        <control:LeakTestValve Visibility="{Binding OnLeakTestVisibility}" x:Name="V46" Canvas.Left="620" Canvas.Top="673" ValveID="V46"/>
-        <control:LeakTestValve Visibility="{Binding OnLeakTestVisibility}" x:Name="V47" Canvas.Left="716" Canvas.Top="697" ValveID="V47">
+        <control:LeakTestValve Visibility="{Binding DataContext.OnLeakTestVisibility, ElementName=homePage}" x:Name="V46" Canvas.Left="620" Canvas.Top="673" ValveID="V46"/>
+        <control:LeakTestValve Visibility="{Binding DataContext.OnLeakTestVisibility, ElementName=homePage}" x:Name="V47" Canvas.Left="716" Canvas.Top="697" ValveID="V47">
             <control:LeakTestValve.RenderTransform>
                 <TransformGroup>
                     <RotateTransform Angle="180"/>
                 </TransformGroup>
             </control:LeakTestValve.RenderTransform>
         </control:LeakTestValve>
-        <control:LeakTestValve Visibility="{Binding OnLeakTestVisibility}" x:Name="V48" Canvas.Left="760" Canvas.Top="673" ValveID="V48"/>
-        <control:LeakTestValve Visibility="{Binding OnLeakTestVisibility}" x:Name="V49" Canvas.Left="856" Canvas.Top="697" ValveID="V49">
+        <control:LeakTestValve Visibility="{Binding DataContext.OnLeakTestVisibility, ElementName=homePage}" x:Name="V48" Canvas.Left="760" Canvas.Top="673" ValveID="V48"/>
+        <control:LeakTestValve Visibility="{Binding DataContext.OnLeakTestVisibility, ElementName=homePage}" x:Name="V49" Canvas.Left="856" Canvas.Top="697" ValveID="V49">
             <control:LeakTestValve.RenderTransform>
                 <TransformGroup>
                     <RotateTransform Angle="180"/>
                 </TransformGroup>
             </control:LeakTestValve.RenderTransform>
         </control:LeakTestValve>
-        <control:LeakTestValve Visibility="{Binding OnLeakTestVisibility}" x:Name="V50" Canvas.Left="958" Canvas.Top="673" ValveID="V50"/>
-        <control:LeakTestValve Visibility="{Binding OnLeakTestVisibility}" x:Name="V51" Canvas.Left="1054" Canvas.Top="697" ValveID="V51">
+        <control:LeakTestValve Visibility="{Binding DataContext.OnLeakTestVisibility, ElementName=homePage}" x:Name="V50" Canvas.Left="958" Canvas.Top="673" ValveID="V50"/>
+        <control:LeakTestValve Visibility="{Binding DataContext.OnLeakTestVisibility, ElementName=homePage}" x:Name="V51" Canvas.Left="1054" Canvas.Top="697" ValveID="V51">
             <control:LeakTestValve.RenderTransform>
                 <TransformGroup>
                     <RotateTransform Angle="180"/>

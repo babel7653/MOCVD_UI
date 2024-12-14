@@ -25,13 +25,9 @@ namespace SapphireXR_App.Models
             dataIssuer?.Issue(value);
         }
 
-        void IObserver<bool>.OnCompleted()
-        {
-        }
+        void IObserver<bool>.OnCompleted() { }
 
-        void IObserver<bool>.OnError(Exception error)
-        {
-        }
+        void IObserver<bool>.OnError(Exception error) { }
 
         //UI에서 IsOpen 값을 변경하면 이 메소드가 호출 됨.
         void IObserver<bool>.OnNext(bool value)

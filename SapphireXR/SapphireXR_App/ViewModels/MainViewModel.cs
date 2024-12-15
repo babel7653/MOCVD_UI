@@ -25,18 +25,15 @@ namespace SapphireXR_App.ViewModels
         public MainViewModel()
         {
             Title = "SapphireXR";
-            Init();
-        }
-        public PlotModel PlotModel { get; set; } = default;
 
-        private void Init()
-        {
-            //시작 페이지 설정
+             //시작 페이지 설정
             NavigationSource = "Views/RecipeRunPage.xaml";
-            NavigateCommand = new RelayCommand<string>(OnNavigate);
+            NavigateCommand = new RelayCommand<string>(OnNavigate!);
             //네비게이션 메시지 수신 등록
             WeakReferenceMessenger.Default.Register<NavigationMessage>(this, OnNavigationMessage);
         }
+        public PlotModel PlotModel { get; set; } = default;
+
         private void OnNavigationMessage(object recipient, NavigationMessage message)
         {
             NavigationSource = message.Value;

@@ -5,31 +5,54 @@
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:SapphireXR_App.Views"
       mc:Ignorable="d" 
-
-      d:DesignHeight="810" d:DesignWidth="1320"
+      d:DesignHeight="836" d:DesignWidth="1300"
       Title="SettingPage">
-
-
+    <Page.Resources>
+        <Style x:Key="BaseStyle" TargetType="{x:Type Control}">
+            <Setter Property="FontSize" Value="11"/>
+            <Setter Property="FontFamily" Value="NanumGothic"/>
+        </Style>
+        <Style x:Key="SettingOperationButton" TargetType="{x:Type Button}">
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Height" Value="30"/>
+            <Setter Property="Width" Value="64"/>
+            <Setter Property="Margin" Value="4"/>
+            <Setter Property="HorizontalContentAlignment" Value="Center"/>
+            <Style.Resources>
+                <Style TargetType="{x:Type Border}">
+                    <Setter Property="CornerRadius" Value="4"/>
+                </Style>
+            </Style.Resources>
+        </Style>
+        <Style TargetType="{x:Type DataGrid}">
+            <Setter Property="AutoGenerateColumns" Value="False"/>
+            <Setter Property="Padding" Value="5"/>
+            <Setter Property="CanUserSortColumns" Value="False"/>
+            <Setter Property="CanUserAddRows" Value="False"/>
+        </Style>
+        <Style TargetType="{x:Type DataGridColumnHeader}">
+            <Setter Property="HorizontalContentAlignment" Value="Center"/>
+        </Style>
+        <Style TargetType="{x:Type TabItem}">
+            <Setter Property="HeaderTemplate">
+                <Setter.Value>
+                    <DataTemplate>
+                        <ContentPresenter Content="{TemplateBinding Content}">
+                            <ContentPresenter.LayoutTransform>
+                                <RotateTransform Angle="270"/>
+                            </ContentPresenter.LayoutTransform>
+                        </ContentPresenter>
+                    </DataTemplate>
+                </Setter.Value>
+            </Setter>
+            <Setter Property="Width" Value="20"/>
+            <Setter Property="Height" Value="90"/>
+            <Setter Property="Padding" Value="3"/>
+        </Style>
+    </Page.Resources>
+    
     <Grid>
         <TabControl TabStripPlacement="Left">
-            <TabControl.Resources>
-                <Style TargetType="{x:Type TabItem}">
-                    <Setter Property="HeaderTemplate">
-                        <Setter.Value>
-                            <DataTemplate>
-                                <ContentPresenter Content="{TemplateBinding Content}">
-                                    <ContentPresenter.LayoutTransform>
-                                        <RotateTransform Angle="270"/>
-                                    </ContentPresenter.LayoutTransform>
-                                </ContentPresenter>
-                            </DataTemplate>
-                        </Setter.Value>
-                    </Setter>
-                    <Setter Property="Width" Value="20"/>
-                    <Setter Property="Height" Value="90"/>
-                    <Setter Property="Padding" Value="3"/>
-                </Style>
-            </TabControl.Resources>
             <!--Tab for Alarm Setting -->
             <TabItem Name="AlarmSetting" Header="Alarm Setting">
                 <TabItem.Content>
@@ -103,6 +126,7 @@
 																									Binding="{Binding Path=AlarmSet}"/>
                                                     <DataGridCheckBoxColumn Header="Warning" Width="50"	CanUserSort="False"
 																									Binding="{Binding Path=WarningSet}"/>
+                                                    
                                                 </DataGrid.Columns>
                                             </DataGrid>
                                         </StackPanel>
@@ -434,7 +458,7 @@
                         <Grid Grid.Row="1">
                             <StackPanel Orientation="Horizontal">
                                 <!-- Device Name 설정 테이블-->
-                                <GroupBox Header="Device Naming" Width="620"
+                                <GroupBox Header="Device Naming" Width="450"
                                           BorderBrush="LightSteelBlue" BorderThickness="2" Margin="2,10,2,0"
                                           FontSize="14">
                                     <StackPanel>
@@ -453,7 +477,8 @@
                                             </Grid.RowDefinitions>
                                             <!-- Analog Device Name 설정 테이블-->
                                             <StackPanel>
-                                                <DataGrid x:Name="MaxValueSetting" AutoGenerateColumns="False" Margin="5,0,5,0">
+                                                <DataGrid x:Name="dgMaxValueSetting" Width="430"  AutoGenerateColumns="False" Margin="5,0,5,0"
+                                                          VerticalScrollBarVisibility="Auto" ItemsSource="{Binding lGasAIO}" CanUserAddRows="False">
                                                     <DataGrid.Resources>
                                                         <Style TargetType="{x:Type DataGridColumnHeader}">
                                                             <Setter Property="HorizontalAlignment" Value="Center"/>
@@ -465,18 +490,13 @@
                                                         </Style>
                                                     </DataGrid.Resources>
                                                     <DataGrid.Columns>
-                                                        <DataGridTextColumn Header="Device ID" CanUserSort="False" CanUserResize="False" Width="60"
-                                                                        Binding="{Binding}"/>
+                                                        <DataGridTextColumn Header="ID" CanUserSort="False" CanUserResize="False" Width="60"
+                                                                        Binding="{Binding Path=ID, Mode=TwoWay}"/>
                                                         <DataGridTextColumn Header="Device Name" CanUserSort="False" CanUserResize="False" Width="*"
-                                                                        Binding="{Binding}"/>
+                                                                        Binding="{Binding Path=Name}"/>
                                                         <DataGridTextColumn Header="Max Value" CanUserSort="False" CanUserResize="False" Width="120"
-                                                                        Binding="{Binding}"/>
-                                                        <DataGridTextColumn Header="Ramping" CanUserSort="False" CanUserResize="False" Width="60"
-                                                                        Binding="{Binding}"/>
-                                                        <DataGridTextColumn Header="Accuracy" CanUserSort="False" CanUserResize="False" Width="60"
-                                                                        Binding="{Binding}"/>
-                                                        <DataGridTextColumn Header="Units" CanUserSort="False" CanUserResize="False" Width="60"
-                                                                        Binding="{Binding}"/>
+                                                                        Binding="{Binding Path=MaxValue}"/>
+
                                                     </DataGrid.Columns>
                                                 </DataGrid>
                                             </StackPanel>
@@ -485,7 +505,7 @@
                                             <!-- Digital Device Name 설정 테이블-->
                                             <StackPanel Grid.Row="2" Orientation="Horizontal">
                                                 <StackPanel>
-                                                    <DataGrid x:Name="DigitalMappingSetting" Width="405" AutoGenerateColumns="False" Margin="5,0,5,0">
+                                                    <DataGrid x:Name="DigitalMappingSetting" Width="430" AutoGenerateColumns="False" Margin="5,0,5,0">
                                                         <DataGrid.Resources>
                                                             <Style TargetType="{x:Type DataGridColumnHeader}">
                                                                 <Setter Property="HorizontalAlignment" Value="Center"/>
@@ -506,16 +526,14 @@
                                                         </DataGrid.Columns>
                                                     </DataGrid>
                                                 </StackPanel>
-                                                <ListBox x:Name="SolenoidValveID" Width="190">
-                                                    <!-- 솔레노이드밸브 리스트 추가-->
-                                                </ListBox>
+         
 
                                             </StackPanel>
                                         </Grid>
                                     </StackPanel>
                                 </GroupBox>
                                 <!-- Component I/O List 테이블-->
-                                <GroupBox Header="Component I/O List" Width="660"
+                                <GroupBox Header="I/O List" Width="660"
                                           BorderBrush="LightSteelBlue" BorderThickness="2" Margin="2,10,2,0"
                                           FontSize="14">
                                     <StackPanel>
@@ -555,26 +573,6 @@
                                     </StackPanel>
                                 </GroupBox>
                             </StackPanel>
-                        </Grid>
-                    </Grid>
-                </TabItem.Content>
-            </TabItem>
-            <!-- Tab for I/O List -->
-            <TabItem Name="IO_List" Header="I/O List">
-                <TabItem.Content>
-                    <Grid>
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="30"/>
-                            <RowDefinition/>
-                        </Grid.RowDefinitions>
-                        <Grid Grid.Row="0" Background="Yellow">
-                            <TextBlock FontSize="14" Text="I/O List" FontWeight="Bold" Foreground="Black"
-                                           VerticalAlignment="Center" HorizontalAlignment="Center"/>
-                        </Grid>
-                        <Grid Grid.Row="1">
-                            <DataGrid Name="IO_ListTable"
-                              Padding="5">
-                            </DataGrid>
                         </Grid>
                     </Grid>
                 </TabItem.Content>

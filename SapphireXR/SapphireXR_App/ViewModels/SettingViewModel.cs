@@ -12,28 +12,25 @@ namespace SapphireXR_App.ViewModels
     public class SettingViewModel : ObservableObject
     {
         public string fname = AppDomain.CurrentDomain.BaseDirectory + "..\\..\\..\\..\\Data\\Configuration\\" + @"DeviceIO.json";
-        public Dictionary<string, GasAIO> dGasAIO = [];
-        public Dictionary<string, SwitchDI> dSwitchDI = [];
-        public Dictionary<string, GasDO> dGasDO = [];
-        public Dictionary<string, string> dPreSet { get; set; } = [];
-        public Dictionary<string, InterLockA> dInterLockA { get; set; } = [];
-        public Dictionary<string, bool> dInterLockD { get; set; } = [];
-        public List<GasAIO> lGasAIO { get; set; } = [];
-        public static List<GasAIO> sGasAIO = new();
-
-        public List<SwitchDI> lSwitchDI { get; set; } = [];
-        public List<GasDO> lGasDO { get; set; } = [];
-        public UserState userstate { get; set; } = new();
+        public Dictionary<string, GasAIO>? dGasAIO = [];
+        public Dictionary<string, SwitchDI>? dSwitchDI = [];
+        public Dictionary<string, GasDO>? dGasDO = [];
+        public Dictionary<string, string>? dPreSet { get; set; } = [];
+        public Dictionary<string, InterLockA>? dInterLockA { get; set; } = [];
+        public Dictionary<string, bool>? dInterLockD { get; set; } = [];
+        public List<GasAIO>? lGasAIO { get; set; } = [];
+        public List<SwitchDI>? lSwitchDI { get; set; } = [];
+        public List<GasDO>? lGasDO { get; set; } = [];
+        public UserState? userstate { get; set; } = new();
 
         public ICommand AlarmSettingLoadCommand => new RelayCommand(AlarmSettingLoad);
         public ICommand AlarmSettingSaveCommand => new RelayCommand(AlarmSettingSave);
 
+
         public SettingViewModel()
         {
             AlarmSettingLoad();
-            sGasAIO = lGasAIO;
         }
-
         public void AlarmSettingLoad()
         {
             //Json파일 읽기 및 Pars

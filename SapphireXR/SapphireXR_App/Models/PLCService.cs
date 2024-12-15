@@ -61,7 +61,6 @@ namespace SapphireXR_App.Models
         // Read from PLC State
         public static uint hReadValveStatePLC { get; set; }
         private static uint[] aReadValveStatePLC { get; set; }
-        //public static BitArray[] baReadValveStatePLC { get; set; }
         public static void ReadValveState()
         {
             // Solenoid Valve State Read(Update)
@@ -69,7 +68,7 @@ namespace SapphireXR_App.Models
             {
                 hReadValveStatePLC = Ads.CreateVariableHandle("GVL_IO.aOutputSolValve");
                 aReadValveStatePLC = (uint[])Ads.ReadAny(hReadValveStatePLC, typeof(uint[]), new int[] { 2 }); // Convert to Array
-             
+
                 BitArray baReadValveStatePLC1 = new BitArray(new int[] { (int)aReadValveStatePLC[0] });
                 BitArray baReadValveStatePLC2 = new BitArray(new int[] { (int)aReadValveStatePLC[1] });
 

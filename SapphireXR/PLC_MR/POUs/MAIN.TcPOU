@@ -16,11 +16,7 @@ VAR
 	sRecipeName			: STRING;
 	iCurrentRecipeRamp	: INT;
 	iCurrentRecipeHold	: INT;
-	rMFC01				: REAL;
-	rMFC02				: REAL;
-	bValve01			: BOOL;
-	bValve02			: BOOL;
-	
+
 	OnTimer				: TON;
 	OffTimer			: TOF;
 	OnTimerOut			: BOOL;
@@ -33,8 +29,8 @@ VAR
 	bMaintKey			: BOOL;
 	RecipeNumber		: INT;
 
-	bTest1 : BOOL;
-	bTest2 : BOOL;
+	bTest1 : DWORD;
+	bTest2 : DWORD;
 	
 	GVL_I: INT;
 END_VAR
@@ -62,8 +58,8 @@ P90_Interlock();
 P91_Monitoring();
 P92_Maintenance();
 
-bTest1 := GVL_IO.aOutputSolValve[1].1;
-bTest2 := GVL_IO.aOutputSolValve[2].0;
+bTest1 := GVL_IO.aOutputSolValve[1];
+bTest2 := GVL_IO.aOutputSolValve[2];
 
 // RecipeNumber := GVL_IO.NumOfRecipe;
 // 
@@ -72,10 +68,6 @@ bTest2 := GVL_IO.aOutputSolValve[2].0;
 // // 	sRecipeName	:= GVL_IO.aRecipe[iCurrentStep].sRecipe;
 // 	iCurrentRecipeRamp := GVL_IO.aRecipe[iCurrentStep].iRecipe[1];
 // 	iCurrentRecipeHold := GVL_IO.aRecipe[iCurrentStep].iRecipe[2];
-// 	rMFC01	:= GVL_IO.aRecipe[iCurrentStep].rRecipe[1];
-// 	rMFC02	:= GVL_IO.aRecipe[iCurrentStep].rRecipe[2];
-// 	bValve01 := GVL_IO.aRecipe[iCurrentStep].dRecipe.0;
-// 	bValve02 := GVL_IO.aRecipe[iCurrentStep].dRecipe.1;
 // 	
 // END_IF
 
@@ -110,8 +102,7 @@ bTest2 := GVL_IO.aOutputSolValve[2].0;
       <LineId Id="329" Count="0" />
       <LineId Id="338" Count="0" />
       <LineId Id="331" Count="0" />
-      <LineId Id="334" Count="2" />
-      <LineId Id="339" Count="1" />
+      <LineId Id="334" Count="0" />
       <LineId Id="337" Count="0" />
       <LineId Id="330" Count="0" />
       <LineId Id="317" Count="0" />

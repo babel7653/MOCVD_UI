@@ -83,13 +83,13 @@ namespace SapphireXR_App.Models
             try
             {
                 hReadValveStatePLC1 = Ads.CreateVariableHandle("GVL_IO.aOutputSolValve[1]");
-                uint[] aReadValveStatePLC1 = (uint[])Ads.ReadAny(hReadValveStatePLC1, typeof(uint[]), new int[] { 1 }); // Convert to Array
+                uint aReadValveStatePLC1 = (uint)Ads.ReadAny(hReadValveStatePLC1, typeof(uint)); // Convert to Array
 
                 hReadValveStatePLC2 = Ads.CreateVariableHandle("GVL_IO.aOutputSolValve[2]");
-                uint[] aReadValveStatePLC2 = (uint[])Ads.ReadAny(hReadValveStatePLC1, typeof(uint[]), new int[] { 1 }); // Convert to Array
+                uint aReadValveStatePLC2 = (uint)Ads.ReadAny(hReadValveStatePLC1, typeof(uint)); // Convert to Array
 
-                BaReadValveStatePLC1 = new BitArray(new int[] { (int)aReadValveStatePLC1[0] });
-                BaReadValveStatePLC2 = new BitArray(new int[] { (int)aReadValveStatePLC2[0] });
+                BaReadValveStatePLC1 = new BitArray(new int[] { (int)aReadValveStatePLC1 });
+                BaReadValveStatePLC2 = new BitArray(new int[] { (int)aReadValveStatePLC2 });
             }
             catch (Exception ex)
             {

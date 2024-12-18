@@ -74,18 +74,22 @@ namespace SapphireXR_App.Models
         }
 
         // Read from PLC State
-        public static uint hReadValveStatePLC { get; set; }
-       
+        public static uint hReadValveStatePLC1 { get; set; }
+        public static uint hReadValveStatePLC2 { get; set; }
+
         public static void ReadValveStateFromPLC()
         {
             // Solenoid Valve State Read(Update)
             try
             {
-                hReadValveStatePLC = Ads.CreateVariableHandle("GVL_IO.aOutputSolValve");
-                uint[] aReadValveStatePLC = (uint[])Ads.ReadAny(hReadValveStatePLC, typeof(uint[]), new int[] { 2 }); // Convert to Array
+                hReadValveStatePLC1 = Ads.CreateVariableHandle("GVL_IO.aOutputSolValve[1]");
+                uint[] aReadValveStatePLC1 = (uint[])Ads.ReadAny(hReadValveStatePLC1, typeof(uint[]), new int[] { 1 }); // Convert to Array
 
-                BaReadValveStatePLC1 = new BitArray(new int[] { (int)aReadValveStatePLC[0] });
-                BaReadValveStatePLC2 = new BitArray(new int[] { (int)aReadValveStatePLC[1] });
+                hReadValveStatePLC2 = Ads.CreateVariableHandle("GVL_IO.aOutputSolValve[2]");
+                uint[] aReadValveStatePLC2 = (uint[])Ads.ReadAny(hReadValveStatePLC1, typeof(uint[]), new int[] { 1 }); // Convert to Array
+
+                BaReadValveStatePLC1 = new BitArray(new int[] { (int)aReadValveStatePLC1[0] });
+                BaReadValveStatePLC2 = new BitArray(new int[] { (int)aReadValveStatePLC2[0] });
             }
             catch (Exception ex)
             {
@@ -95,21 +99,21 @@ namespace SapphireXR_App.Models
 
         public static bool ReadValveState(string valveID)
         {
-            (BitArray buffer, int index) = GetBuffer(valveID);
+            (BitArray buffer, int index, uint variableHandle) = GetBuffer(valveID);
             return buffer[index];
         }
 
         public static void WriteValveState(string valveID, bool onOff)
         {
-            (BitArray buffer, int index) = GetBuffer(valveID);
+            (BitArray buffer, int index, uint variableHandle) = GetBuffer(valveID);
             buffer[index] = onOff;
            
             uint[] sentBuffer = new uint[1];
             buffer.CopyTo(sentBuffer, 0);
-            Ads.WriteAny(hReadValveStatePLC, sentBuffer);
+            Ads.WriteAny(variableHandle, sentBuffer);
         }
 
-        private static (BitArray, int) GetBuffer(string valveID)
+        private static (BitArray, int, uint) GetBuffer(string valveID)
         {
             int index = -1;
             if (ValveIDtoOutputSolValveIdx1.TryGetValue(valveID, out index) == true)
@@ -120,7 +124,7 @@ namespace SapphireXR_App.Models
                 }
                 else
                 {
-                    return (BaReadValveStatePLC1, index);
+                    return (BaReadValveStatePLC1, index, hReadValveStatePLC1);
                 }
             }
             else
@@ -132,7 +136,7 @@ namespace SapphireXR_App.Models
                 }
                 else
                 {
-                    return (BaReadValveStatePLC2, index);
+                    return (BaReadValveStatePLC2, index, hReadValveStatePLC2);
                 }
             }
             else

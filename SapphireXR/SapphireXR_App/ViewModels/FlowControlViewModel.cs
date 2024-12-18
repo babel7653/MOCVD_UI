@@ -4,6 +4,8 @@ using SapphireXR_App.Enums;
 using SapphireXR_App.Views;
 using System.ComponentModel;
 using System.Windows;
+using System.Windows.Input;
+using System.Windows.Media;
 
 namespace SapphireXR_App.ViewModels
 {
@@ -25,6 +27,8 @@ namespace SapphireXR_App.ViewModels
         private string _controlValue = string.Empty;
         [ObservableProperty]
         private string _maxValue = string.Empty;
+        [ObservableProperty]
+        private SolidColorBrush _fontColor = new SolidColorBrush(Colors.Black);
 
         public PopupExResult PopupExResult { get; internal set; } = PopupExResult.Close;
 
@@ -56,6 +60,7 @@ namespace SapphireXR_App.ViewModels
             CurrentValue = string.Empty;
             ControlValue = string.Empty;
             MaxValue = string.Empty;
+            FontColor = OnNormal;
         }
 
         public struct ControlValues
@@ -72,5 +77,11 @@ namespace SapphireXR_App.ViewModels
         public event ConfiredEventHandler? Confirmed;
         public delegate void CanceledEventHandler(PopupExResult result);
         public event CanceledEventHandler? Canceled;
+
+
+        private static readonly SolidColorBrush OnWrongTextFormat = new SolidColorBrush(Colors.Red);
+        private static readonly SolidColorBrush OnNormal = new SolidColorBrush(Colors.Red);
+
+       
     }
 }

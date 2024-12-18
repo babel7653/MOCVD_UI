@@ -28,7 +28,6 @@ namespace SapphireXR_App.ViewModels
                         break;
                 }
             });
-            PLCService.ReadValveState(); // 초기 로드시 PLC Valve상태 읽음
         }
 
         public event PropertyChangedEventHandler? PropertyChanged;

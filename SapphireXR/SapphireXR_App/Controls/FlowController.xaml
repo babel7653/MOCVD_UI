@@ -3,12 +3,13 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:i="clr-namespace:Microsoft.Xaml.Behaviors;assembly=Microsoft.Xaml.Behaviors"
              xmlns:local="clr-namespace:SapphireXR_App.Controls"
              mc:Ignorable="d"
              x:Name="flowController"
-             Loaded="flowController_Loaded"
              d:DesignHeight="34" d:DesignWidth="70">
     <UserControl.Resources>
+        <local:OnLoadedCommandParamConverver x:Key="onLoadedCommandConverter" />
         <Style x:Key="ControllerStyle" TargetType="{x:Type Button}">
             <Setter Property="Template">
                 <Setter.Value>
@@ -25,9 +26,16 @@
                                     <Ellipse x:Name="LampWarning" Width="10" Height="10" Fill="Lime" HorizontalAlignment="Right"  Margin="5,0,0,0"/>
                                 </StackPanel>
                             </Border>
-                            <Border Grid.Row="1" BorderBrush="LightGray"  BorderThickness="1,0,1,1"  Background="{StaticResource MFCDisplayColor2}" 
-                                    CornerRadius="0,0,3,3" x:Name="controllerBorder" MouseLeave="controllerBorder_MouseLeave" 
-                                    MouseEnter="controllerBorder_MouseEnter">
+                            <Border Grid.Row="1" BorderBrush="LightGray"  BorderThickness="1,0,1,1"  Background="{Binding BorderBackground}" 
+                                    CornerRadius="0,0,3,3" x:Name="controllerBorder">
+                                <i:Interaction.Triggers>
+                                    <i:EventTrigger EventName="MouseEnter">
+                                        <i:InvokeCommandAction Command="{Binding OnMouseEntered}" />
+                                    </i:EventTrigger>
+                                    <i:EventTrigger EventName="MouseLeave">
+                                        <i:InvokeCommandAction Command="{Binding OnMouseLeaved}" />
+                                    </i:EventTrigger>
+                                </i:Interaction.Triggers>
                                 <StackPanel   Orientation="Horizontal">
                                     <Label x:Name="flowCurrent" Height="28" Width="68" FontSize="20" HorizontalContentAlignment="Right" 
                             VerticalAlignment="Center" Padding="0" Content="1234.5"/>
@@ -35,18 +43,11 @@
                             </Border>
                         </Grid>
                         <ControlTemplate.Triggers>
-                            <DataTrigger Binding="{Binding IsDeviationLimit, RelativeSource={RelativeSource AncestorType={x:Type local:FlowController}}, Mode=TwoWay}" Value="True">
+                            <DataTrigger Binding="{Binding IsDeviationLimit, Mode=TwoWay}" Value="True">
                                 <Setter TargetName="LampWarning" Property="Fill" Value="Orangered"/>
                             </DataTrigger>
-                            <DataTrigger Binding="{Binding IsDeviationLimit, RelativeSource={RelativeSource AncestorType={x:Type local:FlowController}}, Mode=TwoWay}" Value="False">
+                            <DataTrigger Binding="{Binding IsDeviationLimit, Mode=TwoWay}" Value="False">
                                 <Setter TargetName="LampWarning" Property="Fill" Value="Lime"/>
-                            </DataTrigger>
-                           
-                            <DataTrigger Binding="{Binding Type, ElementName=flowController}" Value="MFC">
-                                <Setter TargetName="controllerBorder" Property="Background" Value="{StaticResource MFCDisplayColor2}" />
-                            </DataTrigger>
-                            <DataTrigger Binding="{Binding Type, ElementName=flowController}" Value="EPC">
-                                <Setter TargetName="controllerBorder" Property="Background" Value="{StaticResource EPCDisplayColor1}" />
                             </DataTrigger>
                         </ControlTemplate.Triggers>
                     </ControlTemplate>
@@ -55,5 +56,17 @@
             <Setter Property="Cursor" Value="Hand"/>
         </Style>
     </UserControl.Resources>
-    <Button Height="34" Width="70" Style="{StaticResource ControllerStyle}" Click="FlowController_Click"/>
+    <i:Interaction.Triggers>
+        <i:EventTrigger EventName="Loaded">
+            <i:InvokeCommandAction Command="{Binding OnLoadedCommand}">
+                <i:InvokeCommandAction.CommandParameter>
+                    <MultiBinding Converter="{StaticResource onLoadedCommandConverter}">
+                        <Binding Path="Type" RelativeSource="{RelativeSource AncestorType=UserControl}" />
+                        <Binding Path="ControllerID" RelativeSource="{RelativeSource AncestorType=UserControl}" />
+                    </MultiBinding>
+                </i:InvokeCommandAction.CommandParameter>
+            </i:InvokeCommandAction>
+        </i:EventTrigger>
+    </i:Interaction.Triggers>
+    <Button Height="34" Width="70" Style="{StaticResource ControllerStyle}" Click="FlowController_Click" />
 </UserControl>

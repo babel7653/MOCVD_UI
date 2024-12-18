@@ -6,19 +6,12 @@ using SapphireXR_App.ViewModels;
 
 namespace SapphireXR_App.Controls
 {
-    public partial class SwitchingValve : UserControl
+    public partial class SwitchingValve : Valve
     {
         public SwitchingValve()
         {
             InitializeComponent();
             DataContext = new SwitchingValveViewModel();
         }
-
-        public string ValveID
-        {
-            get;
-            set;
-        } = "";
-       
     }
 }

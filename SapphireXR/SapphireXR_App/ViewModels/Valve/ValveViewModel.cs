@@ -3,12 +3,14 @@ using SapphireXR_App.Common;
 using System.Windows;
 using System.Windows.Input;
 using CommunityToolkit.Mvvm.Input;
+using SapphireXR_App.Enums;
+using SapphireXR_App.Models;
 
 namespace SapphireXR_App.ViewModels
 {
     public class ValveViewModel : DependencyObject, INotifyPropertyChanged, IObserver<bool>
     {
-        protected virtual void OnLoaded(string? valveID)
+        protected virtual void Init(string? valveID)
         {
             ValveID = valveID;
             try
@@ -23,6 +25,33 @@ namespace SapphireXR_App.ViewModels
 
         public event PropertyChangedEventHandler? PropertyChanged;
 
+        public ICommand OnLoadedCommand => new RelayCommand<string>(Init);
+        public ICommand OnClickCommand => new RelayCommand(OnClicked);
+
+        protected virtual void OnClicked()
+        {
+            if (popUpMessage == null)
+            {
+                popUpMessage = getPopupMessage();
+            }
+            PopupMessage actual = popUpMessage.Value;
+            string valveOperationMessage = (IsOpen == true ? actual.messageWithOpen : actual.messageWithoutOpen);
+            string confirmMessage = (IsOpen == true ? actual.confirmWithOpen : actual.confirmWithoutOpen);
+            string cancelMessage = (IsOpen == true ? actual.cancelWithOpen : actual.cancelWithoutOpen);
+            var result = ValveOperationEx.Show("Valve Operation", valveOperationMessage);
+            switch (result)
+            {
+                case ValveOperationExResult.Ok:
+                    IsOpenObservable = !(IsOpen);
+                    MessageBox.Show(confirmMessage);
+                    //TODO
+
+                    break;
+                case ValveOperationExResult.Cancel:
+                    MessageBox.Show(cancelMessage);
+                    break;
+            }
+        }
 
         public string? ValveID { get; set; }
 
@@ -50,6 +79,22 @@ namespace SapphireXR_App.ViewModels
             DependencyProperty.Register("IsOpen", typeof(bool), typeof(ValveViewModel), new PropertyMetadata(default));
 
         private ObservableManager<bool>.DataIssuerBase? isOpenValueChanged;
+
+        protected struct PopupMessage
+        {
+            public string messageWithOpen;
+            public string confirmWithOpen;
+            public string cancelWithOpen;
+            public string messageWithoutOpen;
+            public string confirmWithoutOpen;
+            public string cancelWithoutOpen;
+        };
+        private PopupMessage? popUpMessage;
+
+        protected virtual PopupMessage getPopupMessage()
+        {
+            return new PopupMessage();
+        }
 
         void IObserver<bool>.OnCompleted()
         {

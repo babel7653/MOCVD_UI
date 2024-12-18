@@ -2,11 +2,17 @@
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:i="clr-namespace:Microsoft.Xaml.Behaviors;assembly=Microsoft.Xaml.Behaviors"
              xmlns:local="clr-namespace:SapphireXR_App.Controls"
              mc:Ignorable="d" 
              x:Name="butterflyValve"
              d:DesignHeight="30" d:DesignWidth="30">
+    <i:Interaction.Triggers>
+        <i:EventTrigger EventName="Loaded">
+            <i:InvokeCommandAction Command="{Binding OnLoadedCommand}" CommandParameter="{Binding ValveID, RelativeSource={RelativeSource AncestorType=UserControl}}"/>
+        </i:EventTrigger>
+    </i:Interaction.Triggers>
     <local:Valve.Resources>
         <Style x:Key="ValveStyle" TargetType="{x:Type Button}">
             <Setter Property="Template">
@@ -19,21 +25,26 @@
                             <Ellipse x:Name="valveCenter" Width="6" Height="6" Fill="WhiteSmoke"  Canvas.Left="12" Canvas.Top="12"/>
                         </Canvas>
                         <ControlTemplate.Triggers>
-                            <DataTrigger Binding="{Binding IsOpen, RelativeSource={RelativeSource AncestorType={x:Type local:ButterflyValve}}, Mode=TwoWay}" Value="True">
+                            <DataTrigger Binding="{Binding IsOpen, Mode=TwoWay}" Value="True">
                                 <Setter TargetName="valveFlipper" Property="Stroke" Value="Lime"/>
                                 <Setter TargetName="valveCenter" Property="Fill" Value="Lime"/>
                             </DataTrigger>
-                            
-                            <DataTrigger Binding="{Binding IsOpen, RelativeSource={RelativeSource AncestorType={x:Type local:ButterflyValve}}, Mode=TwoWay}" Value="False">
+
+                            <DataTrigger Binding="{Binding IsOpen, Mode=TwoWay}" Value="False">
                                 <Setter TargetName="valveFlipper" Property="Stroke" Value="Red"/>
                                 <Setter TargetName="valveCenter" Property="Fill" Value="Red"/>
                             </DataTrigger>
-
                         </ControlTemplate.Triggers>
                     </ControlTemplate>
                 </Setter.Value>
             </Setter>
         </Style>
     </local:Valve.Resources>
-    <Button Width="30" Height="30" Style="{StaticResource ValveStyle}" Click="ButterflyValve_Click"/>
+    <Button Width="30" Height="30" Style="{StaticResource ValveStyle}">
+        <i:Interaction.Triggers>
+            <i:EventTrigger EventName="Click">
+                <i:InvokeCommandAction Command="{Binding OnClickCommand}" />
+            </i:EventTrigger>
+        </i:Interaction.Triggers>
+    </Button>
 </local:Valve>

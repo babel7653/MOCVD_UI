@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using System.Windows.Controls;
+using SapphireXR_App.ViewModels;
 
 namespace SapphireXR_App.Controls
 {
@@ -10,29 +11,7 @@ namespace SapphireXR_App.Controls
         public ButterflyValve()
         {
             InitializeComponent();
-        }
-        
-        public bool IsControl
-        {
-            get { return (bool)GetValue(IsControlProperty); }
-            set { SetValue(IsControlProperty, value); }
-        }
-
-        public static readonly DependencyProperty IsControlProperty =
-            DependencyProperty.Register("IsControl", typeof(bool), typeof(ButterflyValve), new PropertyMetadata(default));
-
-        public int setValue
-        {
-            get { return (int)GetValue(setValueProperty); }
-            set { SetValue(setValueProperty, value); }
-        }
-
-        public static readonly DependencyProperty setValueProperty =
-            DependencyProperty.Register("setValue", typeof(int), typeof(ButterflyValve), new PropertyMetadata(0));
-
-        private void ButterflyValve_Click(object sender, RoutedEventArgs e)
-        {
-
+            DataContext = new ButterflyValveViewModel();
         }
     }
 }

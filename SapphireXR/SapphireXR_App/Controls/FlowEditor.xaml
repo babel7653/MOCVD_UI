@@ -3,10 +3,16 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:i="clr-namespace:Microsoft.Xaml.Behaviors;assembly=Microsoft.Xaml.Behaviors"
              xmlns:local="clr-namespace:SapphireXR_App.Controls"
              mc:Ignorable="d"
              x:Name="flowEditor"
              d:DesignHeight="34" d:DesignWidth="70">
+    <i:Interaction.Triggers>
+        <i:EventTrigger EventName="Loaded">
+            <i:InvokeCommandAction Command="{Binding OnLoadedCommand}" CommandParameter="{Binding ContentLabel, RelativeSource={RelativeSource AncestorType=UserControl}}"/>
+        </i:EventTrigger>
+    </i:Interaction.Triggers>
     <UserControl.Resources>
         <Style x:Key="ControllerStyle" TargetType="{x:Type Button}">
             <Setter Property="Template">
@@ -20,7 +26,7 @@
                             <Border  BorderBrush="LightGray" BorderThickness="1,1,1,0" CornerRadius="3,3,0,0">
                                 <StackPanel Orientation="Horizontal" >
                                     <Label Name="controllerName"  Height="16" Width="50" FontSize="12" HorizontalContentAlignment="Right" VerticalAlignment="Center" Padding="0"
-                                       Content="{Binding ContentLabel, ElementName=flowEditor}" Foreground="Lime" />
+                                       Content="{Binding ContentLabel}" Foreground="Lime" />
                                 </StackPanel>
                             </Border>
                             <Border Grid.Row="1" BorderBrush="LightGray"  BorderThickness="1,0,1,1"  Background="{StaticResource MFCDisplayColor2}" CornerRadius="0,0,3,3">

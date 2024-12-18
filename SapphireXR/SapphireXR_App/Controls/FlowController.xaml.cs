@@ -1,13 +1,16 @@
-﻿using System.Reflection.Emit;
+﻿using System.Globalization;
+using System.Security.RightsManagement;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Data;
+using System.Windows.Input;
 using System.Windows.Media;
-using CommunityToolkit.Mvvm.Input;
 using SapphireXR_App.Common;
 using SapphireXR_App.Enums;
 using SapphireXR_App.Models;
 using SapphireXR_App.ViewModels;
 using SapphireXR_App.Views;
+using static SapphireXR_App.ViewModels.FlowControlViewModel;
 
 namespace SapphireXR_App.Controls
 {
@@ -16,106 +19,14 @@ namespace SapphireXR_App.Controls
     /// </summary>
     public partial class FlowController : UserControl
     {
-        static FlowController()
-        {
-            MouseEnterColor = new SolidColorBrush(Color.FromRgb(0x9d, 0xbc, 0xe8));
-        }
         public FlowController()
         {
             InitializeComponent();
-            ControllerBorderBackground = new SolidColorBrush(Color.FromRgb(0xCC, 0xDF, 0xEF));
+            DataContext = new FlowControllerViewModel();
         }
 
-        public string ControllerID
-        {
-            get { return (string)GetValue(ControllerIDProperty); }
-            set { SetValue(ControllerIDProperty, value); }
-        }
-
-        public static readonly DependencyProperty ControllerIDProperty =
-            DependencyProperty.Register("ControllerID", typeof(string), typeof(FlowController), new PropertyMetadata(default));
-
-        public float TargetValue
-        {
-            get { return (float)GetValue(TargetValueProperty); }
-            set { SetValue(TargetValueProperty, value); }
-        }
-
-        public static readonly DependencyProperty TargetValueProperty =
-            DependencyProperty.Register("TargetValue", typeof(float), typeof(FlowController), new PropertyMetadata(default));
-
-        public float ControlValue
-        {
-            get { return (float)GetValue(ControlValueProperty); }
-            set { SetValue(ControlValueProperty, value); }
-        }
-
-        public static readonly DependencyProperty ControlValueProperty =
-            DependencyProperty.Register("ControlValue", typeof(float), typeof(FlowController), new PropertyMetadata(default));
-
-        public float CurrentValue
-        {
-            get { return (float)GetValue(CurrentValueProperty); }
-            set { SetValue(CurrentValueProperty, value); }
-        }
-
-        public static readonly DependencyProperty CurrentValueProperty =
-            DependencyProperty.Register("CurrentValue", typeof(float), typeof(FlowController), new PropertyMetadata(default));
-
-        public string buttonBackground
-        {
-            get { return (string)GetValue(buttonBackgroundProperty); }
-            set { SetValue(buttonBackgroundProperty, value); }
-        }
-
-        public static readonly DependencyProperty buttonBackgroundProperty =
-            DependencyProperty.Register("buttonBackground", typeof(string), typeof(FlowController), new PropertyMetadata(default));
-
-
-        public bool IsDeviationLimit
-        {
-            get { return (bool)GetValue(IsDeviationLimitProperty); }
-            set { SetValue(IsDeviationLimitProperty, value); }
-        }
-
-        public string Type
-        {
-            get { return (string)GetValue(typeProperty);  }
-            set { 
-                SetValue(typeProperty, value);
-                switch (Type)
-                {
-                    case "MFC":
-                        ControllerBorderBackground = Application.Current.Resources.MergedDictionaries[0]["MFCDisplayColor2"] as SolidColorBrush
-                            ?? ControllerBorderBackground;
-                        break;
-
-                    case "EPC":
-                        ControllerBorderBackground = Application.Current.Resources.MergedDictionaries[0]["EPCDisplayColor1"] as SolidColorBrush
-                            ?? ControllerBorderBackground;
-                        break;
-                }
-            }
-        }
-
-        public static readonly DependencyProperty IsDeviationLimitProperty =
-            DependencyProperty.Register("IsDeviationLimit", typeof(bool), typeof(FlowController), new PropertyMetadata(default));
-
-        static uint TypeCount = 0;
-        public readonly DependencyProperty typeProperty =
-            DependencyProperty.Register("TypeProperty" + (TypeCount++), typeof(string), typeof(FlowController), new PropertyMetadata(""));
-
-        static private bool SetMouseEnterColor = false;
-        public static SolidColorBrush MouseEnterColor
-        {
-            get; set;
-        }
-        public SolidColorBrush ControllerBorderBackground
-        {
-            get; set;
-        }
-
-        private FlowControlView? flowControlView = null;
+        public string? Type { get; set; }
+        public string? ControllerID { get; set; }
 
         private void FlowController_Click(object sender, RoutedEventArgs e) 
         {
@@ -124,20 +35,28 @@ namespace SapphireXR_App.Controls
                 flowController = (FlowController)((Button)e.OriginalSource).Parent;
                 if (flowController != null)
                 {
-                    flowControlView = FlowControllerEx.Show("Flow Controller", $"{flowController.ControllerID} 유량을 변경하시겠습니까?");
+                    flowControlView = FlowControllerEx.Show("Flow Controller", $"{ControllerID} 유량을 변경하시겠습니까?", (PopupExResult result, ControlValues controlValues) => { 
+                        if(OnFlowControllerConfirmed == null)
+                        {
+                            OnFlowControllerConfirmed = ((FlowControllerViewModel)DataContext).OnFlowControllerConfirmedCommand;
+                        }
+                        OnFlowControllerConfirmed?.Execute(new object[2] { result, controlValues }); 
+                    },
+                    (PopupExResult result) => {
+                        if(OnFlowControllerCanceled == null)
+                        {
+                            OnFlowControllerCanceled = ((FlowControllerViewModel)DataContext).OnFlowControllerCanceledCommand;
+                        }
+                        OnFlowControllerCanceled?.Execute(result); 
+                    });
                     Point p = TransformToAncestor(Util.FindParent<Window>(this, "mainWindow")).Transform(new Point(0, 0));
                     flowControlView.Left = p.X;
                     flowControlView.Top = p.Y;
                     flowControlView.Topmost = true;
-                    ((FlowControlViewModel)(flowControlView.DataContext)).Confirmed += (PopupExResult result, FlowControlViewModel.ControlValues controlValues) => {
-                            //여기에서 FlowControlView에서 설정한 속성값들(Targe Value, Current Value ...)을 얻어온다.
-                        };
-                    ((FlowControlViewModel)(flowControlView.DataContext)).Canceled += (PopupExResult result) => { };
                     flowControlView.Closed += (object? sender, EventArgs e) =>
                     {
                         flowControlView = null; 
                     };
-                
                 }
             }
             else
@@ -146,29 +65,21 @@ namespace SapphireXR_App.Controls
             }
         }
 
-        private void flowController_Loaded(object sender, RoutedEventArgs e)
+        private FlowControlView? flowControlView = null;
+        private ICommand? OnFlowControllerConfirmed { get; set; }
+        private ICommand? OnFlowControllerCanceled { get; set; }
+    }
+
+    public class OnLoadedCommandParamConverver : IMultiValueConverter
+    {
+        object IMultiValueConverter.Convert(object[] values, Type targetType, object parameter, CultureInfo culture)
         {
-            if (SetMouseEnterColor == false)
-            {
-                MouseEnterColor = Application.Current.Resources.MergedDictionaries[0]["ValeOnMouseEnterColor"] as SolidColorBrush ?? MouseEnterColor;
-                SetMouseEnterColor = true;
-            }
+            return values.Clone();
         }
 
-        private void controllerBorder_MouseLeave(object sender, System.Windows.Input.MouseEventArgs e)
+        object[] IMultiValueConverter.ConvertBack(object value, Type[] targetTypes, object parameter, CultureInfo culture)
         {
-            if(sender is Border)
-            {
-                ((Border)sender).Background = ControllerBorderBackground;
-            }
-        }
-
-        private void controllerBorder_MouseEnter(object sender, System.Windows.Input.MouseEventArgs e)
-        {
-            if (sender is Border)
-            {
-                ((Border)sender).Background = MouseEnterColor;
-            }
+            return (object[]) value;
         }
     }
 }

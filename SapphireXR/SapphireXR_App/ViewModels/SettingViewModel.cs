@@ -25,6 +25,8 @@ namespace SapphireXR_App.ViewModels
         public List<GasDO> lGasDO { get; set; } = [];
         public UserState userstate { get; set; } = new();
 
+        public bool WithoutConnection { get; set; }
+
         public ICommand AlarmSettingLoadCommand => new RelayCommand(AlarmSettingLoad);
         public ICommand AlarmSettingSaveCommand => new RelayCommand(AlarmSettingSave);
 
@@ -47,6 +49,7 @@ namespace SapphireXR_App.ViewModels
             JToken? jInterLockD = jDeviceInit["InterLockD"];
             JToken? jInterLockA = jDeviceInit["InterLockA"];
             JToken? jUserState = jDeviceInit["UserState"];
+            JToken? jWithoutConnection = jDeviceInit["WithoutConnection"];
 
             dGasAIO = JsonConvert.DeserializeObject<Dictionary<string, GasAIO>>(jGasAIO.ToString());
             dSwitchDI = JsonConvert.DeserializeObject<Dictionary<string, SwitchDI>>(jSwitchDI.ToString());

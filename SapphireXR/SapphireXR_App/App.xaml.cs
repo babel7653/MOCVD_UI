@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
+using SapphireXR_App.Models;
 using SapphireXR_App.ViewModels;
 using SapphireXR_App.Views;
 using System.Windows;
@@ -17,12 +18,21 @@ namespace SapphireXR_App
         {
             // 생성자 주입 구문을 사용하면 매개변수를 입력하지 않아도 객체가 만들어 지고 호출이 가능
             // 단, 이것도 서비스에 등록이 되어야 함
-            var mainView = App.Current.Services.GetService<MainWindow>();
-            if (mainView != null)
+            try
             {
-                mainView.Show();
+                PLCService.ReadValveStateFromPLC(); // 초기 로드시 PLC Valve상태 읽음
+                var mainView = App.Current.Services.GetService<MainWindow>();
+                if (mainView != null)
+                {
+                    mainView.Show();
+                }
+                else
+                {
+                    throw new Exception("cannot create MainView from App.Current.Services.GetService<MainWindow>()");
+                }
+
             }
-            else
+            catch (Exception)
             {
                 Shutdown();
             }

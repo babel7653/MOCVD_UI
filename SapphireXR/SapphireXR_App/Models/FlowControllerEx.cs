@@ -6,9 +6,11 @@ namespace SapphireXR_App.Models
 {
     public static class FlowControllerEx
     {
-        public static FlowControlView Show(string title, string message)
+        public static FlowControlView Show(string title, string message, FlowControlViewModel.ConfiredEventHandler onConfirmed, FlowControlViewModel.CanceledEventHandler onCanceled)
         {
             var viewModel = new FlowControlViewModel(title, message);
+            viewModel.Confirmed += onConfirmed;
+            viewModel.Canceled += onCanceled;
             FlowControlView view = new FlowControlView
             {
                 DataContext = viewModel

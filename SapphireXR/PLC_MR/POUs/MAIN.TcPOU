@@ -33,6 +33,8 @@ VAR
 	bMaintKey			: BOOL;
 	RecipeNumber		: INT;
 
+	bTest1 : BOOL;
+	bTest2 : BOOL;
 	
 	GVL_I: INT;
 END_VAR
@@ -60,12 +62,8 @@ P90_Interlock();
 P91_Monitoring();
 P92_Maintenance();
 
-GVL_IO.aOutputSolValve[1].1 := 1;
-GVL_IO.aOutputSolValve[1].2 := 1;
-
-GVL_IO.aOutputSolValve[2].0 := 1;
-GVL_IO.aOutputSolValve[2].26 := 1;
-
+bTest1 := GVL_IO.aOutputSolValve[1].1;
+bTest2 := GVL_IO.aOutputSolValve[2].0;
 
 // RecipeNumber := GVL_IO.NumOfRecipe;
 // 
@@ -106,10 +104,6 @@ GVL_IO.aOutputSolValve[2].26 := 1;
       <LineId Id="333" Count="0" />
       <LineId Id="356" Count="0" />
       <LineId Id="359" Count="0" />
-      <LineId Id="357" Count="0" />
-      <LineId Id="360" Count="0" />
-      <LineId Id="358" Count="0" />
-      <LineId Id="355" Count="0" />
       <LineId Id="332" Count="0" />
       <LineId Id="323" Count="0" />
       <LineId Id="313" Count="0" />

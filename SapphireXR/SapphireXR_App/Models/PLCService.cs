@@ -1,17 +1,7 @@
 ﻿using SapphireXR_App.Common;
-using SapphireXR_App.Controls;
 using SapphireXR_App.Enums;
-using SapphireXR_App.ViewModels;
-using System;
 using System.Collections;
-using System.Collections.Generic;
-using System.Diagnostics.Eventing.Reader;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Documents;
-using TwinCAT;
 using TwinCAT.Ads;
 
 namespace SapphireXR_App.Models

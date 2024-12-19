@@ -29,7 +29,7 @@
 
     <!-- Foreground Colors -->
     <SolidColorBrush x:Key="PrimaryFontColor" Color="#F8FAFC"/>
-    <SolidColorBrush x:Key="SecondaryFontColor" Color="#E2E8F0"/>
+    <SolidColorBrush x:Key="SecondaryFontColor" Color="LightSkyBlue"/>
 
     <!-- Line Colors -->
     <SolidColorBrush x:Key="LeakTestLineColor" Color="#66ffff"/>

@@ -72,16 +72,25 @@
                     <TextBox Grid.Row="1" Grid.Column="1" x:Name="txtInput1" Margin="5" Text="{Binding RampTime}"/>
 
                     <Label Grid.Row="2" Grid.Column="0">Deviation</Label>
-                    <TextBox Grid.Row="2" Grid.Column="1" x:Name="txtInput2" Margin="5" Text="{Binding Deviation}"/>
+                    <Border Grid.Row="2" Grid.Column="1" Background="LightGray" Margin="5" CornerRadius="2">
+                        <Label  x:Name="txtFlowDeviaion" Content="{Binding Deviation}"/>
+                    </Border>
 
                     <Label Grid.Row="0" Grid.Column="2">Current Value</Label>
-                    <TextBox Grid.Row="0" Grid.Column="3" x:Name="txtInput3" Margin="5" Text="{Binding CurrentValue}"/>
-
+                    <Border Grid.Row="0" Grid.Column="3" Background="LightGray" Margin="5" CornerRadius="2">
+                        <Label  x:Name="txtFlowCurrentValue" Content="{Binding CurrentValue}"/>
+                    </Border>
+                    
                     <Label Grid.Row="1" Grid.Column="2">Control Value</Label>
-                    <TextBox Grid.Row="1" Grid.Column="3" x:Name="txtInput4" Margin="5" Text="{Binding ControlValue}"/>
+                    <Border Grid.Row="1" Grid.Column="3" Background="LightGray" Margin="5" CornerRadius="2">
+                        <Label  x:Name="txtFlowControlValue" Content="{Binding ControlValue}"/>
+                    </Border>
 
                     <Label Grid.Row="2" Grid.Column="2">Max. Value</Label>
-                    <TextBox Grid.Row="2" Grid.Column="3" x:Name="txtInput5" Margin="5" Text="{Binding MaxValue}"/>
+                    <Border Grid.Row="2" Grid.Column="3" Background="LightGray" Margin="5" CornerRadius="2">
+                        <Label  x:Name="txtFlowMaxValue" Content="{Binding MaxValue}"/>
+                    </Border>
+                    
                 </Grid>
                 <Grid Grid.Row="2">
                     <Grid.ColumnDefinitions>

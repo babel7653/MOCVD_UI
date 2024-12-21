@@ -407,91 +407,76 @@
         <control:SingleValve x:Name="V34" Canvas.Left="1116" Canvas.Top="546" ValveID="V34" />
         <control:SingleValve x:Name="V35" Canvas.Left="1228" Canvas.Top="178" ValveID="V35" />
         <control:SingleValve x:Name="V36" Canvas.Left="1257" Canvas.Top="178" ValveID="V36" />
-        <control:SingleValve x:Name="V53" Canvas.Left="1084" Canvas.Top="738" ValveID="V53" 
-                             Visibility="{Binding DataContext.OnLeakTestVisibility, ElementName=homePage}"/>
+         <!-- Button for Leak Test Valve -->
+        <Canvas Visibility="{Binding DataContext.OnLeakTestVisibility, ElementName=homePage}">
+            <control:LeakTestValve x:Name="V37" Canvas.Left="579" Canvas.Top="62" ValveID="V37" />
+            <control:LeakTestValve x:Name="V38" Canvas.Left="285" Canvas.Top="62" ValveID="V38"/>
+            <control:LeakTestValve x:Name="V39" Canvas.Left="108" Canvas.Top="506" ValveID="V39">
+                <control:LeakTestValve.RenderTransform>
+                    <TransformGroup>
+                        <RotateTransform Angle="270"/>
+                    </TransformGroup>
+                </control:LeakTestValve.RenderTransform>
+            </control:LeakTestValve>
+            <control:LeakTestValve x:Name="V40" Canvas.Left="102" Canvas.Top="424" ValveID="V40">
+                <control:LeakTestValve.RenderTransform>
+                    <TransformGroup>
+                        <RotateTransform Angle="90"/>
+                    </TransformGroup>
+                </control:LeakTestValve.RenderTransform>
+            </control:LeakTestValve>
+            <control:LeakTestValve x:Name="V41" Canvas.Left="200" Canvas.Top="673" ValveID="V41"/>
+            <control:LeakTestValve x:Name="V42" Canvas.Left="296" Canvas.Top="697" ValveID="V42">
+                <control:LeakTestValve.RenderTransform>
+                    <TransformGroup>
+                        <RotateTransform Angle="180"/>
+                    </TransformGroup>
+                </control:LeakTestValve.RenderTransform>
+            </control:LeakTestValve>
+            <control:LeakTestValve x:Name="V43" Canvas.Left="340" Canvas.Top="673" ValveID="V43" />
+            <control:LeakTestValve x:Name="V44" Canvas.Left="436" Canvas.Top="697" ValveID="V44">
+                <control:LeakTestValve.RenderTransform>
+                    <TransformGroup>
+                        <RotateTransform Angle="180"/>
+                    </TransformGroup>
+                </control:LeakTestValve.RenderTransform>
+            </control:LeakTestValve>
+            <control:LeakTestValve x:Name="V45" Canvas.Left="480" Canvas.Top="673" ValveID="V45"/>
+            <control:LeakTestValve x:Name="V46" Canvas.Left="576" Canvas.Top="697" ValveID="V46">
+                <control:LeakTestValve.RenderTransform>
+                    <TransformGroup>
+                        <RotateTransform Angle="180"/>
+                    </TransformGroup>
+                </control:LeakTestValve.RenderTransform>
+            </control:LeakTestValve>
+            <control:LeakTestValve x:Name="V47" Canvas.Left="620" Canvas.Top="673" ValveID="V47" />
+            <control:LeakTestValve x:Name="V48" Canvas.Left="716" Canvas.Top="697" ValveID="V48">
+                <control:LeakTestValve.RenderTransform>
+                    <TransformGroup>
+                        <RotateTransform Angle="180"/>
+                    </TransformGroup>
+                </control:LeakTestValve.RenderTransform>
+            </control:LeakTestValve>
+            <control:LeakTestValve x:Name="V49" Canvas.Left="760" Canvas.Top="673" ValveID="V49"/>
+            <control:LeakTestValve x:Name="V50" Canvas.Left="856" Canvas.Top="697" ValveID="V50">
+                <control:LeakTestValve.RenderTransform>
+                    <TransformGroup>
+                        <RotateTransform Angle="180"/>
+                    </TransformGroup>
+                </control:LeakTestValve.RenderTransform>
+            </control:LeakTestValve>
+            <control:LeakTestValve x:Name="V51" Canvas.Left="958" Canvas.Top="673" ValveID="V51"/>
+            <control:LeakTestValve x:Name="V52" Canvas.Left="1054" Canvas.Top="697" ValveID="V52">
+                <control:LeakTestValve.RenderTransform>
+                    <TransformGroup>
+                        <RotateTransform Angle="180"/>
+                    </TransformGroup>
+                </control:LeakTestValve.RenderTransform>
+            </control:LeakTestValve>
+            <control:SingleValve x:Name="V53" Canvas.Left="1084" Canvas.Top="738" ValveID="V53" />
+        </Canvas>
+        
         <control:ButterflyValve x:Name="ButterflyValve" Canvas.Left="1145" Canvas.Top="599" ValveID="V54" />
-
-        <!-- Button for Leak Test Valve -->
-        <control:LeakTestValve x:Name="V37" Canvas.Left="579" Canvas.Top="62" ValveID="V37"
-                               Visibility="{Binding DataContext.OnLeakTestVisibility, ElementName=homePage}" />
-        <control:LeakTestValve x:Name="V38" Canvas.Left="285" Canvas.Top="62" ValveID="V38"
-                               Visibility="{Binding DataContext.OnLeakTestVisibility, ElementName=homePage}"/>
-        <control:LeakTestValve x:Name="V39" Canvas.Left="108" Canvas.Top="506" ValveID="V39"
-                               Visibility="{Binding DataContext.OnLeakTestVisibility, ElementName=homePage}" >
-            <control:LeakTestValve.RenderTransform>
-                <TransformGroup>
-                    <RotateTransform Angle="270"/>
-                </TransformGroup>
-            </control:LeakTestValve.RenderTransform>
-        </control:LeakTestValve>
-        <control:LeakTestValve x:Name="V40" Canvas.Left="102" Canvas.Top="424" ValveID="V40"
-                               Visibility="{Binding DataContext.OnLeakTestVisibility, ElementName=homePage}">
-            <control:LeakTestValve.RenderTransform>
-                <TransformGroup>
-                    <RotateTransform Angle="90"/>
-                </TransformGroup>
-            </control:LeakTestValve.RenderTransform>
-        </control:LeakTestValve>
-        <control:LeakTestValve x:Name="V41" Canvas.Left="200" Canvas.Top="673" ValveID="V41"
-                               Visibility="{Binding DataContext.OnLeakTestVisibility, ElementName=homePage}"/>
-        <control:LeakTestValve x:Name="V42" Canvas.Left="296" Canvas.Top="697" ValveID="V42"
-                               Visibility="{Binding DataContext.OnLeakTestVisibility, ElementName=homePage}" >
-            <control:LeakTestValve.RenderTransform>
-                <TransformGroup>
-                    <RotateTransform Angle="180"/>
-                </TransformGroup>
-            </control:LeakTestValve.RenderTransform>
-        </control:LeakTestValve>
-        <control:LeakTestValve x:Name="V43" Canvas.Left="340" Canvas.Top="673" ValveID="V43"
-                               Visibility="{Binding DataContext.OnLeakTestVisibility, ElementName=homePage}" />
-        <control:LeakTestValve x:Name="V44" Canvas.Left="436" Canvas.Top="697" ValveID="V44"
-                               Visibility="{Binding DataContext.OnLeakTestVisibility, ElementName=homePage}">
-            <control:LeakTestValve.RenderTransform>
-                <TransformGroup>
-                    <RotateTransform Angle="180"/>
-                </TransformGroup>
-            </control:LeakTestValve.RenderTransform>
-        </control:LeakTestValve>
-        <control:LeakTestValve x:Name="V45" Canvas.Left="480" Canvas.Top="673" ValveID="V45"
-                               Visibility="{Binding DataContext.OnLeakTestVisibility, ElementName=homePage}" />
-        <control:LeakTestValve x:Name="V46" Canvas.Left="576" Canvas.Top="697" ValveID="V46"
-                               Visibility="{Binding DataContext.OnLeakTestVisibility, ElementName=homePage}" >
-            <control:LeakTestValve.RenderTransform>
-                <TransformGroup>
-                    <RotateTransform Angle="180"/>
-                </TransformGroup>
-            </control:LeakTestValve.RenderTransform>
-        </control:LeakTestValve>
-        <control:LeakTestValve x:Name="V47" Canvas.Left="620" Canvas.Top="673" ValveID="V47"
-                               Visibility="{Binding DataContext.OnLeakTestVisibility, ElementName=homePage}" />
-        <control:LeakTestValve x:Name="V48" Canvas.Left="716" Canvas.Top="697" ValveID="V48"
-                               Visibility="{Binding DataContext.OnLeakTestVisibility, ElementName=homePage}" >
-            <control:LeakTestValve.RenderTransform>
-                <TransformGroup>
-                    <RotateTransform Angle="180"/>
-                </TransformGroup>
-            </control:LeakTestValve.RenderTransform>
-        </control:LeakTestValve>
-        <control:LeakTestValve x:Name="V49" Canvas.Left="760" Canvas.Top="673" ValveID="V49"
-                               Visibility="{Binding DataContext.OnLeakTestVisibility, ElementName=homePage}" />
-        <control:LeakTestValve x:Name="V50" Canvas.Left="856" Canvas.Top="697" ValveID="V50"
-                                Visibility="{Binding DataContext.OnLeakTestVisibility, ElementName=homePage}">
-            <control:LeakTestValve.RenderTransform>
-                <TransformGroup>
-                    <RotateTransform Angle="180"/>
-                </TransformGroup>
-            </control:LeakTestValve.RenderTransform>
-        </control:LeakTestValve>
-        <control:LeakTestValve x:Name="V51" Canvas.Left="958" Canvas.Top="673" ValveID="V51"
-                               Visibility="{Binding DataContext.OnLeakTestVisibility, ElementName=homePage}"/>
-        <control:LeakTestValve x:Name="V52" Canvas.Left="1054" Canvas.Top="697" ValveID="V52"
-                                Visibility="{Binding DataContext.OnLeakTestVisibility, ElementName=homePage}">
-            <control:LeakTestValve.RenderTransform>
-                <TransformGroup>
-                    <RotateTransform Angle="180"/>
-                </TransformGroup>
-            </control:LeakTestValve.RenderTransform>
-        </control:LeakTestValve>
         <!--#endregion-->
 
         <!-- #Region 6. 가스 제어(MFC, EPC) -->
@@ -569,6 +554,7 @@
         </Border>
         <!--#endregion-->
 
+        <!-- #Region 8. Show / Hide Label ) -->
         <Canvas Visibility="{Binding DataContext.ValveLabelVisibility, ElementName=homePage}">
             <Label Canvas.Left="70" Canvas.Top="124" Foreground="{StaticResource SecondaryFontColor}" Content="V01"
                 Width="40" HorizontalContentAlignment="Center" />
@@ -646,7 +632,93 @@
                 Width="40" HorizontalContentAlignment="Center" />
             <Label Canvas.Left="314" Canvas.Top="60" Foreground="{StaticResource SecondaryFontColor}" Content="V38"
                 Width="40" HorizontalContentAlignment="Center" />
+            <Label Canvas.Left="75" Canvas.Top="479" Foreground="{StaticResource SecondaryFontColor}" Content="V39"
+                Width="40" HorizontalContentAlignment="Center" />
+            <Label Canvas.Left="95" Canvas.Top="423" Foreground="{StaticResource SecondaryFontColor}" Content="V40"
+                Width="40" HorizontalContentAlignment="Center" />
+            <Label Canvas.Left="168" Canvas.Top="660" Foreground="{StaticResource SecondaryFontColor}" Content="V41"
+                Width="40" HorizontalContentAlignment="Center" />
+            <Label Canvas.Left="274" Canvas.Top="651" Foreground="{StaticResource SecondaryFontColor}" Content="V42"
+                Width="40" HorizontalContentAlignment="Center" />
+            <Label Canvas.Left="308" Canvas.Top="660" Foreground="{StaticResource SecondaryFontColor}" Content="V43"
+                Width="40" HorizontalContentAlignment="Center" />
+            <Label Canvas.Left="414" Canvas.Top="651" Foreground="{StaticResource SecondaryFontColor}" Content="V44"
+                Width="40" HorizontalContentAlignment="Center" />
+            <Label Canvas.Left="448" Canvas.Top="660" Foreground="{StaticResource SecondaryFontColor}" Content="V45"
+                Width="40" HorizontalContentAlignment="Center" />
+            <Label Canvas.Left="554" Canvas.Top="651" Foreground="{StaticResource SecondaryFontColor}" Content="V46"
+                Width="40" HorizontalContentAlignment="Center" />
+            <Label Canvas.Left="588" Canvas.Top="660" Foreground="{StaticResource SecondaryFontColor}" Content="V47"
+                Width="40" HorizontalContentAlignment="Center" />
+            <Label Canvas.Left="694" Canvas.Top="651" Foreground="{StaticResource SecondaryFontColor}" Content="V48"
+                Width="40" HorizontalContentAlignment="Center" />
+            <Label Canvas.Left="728" Canvas.Top="660" Foreground="{StaticResource SecondaryFontColor}" Content="V49"
+                Width="40" HorizontalContentAlignment="Center" />
+            <Label Canvas.Left="830" Canvas.Top="651" Foreground="{StaticResource SecondaryFontColor}" Content="V50"
+                Width="40" HorizontalContentAlignment="Center" />
+            <Label Canvas.Left="926" Canvas.Top="660" Foreground="{StaticResource SecondaryFontColor}" Content="V51"
+                Width="40" HorizontalContentAlignment="Center" />
+            <Label Canvas.Left="1032" Canvas.Top="651" Foreground="{StaticResource SecondaryFontColor}" Content="V52"
+                Width="40" HorizontalContentAlignment="Center" />
+            <Label Canvas.Left="1076" Canvas.Top="715" Foreground="{StaticResource SecondaryFontColor}" Content="V53"
+                Width="40" HorizontalContentAlignment="Center" />
+
+            <Label Canvas.Left="190" Canvas.Top="339" Foreground="{StaticResource SecondaryFontColor}" Content="M01"
+                Width="40" HorizontalContentAlignment="Center" />
+            <Label Canvas.Left="190" Canvas.Top="304" Foreground="{StaticResource SecondaryFontColor}" Content="M02"
+                Width="40" HorizontalContentAlignment="Center" />
+            <Label Canvas.Left="412" Canvas.Top="186" Foreground="{StaticResource SecondaryFontColor}" Content="M03"
+                Width="40" HorizontalContentAlignment="Center" />
+            <Label Canvas.Left="234" Canvas.Top="186" Foreground="{StaticResource SecondaryFontColor}" Content="M04"
+                Width="40" HorizontalContentAlignment="Center" />
+            <Label Canvas.Left="626" Canvas.Top="136" Foreground="{StaticResource SecondaryFontColor}" Content="M05"
+                Width="40" HorizontalContentAlignment="Center" />
+            <Label Canvas.Left="448" Canvas.Top="136" Foreground="{StaticResource SecondaryFontColor}" Content="M06"
+                Width="40" HorizontalContentAlignment="Center" />
+            <Label Canvas.Left="528" Canvas.Top="186" Foreground="{StaticResource SecondaryFontColor}" Content="M07"
+                Width="40" HorizontalContentAlignment="Center" />
+            <Label Canvas.Left="150" Canvas.Top="570" Foreground="{StaticResource SecondaryFontColor}" Content="M08"
+                Width="40" HorizontalContentAlignment="Center" />
+            <Label Canvas.Left="290" Canvas.Top="570" Foreground="{StaticResource SecondaryFontColor}" Content="M09"
+                Width="40" HorizontalContentAlignment="Center" />
+            <Label Canvas.Left="430" Canvas.Top="570" Foreground="{StaticResource SecondaryFontColor}" Content="M10"
+                Width="40" HorizontalContentAlignment="Center" />
+            <Label Canvas.Left="570" Canvas.Top="570" Foreground="{StaticResource SecondaryFontColor}" Content="M11"
+                Width="40" HorizontalContentAlignment="Center" />
+            <Label Canvas.Left="710" Canvas.Top="570" Foreground="{StaticResource SecondaryFontColor}" Content="M12"
+                Width="40" HorizontalContentAlignment="Center" />
+            <Label Canvas.Left="866" Canvas.Top="526" Foreground="{StaticResource SecondaryFontColor}" Content="M13"
+                Width="40" HorizontalContentAlignment="Center" />
+            <Label Canvas.Left="826" Canvas.Top="570" Foreground="{StaticResource SecondaryFontColor}" Content="M14"
+                Width="40" HorizontalContentAlignment="Center" />
+            <Label Canvas.Left="935" Canvas.Top="554" Foreground="{StaticResource SecondaryFontColor}" Content="M15"
+                Width="40" HorizontalContentAlignment="Center" />
+            <Label Canvas.Left="867" Canvas.Top="196" Foreground="{StaticResource SecondaryFontColor}" Content="M16"
+                Width="40" HorizontalContentAlignment="Center" />
+            <Label Canvas.Left="867" Canvas.Top="240" Foreground="{StaticResource SecondaryFontColor}" Content="M17"
+                Width="40" HorizontalContentAlignment="Center" />
+            <Label Canvas.Left="190" Canvas.Top="402" Foreground="{StaticResource SecondaryFontColor}" Content="M18"
+                Width="40" HorizontalContentAlignment="Center" />
+            <Label Canvas.Left="190" Canvas.Top="241" Foreground="{StaticResource SecondaryFontColor}" Content="M19"
+                Width="40" HorizontalContentAlignment="Center" />
+
+            <Label Canvas.Left="706" Canvas.Top="186" Foreground="{StaticResource SecondaryFontColor}" Content="E01"
+                Width="40" HorizontalContentAlignment="Center" />
+            <Label Canvas.Left="306" Canvas.Top="526" Foreground="{StaticResource SecondaryFontColor}" Content="E02"
+                Width="40" HorizontalContentAlignment="Center" />
+            <Label Canvas.Left="446" Canvas.Top="526" Foreground="{StaticResource SecondaryFontColor}" Content="E03"
+                Width="40" HorizontalContentAlignment="Center" />
+            <Label Canvas.Left="586" Canvas.Top="526" Foreground="{StaticResource SecondaryFontColor}" Content="E04"
+                Width="40" HorizontalContentAlignment="Center" />
+            <Label Canvas.Left="726" Canvas.Top="526" Foreground="{StaticResource SecondaryFontColor}" Content="E05"
+                Width="40" HorizontalContentAlignment="Center" />
+            <Label Canvas.Left="899" Canvas.Top="613" Foreground="{StaticResource SecondaryFontColor}" Content="E06"
+                Width="40" HorizontalContentAlignment="Center" />
+            <Label Canvas.Left="1037" Canvas.Top="511" Foreground="{StaticResource SecondaryFontColor}" Content="E07"
+                Width="40" HorizontalContentAlignment="Center" />
         </Canvas>
+        <!--#endregion-->
+        
     </Canvas>
 
 </Page>

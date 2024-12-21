@@ -4,6 +4,7 @@ using CommunityToolkit.Mvvm.Messaging;
 using OxyPlot;
 using SapphireXR_App.Bases;
 using SapphireXR_App.Models;
+using System.ComponentModel;
 using System.Configuration;
 using System.Windows;
 using System.Windows.Input;
@@ -11,33 +12,31 @@ using TwinCAT.Ads;
 
 namespace SapphireXR_App.ViewModels
 {
-    public class MainViewModel : ViewModelBase
+    public partial class MainViewModel : ViewModelBase
     {
-        // 네비게이션 소스
-        private string? _navigationSource;
-        public string? NavigationSource
-        {
-            get { return _navigationSource; }
-            set { SetProperty(ref _navigationSource, value); }
-        }
-        // 네비게이트 커맨드
-        public ICommand NavigateCommand { get; set; }
+        [ObservableProperty]
+        private string? navigationSource;
+
         public MainViewModel()
         {
             Title = "SapphireXR";
 
              //시작 페이지 설정
             NavigationSource = "Views/RecipeRunPage.xaml";
-            NavigateCommand = new RelayCommand<string>(OnNavigate!);
+  
             //네비게이션 메시지 수신 등록
             WeakReferenceMessenger.Default.Register<NavigationMessage>(this, OnNavigationMessage);
         }
+
         public PlotModel PlotModel { get; set; } = default;
 
         private void OnNavigationMessage(object recipient, NavigationMessage message)
         {
             NavigationSource = message.Value;
         }
+
+        // 네비게이트 커맨드
+        [RelayCommand]
         private void OnNavigate(string pageUri)
         {
             NavigationSource = pageUri;

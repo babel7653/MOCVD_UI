@@ -2,6 +2,7 @@
 using SapphireXR_App.Enums;
 using SapphireXR_App.ViewModels;
 using System.Collections;
+using System.Reactive.Linq;
 using System.Security.Permissions;
 using System.Windows;
 using System.Windows.Threading;
@@ -27,6 +28,10 @@ namespace SapphireXR_App.Models
         private static BitArray? BaReadValveStatePLC1;
         private static BitArray? BaReadValveStatePLC2;
         private static float[]? BaMaxValue;
+        private static int[]? CurrentValues;
+        private static int[]? ControlValues;
+        private static List<IObservable<int>>? CurrentValueIssuers;
+        private static List<IObservable<int>>? ControlValueIssuers;
 
         //Create an instance of the TcAdsClient()
         public static AdsClient Ads { get; set; }
@@ -119,11 +124,6 @@ namespace SapphireXR_App.Models
                 
                 BaReadValveStatePLC1 = new BitArray(new int[] { (int)aReadValveStatePLC1 });
                 BaReadValveStatePLC2 = new BitArray(new int[] { (int)aReadValveStatePLC2 });
-
-                timer = new DispatcherTimer();
-                timer.Interval = new TimeSpan(5000000);
-                timer.Tick += ReadStateFromPLC;
-                timer.Start();
             }
             catch (Exception ex)
             {
@@ -131,16 +131,51 @@ namespace SapphireXR_App.Models
             }
         }
 
+        public static void ReadInitialStateValueFromPLC()
+        {
+            ReadValveStateFromPLC();
+            ReadMaxValueFromPLC();
+            ReadFlowControlStateFromPLC();
+
+            timer = new DispatcherTimer();
+            timer.Interval = new TimeSpan(5000000);
+            timer.Tick += OnTick;
+            timer.Start();
+
+            CurrentValueIssuers = new List<IObservable<int>>();
+            foreach (KeyValuePair<string, int> kv in FCCurrentValuetoIdx)
+            {
+                CurrentValueIssuers.Add(ObservableManager<int>.Get("FlowControl." + kv.Key + ".CurrentValue"));
+            }
+            ControlValueIssuers = new List<IObservable<int>>();
+            foreach (KeyValuePair<string, int> kv in FCControlValuetoIdx)
+            {
+                ControlValueIssuers.Add(ObservableManager<int>.Get("FlowControl." + kv.Key + ".ControlValue"));
+            }
+        }
+
         public static void ReadMaxValueFromPLC()
         {
             BaMaxValue = Ads.ReadAny<float[]>(hWriteDeviceMaxValuePLC, [29]);
-            
         }
 
-        private static void ReadStateFromPLC(object? sender, EventArgs e)
+        private static void OnTick(object? sender, EventArgs e)
         {
-            int[] currentValues = Ads.ReadAny<int[]>(hReadFlowControllerCurrentValuePLC, [40]);
-            int[] controlValues = Ads.ReadAny<int[]>(hReadFlowControllerControlValuePLC, [28]);
+            ReadFlowControlStateFromPLC();
+            foreach(KeyValuePair<string, int> kv in FCControlValuetoIdx)
+            {
+                
+            }
+            foreach (KeyValuePair<string, int> kv in FCCurrentValuetoIdx)
+            {
+
+            }
+        }
+
+        private static void ReadFlowControlStateFromPLC()
+        {
+            CurrentValues = Ads.ReadAny<int[]>(hReadFlowControllerCurrentValuePLC, [40]);
+            ControlValues = Ads.ReadAny<int[]>(hReadFlowControllerControlValuePLC, [28]);
         }
 
         public static bool ReadValveState(string valveID)

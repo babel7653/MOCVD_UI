@@ -84,7 +84,12 @@ namespace SapphireXR_App.Common
             {
                 foreach (IObserver<T> observer in deferred[name])
                 {
-                    deferredUnsubscribers.Add(observer, observable.Subscribe(observer));
+                    Dictionary<IObserver<T>, IDisposable>? disposerByTopic;
+                    if( deferredUnsubscribers.TryGetValue(name, out disposerByTopic) == false)
+                    {
+                        disposerByTopic = deferredUnsubscribers[name] = new Dictionary<IObserver<T>, IDisposable>();
+                    }
+                    disposerByTopic[observer] = observable.Subscribe(observer);
                 }
                 deferred[name].Clear();
             }
@@ -112,12 +117,12 @@ namespace SapphireXR_App.Common
             }
         }
 
-        public static void Subscribe(string name, IObserver<T> observer)
+        public static IDisposable? Subscribe(string name, IObserver<T> observer)
         {
             IObservable<T> found;
             if (observables.TryGetValue(name, out found!) == true)
             {
-                observables[name].Subscribe(observer);
+                return observables[name].Subscribe(observer);
             }
             else
             {
@@ -128,16 +133,24 @@ namespace SapphireXR_App.Common
                     deferred[name] = deferredObservers;
                 }
                 deferredObservers.Add(observer);
+                return null;
             }
         }
 
-        public static IDisposable? PopUnsubscriber(IObserver<T> observer)
+        public static IDisposable? PopUnsubscriber(string name, IObserver<T> observer)
         {
-            IDisposable found;
-            if (deferredUnsubscribers.TryGetValue(observer, out found!) == true)
+            Dictionary<IObserver<T>, IDisposable>? found;
+            if (deferredUnsubscribers.TryGetValue(name, out found) == true)
             {
-                deferredUnsubscribers.Remove(observer);
-                return found;
+                IDisposable? disposable;
+                if(found.TryGetValue(observer, out disposable) == true)
+                {
+                    return disposable;
+                }
+                else
+                {
+                    return null;
+                }
             }
             else
             {
@@ -147,7 +160,7 @@ namespace SapphireXR_App.Common
 
         static readonly Dictionary<string, IObservable<T>> observables = new Dictionary<string, IObservable<T>>();
         static readonly Dictionary<string, List<IObserver<T>>> deferred = new Dictionary<string, List<IObserver<T>>>();
-        static readonly Dictionary<IObserver<T>, IDisposable> deferredUnsubscribers = new Dictionary<IObserver<T>, IDisposable>();
+        static readonly Dictionary<string, Dictionary<IObserver<T>, IDisposable>> deferredUnsubscribers = new Dictionary<string, Dictionary<IObserver<T>, IDisposable>>();
 
     }
 }

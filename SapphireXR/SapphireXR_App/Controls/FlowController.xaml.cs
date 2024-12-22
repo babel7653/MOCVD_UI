@@ -26,7 +26,7 @@ namespace SapphireXR_App.Controls
         }
 
         public string? Type { get; set; }
-        public string? ControllerID { get; set; }
+        required public string ControllerID { get; set; }
 
         private void FlowController_Click(object sender, RoutedEventArgs e) 
         {
@@ -35,7 +35,7 @@ namespace SapphireXR_App.Controls
                 flowController = (FlowController)((Button)e.OriginalSource).Parent;
                 if (flowController != null)
                 {
-                    flowControlView = FlowControllerEx.Show("Flow Controller", $"{ControllerID} 유량을 변경하시겠습니까?", (PopupExResult result, ControlValues controlValues) => { 
+                    flowControlView = FlowControllerEx.Show("Flow Controller", $"{ControllerID} 유량을 변경하시겠습니까?", ControllerID, (PopupExResult result, ControlValues controlValues) => { 
                         if(OnFlowControllerConfirmed == null)
                         {
                             OnFlowControllerConfirmed = ((FlowControllerViewModel)DataContext).OnFlowControllerConfirmedCommand;

@@ -59,7 +59,10 @@ namespace SapphireXR_App.ViewModels
             lGasAIO = dGasAIO.Values.ToList();
             lSwitchDI = dSwitchDI.Values.ToList();
             lGasDO = dGasDO.Values.ToList();
+
+            PLCService.WriteDeviceMaxValue(lGasAIO);
         }
+
         public void AlarmSettingSave()
         {
             JToken jsonGasAIO = JsonConvert.SerializeObject(dGasAIO);
@@ -82,6 +85,9 @@ namespace SapphireXR_App.ViewModels
 
             if (File.Exists(fname)) File.Delete(fname);
             File.WriteAllText(fname, jDeviceIO.ToString());
+
+            PLCService.WriteDeviceMaxValue(lGasAIO);
+
         }
     }
 }

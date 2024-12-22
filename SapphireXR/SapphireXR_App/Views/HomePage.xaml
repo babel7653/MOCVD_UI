@@ -341,8 +341,8 @@
                 </TransformGroup>
             </control:SwitchingValve.RenderTransform>
         </control:SwitchingValve>
-        <control:SwitchingValve x:Name="V03" Canvas.Left="279" Canvas.Top="105" ValveID="V03"/>
-        <control:SwitchingValve x:Name="V04" Canvas.Left="573" Canvas.Top="105" ValveID="V04"/>
+        <control:SwitchingValve x:Name="V03" Canvas.Left="573" Canvas.Top="105" ValveID="V03"/>
+        <control:SwitchingValve x:Name="V04" Canvas.Left="279" Canvas.Top="105" ValveID="V04"/>
 
         <control:SwitchingValve x:Name="V05" Canvas.Left="195" Canvas.Top="487" ValveID="V05" 
                                 Visibility="{Binding DataContext.OffLeakTestVisibility, ElementName=homePage}"/>

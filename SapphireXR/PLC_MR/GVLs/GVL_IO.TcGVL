@@ -12,9 +12,9 @@ VAR_GLOBAL
 	aAnalogOutputIO AT %Q* 	: ARRAY[1..28]OF INT;
 	aAnalogInputIO2 AT %I*	: ARRAY[1..2]OF UINT;
 	//Solenoid Valve
-	aOutputSolValve AT %Q* 	: ARRAY[1..2]OF DWORD; //Solenoid Valve
+	aOutputSolValve AT %Q* 	: ARRAY[1..3]OF DWORD; //Solenoid Valve
 	
-	aMaxValue	: ARRAY[0..69]OF REAL; //Device Max Value from UI
+	aMaxValue	: ARRAY[1..29]OF REAL; //Device Max Value from UI
 END_VAR]]></Declaration>
   </GVL>
 </TcPlcObject>

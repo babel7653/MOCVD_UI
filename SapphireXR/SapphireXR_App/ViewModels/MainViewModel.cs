@@ -26,6 +26,7 @@ namespace SapphireXR_App.ViewModels
   
             //네비게이션 메시지 수신 등록
             WeakReferenceMessenger.Default.Register<NavigationMessage>(this, OnNavigationMessage);
+
         }
 
         public PlotModel PlotModel { get; set; } = default;

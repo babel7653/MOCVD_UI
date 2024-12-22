@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4026.8">
   <POU Name="P91_Monitoring" Id="{4f91223e-09c8-40bc-a729-040528b0179c}" SpecialFunc="None">
     <Declaration><![CDATA[PROGRAM P91_Monitoring
 VAR_INPUT
@@ -40,12 +40,12 @@ VAR CONSTANT
 END_VAR]]></Declaration>
     <Implementation>
       <ST><![CDATA[//Tempeary Value for TEST
-GVL_IO.aMaxValue[27] := 10; //10 Torr
-GVL_IO.aMaxValue[28] := 1000; //1,000 Torr
-GVL_IO.aMaxValue[33] := 6.89;
-GVL_IO.aMaxValue[34] := 6.89;
-GVL_IO.aMaxValue[35] := 6.89;
-GVL_IO.aMaxValue[36] := 6.89;
+// GVL_IO.aMaxValue[27] := 10; //10 Torr
+// GVL_IO.aMaxValue[28] := 1000; //1,000 Torr
+// GVL_IO.aMaxValue[33] := 6.89;
+// GVL_IO.aMaxValue[34] := 6.89;
+// GVL_IO.aMaxValue[35] := 6.89;
+// GVL_IO.aMaxValue[36] := 6.89;
 
 (* Read from Device*)
 bAirPressureSensor	:= NOT(GVL_IO.aDigitalInputIO[2].0); //Normally Contacted

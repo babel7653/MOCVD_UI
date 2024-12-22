@@ -97,8 +97,8 @@ namespace SapphireXR_App.Models
                     }
                     BaMaxValue = new float[29];
                     BaMaxValue[FlowControllerIDtoIdx[entry.ID]] = entry.MaxValue;
+                    Ads.WriteAny(hWriteDeviceMaxValuePLC, BaMaxValue);
                 }
-                Ads.WriteAny(hWriteDeviceMaxValuePLC, BaMaxValue);
                 //lGasAIO
             }
             catch (Exception ex)
@@ -131,7 +131,7 @@ namespace SapphireXR_App.Models
             }
         }
 
-        public static void ReadMaxValueFromPLC1()
+        public static void ReadMaxValueFromPLC()
         {
             BaMaxValue = Ads.ReadAny<float[]>(hWriteDeviceMaxValuePLC, [29]);
             

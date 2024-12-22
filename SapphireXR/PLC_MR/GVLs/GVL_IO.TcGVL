@@ -14,7 +14,8 @@ VAR_GLOBAL
 	//Solenoid Valve
 	aOutputSolValve AT %Q* 	: ARRAY[1..3]OF DWORD; //Solenoid Valve
 	
-	aMaxValue	: ARRAY[1..29]OF REAL; //Device Max Value from UI
+	aMaxValue	: ARRAY[1..40]OF REAL ; //Device Max Value from UI
+	
 END_VAR]]></Declaration>
   </GVL>
 </TcPlcObject>

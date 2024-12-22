@@ -137,7 +137,7 @@
 		</System>
 		<Plc>
 			<Project GUID="{8B546B3A-EC4D-41CC-9C57-49402FFC4072}" Name="PLC_MR" PrjFilePath="PLC_MR\PLC_MR.plcproj" TmcFilePath="PLC_MR\PLC_MR.tmc" ReloadTmc="true" AmsPort="851" FileArchiveSettings="#x000e" SymbolicMapping="true">
-				<Instance Id="#x08502000" TcSmClass="TComPlcObjDef" KeepUnrestoredLinks="2" TmcHash="{B8E844CC-6FF1-5632-C553-FFECAE1466C8}" TmcPath="PLC_MR\PLC_MR.tmc">
+				<Instance Id="#x08502000" TcSmClass="TComPlcObjDef" KeepUnrestoredLinks="2" TmcHash="{25E52F3D-4D39-51E8-8BBA-3B237761B394}" TmcPath="PLC_MR\PLC_MR.tmc">
 					<Name>PLC_MR Instance</Name>
 					<CLSID ClassFactory="TcPlc30">{08500001-0000-0000-F000-000000000064}</CLSID>
 					<Vars VarGrpType="2" ContextId="1" AreaNo="17">
@@ -327,5 +327,36 @@
 				</Instance>
 			</Project>
 		</Plc>
+		<Io>
+			<Device Id="1" DevType="121">
+				<Name>Device 1 (NOV-DP-RAM)</Name>
+				<AddressInfo>
+					<Pci>
+						<Address>819200</Address>
+						<Size>1024</Size>
+						<BusNo>0</BusNo>
+						<SlotNo>0</SlotNo>
+					</Pci>
+				</AddressInfo>
+				<Vars VarGrpType="1" InsertType="1">
+					<Name>Inputs</Name>
+				</Vars>
+				<Vars VarGrpType="2" InsertType="1">
+					<Name>Outputs</Name>
+				</Vars>
+				<Image Id="1" AddrType="5" ImageType="2">
+					<Name>Image</Name>
+				</Image>
+				<Box Id="1" BoxType="6000">
+					<Name>Box 1 (Retain Handler)</Name>
+					<ImageId>276</ImageId>
+					<Vars VarGrpType="8">
+						<Name>Retains</Name>
+					</Vars>
+					<Retain AreaSize="1024" DataSize="480" ContextCnt="4"/>
+				</Box>
+				<DpRam/>
+			</Device>
+		</Io>
 	</Project>
 </TcSmProject>

@@ -87,6 +87,13 @@ namespace SapphireXR_App.ViewModels
             File.WriteAllText(fname, jDeviceIO.ToString());
 
             PLCService.WriteDeviceMaxValue(lGasAIO);
+            lGasAIO[0].TargetValue = 1111;
+            lGasAIO[1].TargetValue = 2222;
+            lGasAIO[2].TargetValue = 3333;
+            lGasAIO[3].TargetValue = 4444;
+            lGasAIO[4].TargetValue = 5555;
+            lGasAIO[5].TargetValue = 6666;
+            PLCService.WriteDeviceTargetValue(lGasAIO);
 
         }
     }

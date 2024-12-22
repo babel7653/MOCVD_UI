@@ -6,7 +6,7 @@ VAR
 	//bMaxValueChanged : BOOL;
 	aMFC : ARRAY[1..19] OF FB_RampGeneration_Gas; //MFC 0 ~ 5V
 	aEPC : ARRAY[1..7] OF FB_RampGeneration_Gas; //EPC 0 ~ 5V
-	aMFC_TV : ARRAY[1..19] OF INT;
+	aMFC_TV : ARRAY[1..19] OF REAL;
 	aMFC_RampTime : ARRAY[1..19] OF INT;
 	aMFC_PV : ARRAY[1..19] OF INT;
 	aEPC_TV : ARRAY[1..7] OF INT;
@@ -14,6 +14,7 @@ VAR
 	aEPC_PV	: ARRAY[1..7] OF INT;
 	i 	: INT;
 	j 	: INT;
+
 	atest : ARRAY[1..29] OF REAL; 
 END_VAR
 
@@ -23,20 +24,9 @@ VAR CONSTANT
 END_VAR]]></Declaration>
     <Implementation>
       <ST><![CDATA[//Tempeary Value for TEST
-// GVL_IO.aMaxValue[1] := 4000; //MFC1 MO Manifold RUN
-// GVL_IO.aMaxValue[2] := 4000; //MFC2 HYD Manifold RUN
-// GVL_IO.aMaxValue[3] := 4000; //MFC3 NH3 #1
-// GVL_IO.aMaxValue[4] := 4000; //MFC4 NH3 #2
-// GVL_IO.aMaxValue[8] := 50; //MFC4 NH3 #2
-// GVL_IO.aMaxValue[20] := 2000; //EPC
-// GVL_IO.aMaxValue[21] := 2250; //EPC
-// GVL_IO.aMaxValue[22] := 2250; //EPC
-// GVL_IO.aMaxValue[23] := 2250; //EPC
-// GVL_IO.aMaxValue[24] := 2250; //EPC
-// GVL_IO.aMaxValue[25] := 2250; //EPC
-// GVL_IO.aMaxValue[26] := 2250; //EPC
 atest[3] := GVL_IO.aMaxValue[3];
 atest[4] := GVL_IO.aMaxValue[4];
+
 //aMFC_RampTime[i]; <-- Frome UI
 //aMFC_TV[i] <-- From UI
 
@@ -46,14 +36,19 @@ atest[4] := GVL_IO.aMaxValue[4];
 //	END_FOR								
 //END_IF
 
+// aMFC[1] := GVL_IO.aAnalogInputIO[1];
+// aMFC_RampTime[1] := GVL_IO.aAnalogInputIO[1].RampTime;
+
+
+
 (* Read from Device*)
 FOR i:=1 TO 19 DO
-	j := i + 3;
+	j := i + 0;
 	IF GVL_IO.aMaxValue[j] <> 0 THEN
 		aMFC[i].nState := 1;
 		aMFC[i].nRampTime := aMFC_RampTime[i];
 		aMFC[i].rTargetValue := aMFC_TV[i] / GVL_IO.aMaxValue[j] * KL3464MaxValueH; //Input Set Value
-		GVL_IO.aAnalogOutputIO[j] := LREAL_TO_INT(aMFC[i].rControlValue);
+		GVL_IO.aAnalogOutputIO[j] := LREAL_TO_INT(aMFC[i].rControlValue); //Write to Device
 		
 		aMFC_PV[i] := REAL_TO_INT(GVL_IO.aAnalogInputIO[j] / KL3464MaxValueH * GVL_IO.aMaxValue[j]);
 		aMFC[i]();
@@ -61,7 +56,7 @@ FOR i:=1 TO 19 DO
 END_FOR
 
 FOR i:=1 TO 7 DO
-	j := i + 22; //Offset Analog Input Output Card
+	j := i + 19; //Offset Analog Input Output Card
 	IF GVL_IO.aMaxValue[j] <> 0 THEN
 		aEPC[i].nState := 1;
 		aEPC[i].nRampTime := aEPC_RampTime[i];
@@ -74,9 +69,16 @@ FOR i:=1 TO 7 DO
 END_FOR]]></ST>
     </Implementation>
     <LineIds Name="P30_GasFlowControl">
-      <LineId Id="1" Count="12" />
+      <LineId Id="1" Count="0" />
       <LineId Id="50" Count="1" />
-      <LineId Id="14" Count="10" />
+      <LineId Id="64" Count="0" />
+      <LineId Id="14" Count="7" />
+      <LineId Id="53" Count="0" />
+      <LineId Id="22" Count="0" />
+      <LineId Id="55" Count="0" />
+      <LineId Id="65" Count="1" />
+      <LineId Id="56" Count="0" />
+      <LineId Id="23" Count="1" />
       <LineId Id="52" Count="0" />
       <LineId Id="25" Count="19" />
       <LineId Id="46" Count="2" />

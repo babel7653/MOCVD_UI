@@ -1,7 +1,9 @@
 ﻿using SapphireXR_App.Common;
 using SapphireXR_App.Enums;
 using System.Collections;
+using System.Security.Permissions;
 using System.Windows;
+using System.Windows.Threading;
 using TwinCAT.Ads;
 
 namespace SapphireXR_App.Models
@@ -67,6 +69,8 @@ namespace SapphireXR_App.Models
         public static uint hReadValveStatePLC1 { get; set; }
         public static uint hReadValveStatePLC2 { get; set; }
 
+        private static System.Windows.Threading.DispatcherTimer? timer;
+
         public static void ReadValveStateFromPLC()
         {
             // Solenoid Valve State Read(Update)
@@ -80,11 +84,21 @@ namespace SapphireXR_App.Models
 
                 BaReadValveStatePLC1 = new BitArray(new int[] { (int)aReadValveStatePLC1 });
                 BaReadValveStatePLC2 = new BitArray(new int[] { (int)aReadValveStatePLC2 });
+
+                timer = new DispatcherTimer();
+                timer.Interval = new TimeSpan(5000000);
+                timer.Tick += ReadStateFromPLC;
+                timer.Start();
             }
             catch (Exception ex)
             {
                 MessageBox.Show(ex.Message);
             }
+        }
+
+        private static void ReadStateFromPLC(object? sender, EventArgs e)
+        {
+
         }
 
         public static bool ReadValveState(string valveID)

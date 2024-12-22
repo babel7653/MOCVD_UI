@@ -1,4 +1,5 @@
-﻿using System.Net;
+﻿using SapphireXR_App.Common;
+using System.Net;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -12,16 +13,52 @@ namespace SapphireXR_App.Views
             PreviewTextInput += OnlyAllowNumber;
         }
 
-        protected static bool IsTextNumeric(string str)
+        protected bool IsTextNumeric(string str, int maxValue)
         {
-            System.Text.RegularExpressions.Regex reg = new System.Text.RegularExpressions.Regex("[^0-9]");
-            return reg.IsMatch(str);
+            if(Util.IsTextNumeric(str) == true)
+            {
+                string nextValueStr = Text + str;
+                int nextValue = int.Parse(nextValueStr);
+                if (nextValue <= maxValue)
+                {
+                    return false;
+                }
+                else
+                {
+                    return true;
+                }
+
+            }
+            else
+            {
+                return true;
+            }
         }
 
         protected void OnlyAllowNumber(object sender, TextCompositionEventArgs e)
         {
-            e.Handled = IsTextNumeric(e.Text);
+            e.Handled = IsTextNumeric(e.Text, int.Parse(MaxValue));
         }
+
+        public string MaxValue
+        {
+            get { return (string)GetValue(MaxValueProperty); }
+            set {  
+                if(Util.IsTextNumeric(value) == true)
+                {
+                    SetValue(MaxValueProperty, value);
+                    maxValue = int.Parse(value);
+                }
+                else
+                {
+                    throw new FormatException("MaxValue for FlowControlView is not valid: to set is " + value);
+                }
+            } 
+        }
+
+        private static readonly DependencyProperty MaxValueProperty = DependencyProperty.Register("MaxValue", typeof(string), typeof(NumberBox), new PropertyMetadata(""));
+        private int maxValue = int.MinValue;
+       
     }
     public partial class FlowControlView : Window
     {

@@ -66,10 +66,10 @@
                         <ColumnDefinition/>
                     </Grid.ColumnDefinitions>
                     <Label Grid.Row="0" Grid.Column="0">Target Value</Label>
-                    <local:NumberBox Grid.Row="0" Grid.Column="1" x:Name="txtInput" Margin="5" Text="{Binding TargetValue}" />
+                    <local:NumberBox Grid.Row="0" Grid.Column="1" x:Name="txtInput" Margin="5" Text="{Binding TargetValue}" MaxValue="{Binding MaxValue}"/>
 
                     <Label Grid.Row="1" Grid.Column="0">Ramp Time(s)</Label>
-                    <TextBox Grid.Row="1" Grid.Column="1" x:Name="txtInput1" Margin="5" Text="{Binding RampTime}"/>
+                    <local:NumberBox Grid.Row="1" Grid.Column="1" x:Name="txtInput1" Margin="5" Text="{Binding RampTime}"/>
 
                     <Label Grid.Row="2" Grid.Column="0">Deviation</Label>
                     <Border Grid.Row="2" Grid.Column="1" Background="LightGray" Margin="5" CornerRadius="2">

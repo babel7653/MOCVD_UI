@@ -1,9 +1,11 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using SapphireXR_App.Common;
 using SapphireXR_App.Enums;
 using SapphireXR_App.Views;
 using System.ComponentModel;
 using System.Windows;
+using System.Windows.Controls.Ribbon.Primitives;
 using System.Windows.Input;
 using System.Windows.Media;
 
@@ -59,8 +61,19 @@ namespace SapphireXR_App.ViewModels
             Deviation = string.Empty;
             CurrentValue = string.Empty;
             ControlValue = string.Empty;
-            MaxValue = string.Empty;
+            //TO DO: MaxValue = "";로 복원할 것
+            MaxValue = "6000";
             FontColor = OnNormal;
+            PropertyChanged += (object? sender, PropertyChangedEventArgs e) =>
+            {
+                if(e.PropertyName == "CurrentValue" || e.PropertyName == "ControlValue")
+                {
+                    if (Util.IsTextNumeric(CurrentValue) && Util.IsTextNumeric(ControlValue) && Util.IsTextNumeric(MaxValue))
+                    {
+                        Deviation = ((int)(((double)(Math.Abs(int.Parse(CurrentValue) - int.Parse(ControlValue))) / double.Parse(MaxValue)) * 100.0)).ToString();
+                    }
+                } 
+            };
         }
 
         public struct ControlValues

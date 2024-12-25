@@ -6,22 +6,14 @@ using System.Linq;
 using System.Reactive.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Xml.Linq;
+using SapphireXR_App.Models;
 
 namespace SapphireXR_App.Common
 {
     static class ObservableManager<T>
     {
-        public class DataIssuerBaseCreateException: Exception
-        {
-            public DataIssuerBaseCreateException(IObservable<T> alreadyExisted)
-            {
-                alreadyExistedName = alreadyExisted.GetType().ToString();
-            }
-
-            private string alreadyExistedName;
-            public override string Message { get { return "The given name is already registered with different Observable Type" + alreadyExistedName;  } }
-        }
         internal sealed class Unsubscriber : IDisposable
         {
             private readonly IList<IObserver<T>> _observers;
@@ -34,9 +26,9 @@ namespace SapphireXR_App.Common
             public void Dispose() => _observers.Remove(_observer);
         }
 
-        public class DataIssuerBase : IObservable<T>
+        public class DataIssuer : IObservable<T>
         {
-            IDisposable IObservable<T>.Subscribe(IObserver<T> observer)
+            public IDisposable Subscribe(IObserver<T> observer)
             {
                 observers.Add(observer);
                 return new Unsubscriber(observers, observer);
@@ -53,114 +45,34 @@ namespace SapphireXR_App.Common
             private List<IObserver<T>> observers = new List<IObserver<T>>();
         }
 
-        public static DataIssuerBase Get(string name)
+
+        public static DataIssuer Get(string name)
         {
-            IObservable<T> found;
+            DataIssuer found;
             if (observables.TryGetValue(name, out found!) == false)
             {
-                DataIssuerBase issuer = new DataIssuerBase();
-                DoRegister(name, issuer);
+                DataIssuer issuer = new DataIssuer();
+                observables.Add(name, issuer);
                 return issuer;
             }
             else
             {
-                if(found is DataIssuerBase)
-                {
-                    return (DataIssuerBase)found;
-                }
-                else
-                {
-                    throw new DataIssuerBaseCreateException(found);
-                }
+                return found;
             }
         }
 
-        private static void DoRegister(string name, IObservable<T> observable)
+        public static IDisposable Subscribe(string name, IObserver<T> observer)
         {
-            observables.Add(name, observable);
-            List<IObserver<T>> deferredObservers;
-            deferred.TryGetValue(name, out deferredObservers!);
-            if (deferredObservers != null)
+            DataIssuer found;
+            if (observables.TryGetValue(name, out found!) == false)
             {
-                foreach (IObserver<T> observer in deferred[name])
-                {
-                    Dictionary<IObserver<T>, IDisposable>? disposerByTopic;
-                    if( deferredUnsubscribers.TryGetValue(name, out disposerByTopic) == false)
-                    {
-                        disposerByTopic = deferredUnsubscribers[name] = new Dictionary<IObserver<T>, IDisposable>();
-                    }
-                    disposerByTopic[observer] = observable.Subscribe(observer);
-                }
-                deferred[name].Clear();
+                found = Get(name);
             }
+
+            return found.Subscribe(observer);
+           
         }
 
-        public static (bool, IObservable<T>?) Register(string name, IObservable<T> observable)
-        {
-            if (observable == null)
-            {
-                return (false, null);
-            }
-            else
-            {
-                IObservable<T> found;
-                if (observables.TryGetValue(name, out found!) == false)
-                {
-                    DoRegister(name, observable);
-
-                    return (true, observable);
-                }
-                else
-                {
-                    return (false, found);
-                }
-            }
-        }
-
-        public static IDisposable? Subscribe(string name, IObserver<T> observer)
-        {
-            IObservable<T> found;
-            if (observables.TryGetValue(name, out found!) == true)
-            {
-                return observables[name].Subscribe(observer);
-            }
-            else
-            {
-                List<IObserver<T>> deferredObservers;
-                if(deferred.TryGetValue(name, out deferredObservers!) == false)
-                {
-                    deferredObservers = new List<IObserver<T>>();
-                    deferred[name] = deferredObservers;
-                }
-                deferredObservers.Add(observer);
-                return null;
-            }
-        }
-
-        public static IDisposable? PopUnsubscriber(string name, IObserver<T> observer)
-        {
-            Dictionary<IObserver<T>, IDisposable>? found;
-            if (deferredUnsubscribers.TryGetValue(name, out found) == true)
-            {
-                IDisposable? disposable;
-                if(found.TryGetValue(observer, out disposable) == true)
-                {
-                    return disposable;
-                }
-                else
-                {
-                    return null;
-                }
-            }
-            else
-            {
-                return null;
-            }
-        }
-
-        static readonly Dictionary<string, IObservable<T>> observables = new Dictionary<string, IObservable<T>>();
-        static readonly Dictionary<string, List<IObserver<T>>> deferred = new Dictionary<string, List<IObserver<T>>>();
-        static readonly Dictionary<string, Dictionary<IObserver<T>, IDisposable>> deferredUnsubscribers = new Dictionary<string, Dictionary<IObserver<T>, IDisposable>>();
-
+        static readonly Dictionary<string, DataIssuer> observables = new Dictionary<string, DataIssuer>();
     }
 }

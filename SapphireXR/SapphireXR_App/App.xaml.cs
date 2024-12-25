@@ -20,7 +20,7 @@ namespace SapphireXR_App
             // 단, 이것도 서비스에 등록이 되어야 함
             try
             {
-                PLCService.ReadValveStateFromPLC(); // 초기 로드시 PLC Valve상태 읽음
+                PLCService.ReadInitialStateValueFromPLC(); // 초기 로드시 PLC Valve상태 읽음
                 var mainView = App.Current.Services.GetService<MainWindow>();
                 if (mainView != null)
                 {

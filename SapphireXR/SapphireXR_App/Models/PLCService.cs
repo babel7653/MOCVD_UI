@@ -30,8 +30,8 @@ namespace SapphireXR_App.Models
         private static float[]? BaMaxValue;
         private static int[]? CurrentValues;
         private static int[]? ControlValues;
-        private static List<IObservable<int>>? CurrentValueIssuers;
-        private static List<IObservable<int>>? ControlValueIssuers;
+        private static Dictionary<string, ObservableManager<int>.DataIssuer>? CurrentValueIssuers;
+        private static Dictionary<string, ObservableManager<int>.DataIssuer>? ControlValueIssuers;
 
         //Create an instance of the TcAdsClient()
         public static AdsClient Ads { get; set; }
@@ -137,21 +137,21 @@ namespace SapphireXR_App.Models
             ReadMaxValueFromPLC();
             ReadFlowControlStateFromPLC();
 
+            CurrentValueIssuers = new Dictionary<string, ObservableManager<int>.DataIssuer>();
+            foreach (KeyValuePair<string, int> kv in FCCurrentValuetoIdx)
+            {
+                CurrentValueIssuers.Add(kv.Key, ObservableManager<int>.Get("FlowControl." + kv.Key + ".CurrentValue"));
+            }
+            ControlValueIssuers = new Dictionary<string, ObservableManager<int>.DataIssuer>();
+            foreach (KeyValuePair<string, int> kv in FCControlValuetoIdx)
+            {
+                ControlValueIssuers.Add(kv.Key, ObservableManager<int>.Get("FlowControl." + kv.Key + ".ControlValue"));
+            }
+
             timer = new DispatcherTimer();
             timer.Interval = new TimeSpan(5000000);
             timer.Tick += OnTick;
             timer.Start();
-
-            CurrentValueIssuers = new List<IObservable<int>>();
-            foreach (KeyValuePair<string, int> kv in FCCurrentValuetoIdx)
-            {
-                CurrentValueIssuers.Add(ObservableManager<int>.Get("FlowControl." + kv.Key + ".CurrentValue"));
-            }
-            ControlValueIssuers = new List<IObservable<int>>();
-            foreach (KeyValuePair<string, int> kv in FCControlValuetoIdx)
-            {
-                ControlValueIssuers.Add(ObservableManager<int>.Get("FlowControl." + kv.Key + ".ControlValue"));
-            }
         }
 
         public static void ReadMaxValueFromPLC()
@@ -159,16 +159,49 @@ namespace SapphireXR_App.Models
             BaMaxValue = Ads.ReadAny<float[]>(hWriteDeviceMaxValuePLC, [29]);
         }
 
+        public static float ReadMaxValue(string flowControlID)
+        {
+            if(BaMaxValue == null)
+            {
+                throw new Exception("BaMaxValue is null in ReadMaxValue(), WriteDeviceMaxValue() must be called before");
+            }
+            return BaMaxValue[FlowControllerIDtoIdx[flowControlID]];
+        }
+
         private static void OnTick(object? sender, EventArgs e)
         {
             ReadFlowControlStateFromPLC();
-            foreach(KeyValuePair<string, int> kv in FCControlValuetoIdx)
+            if (ControlValues != null)
             {
-                
+                foreach (KeyValuePair<string, int> kv in FCControlValuetoIdx)
+                {
+                    ControlValueIssuers?[kv.Key].Issue(ControlValues[FCControlValuetoIdx[kv.Key]]);
+                }
             }
-            foreach (KeyValuePair<string, int> kv in FCCurrentValuetoIdx)
+            if (CurrentValues != null)
             {
+                foreach (KeyValuePair<string, int> kv in FCCurrentValuetoIdx)
+                {
+                    CurrentValueIssuers?[kv.Key].Issue(CurrentValues[FCCurrentValuetoIdx[kv.Key]]);
+                }
+            }
 
+            string expcetionStr = string.Empty;
+            if(ControlValues == null)
+            {
+                expcetionStr += "ControlValues is null in OnTick PLCService";
+            }
+            if(CurrentValues == null)
+            {
+                if(expcetionStr != string.Empty)
+                {
+                    expcetionStr += "\r\n";
+                }
+                expcetionStr += "CurrentValues is null in OnTick PLCService";
+            }
+            if(expcetionStr != string.Empty)
+            {
+                throw new Exception(expcetionStr);
             }
         }
 
@@ -226,7 +259,7 @@ namespace SapphireXR_App.Models
             }
         }
 
-        private static ObservableManager<PLCConnection>.DataIssuerBase ConnectedNotifier;
+        private static ObservableManager<PLCConnection>.DataIssuer ConnectedNotifier;
 
 
         public static Dictionary<string, int> ValveIDtoOutputSolValveIdx1 = new Dictionary<string, int>

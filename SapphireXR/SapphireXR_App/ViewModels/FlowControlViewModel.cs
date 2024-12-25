@@ -2,6 +2,7 @@
 using CommunityToolkit.Mvvm.Input;
 using SapphireXR_App.Common;
 using SapphireXR_App.Enums;
+using SapphireXR_App.Models;
 using SapphireXR_App.Views;
 using System.ComponentModel;
 using System.Reactive;
@@ -11,6 +12,7 @@ using System.Windows.Automation;
 using System.Windows.Controls.Ribbon.Primitives;
 using System.Windows.Input;
 using System.Windows.Media;
+using static SapphireXR_App.ViewModels.FlowControlViewModel;
 
 namespace SapphireXR_App.ViewModels
 {
@@ -37,7 +39,53 @@ namespace SapphireXR_App.ViewModels
 
         public PopupExResult PopupExResult { get; internal set; } = PopupExResult.Close;
 
-        
+        internal class ControlValueSubscriber : IObserver<int>
+        {
+            public ControlValueSubscriber(FlowControlViewModel viewModel)
+            {
+                flowControlViewModel = viewModel;
+            }
+            void IObserver<int>.OnCompleted()
+            {
+                throw new NotImplementedException();
+            }
+
+            void IObserver<int>.OnError(Exception error)
+            {
+                throw new NotImplementedException();
+            }
+
+            void IObserver<int>.OnNext(int value)
+            {
+                flowControlViewModel.ControlValue = value.ToString();
+            }
+
+            private FlowControlViewModel flowControlViewModel;
+        }
+
+        internal class CurrwentValueSubscriber : IObserver<int>
+        {
+            public CurrwentValueSubscriber(FlowControlViewModel viewModel)
+            {
+                flowControlViewModel = viewModel;
+            }
+            void IObserver<int>.OnCompleted()
+            {
+                throw new NotImplementedException();
+            }
+
+            void IObserver<int>.OnError(Exception error)
+            {
+                throw new NotImplementedException();
+            }
+
+            void IObserver<int>.OnNext(int value)
+            {
+                flowControlViewModel.CurrentValue = value.ToString();
+            }
+
+            private FlowControlViewModel flowControlViewModel;
+        }
 
         [RelayCommand]
         private void Confirm(Window window)
@@ -60,22 +108,8 @@ namespace SapphireXR_App.ViewModels
 
         void dispose()
         {
-            if (controlValueSubscriberDisposable != null)
-            {
-                controlValueSubscriberDisposable.Dispose();
-            }
-            else
-            {
-                ObservableManager<float>.PopUnsubscriber("FlowControl." + flowControllerID + ".ControlValue", this)?.Dispose();
-            }
-            if (currentValueSubscriberDisposable != null)
-            {
-                currentValueSubscriberDisposable.Dispose();
-            }
-            else
-            {
-                ObservableManager<float>.PopUnsubscriber("FlowControl." + flowControllerID + ".CurrentValue", this)?.Dispose();
-            }
+            controlValueSubscriberDisposable.Dispose();
+            currentValueSubscriberDisposable.Dispose();
         }
 
         void IObserver<float>.OnCompleted()
@@ -102,8 +136,7 @@ namespace SapphireXR_App.ViewModels
             Deviation = string.Empty;
             CurrentValue = string.Empty;
             ControlValue = string.Empty;
-            //TO DO: MaxValue = "";로 복원할 것
-            MaxValue = "6000";
+            MaxValue = PLCService.ReadMaxValue(fcID).ToString();
             FontColor = OnNormal;
             PropertyChanged += (object? sender, PropertyChangedEventArgs e) =>
             {
@@ -115,9 +148,10 @@ namespace SapphireXR_App.ViewModels
                     }
                 } 
             };
-            currentValueSubscriberDisposable = ObservableManager<float>.Subscribe("FlowControl." + fcID + ".CurrentValue", this);
-            controlValueSubscriberDisposable = ObservableManager<float>.Subscribe("FlowControl." + fcID + ".ControlValue", this);
-            flowControllerID = fcID;
+            controlValueSubscriber = new ControlValueSubscriber(this);
+            currwentValueSubscriber = new CurrwentValueSubscriber(this);
+            currentValueSubscriberDisposable = ObservableManager<int>.Subscribe("FlowControl." + fcID + ".CurrentValue", currwentValueSubscriber);
+            controlValueSubscriberDisposable = ObservableManager<int>.Subscribe("FlowControl." + fcID + ".ControlValue", controlValueSubscriber);
         }
 
         public struct ControlValues
@@ -139,9 +173,9 @@ namespace SapphireXR_App.ViewModels
         private static readonly SolidColorBrush OnWrongTextFormat = new SolidColorBrush(Colors.Red);
         private static readonly SolidColorBrush OnNormal = new SolidColorBrush(Colors.Red);
 
-        private IDisposable? currentValueSubscriberDisposable;
-        private IDisposable? controlValueSubscriberDisposable;
-
-        private string flowControllerID;
+        private ControlValueSubscriber controlValueSubscriber;
+        private CurrwentValueSubscriber currwentValueSubscriber;
+        private IDisposable currentValueSubscriberDisposable;
+        private IDisposable controlValueSubscriberDisposable;
     }
 }

@@ -32,8 +32,9 @@ namespace SapphireXR_App
                 }
 
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                MessageBox.Show(ex.ToString());
                 Shutdown();
             }
         }

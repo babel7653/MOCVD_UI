@@ -68,7 +68,11 @@ namespace SapphireXR_App.Models
 
                 hReadFlowControllerControlValuePLC = Ads.CreateVariableHandle("GVL_IO.aAnalogOutputIO");
                 hReadFlowControllerCurrentValuePLC = Ads.CreateVariableHandle("GVL_IO.aAnalogInputIO");
-                
+                hWriteDeviceMaxValuePLC = Ads.CreateVariableHandle("GVL_IO.aMaxValue");
+                hReadValveStatePLC1 = Ads.CreateVariableHandle("GVL_IO.aOutputSolValve[1]");
+                hReadValveStatePLC2 = Ads.CreateVariableHandle("GVL_IO.aOutputSolValve[2]");
+                hWriteDeviceTargetValuePLC = Ads.CreateVariableHandle("P30_GasFlowControl.aMFC_TV");
+
                 ConnectedNotifier.Issue(PLCConnection.Connecrted);
             }
             else
@@ -94,7 +98,7 @@ namespace SapphireXR_App.Models
                 {
                     throw new Exception("gasAIO is null in WriteDeviceMaxValue");
                 }
-                hWriteDeviceMaxValuePLC = Ads.CreateVariableHandle("GVL_IO.aMaxValue");
+               
 
                 foreach (GasAIO entry in gasAIOs)
                 {
@@ -133,7 +137,6 @@ namespace SapphireXR_App.Models
                 {
                     gass.Add(gasAIOs[i]);
                 }
-                hWriteDeviceTargetValuePLC = Ads.CreateVariableHandle("P30_GasFlowControl.aMFC_TV");
 
                 foreach (GasAIO entry in gass)
                 {
@@ -157,10 +160,7 @@ namespace SapphireXR_App.Models
             // Solenoid Valve State Read(Update)
             try
             {
-                hReadValveStatePLC1 = Ads.CreateVariableHandle("GVL_IO.aOutputSolValve[1]");
                 uint aReadValveStatePLC1 = (uint)Ads.ReadAny(hReadValveStatePLC1, typeof(uint)); // Convert to Array
-
-                hReadValveStatePLC2 = Ads.CreateVariableHandle("GVL_IO.aOutputSolValve[2]");
                 uint aReadValveStatePLC2 = (uint)Ads.ReadAny(hReadValveStatePLC2, typeof(uint)); // Convert to Array
                 
                 BaReadValveStatePLC1 = new BitArray(new int[] { (int)aReadValveStatePLC1 });

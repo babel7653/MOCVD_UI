@@ -61,6 +61,7 @@ namespace SapphireXR_App.ViewModels
             lGasDO = dGasDO.Values.ToList();
 
             PLCService.WriteDeviceMaxValue(lGasAIO);
+            PLCService.ReadMaxValueFromPLC();
         }
 
         public void AlarmSettingSave()

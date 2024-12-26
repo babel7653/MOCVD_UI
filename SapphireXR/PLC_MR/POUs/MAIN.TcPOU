@@ -31,7 +31,7 @@ VAR
 
 	bTest1 : DWORD;
 	bTest2 : DWORD;
-
+	
 	GVL_I: INT;
 END_VAR
 ]]></Declaration>
@@ -60,7 +60,6 @@ P92_Maintenance();
 
 bTest1 := GVL_IO.aOutputSolValve[1];
 bTest2 := GVL_IO.aOutputSolValve[2];
-
 
 // RecipeNumber := GVL_IO.NumOfRecipe;
 // 
@@ -96,7 +95,6 @@ bTest2 := GVL_IO.aOutputSolValve[2];
       <LineId Id="354" Count="0" />
       <LineId Id="333" Count="0" />
       <LineId Id="356" Count="0" />
-      <LineId Id="360" Count="0" />
       <LineId Id="359" Count="0" />
       <LineId Id="332" Count="0" />
       <LineId Id="323" Count="0" />

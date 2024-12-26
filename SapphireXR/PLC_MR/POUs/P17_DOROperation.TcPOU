@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4026.8">
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
   <POU Name="P17_DOROperation" Id="{47a43ac8-2dfa-477f-bf65-90da71792e7e}" SpecialFunc="None">
     <Declaration><![CDATA[PROGRAM P17_DOROperation
 VAR_INPUT

@@ -33,5 +33,12 @@ namespace SapphireXR_App.Common
 
             return foundParent;
         }
+
+        public static bool IsTextNumeric(string str)
+        {
+            return reg.IsMatch(str);
+
+        }
+        static System.Text.RegularExpressions.Regex reg = new System.Text.RegularExpressions.Regex("[0-9]");
     }
 }

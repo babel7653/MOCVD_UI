@@ -10,8 +10,8 @@ namespace SapphireXR_App.Models
   }
   public class GasAIO : Device
   {
-    public float MaxValue { get; set; }
-    public float MinSignal { get; set; }
+    public int MaxValue { get; set; }
+    public int MinSignal { get; set; }
     public float CurrentValue { get; set; }
     public float TargetValue { get; set; }
 

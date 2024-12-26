@@ -13,13 +13,7 @@ namespace SapphireXR_App.ViewModels
         protected virtual void Init(string? valveID)
         {
             ValveID = valveID;
-            try
-            {
-                isOpenValueChanged = ObservableManager<bool>.Get(ValveID + ".IsOpen.Write");
-            }
-            catch (ObservableManager<bool>.DataIssuerBaseCreateException)
-            {
-            }
+            isOpenValueChanged = ObservableManager<bool>.Get(ValveID + ".IsOpen.Write");
             ObservableManager<bool>.Subscribe(ValveID + ".IsOpen.Read", this);
         }
 
@@ -78,7 +72,7 @@ namespace SapphireXR_App.ViewModels
         public static readonly DependencyProperty IsOpenProperty =
             DependencyProperty.Register("IsOpen", typeof(bool), typeof(ValveViewModel), new PropertyMetadata(default));
 
-        private ObservableManager<bool>.DataIssuerBase? isOpenValueChanged;
+        private ObservableManager<bool>.DataIssuer? isOpenValueChanged;
 
         protected struct PopupMessage
         {

@@ -8,26 +8,18 @@ namespace SapphireXR_App.Models
         public OnOffModel(string vid)
         {
             ValveID = vid;
+            dataIssuer = ObservableManager<bool>.Get(vid + ".IsOpen.Read");
+            ObservableManager<bool>.Subscribe(vid + ".IsOpen.Write", this);
             try
             {
-                dataIssuer = ObservableManager<bool>.Get(vid + ".IsOpen.Read");
-                ObservableManager<bool>.Subscribe(vid + ".IsOpen.Write", this);
-
-                dataIssuer?.Issue(PLCService.ReadValveState(vid));
-            }
-            catch (ObservableManager<bool>.DataIssuerBaseCreateException)
-            {
-
+                dataIssuer.Issue(PLCService.ReadValveState(vid));
             }
             catch (PLCService.ReadValveStateException)
             {
-
             }
         }
 
-        private ObservableManager<bool>.DataIssuerBase? dataIssuer;
-
-
+        private ObservableManager<bool>.DataIssuer dataIssuer;
 
         void IObserver<bool>.OnCompleted() { }
 

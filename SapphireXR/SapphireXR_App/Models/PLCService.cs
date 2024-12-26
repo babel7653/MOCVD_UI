@@ -28,11 +28,10 @@ namespace SapphireXR_App.Models
         private static BitArray? BaReadValveStatePLC1;
         private static BitArray? BaReadValveStatePLC2;
         private static float[]? BaMaxValue;
-        private static float[]? BaTargetValue;
         private static int[]? CurrentValues;
         private static int[]? ControlValues;
-        private static List<IObservable<int>>? CurrentValueIssuers;
-        private static List<IObservable<int>>? ControlValueIssuers;
+        private static Dictionary<string, ObservableManager<int>.DataIssuer>? CurrentValueIssuers;
+        private static Dictionary<string, ObservableManager<int>.DataIssuer>? ControlValueIssuers;
 
         //Create an instance of the TcAdsClient()
         public static AdsClient Ads { get; set; }
@@ -83,20 +82,19 @@ namespace SapphireXR_App.Models
         public static uint hWriteDeviceMaxValuePLC { get; set; }
         public static uint hReadFlowControllerControlValuePLC { get; set; }
         public static uint hReadFlowControllerCurrentValuePLC { get; set; }
-        public static uint hWriteDeviceTargetValuePLC { get; set; }
 
-        public static void WriteDeviceMaxValue(List<GasAIO>? gasAIOs)
+        public static void WriteDeviceMaxValue(List<GasAIO>? gasAIO)
         {
             // Device Max. Value Write
             try
             {
-                if (gasAIOs == null)
+                if (gasAIO == null)
                 {
                     throw new Exception("gasAIO is null in WriteDeviceMaxValue");
                 }
                 hWriteDeviceMaxValuePLC = Ads.CreateVariableHandle("GVL_IO.aMaxValue");
 
-                foreach (GasAIO entry in gasAIOs)
+                foreach (GasAIO entry in gasAIO)
                 {
                     if (entry.ID == null)
                     {
@@ -113,45 +111,6 @@ namespace SapphireXR_App.Models
                 MessageBox.Show(ex.Message);
             }
         }
-
-
-        public static void WriteDeviceTargetValue(List<GasAIO>? gasAIOs)
-        {
-            // Device Target Value Write
-            try
-            {
-                List<GasAIO> gass = new();
-                if (gasAIOs == null)
-                {
-                    throw new Exception("gasAIO is null in WriteDeviceMaxValue in PLCService");
-                }
-                if(BaTargetValue == null)
-                {
-                    throw new Exception("BaTargetValue is null in WriteDeviceTargetValue in PLCService");
-                }
-                for (int i = 3; i < 22; i++)
-                {
-                    gass.Add(gasAIOs[i]);
-                }
-                hWriteDeviceTargetValuePLC = Ads.CreateVariableHandle("P30_GasFlowControl.aMFC_TV");
-
-                foreach (GasAIO entry in gass)
-                {
-                    if (entry.ID == null)
-                    {
-                        throw new Exception("entry ID is null for gasAIO");
-                    }
-                    BaTargetValue[MFCIDtoIdx[entry.ID]] = entry.TargetValue;
-                }
-                Ads.WriteAny(hWriteDeviceTargetValuePLC, BaTargetValue);
-                //lGasAIO
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message);
-            }
-        }
-
         public static void ReadValveStateFromPLC()
         {
             // Solenoid Valve State Read(Update)
@@ -178,23 +137,21 @@ namespace SapphireXR_App.Models
             ReadMaxValueFromPLC();
             ReadFlowControlStateFromPLC();
 
+            CurrentValueIssuers = new Dictionary<string, ObservableManager<int>.DataIssuer>();
+            foreach (KeyValuePair<string, int> kv in FCCurrentValuetoIdx)
+            {
+                CurrentValueIssuers.Add(kv.Key, ObservableManager<int>.Get("FlowControl." + kv.Key + ".CurrentValue"));
+            }
+            ControlValueIssuers = new Dictionary<string, ObservableManager<int>.DataIssuer>();
+            foreach (KeyValuePair<string, int> kv in FCControlValuetoIdx)
+            {
+                ControlValueIssuers.Add(kv.Key, ObservableManager<int>.Get("FlowControl." + kv.Key + ".ControlValue"));
+            }
+
             timer = new DispatcherTimer();
             timer.Interval = new TimeSpan(5000000);
             timer.Tick += OnTick;
             timer.Start();
-
-            CurrentValueIssuers = new List<IObservable<int>>();
-            foreach (KeyValuePair<string, int> kv in FCCurrentValuetoIdx)
-            {
-                CurrentValueIssuers.Add(ObservableManager<int>.Get("FlowControl." + kv.Key + ".CurrentValue"));
-            }
-            ControlValueIssuers = new List<IObservable<int>>();
-            foreach (KeyValuePair<string, int> kv in FCControlValuetoIdx)
-            {
-                ControlValueIssuers.Add(ObservableManager<int>.Get("FlowControl." + kv.Key + ".ControlValue"));
-            }
-
-            BaTargetValue = new float[29];
         }
 
         public static void ReadMaxValueFromPLC()
@@ -202,16 +159,49 @@ namespace SapphireXR_App.Models
             BaMaxValue = Ads.ReadAny<float[]>(hWriteDeviceMaxValuePLC, [29]);
         }
 
+        public static float ReadMaxValue(string flowControlID)
+        {
+            if(BaMaxValue == null)
+            {
+                throw new Exception("BaMaxValue is null in ReadMaxValue(), WriteDeviceMaxValue() must be called before");
+            }
+            return BaMaxValue[FlowControllerIDtoIdx[flowControlID]];
+        }
+
         private static void OnTick(object? sender, EventArgs e)
         {
             ReadFlowControlStateFromPLC();
-            foreach(KeyValuePair<string, int> kv in FCControlValuetoIdx)
+            if (ControlValues != null)
             {
-                
+                foreach (KeyValuePair<string, int> kv in FCControlValuetoIdx)
+                {
+                    ControlValueIssuers?[kv.Key].Issue(ControlValues[FCControlValuetoIdx[kv.Key]]);
+                }
             }
-            foreach (KeyValuePair<string, int> kv in FCCurrentValuetoIdx)
+            if (CurrentValues != null)
             {
+                foreach (KeyValuePair<string, int> kv in FCCurrentValuetoIdx)
+                {
+                    CurrentValueIssuers?[kv.Key].Issue(CurrentValues[FCCurrentValuetoIdx[kv.Key]]);
+                }
+            }
 
+            string expcetionStr = string.Empty;
+            if(ControlValues == null)
+            {
+                expcetionStr += "ControlValues is null in OnTick PLCService";
+            }
+            if(CurrentValues == null)
+            {
+                if(expcetionStr != string.Empty)
+                {
+                    expcetionStr += "\r\n";
+                }
+                expcetionStr += "CurrentValues is null in OnTick PLCService";
+            }
+            if(expcetionStr != string.Empty)
+            {
+                throw new Exception(expcetionStr);
             }
         }
 
@@ -269,7 +259,7 @@ namespace SapphireXR_App.Models
             }
         }
 
-        private static ObservableManager<PLCConnection>.DataIssuerBase ConnectedNotifier;
+        private static ObservableManager<PLCConnection>.DataIssuer ConnectedNotifier;
 
 
         public static Dictionary<string, int> ValveIDtoOutputSolValveIdx1 = new Dictionary<string, int>
@@ -294,21 +284,12 @@ namespace SapphireXR_App.Models
 
         public static Dictionary<string, int> FlowControllerIDtoIdx = new Dictionary<string, int>
         {
-            {"M01", 0}, {"M02", 1}, {"M03", 2}, {"M04", 3}, {"M05", 4},
-            {"M06", 5}, {"M07", 6}, {"M08", 7},  {"M09", 8},  {"M10", 9},
-            {"M11", 10}, {"M12", 11}, {"M13", 12}, {"M14", 13}, {"M15", 14},
-            {"M16", 15}, {"M17", 16}, {"M18", 17}, {"M19", 18}, {"E01", 19},
-            {"E02", 20}, {"E03", 21}, {"E04", 22}, {"E05", 23}, {"E06", 24},
-            {"E07", 25}, {"R01", 26}, {"R02", 27}, {"R03", 28},
-
-        };
-        public static Dictionary<string, int> MFCIDtoIdx = new Dictionary<string, int>
-        {
-             {"M01", 0}, {"M02", 1}, {"M03", 2}, {"M04", 3}, {"M05", 4},
-            {"M06", 5}, {"M07", 6}, {"M08", 7},  {"M09", 8},  {"M10", 9},
-            {"M11", 10}, {"M12", 11}, {"M13", 12}, {"M14", 13}, {"M15", 14},
-            {"M16", 15}, {"M17", 16}, {"M18", 17}, {"M19", 18},
-
+            {"R01",0 }, {"R02", 1}, {"R03", 2},{"M01", 3},  {"M02", 4},
+            {"M03", 5}, {"M04", 6}, {"M05", 7},  {"M06", 8}, {"M07", 9},
+            {"M08", 10},  {"M09", 11},  {"M10", 12},  {"M11", 13}, {"M12", 14},
+            {"M13", 15},  {"M14", 16}, {"M15", 17}, {"M16", 18}, {"M17", 19},
+            {"M18", 20}, {"M19", 21}, {"E01", 22}, {"E02", 23}, {"E03", 24},
+            {"E04", 25}, {"E05", 26}, {"E06", 27}, {"E07", 28},
         };
 
         public static Dictionary<string, int> FCControlValuetoIdx = new Dictionary<string, int> {

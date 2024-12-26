@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<TcSmProject xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://www.beckhoff.com/schemas/2012/07/TcSmProject" TcSmVersion="1.0" TcVersion="3.1.4026.12">
+<TcSmProject xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://www.beckhoff.com/schemas/2012/07/TcSmProject" TcSmVersion="1.0" TcVersion="3.1.4026.10">
 	<DataTypes>
 		<DataType>
 			<Name GUID="{F13B6D04-11D0-5217-2BF9-7A8308D2316E}" Namespace="Tc2_SerialCom" AutoDeleteType="true">KL6inData22B</Name>
@@ -106,12 +106,12 @@
 			</ArrayInfo>
 		</DataType>
 		<DataType>
-			<Name GUID="{632BDD37-E32E-3C22-785B-5C7A1B2D6DCF}" IecBaseType="true" AutoDeleteType="true">ARRAY [1..2] OF DWORD</Name>
-			<BitSize>64</BitSize>
+			<Name GUID="{F1067C97-5856-A0D4-F83B-3799F32AD0D1}" IecBaseType="true" AutoDeleteType="true">ARRAY [1..3] OF DWORD</Name>
+			<BitSize>96</BitSize>
 			<BaseType GUID="{18071995-0000-0000-0000-000000000007}">DWORD</BaseType>
 			<ArrayInfo>
 				<LBound>1</LBound>
-				<Elements>2</Elements>
+				<Elements>3</Elements>
 			</ArrayInfo>
 		</DataType>
 	</DataTypes>
@@ -137,7 +137,7 @@
 		</System>
 		<Plc>
 			<Project GUID="{8B546B3A-EC4D-41CC-9C57-49402FFC4072}" Name="PLC_MR" PrjFilePath="PLC_MR\PLC_MR.plcproj" TmcFilePath="PLC_MR\PLC_MR.tmc" ReloadTmc="true" AmsPort="851" FileArchiveSettings="#x000e" SymbolicMapping="true">
-				<Instance Id="#x08502000" TcSmClass="TComPlcObjDef" KeepUnrestoredLinks="2" TmcHash="{25E52F3D-4D39-51E8-8BBA-3B237761B394}" TmcPath="PLC_MR\PLC_MR.tmc">
+				<Instance Id="#x08502000" TcSmClass="TComPlcObjDef" KeepUnrestoredLinks="2" TmcHash="{0750577C-B353-101A-6E65-EE50E364A5C6}" TmcPath="PLC_MR\PLC_MR.tmc">
 					<Name>PLC_MR Instance</Name>
 					<CLSID ClassFactory="TcPlc30">{08500001-0000-0000-F000-000000000064}</CLSID>
 					<Vars VarGrpType="2" ContextId="1" AreaNo="17">
@@ -184,7 +184,7 @@
 						<Var>
 							<Name>GVL_IO.aOutputSolValve</Name>
 							<Comment><![CDATA[Solenoid Valve]]></Comment>
-							<Type GUID="{632BDD37-E32E-3C22-785B-5C7A1B2D6DCF}">ARRAY [1..2] OF DWORD</Type>
+							<Type GUID="{F1067C97-5856-A0D4-F83B-3799F32AD0D1}">ARRAY [1..3] OF DWORD</Type>
 						</Var>
 					</Vars>
 					<Vars VarGrpType="1" ContextId="1" AreaNo="16">
@@ -328,7 +328,7 @@
 			</Project>
 		</Plc>
 		<Io>
-			<Device Id="1" DevType="121">
+			<Device Id="1" Disabled="true" DevType="121">
 				<Name>Device 1 (NOV-DP-RAM)</Name>
 				<AddressInfo>
 					<Pci>

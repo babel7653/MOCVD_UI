@@ -28,6 +28,7 @@ namespace SapphireXR_App.Models
         private static BitArray? BaReadValveStatePLC1;
         private static BitArray? BaReadValveStatePLC2;
         private static float[]? BaMaxValue;
+        private static float[]? BaTargetValue;
         private static int[]? CurrentValues;
         private static int[]? ControlValues;
         private static List<IObservable<int>>? CurrentValueIssuers;
@@ -82,6 +83,7 @@ namespace SapphireXR_App.Models
         public static uint hWriteDeviceMaxValuePLC { get; set; }
         public static uint hReadFlowControllerControlValuePLC { get; set; }
         public static uint hReadFlowControllerCurrentValuePLC { get; set; }
+        public static uint hWriteDeviceTargetValuePLC { get; set; }
 
         public static void WriteDeviceMaxValue(List<GasAIO>? gasAIOs)
         {
@@ -121,7 +123,11 @@ namespace SapphireXR_App.Models
                 List<GasAIO> gass = new();
                 if (gasAIOs == null)
                 {
-                    throw new Exception("gasAIO is null in WriteDeviceMaxValue");
+                    throw new Exception("gasAIO is null in WriteDeviceMaxValue in PLCService");
+                }
+                if(BaTargetValue == null)
+                {
+                    throw new Exception("BaTargetValue is null in WriteDeviceTargetValue in PLCService");
                 }
                 for (int i = 3; i < 22; i++)
                 {
@@ -187,6 +193,8 @@ namespace SapphireXR_App.Models
             {
                 ControlValueIssuers.Add(ObservableManager<int>.Get("FlowControl." + kv.Key + ".ControlValue"));
             }
+
+            BaTargetValue = new float[29];
         }
 
         public static void ReadMaxValueFromPLC()

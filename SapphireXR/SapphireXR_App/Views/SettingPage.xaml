@@ -106,7 +106,7 @@
                                         </StackPanel>
                                         <StackPanel Grid.Row="2">
                                             <DataGrid x:Name="dgAlarmSettingA" AutoGenerateColumns="False" Margin="5,0,5,0"
-																VerticalScrollBarVisibility="Auto" ItemsSource="{Binding lGasAIO}" CanUserAddRows="False">
+																VerticalScrollBarVisibility="Auto" ItemsSource="{Binding lAnalogDeviceIO}" CanUserAddRows="False">
                                                 <DataGrid.Resources>
                                                     <Style TargetType="{x:Type DataGridColumnHeader}">
                                                         <Setter Property="HorizontalAlignment" Value="Center"/>
@@ -280,7 +280,7 @@
                                             </Grid.RowDefinitions>
                                             <StackPanel Grid.Row="0">
                                                 <DataGrid x:Name="dgUserSettingA" AutoGenerateColumns="False" Margin="5,0,5,0" Height="320"
-                                                          VerticalScrollBarVisibility="Auto" ItemsSource="{Binding lGasAIO}" CanUserAddRows="False">
+                                                          VerticalScrollBarVisibility="Auto" ItemsSource="{Binding lAnalogDeviceIO}" CanUserAddRows="False">
                                                     <DataGrid.Resources>
                                                         <Style TargetType="{x:Type DataGridColumnHeader}">
                                                             <Setter Property="HorizontalAlignment" Value="Center"/>
@@ -478,7 +478,7 @@
                                             <!-- Analog Device Name 설정 테이블-->
                                             <StackPanel>
                                                 <DataGrid x:Name="dgMaxValueSetting" Width="425" Height="360" AutoGenerateColumns="False" Margin="5,0,5,0"
-                                                           ItemsSource="{Binding lGasAIO}" CanUserAddRows="False">
+                                                           ItemsSource="{Binding lAnalogDeviceIO}" CanUserAddRows="False">
                                                     <DataGrid.Resources>
                                                         <Style TargetType="{x:Type DataGridColumnHeader}">
                                                             <Setter Property="HorizontalAlignment" Value="Center"/>

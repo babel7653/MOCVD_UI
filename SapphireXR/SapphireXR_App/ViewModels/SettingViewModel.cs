@@ -12,13 +12,13 @@ namespace SapphireXR_App.ViewModels
     public class SettingViewModel : ObservableObject
     {
         public string fname = AppDomain.CurrentDomain.BaseDirectory + "..\\..\\..\\..\\Data\\Configuration\\" + @"DeviceIO.json";
-        public Dictionary<string, GasAIO>? dGasAIO = [];
+        public Dictionary<string, AnalogDeviceIO>? dAnalogDeviceIO = [];
         public Dictionary<string, SwitchDI>? dSwitchDI = [];
         public Dictionary<string, GasDO>? dGasDO = [];
         public Dictionary<string, string>? dPreSet { get; set; } = [];
         public Dictionary<string, InterLockA>? dInterLockA { get; set; } = [];
         public Dictionary<string, bool>? dInterLockD { get; set; } = [];
-        public List<GasAIO>? lGasAIO { get; set; } = [];
+        public List<AnalogDeviceIO>? lAnalogDeviceIO { get; set; } = [];
         public List<SwitchDI>? lSwitchDI { get; set; } = [];
         public List<GasDO>? lGasDO { get; set; } = [];
         public UserState? userstate { get; set; } = new();
@@ -39,7 +39,7 @@ namespace SapphireXR_App.ViewModels
             var fdevice = File.ReadAllText(fname);
 
             JToken? jDeviceInit = JToken.Parse(fdevice);
-            JToken? jGasAIO = jDeviceInit["GasAIO"];
+            JToken? jAnalogDeviceIO = jDeviceInit["AnalogDeviceIO"];
             JToken? jSwitchDI = jDeviceInit["SwitchDI"];
             JToken? jGasDO = jDeviceInit["GasDO"];
             JToken? jPreSet = jDeviceInit["PreSet"];
@@ -48,7 +48,7 @@ namespace SapphireXR_App.ViewModels
             JToken? jUserState = jDeviceInit["UserState"];
             JToken? jWithoutConnection = jDeviceInit["WithoutConnection"];
 
-            dGasAIO = JsonConvert.DeserializeObject<Dictionary<string, GasAIO>>(jGasAIO.ToString());
+            dAnalogDeviceIO = JsonConvert.DeserializeObject<Dictionary<string, AnalogDeviceIO>>(jAnalogDeviceIO.ToString());
             dSwitchDI = JsonConvert.DeserializeObject<Dictionary<string, SwitchDI>>(jSwitchDI.ToString());
             dGasDO = JsonConvert.DeserializeObject<Dictionary<string, GasDO>>(jGasDO.ToString());
             dPreSet = JsonConvert.DeserializeObject<Dictionary<string, string>>(jPreSet.ToString());
@@ -56,17 +56,17 @@ namespace SapphireXR_App.ViewModels
             dInterLockA = JsonConvert.DeserializeObject<Dictionary<string, InterLockA>>(jInterLockA.ToString());
             userstate = JsonConvert.DeserializeObject<UserState>(jUserState.ToString());
 
-            lGasAIO = dGasAIO.Values.ToList();
+            lAnalogDeviceIO = dAnalogDeviceIO.Values.ToList();
             lSwitchDI = dSwitchDI.Values.ToList();
             lGasDO = dGasDO.Values.ToList();
 
-            PLCService.WriteDeviceMaxValue(lGasAIO);
+            PLCService.WriteDeviceMaxValue(lAnalogDeviceIO);
             PLCService.ReadMaxValueFromPLC();
         }
 
         public void AlarmSettingSave()
         {
-            JToken jsonGasAIO = JsonConvert.SerializeObject(dGasAIO);
+            JToken jsonAnalogDeviceIO = JsonConvert.SerializeObject(dAnalogDeviceIO);
             JToken jsonSwitchDI = JsonConvert.SerializeObject(dSwitchDI);
             JToken jsonGasDO = JsonConvert.SerializeObject(dGasDO);
             JToken jPreSet = JsonConvert.SerializeObject(dPreSet);
@@ -75,7 +75,7 @@ namespace SapphireXR_App.ViewModels
             JToken jUserState = JsonConvert.SerializeObject(userstate);
 
             JObject jDeviceIO = new(
-                new JProperty("GasAIO", jsonGasAIO),
+                new JProperty("AnalogDeviceIO", jsonAnalogDeviceIO),
                 new JProperty("SwitchDI", jsonSwitchDI),
                 new JProperty("GasDO", jsonGasDO),
                 new JProperty("PreSet", jPreSet),
@@ -87,7 +87,7 @@ namespace SapphireXR_App.ViewModels
             if (File.Exists(fname)) File.Delete(fname);
             File.WriteAllText(fname, jDeviceIO.ToString());
 
-            PLCService.WriteDeviceMaxValue(lGasAIO);
+            PLCService.WriteDeviceMaxValue(lAnalogDeviceIO);
             PLCService.ReadMaxValueFromPLC();
 
         }

@@ -1,0 +1,523 @@
+{
+  "AnalogSetIO": {
+    "R01": {
+      "MaxValue": 1200,
+      "MinSignal": 0,
+      "MaxSignal": 5,
+      "CurrentValue": 0,
+      "TargetValue": 0,
+      "AlarmSet": false,
+      "WarningSet": false,
+      "ID": "R01",
+      "Name": "ReactorTemp",
+      "Description": "Reactor Susceptor Temperature"
+    },
+    "R02": {
+      "MaxValue": 1000,
+      "MinSignal": 0,
+      "MaxSignal": 5,
+      "CurrentValue": 0,
+      "TargetValue": 0,
+      "AlarmSet": false,
+      "WarningSet": false,
+      "ID": "R02",
+      "Name": "ReactorPress",
+      "Description": "Reactor Pressure"
+    },
+    "R03": {
+      "MaxValue": 100,
+      "MinSignal": 0,
+      "MaxSignal": 5,
+      "CurrentValue": 0,
+      "TargetValue": 0,
+      "AlarmSet": false,
+      "WarningSet": false,
+      "ID": "R03",
+      "Name": "SusRotation",
+      "Description": "Susceptor Rotaion"
+    },
+    "M01": {
+      "MaxValue": 4000,
+      "MinSignal": 0,
+      "MaxSignal": 5,
+      "CurrentValue": 400,
+      "TargetValue": 400,
+      "AlarmSet": false,
+      "WarningSet": false,
+      "ID": "M01",
+      "Name": "MO Run",
+      "Description": "Horiba MFC N-112"
+    },
+    "M02": {
+      "MaxValue": 4000,
+      "MinSignal": 0,
+      "MaxSignal": 5,
+      "CurrentValue": 400,
+      "TargetValue": 400,
+      "AlarmSet": false,
+      "WarningSet": false,
+      "ID": "M02",
+      "Name": "HYD Run",
+      "Description": "Horiba MFC N-112"
+    },
+    "M03": {
+      "MaxValue": 4000,
+      "MinSignal": 0,
+      "MaxSignal": 5,
+      "CurrentValue": 400,
+      "TargetValue": 400,
+      "AlarmSet": false,
+      "WarningSet": false,
+      "ID": "M03",
+      "Name": "NH3 Large IN",
+      "Description": "Horiba MFC N-112"
+    },
+    "M04": {
+      "MaxValue": 80,
+      "MinSignal": 0,
+      "MaxSignal": 5,
+      "CurrentValue": 8,
+      "TargetValue": 8,
+      "AlarmSet": false,
+      "WarningSet": false,
+      "ID": "M04",
+      "Name": "NH3 Small IN",
+      "Description": "Horiba MFC N-112"
+    },
+    "M05": {
+      "MaxValue": 50,
+      "MinSignal": 0,
+      "MaxSignal": 5,
+      "CurrentValue": 5,
+      "TargetValue": 5,
+      "AlarmSet": false,
+      "WarningSet": false,
+      "ID": "M05",
+      "Name": "SiH IN",
+      "Description": "Horiba MFC N-112"
+    },
+    "M06": {
+      "MaxValue": 500,
+      "MinSignal": 0,
+      "MaxSignal": 5,
+      "CurrentValue": 50,
+      "TargetValue": 50,
+      "AlarmSet": false,
+      "WarningSet": false,
+      "ID": "M06",
+      "Name": "SiH4 Dilution ",
+      "Description": "Horiba MFC N-112"
+    },
+    "M07": {
+      "MaxValue": 500,
+      "MinSignal": 0,
+      "MaxSignal": 5,
+      "CurrentValue": 50,
+      "TargetValue": 50,
+      "AlarmSet": false,
+      "WarningSet": false,
+      "ID": "M07",
+      "Name": "SiH4 Diluted",
+      "Description": "Horiba MFC N-112"
+    },
+    "M08": {
+      "MaxValue": 50,
+      "MinSignal": 0,
+      "MaxSignal": 5,
+      "CurrentValue": 5,
+      "TargetValue": 5,
+      "AlarmSet": false,
+      "WarningSet": false,
+      "ID": "M08",
+      "Name": "TEB Bubbling",
+      "Description": "Horiba MFC N-112"
+    },
+    "M09": {
+      "MaxValue": 50,
+      "MinSignal": 0,
+      "MaxSignal": 5,
+      "CurrentValue": 5,
+      "TargetValue": 5,
+      "AlarmSet": false,
+      "WarningSet": false,
+      "ID": "M09",
+      "Name": "TMAl Bubbling",
+      "Description": "Horiba MFC N-112"
+    },
+    "M10": {
+      "MaxValue": 150,
+      "MinSignal": 0,
+      "MaxSignal": 5,
+      "CurrentValue": 15,
+      "TargetValue": 15,
+      "AlarmSet": false,
+      "WarningSet": false,
+      "ID": "M10",
+      "Name": "TMIn Bubbling",
+      "Description": "Horiba MFC N-112"
+    },
+    "M11": {
+      "MaxValue": 50,
+      "MinSignal": 0,
+      "MaxSignal": 5,
+      "CurrentValue": 5,
+      "TargetValue": 5,
+      "AlarmSet": false,
+      "WarningSet": false,
+      "ID": "M11",
+      "Name": "TMGa Bubbling",
+      "Description": "Horiba MFC N-112"
+    },
+    "M12": {
+      "MaxValue": 50,
+      "MinSignal": 0,
+      "MaxSignal": 5,
+      "CurrentValue": 5,
+      "TargetValue": 5,
+      "AlarmSet": false,
+      "WarningSet": false,
+      "ID": "M12",
+      "Name": "DTMGa Bubbling",
+      "Description": "Horiba MFC N-112"
+    },
+    "M13": {
+      "MaxValue": 500,
+      "MinSignal": 0,
+      "MaxSignal": 5,
+      "CurrentValue": 50,
+      "TargetValue": 50,
+      "AlarmSet": false,
+      "WarningSet": false,
+      "ID": "M13",
+      "Name": "DTMGa Dilution",
+      "Description": "Horiba MFC N-112"
+    },
+    "M14": {
+      "MaxValue": 100,
+      "MinSignal": 0,
+      "MaxSignal": 5,
+      "CurrentValue": 10,
+      "TargetValue": 10,
+      "AlarmSet": false,
+      "WarningSet": false,
+      "ID": "M14",
+      "Name": "DTMGa Diluted",
+      "Description": "Horiba MFC N-112"
+    },
+    "M15": {
+      "MaxValue": 1500,
+      "MinSignal": 0,
+      "MaxSignal": 5,
+      "CurrentValue": 150,
+      "TargetValue": 150,
+      "AlarmSet": false,
+      "WarningSet": false,
+      "ID": "M15",
+      "Name": "Cp2Mg Bubbling ",
+      "Description": "Horiba MFC N-112"
+    },
+    "M16": {
+      "MaxValue": 5000,
+      "MinSignal": 0,
+      "MaxSignal": 5,
+      "CurrentValue": 500,
+      "TargetValue": 500,
+      "AlarmSet": false,
+      "WarningSet": false,
+      "ID": "M16",
+      "Name": "Reactor Purge",
+      "Description": "Horiba MFC N-112"
+    },
+    "M17": {
+      "MaxValue": 1000,
+      "MinSignal": 0,
+      "MaxSignal": 5,
+      "CurrentValue": 100,
+      "TargetValue": 100,
+      "AlarmSet": false,
+      "WarningSet": false,
+      "ID": "M17",
+      "Name": "Rotation Seal Purge",
+      "Description": "Horiba MFC N-112"
+    },
+    "M18": {
+      "MaxValue": 1000,
+      "MinSignal": 0,
+      "MaxSignal": 5,
+      "CurrentValue": 100,
+      "TargetValue": 100,
+      "AlarmSet": false,
+      "WarningSet": false,
+      "ID": "M18",
+      "Name": "MO Vent",
+      "Description": "Horiba MFC N-112"
+    },
+    "M19": {
+      "MaxValue": 1000,
+      "MinSignal": 0,
+      "MaxSignal": 5,
+      "CurrentValue": 100,
+      "TargetValue": 100,
+      "AlarmSet": false,
+      "WarningSet": false,
+      "ID": "M19",
+      "Name": "HYD Vent ",
+      "Description": "Horiba MFC N-112"
+    },
+    "E01": {
+      "MaxValue": 2000,
+      "MinSignal": 0,
+      "MaxSignal": 5,
+      "CurrentValue": 5,
+      "TargetValue": 5,
+      "AlarmSet": false,
+      "WarningSet": false,
+      "ID": "E01",
+      "Name": "SiH4 Pressure",
+      "Description": "MKS 640A"
+    },
+    "E02": {
+      "MaxValue": 2250,
+      "MinSignal": 0,
+      "MaxSignal": 5,
+      "CurrentValue": 5,
+      "TargetValue": 5,
+      "AlarmSet": false,
+      "WarningSet": false,
+      "ID": "E02",
+      "Name": "TEB Pressure",
+      "Description": "Horiba UR-2700"
+    },
+    "E03": {
+      "MaxValue": 2250,
+      "MinSignal": 0,
+      "MaxSignal": 5,
+      "CurrentValue": 5,
+      "TargetValue": 5,
+      "AlarmSet": false,
+      "WarningSet": false,
+      "ID": "E03",
+      "Name": "TMAl Pressure",
+      "Description": "Horiba UR-2700"
+    },
+    "E04": {
+      "MaxValue": 2250,
+      "MinSignal": 0,
+      "MaxSignal": 5,
+      "CurrentValue": 5,
+      "TargetValue": 5,
+      "AlarmSet": false,
+      "WarningSet": false,
+      "ID": "E04",
+      "Name": "TMIn Pressure",
+      "Description": "Horiba UR-2700"
+    },
+    "E05": {
+      "MaxValue": 2250,
+      "MinSignal": 0,
+      "MaxSignal": 5,
+      "CurrentValue": 5,
+      "TargetValue": 5,
+      "AlarmSet": false,
+      "WarningSet": false,
+      "ID": "E05",
+      "Name": "TMGa Pressure",
+      "Description": "Horiba UR-2700"
+    },
+    "E06": {
+      "MaxValue": 2250,
+      "MinSignal": 0,
+      "MaxSignal": 5,
+      "CurrentValue": 5,
+      "TargetValue": 5,
+      "AlarmSet": false,
+      "WarningSet": false,
+      "ID": "E06",
+      "Name": "DTMGa Pressure",
+      "Description": "Horiba UR-2700"
+    },
+    "E07": {
+      "MaxValue": 2250,
+      "MinSignal": 0,
+      "MaxSignal": 5,
+      "CurrentValue": 5,
+      "TargetValue": 5,
+      "AlarmSet": false,
+      "WarningSet": false,
+      "ID": "E07",
+      "Name": "CP2Mgs Pressure ",
+      "Description": "Horiba UR-2700"
+    }
+  },
+  "SwitchDI": {
+    "A01": {
+      "IsOn": true,
+      "AlarmSet": true,
+      "WarningSet": false,
+      "ID": "A01",
+      "Name": "EMOPushed",
+      "Description": "Emergency Switch"
+    },
+    "A02": {
+      "IsOn": true,
+      "AlarmSet": true,
+      "WarningSet": false,
+      "ID": "A02",
+      "Name": "MainMCOff",
+      "Description": "Main Switch Turn ON"
+    },
+    "A03": {
+      "IsOn": true,
+      "AlarmSet": true,
+      "WarningSet": false,
+      "ID": "A03",
+      "Name": "H2GasLeak",
+      "Description": "H2 Gas Leak"
+    },
+    "A04": {
+      "IsOn": true,
+      "AlarmSet": true,
+      "WarningSet": false,
+      "ID": "A03",
+      "Name": "NH3GasLeak",
+      "Description": "NH3 Gas Leak"
+    },
+    "A05": {
+      "IsOn": true,
+      "AlarmSet": true,
+      "WarningSet": false,
+      "ID": "A05",
+      "Name": "SiH4GasLeak",
+      "Description": "SiH4 Gas Leak"
+    },
+    "A06": {
+      "IsOn": true,
+      "AlarmSet": true,
+      "WarningSet": false,
+      "ID": "A06",
+      "Name": "N2LowPress",
+      "Description": "N2 Gas Low Pressure"
+    },
+    "A07": {
+      "IsOn": true,
+      "AlarmSet": true,
+      "WarningSet": false,
+      "ID": "A07",
+      "Name": "H2LowPress",
+      "Description": "H2 Gas Low Pressure"
+    },
+    "A08": {
+      "IsOn": true,
+      "AlarmSet": true,
+      "WarningSet": false,
+      "ID": "A08",
+      "Name": "NH3LowPress",
+      "Description": "NH3 Gas Low Pressure"
+    },
+    "A09": {
+      "IsOn": true,
+      "AlarmSet": true,
+      "WarningSet": false,
+      "ID": "A09",
+      "Name": "SiH4LowPress",
+      "Description": "SiH4 Gas Low Pressure"
+    },
+    "A10": {
+      "IsOn": true,
+      "AlarmSet": true,
+      "WarningSet": false,
+      "ID": "A10",
+      "Name": "PneumaticLow",
+      "Description": "Pneumatic Low Pressure"
+    },
+    "A11": {
+      "IsOn": true,
+      "AlarmSet": true,
+      "WarningSet": false,
+      "ID": "A11",
+      "Name": "CWLowFlow",
+      "Description": "Cooling Water Low Flow"
+    },
+    "A12": {
+      "IsOn": true,
+      "AlarmSet": true,
+      "WarningSet": false,
+      "ID": "A12",
+      "Name": "ReactorOverPress",
+      "Description": "Reactor Over Pressure"
+    },
+    "A13": {
+      "IsOn": true,
+      "AlarmSet": true,
+      "WarningSet": false,
+      "ID": "A13",
+      "Name": "SusOverTemp",
+      "Description": "Susceptor Over Temperature"
+    },
+    "A14": {
+      "IsOn": true,
+      "AlarmSet": true,
+      "WarningSet": false,
+      "ID": "A14",
+      "Name": "SHOverTemp",
+      "Description": "Shower Head Over Temprature"
+    },
+    "A15": {
+      "IsOn": true,
+      "AlarmSet": true,
+      "WarningSet": false,
+      "ID": "A15",
+      "Name": "ICoilTemp",
+      "Description": "Induction Coil Over Temperature"
+    },
+    "A16": {
+      "IsOn": true,
+      "AlarmSet": true,
+      "WarningSet": false,
+      "ID": "A16",
+      "Name": "PumpOverTemp",
+      "Description": "Vacuum Pump Over Temperature"
+    },
+    "A17": {
+      "IsOn": true,
+      "AlarmSet": true,
+      "WarningSet": false,
+      "ID": "A17",
+      "Name": "InductionFault",
+      "Description": "Induction Power Supply Fault"
+    },
+    "A18": {
+      "IsOn": true,
+      "AlarmSet": true,
+      "WarningSet": false,
+      "ID": "A18",
+      "Name": "ScrubberFault",
+      "Description": "Utility Alarm : Scrubber"
+    },
+    "A19": {
+      "IsOn": true,
+      "AlarmSet": true,
+      "WarningSet": false,
+      "ID": "A19",
+      "Name": "RotationMotorFault",
+      "Description": "Susceptor Rotation Motor Fault"
+    },
+    "A20": {
+      "IsOn": true,
+      "AlarmSet": true,
+      "WarningSet": false,
+      "ID": "A20",
+      "Name": "GCDoorOpen",
+      "Description": "Gas Delivery Door Open"
+    },
+    "A21": {
+      "IsOn": true,
+      "AlarmSet": true,
+      "WarningSet": false,
+      "ID": "A21",
+      "Name": "RCDoorOpen",
+      "Description": "Reactor Cabinet Door Open"
+    },
+
+  }
+}

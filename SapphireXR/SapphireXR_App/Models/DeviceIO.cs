@@ -8,7 +8,7 @@ namespace SapphireXR_App.Models
     public string? Name { get; set; }
     public string? Description { get; set; }
   }
-  public class GasAIO : Device
+  public class AnalogDeviceIO : Device
   {
     public int MaxValue { get; set; }
     public int MinSignal { get; set; }

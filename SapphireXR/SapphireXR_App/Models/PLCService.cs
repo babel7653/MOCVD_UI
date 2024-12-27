@@ -68,7 +68,7 @@ namespace SapphireXR_App.Models
 
                 hReadFlowControllerControlValuePLC = Ads.CreateVariableHandle("GVL_IO.aAnalogOutputIO");
                 hReadFlowControllerCurrentValuePLC = Ads.CreateVariableHandle("GVL_IO.aAnalogInputIO");
-                hWriteDeviceMaxValuePLC = Ads.CreateVariableHandle("GVL_IO.aMaxValue");
+                hWriteDeviceMaxValuePLC = Ads.CreateVariableHandle("GVL_IO.aMaxValueController");
                 hReadValveStatePLC1 = Ads.CreateVariableHandle("GVL_IO.aOutputSolValve[1]");
                 hReadValveStatePLC2 = Ads.CreateVariableHandle("GVL_IO.aOutputSolValve[2]");
                 hWriteDeviceTargetValuePLC = Ads.CreateVariableHandle("P30_GasFlowControl.aMFC_TV");
@@ -89,28 +89,28 @@ namespace SapphireXR_App.Models
         public static uint hReadFlowControllerCurrentValuePLC { get; set; }
         public static uint hWriteDeviceTargetValuePLC { get; set; }
 
-        public static void WriteDeviceMaxValue(List<GasAIO>? gasAIOs)
+        public static void WriteDeviceMaxValue(List<AnalogDeviceIO>? analogDeviceIOs)
         {
             // Device Max. Value Write
             try
             {
-                if (gasAIOs == null)
+                if (analogDeviceIOs == null)
                 {
-                    throw new Exception("gasAIO is null in WriteDeviceMaxValue");
+                    throw new Exception("AnalogDeviceIO is null in WriteDeviceMaxValue");
                 }
                
 
-                foreach (GasAIO entry in gasAIOs)
+                foreach (AnalogDeviceIO entry in analogDeviceIOs)
                 {
                     if (entry.ID == null)
                     {
-                        throw new Exception("entry ID is null for gasAIO");
+                        throw new Exception("entry ID is null for AnalogDeviceIO");
                     }
                     BaMaxValue = new float[29];
                     BaMaxValue[FlowControllerIDtoIdx[entry.ID]] = entry.MaxValue;
                     Ads.WriteAny(hWriteDeviceMaxValuePLC, BaMaxValue);
                 }
-                //lGasAIO
+                // List Analog Device Input / Output
             }
             catch (Exception ex)
             {
@@ -119,15 +119,15 @@ namespace SapphireXR_App.Models
         }
 
 
-        public static void WriteDeviceTargetValue(List<GasAIO>? gasAIOs)
+        public static void WriteDeviceTargetValue(List<AnalogDeviceIO>? analogDeviceIOs)
         {
             // Device Target Value Write
             try
             {
-                List<GasAIO> gass = new();
-                if (gasAIOs == null)
+                List<AnalogDeviceIO> deviceIOs = new();
+                if (analogDeviceIOs == null)
                 {
-                    throw new Exception("gasAIO is null in WriteDeviceMaxValue in PLCService");
+                    throw new Exception("AnalogDeviceIO is null in WriteDeviceMaxValue in PLCService");
                 }
                 if(BaTargetValue == null)
                 {
@@ -135,19 +135,19 @@ namespace SapphireXR_App.Models
                 }
                 for (int i = 3; i < 22; i++)
                 {
-                    gass.Add(gasAIOs[i]);
+                    deviceIOs.Add(analogDeviceIOs[i]);
                 }
 
-                foreach (GasAIO entry in gass)
+                foreach (AnalogDeviceIO entry in deviceIOs)
                 {
                     if (entry.ID == null)
                     {
-                        throw new Exception("entry ID is null for gasAIO");
+                        throw new Exception("entry ID is null for AnalogDeviceIO");
                     }
                     BaTargetValue[MFCIDtoIdx[entry.ID]] = entry.TargetValue;
                 }
                 Ads.WriteAny(hWriteDeviceTargetValuePLC, BaTargetValue);
-                //lGasAIO
+                // List Analog Device Input / Output
             }
             catch (Exception ex)
             {

@@ -31,7 +31,7 @@ namespace SapphireXR_App.Models
         private static float[]? BaTargetValues;
         private static int[]? CurrentValues;
         private static int[]? ControlValues;
-        private static int[]? BaRampTimes;
+        private static Int16[]? BaRampTimes;
         private static Dictionary<string, ObservableManager<int>.DataIssuer>? CurrentValueIssuers;
         private static Dictionary<string, ObservableManager<int>.DataIssuer>? ControlValueIssuers;
 
@@ -77,7 +77,7 @@ namespace SapphireXR_App.Models
                 hWriteDeviceRampTimePLC = Ads.CreateVariableHandle("P30_GasFlowControl.aGasController_RampTime");
                 hReadDeviceCurrentValuePLC = Ads.CreateVariableHandle("P30_GasFlowControl.aGasController_PV");
 
-                BaRampTimes = new int[FlowControltoIdx.Count];
+                BaRampTimes = new Int16[FlowControltoIdx.Count];
                 BaTargetValues = new float[FlowControltoIdx.Count];
 
                 ConnectedNotifier.Issue(PLCConnection.Connecrted);
@@ -275,13 +275,13 @@ namespace SapphireXR_App.Models
         public static void WriteTargetValue(string flowControllerID, int targetValue)
         {
             BaTargetValues![FlowControltoIdx[flowControllerID]] = (float)targetValue;
-            Ads.WriteAny(hWriteDeviceTargetValuePLC, BaTargetValues!, [FlowControltoIdx.Count]);
+            Ads.WriteAny(hWriteDeviceTargetValuePLC, BaTargetValues!, [BaTargetValues!.Length]);
         }
 
-        public static void WriteRampTime(string flowControllerID, int currentValue)
+        public static void WriteRampTime(string flowControllerID, Int16 currentValue)
         {
             BaRampTimes![FlowControltoIdx[flowControllerID]] = currentValue;
-            Ads.WriteAny(hWriteDeviceRampTimePLC, BaRampTimes!, [FlowControltoIdx.Count]);
+            Ads.WriteAny(hWriteDeviceRampTimePLC, BaRampTimes!, [BaRampTimes!.Length]);
         }
 
         private static ObservableManager<PLCConnection>.DataIssuer ConnectedNotifier;

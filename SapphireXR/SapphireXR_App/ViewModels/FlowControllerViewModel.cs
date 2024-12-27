@@ -28,7 +28,7 @@ namespace SapphireXR_App.ViewModels
                 }
                 if (controlValues.rampTime != null)
                 {
-                    PLCService.WriteRampTime(ControllerID, (int)controlValues.rampTime);
+                    PLCService.WriteRampTime(ControllerID, (Int16)controlValues.rampTime);
                 }
             });
         }

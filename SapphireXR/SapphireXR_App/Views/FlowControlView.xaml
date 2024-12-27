@@ -102,6 +102,7 @@
                         FontSize="15"
                         Margin="5"
                         IsDefault="True"
+                        IsEnabled="{Binding IsConfirmButtonEnabled}"
                         Style="{StaticResource MetroBlueButtonStyle}"
                         Command="{Binding ConfirmCommand}"
                         CommandParameter="{Binding ElementName=FlowControlDialog}"/>

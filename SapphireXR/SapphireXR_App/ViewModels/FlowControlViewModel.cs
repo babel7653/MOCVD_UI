@@ -36,6 +36,8 @@ namespace SapphireXR_App.ViewModels
         private int _maxValue;
         [ObservableProperty]
         private SolidColorBrush _fontColor = new SolidColorBrush(Colors.Black);
+        [ObservableProperty]
+        private bool isConfirmButtonEnabled;
 
         public PopupExResult PopupExResult { get; internal set; } = PopupExResult.Close;
 
@@ -92,7 +94,7 @@ namespace SapphireXR_App.ViewModels
         {
             PopupExResult = PopupExResult.Confirm;
             Confirmed!(PopupExResult.Confirm, new ControlValues { targetValue = (string.IsNullOrEmpty(TargetValue) ? null : int.Parse(TargetValue)), 
-                rampTime = (string.IsNullOrEmpty(RampTime) ? null : int.Parse(RampTime) )});
+                rampTime = (string.IsNullOrEmpty(RampTime) ? null : Int16.Parse(RampTime) )});
             dispose();
             window.Close();
         }
@@ -138,6 +140,7 @@ namespace SapphireXR_App.ViewModels
             ControlValue = string.Empty;
             MaxValue = (int)PLCService.ReadMaxValue(fcID);
             FontColor = OnNormal;
+            IsConfirmButtonEnabled = false;
             PropertyChanged += (object? sender, PropertyChangedEventArgs e) =>
             {
                 if(e.PropertyName == "CurrentValue" || e.PropertyName == "ControlValue")
@@ -150,7 +153,7 @@ namespace SapphireXR_App.ViewModels
                 else
                  if(e.PropertyName == "TargetValue" || e.PropertyName == "RampTime")
                 {
-
+                    IsConfirmButtonEnabled = !string.IsNullOrEmpty(TargetValue) && !string.IsNullOrEmpty(RampTime);
                 }
             };
             controlValueSubscriber = new ControlValueSubscriber(this);
@@ -162,7 +165,7 @@ namespace SapphireXR_App.ViewModels
         public struct ControlValues
         {
             public int? targetValue;
-            public int? rampTime;
+            public Int16? rampTime;
         }
 
         public delegate void ConfiredEventHandler(PopupExResult result, ControlValues controlValues);

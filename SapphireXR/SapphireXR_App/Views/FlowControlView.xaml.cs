@@ -6,60 +6,62 @@ using System.Windows.Input;
 
 namespace SapphireXR_App.Views
 {
-    public class NumberBox: TextBox
+    public class NumberBox : TextBox
     {
-        public NumberBox(): base()
+        public NumberBox() : base()
         {
             PreviewTextInput += OnlyAllowNumber;
         }
 
-        protected bool IsTextNumeric(string str, int maxValue)
+        protected void OnlyAllowNumber(object sender, TextCompositionEventArgs e)
+        {
+            e.Handled = !Util.IsTextNumeric(e.Text);
+        }
+    }
+
+    public class NumberBoxWithMax: TextBox
+    {
+        public NumberBoxWithMax(): base()
+        {
+            PreviewTextInput += OnlyAllowNumber;
+        }
+
+        protected bool CheckValid(string str)
         {
             if(Util.IsTextNumeric(str) == true)
             {
                 string nextValueStr = Text + str;
                 int nextValue = int.Parse(nextValueStr);
-                if (nextValue <= maxValue)
+                if (nextValue <= MaxValue)
                 {
-                    return false;
+                    return true;
                 }
                 else
                 {
-                    return true;
+                    return false;
                 }
 
             }
             else
             {
-                return true;
+                return false; ;
             }
         }
 
         protected void OnlyAllowNumber(object sender, TextCompositionEventArgs e)
         {
-            e.Handled = IsTextNumeric(e.Text, int.Parse(MaxValue));
+            e.Handled = !CheckValid(e.Text);
         }
 
-        public string MaxValue
+        public int MaxValue
         {
-            get { return (string)GetValue(MaxValueProperty); }
-            set {  
-                if(Util.IsTextNumeric(value) == true)
-                {
-                    SetValue(MaxValueProperty, value);
-                    maxValue = int.Parse(value);
-                }
-                else
-                {
-                    throw new FormatException("MaxValue for FlowControlView is not valid: to set is " + value);
-                }
-            } 
+            get { return (int)GetValue(MaxValueProperty); }
+            set {  SetValue(MaxValueProperty, value); } 
         }
 
-        private static readonly DependencyProperty MaxValueProperty = DependencyProperty.Register("MaxValue", typeof(string), typeof(NumberBox), new PropertyMetadata(""));
-        private int maxValue = int.MinValue;
-       
+        private static readonly DependencyProperty MaxValueProperty = DependencyProperty.Register("MaxValue", typeof(int), typeof(NumberBoxWithMax), new PropertyMetadata(int.MinValue));
     }
+
     public partial class FlowControlView : Window
     {
         private void MessageBoxView_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)

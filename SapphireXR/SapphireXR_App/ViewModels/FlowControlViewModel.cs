@@ -33,7 +33,7 @@ namespace SapphireXR_App.ViewModels
         [ObservableProperty]
         private string _controlValue = string.Empty;
         [ObservableProperty]
-        private string _maxValue = string.Empty;
+        private int _maxValue;
         [ObservableProperty]
         private SolidColorBrush _fontColor = new SolidColorBrush(Colors.Black);
 
@@ -91,8 +91,8 @@ namespace SapphireXR_App.ViewModels
         private void Confirm(Window window)
         {
             PopupExResult = PopupExResult.Confirm;
-            Confirmed!(PopupExResult.Confirm, new ControlValues { targetValue = uint.Parse(TargetValue), rampTime = uint.Parse(RampTime), controlValue = uint.Parse(ControlValue), 
-                currentValue = uint.Parse(CurrentValue), deviation = uint.Parse(Deviation), maxValue = uint.Parse(MaxValue) });
+            Confirmed!(PopupExResult.Confirm, new ControlValues { targetValue = (string.IsNullOrEmpty(TargetValue) ? null : int.Parse(TargetValue)), 
+                rampTime = (string.IsNullOrEmpty(RampTime) ? null : int.Parse(RampTime) )});
             dispose();
             window.Close();
         }
@@ -136,17 +136,22 @@ namespace SapphireXR_App.ViewModels
             Deviation = string.Empty;
             CurrentValue = string.Empty;
             ControlValue = string.Empty;
-            MaxValue = PLCService.ReadMaxValue(fcID).ToString();
+            MaxValue = (int)PLCService.ReadMaxValue(fcID);
             FontColor = OnNormal;
             PropertyChanged += (object? sender, PropertyChangedEventArgs e) =>
             {
                 if(e.PropertyName == "CurrentValue" || e.PropertyName == "ControlValue")
                 {
-                    if (Util.IsTextNumeric(CurrentValue) && Util.IsTextNumeric(ControlValue) && Util.IsTextNumeric(MaxValue))
+                    if (Util.IsTextNumeric(CurrentValue) && Util.IsTextNumeric(ControlValue))
                     {
-                        Deviation = ((int)(((double)(Math.Abs(int.Parse(CurrentValue) - int.Parse(ControlValue))) / double.Parse(MaxValue)) * 100.0)).ToString();
+                        Deviation = ((int)(((float)(Math.Abs(int.Parse(CurrentValue) - int.Parse(ControlValue))) / ((float)MaxValue)) * 100.0)).ToString();
                     }
                 } 
+                else
+                 if(e.PropertyName == "TargetValue" || e.PropertyName == "RampTime")
+                {
+
+                }
             };
             controlValueSubscriber = new ControlValueSubscriber(this);
             currwentValueSubscriber = new CurrwentValueSubscriber(this);
@@ -156,19 +161,14 @@ namespace SapphireXR_App.ViewModels
 
         public struct ControlValues
         {
-            public uint targetValue;
-            public uint rampTime;
-            public uint deviation;
-            public uint currentValue;
-            public uint controlValue;
-            public uint maxValue;
+            public int? targetValue;
+            public int? rampTime;
         }
 
         public delegate void ConfiredEventHandler(PopupExResult result, ControlValues controlValues);
         public event ConfiredEventHandler? Confirmed;
         public delegate void CanceledEventHandler(PopupExResult result);
         public event CanceledEventHandler? Canceled;
-
 
         private static readonly SolidColorBrush OnWrongTextFormat = new SolidColorBrush(Colors.Red);
         private static readonly SolidColorBrush OnNormal = new SolidColorBrush(Colors.Red);

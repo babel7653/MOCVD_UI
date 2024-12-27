@@ -7,11 +7,31 @@ using CommunityToolkit.Mvvm.Input;
 using System.Reactive;
 using System.Windows.Input;
 using SapphireXR_App.Enums;
+using SapphireXR_App.Common;
+using SapphireXR_App.Models;
 
 namespace SapphireXR_App.ViewModels
 {
     public class FlowControllerViewModel : DependencyObject, INotifyPropertyChanged
     {
+        public FlowControllerViewModel() 
+        {
+            OnFlowControllerConfirmedCommand = new RelayCommand<object?>((object? parameter) =>
+            {
+                object[] parameters = (object[])parameter!;
+                PopupExResult result = (PopupExResult)parameters[0];
+                FlowControlViewModel.ControlValues controlValues = (FlowControlViewModel.ControlValues)parameters[1];
+
+                if (controlValues.targetValue != null)
+                {
+                    PLCService.WriteTargetValue(ControllerID, (int)controlValues.targetValue);
+                }
+                if (controlValues.rampTime != null)
+                {
+                    PLCService.WriteRampTime(ControllerID, (int)controlValues.rampTime);
+                }
+            });
+        }
         public string ControllerID
         {
             get { return (string)GetValue(ControllerIDProperty); }
@@ -150,6 +170,7 @@ namespace SapphireXR_App.ViewModels
                     break;
             }
             BorderBackground = ControllerBorderBackground;
+            dataIssuer = ObservableManager<FlowControlViewModel.ControlValues>.Get("FlowControl." +  controllerID + ".TargetValueRampTime.Write");
         });
         public ICommand OnMouseEntered => new RelayCommand(() =>
         {
@@ -159,18 +180,11 @@ namespace SapphireXR_App.ViewModels
         {
             BorderBackground = ControllerBorderBackground;
         });
-
-        public ICommand OnFlowControllerConfirmedCommand = new RelayCommand<object?>((object? parameter) =>
-        {
-            object[] parameters = (object[])parameter!;
-            PopupExResult result = (PopupExResult)parameters[0];
-            FlowControlViewModel.ControlValues controlValues = (FlowControlViewModel.ControlValues)parameters[1];
-        });
-
+        public ICommand OnFlowControllerConfirmedCommand;
         public ICommand OnFlowControllerCanceledCommand = new RelayCommand<PopupExResult>((PopupExResult result) =>
         {
-         
         });
 
+        private ObservableManager<FlowControlViewModel.ControlValues>.DataIssuer? dataIssuer;
     }
 }

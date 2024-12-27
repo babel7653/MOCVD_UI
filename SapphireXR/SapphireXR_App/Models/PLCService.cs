@@ -71,7 +71,10 @@ namespace SapphireXR_App.Models
                 hWriteDeviceMaxValuePLC = Ads.CreateVariableHandle("GVL_IO.aMaxValueController");
                 hReadValveStatePLC1 = Ads.CreateVariableHandle("GVL_IO.aOutputSolValve[1]");
                 hReadValveStatePLC2 = Ads.CreateVariableHandle("GVL_IO.aOutputSolValve[2]");
-                hWriteDeviceTargetValuePLC = Ads.CreateVariableHandle("P30_GasFlowControl.aMFC_TV");
+                hWriteDeviceTargetValuePLC = Ads.CreateVariableHandle("P30_GasFlowControl.aGasController_TV");
+                hWriteDeviceRampTimePLC = Ads.CreateVariableHandle("P30_GasFlowControl.aGasController_RampTime");
+                hReadDeviceCurrentValuePLC = Ads.CreateVariableHandle("P30_GasFlowControl.aGasController_PV");
+                
 
                 ConnectedNotifier.Issue(PLCConnection.Connecrted);
             }
@@ -82,12 +85,14 @@ namespace SapphireXR_App.Models
         }
 
         // Read from PLC State
-        public static uint hReadValveStatePLC1 { get; set; }
-        public static uint hReadValveStatePLC2 { get; set; }
-        public static uint hWriteDeviceMaxValuePLC { get; set; }
-        public static uint hReadFlowControllerControlValuePLC { get; set; }
-        public static uint hReadFlowControllerCurrentValuePLC { get; set; }
-        public static uint hWriteDeviceTargetValuePLC { get; set; }
+        private static uint hReadValveStatePLC1;
+        private static uint hReadValveStatePLC2;
+        private static uint hWriteDeviceMaxValuePLC;
+        private static uint hReadFlowControllerControlValuePLC;
+        private static uint hReadFlowControllerCurrentValuePLC;
+        private static uint hWriteDeviceTargetValuePLC;
+        private static uint hWriteDeviceRampTimePLC;
+        private static uint hReadDeviceCurrentValuePLC;
 
         public static void WriteDeviceMaxValue(List<AnalogDeviceIO>? analogDeviceIOs)
         {

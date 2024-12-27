@@ -14,7 +14,9 @@
         MinWidth="400"
         MinHeight="150"
         Title="FlowControl" Height="250" Width="400"
-        x:Name="FlowControlDialog">
+        x:Name="FlowControlDialog"
+        TextBoxBase.TextChanged="FlowControlDialog_TextChanged"
+        >
 
     <Window.Resources>
         <ResourceDictionary>
@@ -102,7 +104,7 @@
                         FontSize="15"
                         Margin="5"
                         IsDefault="True"
-                        IsEnabled="{Binding IsConfirmButtonEnabled}"
+                        IsEnabled="{Binding IsConfirmButtonEnabled, ElementName=FlowControlDialog}"
                         Style="{StaticResource MetroBlueButtonStyle}"
                         Command="{Binding ConfirmCommand}"
                         CommandParameter="{Binding ElementName=FlowControlDialog}"/>

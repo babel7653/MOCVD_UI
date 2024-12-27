@@ -9,11 +9,16 @@ using System.Windows.Input;
 using SapphireXR_App.Enums;
 using SapphireXR_App.Common;
 using SapphireXR_App.Models;
+using static SapphireXR_App.ViewModels.FlowControlViewModel;
 
 namespace SapphireXR_App.ViewModels
 {
     public class FlowControllerViewModel : DependencyObject, INotifyPropertyChanged
     {
+        static FlowControllerViewModel()
+        {
+            MouseEnterColor = Application.Current.Resources.MergedDictionaries[0]["ValveOnMouseEnterColor"] as SolidColorBrush ?? MouseEnterColor;
+        }
         public FlowControllerViewModel() 
         {
             OnFlowControllerConfirmedCommand = new RelayCommand<object?>((object? parameter) =>
@@ -32,6 +37,31 @@ namespace SapphireXR_App.ViewModels
                 }
             });
         }
+
+        internal class ControlValueSubscriber : IObserver<int>
+        {
+            public ControlValueSubscriber(FlowControllerViewModel viewModel)
+            {
+                flowControllerViewModel = viewModel;
+            }
+            void IObserver<int>.OnCompleted()
+            {
+                throw new NotImplementedException();
+            }
+
+            void IObserver<int>.OnError(Exception error)
+            {
+                throw new NotImplementedException();
+            }
+
+            void IObserver<int>.OnNext(int value)
+            {
+                flowControllerViewModel.ControlValue = value.ToString();
+            }
+
+            private FlowControllerViewModel flowControllerViewModel;
+        }
+
         public string ControllerID
         {
             get { return (string)GetValue(ControllerIDProperty); }
@@ -50,14 +80,17 @@ namespace SapphireXR_App.ViewModels
         public static readonly DependencyProperty TargetValueProperty =
             DependencyProperty.Register("TargetValue", typeof(float), typeof(FlowControllerViewModel), new PropertyMetadata(default));
 
-        public float ControlValue
+        public string ControlValue
         {
-            get { return (float)GetValue(ControlValueProperty); }
-            set { SetValue(ControlValueProperty, value); }
+            get { return (string)GetValue(ControlValueProperty); }
+            set { 
+                SetValue(ControlValueProperty, value);
+                OnPropertyChanged(nameof(ControlValue));
+            }
         }
 
         public static readonly DependencyProperty ControlValueProperty =
-            DependencyProperty.Register("ControlValue", typeof(float), typeof(FlowControllerViewModel), new PropertyMetadata(default));
+            DependencyProperty.Register("ControlValue", typeof(string), typeof(FlowControllerViewModel), new PropertyMetadata(default));
 
         public float CurrentValue
         {
@@ -101,7 +134,6 @@ namespace SapphireXR_App.ViewModels
         public readonly DependencyProperty typeProperty =
             DependencyProperty.Register("TypeProperty" + (TypeCount++), typeof(string), typeof(FlowControllerViewModel), new PropertyMetadata(""));
 
-        static private bool SetMouseEnterColor = false;
         public static SolidColorBrush MouseEnterColor
         {
             get; set;
@@ -142,19 +174,13 @@ namespace SapphireXR_App.ViewModels
             }
 
             string controllerID = (string)((object[])param)[1];
-            if(controllerID != string.Empty)
+            if (controllerID != string.Empty)
             {
                 ControllerID = controllerID;
             }
             else
             {
                 throw new Exception("ControllerID property of FlowController not set");
-            }
-
-            if (SetMouseEnterColor == false)
-            {
-                MouseEnterColor = Application.Current.Resources.MergedDictionaries[0]["ValeOnMouseEnterColor"] as SolidColorBrush ?? MouseEnterColor;
-                SetMouseEnterColor = true;
             }
 
             switch (Type)
@@ -170,7 +196,9 @@ namespace SapphireXR_App.ViewModels
                     break;
             }
             BorderBackground = ControllerBorderBackground;
-            dataIssuer = ObservableManager<FlowControlViewModel.ControlValues>.Get("FlowControl." +  controllerID + ".TargetValueRampTime.Write");
+
+            controlValueSubscriber = new ControlValueSubscriber(this);
+            ObservableManager<int>.Subscribe("FlowControl." + controllerID + ".ControlValue", controlValueSubscriber);
         });
         public ICommand OnMouseEntered => new RelayCommand(() =>
         {
@@ -185,6 +213,6 @@ namespace SapphireXR_App.ViewModels
         {
         });
 
-        private ObservableManager<FlowControlViewModel.ControlValues>.DataIssuer? dataIssuer;
+        private ControlValueSubscriber? controlValueSubscriber;
     }
 }

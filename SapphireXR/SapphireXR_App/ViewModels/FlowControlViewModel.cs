@@ -36,8 +36,6 @@ namespace SapphireXR_App.ViewModels
         private int _maxValue;
         [ObservableProperty]
         private SolidColorBrush _fontColor = new SolidColorBrush(Colors.Black);
-        [ObservableProperty]
-        private bool isConfirmButtonEnabled;
 
         public PopupExResult PopupExResult { get; internal set; } = PopupExResult.Close;
 
@@ -140,7 +138,6 @@ namespace SapphireXR_App.ViewModels
             ControlValue = string.Empty;
             MaxValue = (int)PLCService.ReadMaxValue(fcID);
             FontColor = OnNormal;
-            IsConfirmButtonEnabled = false;
             PropertyChanged += (object? sender, PropertyChangedEventArgs e) =>
             {
                 if(e.PropertyName == "CurrentValue" || e.PropertyName == "ControlValue")
@@ -149,11 +146,6 @@ namespace SapphireXR_App.ViewModels
                     {
                         Deviation = ((int)(((float)(Math.Abs(int.Parse(CurrentValue) - int.Parse(ControlValue))) / ((float)MaxValue)) * 100.0)).ToString();
                     }
-                } 
-                else
-                 if(e.PropertyName == "TargetValue" || e.PropertyName == "RampTime")
-                {
-                    IsConfirmButtonEnabled = !string.IsNullOrEmpty(TargetValue) && !string.IsNullOrEmpty(RampTime);
                 }
             };
             controlValueSubscriber = new ControlValueSubscriber(this);

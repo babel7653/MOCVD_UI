@@ -62,6 +62,30 @@ namespace SapphireXR_App.ViewModels
             private FlowControllerViewModel flowControllerViewModel;
         }
 
+        internal class CurrentValueSubscriber : IObserver<float>
+        {
+            public CurrentValueSubscriber(FlowControllerViewModel viewModel)
+            {
+                flowControllerViewModel = viewModel;
+            }
+            void IObserver<float>.OnCompleted()
+            {
+                throw new NotImplementedException();
+            }
+
+            void IObserver<float>.OnError(Exception error)
+            {
+                throw new NotImplementedException();
+            }
+
+            void IObserver<float>.OnNext(float value)
+            {
+                flowControllerViewModel.CurrentValue = value.ToString();
+            }
+
+            private FlowControllerViewModel flowControllerViewModel;
+        }
+
         public string ControllerID
         {
             get { return (string)GetValue(ControllerIDProperty); }
@@ -92,14 +116,14 @@ namespace SapphireXR_App.ViewModels
         public static readonly DependencyProperty ControlValueProperty =
             DependencyProperty.Register("ControlValue", typeof(string), typeof(FlowControllerViewModel), new PropertyMetadata(default));
 
-        public float CurrentValue
+        public string CurrentValue
         {
-            get { return (float)GetValue(CurrentValueProperty); }
+            get { return (string)GetValue(CurrentValueProperty); }
             set { SetValue(CurrentValueProperty, value); }
         }
 
         public static readonly DependencyProperty CurrentValueProperty =
-            DependencyProperty.Register("CurrentValue", typeof(float), typeof(FlowControllerViewModel), new PropertyMetadata(default));
+            DependencyProperty.Register("CurrentValue", typeof(string), typeof(FlowControllerViewModel), new PropertyMetadata(default));
 
         public string buttonBackground
         {
@@ -197,8 +221,8 @@ namespace SapphireXR_App.ViewModels
             }
             BorderBackground = ControllerBorderBackground;
 
-            controlValueSubscriber = new ControlValueSubscriber(this);
-            ObservableManager<int>.Subscribe("FlowControl." + controllerID + ".ControlValue", controlValueSubscriber);
+            ObservableManager<int>.Subscribe("FlowControl." + controllerID + ".ControlValue", controlValueSubscriber = new ControlValueSubscriber(this));
+            ObservableManager<float>.Subscribe("FlowControl." + controllerID + ".CurrentValue", currentValueSubscriber = new CurrentValueSubscriber(this));
         });
         public ICommand OnMouseEntered => new RelayCommand(() =>
         {
@@ -214,5 +238,6 @@ namespace SapphireXR_App.ViewModels
         });
 
         private ControlValueSubscriber? controlValueSubscriber;
+        private CurrentValueSubscriber? currentValueSubscriber;
     }
 }

@@ -63,9 +63,9 @@ namespace SapphireXR_App.ViewModels
             private FlowControlViewModel flowControlViewModel;
         }
 
-        internal class CurrwentValueSubscriber : IObserver<int>
+        internal class CurrentValueSubscriber : IObserver<int>
         {
-            public CurrwentValueSubscriber(FlowControlViewModel viewModel)
+            public CurrentValueSubscriber(FlowControlViewModel viewModel)
             {
                 flowControlViewModel = viewModel;
             }
@@ -149,8 +149,8 @@ namespace SapphireXR_App.ViewModels
                 }
             };
             controlValueSubscriber = new ControlValueSubscriber(this);
-            currwentValueSubscriber = new CurrwentValueSubscriber(this);
-            currentValueSubscriberDisposable = ObservableManager<int>.Subscribe("FlowControl." + fcID + ".CurrentValue", currwentValueSubscriber);
+            currentValueSubscriber = new CurrentValueSubscriber(this);
+            currentValueSubscriberDisposable = ObservableManager<int>.Subscribe("FlowControl." + fcID + ".CurrentValue", currentValueSubscriber);
             controlValueSubscriberDisposable = ObservableManager<int>.Subscribe("FlowControl." + fcID + ".ControlValue", controlValueSubscriber);
         }
 
@@ -169,7 +169,7 @@ namespace SapphireXR_App.ViewModels
         private static readonly SolidColorBrush OnNormal = new SolidColorBrush(Colors.Red);
 
         private ControlValueSubscriber controlValueSubscriber;
-        private CurrwentValueSubscriber currwentValueSubscriber;
+        private CurrentValueSubscriber currentValueSubscriber;
         private IDisposable currentValueSubscriberDisposable;
         private IDisposable controlValueSubscriberDisposable;
     }

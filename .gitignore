@@ -14,4 +14,17 @@
 /SapphireXR_Test/SapphireXR_App/SapphireXR_App.csproj.user
 /SapphireXR/SapphireXR.~u
 /SapphireXR/SapphireXR.tsproj.bak
-/SapphireXR/Port_851.ocm
+/SapphireXR/_Boot/CurrentConfig/PLC_MR.tpzip
+/SapphireXR/_Boot/TwinCAT RT (x64)/CurrentConfig/PLC_MR.tpzip
+/SapphireXR/_Boot/TwinCAT RT (x64)/Plc/Port_851.cid
+/SapphireXR/_Boot/TwinCAT RT (x64)/Plc/Port_851.occ
+/SapphireXR/_Boot/TwinCAT RT (x64)/CurrentConfig.tszip
+/SapphireXR/_Boot/TwinCAT RT (x64)/CurrentConfig.xml
+/SapphireXR/_Boot/TargetDescription.xml
+/SapphireXR/PLC_MR/PLC_MR.tmc
+/SapphireXR/PLC_MR/POUs/MAIN.TcPOU
+/SapphireXR/PLC_MR/POUs/MAIN.TcPOU
+/SapphireXR/PLC_MR/GVLs/GVL_IO.TcGVL
+/SapphireXR/PLC_MR/GVLs/GVL_IO.TcGVL
+/SapphireXR/PLC_MR/POUs/MAIN.TcPOU
+/SapphireXR/PLC_MR/POUs/P30_GasFlowControl.TcPOU

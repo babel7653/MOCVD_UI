@@ -3,19 +3,6 @@
 ################################################################################
 
 /.vs
-/SampleTest/.vs
-/SampleTest/CustomDialog_V4/.vs/CustomDialogSample1/FileContentIndex
-/SampleTest/CustomDialog_V4/obj/Debug/net8.0-windows
-/SampleTest/CustomDialog_V4/obj/Release/net8.0-windows/.NETCoreApp,Version=v8.0.AssemblyAttributes.cs
-/SampleTest/CustomDialog_V4/obj/Release/net8.0-windows/App.g.cs
-/SampleTest/CustomDialog_V4/obj/Release/net8.0-windows/CustomDialogSample1.AssemblyInfo.cs
-/SampleTest/CustomDialog_V4/obj/Release/net8.0-windows/CustomDialogSample1.AssemblyInfoInputs.cache
-/SampleTest/CustomDialog_V4/obj/Release/net8.0-windows/CustomDialogSample1.GeneratedMSBuildEditorConfig.editorconfig
-/SampleTest/CustomDialog_V4/obj/Release/net8.0-windows/CustomDialogSample1.GlobalUsings.g.cs
-/SampleTest/CustomDialog_V4/obj/Release/net8.0-windows/CustomDialogSample1_MarkupCompile.cache
-/SampleTest/CustomDialog_V4/obj/Release/net8.0-windows/CustomDialogSample1_MarkupCompile.lref
-/SampleTest/CustomDialog_V4/obj/Release/net8.0-windows/GeneratedInternalTypeHelper.g.cs
-/SampleTest/CustomDialog_V4/obj/Release/net8.0-windows/MainWindow.g.cs
 /SapphireXR/.vs/
 /SapphireXR/SapphireXR_App/bin/
 /SapphireXR/SapphireXR_App/obj/
@@ -27,11 +14,4 @@
 /SapphireXR_Test/SapphireXR_App/SapphireXR_App.csproj.user
 /SapphireXR/SapphireXR.~u
 /SapphireXR/SapphireXR.tsproj.bak
-/SapphireXR/_Boot/CurrentConfig/PLC_MR.tpzip
-/SapphireXR/_Boot/TwinCAT RT (x64)/CurrentConfig/PLC_MR.tpzip
-/SapphireXR/_Boot/TwinCAT RT (x64)/Plc/Port_851.cid
-/SapphireXR/_Boot/TwinCAT RT (x64)/Plc/Port_851.occ
-/SapphireXR/_Boot/TwinCAT RT (x64)/CurrentConfig.tszip
-/SapphireXR/_Boot/TwinCAT RT (x64)/CurrentConfig.xml
-/SapphireXR/_Boot/TargetDescription.xml
-/SapphireXR/PLC_MR/PLC_MR.tmc
+/SapphireXR/Port_851.ocm

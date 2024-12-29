@@ -35,3 +35,6 @@
 /SapphireXR/_Boot/TwinCAT RT (x64)/CurrentConfig.xml
 /SapphireXR/_Boot/TargetDescription.xml
 /SapphireXR/PLC_MR/PLC_MR.tmc
+/SapphireXR/PLC_MR/POUs/MAIN.TcPOU
+/SapphireXR/PLC_MR/POUs/MAIN.TcPOU
+/SapphireXR/PLC_MR/GVLs/GVL_IO.TcGVL

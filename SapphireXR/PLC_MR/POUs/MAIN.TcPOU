@@ -29,9 +29,6 @@ VAR
 	bMaintKey			: BOOL;
 	RecipeNumber		: INT;
 
-	bTest1 : DWORD;
-	bTest2 : DWORD;
-	
 	aMaxValue	: ARRAY[1..29]OF REAL ;
 END_VAR
 ]]></Declaration>
@@ -58,11 +55,7 @@ P90_Interlock();
 P91_Monitoring();
 P92_Maintenance();
 
-//값 확인 
-bTest1 := GVL_IO.aOutputSolValve[1];
-bTest2 := GVL_IO.aOutputSolValve[2];
-aMaxValue[1] := GVL_IO.aMaxValueController[1];
-aMaxValue[29] := GVL_IO.aMaxValueController[29];
+
 // RecipeNumber := GVL_IO.NumOfRecipe;
 // 
 // IF RecipeStart AND P90_Interlock.bRecipeEnable THEN
@@ -94,12 +87,7 @@ aMaxValue[29] := GVL_IO.aMaxValueController[29];
       <LineId Id="345" Count="0" />
       <LineId Id="282" Count="1" />
       <LineId Id="291" Count="0" />
-      <LineId Id="360" Count="0" />
-      <LineId Id="354" Count="0" />
-      <LineId Id="333" Count="0" />
-      <LineId Id="356" Count="0" />
-      <LineId Id="359" Count="0" />
-      <LineId Id="361" Count="0" />
+      <LineId Id="360" Count="1" />
       <LineId Id="332" Count="0" />
       <LineId Id="323" Count="0" />
       <LineId Id="313" Count="0" />

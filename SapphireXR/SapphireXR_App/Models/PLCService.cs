@@ -26,9 +26,9 @@ namespace SapphireXR_App.Models
         private static BitArray? baReadValveStatePLC2;
         private static float[]? aDeviceMaxValue;
         private static float[]? aDeviceTargetValues;
-        private static int[]? aDeviceCurrentValues;
-        private static int[]? aDeviceControlValues;
-        private static Int16[]? aDeviceRampTimes;
+        private static short[]? aDeviceCurrentValues;
+        private static short[]? aDeviceControlValues;
+        private static short[]? aDeviceRampTimes;
         private static Dictionary<string, ObservableManager<int>.DataIssuer>? dCurrentValueIssuers;
         private static Dictionary<string, ObservableManager<int>.DataIssuer>? dControlValueIssuers;
 
@@ -64,7 +64,7 @@ namespace SapphireXR_App.Models
                 TcStatePLC = (bool)Ads.ReadAny(hStatePLC, typeof(bool));
                 AddressPLC = $"PLC Address : {Ads.Address}";
                 ModePLC = "System Mode : Ready";
-                //Read Current Value from PLC 
+                //Read Set Value from PLC 
                 hDeviceControlValuePLC = Ads.CreateVariableHandle("P30_GasFlowControl.aGasController_SV");
                 //Read Present Value from Device of PLC
                 hDeviceCurrentValuePLC = Ads.CreateVariableHandle("P30_GasFlowControl.aGasController_PV");
@@ -76,7 +76,7 @@ namespace SapphireXR_App.Models
                 hWriteDeviceTargetValuePLC = Ads.CreateVariableHandle("P30_GasFlowControl.aGasController_TV");
                 hWriteDeviceRampTimePLC = Ads.CreateVariableHandle("P30_GasFlowControl.aGasController_RampTime");
 
-                aDeviceRampTimes = new Int16[dIndexFlowController.Count];
+                aDeviceRampTimes = new short[dIndexFlowController.Count];
                 aDeviceTargetValues = new float[dIndexFlowController.Count];
 
                 ConnectedNotifier.Issue(PLCConnection.Connecrted);
@@ -131,14 +131,14 @@ namespace SapphireXR_App.Models
             }
 
             timer = new DispatcherTimer();
-            timer.Interval = new TimeSpan(5000000);
+            timer.Interval = new TimeSpan(2000000);
             timer.Tick += OnTick;
             timer.Start();
         }
 
         public static void ReadMaxValueFromPLC()
         {
-            aDeviceMaxValue = Ads.ReadAny<float[]>(hDeviceMaxValuePLC, [29]);
+            aDeviceMaxValue = Ads.ReadAny<float[]>(hDeviceMaxValuePLC, [26]);
         }
 
         public static float ReadMaxValue(string flowControlID)
@@ -189,8 +189,8 @@ namespace SapphireXR_App.Models
 
         private static void ReadCurrentValueFromPLC()
         {
-            aDeviceCurrentValues = Ads.ReadAny<int[]>(hDeviceCurrentValuePLC, [26]);
-            aDeviceControlValues = Ads.ReadAny<int[]>(hDeviceControlValuePLC, [26]);
+            aDeviceCurrentValues = Ads.ReadAny<short[]>(hDeviceCurrentValuePLC, [26]);
+            aDeviceControlValues = Ads.ReadAny<short[]>(hDeviceControlValuePLC, [26]);
         }
 
         public static bool ReadValveState(string valveID)
@@ -251,17 +251,22 @@ namespace SapphireXR_App.Models
                     throw new Exception("AnalogDeviceIO is null in WriteDeviceMaxValue");
                 }
 
-                float[] maxValue = new float[29];
+                float[] maxValue = new float[26];
                 uint index = 0;
+                uint count = 1;
                 foreach (AnalogDeviceIO entry in analogDeviceIOs)
                 {
                     if (entry.ID == null)
                     {
                         throw new Exception("entry ID is null for AnalogDeviceIO");
                     }
-                    maxValue[index++] = entry.MaxValue;
+                    if (count > 3)
+                    {
+                        maxValue[index++] = entry.MaxValue;
+                    }
+                    count++;
                 }
-                Ads.WriteAny(hDeviceMaxValuePLC, maxValue, [29]);
+                Ads.WriteAny(hDeviceMaxValuePLC, maxValue, [26]);
                 // List Analog Device Input / Output
             }
             catch (Exception ex)
@@ -305,13 +310,14 @@ namespace SapphireXR_App.Models
             { "V52", 25 }, { "V53", 26 }
         };
 
-        public static Dictionary<string, int> dIndexFlowController = new Dictionary<string, int> {
-           
-            { "MFC01", 3 }, { "MFC02", 4 }, { "MFC03", 5 }, { "MFC04", 6 }, { "MFC05", 7 },
-            { "MFC06", 8 }, { "MFC07", 9 }, { "MFC08", 10 }, { "MFC09", 11 }, { "MFC10", 12 }, 
-            { "MFC11", 13 }, { "MFC12", 14 }, { "MFC13", 15 }, { "MFC14", 16 }, { "MFC15", 17 },
-            { "MFC16", 18 }, { "MFC17", 19 }, { "MFC18", 20 }, { "MFC19", 21 },
-            { "EPC01", 22 },  { "EPC02", 23 }, { "EPC03", 24 }, { "EPC04", 25 }, 
+        public static Dictionary<string, int> dIndexFlowController = new Dictionary<string, int>
+        {
+            { "MFC01", 0 }, { "MFC02", 1 }, { "MFC03", 2 }, { "MFC04", 3 }, { "MFC05", 4 },
+            { "MFC06", 5 }, { "MFC07", 6 }, { "MFC08", 7 }, { "MFC09", 8 }, { "MFC10", 9 }, 
+            { "MFC11", 10 }, { "MFC12", 11 }, { "MFC13", 12 }, { "MFC14", 13 }, { "MFC15", 14 },
+            { "MFC16", 15 }, { "MFC17", 16 }, { "MFC18", 17 }, { "MFC19", 18 },
+            { "EPC01", 19 },  { "EPC02", 20 }, { "EPC03", 21 }, { "EPC04", 22 }, { "EPC05", 23 },
+            { "EPC06", 24 }, { "EPC07", 25 }
         };
     }
 }

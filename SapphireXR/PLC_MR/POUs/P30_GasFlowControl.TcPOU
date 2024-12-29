@@ -10,7 +10,6 @@ VAR
 	aGasController_SV : ARRAY[1..26] OF INT; //Current Value from RampingController
 
 	i 	: INT;
-	j 	: INT;
 
 END_VAR
 
@@ -26,17 +25,17 @@ END_VAR]]></Declaration>
 
 (* Read from Device*)
 FOR i:=1 TO 26 DO
-	j := i + 3; //Offset Max Value Index
-	IF GVL_IO.aMaxValueController[j] <> 0 THEN
+	IF GVL_IO.aMaxValueController[i] <> 0 THEN
 		aGasController[i].nState := 1;
 		aGasController[i].nRampTime := aGasController_RampTime[i];
-		aGasController[i].rTargetValue := aGasController_TV[i] / GVL_IO.aMaxValueController[j] * KL3464MaxValueH; //Input Set Value
-		GVL_IO.aAnalogOutputIO[j] := LREAL_TO_INT(aGasController[i].rControlValue); //Write to Device
+		aGasController[i].rTargetValue := aGasController_TV[i] / GVL_IO.aMaxValueController[i] * KL3464MaxValueH; //Input Set Value
+		GVL_IO.aAnalogOutputIO[i] := LREAL_TO_INT(aGasController[i].rControlValue); //Write to Device
 		
-		aGasController_PV[i] := REAL_TO_INT(GVL_IO.aAnalogInputIO[j] / KL3464MaxValueH * GVL_IO.aMaxValueController[j]);
-		aGasController_SV[i] := REAL_TO_INT(aGasController[i].rControlValue * GVL_IO.aMaxValueController[j]);
+		aGasController_PV[i] := REAL_TO_INT(GVL_IO.aAnalogInputIO[i] / KL3464MaxValueH * GVL_IO.aMaxValueController[i]);
+		aGasController_SV[i] := LREAL_TO_INT((aGasController[i].rControlValue / KL3464MaxValueH)*GVL_IO.aMaxValueController[i]);
 		aGasController[i]();
 	END_IF
+
 END_FOR
 ]]></ST>
     </Implementation>
@@ -44,11 +43,13 @@ END_FOR
       <LineId Id="14" Count="1" />
       <LineId Id="22" Count="0" />
       <LineId Id="55" Count="1" />
-      <LineId Id="23" Count="1" />
-      <LineId Id="67" Count="0" />
+      <LineId Id="23" Count="0" />
+      <LineId Id="71" Count="0" />
       <LineId Id="25" Count="6" />
       <LineId Id="68" Count="0" />
-      <LineId Id="32" Count="2" />
+      <LineId Id="32" Count="1" />
+      <LineId Id="70" Count="0" />
+      <LineId Id="34" Count="0" />
       <LineId Id="48" Count="0" />
     </LineIds>
   </POU>

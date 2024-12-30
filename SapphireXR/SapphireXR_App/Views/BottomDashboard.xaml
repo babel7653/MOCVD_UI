@@ -4,6 +4,7 @@
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:SapphireXR_App.Views"
+      xmlns:oxy="http://oxyplot.org/wpf"
       mc:Ignorable="d" 
       d:DesignHeight="240" d:DesignWidth="1320"
       Title="BottomDashboard">
@@ -16,6 +17,7 @@
                 <RowDefinition Height="20"/>
                 <RowDefinition/>
             </Grid.RowDefinitions>
+        <Grid Grid.Row="0">
             <StackPanel Grid.Row="0" Grid.Column="0" Orientation="Horizontal">
                 <ComboBox x:Name="cmbPlotItem" SelectedIndex="0">
                     <ComboBoxItem Content="Recipe"/>
@@ -23,5 +25,17 @@
                 </ComboBox>
                 <Button Content="Read" Width="70"/>
             </StackPanel>
+        </Grid>
+        <Grid Grid.Row="1" Grid.ColumnSpan="2">
+            <!-- Recipe Live chart -->
+            <oxy:PlotView x:Name="RecipeLive" Model="{Binding RecipeLivePlot}">
+                <oxy:PlotView.ContextMenu>
+                    <ContextMenu>
+                        <MenuItem/>
+                        <MenuItem/>
+                    </ContextMenu>
+                </oxy:PlotView.ContextMenu>
+            </oxy:PlotView>
+        </Grid>
     </Grid> 
 </Page>

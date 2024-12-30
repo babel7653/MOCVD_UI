@@ -1,9 +1,6 @@
 ﻿using SapphireXR_App.Common;
 using SapphireXR_App.Enums;
-using SapphireXR_App.ViewModels;
 using System.Collections;
-using System.Reactive.Linq;
-using System.Security.Permissions;
 using System.Windows;
 using System.Windows.Threading;
 using TwinCAT.Ads;
@@ -25,15 +22,15 @@ namespace SapphireXR_App.Models
         static uint hStatePLC = 0;
         public static bool TcStatePLC { get; set; }
 
-        private static BitArray? BaReadValveStatePLC1;
-        private static BitArray? BaReadValveStatePLC2;
-        private static float[]? BaMaxValue;
-        private static float[]? BaTargetValues;
-        private static int[]? CurrentValues;
-        private static int[]? ControlValues;
-        private static Int16[]? BaRampTimes;
-        private static Dictionary<string, ObservableManager<int>.DataIssuer>? CurrentValueIssuers;
-        private static Dictionary<string, ObservableManager<int>.DataIssuer>? ControlValueIssuers;
+        private static BitArray? baReadValveStatePLC1;
+        private static BitArray? baReadValveStatePLC2;
+        private static float[]? aDeviceMaxValue;
+        private static float[]? aDeviceTargetValues;
+        private static short[]? aDeviceCurrentValues;
+        private static short[]? aDeviceControlValues;
+        private static short[]? aDeviceRampTimes;
+        private static Dictionary<string, ObservableManager<int>.DataIssuer>? dCurrentValueIssuers;
+        private static Dictionary<string, ObservableManager<int>.DataIssuer>? dControlValueIssuers;
 
 
         //Create an instance of the TcAdsClient()
@@ -67,18 +64,20 @@ namespace SapphireXR_App.Models
                 TcStatePLC = (bool)Ads.ReadAny(hStatePLC, typeof(bool));
                 AddressPLC = $"PLC Address : {Ads.Address}";
                 ModePLC = "System Mode : Ready";
+                //Read Set Value from PLC 
+                hDeviceControlValuePLC = Ads.CreateVariableHandle("P30_GasFlowControl.aGasController_SV");
+                //Read Present Value from Device of PLC
+                hDeviceCurrentValuePLC = Ads.CreateVariableHandle("P30_GasFlowControl.aGasController_PV");
+                //Read and Write Max Value of PLC 
+                hDeviceMaxValuePLC = Ads.CreateVariableHandle("GVL_IO.aMaxValueController");
 
-                hReadFlowControllerControlValuePLC = Ads.CreateVariableHandle("GVL_IO.aAnalogOutputIO");
-                hReadFlowControllerCurrentValuePLC = Ads.CreateVariableHandle("GVL_IO.aAnalogInputIO");
-                hWriteDeviceMaxValuePLC = Ads.CreateVariableHandle("GVL_IO.aMaxValueController");
                 hReadValveStatePLC1 = Ads.CreateVariableHandle("GVL_IO.aOutputSolValve[1]");
                 hReadValveStatePLC2 = Ads.CreateVariableHandle("GVL_IO.aOutputSolValve[2]");
                 hWriteDeviceTargetValuePLC = Ads.CreateVariableHandle("P30_GasFlowControl.aGasController_TV");
                 hWriteDeviceRampTimePLC = Ads.CreateVariableHandle("P30_GasFlowControl.aGasController_RampTime");
-                hReadDeviceCurrentValuePLC = Ads.CreateVariableHandle("P30_GasFlowControl.aGasController_PV");
 
-                BaRampTimes = new Int16[FlowControltoIdx.Count];
-                BaTargetValues = new float[FlowControltoIdx.Count];
+                aDeviceRampTimes = new short[dIndexFlowController.Count];
+                aDeviceTargetValues = new float[dIndexFlowController.Count];
 
                 ConnectedNotifier.Issue(PLCConnection.Connecrted);
             }
@@ -91,13 +90,12 @@ namespace SapphireXR_App.Models
         // Read from PLC State
         private static uint hReadValveStatePLC1;
         private static uint hReadValveStatePLC2;
-        private static uint hWriteDeviceMaxValuePLC;
-        private static uint hReadFlowControllerControlValuePLC;
-        private static uint hReadFlowControllerCurrentValuePLC;
+        private static uint hDeviceMaxValuePLC;
+        private static uint hDeviceControlValuePLC;
+        private static uint hDeviceCurrentValuePLC;
         private static uint hWriteDeviceTargetValuePLC;
         private static uint hWriteDeviceRampTimePLC;
-        private static uint hReadDeviceCurrentValuePLC;
-
+        
         public static void ReadValveStateFromPLC()
         {
             // Solenoid Valve State Read(Update)
@@ -106,8 +104,8 @@ namespace SapphireXR_App.Models
                 uint aReadValveStatePLC1 = (uint)Ads.ReadAny(hReadValveStatePLC1, typeof(uint)); // Convert to Array
                 uint aReadValveStatePLC2 = (uint)Ads.ReadAny(hReadValveStatePLC2, typeof(uint)); // Convert to Array
                 
-                BaReadValveStatePLC1 = new BitArray(new int[] { (int)aReadValveStatePLC1 });
-                BaReadValveStatePLC2 = new BitArray(new int[] { (int)aReadValveStatePLC2 });
+                baReadValveStatePLC1 = new BitArray(new int[] { (int)aReadValveStatePLC1 });
+                baReadValveStatePLC2 = new BitArray(new int[] { (int)aReadValveStatePLC2 });
             }
             catch (Exception ex)
             {
@@ -119,69 +117,69 @@ namespace SapphireXR_App.Models
         {
             ReadValveStateFromPLC();
             ReadMaxValueFromPLC();
-            ReadFlowControlStateFromPLC();
+            ReadCurrentValueFromPLC();
 
-            CurrentValueIssuers = new Dictionary<string, ObservableManager<int>.DataIssuer>();
-            foreach (KeyValuePair<string, int> kv in FlowControltoIdx)
+            dCurrentValueIssuers = new Dictionary<string, ObservableManager<int>.DataIssuer>();
+            foreach (KeyValuePair<string, int> kv in dIndexFlowController)
             {
-                CurrentValueIssuers.Add(kv.Key, ObservableManager<int>.Get("FlowControl." + kv.Key + ".CurrentValue"));
+                dCurrentValueIssuers.Add(kv.Key, ObservableManager<int>.Get("FlowControl." + kv.Key + ".CurrentValue"));
             }
-            ControlValueIssuers = new Dictionary<string, ObservableManager<int>.DataIssuer>();
-            foreach (KeyValuePair<string, int> kv in FlowControltoIdx)
+            dControlValueIssuers = new Dictionary<string, ObservableManager<int>.DataIssuer>();
+            foreach (KeyValuePair<string, int> kv in dIndexFlowController)
             {
-                ControlValueIssuers.Add(kv.Key, ObservableManager<int>.Get("FlowControl." + kv.Key + ".ControlValue"));
+                dControlValueIssuers.Add(kv.Key, ObservableManager<int>.Get("FlowControl." + kv.Key + ".ControlValue"));
             }
 
             timer = new DispatcherTimer();
-            timer.Interval = new TimeSpan(5000000);
+            timer.Interval = new TimeSpan(2000000);
             timer.Tick += OnTick;
             timer.Start();
         }
 
         public static void ReadMaxValueFromPLC()
         {
-            BaMaxValue = Ads.ReadAny<float[]>(hWriteDeviceMaxValuePLC, [29]);
+            aDeviceMaxValue = Ads.ReadAny<float[]>(hDeviceMaxValuePLC, [26]);
         }
 
         public static float ReadMaxValue(string flowControlID)
         {
-            if(BaMaxValue == null)
+            if(aDeviceMaxValue == null)
             {
-                throw new Exception("BaMaxValue is null in ReadMaxValue(), WriteDeviceMaxValue() must be called before");
+                throw new Exception("aDeviceMaxValue is null in ReadMaxValue(), WriteDeviceMaxValue() must be called before");
             }
-            return BaMaxValue[FlowControltoIdx[flowControlID]];
+            return aDeviceMaxValue[dIndexFlowController[flowControlID]];
         }
 
         private static void OnTick(object? sender, EventArgs e)
         {
-            ReadFlowControlStateFromPLC();
-            if (ControlValues != null)
+            ReadCurrentValueFromPLC();
+            if (aDeviceControlValues != null)
             {
-                foreach (KeyValuePair<string, int> kv in FlowControltoIdx)
+                foreach (KeyValuePair<string, int> kv in dIndexFlowController)
                 {
-                    ControlValueIssuers?[kv.Key].Issue(ControlValues[FlowControltoIdx[kv.Key]]);
+                    dControlValueIssuers?[kv.Key].Issue(aDeviceControlValues[dIndexFlowController[kv.Key]]);
                 }
             }
-            if (CurrentValues != null)
+            if (aDeviceCurrentValues != null)
             {
-                foreach (KeyValuePair<string, int> kv in FlowControltoIdx)
+                foreach (KeyValuePair<string, int> kv in dIndexFlowController)
                 {
-                    CurrentValueIssuers?[kv.Key].Issue(CurrentValues[FlowControltoIdx[kv.Key]]);
+                    dCurrentValueIssuers?[kv.Key].Issue(aDeviceCurrentValues[dIndexFlowController[kv.Key]]);
                 }
             }
 
             string expcetionStr = string.Empty;
-            if(ControlValues == null)
+            if(aDeviceControlValues == null)
             {
-                expcetionStr += "ControlValues is null in OnTick PLCService";
+                expcetionStr += "aDeviceControlValues is null in OnTick PLCService";
             }
-            if(CurrentValues == null)
+            if(aDeviceCurrentValues == null)
             {
                 if(expcetionStr != string.Empty)
                 {
                     expcetionStr += "\r\n";
                 }
-                expcetionStr += "CurrentValues is null in OnTick PLCService";
+                expcetionStr += "aDeviceCurrentValues is null in OnTick PLCService";
             }
             if(expcetionStr != string.Empty)
             {
@@ -189,10 +187,10 @@ namespace SapphireXR_App.Models
             }
         }
 
-        private static void ReadFlowControlStateFromPLC()
+        private static void ReadCurrentValueFromPLC()
         {
-            CurrentValues = Ads.ReadAny<int[]>(hReadFlowControllerCurrentValuePLC, [40]);
-            ControlValues = Ads.ReadAny<int[]>(hReadFlowControllerControlValuePLC, [28]);
+            aDeviceCurrentValues = Ads.ReadAny<short[]>(hDeviceCurrentValuePLC, [26]);
+            aDeviceControlValues = Ads.ReadAny<short[]>(hDeviceControlValuePLC, [26]);
         }
 
         public static bool ReadValveState(string valveID)
@@ -216,25 +214,25 @@ namespace SapphireXR_App.Models
             int index = -1;
             if (ValveIDtoOutputSolValveIdx1.TryGetValue(valveID, out index) == true)
             {
-                if (BaReadValveStatePLC1 == null)
+                if (baReadValveStatePLC1 == null)
                 {
                     throw new ReadValveStateException("PLC Service: BaReadValveStatePLC1 accessed without initialization \r\n Call ReadValveStateFromPLC first");
                 }
                 else
                 {
-                    return (BaReadValveStatePLC1, index, hReadValveStatePLC1);
+                    return (baReadValveStatePLC1, index, hReadValveStatePLC1);
                 }
             }
             else
                 if (ValveIDtoOutputSolValveIdx2.TryGetValue(valveID, out index) == true)
             {
-                if (BaReadValveStatePLC2 == null)
+                if (baReadValveStatePLC2 == null)
                 {
-                    throw new ReadValveStateException("PLC Service: BaReadValveStatePLC1 accessed without initialization \r\n Call ReadValveStateFromPLC first");
+                    throw new ReadValveStateException("PLC Service: baReadValveStatePLC1 accessed without initialization \r\n Call ReadValveStateFromPLC first");
                 }
                 else
                 {
-                    return (BaReadValveStatePLC2, index, hReadValveStatePLC2);
+                    return (baReadValveStatePLC2, index, hReadValveStatePLC2);
                 }
             }
             else
@@ -253,17 +251,22 @@ namespace SapphireXR_App.Models
                     throw new Exception("AnalogDeviceIO is null in WriteDeviceMaxValue");
                 }
 
-                float[] maxValue = new float[29];
+                float[] maxValue = new float[26];
                 uint index = 0;
+                uint count = 1;
                 foreach (AnalogDeviceIO entry in analogDeviceIOs)
                 {
                     if (entry.ID == null)
                     {
                         throw new Exception("entry ID is null for AnalogDeviceIO");
                     }
-                    maxValue[index++] = entry.MaxValue;
+                    if (count > 3)
+                    {
+                        maxValue[index++] = entry.MaxValue;
+                    }
+                    count++;
                 }
-                Ads.WriteAny(hWriteDeviceMaxValuePLC, maxValue, [29]);
+                Ads.WriteAny(hDeviceMaxValuePLC, maxValue, [26]);
                 // List Analog Device Input / Output
             }
             catch (Exception ex)
@@ -274,14 +277,14 @@ namespace SapphireXR_App.Models
 
         public static void WriteTargetValue(string flowControllerID, int targetValue)
         {
-            BaTargetValues![FlowControltoIdx[flowControllerID]] = (float)targetValue;
-            Ads.WriteAny(hWriteDeviceTargetValuePLC, BaTargetValues!, [BaTargetValues!.Length]);
+            aDeviceTargetValues![dIndexFlowController[flowControllerID]] = (float)targetValue;
+            Ads.WriteAny(hWriteDeviceTargetValuePLC, aDeviceTargetValues!, [aDeviceTargetValues!.Length]);
         }
 
         public static void WriteRampTime(string flowControllerID, Int16 currentValue)
         {
-            BaRampTimes![FlowControltoIdx[flowControllerID]] = currentValue;
-            Ads.WriteAny(hWriteDeviceRampTimePLC, BaRampTimes!, [BaRampTimes!.Length]);
+            aDeviceRampTimes![dIndexFlowController[flowControllerID]] = currentValue;
+            Ads.WriteAny(hWriteDeviceRampTimePLC, aDeviceRampTimes!, [aDeviceRampTimes!.Length]);
         }
 
         private static ObservableManager<PLCConnection>.DataIssuer ConnectedNotifier;
@@ -307,10 +310,14 @@ namespace SapphireXR_App.Models
             { "V52", 25 }, { "V53", 26 }
         };
 
-        public static Dictionary<string, int> FlowControltoIdx = new Dictionary<string, int> {
-            { "MFC01", 1 },  { "MFC02", 2 },  { "MFC03", 3 },  { "MFC04", 4 },  { "MFC05", 5 },  { "MFC06", 6 },  { "MFC07", 7 },  { "MFC08", 8 },  { "MFC9", 9 },  { "MFC10", 10 },
-            { "MFC11", 11 },  { "MFC12", 12 },  { "MFC13", 13 },  { "MFC14", 14 },  { "MFC15", 15 },  { "MFC16", 16 },  { "MFC17", 17 },  { "MFC18", 18 },  { "MFC19", 19 },  { "EPC01", 1 },
-            { "EPC02", 2 },  { "EPC03", 3 },  { "EPC04", 4 },  { "EPC05", 5 },  { "EPC06", 6 },  { "EPC07", 7 }
+        public static Dictionary<string, int> dIndexFlowController = new Dictionary<string, int>
+        {
+            { "MFC01", 0 }, { "MFC02", 1 }, { "MFC03", 2 }, { "MFC04", 3 }, { "MFC05", 4 },
+            { "MFC06", 5 }, { "MFC07", 6 }, { "MFC08", 7 }, { "MFC09", 8 }, { "MFC10", 9 }, 
+            { "MFC11", 10 }, { "MFC12", 11 }, { "MFC13", 12 }, { "MFC14", 13 }, { "MFC15", 14 },
+            { "MFC16", 15 }, { "MFC17", 16 }, { "MFC18", 17 }, { "MFC19", 18 },
+            { "EPC01", 19 },  { "EPC02", 20 }, { "EPC03", 21 }, { "EPC04", 22 }, { "EPC05", 23 },
+            { "EPC06", 24 }, { "EPC07", 25 }
         };
     }
 }

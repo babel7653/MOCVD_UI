@@ -1,0 +1,105 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4026.8">
+  <POU Name="MAIN" Id="{c65bb020-a024-43e6-87d0-b2b9cfee7c16}" SpecialFunc="None">
+    <Declaration><![CDATA[PROGRAM MAIN
+VAR
+	
+	cmdManualOperation 	: BOOL;
+	cmdLineHeaterON		: BOOL;
+	StatePLC			: BOOL;
+	
+	(* Recipe Variable *)
+	bRecipeStart			: BOOL;
+	
+	EnableTimer			: BOOL;
+	iCurrentStep		: INT := 2;
+	sRecipeName			: STRING;
+	iCurrentRecipeRamp	: INT;
+	iCurrentRecipeHold	: INT;
+
+	OnTimer				: TON;
+	OffTimer			: TOF;
+	OnTimerOut			: BOOL;
+	OffTimerOut			: BOOL;
+	
+	TimeTrigOn			: R_Trig;
+	bTrigOn				: BOOL;
+	
+	(* For Test Variable *)
+	bMaintKey			: BOOL;
+	RecipeNumber		: INT;
+
+	aMaxValue	: ARRAY[1..29]OF REAL ;
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[(* Modify Program *)
+P11_E3508(); //Temp Controller
+P12_IQ_PLUS(); //Throttle Valve Controller
+P13_LineHeater();
+P14_ThermalBath();
+P15_RotationOperation();
+P16_CoverOperation();
+P17_DOROperation();
+P20_BackgroundCom();
+P21_Background_LineHeater();
+P22_Background_ThermalBath();
+P22_Background_ThermalBath();
+
+P30_GasFlowControl();
+
+(* Recipe RUN *)
+P50_RecipeControl();
+
+P90_Interlock();
+P91_Monitoring();
+P92_Maintenance();
+
+
+// RecipeNumber := GVL_IO.NumOfRecipe;
+// 
+// IF RecipeStart AND P90_Interlock.bRecipeEnable THEN
+// 	//Current Recipe Step Total Time 가져오기
+// // 	sRecipeName	:= GVL_IO.aRecipe[iCurrentStep].sRecipe;
+// 	iCurrentRecipeRamp := GVL_IO.aRecipe[iCurrentStep].iRecipe[1];
+// 	iCurrentRecipeHold := GVL_IO.aRecipe[iCurrentStep].iRecipe[2];
+// 	
+// END_IF
+
+(* Interlock Condtion *)
+// DOR Operation Condition
+]]></ST>
+    </Implementation>
+    <LineIds Name="MAIN">
+      <LineId Id="217" Count="0" />
+      <LineId Id="216" Count="0" />
+      <LineId Id="240" Count="0" />
+      <LineId Id="238" Count="0" />
+      <LineId Id="242" Count="0" />
+      <LineId Id="270" Count="2" />
+      <LineId Id="218" Count="0" />
+      <LineId Id="280" Count="1" />
+      <LineId Id="344" Count="0" />
+      <LineId Id="346" Count="0" />
+      <LineId Id="341" Count="0" />
+      <LineId Id="353" Count="0" />
+      <LineId Id="349" Count="1" />
+      <LineId Id="345" Count="0" />
+      <LineId Id="282" Count="1" />
+      <LineId Id="291" Count="0" />
+      <LineId Id="360" Count="1" />
+      <LineId Id="332" Count="0" />
+      <LineId Id="323" Count="0" />
+      <LineId Id="313" Count="0" />
+      <LineId Id="329" Count="0" />
+      <LineId Id="338" Count="0" />
+      <LineId Id="331" Count="0" />
+      <LineId Id="334" Count="0" />
+      <LineId Id="337" Count="0" />
+      <LineId Id="330" Count="0" />
+      <LineId Id="317" Count="0" />
+      <LineId Id="165" Count="0" />
+      <LineId Id="219" Count="1" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

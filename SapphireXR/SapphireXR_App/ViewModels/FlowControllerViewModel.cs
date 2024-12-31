@@ -62,23 +62,23 @@ namespace SapphireXR_App.ViewModels
             private FlowControllerViewModel flowControllerViewModel;
         }
 
-        internal class CurrentValueSubscriber : IObserver<float>
+        internal class CurrentValueSubscriber : IObserver<int>
         {
             public CurrentValueSubscriber(FlowControllerViewModel viewModel)
             {
                 flowControllerViewModel = viewModel;
             }
-            void IObserver<float>.OnCompleted()
+            void IObserver<int>.OnCompleted()
             {
                 throw new NotImplementedException();
             }
 
-            void IObserver<float>.OnError(Exception error)
+            void IObserver<int>.OnError(Exception error)
             {
                 throw new NotImplementedException();
             }
 
-            void IObserver<float>.OnNext(float value)
+            void IObserver<int>.OnNext(int value)
             {
                 flowControllerViewModel.CurrentValue = value.ToString();
             }
@@ -222,7 +222,7 @@ namespace SapphireXR_App.ViewModels
             BorderBackground = ControllerBorderBackground;
 
             ObservableManager<int>.Subscribe("FlowControl." + controllerID + ".ControlValue", controlValueSubscriber = new ControlValueSubscriber(this));
-            ObservableManager<float>.Subscribe("FlowControl." + controllerID + ".CurrentValue", currentValueSubscriber = new CurrentValueSubscriber(this));
+            ObservableManager<int>.Subscribe("FlowControl." + controllerID + ".CurrentValue", currentValueSubscriber = new CurrentValueSubscriber(this));
         });
         public ICommand OnMouseEntered => new RelayCommand(() =>
         {

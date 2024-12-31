@@ -31,6 +31,7 @@ namespace SapphireXR_App.Models
         private static short[]? aDeviceRampTimes;
         private static Dictionary<string, ObservableManager<int>.DataIssuer>? dCurrentValueIssuers;
         private static Dictionary<string, ObservableManager<int>.DataIssuer>? dControlValueIssuers;
+        private static Dictionary<string, ObservableManager<(int, int)>.DataIssuer>? dControlCurrentValueIssuers;
 
 
         //Create an instance of the TcAdsClient()
@@ -129,6 +130,11 @@ namespace SapphireXR_App.Models
             {
                 dControlValueIssuers.Add(kv.Key, ObservableManager<int>.Get("FlowControl." + kv.Key + ".ControlValue"));
             }
+            dControlCurrentValueIssuers = new Dictionary<string, ObservableManager<(int, int)>.DataIssuer>();
+            foreach (KeyValuePair<string, int> kv in dIndexFlowController)
+            {
+                dControlCurrentValueIssuers.Add(kv.Key, ObservableManager<(int, int)>.Get("FlowControl." + kv.Key + ".ControlTargetValue"));
+            }
 
             timer = new DispatcherTimer();
             timer.Interval = new TimeSpan(2000000);
@@ -138,7 +144,7 @@ namespace SapphireXR_App.Models
 
         public static void ReadMaxValueFromPLC()
         {
-            aDeviceMaxValue = Ads.ReadAny<float[]>(hDeviceMaxValuePLC, [26]);
+            aDeviceMaxValue = Ads.ReadAny<float[]>(hDeviceMaxValuePLC, [dIndexFlowController.Count]);
         }
 
         public static float ReadMaxValue(string flowControlID)
@@ -167,6 +173,13 @@ namespace SapphireXR_App.Models
                     dCurrentValueIssuers?[kv.Key].Issue(aDeviceCurrentValues[dIndexFlowController[kv.Key]]);
                 }
             }
+            if(aDeviceControlValues != null && aDeviceTargetValues != null)
+            {
+                foreach (KeyValuePair<string, int> kv in dIndexFlowController)
+                {
+                    dControlCurrentValueIssuers?[kv.Key].Issue((aDeviceControlValues[dIndexFlowController[kv.Key]], (int)aDeviceTargetValues[dIndexFlowController[kv.Key]]));
+                }
+            }
 
             string expcetionStr = string.Empty;
             if(aDeviceControlValues == null)
@@ -181,6 +194,14 @@ namespace SapphireXR_App.Models
                 }
                 expcetionStr += "aDeviceCurrentValues is null in OnTick PLCService";
             }
+            if(aDeviceTargetValues == null)
+            {
+                if (expcetionStr != string.Empty)
+                {
+                    expcetionStr += "\r\n";
+                }
+                expcetionStr += "aDeviceTargetValues is null in OnTick PLCService";
+            }
             if(expcetionStr != string.Empty)
             {
                 throw new Exception(expcetionStr);
@@ -189,8 +210,9 @@ namespace SapphireXR_App.Models
 
         private static void ReadCurrentValueFromPLC()
         {
-            aDeviceCurrentValues = Ads.ReadAny<short[]>(hDeviceCurrentValuePLC, [26]);
-            aDeviceControlValues = Ads.ReadAny<short[]>(hDeviceControlValuePLC, [26]);
+            aDeviceCurrentValues = Ads.ReadAny<short[]>(hDeviceCurrentValuePLC, [NumFlowControllers]);
+            aDeviceControlValues = Ads.ReadAny<short[]>(hDeviceControlValuePLC, [NumFlowControllers]);
+            aDeviceTargetValues = Ads.ReadAny<float[]>(hWriteDeviceTargetValuePLC, [NumFlowControllers]);
         }
 
         public static bool ReadValveState(string valveID)
@@ -266,7 +288,7 @@ namespace SapphireXR_App.Models
                     }
                     count++;
                 }
-                Ads.WriteAny(hDeviceMaxValuePLC, maxValue, [26]);
+                Ads.WriteAny(hDeviceMaxValuePLC, maxValue, [dIndexFlowController.Count]);
                 // List Analog Device Input / Output
             }
             catch (Exception ex)
@@ -319,5 +341,6 @@ namespace SapphireXR_App.Models
             { "EPC01", 19 },  { "EPC02", 20 }, { "EPC03", 21 }, { "EPC04", 22 }, { "EPC05", 23 },
             { "EPC06", 24 }, { "EPC07", 25 }
         };
+        public static int NumFlowControllers = dIndexFlowController.Count;
     }
 }

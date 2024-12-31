@@ -5,6 +5,7 @@ using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Input;
 using System.Windows.Media;
+using System.Windows.Navigation;
 using SapphireXR_App.Common;
 using SapphireXR_App.Enums;
 using SapphireXR_App.Models;
@@ -23,6 +24,12 @@ namespace SapphireXR_App.Controls
         {
             InitializeComponent();
             DataContext = new FlowControllerViewModel();
+            Binding binding = new Binding();
+            binding.Source = DataContext;
+            binding.Path = new PropertyPath("OnClickedCommand");
+            binding.Mode = BindingMode.OneWay;
+            binding.UpdateSourceTrigger = UpdateSourceTrigger.PropertyChanged;
+            BindingOperations.SetBinding(this, OnClickedCommandProperty, binding);
         }
 
         public string? Type { get; set; }
@@ -57,6 +64,7 @@ namespace SapphireXR_App.Controls
                     {
                         flowControlView = null; 
                     };
+                    OnClickedCommand.Execute(new object[2] {sender, e});
                 }
             }
             else
@@ -68,6 +76,12 @@ namespace SapphireXR_App.Controls
         private FlowControlView? flowControlView = null;
         private ICommand? OnFlowControllerConfirmed { get; set; }
         private ICommand? OnFlowControllerCanceled { get; set; }
+
+        public ICommand OnClickedCommand {
+            get { return (ICommand) GetValue(OnClickedCommandProperty);  }
+            set { SetValue(OnClickedCommandProperty, value);  }
+        }
+        private static readonly DependencyProperty OnClickedCommandProperty = DependencyProperty.Register("OnClickedCommand", typeof(ICommand), typeof(FlowControlView), new PropertyMetadata(null));
     }
 
     public class OnLoadedCommandParamConverver : IMultiValueConverter

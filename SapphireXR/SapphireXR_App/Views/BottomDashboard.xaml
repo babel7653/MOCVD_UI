@@ -26,9 +26,9 @@
                 <Button Content="Read" Width="70"/>
             </StackPanel>
         </Grid>
-        <Grid Grid.Row="1" Grid.ColumnSpan="2">
+        <Grid Grid.Row="1">
             <!-- Recipe Live chart -->
-            <oxy:PlotView x:Name="RecipeLive" Model="{Binding RecipeLivePlot}">
+            <oxy:PlotView x:Name="FlowControlLive" Model="{Binding FlowControlLivePlot}">
                 <oxy:PlotView.ContextMenu>
                     <ContextMenu>
                         <MenuItem/>

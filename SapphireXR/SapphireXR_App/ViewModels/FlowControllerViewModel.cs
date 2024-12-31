@@ -38,49 +38,26 @@ namespace SapphireXR_App.ViewModels
             });
         }
 
-        internal class ControlValueSubscriber : IObserver<int>
+        internal class ControlTargetValueSubscriber : IObserver<(int, int)>
         {
-            public ControlValueSubscriber(FlowControllerViewModel viewModel)
+            public ControlTargetValueSubscriber(FlowControllerViewModel viewModel)
             {
                 flowControllerViewModel = viewModel;
             }
-            void IObserver<int>.OnCompleted()
+            void IObserver<(int, int)>.OnCompleted()
             {
                 throw new NotImplementedException();
             }
 
-            void IObserver<int>.OnError(Exception error)
+            void IObserver<(int, int)>.OnError(Exception error)
             {
                 throw new NotImplementedException();
             }
 
-            void IObserver<int>.OnNext(int value)
+            void IObserver<(int, int)>.OnNext((int, int) values)
             {
-                flowControllerViewModel.ControlValue = value.ToString();
-            }
-
-            private FlowControllerViewModel flowControllerViewModel;
-        }
-
-        internal class CurrentValueSubscriber : IObserver<int>
-        {
-            public CurrentValueSubscriber(FlowControllerViewModel viewModel)
-            {
-                flowControllerViewModel = viewModel;
-            }
-            void IObserver<int>.OnCompleted()
-            {
-                throw new NotImplementedException();
-            }
-
-            void IObserver<int>.OnError(Exception error)
-            {
-                throw new NotImplementedException();
-            }
-
-            void IObserver<int>.OnNext(int value)
-            {
-                flowControllerViewModel.CurrentValue = value.ToString();
+                flowControllerViewModel.ControlValue = values.Item1.ToString();
+                flowControllerViewModel.TargetValue = values.Item2.ToString();
             }
 
             private FlowControllerViewModel flowControllerViewModel;
@@ -95,14 +72,14 @@ namespace SapphireXR_App.ViewModels
         public static readonly DependencyProperty ControllerIDProperty =
             DependencyProperty.Register("ControllerID", typeof(string), typeof(FlowControllerViewModel), new PropertyMetadata(default));
 
-        public float TargetValue
+        public string TargetValue
         {
-            get { return (float)GetValue(TargetValueProperty); }
+            get { return (string)GetValue(TargetValueProperty); }
             set { SetValue(TargetValueProperty, value); }
         }
 
         public static readonly DependencyProperty TargetValueProperty =
-            DependencyProperty.Register("TargetValue", typeof(float), typeof(FlowControllerViewModel), new PropertyMetadata(default));
+            DependencyProperty.Register("TargetValue", typeof(string), typeof(FlowControllerViewModel), new PropertyMetadata(default));
 
         public string ControlValue
         {
@@ -133,7 +110,6 @@ namespace SapphireXR_App.ViewModels
 
         public static readonly DependencyProperty buttonBackgroundProperty =
             DependencyProperty.Register("buttonBackground", typeof(string), typeof(FlowControllerViewModel), new PropertyMetadata(default));
-
 
         public bool IsDeviationLimit
         {
@@ -221,9 +197,15 @@ namespace SapphireXR_App.ViewModels
             }
             BorderBackground = ControllerBorderBackground;
 
-            ObservableManager<int>.Subscribe("FlowControl." + controllerID + ".ControlValue", controlValueSubscriber = new ControlValueSubscriber(this));
-            ObservableManager<int>.Subscribe("FlowControl." + controllerID + ".CurrentValue", currentValueSubscriber = new CurrentValueSubscriber(this));
+            ObservableManager<(int, int)>.Subscribe("FlowControl." + controllerID + ".ControlTargetValue", controlTargetValueSubscriber = new ControlTargetValueSubscriber(this));
+            selectedThis = ObservableManager<string>.Get("FlowControl.Selected");
         });
+
+        private void OnClicked(object[]? args)
+        {
+            selectedThis?.Issue(ControllerID);
+        }
+
         public ICommand OnMouseEntered => new RelayCommand(() =>
         {
             BorderBackground = MouseEnterColor;
@@ -236,8 +218,9 @@ namespace SapphireXR_App.ViewModels
         public ICommand OnFlowControllerCanceledCommand = new RelayCommand<PopupExResult>((PopupExResult result) =>
         {
         });
+        public ICommand OnClickedCommand => new RelayCommand<object[]?>(OnClicked);
 
-        private ControlValueSubscriber? controlValueSubscriber;
-        private CurrentValueSubscriber? currentValueSubscriber;
+        private ControlTargetValueSubscriber? controlTargetValueSubscriber;
+        private ObservableManager<string>.DataIssuer? selectedThis;
     }
 }

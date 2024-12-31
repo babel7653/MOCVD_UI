@@ -97,12 +97,12 @@
 			</ArrayInfo>
 		</DataType>
 		<DataType>
-			<Name GUID="{7B3F088C-17A7-DC84-A99B-008DFC9AB80F}" IecBaseType="true" AutoDeleteType="true">ARRAY [1..28] OF INT</Name>
-			<BitSize>448</BitSize>
+			<Name GUID="{C8C94FF8-4D80-C440-A7D5-B51FEC6123C5}" IecBaseType="true" AutoDeleteType="true">ARRAY [1..29] OF INT</Name>
+			<BitSize>464</BitSize>
 			<BaseType GUID="{18071995-0000-0000-0000-000000000006}">INT</BaseType>
 			<ArrayInfo>
 				<LBound>1</LBound>
-				<Elements>28</Elements>
+				<Elements>29</Elements>
 			</ArrayInfo>
 		</DataType>
 		<DataType>
@@ -117,8 +117,8 @@
 	</DataTypes>
 	<Project ProjectGUID="{3D06573F-FA21-4D81-AB6B-ED6B30724E66}" Target64Bit="true" ShowHideConfigurations="#x3c7">
 		<System>
-			<Settings MaxCpus="4" NonWinCpus="1">
-				<Cpu CpuId="3"/>
+			<Settings MaxCpus="12" NonWinCpus="1">
+				<Cpu CpuId="11"/>
 			</Settings>
 			<Licenses>
 				<Target>
@@ -137,7 +137,7 @@
 		</System>
 		<Plc>
 			<Project GUID="{8B546B3A-EC4D-41CC-9C57-49402FFC4072}" Name="PLC_MR" PrjFilePath="PLC_MR\PLC_MR.plcproj" TmcFilePath="PLC_MR\PLC_MR.tmc" ReloadTmc="true" AmsPort="851" FileArchiveSettings="#x000e" SymbolicMapping="true">
-				<Instance Id="#x08502000" TcSmClass="TComPlcObjDef" KeepUnrestoredLinks="2" TmcHash="{D4466C49-3EE5-2213-B6D9-A41892E642BF}" TmcPath="PLC_MR\PLC_MR.tmc">
+				<Instance Id="#x08502000" TcSmClass="TComPlcObjDef" KeepUnrestoredLinks="2" TmcHash="{20817EF4-3A39-B221-6F40-5AA6208334AA}" TmcPath="PLC_MR\PLC_MR.tmc">
 					<Name>PLC_MR Instance</Name>
 					<CLSID ClassFactory="TcPlc30">{08500001-0000-0000-F000-000000000064}</CLSID>
 					<Vars VarGrpType="2" ContextId="1" AreaNo="17">
@@ -179,7 +179,7 @@
 						</Var>
 						<Var>
 							<Name>GVL_IO.aAnalogOutputIO</Name>
-							<Type GUID="{7B3F088C-17A7-DC84-A99B-008DFC9AB80F}">ARRAY [1..28] OF INT</Type>
+							<Type GUID="{C8C94FF8-4D80-C440-A7D5-B51FEC6123C5}">ARRAY [1..29] OF INT</Type>
 						</Var>
 						<Var>
 							<Name>GVL_IO.aOutputSolValve</Name>

@@ -92,7 +92,7 @@ namespace SapphireXR_App.ViewModels
         {
             PopupExResult = PopupExResult.Confirm;
             Confirmed!(PopupExResult.Confirm, new ControlValues { targetValue = (string.IsNullOrEmpty(TargetValue) ? null : int.Parse(TargetValue)), 
-                rampTime = (string.IsNullOrEmpty(RampTime) ? null : Int16.Parse(RampTime) )});
+                rampTime = (string.IsNullOrEmpty(RampTime) ? null : short.Parse(RampTime) )});
             dispose();
             window.Close();
         }
@@ -157,7 +157,7 @@ namespace SapphireXR_App.ViewModels
         public struct ControlValues
         {
             public int? targetValue;
-            public Int16? rampTime;
+            public short? rampTime;
         }
 
         public delegate void ConfiredEventHandler(PopupExResult result, ControlValues controlValues);

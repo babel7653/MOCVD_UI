@@ -14,15 +14,18 @@ using System.IO;
 using System.Windows.Input;
 using System.Windows.Threading;
 using SapphireXR_App.Common;
+using System.Windows;
 
 namespace SapphireXR_App.ViewModels
 {
     public partial class BottomViewModel : ObservableObject
     {
-        class ControlCurrentValueSeriesUpdater : IObserver<(int, int)>
+        class ControlTargetValueSeriesUpdater : IObserver<(int, int)>
         {
-            public ControlCurrentValueSeriesUpdater()
+            public ControlTargetValueSeriesUpdater(string title)
             {
+                plotModel.Title = title;
+                plotModel.TitleFontSize = plotModel.TitleFontSize / 2;
                 plotModel.Axes.Add(new DateTimeAxis
                 {
                     Title = "TimeStamp",
@@ -79,11 +82,34 @@ namespace SapphireXR_App.ViewModels
                 var dateTimeAxis = plotModel.Axes.OfType<DateTimeAxis>().First();
                 var series1 = plotModel.Series.OfType<LineSeries>().ElementAt(0);
                 var series2 = plotModel.Series.OfType<LineSeries>().ElementAt(1);
+
+                if (!series1.Points.Any())
+                {
+                    dateTimeAxis.Minimum = DateTimeAxis.ToDouble(DateTime.Now);
+                    dateTimeAxis.Maximum = DateTimeAxis.ToDouble(DateTime.Now.AddSeconds(MaxSecondsToLiveShow));
+                }
+
                 double x = DateTimeAxis.ToDouble(DateTime.Now);
                 series1.Points.Add(new DataPoint(x, (double)value.Item1));
                 series2.Points.Add(new DataPoint(x, (double)value.Item2));
 
+             
+                dateTimeAxis.Minimum = DateTimeAxis.ToDouble(DateTime.Now.AddSeconds(-1 * MaxSecondsToLiveShow));
+                dateTimeAxis.Maximum = DateTimeAxis.ToDouble(DateTime.Now);
+                dateTimeAxis.Reset();
+                
+
                 plotModel.InvalidatePlot(true);
+            }
+
+            public void toggleControlValueSeries()
+            {
+                plotModel.Series.OfType<LineSeries>().ElementAt(0).IsVisible = !plotModel.Series.OfType<LineSeries>().ElementAt(0).IsVisible;
+            }
+
+            public void toggleTargetValueSeries()
+            {
+                plotModel.Series.OfType<LineSeries>().ElementAt(1).IsVisible = !plotModel.Series.OfType<LineSeries>().ElementAt(1).IsVisible;
             }
 
             public PlotModel plotModel = new PlotModel();
@@ -107,34 +133,82 @@ namespace SapphireXR_App.ViewModels
 
             void IObserver<string>.OnNext(string value)
             {
-                bottomViewModel.FlowControlLivePlot = bottomViewModel.plotModels[PLCService.dIndexController[value]].plotModel;
+                ControlTargetValueSeriesUpdater currentSelectedFlowControllerListener = bottomViewModel.plotModels[PLCService.dIndexFlowController[value]];
+                bottomViewModel.currentSelectedFlowControllerListener = currentSelectedFlowControllerListener;
+                bottomViewModel.FlowControlLivePlot = currentSelectedFlowControllerListener.plotModel;
             }
 
             private BottomViewModel bottomViewModel;
         }
 
         [ObservableProperty]
-        public PlotModel flowControlLivePlot;
-
-        private ControlCurrentValueSeriesUpdater[] plotModels = new ControlCurrentValueSeriesUpdater[PLCService.dIndexController.Count];
+        public PlotModel? flowControlLivePlot;
+        private ControlTargetValueSeriesUpdater[] plotModels = new ControlTargetValueSeriesUpdater[PLCService.dIndexFlowController.Count];
+        private ControlTargetValueSeriesUpdater? currentSelectedFlowControllerListener;
 
         public BottomViewModel()
         {
             FlowControlLivePlot = new PlotModel();
             LivePlotSetting();
             ObservableManager<string>.Subscribe("FlowControl.Selected", flowContorllerSelectionChanged = new SelectedFlowControllerListener(this));
+            ControlValueOption = HideControlValueStr;
+            TargetValueOption = HideTargetValueStr;
         }
    
         public void LivePlotSetting()
         {
-            foreach(var (id, index) in PLCService.dIndexController)
+            foreach(var (id, index) in PLCService.dIndexFlowController)
             {
-                ControlCurrentValueSeriesUpdater controlCurrentValueSeriesUpdater = new ControlCurrentValueSeriesUpdater();
+                ControlTargetValueSeriesUpdater controlCurrentValueSeriesUpdater = new ControlTargetValueSeriesUpdater(id);
                 ObservableManager<(int, int)>.Subscribe("FlowControl." + id + ".ControlTargetValue", controlCurrentValueSeriesUpdater);
                 plotModels[index] = controlCurrentValueSeriesUpdater;
             }
         }
 
+        public ICommand ShowControlValue => new RelayCommand(() =>
+        {
+            if (currentSelectedFlowControllerListener != null)
+            {
+                currentSelectedFlowControllerListener.toggleControlValueSeries();
+                if (ControlValueOption == ShowControlValueStr)
+                {
+                    ControlValueOption = HideControlValueStr;
+                }
+                else
+                    if (ControlValueOption == HideControlValueStr)
+                    {
+                        ControlValueOption = ShowControlValueStr;
+                    }
+            }
+        });
+        public ICommand ShowTargetValue => new RelayCommand(() =>
+        {
+            if (currentSelectedFlowControllerListener != null)
+            {
+                currentSelectedFlowControllerListener?.toggleTargetValueSeries();
+                if (TargetValueOption == ShowTargetValueStr)
+                {
+                    TargetValueOption = HideTargetValueStr;
+                }
+                else
+                    if (TargetValueOption == HideTargetValueStr)
+                    {
+                        TargetValueOption = ShowTargetValueStr;
+                    }
+            }
+        });
+
         private IObserver<string> flowContorllerSelectionChanged;
+        public static readonly int MaxSecondsToLiveShow = 30;
+
+        [ObservableProperty]
+        public string controlValueOption;
+        [ObservableProperty]
+        public string targetValueOption;
+
+        private static string ShowControlValueStr = "Show Control Value";
+        private static string HideControlValueStr = "Hide Control Value";
+        private static string ShowTargetValueStr = "Show Target Value";
+        private static string HideTargetValueStr = "Hide Target Value";
     }
 }

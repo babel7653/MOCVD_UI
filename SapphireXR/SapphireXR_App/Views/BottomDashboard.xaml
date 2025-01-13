@@ -30,9 +30,9 @@
             <!-- Recipe Live chart -->
             <oxy:PlotView x:Name="FlowControlLive" Model="{Binding FlowControlLivePlot}">
                 <oxy:PlotView.ContextMenu>
-                    <ContextMenu>
-                        <MenuItem/>
-                        <MenuItem/>
+                    <ContextMenu >
+                        <MenuItem Header="{Binding ControlValueOption}" Command="{Binding ShowControlValue}"/>
+                        <MenuItem Header="{Binding TargetValueOption}" Command="{Binding ShowTargetValue}"/>
                     </ContextMenu>
                 </oxy:PlotView.ContextMenu>
             </oxy:PlotView>

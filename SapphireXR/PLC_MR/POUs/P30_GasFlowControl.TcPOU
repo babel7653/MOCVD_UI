@@ -1,0 +1,56 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4026.8">
+  <POU Name="P30_GasFlowControl" Id="{761008bd-d9bc-489c-85ce-c898e802d93f}" SpecialFunc="None">
+    <Declaration><![CDATA[PROGRAM P30_GasFlowControl
+VAR
+	aGasController : ARRAY[1..26] OF FB_RampGeneration_Gas; //MFC EPC 0 ~ 5V
+	aGasController_TV : ARRAY[1..26] OF REAL; //Target Value from UI
+	aGasController_RampTime : ARRAY[1..26] OF INT;
+	aGasController_PV : ARRAY[1..26] OF INT; //Present Value from Device
+	aGasController_SV : ARRAY[1..26] OF INT; //Current Value from RampingController
+
+	i 	: INT;
+
+END_VAR
+
+VAR CONSTANT
+	KL3464MaxValueH	: REAL := 16383; //0~5V Half Input
+	//KL4404MaxValueH	: REAL := 16383; //0~5V Half Output
+END_VAR]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[//aMFC_RampTime[i]; <-- Frome UI
+//aMFC_TV[i] <-- From UI
+// aMFC[1] := GVL_IO.aAnalogInputIO[1];
+// aMFC_RampTime[1] := GVL_IO.aAnalogInputIO[1].RampTime;
+
+(* Read from Device*)
+FOR i:=1 TO 26 DO
+	IF GVL_IO.aMaxValueController[i] <> 0 THEN
+		aGasController[i].nState := 1;
+		aGasController[i].nRampTime := aGasController_RampTime[i];
+		aGasController[i].rTargetValue := aGasController_TV[i] / GVL_IO.aMaxValueController[i] * KL3464MaxValueH; //Input Set Value
+		GVL_IO.aAnalogOutputIO[i] := LREAL_TO_INT(aGasController[i].rControlValue); //Write to Device
+		
+		aGasController_PV[i] := REAL_TO_INT(GVL_IO.aAnalogInputIO[i] / KL3464MaxValueH * GVL_IO.aMaxValueController[i]);
+		aGasController_SV[i] := LREAL_TO_INT((aGasController[i].rControlValue / KL3464MaxValueH)*GVL_IO.aMaxValueController[i]);
+		aGasController[i]();
+	END_IF
+
+END_FOR
+]]></ST>
+    </Implementation>
+    <LineIds Name="P30_GasFlowControl">
+      <LineId Id="14" Count="1" />
+      <LineId Id="22" Count="0" />
+      <LineId Id="55" Count="1" />
+      <LineId Id="23" Count="0" />
+      <LineId Id="71" Count="0" />
+      <LineId Id="25" Count="6" />
+      <LineId Id="68" Count="0" />
+      <LineId Id="32" Count="1" />
+      <LineId Id="70" Count="0" />
+      <LineId Id="34" Count="0" />
+      <LineId Id="48" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

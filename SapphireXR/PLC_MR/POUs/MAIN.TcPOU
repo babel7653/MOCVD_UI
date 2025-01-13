@@ -3,6 +3,7 @@
   <POU Name="MAIN" Id="{c65bb020-a024-43e6-87d0-b2b9cfee7c16}" SpecialFunc="None">
     <Declaration><![CDATA[PROGRAM MAIN
 VAR
+	
 	cmdManualOperation 	: BOOL;
 	cmdLineHeaterON		: BOOL;
 	StatePLC			: BOOL;
@@ -45,7 +46,7 @@ P21_Background_LineHeater();
 P22_Background_ThermalBath();
 P22_Background_ThermalBath();
 
-P30_ManualControl();
+P30_GasFlowControl();
 
 (* Recipe RUN *)
 P50_RecipeControl();

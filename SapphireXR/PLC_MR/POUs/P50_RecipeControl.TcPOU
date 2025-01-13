@@ -65,10 +65,8 @@ END_VAR
 				tMoveNext(IN := FALSE);
 				// Satety State 전달
 			END_IF
-		END_IF	
-	20: //PAUSE
-	30: //RESTART
-	40: //STOP
+		END_IF
+	20: //STOP
 		RCP.bRcpStart := FALSE;
 		nRcpIndex := RCP.iRcpTotalStep;
 		nRcpStepTime := RCP.aRecipe[nRcpIndex].iRecipe[2] + RCP.aRecipe[nRcpIndex].iRecipe[3]; // Recipe Step Time
@@ -81,8 +79,10 @@ END_VAR
 			bMoveNext := FALSE;
 			tMoveNext(IN := FALSE);
 			// Satety State 전달
-		END_IF
-	50: //END
+		END_IF	
+	30: //PAUSE
+	50: //RESTART
+	90: //END
 		//Safety State 
 END_CASE
 
@@ -123,14 +123,9 @@ END_CASE
       <LineId Id="83" Count="0" />
       <LineId Id="82" Count="0" />
       <LineId Id="70" Count="0" />
-      <LineId Id="7" Count="2" />
-      <LineId Id="88" Count="0" />
-      <LineId Id="87" Count="0" />
-      <LineId Id="86" Count="0" />
-      <LineId Id="112" Count="0" />
-      <LineId Id="122" Count="0" />
-      <LineId Id="105" Count="6" />
-      <LineId Id="89" Count="0" />
+      <LineId Id="124" Count="12" />
+      <LineId Id="123" Count="0" />
+      <LineId Id="7" Count="1" />
       <LineId Id="10" Count="0" />
       <LineId Id="113" Count="0" />
       <LineId Id="11" Count="0" />

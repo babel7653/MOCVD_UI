@@ -1,18 +1,15 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4026.8">
   <POU Name="P11_E3508" Id="{a7e3d6a1-82f0-4607-8ac9-093cb5f931f5}" SpecialFunc="None">
     <Declaration><![CDATA[PROGRAM P11_E3508
 VAR_INPUT
-	nTemperatureTargetValue	: INT(0..1200); //Target Values, Input Range 0 ~ 1200 Celcius
-	nRampTime				: INT := 1; //Second
-	
 	nPowerRateSetValue		: WORD;	
 	bOutputManAuto 			: BOOL; // 0:Auto, 1:Manual Operation
 	
 	bHeaterOn				: BOOL := FALSE; //to PSTEK
 	bHeaterReset			: BOOL; //to PSTEK
-
 END_VAR
+
 VAR_OUTPUT
 	bAlarmState_E3508 		: BOOL; //Alarm or Sensor Break Signal
 	bManAuto_E3508 			: BOOL; // 0:Manual, 1:Auto
@@ -93,61 +90,12 @@ nParameterD 			:= USINT_TO_WORD_Bit(aInputDerivative[1], aInputDerivative[2]);
 bAlarmState_E3508 		:= nInputAlarmBytes.7;
 bManAuto_E3508 			:= nInputManAutoBytes.7;
 
+rPowerRate				:= WORD_TO_REAL(nPowerRate_E3508)*0.1; //divided to 10
+
 (* Read from Induction Heater Value *)
 isHeaterReady 			:= GVL_IO.aDigitalInputIO[2].2;
 isHeaterRun		 		:= GVL_IO.aDigitalInputIO[2].3;
 isHeaterFault 			:= GVL_IO.aDigitalInputIO[2].4;
-
-(*Ramp Generator Parameter Variable*)
-rTemperatureTargetValue	:= INT_TO_REAL(nTemperatureTargetValue);
-rPowerRate				:= WORD_TO_REAL(nPowerRate_E3508)*0.1; //divided to 10
-
-bEnable := TRUE;
-
-IF (rTemperatureTargetValue > 0) OR (rTemperatureStartValue > 0) THEN //Induction Power Supply RUN
-	bHeaterOn := TRUE;
-	bInit := TRUE;
-ELSE //Induction Power Supply STOP
-	bHeaterOn := TRUE;
-	bInit := FALSE;
-END_IF
-
-IF nRampTime <> 0 THEN
-rRampingRatio := ABS(rTemperatureTargetValue - rTemperatureStartValue) / nRampTime * 0.1 ; //Second
-END_IF
-
-IF bInit THEN
-	(* init parameter struct *)
-	stCTRL_RAMP_GENERATOR_PARAMS.tTaskCycleTime		:= T#100MS;
-	stCTRL_RAMP_GENERATOR_PARAMS.tCtrlCycleTime		:= T#100MS;
-	stCTRL_RAMP_GENERATOR_PARAMS.fVeloPos			:= rRampingRatio; (* in units per second *)
-	stCTRL_RAMP_GENERATOR_PARAMS.fVeloNeg			:= rRampingRatio; (* in units per second *)
-
-	(* reset the init flag *)
-	bInit := FALSE;
-END_IF
-
-IF rTemperatureTargetValue <> rTemperatureStartValue THEN
-	bEnable := TRUE;
-	(* call function block *)
-	fbCTRL_RAMP_GENERATOR(
-		bEnable			:= bEnable,
-		fStart			:= rTemperatureStartValue,
-		fTarget			:= rTemperatureTargetValue,
-		stParams		:= stCTRL_RAMP_GENERATOR_PARAMS,
-		fOut			=> rTemperatureControlValue,
-		bValueReached	=> bValueReached,
-		bError			=> bError,
-		eErrorId		=> eErrorId);
-ELSE
-	fbCTRL_RAMP_GENERATOR.bEnable := FALSE;
-END_IF
-
-IF bValueReached THEN
-	rTemperatureStartValue	:= LREAL_TO_REAL(rTemperatureControlValue);
-END_IF
-
-nTemperatureControlValue	:= LREAL_TO_WORD(rTemperatureControlValue);
 
 (* Write to E3508 Device Value *)
 wOutputSVBytes 			:= WORD_TO_USINT_Bit(nTemperatureControlValue);
@@ -173,36 +121,14 @@ GVL_IO.aDigitalOutputIO[2].1 := bHeaterReset;
       <LineId Id="297" Count="0" />
       <LineId Id="279" Count="8" />
       <LineId Id="278" Count="0" />
-      <LineId Id="293" Count="1" />
+      <LineId Id="531" Count="0" />
+      <LineId Id="293" Count="0" />
+      <LineId Id="532" Count="0" />
+      <LineId Id="294" Count="0" />
       <LineId Id="296" Count="0" />
       <LineId Id="309" Count="1" />
-      <LineId Id="288" Count="0" />
-      <LineId Id="243" Count="2" />
-      <LineId Id="454" Count="0" />
-      <LineId Id="111" Count="0" />
-      <LineId Id="455" Count="0" />
-      <LineId Id="100" Count="0" />
-      <LineId Id="457" Count="0" />
-      <LineId Id="529" Count="0" />
-      <LineId Id="136" Count="0" />
-      <LineId Id="456" Count="0" />
-      <LineId Id="530" Count="0" />
-      <LineId Id="135" Count="0" />
-      <LineId Id="139" Count="2" />
-      <LineId Id="138" Count="0" />
-      <LineId Id="144" Count="9" />
-      <LineId Id="99" Count="0" />
-      <LineId Id="155" Count="0" />
-      <LineId Id="154" Count="0" />
-      <LineId Id="158" Count="2" />
-      <LineId Id="453" Count="0" />
-      <LineId Id="161" Count="9" />
-      <LineId Id="172" Count="0" />
-      <LineId Id="157" Count="0" />
-      <LineId Id="173" Count="1" />
       <LineId Id="254" Count="0" />
-      <LineId Id="253" Count="0" />
-      <LineId Id="268" Count="4" />
+      <LineId Id="269" Count="3" />
       <LineId Id="311" Count="0" />
       <LineId Id="273" Count="4" />
       <LineId Id="257" Count="0" />

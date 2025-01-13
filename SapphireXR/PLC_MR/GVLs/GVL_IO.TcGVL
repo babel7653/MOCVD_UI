@@ -18,7 +18,7 @@ VAR_GLOBAL
 	aMaxValueGauge : ARRAY[1..9]OF REAL ; //Gauge Max Value frome UI
 	
 	(* Read and Write of Device Control Value*)
-	aGasController : ARRAY[1..26] OF FB_RampGeneration_Gas; //MFC EPC 0 ~ 5V
+	aController : ARRAY[1..29] OF FB_RampGenerator; //MFC, EPC 0 ~ 5V
 	aController_TV : ARRAY[1..29] OF REAL; //Target Value from UI
 	aController_RampTime : ARRAY[1..29] OF INT;
 	aController_PV : ARRAY[1..29] OF INT; //Present Value from Device

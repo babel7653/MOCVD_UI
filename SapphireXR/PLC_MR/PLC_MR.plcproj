@@ -69,7 +69,7 @@
     <Compile Include="PlcTask_Standard.TcTTO">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="POUs\FB_RampGeneration_Gas.TcPOU">
+    <Compile Include="POUs\FB_RampGenerator.TcPOU">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="POUs\FB_RecipeSequencer.TcPOU">

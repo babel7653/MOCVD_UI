@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4026.8">
-  <POU Name="FB_RampGenerator" Id="{cdf2a92c-f3b1-412b-b8de-c0c4804ef182}" SpecialFunc="None">
+  <POU Name="FB_RampGenerator" Id="{7a176e25-0cf1-4415-b123-fcca9c642459}" SpecialFunc="None">
     <Declaration><![CDATA[FUNCTION_BLOCK FB_RampGenerator
 VAR_INPUT
 	//bStart_Stop			: BOOL := TRUE;

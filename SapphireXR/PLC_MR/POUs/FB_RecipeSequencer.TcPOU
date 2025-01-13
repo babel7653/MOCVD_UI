@@ -10,15 +10,15 @@ VAR_OUTPUT
 END_VAR
 VAR
 	// for FB_Sequencer Variable
-// 	aController : ARRAY[1..26] OF FB_RampGenerator; //MFC EPC 0 ~ 5V
-// 	aController_PV : ARRAY[1..29] OF INT;
+	// 	aController : ARRAY[1..26] OF FB_RampGenerator; //MFC EPC 0 ~ 5V
+	// 	aController_PV : ARRAY[1..29] OF INT;
+	aGasController : ARRAY[1..29] OF FB_RampGenerator;
+	aGasController_PV : ARRAY[1..29] OF INT;
 	i 	: INT;
 	nRcpRampTime	: INT;
 END_VAR]]></Declaration>
     <Implementation>
-      <ST><![CDATA[// TODO - 매뉴얼 동작시와 레시피 동작시 구분 방법 추가 
-
-nRcpRampTime := RCP.aRecipe[nRcpIndex].iRecipe[2]; // Current Recipe Step Ramp Time 
+      <ST><![CDATA[nRcpRampTime := RCP.aRecipe[nRcpIndex].iRecipe[2]; // Current Recipe Step Ramp Time 
 
 (* Target Value Write to Device *)
 (* Heater Controller *)
@@ -72,12 +72,9 @@ GVL_IO.aOutputSolValve[2].11 := RCP.aRecipe[nRcpIndex].dRecipe.21; //V28
 GVL_IO.aOutputSolValve[2].12 := RCP.aRecipe[nRcpIndex].dRecipe.22; //V29
 GVL_IO.aOutputSolValve[2].13 := RCP.aRecipe[nRcpIndex].dRecipe.23; //V30
 GVL_IO.aOutputSolValve[2].14 := RCP.aRecipe[nRcpIndex].dRecipe.24; //V31
-GVL_IO.aOutputSolValve[2].15 := RCP.aRecipe[nRcpIndex].dRecipe.25; //V32
-]]></ST>
+GVL_IO.aOutputSolValve[2].15 := RCP.aRecipe[nRcpIndex].dRecipe.25; //V32]]></ST>
     </Implementation>
     <LineIds Name="FB_RecipeSequencer">
-      <LineId Id="188" Count="0" />
-      <LineId Id="179" Count="0" />
       <LineId Id="25" Count="0" />
       <LineId Id="187" Count="0" />
       <LineId Id="183" Count="0" />
@@ -96,7 +93,6 @@ GVL_IO.aOutputSolValve[2].15 := RCP.aRecipe[nRcpIndex].dRecipe.25; //V32
       <LineId Id="36" Count="5" />
       <LineId Id="132" Count="26" />
       <LineId Id="131" Count="0" />
-      <LineId Id="159" Count="0" />
     </LineIds>
   </POU>
 </TcPlcObject>

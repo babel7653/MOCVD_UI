@@ -23,18 +23,28 @@ FOR i:=1 TO 26 DO
 END_FOR
 
 (* Read and Write Temperature Cotnroller *)
-j := 27; // Heater Controller 
-	IF (GVL_IO.aController_TV[j] > 0 OR GVL_IO.aController[j].rStartValue >0) THEN
-		P11_E3508.bHeaterOn := TRUE;
-		GVL_IO.aController[j].nState := 10; //START
-	ELSE
-		P11_E3508.bHeaterOn := FALSE;
-		GVL_IO.aController[j].nState := 20; //Heater Stop
-	END_IF
+i := 27; // Heater Controller 
+	IF GVL_IO.aMaxValueController[i]<> 0 THEN
+		GVL_IO.aController[i].nState := 10;
+	END_IF	
+
+
+IF ( GVL_IO.aController_SV[j] > 10 ) THEN
+	P11_E3508.bHeaterOn := TRUE;
+ELSE
+	P11_E3508.bHeaterOn := FALSE;
+END_IF
 	
-	GVL_IO.aController[j].nRampTime := GVL_IO.aController_RampTime[j];
-	GVL_IO.aController[j].rTargetValue := GVL_IO.aController_TV[j];
-	P11_E3508.nTemperatureControlValue := LREAL_TO_WORD(GVL_IO.aController[j].rControlValue); //Write to Temperature Controller
+GVL_IO.aController[j].nRampTime := GVL_IO.aController_RampTime[j];
+GVL_IO.aController[j].rTargetValue := GVL_IO.aController_TV[j];
+P11_E3508.wControlValue := LREAL_TO_WORD(GVL_IO.aController[j].rControlValue); //Write to Temperature Controller
+
+(* Read and Write Pressure Controller *)
+j := 28; // Pressure Controller
+IF (GVL_IO.aController_TV[j] >= 0 ) THEN
+	GVL_IO.aController[j].nState := 10; //START
+END_IF
+
 ]]></ST>
     </Implementation>
     <LineIds Name="P30_ManualControl">
@@ -42,16 +52,20 @@ j := 27; // Heater Controller
       <LineId Id="16" Count="0" />
       <LineId Id="15" Count="0" />
       <LineId Id="35" Count="0" />
+      <LineId Id="49" Count="2" />
+      <LineId Id="47" Count="1" />
       <LineId Id="25" Count="0" />
-      <LineId Id="30" Count="0" />
-      <LineId Id="36" Count="0" />
-      <LineId Id="31" Count="1" />
-      <LineId Id="37" Count="0" />
+      <LineId Id="30" Count="2" />
       <LineId Id="29" Count="0" />
       <LineId Id="38" Count="0" />
       <LineId Id="34" Count="0" />
       <LineId Id="19" Count="0" />
       <LineId Id="28" Count="0" />
+      <LineId Id="40" Count="0" />
+      <LineId Id="39" Count="0" />
+      <LineId Id="41" Count="0" />
+      <LineId Id="43" Count="2" />
+      <LineId Id="42" Count="0" />
       <LineId Id="21" Count="0" />
     </LineIds>
   </POU>

@@ -3,7 +3,7 @@
   <POU Name="FB_RampGenerator" Id="{cdf2a92c-f3b1-412b-b8de-c0c4804ef182}" SpecialFunc="None">
     <Declaration><![CDATA[FUNCTION_BLOCK FB_RampGenerator
 VAR_INPUT
-	//bStart_Stop				: BOOL := TRUE;
+	//bStart_Stop			: BOOL := TRUE;
 	//bAlarmReset			: BOOL;
 	rInitValue		: REAL;
 	rTargetValue	: REAL;

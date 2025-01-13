@@ -3,7 +3,8 @@
   <POU Name="P11_E3508" Id="{a7e3d6a1-82f0-4607-8ac9-093cb5f931f5}" SpecialFunc="None">
     <Declaration><![CDATA[PROGRAM P11_E3508
 VAR_INPUT
-	nPowerRateSetValue		: WORD;	
+	wControlValue			: WORD;
+	wPowerRateSetValue		: WORD;	
 	bOutputManAuto 			: BOOL; // 0:Auto, 1:Manual Operation
 	
 	bHeaterOn				: BOOL := FALSE; //to PSTEK
@@ -48,7 +49,7 @@ VAR
 	aOutputPowerBytes AT %Q* 	: ARRAY[1..2]OF USINT; //Output Power in Manual State
 	//nOutputAlarmClear AT %Q* : USINT; //Alarm Clear Set
 	
-	nTemperatureControlValue	: WORD;
+
 	
 	// for FB_CTRL_RAMP_GENERATOR Variable
 	(* input *)
@@ -98,14 +99,14 @@ isHeaterRun		 		:= GVL_IO.aDigitalInputIO[2].3;
 isHeaterFault 			:= GVL_IO.aDigitalInputIO[2].4;
 
 (* Write to E3508 Device Value *)
-wOutputSVBytes 			:= WORD_TO_USINT_Bit(nTemperatureControlValue);
+wOutputSVBytes 			:= WORD_TO_USINT_Bit(wControlValue);
 aOutputSVBytes[1] 		:= wOutputSVBytes.Lower;
 aOutputSVBytes[2] 		:= wOutputSVBytes.Upper;
 
 // PowerRate Operation
 nOutputManAutoBytes.0 	:= bOutputManAuto;
 
-wOutputPowerSVBytes 	:= WORD_TO_USINT_Bit(nPowerRateSetValue*10); //multiple to 10
+wOutputPowerSVBytes 	:= WORD_TO_USINT_Bit(wPowerRateSetValue*10); //multiple to 10
 aOutputPowerBytes[1] 	:= wOutputPowerSVBytes.Lower;
 aOutputPowerBytes[2] 	:= wOutputPowerSVBytes.Upper;
 

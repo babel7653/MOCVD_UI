@@ -22,8 +22,8 @@ nRcpRampTime := RCP.aRecipe[nRcpIndex].iRecipe[2]; // Current Recipe Step Ramp T
 
 (* Target Value Write to Device *)
 (* Heater Controller *)
-P11_E3508.nTemperatureTargetValue := RCP.aRecipe[nRcpIndex].iRecipe[4];
-P11_E3508.nRampTime := nRcpRampTime;
+GVL_IO.aController[27].rTargetValue := RCP.aRecipe[nRcpIndex].iRecipe[4];
+GVL_IO.aController[27].nRampTime := nRcpRampTime;
 
 (* Pressure Controller *)
 P12_IQ_PLUS.nPressureTargetValue := INT_TO_WORD(RCP.aRecipe[nRcpIndex].iRecipe[5]);
@@ -81,8 +81,8 @@ GVL_IO.aOutputSolValve[2].15 := RCP.aRecipe[nRcpIndex].dRecipe.25; //V32
       <LineId Id="25" Count="0" />
       <LineId Id="187" Count="0" />
       <LineId Id="183" Count="0" />
-      <LineId Id="160" Count="1" />
-      <LineId Id="165" Count="0" />
+      <LineId Id="160" Count="0" />
+      <LineId Id="189" Count="1" />
       <LineId Id="182" Count="0" />
       <LineId Id="166" Count="0" />
       <LineId Id="162" Count="0" />

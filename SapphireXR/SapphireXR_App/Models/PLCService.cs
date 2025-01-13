@@ -1,6 +1,7 @@
 ﻿using SapphireXR_App.Common;
 using SapphireXR_App.Enums;
 using System.Collections;
+using System.Security.Permissions;
 using System.Windows;
 using System.Windows.Threading;
 using TwinCAT.Ads;
@@ -77,6 +78,11 @@ namespace SapphireXR_App.Models
                 hWriteDeviceTargetValuePLC = Ads.CreateVariableHandle("P30_GasFlowControl.aGasController_TV");
                 hWriteDeviceRampTimePLC = Ads.CreateVariableHandle("P30_GasFlowControl.aGasController_RampTime");
 
+                hRcp = PLCService.Ads.CreateVariableHandle("RCP.aRecipe");
+                hRcpTotalStep = PLCService.Ads.CreateVariableHandle("RCP.iRcpTotalStep");
+                hRcpStart = PLCService.Ads.CreateVariableHandle("RCP.bRcpStart");
+                hRcpState = PLCService.Ads.CreateVariableHandle("RCP.iRcpOperationState");
+
                 aDeviceRampTimes = new short[dIndexFlowController.Count];
                 aDeviceTargetValues = new float[dIndexFlowController.Count];
 
@@ -96,7 +102,11 @@ namespace SapphireXR_App.Models
         private static uint hDeviceCurrentValuePLC;
         private static uint hWriteDeviceTargetValuePLC;
         private static uint hWriteDeviceRampTimePLC;
-        
+        private static uint hRcp;
+        private static uint hRcpTotalStep;
+        private static uint hRcpStart;
+        private static uint hRcpState;
+
         public static void ReadValveStateFromPLC()
         {
             // Solenoid Valve State Read(Update)
@@ -307,6 +317,26 @@ namespace SapphireXR_App.Models
         {
             aDeviceRampTimes![dIndexFlowController[flowControllerID]] = currentValue;
             Ads.WriteAny(hWriteDeviceRampTimePLC, aDeviceRampTimes!, [aDeviceRampTimes!.Length]);
+        }
+
+        public static void WriteRecipe(PlcRecipe[] recipe)
+        {
+            Ads.WriteAny(hRcp, recipe);
+        }
+
+        public static void WriteTotalStep(short totalStep)
+        {
+           Ads.WriteAny(hRcpTotalStep, totalStep);
+        }
+
+        public static void WriteStart(bool start)
+        {
+            Ads.WriteAny(hRcpStart, start);
+        }
+
+        public static void WriteOperationState(short operationState)
+        {
+            Ads.WriteAny(hRcpState, operationState);
         }
 
         private static ObservableManager<PLCConnection>.DataIssuer ConnectedNotifier;

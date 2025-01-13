@@ -14,7 +14,7 @@ VAR_GLOBAL
 	//Solenoid Valve
 	aOutputSolValve AT %Q* 	: ARRAY[1..3]OF DWORD; //Solenoid Valve
 	
-	aMaxValueController	: ARRAY[1..29]OF REAL ; //Device Max Value from UI
+	aMaxValueController	: ARRAY[1..26]OF REAL ; //Device Max Value from UI
 	aMaxValueGauge : ARRAY[1..9]OF REAL ; //Gauge Max Value frome UI
 	
 	(* Read and Write of Device Control Value*)
@@ -22,7 +22,7 @@ VAR_GLOBAL
 	aController_TV : ARRAY[1..29] OF REAL; //Target Value from UI
 	aController_RampTime : ARRAY[1..29] OF INT;
 	aController_PV : ARRAY[1..29] OF INT; //Present Value from Device
-	aController_SV : ARRAY[1..29] OF INT; //Control Value from RampingController
+	aController_SV : ARRAY[1..29] OF INT; //Current Value from RampingController
 END_VAR
 
 VAR_GLOBAL CONSTANT

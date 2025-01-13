@@ -1,0 +1,99 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4026.8">
+  <POU Name="FB_RampGenerator" Id="{cdf2a92c-f3b1-412b-b8de-c0c4804ef182}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK FB_RampGenerator
+VAR_INPUT
+	//bStart_Stop			: BOOL := TRUE;
+	//bAlarmReset			: BOOL;
+	rInitValue		: REAL;
+	rTargetValue	: REAL;
+	nRampTime		: INT := 1; // Second
+	nState			: SINT; //0:Init State
+END_VAR
+
+VAR_OUTPUT
+	rControlValue	: LREAL;
+	rStartValue		: REAL;
+END_VAR
+
+VAR
+	// for FB_CTRL_RAMP_GENERATOR Variable
+	(* input *)
+	bEnable			: BOOL; // Reference
+	(* output *)
+	bValueReached	: BOOL;
+	(* function block *)
+	fbCTRL_RAMP_GENERATOR			: FB_CTRL_RAMP_GENERATOR;
+	stCTRL_RAMP_GENERATOR_PARAMS	: ST_CTRL_RAMP_GENERATOR_PARAMS;
+	eErrorId						: E_CTRL_ERRORCODES;
+	bError							: BOOL;
+	bInit							: BOOL := TRUE;
+	(* Operation Parameter*)
+	rRampingRatio			: REAL;		
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[// Ramp Value Genearation for MFC, EPC
+(* Convert to Normalization, Ramp Valve Calculation*)
+IF nRampTime <> 0 THEN
+	rRampingRatio := ABS(rTargetValue - rStartValue) / nRampTime * 0.1; //Second
+END_IF
+
+CASE nState OF
+	0: // Init Sate
+		rStartValue := rInitValue;
+	10: // START
+		IF (rTargetValue > 0) OR (rStartValue > 0) THEN
+			bEnable := TRUE;
+			bInit := TRUE;
+		ELSE
+			bEnable := FALSE;
+			bInit := FALSE;
+		END_IF
+	20: //STOP
+		bEnable := FALSE;
+		bInit := TRUE;
+		bValueReached := TRUE;
+	30: //PAUSE
+		bEnable := FALSE;
+	50: //RESTART
+		bEnable := TRUE;	
+END_CASE
+
+IF bInit THEN
+	(* init parameter struct *)
+	stCTRL_RAMP_GENERATOR_PARAMS.tTaskCycleTime		:= T#100MS;
+	stCTRL_RAMP_GENERATOR_PARAMS.tCtrlCycleTime		:= T#100MS;
+	stCTRL_RAMP_GENERATOR_PARAMS.fVeloPos			:= rRampingRatio; (* in units per second *)
+	stCTRL_RAMP_GENERATOR_PARAMS.fVeloNeg			:= rRampingRatio; (* in units per second *)
+	(* reset the init flag *)
+	bInit := FALSE;
+END_IF
+
+IF rTargetValue <> rStartValue THEN
+	(* call function block *)
+	fbCTRL_RAMP_GENERATOR(
+		bEnable			:= bEnable,
+		fStart			:= rStartValue,
+		fTarget			:= rTargetValue,
+		stParams		:= stCTRL_RAMP_GENERATOR_PARAMS,
+		fOut			=> rControlValue,
+		bValueReached	=> bValueReached,
+		bError			=> bError,
+		eErrorId		=> eErrorId);
+ELSE
+	fbCTRL_RAMP_GENERATOR.bEnable := FALSE;
+END_IF
+
+IF bValueReached THEN
+	rStartValue := LREAL_TO_REAL(rControlValue);
+END_IF
+
+(* Convert to Writing Value *)
+//nControlValue := REAL_TO_INT(rControlValue);]]></ST>
+    </Implementation>
+    <LineIds Name="FB_RampGenerator">
+      <LineId Id="1" Count="57" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

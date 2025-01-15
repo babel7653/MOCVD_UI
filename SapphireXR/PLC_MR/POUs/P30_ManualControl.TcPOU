@@ -17,38 +17,65 @@ FOR i:=1 TO 26 DO
 		GVL_IO.aAnalogOutputIO[i] := LREAL_TO_INT(GVL_IO.aController[i].rControlValue); //Write to Device
 		
 		GVL_IO.aController_PV[i] := REAL_TO_INT(GVL_IO.aAnalogInputIO[i] / GVL_IO.KL3464MaxValueH * GVL_IO.aMaxValueController[i]);
-		GVL_IO.aController_SV[i] := LREAL_TO_INT((GVL_IO.aController[i].rControlValue / GVL_IO.KL3464MaxValueH)*GVL_IO.aMaxValueController[i]);
+		GVL_IO.aController_CV[i] := LREAL_TO_INT((GVL_IO.aController[i].rControlValue / GVL_IO.KL3464MaxValueH)*GVL_IO.aMaxValueController[i]);
 		GVL_IO.aController[i]();
 	END_IF
 END_FOR
 
 (* Read and Write Temperature Cotnroller *)
-i := 27; // Heater Controller 
+FOR i:=27 TO 29 DO
 	IF GVL_IO.aMaxValueController[i]<> 0 THEN
 		GVL_IO.aController[i].nState := 10;
-	END_IF	
-
-
-IF ( GVL_IO.aController_SV[j] > 10 ) THEN
-	P11_E3508.bHeaterOn := TRUE;
-ELSE
-	P11_E3508.bHeaterOn := FALSE;
-END_IF
+	END_IF
 	
-GVL_IO.aController[j].nRampTime := GVL_IO.aController_RampTime[j];
-GVL_IO.aController[j].rTargetValue := GVL_IO.aController_TV[j];
-P11_E3508.wControlValue := LREAL_TO_WORD(GVL_IO.aController[j].rControlValue); //Write to Temperature Controller
+	CASE i OF
+		27: // Induction Heater Controller
+			IF ( GVL_IO.aController_CV[i] > 10 ) THEN
+				P11_E3508.bHeaterOn := TRUE;  // PowerSupply Turn ON when ControlValue is 10 degrees or more
+			ELSE
+				P11_E3508.bHeaterOn := FALSE; // PowerSupply Turn OFF when ControlValue is below 10 degrees
+			END_IF
+			GVL_IO.aController[i].nRampTime := GVL_IO.aController_RampTime[i]; // from UI
+			GVL_IO.aController[i].rTargetValue := GVL_IO.aController_TV[i]; // from UI
+			P11_E3508.wControlValue := LREAL_TO_WORD(GVL_IO.aController[i].rControlValue); //Write to Temperature Controller
+			
+		28: // Reactor Pressure Controller
+			GVL_IO.aController[i].nRampTime := GVL_IO.aController_RampTime[i]; // from UI
+			GVL_IO.aController[i].rTargetValue := GVL_IO.aController_TV[i]; // from UI
+			P12_IQ_PLUS.wControlValue := LREAL_TO_WORD(GVL_IO.aController[i].rControlValue); //Write to Pressure Controller
+			
+		29: // Susceptor Rotation Controller
+	END_CASE
+	
 
-(* Read and Write Pressure Controller *)
-j := 28; // Pressure Controller
-IF (GVL_IO.aController_TV[j] >= 0 ) THEN
-	GVL_IO.aController[j].nState := 10; //START
-END_IF
+	
+END_FOR 
+
 
 ]]></ST>
     </Implementation>
     <LineIds Name="P30_ManualControl">
-      <LineId Id="1" Count="37" />
+      <LineId Id="1" Count="12" />
+      <LineId Id="54" Count="0" />
+      <LineId Id="43" Count="0" />
+      <LineId Id="14" Count="0" />
+      <LineId Id="46" Count="1" />
+      <LineId Id="45" Count="0" />
+      <LineId Id="49" Count="2" />
+      <LineId Id="55" Count="3" />
+      <LineId Id="53" Count="0" />
+      <LineId Id="75" Count="1" />
+      <LineId Id="59" Count="0" />
+      <LineId Id="62" Count="2" />
+      <LineId Id="69" Count="0" />
+      <LineId Id="77" Count="1" />
+      <LineId Id="67" Count="0" />
+      <LineId Id="52" Count="0" />
+      <LineId Id="72" Count="0" />
+      <LineId Id="71" Count="0" />
+      <LineId Id="70" Count="0" />
+      <LineId Id="44" Count="0" />
+      <LineId Id="36" Count="2" />
     </LineIds>
   </POU>
 </TcPlcObject>

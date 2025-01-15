@@ -15,34 +15,30 @@ VAR
 	aGasController : ARRAY[1..29] OF FB_RampGenerator;
 	aGasController_PV : ARRAY[1..29] OF INT;
 	i 	: INT;
-	nRcpRampTime	: INT;
+	j	: INT;
 END_VAR]]></Declaration>
     <Implementation>
-      <ST><![CDATA[nRcpRampTime := RCP.aRecipe[nRcpIndex].iRecipe[2]; // Current Recipe Step Ramp Time 
-
-(* Target Value Write to Device *)
-(* Heater Controller *)
-GVL_IO.aController[27].rTargetValue := RCP.aRecipe[nRcpIndex].iRecipe[4];
-GVL_IO.aController[27].nRampTime := nRcpRampTime;
-
-(* Pressure Controller *)
-P12_IQ_PLUS.nPressureTargetValue := INT_TO_WORD(RCP.aRecipe[nRcpIndex].iRecipe[5]);
-P12_IQ_PLUS.nRampTime := nRcpRampTime;
-
-(* Susceptor Rotation *)
-P15_RotationOperation.nRotationTV_rpm := INT_TO_SINT(RCP.aRecipe[nRcpIndex].iRecipe[6]);
-P15_RotationOperation.nRampTime := nRcpRampTime;
-
-(* Gas Controller MFC / EPC *)
+      <ST><![CDATA[(* Gas Controller MFC / EPC *)
 FOR i:= 1 TO 26 DO
 	IF GVL_IO.aMaxValueController[i] <> 0 THEN
 		GVL_IO.aController[i].nState := 10;
-		GVL_IO.aController[i].nRampTime := nRcpRampTime;
 		GVL_IO.aController[i].rTargetValue := RCP.aRecipe[nRcpIndex].rRecipe[i] / GVL_IO.aMaxValueController[i] * GVL_IO.KL3464MaxValueH; //Input Set Value
+		GVL_IO.aController[i].nRampTime := RCP.aRecipe[nRcpIndex].iRecipe[2];
 		GVL_IO.aAnalogOutputIO[i] := LREAL_TO_INT(GVL_IO.aController[i].rControlValue);
 		
 		GVL_IO.aController_PV[i] := REAL_TO_INT(GVL_IO.aAnalogInputIO[i] / GVL_IO.KL3464MaxValueH * GVL_IO.aMaxValueController[i]);
 		GVL_IO.aController[i]();
+	END_IF
+END_FOR
+
+(* Temperature, Pressure, Rotation*)
+FOR i:=27 TO 29 DO
+	j := i - 23; //Recipe index offset
+	
+	IF GVL_IO.aMaxValueController[i] <> 0 THEN
+		GVL_IO.aController[i].nState := 10;
+		GVL_IO.aController[i].rTargetValue := RCP.aRecipe[nRcpIndex].iRecipe[j]; // Recipe Target Value
+		GVL_IO.aController[i].nRampTime := RCP.aRecipe[nRcpIndex].iRecipe[2]; // Recipe Step Ramp Time 
 	END_IF
 END_FOR
 
@@ -75,22 +71,20 @@ GVL_IO.aOutputSolValve[2].14 := RCP.aRecipe[nRcpIndex].dRecipe.24; //V31
 GVL_IO.aOutputSolValve[2].15 := RCP.aRecipe[nRcpIndex].dRecipe.25; //V32]]></ST>
     </Implementation>
     <LineIds Name="FB_RecipeSequencer">
-      <LineId Id="25" Count="0" />
-      <LineId Id="187" Count="0" />
-      <LineId Id="183" Count="0" />
-      <LineId Id="160" Count="0" />
-      <LineId Id="189" Count="1" />
-      <LineId Id="182" Count="0" />
-      <LineId Id="166" Count="0" />
-      <LineId Id="162" Count="0" />
-      <LineId Id="175" Count="0" />
-      <LineId Id="181" Count="0" />
-      <LineId Id="177" Count="1" />
-      <LineId Id="176" Count="0" />
-      <LineId Id="180" Count="0" />
-      <LineId Id="30" Count="4" />
+      <LineId Id="30" Count="3" />
       <LineId Id="129" Count="0" />
+      <LineId Id="200" Count="0" />
       <LineId Id="36" Count="5" />
+      <LineId Id="198" Count="0" />
+      <LineId Id="193" Count="0" />
+      <LineId Id="192" Count="0" />
+      <LineId Id="209" Count="1" />
+      <LineId Id="206" Count="0" />
+      <LineId Id="212" Count="0" />
+      <LineId Id="207" Count="0" />
+      <LineId Id="211" Count="0" />
+      <LineId Id="208" Count="0" />
+      <LineId Id="195" Count="0" />
       <LineId Id="132" Count="26" />
       <LineId Id="131" Count="0" />
     </LineIds>

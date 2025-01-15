@@ -1,17 +1,13 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4026.8">
   <POU Name="P12_IQ_PLUS" Id="{e511b755-5d71-4ab9-9c97-639ef910a29b}" SpecialFunc="None">
     <Declaration><![CDATA[PROGRAM P12_IQ_PLUS
 VAR_INPUT
-	nPressureTargetValue : WORD := 760;//Pressure Set Value
-	nRampTime			: INT := 1; //Second
-	//wSetPoint 			: WORD; //Set Point
+	wControlValue		: WORD := 760; //Pressure Target Value from UI
 	nSetType 			: USINT; //1:Pressure Conrol, 2:Position Control
 	nTValveMode 		: USINT := 0; //Valve Mode
 	bPumpOn				: BOOL;
 	bPumpReset			: BOOL;
-	
-	bEnable				: BOOL; //Value Change
 
 END_VAR
 VAR_OUTPUT
@@ -20,7 +16,6 @@ VAR_OUTPUT
 	rValvePosition 		: REAL; //Valve Position
 	bVacuumPumpCB		: BOOL;
 	bThrottleValveCP	: BOOL;
-	nPressureControlValue	: INT;
 
 	//nInputStatus
 	ingPressureControl 	: BOOL;
@@ -60,21 +55,6 @@ VAR
 	wInputValvePosition : WORD; //Current Valve Position (0~100%)
 	nInputStatusOld : USINT := 9; //Value Change Monitoring, First Temp value
 	
-	// for FB_CTRL_RAMP_GENERATOR Variable
-	(* input *)
-	rPressureTargetValue 		: REAL;
-	rPressureStartValue 		: REAL := 760;
-	(* output *)
-	rPressureControlValue		: LREAL;
-	bValueReached				: BOOL;
-	(* function block *)
-	fbCTRL_RAMP_GENERATOR			: FB_CTRL_RAMP_GENERATOR;
-	stCTRL_RAMP_GENERATOR_PARAMS	: ST_CTRL_RAMP_GENERATOR_PARAMS;
-	eErrorId						: E_CTRL_ERRORCODES;
-	bError							: BOOL;
-	bInit						: BOOL := TRUE;	
-	(* Operation Parameter*)
-	rRampingRatio				: REAL;	
 END_VAR
 VAR CONSTANT
 	//Conversion Parameter
@@ -109,56 +89,12 @@ rPressurePV_CD2 := WORD_TO_REAL(wInputPressurePV_CDG2)/PressureFactor;
 rValvePosition := WORD_TO_REAL(wInputValvePosition)/SetPointFactor;
 
 //To IQ Plus
-IF nTValveMode = 0 AND nSetType = 1 THEN
-	rPressureTargetValue := nPressureTargetValue * SetPointFactor * 0.1; //Pressure Control
+IF nTValveMode = 0 AND nSetType = 1 THEN 
+	wOutputSetPoint := LREAL_TO_WORD(wControlValue * SetPointFactor * 0.1); //Pressure Control
 ELSIF nTValveMode = 0 AND nSetType = 2 THEN
-	rPressureTargetValue := nPressureTargetValue * SetPointFactor; // Position Control
+	wOutputSetPoint := LREAL_TO_WORD(wControlValue * SetPointFactor); // Position Control
 END_IF
 
-//Ramp Generator
-IF nRampTime <> 0 THEN
-	rRampingRatio := ABS(rPressureTargetValue - rPressureStartValue) / nRampTime * 0.1; // Second
-END_IF
-
-bEnable	:= TRUE;
-
-IF (rPressureTargetValue > 0) OR (rPressureStartValue > 0) THEN
-	bInit := TRUE;
-ELSIF (rPressureTargetValue = 0) AND (rPressureStartValue = 0) THEN
-	bInit := FALSE;
-END_IF
-
-IF bInit THEN
-	(* init parameter struct *)
-	stCTRL_RAMP_GENERATOR_PARAMS.tTaskCycleTime		:= T#100MS;
-	stCTRL_RAMP_GENERATOR_PARAMS.tCtrlCycleTime		:= T#100MS;
-	stCTRL_RAMP_GENERATOR_PARAMS.fVeloPos			:= rRampingRatio; (* in units per second *)
-	stCTRL_RAMP_GENERATOR_PARAMS.fVeloNeg			:= rRampingRatio; (* in units per second *)
-	(* reset the init flag *)
-	bInit := FALSE;
-END_IF
-
-IF rPressureTargetValue <> rPressureStartValue THEN
-	bEnable := TRUE;
-	(* call function block *)
-	fbCTRL_RAMP_GENERATOR(
-		bEnable			:= bEnable,
-		fStart			:= rPressureStartValue,
-		fTarget			:= rPressureTargetValue,
-		stParams		:= stCTRL_RAMP_GENERATOR_PARAMS,
-		fOut			=> rPressureControlValue,
-		bValueReached	=> bValueReached,
-		bError			=> bError,
-		eErrorId		=> eErrorId);
-ELSE
-	fbCTRL_RAMP_GENERATOR.bEnable := FALSE;
-END_IF
-
-IF bValueReached THEN
-	rPressureStartValue := LREAL_TO_REAL(rPressureControlValue);
-END_IF
-
-wOutputSetPoint := LREAL_TO_WORD(rPressureControlValue);
 oSetPoint := WORD_TO_USINT_Bit(wOutputSetPoint);
 aOutputSPBytes[1] := oSetPoint.Lower;
 aOutputSPBytes[2] := oSetPoint.Upper;
@@ -199,7 +135,6 @@ END_CASE
 // 3 : Holds valve in current position.
 // 4 : Reset the controller.
 nOutputMode := nTValveMode;
-nPressureControlValue := LREAL_TO_INT(rPressureControlValue);
 GVL_IO.aDigitalOutputIO[2].2 := bPumpOn; //Pump On
 GVL_IO.aDigitalOutputIO[2].3 := bPumpReset; // Pump Reset]]></ST>
     </Implementation>
@@ -216,26 +151,12 @@ GVL_IO.aDigitalOutputIO[2].3 := bPumpReset; // Pump Reset]]></ST>
       <LineId Id="290" Count="0" />
       <LineId Id="277" Count="0" />
       <LineId Id="158" Count="0" />
-      <LineId Id="52" Count="15" />
-      <LineId Id="297" Count="1" />
-      <LineId Id="301" Count="0" />
-      <LineId Id="306" Count="1" />
-      <LineId Id="310" Count="0" />
-      <LineId Id="299" Count="0" />
-      <LineId Id="312" Count="4" />
-      <LineId Id="311" Count="0" />
-      <LineId Id="326" Count="0" />
-      <LineId Id="328" Count="7" />
-      <LineId Id="327" Count="0" />
-      <LineId Id="336" Count="14" />
-      <LineId Id="217" Count="0" />
-      <LineId Id="352" Count="0" />
-      <LineId Id="354" Count="1" />
-      <LineId Id="353" Count="0" />
-      <LineId Id="351" Count="0" />
-      <LineId Id="68" Count="39" />
+      <LineId Id="52" Count="11" />
+      <LineId Id="357" Count="0" />
+      <LineId Id="65" Count="0" />
+      <LineId Id="358" Count="0" />
+      <LineId Id="67" Count="40" />
       <LineId Id="5" Count="0" />
-      <LineId Id="356" Count="0" />
       <LineId Id="287" Count="0" />
       <LineId Id="293" Count="0" />
     </LineIds>

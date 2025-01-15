@@ -133,7 +133,7 @@ namespace SapphireXR_App.ViewModels
 
             void IObserver<string>.OnNext(string value)
             {
-                ControlTargetValueSeriesUpdater currentSelectedFlowControllerListener = bottomViewModel.plotModels[PLCService.dIndexFlowController[value]];
+                ControlTargetValueSeriesUpdater currentSelectedFlowControllerListener = bottomViewModel.plotModels[PLCService.dIndexController[value]];
                 bottomViewModel.currentSelectedFlowControllerListener = currentSelectedFlowControllerListener;
                 bottomViewModel.FlowControlLivePlot = currentSelectedFlowControllerListener.plotModel;
             }
@@ -143,7 +143,7 @@ namespace SapphireXR_App.ViewModels
 
         [ObservableProperty]
         public PlotModel? flowControlLivePlot;
-        private ControlTargetValueSeriesUpdater[] plotModels = new ControlTargetValueSeriesUpdater[PLCService.dIndexFlowController.Count];
+        private ControlTargetValueSeriesUpdater[] plotModels = new ControlTargetValueSeriesUpdater[PLCService.dIndexController.Count];
         private ControlTargetValueSeriesUpdater? currentSelectedFlowControllerListener;
 
         public BottomViewModel()
@@ -157,7 +157,7 @@ namespace SapphireXR_App.ViewModels
    
         public void LivePlotSetting()
         {
-            foreach(var (id, index) in PLCService.dIndexFlowController)
+            foreach(var (id, index) in PLCService.dIndexController)
             {
                 ControlTargetValueSeriesUpdater controlCurrentValueSeriesUpdater = new ControlTargetValueSeriesUpdater(id);
                 ObservableManager<(int, int)>.Subscribe("FlowControl." + id + ".ControlTargetValue", controlCurrentValueSeriesUpdater);

@@ -67,7 +67,7 @@ namespace SapphireXR_App.Models
                 AddressPLC = $"PLC Address : {Ads.Address}";
                 ModePLC = "System Mode : Ready";
                 //Read Set Value from PLC 
-                hDeviceControlValuePLC = Ads.CreateVariableHandle("GVL_IO.aController_SV");
+                hDeviceControlValuePLC = Ads.CreateVariableHandle("GVL_IO.aController_CV");
                 //Read Present Value from Device of PLC
                 hDeviceCurrentValuePLC = Ads.CreateVariableHandle("GVL_IO.aController_PV");
                 //Read and Write Max Value of PLC 
@@ -83,8 +83,8 @@ namespace SapphireXR_App.Models
                 hRcpStart = PLCService.Ads.CreateVariableHandle("RCP.bRcpStart");
                 hRcpState = PLCService.Ads.CreateVariableHandle("RCP.iRcpOperationState");
 
-                aDeviceRampTimes = new short[dIndexFlowController.Count];
-                aDeviceTargetValues = new float[dIndexFlowController.Count];
+                aDeviceRampTimes = new short[dIndexController.Count];
+                aDeviceTargetValues = new float[dIndexController.Count];
 
                 ConnectedNotifier.Issue(PLCConnection.Connecrted);
             }

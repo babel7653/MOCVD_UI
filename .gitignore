@@ -3,21 +3,15 @@
 ################################################################################
 
 /.vs
-/SapphireXR/.vs/
+/SapphireXR/.vs
+/SapphireXR/SapphireXR.~u
 /SapphireXR/SapphireXR_App/bin/
 /SapphireXR/SapphireXR_App/obj/
-/SapphireXR/UpgradeLog.htm
 /SapphireXR/_Boot
 /SapphireXR/PLC_MR/_CompileInfo
-/SapphireXR/PLC_MR/_Libraries
-/SapphireXR/PLC_MR/VISUs
 /SapphireXR/PLC_MR/PLC_MR.tmc
 /SapphireXR/PLC_MR/PlcTask.TcTTO
 /SapphireXR/PLC_MR/PlcTask_Standard.TcTTO
 /SapphireXR/SapphireXR.project.~u
-/SapphireXR/SapphireXR_App/SapphireXR_App.csproj.user
-/SapphireXR_Test/SapphireXR_App/SapphireXR_App.csproj.user
-/SapphireXR/SapphireXR.~u
 /SapphireXR/SapphireXR.tsproj.bak
-/SapphireXR/Port_851.ocm
 /SapphireXR/TrialLicense.tclrs

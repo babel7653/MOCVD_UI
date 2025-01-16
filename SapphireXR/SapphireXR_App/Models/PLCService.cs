@@ -67,7 +67,7 @@ namespace SapphireXR_App.Models
                 AddressPLC = $"PLC Address : {Ads.Address}";
                 ModePLC = "System Mode : Ready";
                 //Read Set Value from PLC 
-                hDeviceControlValuePLC = Ads.CreateVariableHandle("GVL_IO.aController_SV");
+                hDeviceControlValuePLC = Ads.CreateVariableHandle("GVL_IO.aController_CV");
                 //Read Present Value from Device of PLC
                 hDeviceCurrentValuePLC = Ads.CreateVariableHandle("GVL_IO.aController_PV");
                 //Read and Write Max Value of PLC 

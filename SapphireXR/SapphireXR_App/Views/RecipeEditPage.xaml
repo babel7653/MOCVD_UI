@@ -423,8 +423,9 @@
                 <StackPanel Grid.Column="0" Orientation="Horizontal">
                     <Button x:Name="btnRecipeNew" Content="New" Style="{StaticResource RecipeOperationStyle}" Command="{Binding RecipeNewCommand}"/>
                     <Button x:Name="btnRecipeOpen" Content="Open" Style="{StaticResource RecipeOperationStyle}" Command="{Binding RecipeOpenCommand}"/>
-                    <Button x:Name="btnRecipeSave" Content="Save" Style="{StaticResource RecipeOperationStyle}" Command="{Binding RecipeSaveCommand}"/>
-                    <Button x:Name="btnRecipeSaveAs" Content="SaveAs" Style="{StaticResource RecipeOperationStyle}" Command="{Binding RecipeSaveAsCommand}"/>
+                    <Button x:Name="btnRecipePLCLoad" Content="PLC Load" Style="{StaticResource RecipeOperationStyle}" Command="{Binding RecipePLCLoadCommand, Mode=TwoWay}" />
+                    <Button x:Name="btnRecipeSave" Content="Save" Style="{StaticResource RecipeOperationStyle}" Command="{Binding RecipeSaveCommand, Mode=TwoWay}"/>
+                    <Button x:Name="btnRecipeSaveAs" Content="SaveAs" Style="{StaticResource RecipeOperationStyle}" Command="{Binding RecipeSaveAsCommand, Mode=TwoWay}"/>
                 </StackPanel>
                 <StackPanel Grid.Column="2" Orientation="Horizontal" VerticalAlignment="Bottom">
                     <Label Width="80" Foreground="Lime" Content="Recipe File"/>
@@ -435,17 +436,82 @@
 
             <!-- #Region 8. Recipe Edit 데이터 테이블 -->
             <Grid Grid.Row="2" Background="Transparent">
+                <Grid.Resources>
+                    <ContextMenu x:Key="ContextMenuOnSelectedWIthCopied">
+                        <MenuItem Header="Copy" InputGestureText="Ctrl+C" Command="{Binding CopyCommand}" />
+                        <MenuItem Header="Paste"  InputGestureText="Ctrl+V" Command="{Binding PasteCommand}"  />
+                        <Separator/>
+                        <MenuItem Header="Add Step" Command="{Binding AddStepCommand}" CommandParameter="{Binding Path=PlacementTarget, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ContextMenu}}}"/>
+                        <MenuItem Header="Insert Step" Command="{Binding InsertStepCommand}" />
+                        <Separator />
+                        <MenuItem Header="Delete Step" Command="{Binding DeleteStepCommand}"/>
+                    </ContextMenu>
+                    <ContextMenu x:Key="ContextMenuOnSelectedWIthoutCopied">
+                        <MenuItem Header="Copy"  InputGestureText="Ctrl+C" Command="{Binding CopyCommand}"/>
+                        <Separator/>
+                        <MenuItem Header="Add Step" Command="{Binding AddStepCommand}"  CommandParameter="{Binding Path=PlacementTarget, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ContextMenu}}}" />
+                        <MenuItem Header="Insert Step" Command="{Binding InsertStepCommand}" />
+                        <Separator />
+                        <MenuItem Header="Delete Step " Command="{Binding DeleteStepCommand}"/>
+                    </ContextMenu>
+                    <ContextMenu x:Key="ContextMenuOnNothingSelected">
+                        <MenuItem Header="Add Step"  Command="{Binding AddStepCommand}"/>
+                    </ContextMenu>
+                    <Style TargetType="DataGrid">
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding CurrentState}" Value="NoneSelected">
+                                <Setter  Property="ContextMenu" Value="{StaticResource ContextMenuOnNothingSelected}"/>
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding CurrentState}" Value="Selected">
+                                <Setter Property="ContextMenu" Value="{StaticResource ContextMenuOnSelectedWIthoutCopied}"/>
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding CurrentState}" Value="Copied">
+                                <Setter Property="ContextMenu" Value="{StaticResource ContextMenuOnSelectedWIthCopied}"/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                    <Style TargetType="DataGridRow">
+                        <Style.Setters>
+                            <Setter Property="Background" Value="{Binding Background, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                        </Style.Setters>
+                    </Style>
+                    <Style x:Key="VavleOnOffCheckBox" TargetType="{x:Type CheckBox}">
+                        <Setter Property="Template">
+                            <Setter.Value>
+                                <ControlTemplate TargetType="{x:Type CheckBox}">
+                                    <Ellipse Width="10" Height="10" x:Name="checkButton" Stroke="Gray">
+                                        <Ellipse.Style>
+                                            <Style TargetType="{x:Type Ellipse}">
+                                                <Style.Triggers>
+                                                    <DataTrigger Binding="{Binding IsChecked, RelativeSource={RelativeSource AncestorType=CheckBox}}" Value="True">
+                                                        <Setter Property="Fill" Value="Lime"/>
+                                                    </DataTrigger>
+                                                    <DataTrigger Binding="{Binding IsChecked, RelativeSource={RelativeSource AncestorType=CheckBox}}" Value="False">
+                                                        <Setter Property="Fill" Value="White"/>
+                                                    </DataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </Ellipse.Style>
+                                    </Ellipse>
+                                </ControlTemplate>
+                            </Setter.Value>
+                        </Setter>
+                    </Style>
+                </Grid.Resources>
                 <!-- 수직형 탭 설정-->
                 <TabControl TabStripPlacement="Left">
-
                     <TabItem Header="Reactor Data">
                         <TabItem.Content>
-                            <DataGrid
-                                  SelectedIndex="{Binding CurrRecipeStep, Mode=TwoWay}"
-                                  ItemsSource="{Binding Recipes}">  
+                            <DataGrid  x:Name="reactorDataGrid" HorizontalScrollBarVisibility="Visible"  DataContext="{Binding ReactorDataGridContext}" ItemsSource="{Binding RecipeViewModel.Recipes}">
+                                <DataGrid.InputBindings>
+                                    <KeyBinding Key="C" Modifiers="Ctrl" Command="{Binding CopyCommand}" />
+                                    <KeyBinding Key="V" Modifiers="Ctrl" Command="{Binding PasteCommand}" />
+                                    <KeyBinding Key="Insert" Command="{Binding InsertCommand}" />
+                                    <KeyBinding Key="Delete"  Command="{Binding DeleteCommand}" />
+                                </DataGrid.InputBindings>
                                 <b:Interaction.Triggers>
-                                    <b:EventTrigger EventName="SelectedChanged">
-                                        <b:InvokeCommandAction Command="{Binding SelectionChangedcommand}" PassEventArgsToCommand="True"/>
+                                    <b:EventTrigger EventName="SelectionChanged">
+                                        <b:InvokeCommandAction Command="{Binding SelectionChangedCommand}" PassEventArgsToCommand="True"/>
                                     </b:EventTrigger>
                                 </b:Interaction.Triggers>
                                 <DataGrid.Columns>
@@ -466,15 +532,22 @@
 
                     <TabItem Header="FlowData">
                         <TabItem.Content>
-                            <DataGrid HorizontalScrollBarVisibility="Visible"
-                                SelectedIndex="{Binding CurrRecipeStep, Mode=TwoWay}"
-                                ItemsSource="{Binding Recipes}">
+                            <DataGrid x:Name="flowDataGrid" HorizontalScrollBarVisibility="Visible" DataContext="{Binding FlowDataGridContext}" ItemsSource="{Binding RecipeViewModel.Recipes}">
+                                <DataGrid.InputBindings>
+                                    <KeyBinding Key="C" Modifiers="Ctrl" Command="{Binding CopyCommand}" />
+                                    <KeyBinding Key="V" Modifiers="Ctrl" Command="{Binding PasteCommand}" />
+                                </DataGrid.InputBindings>
+                                <b:Interaction.Triggers>
+                                    <b:EventTrigger EventName="SelectionChanged">
+                                        <b:InvokeCommandAction Command="{Binding SelectionChangedCommand}" PassEventArgsToCommand="True"/>
+                                    </b:EventTrigger>
+                                </b:Interaction.Triggers>
                                 <DataGrid.Columns>
                                     <DataGridTextColumn Header="No" Width="30" Binding="{Binding No}" />
                                     <DataGridTextColumn Header="Name" Width="200" Binding="{Binding Name}" />
                                     <DataGridTextColumn Header="Ramp" Width="100" Binding="{Binding rTime}" />
                                     <DataGridTextColumn Header="Hold" Width="100" Binding="{Binding hTime}" />
-                                    <DataGridTextColumn Header="M01" Width="70" Binding="{Binding M01}" />
+                                    <DataGridTextColumn Header="M01" Width="70" Binding="{Binding M01}"/>
                                     <DataGridTextColumn Header="M02" Width="70" Binding="{Binding M02}" />
                                     <DataGridTextColumn Header="M03" Width="70" Binding="{Binding M03}" />
                                     <DataGridTextColumn Header="M04" Width="70" Binding="{Binding M04}" />
@@ -497,39 +570,45 @@
                             </DataGrid>
                         </TabItem.Content>
                     </TabItem>
-
                     <TabItem Header="ValveData">
                         <TabItem.Content>
-                            <DataGrid HorizontalScrollBarVisibility="Visible"
-                                SelectedIndex="{Binding CurrRecipeStep, Mode=TwoWay}"
-                                ItemsSource="{Binding Recipes}">
+                            <DataGrid  x:Name="valveDataGrid" HorizontalScrollBarVisibility="Visible" DataContext="{Binding ValveDataGridContext}" ItemsSource="{Binding RecipeViewModel.Recipes}">
+                                <DataGrid.InputBindings>
+                                    <KeyBinding Key="C" Modifiers="Ctrl" Command="{Binding CopyCommand}" />
+                                    <KeyBinding Key="V" Modifiers="Ctrl" Command="{Binding PasteCommand}" />
+                                </DataGrid.InputBindings>
+                                <b:Interaction.Triggers>
+                                    <b:EventTrigger EventName="SelectionChanged">
+                                        <b:InvokeCommandAction Command="{Binding SelectionChangedCommand}" PassEventArgsToCommand="True"/>
+                                    </b:EventTrigger>
+                                </b:Interaction.Triggers>
                                 <DataGrid.Columns>
                                     <DataGridTextColumn Header="No" Width="30" Binding="{Binding No}" />
                                     <DataGridTextColumn Header="Name" Width="200" Binding="{Binding Name}" />
-                                    <DataGridTextColumn Header="V01" Width="50" Binding="{Binding V01}" />
-                                    <DataGridTextColumn Header="V02" Width="50" Binding="{Binding V02}" />
-                                    <DataGridTextColumn Header="V03" Width="50" Binding="{Binding V03}" />
-                                    <DataGridTextColumn Header="V04" Width="50" Binding="{Binding V04}" />
-                                    <DataGridTextColumn Header="V05" Width="50" Binding="{Binding V05}" />
-                                    <DataGridTextColumn Header="V07" Width="50" Binding="{Binding V07}" />
-                                    <DataGridTextColumn Header="V08" Width="50" Binding="{Binding V08}" />
-                                    <DataGridTextColumn Header="V10" Width="50" Binding="{Binding V10}" />
-                                    <DataGridTextColumn Header="V11" Width="50" Binding="{Binding V11}" />
-                                    <DataGridTextColumn Header="V13" Width="50" Binding="{Binding V13}" />
-                                    <DataGridTextColumn Header="V14" Width="50" Binding="{Binding V14}" />
-                                    <DataGridTextColumn Header="V16" Width="50" Binding="{Binding V16}" />
-                                    <DataGridTextColumn Header="V17" Width="50" Binding="{Binding V17}" />
-                                    <DataGridTextColumn Header="V19" Width="50" Binding="{Binding V19}" />
-                                    <DataGridTextColumn Header="V20" Width="50" Binding="{Binding V20}" />
-                                    <DataGridTextColumn Header="V22" Width="50" Binding="{Binding V22}" />
-                                    <DataGridTextColumn Header="V23" Width="50" Binding="{Binding V23}" />
-                                    <DataGridTextColumn Header="V25" Width="50" Binding="{Binding V25}" />
-                                    <DataGridTextColumn Header="V26" Width="50" Binding="{Binding V26}" />
-                                    <DataGridTextColumn Header="V28" Width="50" Binding="{Binding V28}" />
-                                    <DataGridTextColumn Header="V29" Width="50" Binding="{Binding V29}" />
-                                    <DataGridTextColumn Header="V30" Width="50" Binding="{Binding V30}" />
-                                    <DataGridTextColumn Header="V31" Width="50" Binding="{Binding V31}" />
-                                    <DataGridTextColumn Header="V32" Width="50" Binding="{Binding V32}" />
+                                    <DataGridCheckBoxColumn Header="V01" Width="50" Binding="{Binding V01, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" ElementStyle="{StaticResource VavleOnOffCheckBox}" />
+                                    <DataGridCheckBoxColumn Header="V02" Width="50" Binding="{Binding V02, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" ElementStyle="{StaticResource VavleOnOffCheckBox}" />
+                                    <DataGridCheckBoxColumn Header="V03" Width="50" Binding="{Binding V03, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" ElementStyle="{StaticResource VavleOnOffCheckBox}" />
+                                    <DataGridCheckBoxColumn Header="V04" Width="50" Binding="{Binding V04, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" ElementStyle="{StaticResource VavleOnOffCheckBox}" />
+                                    <DataGridCheckBoxColumn Header="V05" Width="50" Binding="{Binding V05, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" ElementStyle="{StaticResource VavleOnOffCheckBox}" />
+                                    <DataGridCheckBoxColumn Header="V07" Width="50" Binding="{Binding V07, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" ElementStyle="{StaticResource VavleOnOffCheckBox}" />
+                                    <DataGridCheckBoxColumn Header="V08" Width="50" Binding="{Binding V08, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" ElementStyle="{StaticResource VavleOnOffCheckBox}" />
+                                    <DataGridCheckBoxColumn Header="V10" Width="50" Binding="{Binding V10, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" ElementStyle="{StaticResource VavleOnOffCheckBox}" />
+                                    <DataGridCheckBoxColumn Header="V11" Width="50" Binding="{Binding V11, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" ElementStyle="{StaticResource VavleOnOffCheckBox}" />
+                                    <DataGridCheckBoxColumn Header="V13" Width="50" Binding="{Binding V13, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" ElementStyle="{StaticResource VavleOnOffCheckBox}" />
+                                    <DataGridCheckBoxColumn Header="V14" Width="50" Binding="{Binding V14, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" ElementStyle="{StaticResource VavleOnOffCheckBox}" />
+                                    <DataGridCheckBoxColumn Header="V16" Width="50" Binding="{Binding V16, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" ElementStyle="{StaticResource VavleOnOffCheckBox}" />
+                                    <DataGridCheckBoxColumn Header="V17" Width="50" Binding="{Binding V17, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" ElementStyle="{StaticResource VavleOnOffCheckBox}" />
+                                    <DataGridCheckBoxColumn Header="V19" Width="50" Binding="{Binding V19, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" ElementStyle="{StaticResource VavleOnOffCheckBox}" />
+                                    <DataGridCheckBoxColumn Header="V20" Width="50" Binding="{Binding V20, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" ElementStyle="{StaticResource VavleOnOffCheckBox}" />
+                                    <DataGridCheckBoxColumn Header="V22" Width="50" Binding="{Binding V22, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" ElementStyle="{StaticResource VavleOnOffCheckBox}" />
+                                    <DataGridCheckBoxColumn Header="V23" Width="50" Binding="{Binding V23, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" ElementStyle="{StaticResource VavleOnOffCheckBox}" />
+                                    <DataGridCheckBoxColumn Header="V25" Width="50" Binding="{Binding V25, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" ElementStyle="{StaticResource VavleOnOffCheckBox}" />
+                                    <DataGridCheckBoxColumn Header="V26" Width="50" Binding="{Binding V26, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" ElementStyle="{StaticResource VavleOnOffCheckBox}" />
+                                    <DataGridCheckBoxColumn Header="V28" Width="50" Binding="{Binding V28, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" ElementStyle="{StaticResource VavleOnOffCheckBox}" />
+                                    <DataGridCheckBoxColumn Header="V29" Width="50" Binding="{Binding V29, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" ElementStyle="{StaticResource VavleOnOffCheckBox}" />
+                                    <DataGridCheckBoxColumn Header="V30" Width="50" Binding="{Binding V30, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" ElementStyle="{StaticResource VavleOnOffCheckBox}" />
+                                    <DataGridCheckBoxColumn Header="V31" Width="50" Binding="{Binding V31, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" ElementStyle="{StaticResource VavleOnOffCheckBox}" />
+                                    <DataGridCheckBoxColumn Header="V32" Width="50" Binding="{Binding V32, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" ElementStyle="{StaticResource VavleOnOffCheckBox}" />
                                 </DataGrid.Columns>
                             </DataGrid>
                         </TabItem.Content>

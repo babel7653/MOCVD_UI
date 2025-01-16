@@ -74,7 +74,7 @@ namespace SapphireXR_App.ViewModels
         const string showValveLabelStr = "Show Label";
         const string hideValveLabelStr = "Hide Label";
         public static readonly DependencyProperty ShowValveLabelStrProperty =
-            DependencyProperty.Register("ShowValveLabelStr", typeof(string), typeof(HomeViewModel), new PropertyMetadata(showValveLabelStr));
+            DependencyProperty.Register("ShowValveLabelStr", typeof(string), typeof(HomeViewModel), new PropertyMetadata(hideValveLabelStr));
 
         protected void OnPropertyChanged(string propertyName)
         {

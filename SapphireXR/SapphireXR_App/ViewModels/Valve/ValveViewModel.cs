@@ -8,13 +8,11 @@ using SapphireXR_App.Models;
 
 namespace SapphireXR_App.ViewModels
 {
-    public class ValveViewModel : DependencyObject, INotifyPropertyChanged, IObserver<bool>
+    public class ValveViewModel : DependencyObject, INotifyPropertyChanged
     {
         protected virtual void Init(string? valveID)
         {
             ValveID = valveID;
-            isOpenValueChanged = ObservableManager<bool>.Get(ValveID + ".IsOpen.Write");
-            ObservableManager<bool>.Subscribe(ValveID + ".IsOpen.Read", this);
         }
 
         public event PropertyChangedEventHandler? PropertyChanged;
@@ -65,14 +63,15 @@ namespace SapphireXR_App.ViewModels
             set
             {
                 IsOpen = value;
-                isOpenValueChanged?.Issue(value);
+                if (ValveID != null)
+                {
+                    PLCService.WriteValveState(ValveID, value);
+                }
             }
         }
 
         public static readonly DependencyProperty IsOpenProperty =
             DependencyProperty.Register("IsOpen", typeof(bool), typeof(ValveViewModel), new PropertyMetadata(default));
-
-        private ObservableManager<bool>.DataIssuer? isOpenValueChanged;
 
         protected struct PopupMessage
         {
@@ -88,19 +87,6 @@ namespace SapphireXR_App.ViewModels
         protected virtual PopupMessage getPopupMessage()
         {
             return new PopupMessage();
-        }
-
-        void IObserver<bool>.OnCompleted()
-        {
-        }
-
-        void IObserver<bool>.OnError(Exception error)
-        {
-        }
-
-        void IObserver<bool>.OnNext(bool value)
-        {
-            IsOpen = value;
         }
 
         protected void OnPropertyChanged(string propertyName)

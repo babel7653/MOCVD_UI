@@ -83,8 +83,8 @@ namespace SapphireXR_App.Models
                 hRcpStart = PLCService.Ads.CreateVariableHandle("RCP.bRcpStart");
                 hRcpState = PLCService.Ads.CreateVariableHandle("RCP.iRcpOperationState");
 
-                aDeviceRampTimes = new short[dIndexFlowController.Count];
-                aDeviceTargetValues = new float[dIndexFlowController.Count];
+                aDeviceRampTimes = new short[dIndexController.Count];
+                aDeviceTargetValues = new float[dIndexController.Count];
 
                 ConnectedNotifier.Issue(PLCConnection.Connecrted);
             }

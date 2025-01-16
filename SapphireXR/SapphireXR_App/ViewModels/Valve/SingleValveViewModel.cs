@@ -13,7 +13,14 @@ namespace SapphireXR_App.ViewModels
         protected override void Init(string? valveID)
         {
             base.Init(valveID);
-            model = new OnOffModel(ValveID!);
+            if (valveID != null)
+            {
+                IsOpen = PLCService.ReadValveState(valveID);
+            }
+            else
+            {
+                throw new Exception("ValveID is null, cannot set/get valve value from PLC\r\nCheck the SingleValve ValveID value");
+            }
         }
         protected override PopupMessage getPopupMessage()
         {
@@ -37,7 +44,5 @@ namespace SapphireXR_App.ViewModels
         // Using a DependencyProperty as the backing store for IsNormallyOpen.  This enables animation, styling, binding, etc...
         public static readonly DependencyProperty IsNormallyOpenProperty =
             DependencyProperty.Register("IsNormallyOpen", typeof(bool), typeof(SingleValveViewModel), new PropertyMetadata(default));
-
-        private OnOffModel? model;
     }
 }

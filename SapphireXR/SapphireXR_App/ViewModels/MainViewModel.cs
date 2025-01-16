@@ -4,11 +4,6 @@ using CommunityToolkit.Mvvm.Messaging;
 using OxyPlot;
 using SapphireXR_App.Bases;
 using SapphireXR_App.Models;
-using System.ComponentModel;
-using System.Configuration;
-using System.Windows;
-using System.Windows.Input;
-using TwinCAT.Ads;
 
 namespace SapphireXR_App.ViewModels
 {

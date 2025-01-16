@@ -307,15 +307,15 @@
 
         <Label Canvas.Left="768" Canvas.Top="54" Foreground="{StaticResource PrimaryFontColor}" Content="Temperature"
                 Width="80" HorizontalContentAlignment="Center"/>
-        <control:ReactorController x:Name="susceptorTemperature" Canvas.Left="773" Canvas.Top="81"/>
+        <control:FlowController x:Name="susceptorTemperature" Canvas.Left="773" Canvas.Top="81" ControllerID="Temperature" Type="Reactor"/>
 
         <Label Canvas.Left="848" Canvas.Top="54" Foreground="{StaticResource PrimaryFontColor}" Content="Pressure"
                 Width="80" HorizontalContentAlignment="Center"/>
-        <control:ReactorController x:Name="reactorPressure" Canvas.Left="853" Canvas.Top="81"/>
+        <control:FlowController x:Name="reactorPressure" Canvas.Left="853" Canvas.Top="81" ControllerID="Pressure" Type="Reactor"/>
 
         <Label Canvas.Left="928" Canvas.Top="54" Foreground="{StaticResource PrimaryFontColor}" Content="Rotation"
                 Width="80" HorizontalContentAlignment="Center"/>
-        <control:ReactorController x:Name="susceptorRotation" Canvas.Left="933" Canvas.Top="81"/>
+        <control:FlowController x:Name="susceptorRotation" Canvas.Left="933" Canvas.Top="81" ControllerID="Rotation" Type="Reactor"/>
 
         <Label Canvas.Left="1220" Canvas.Top="92" Foreground="{StaticResource PrimaryFontColor}" Content="DOR"
                 Width="40" HorizontalContentAlignment="Center"/>
@@ -629,39 +629,39 @@
             <Label Canvas.Left="1264" Canvas.Top="198" Foreground="{StaticResource SecondaryFontColor}" Content="V36"
                 Width="40" HorizontalContentAlignment="Center" />
             <Label Canvas.Left="608" Canvas.Top="60" Foreground="{StaticResource SecondaryFontColor}" Content="V37"
-                Width="40" HorizontalContentAlignment="Center" />
+                Width="40" HorizontalContentAlignment="Center" Visibility="{Binding OnLeakTestVisibility}" />
             <Label Canvas.Left="314" Canvas.Top="60" Foreground="{StaticResource SecondaryFontColor}" Content="V38"
-                Width="40" HorizontalContentAlignment="Center" />
+                Width="40" HorizontalContentAlignment="Center" Visibility="{Binding OnLeakTestVisibility}" />
             <Label Canvas.Left="75" Canvas.Top="479" Foreground="{StaticResource SecondaryFontColor}" Content="V39"
-                Width="40" HorizontalContentAlignment="Center" />
+                Width="40" HorizontalContentAlignment="Center" Visibility="{Binding OnLeakTestVisibility}" />
             <Label Canvas.Left="95" Canvas.Top="423" Foreground="{StaticResource SecondaryFontColor}" Content="V40"
-                Width="40" HorizontalContentAlignment="Center" />
+                Width="40" HorizontalContentAlignment="Center" Visibility="{Binding OnLeakTestVisibility}" />
             <Label Canvas.Left="168" Canvas.Top="660" Foreground="{StaticResource SecondaryFontColor}" Content="V41"
-                Width="40" HorizontalContentAlignment="Center" />
+                Width="40" HorizontalContentAlignment="Center" Visibility="{Binding OnLeakTestVisibility}" />
             <Label Canvas.Left="274" Canvas.Top="651" Foreground="{StaticResource SecondaryFontColor}" Content="V42"
-                Width="40" HorizontalContentAlignment="Center" />
+                Width="40" HorizontalContentAlignment="Center" Visibility="{Binding OnLeakTestVisibility}" />
             <Label Canvas.Left="308" Canvas.Top="660" Foreground="{StaticResource SecondaryFontColor}" Content="V43"
-                Width="40" HorizontalContentAlignment="Center" />
+                Width="40" HorizontalContentAlignment="Center" Visibility="{Binding OnLeakTestVisibility}" />
             <Label Canvas.Left="414" Canvas.Top="651" Foreground="{StaticResource SecondaryFontColor}" Content="V44"
-                Width="40" HorizontalContentAlignment="Center" />
+                Width="40" HorizontalContentAlignment="Center" Visibility="{Binding OnLeakTestVisibility}" />
             <Label Canvas.Left="448" Canvas.Top="660" Foreground="{StaticResource SecondaryFontColor}" Content="V45"
-                Width="40" HorizontalContentAlignment="Center" />
+                Width="40" HorizontalContentAlignment="Center" Visibility="{Binding OnLeakTestVisibility}" />
             <Label Canvas.Left="554" Canvas.Top="651" Foreground="{StaticResource SecondaryFontColor}" Content="V46"
-                Width="40" HorizontalContentAlignment="Center" />
+                Width="40" HorizontalContentAlignment="Center" Visibility="{Binding OnLeakTestVisibility}" />
             <Label Canvas.Left="588" Canvas.Top="660" Foreground="{StaticResource SecondaryFontColor}" Content="V47"
-                Width="40" HorizontalContentAlignment="Center" />
+                Width="40" HorizontalContentAlignment="Center" Visibility="{Binding OnLeakTestVisibility}" />
             <Label Canvas.Left="694" Canvas.Top="651" Foreground="{StaticResource SecondaryFontColor}" Content="V48"
-                Width="40" HorizontalContentAlignment="Center" />
+                Width="40" HorizontalContentAlignment="Center" Visibility="{Binding OnLeakTestVisibility}" />
             <Label Canvas.Left="728" Canvas.Top="660" Foreground="{StaticResource SecondaryFontColor}" Content="V49"
-                Width="40" HorizontalContentAlignment="Center" />
+                Width="40" HorizontalContentAlignment="Center" Visibility="{Binding OnLeakTestVisibility}" />
             <Label Canvas.Left="830" Canvas.Top="651" Foreground="{StaticResource SecondaryFontColor}" Content="V50"
-                Width="40" HorizontalContentAlignment="Center" />
+                Width="40" HorizontalContentAlignment="Center" Visibility="{Binding OnLeakTestVisibility}" />
             <Label Canvas.Left="926" Canvas.Top="660" Foreground="{StaticResource SecondaryFontColor}" Content="V51"
-                Width="40" HorizontalContentAlignment="Center" />
+                Width="40" HorizontalContentAlignment="Center" Visibility="{Binding OnLeakTestVisibility}" />
             <Label Canvas.Left="1032" Canvas.Top="651" Foreground="{StaticResource SecondaryFontColor}" Content="V52"
-                Width="40" HorizontalContentAlignment="Center" />
+                Width="40" HorizontalContentAlignment="Center" Visibility="{Binding OnLeakTestVisibility}" />
             <Label Canvas.Left="1076" Canvas.Top="715" Foreground="{StaticResource SecondaryFontColor}" Content="V53"
-                Width="40" HorizontalContentAlignment="Center" />
+                Width="40" HorizontalContentAlignment="Center" Visibility="{Binding OnLeakTestVisibility}" />
 
             <Label Canvas.Left="190" Canvas.Top="339" Foreground="{StaticResource SecondaryFontColor}" Content="M01"
                 Width="40" HorizontalContentAlignment="Center" />

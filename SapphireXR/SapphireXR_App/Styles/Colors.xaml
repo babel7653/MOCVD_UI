@@ -25,6 +25,8 @@
     <SolidColorBrush x:Key="EPCDisplayColor1" Color="#4EA72E"/>
     <SolidColorBrush x:Key="EPCDisplayColor2" Color="#D0E1CD"/>
 
+    <SolidColorBrush x:Key="ReactorDisplayColor1" Color="Khaki"/>
+
     <SolidColorBrush x:Key="ValveOnMouseEnterColor" Color="#9dbce8" />
 
     <!-- Foreground Colors -->

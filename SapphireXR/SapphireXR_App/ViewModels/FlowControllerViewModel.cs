@@ -194,6 +194,11 @@ namespace SapphireXR_App.ViewModels
                     ControllerBorderBackground = Application.Current.Resources.MergedDictionaries[0]["EPCDisplayColor1"] as SolidColorBrush
                         ?? ControllerBorderBackground;
                     break;
+
+                case "Reactor":
+                    ControllerBorderBackground = Application.Current.Resources.MergedDictionaries[0]["ReactorDisplayColor1"] as SolidColorBrush
+                       ?? ControllerBorderBackground;
+                    break;
             }
             BorderBackground = ControllerBorderBackground;
 

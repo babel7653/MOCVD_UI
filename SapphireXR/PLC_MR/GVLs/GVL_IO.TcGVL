@@ -22,7 +22,7 @@ VAR_GLOBAL
 	aController_TV : ARRAY[1..29] OF REAL; //Target Value from UI
 	aController_RampTime : ARRAY[1..29] OF INT;
 	aController_PV : ARRAY[1..29] OF INT; //Present Value from Device
-	aController_SV : ARRAY[1..29] OF INT; //Current Value from RampingController
+	aController_CV : ARRAY[1..29] OF INT; //Current Value from RampingController
 END_VAR
 
 VAR_GLOBAL CONSTANT

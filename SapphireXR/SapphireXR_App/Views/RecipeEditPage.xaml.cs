@@ -8,7 +8,7 @@ namespace SapphireXR_App.Views
         public RecipeEditPage()
         {
             InitializeComponent();
-            DataContext = App.Current.Services.GetService(typeof(RecipeViewModel));
+            DataContext = App.Current.Services.GetService(typeof(RecipeEditViewModel));
         }
     }
 }

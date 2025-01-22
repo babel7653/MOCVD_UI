@@ -1,0 +1,196 @@
+﻿using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
+using SapphireXR_App.Bases;
+using SapphireXR_App.Models;
+using System.Collections;
+using System.Windows.Controls;
+using System.Windows.Media;
+
+namespace SapphireXR_App.ViewModels
+{
+    public partial class RecipeEditViewModel : ViewModelBase
+    {
+        public partial class TabDataGridViewModel: ObservableObject
+        {
+            public enum State {  NoneSelected = 0, Selected, Copied };
+
+            public TabDataGridViewModel(RecipeEditViewModel upperLevelViewModel)
+            {
+                Selected = null;
+                CurrentState = State.NoneSelected;
+                RecipeViewModel = upperLevelViewModel;
+            }
+
+            public void reset()
+            {
+                deselect();
+            }
+
+            private void rearangeNumber(int insert)
+            {
+                for(int index = insert; index < RecipeViewModel.Recipes!.Count; ++index)
+                {
+                    RecipeViewModel.Recipes[index].No = (short)(index + 1);
+                }
+            }
+
+            private void deselect()
+            {
+                CurrentState = State.NoneSelected;
+                Selected = null;
+                copied = null;
+                RecipeViewModel.cleanupNewlyAdded();
+            }
+
+            private void select(IList selected)
+            {
+                RecipeViewModel.cleanupNewlyAdded();
+                Selected = selected;
+
+                if (0 < Selected.Count && 0 < selected.Count)
+                {
+                    if (CurrentState == State.NoneSelected)
+                    {
+                        CurrentState = State.Selected;
+                    }
+                }
+                else
+                {
+                    deselect();
+                }
+            }
+
+            private void setCopied(IList toCopy)
+            {
+                if (CurrentState != State.NoneSelected)
+                {
+                    copied = new List<Recipe>();
+                    List<object> noneRecipes = new List<object>();
+                    foreach(object item in toCopy)
+                    {
+                        if(item is Recipe)
+                        { 
+                            copied.Add((Recipe)item);
+                        }
+                        else
+                        {
+                            noneRecipes.Add(item);
+                        }
+                    }
+                    CurrentState = State.Copied;
+
+                    if (0 < noneRecipes.Count)
+                    {
+                        throw new Exception("There is none recipe item of selected items.\r\n" + noneRecipes.ToString());
+                    }
+                }
+            }
+
+            private Recipe insert(int index)
+            {
+                Recipe added = new Recipe();
+                RecipeViewModel.Recipes!.Insert(index, added);
+                added.Background = Brushes.LightPink;
+                RecipeViewModel.newlyAddedForMarking.Add(added);
+                rearangeNumber(index);
+
+                return added;
+            }
+
+            static private int selectedIndex(IList selected)
+            {
+                return ((Recipe)selected[selected.Count - 1]!).No - 1;
+            }
+
+            [ObservableProperty]
+            private State _currentState;
+            [ObservableProperty]
+            private IList? _selected;
+            private IList<Recipe>? copied = null;
+            public RecipeEditViewModel RecipeViewModel { get; set; }
+
+            public IRelayCommand SelectionChangedCommand => new RelayCommand<object?>((object? args) =>
+            {
+                DataGrid? dataGrid = (args as SelectionChangedEventArgs)?.Source as DataGrid;
+                if (dataGrid != null)
+                {
+                    foreach(object item in dataGrid.SelectedItems)
+                    {
+                        if(item is not Recipe)
+                        {
+                            deselect();
+                            dataGrid.Dispatcher.InvokeAsync(() =>
+                            {
+                                dataGrid.UpdateLayout();
+                                dataGrid.UnselectAll();
+                            });
+                            
+                            return;
+                        }
+                    }
+                    select(dataGrid.SelectedItems);
+                }
+            });
+            public IRelayCommand CopyCommand => new RelayCommand(() => {
+                setCopied(Selected!);
+            });
+            public IRelayCommand PasteCommand => new RelayCommand(() =>
+            {
+                if(CurrentState == State.Copied)
+                {
+                    if (RecipeViewModel.Recipes != null)
+                    {
+                        int insert = selectedIndex(Selected!);
+                        int copyCount = copied!.Count;
+                        
+                        IList<Recipe> added = RecipeViewModel.Recipes.CopyInsertRange(insert, copied!);
+                        foreach(var recipe in added)
+                        {
+                            recipe.Background = Brushes.LightPink;
+                        }
+                        rearangeNumber(insert);
+
+                        RecipeViewModel.newlyAddedForMarking.AddRange(added);
+                       
+                    }
+                }
+            });
+            public IRelayCommand DeleteStepCommand => new RelayCommand(() =>
+            {
+                if(State.Selected <= CurrentState)
+                {
+                    RecipeViewModel.Recipes!.RemoveAt((IList)this.Selected!);
+                    rearangeNumber(0);
+                }
+            });
+            public IRelayCommand InsertStepCommand => new RelayCommand(() =>
+            {
+                if (State.Selected <= CurrentState)
+                {
+                    insert(selectedIndex(Selected!));
+                }
+            });
+            public IRelayCommand AddStepCommand => new RelayCommand<object?>((object? args) =>
+            {
+                if (RecipeViewModel.Recipes != null)
+                {
+                    Recipe recipe = insert(RecipeViewModel.Recipes.Count);
+
+                    DataGrid? dataGrid = args as DataGrid;
+                    if (dataGrid != null)
+                    {
+                        dataGrid.Dispatcher.InvokeAsync(() =>
+                        {
+                            dataGrid.UpdateLayout();
+                            dataGrid.ScrollIntoView(recipe);
+                        });
+                    }
+                }
+                else
+                {
+                    throw new Exception("TabDataGridViewModel in RecipeViewModel: Add Step is executed without initializing RecipeViewModel.Recipes");
+                }
+            });
+        }
+    }
+}

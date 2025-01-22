@@ -9,19 +9,19 @@ namespace SapphireXR_App.Views
         public RecipeRunPage()
         {
             InitializeComponent();
-            DataContext = App.Current.Services.GetService(typeof(RecipeViewModel));
+            DataContext = App.Current.Services.GetService(typeof(RecipeRunViewModel));
 
-            if (RecipeViewModel.bRecipeStart == false)
-            {
-                btnRecipeStart.Background = Brushes.Blue;
-                btnRecipeStart.Content = "Stop";
-                btnRecipeStart.Foreground =Brushes.White ;
-            }
-            else
-            {
-                btnRecipeStart.Background = Brushes.Yellow;
-                btnRecipeStart.Content = "Start";
-            }
+            //if (RecipeEditViewModel.bRecipeStart == false)
+            //{
+            //    btnRecipeStart.Background = Brushes.Blue;
+            //    btnRecipeStart.Content = "Stop";
+            //    btnRecipeStart.Foreground =Brushes.White ;
+            //}
+            //else
+            //{
+            //    btnRecipeStart.Background = Brushes.Yellow;
+            //    btnRecipeStart.Content = "Start";
+            //}
                 
         }
     }

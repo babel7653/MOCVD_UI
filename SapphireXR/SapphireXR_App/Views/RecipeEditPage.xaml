@@ -429,7 +429,7 @@
                 </StackPanel>
                 <StackPanel Grid.Column="2" Orientation="Horizontal" VerticalAlignment="Bottom">
                     <Label Width="80" Foreground="Lime" Content="Recipe File"/>
-                    <TextBox x:Name="tbRecipeEditFile" Foreground="Lime" Width="415" Height="18" Margin="1"/>
+                    <TextBox x:Name="tbRecipeEditFile" Width="415" Height="18" Margin="1" Text="{Binding RecipeFilePath, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"/>
                 </StackPanel>
             </Grid>
             <!--#endregion-->
@@ -502,7 +502,7 @@
                 <TabControl TabStripPlacement="Left">
                     <TabItem Header="Reactor Data">
                         <TabItem.Content>
-                            <DataGrid  x:Name="reactorDataGrid" HorizontalScrollBarVisibility="Visible"  DataContext="{Binding ReactorDataGridContext}" ItemsSource="{Binding RecipeViewModel.Recipes}">
+                            <DataGrid   x:Name="reactorDataGrid" AutoGenerateColumns="False"  HorizontalScrollBarVisibility="Visible"  DataContext="{Binding ReactorDataGridContext}" ItemsSource="{Binding RecipeViewModel.Recipes}">
                                 <DataGrid.InputBindings>
                                     <KeyBinding Key="C" Modifiers="Ctrl" Command="{Binding CopyCommand}" />
                                     <KeyBinding Key="V" Modifiers="Ctrl" Command="{Binding PasteCommand}" />
@@ -532,7 +532,7 @@
 
                     <TabItem Header="FlowData">
                         <TabItem.Content>
-                            <DataGrid x:Name="flowDataGrid" HorizontalScrollBarVisibility="Visible" DataContext="{Binding FlowDataGridContext}" ItemsSource="{Binding RecipeViewModel.Recipes}">
+                            <DataGrid x:Name="flowDataGrid" AutoGenerateColumns="False"  HorizontalScrollBarVisibility="Visible" DataContext="{Binding FlowDataGridContext}" ItemsSource="{Binding RecipeViewModel.Recipes}">
                                 <DataGrid.InputBindings>
                                     <KeyBinding Key="C" Modifiers="Ctrl" Command="{Binding CopyCommand}" />
                                     <KeyBinding Key="V" Modifiers="Ctrl" Command="{Binding PasteCommand}" />
@@ -572,7 +572,7 @@
                     </TabItem>
                     <TabItem Header="ValveData">
                         <TabItem.Content>
-                            <DataGrid  x:Name="valveDataGrid" HorizontalScrollBarVisibility="Visible" DataContext="{Binding ValveDataGridContext}" ItemsSource="{Binding RecipeViewModel.Recipes}">
+                            <DataGrid  x:Name="valveDataGrid" AutoGenerateColumns="False"  HorizontalScrollBarVisibility="Visible" DataContext="{Binding ValveDataGridContext}" ItemsSource="{Binding RecipeViewModel.Recipes}">
                                 <DataGrid.InputBindings>
                                     <KeyBinding Key="C" Modifiers="Ctrl" Command="{Binding CopyCommand}" />
                                     <KeyBinding Key="V" Modifiers="Ctrl" Command="{Binding PasteCommand}" />

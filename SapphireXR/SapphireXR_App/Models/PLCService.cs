@@ -33,12 +33,14 @@ namespace SapphireXR_App.Models
         private static Dictionary<string, ObservableManager<int>.DataIssuer>? dCurrentValueIssuers;
         private static Dictionary<string, ObservableManager<int>.DataIssuer>? dControlValueIssuers;
         private static Dictionary<string, ObservableManager<(int, int)>.DataIssuer>? dControlCurrentValueIssuers;
+        private static ObservableManager<short>.DataIssuer? dCurrentActiveRecipeIssue;
 
 
         //Create an instance of the TcAdsClient()
         public static AdsClient Ads { get; set; }
         static AmsNetId amsNetId = new("10.10.10.10.1.1");
         private static DispatcherTimer? timer;
+        private static DispatcherTimer? currentActiveRecipeListener;
         static PLCService()
         {
             ConnectedNotifier = ObservableManager<PLCConnection>.Get("PLCService.Connected");
@@ -82,6 +84,8 @@ namespace SapphireXR_App.Models
                 hRcpTotalStep = PLCService.Ads.CreateVariableHandle("RCP.iRcpTotalStep");
                 hRcpStart = PLCService.Ads.CreateVariableHandle("RCP.bRcpStart");
                 hRcpState = PLCService.Ads.CreateVariableHandle("RCP.iRcpOperationState");
+                hRcpStepN = PLCService.Ads.CreateVariableHandle("RCP.iRcpStepN");
+                
 
                 aDeviceRampTimes = new short[dIndexController.Count];
                 aDeviceTargetValues = new float[dIndexController.Count];
@@ -106,6 +110,8 @@ namespace SapphireXR_App.Models
         private static uint hRcpTotalStep;
         private static uint hRcpStart;
         private static uint hRcpState;
+        private static uint hRcpStepN;
+
 
         public static void ReadValveStateFromPLC()
         {
@@ -145,11 +151,17 @@ namespace SapphireXR_App.Models
             {
                 dControlCurrentValueIssuers.Add(kv.Key, ObservableManager<(int, int)>.Get("FlowControl." + kv.Key + ".ControlTargetValue"));
             }
+            dCurrentActiveRecipeIssue = ObservableManager<short>.Get("RecipeRun.CurrentActiveRecipe");
 
             timer = new DispatcherTimer();
             timer.Interval = new TimeSpan(2000000);
             timer.Tick += OnTick;
             timer.Start();
+
+            currentActiveRecipeListener = new DispatcherTimer();
+            currentActiveRecipeListener.Interval = new TimeSpan(TimeSpan.TicksPerMillisecond * 500);
+            currentActiveRecipeListener.Tick += (object? sender, EventArgs e) => { dCurrentActiveRecipeIssue.Issue(Ads.ReadAny<short>(hRcpStepN)); };
+            currentActiveRecipeListener.Start();
         }
 
         public static void ReadMaxValueFromPLC()

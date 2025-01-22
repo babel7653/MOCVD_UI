@@ -79,6 +79,9 @@ namespace SapphireXR_App.Models
                 hReadValveStatePLC2 = Ads.CreateVariableHandle("GVL_IO.aOutputSolValve[2]");
                 hWriteDeviceTargetValuePLC = Ads.CreateVariableHandle("GVL_IO.aController_TV");
                 hWriteDeviceRampTimePLC = Ads.CreateVariableHandle("GVL_IO.aController_RampTime");
+                hTempShowerHead = Ads.CreateVariableHandle("GVL_IO.aAnalogInputIO[37]");
+                hTempInductionCoil = Ads.CreateVariableHandle("GVL_IO.aAnalogInputIO[38]");
+                hPowerRate = Ads.CreateVariableHandle("P11_E3508.rPowerRate");
 
                 hRcp = PLCService.Ads.CreateVariableHandle("RCP.aRecipe");
                 hRcpTotalStep = PLCService.Ads.CreateVariableHandle("RCP.iRcpTotalStep");
@@ -104,6 +107,9 @@ namespace SapphireXR_App.Models
         private static uint hDeviceMaxValuePLC;
         private static uint hDeviceControlValuePLC;
         private static uint hDeviceCurrentValuePLC;
+        private static uint hTempShowerHead;
+        private static uint hTempInductionCoil;
+        private static uint hPowerRate;
         private static uint hWriteDeviceTargetValuePLC;
         private static uint hWriteDeviceRampTimePLC;
         private static uint hRcp;
@@ -235,6 +241,18 @@ namespace SapphireXR_App.Models
             aDeviceCurrentValues = Ads.ReadAny<short[]>(hDeviceCurrentValuePLC, [NumControllers]);
             aDeviceControlValues = Ads.ReadAny<short[]>(hDeviceControlValuePLC, [NumControllers]);
             aDeviceTargetValues = Ads.ReadAny<float[]>(hWriteDeviceTargetValuePLC, [NumControllers]);
+        }
+
+        public static float ReadCurrentValue(string controllerID)
+        {
+            if (aDeviceCurrentValues != null)
+            {
+                return aDeviceCurrentValues[dIndexController[controllerID]];
+            }
+            else
+            {
+                return float.NaN;
+            }
         }
 
         public static bool ReadValveState(string valveID)

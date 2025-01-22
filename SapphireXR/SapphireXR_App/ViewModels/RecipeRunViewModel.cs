@@ -7,11 +7,37 @@ using System.ComponentModel;
 using System.Globalization;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Threading;
+using static SapphireXR_App.ViewModels.RecipeRunViewModel;
 
 namespace SapphireXR_App.ViewModels
 {
     public partial class RecipeRunViewModel: ViewModelBase, IObserver<short>
     {
+        public class LogIntervalInRecipeRunListener : IObserver<int>
+        {
+            public LogIntervalInRecipeRunListener(RecipeRunViewModel vm) 
+            {
+                recipeRunViewModel = vm;
+            } 
+
+            void IObserver<int>.OnCompleted()
+            {
+                throw new NotImplementedException();
+            }
+
+            void IObserver<int>.OnError(Exception error)
+            {
+                throw new NotImplementedException();
+            }
+
+            void IObserver<int>.OnNext(int value)
+            {
+                recipeRunViewModel.resetLogTimer(value);
+            }
+            RecipeRunViewModel recipeRunViewModel;
+        }
+           
         private static RecipeContext EmptyRecipeContext = new RecipeContext();
 
         [ObservableProperty]
@@ -111,7 +137,18 @@ namespace SapphireXR_App.ViewModels
 
         public RecipeRunViewModel()
         {
+            logIntervalInRecipeRunListener = new LogIntervalInRecipeRunListener(this);
+            ObservableManager<int>.Subscribe("GlobalSetting.LogIntervalInRecipeRun", logIntervalInRecipeRunListener);
             ObservableManager<short>.Subscribe("RecipeRun.CurrentActiveRecipe", this);
+
+            logTimer = new DispatcherTimer();
+            logTimer.Interval = new TimeSpan(TimeSpan.TicksPerMillisecond * GlobalSetting.LogIntervalInRecipeRunInMS);
+            logTimer.Tick += (object? sender, EventArgs args) =>
+            {
+                
+            };
+            logTimer.Start();
+
             PropertyChanged += (object? sender, PropertyChangedEventArgs e) =>
             {
                 var recipeStart = () =>
@@ -183,8 +220,18 @@ namespace SapphireXR_App.ViewModels
             });
         }
 
+        public void resetLogTimer(int intervalInMS)
+        {
+            logTimer.Stop();
+            logTimer.Interval = new TimeSpan(intervalInMS * TimeSpan.TicksPerMillisecond);
+            logTimer.Start();
+        }
+
         private DataGrid? reactorDataGrid;
         private DataGrid? flowDataGrid;
         private DataGrid? valveDataGrid;
+
+        private LogIntervalInRecipeRunListener logIntervalInRecipeRunListener;
+        private DispatcherTimer logTimer;
     }
 }

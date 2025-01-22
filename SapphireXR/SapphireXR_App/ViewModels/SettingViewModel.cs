@@ -5,11 +5,13 @@ using System.Windows.Input;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System.IO;
+using SapphireXR_App.Common;
+using System.ComponentModel;
 
 
 namespace SapphireXR_App.ViewModels
 {
-    public class SettingViewModel : ObservableObject
+    public partial class SettingViewModel : ObservableObject
     {
         public string fname = AppDomain.CurrentDomain.BaseDirectory + "..\\..\\..\\..\\Data\\Configuration\\" + @"DeviceIO.json";
         public Dictionary<string, AnalogDeviceIO>? dAnalogDeviceIO = [];
@@ -28,6 +30,9 @@ namespace SapphireXR_App.ViewModels
         public ICommand AlarmSettingLoadCommand => new RelayCommand(AlarmSettingLoad);
         public ICommand AlarmSettingSaveCommand => new RelayCommand(AlarmSettingSave);
 
+        [ObservableProperty]
+        private string? _logIntervalInRecipeRun;
+
 
         public SettingViewModel()
         {
@@ -35,6 +40,18 @@ namespace SapphireXR_App.ViewModels
         }
         public void AlarmSettingLoad()
         {
+            PropertyChanged += (object? sender, PropertyChangedEventArgs args) =>
+            {
+                switch(args.PropertyName)
+                {
+                    case nameof(LogIntervalInRecipeRun):
+                        if (LogIntervalInRecipeRun != null)
+                        {
+                            GlobalSetting.LogIntervalInRecipeRunInMS = int.Parse(LogIntervalInRecipeRun);
+                        }
+                        break;
+                }
+            };
             //Json파일 읽기 및 Pars
             var fdevice = File.ReadAllText(fname);
 
@@ -47,6 +64,7 @@ namespace SapphireXR_App.ViewModels
             JToken? jInterLockA = jDeviceInit["InterLockA"];
             JToken? jUserState = jDeviceInit["UserState"];
             JToken? jWithoutConnection = jDeviceInit["WithoutConnection"];
+            JToken? jLogIntervalInRecipeRun = jDeviceInit["LogIntervalInRecipeRun"];
 
             dAnalogDeviceIO = JsonConvert.DeserializeObject<Dictionary<string, AnalogDeviceIO>>(jAnalogDeviceIO.ToString());
             dSwitchDI = JsonConvert.DeserializeObject<Dictionary<string, SwitchDI>>(jSwitchDI.ToString());
@@ -55,6 +73,10 @@ namespace SapphireXR_App.ViewModels
             dInterLockD = JsonConvert.DeserializeObject<Dictionary<string, bool>>(jInterLockD.ToString());
             dInterLockA = JsonConvert.DeserializeObject<Dictionary<string, InterLockA>>(jInterLockA.ToString());
             userstate = JsonConvert.DeserializeObject<UserState>(jUserState.ToString());
+            if (jLogIntervalInRecipeRun != null)
+            {
+                LogIntervalInRecipeRun = JsonConvert.DeserializeObject<string>(jLogIntervalInRecipeRun.ToString()) ?? GlobalSetting.DefaultLogIntervalInRecipeRunInMS.ToString();
+            }
 
             lAnalogDeviceIO = dAnalogDeviceIO.Values.ToList();
             lSwitchDI = dSwitchDI.Values.ToList();
@@ -73,6 +95,8 @@ namespace SapphireXR_App.ViewModels
             JToken jInterLockD = JsonConvert.SerializeObject(dInterLockD);
             JToken jInterLockA = JsonConvert.SerializeObject(dInterLockA);
             JToken jUserState = JsonConvert.SerializeObject(userstate);
+            JToken? jLogIntervalInRecipeRun = (LogIntervalInRecipeRun != null ? JsonConvert.SerializeObject(int.Parse(LogIntervalInRecipeRun)) : JsonConvert.SerializeObject(GlobalSetting.DefaultLogIntervalInRecipeRunInMS));
+           
 
             JObject jDeviceIO = new(
                 new JProperty("AnalogDeviceIO", jsonAnalogDeviceIO),
@@ -81,7 +105,8 @@ namespace SapphireXR_App.ViewModels
                 new JProperty("PreSet", jPreSet),
                 new JProperty("InterLockD", jInterLockD),
                 new JProperty("InterLockA", jInterLockA),
-                new JProperty("UserState", jUserState)
+                new JProperty("UserState", jUserState),
+                new JProperty("LogIntervalInRecipeRun", jLogIntervalInRecipeRun)
                 );
 
             if (File.Exists(fname)) File.Delete(fname);

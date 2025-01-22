@@ -364,6 +364,8 @@
                                                 <RowDefinition Height="30"/>
                                                 <RowDefinition Height="30"/>
                                                 <RowDefinition Height="30"/>
+                                                <RowDefinition Height="30"/>
+                                                <RowDefinition Height="30"/>
                                             </Grid.RowDefinitions>
                                             <!-- DOR Release -->
                                             <TextBlock Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Text="Double O-Ring Release" FontWeight="Bold" VerticalAlignment="Bottom"/>
@@ -408,6 +410,9 @@
                                                       IsChecked="{Binding Path=dInterLockD[ReactorCabinetLamp]}" VerticalAlignment="Center" Margin="15,0,0,0"/>
                                             <CheckBox Grid.Row="12" Grid.Column="0" Content=" Gas Control Cabinet Lamp" 
                                                       IsChecked="{Binding Path=dInterLockD[GasControlLamp]}" VerticalAlignment="Center" Margin="15,0,0,0"/>
+                                            <TextBlock Grid.Row="13" Grid.Column="0" Grid.ColumnSpan="2" Text="Misc." FontWeight="Bold" VerticalAlignment="Bottom"/>
+                                            <TextBlock Grid.Row="14" Grid.Column="0" Margin="15,0,0,0" Text="Log Interval in Recipe Run (Millisecond)" />
+                                            <local:NumberBox Grid.Row="14" Grid.Column="1" Width="150" HorizontalAlignment="Left" Margin="2" Text="{Binding LogIntervalInRecipeRun}"/>
                                         </Grid>
                                     </GroupBox>
                                     <!-- Preset State 설정 -->

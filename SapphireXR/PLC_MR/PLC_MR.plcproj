@@ -108,9 +108,6 @@
     <Compile Include="POUs\P22_Background_ThermalBath.TcPOU">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="POUs\P30_GasFlowControl.TcPOU">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="POUs\P30_ManualControl.TcPOU">
       <SubType>Code</SubType>
     </Compile>

@@ -1,131 +1,17 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using CsvHelper;
-using Microsoft.Win32;
 using SapphireXR_App.Bases;
 using SapphireXR_App.Common;
 using SapphireXR_App.Models;
 using System.ComponentModel;
 using System.Globalization;
-using System.IO;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Media;
 
 namespace SapphireXR_App.ViewModels
 {
     public partial class RecipeRunViewModel: ViewModelBase, IObserver<short>
     {
-        public class RecipeContext: ObservableObject, IDisposable
-        {
-            public RecipeContext()
-            {
-            }
-            public RecipeContext(string recipeFilePath, IList<Recipe> recipes)
-            {
-                RecipeFilePath = recipeFilePath;
-                LogFilePath = RecipeFilePath.Replace(".csv", "_log.csv");
-                Recipes = recipes;
-
-                fileStream = new FileStream(LogFilePath, FileMode.Create);
-                streamWriter = new StreamWriter(fileStream);
-            }
-
-            public void onStart()
-            {
-                if(firstStart == true)
-                {
-                    RecipeService.PLCLoad(Recipes, 0);
-                    firstStart = false;
-                }
-                else
-                {
-                    PLCService.WriteStart(true);
-                    PLCService.WriteOperationState(10);
-                }
-            }
-
-            public Recipe? markCurrent(short index)
-            {
-                if (0 < index)
-                {
-                    index -= 1;
-                    if (index < Recipes.Count)
-                    {
-                        Recipe next = Recipes[index];
-                        if (next != currentRecipe)
-                        {
-                            if (currentRecipe != null)
-                            {
-                                currentRecipe.Background = Brushes.White;
-                            }
-                            currentRecipe = next;
-                            currentRecipe.Background = Brushes.LightGoldenrodYellow;
-
-                            return currentRecipe;
-                        }
-                    }
-                }
-
-                return null;
-            }
-
-            private bool firstStart = true;
-            private IList<Recipe> _recipes = new List<Recipe>();
-            public IList<Recipe> Recipes
-            {
-                get { return _recipes; }
-                set { SetProperty(ref _recipes, value); }
-            }
-
-            private string _recipeFilePath = string.Empty;
-            public string RecipeFilePath
-            {
-                get { return _recipeFilePath; }
-                set { SetProperty(ref _recipeFilePath, value); }
-            }
-
-            private string _logFilePath = string.Empty;
-            public string LogFilePath
-            {
-                get { return _logFilePath; }
-                set { SetProperty(ref _logFilePath, value); }
-            }
-
-            public Recipe? currentRecipe = null;
-            private FileStream fileStream;
-            private StreamWriter streamWriter;
-            private bool disposedValue;
-
-            protected virtual void Dispose(bool disposing)
-            {
-                if (!disposedValue)
-                {
-                    if (disposing)
-                    {
-                        DisposeResource();
-                    }
-
-                    // TODO: 비관리형 리소스(비관리형 개체)를 해제하고 종료자를 재정의합니다.
-                    // TODO: 큰 필드를 null로 설정합니다.
-                    disposedValue = true;
-                }
-            }
-
-            void IDisposable.Dispose()
-            {
-                // 이 코드를 변경하지 마세요. 'Dispose(bool disposing)' 메서드에 정리 코드를 입력합니다.
-                Dispose(disposing: true);
-                GC.SuppressFinalize(this);
-            }
-
-            public void DisposeResource()
-            {
-                streamWriter.Close();
-                fileStream.Close();
-            }
-        }
-
         private static RecipeContext EmptyRecipeContext = new RecipeContext();
 
         [ObservableProperty]
@@ -181,7 +67,7 @@ namespace SapphireXR_App.ViewModels
         [RelayCommand(CanExecute = nameof(CurrentRecipeActive))]
         void RecipeRefresh()
         {
-
+            CurrentRecipe.loadPLCSubRangeOfRecipes();
         }
 
         [RelayCommand]
@@ -207,6 +93,20 @@ namespace SapphireXR_App.ViewModels
         {
             PLCService.WriteStart(false);
             PLCService.WriteOperationState(40);
+        }
+
+        [RelayCommand]
+        private void CheckUpperModifedRow(object? args)
+        {
+            DataGridRowEditEndingEventArgs? dataGridRowEditEndingEventArgs = args as DataGridRowEditEndingEventArgs;
+            if(dataGridRowEditEndingEventArgs != null && dataGridRowEditEndingEventArgs.EditAction == DataGridEditAction.Commit)
+            {
+                Recipe? modified = dataGridRowEditEndingEventArgs.Row.DataContext as Recipe;
+                if (modified != null)
+                {
+                    CurrentRecipe.addModfiedRecipe(modified);
+                }
+            }
         }
 
         public RecipeRunViewModel()

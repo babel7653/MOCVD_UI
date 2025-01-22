@@ -441,18 +441,18 @@
                         <MenuItem Header="Copy" InputGestureText="Ctrl+C" Command="{Binding CopyCommand}" />
                         <MenuItem Header="Paste"  InputGestureText="Ctrl+V" Command="{Binding PasteCommand}"  />
                         <Separator/>
-                        <MenuItem Header="Add Step" Command="{Binding AddStepCommand}" CommandParameter="{Binding Path=PlacementTarget, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ContextMenu}}}"/>
-                        <MenuItem Header="Insert Step" Command="{Binding InsertStepCommand}" />
+                        <MenuItem Header="Add Step"  Command="{Binding AddStepCommand}" CommandParameter="{Binding Path=PlacementTarget, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ContextMenu}}}"/>
+                        <MenuItem Header="Insert Step" InputGestureText="Insert" Command="{Binding InsertStepCommand}" />
                         <Separator />
-                        <MenuItem Header="Delete Step" Command="{Binding DeleteStepCommand}"/>
+                        <MenuItem Header="Delete Step" InputGestureText="Del" Command="{Binding DeleteStepCommand}"/>
                     </ContextMenu>
                     <ContextMenu x:Key="ContextMenuOnSelectedWIthoutCopied">
                         <MenuItem Header="Copy"  InputGestureText="Ctrl+C" Command="{Binding CopyCommand}"/>
                         <Separator/>
                         <MenuItem Header="Add Step" Command="{Binding AddStepCommand}"  CommandParameter="{Binding Path=PlacementTarget, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ContextMenu}}}" />
-                        <MenuItem Header="Insert Step" Command="{Binding InsertStepCommand}" />
+                        <MenuItem Header="Insert Step" InputGestureText="Insert" Command="{Binding InsertStepCommand}" />
                         <Separator />
-                        <MenuItem Header="Delete Step " Command="{Binding DeleteStepCommand}"/>
+                        <MenuItem Header="Delete Step " InputGestureText="Del" Command="{Binding DeleteStepCommand}"/>
                     </ContextMenu>
                     <ContextMenu x:Key="ContextMenuOnNothingSelected">
                         <MenuItem Header="Add Step"  Command="{Binding AddStepCommand}"/>
@@ -506,8 +506,9 @@
                                 <DataGrid.InputBindings>
                                     <KeyBinding Key="C" Modifiers="Ctrl" Command="{Binding CopyCommand}" />
                                     <KeyBinding Key="V" Modifiers="Ctrl" Command="{Binding PasteCommand}" />
-                                    <KeyBinding Key="Insert" Command="{Binding InsertCommand}" />
-                                    <KeyBinding Key="Delete"  Command="{Binding DeleteCommand}" />
+                                    <KeyBinding Key="Insert" Command="{Binding InsertStepCommand}" />
+                                    <KeyBinding Key="Delete"  Command="{Binding DeleteStepCommand}" />
+                                    <KeyBinding Modifiers="Ctrl" Command="{Binding AddStepCommand}" />
                                 </DataGrid.InputBindings>
                                 <b:Interaction.Triggers>
                                     <b:EventTrigger EventName="SelectionChanged">
@@ -515,7 +516,7 @@
                                     </b:EventTrigger>
                                 </b:Interaction.Triggers>
                                 <DataGrid.Columns>
-                                    <DataGridTextColumn Header="No" Width="30" Binding="{Binding No}" />
+                                    <DataGridTextColumn Header="No" Width="30" Binding="{Binding No}"  IsReadOnly="True" />
                                     <DataGridTextColumn Header="Name" Width="200" Binding="{Binding Name}" />
                                     <DataGridTextColumn Header="Ramp" Width="100" Binding="{Binding rTime}" />
                                     <DataGridTextColumn Header="Hold" Width="100" Binding="{Binding hTime}" />
@@ -543,7 +544,7 @@
                                     </b:EventTrigger>
                                 </b:Interaction.Triggers>
                                 <DataGrid.Columns>
-                                    <DataGridTextColumn Header="No" Width="30" Binding="{Binding No}" />
+                                    <DataGridTextColumn Header="No" Width="30" Binding="{Binding No}"  IsReadOnly="True" />
                                     <DataGridTextColumn Header="Name" Width="200" Binding="{Binding Name}" />
                                     <DataGridTextColumn Header="Ramp" Width="100" Binding="{Binding rTime}" />
                                     <DataGridTextColumn Header="Hold" Width="100" Binding="{Binding hTime}" />
@@ -583,7 +584,7 @@
                                     </b:EventTrigger>
                                 </b:Interaction.Triggers>
                                 <DataGrid.Columns>
-                                    <DataGridTextColumn Header="No" Width="30" Binding="{Binding No}" />
+                                    <DataGridTextColumn Header="No" Width="30" Binding="{Binding No}"  IsReadOnly="True" />
                                     <DataGridTextColumn Header="Name" Width="200" Binding="{Binding Name}" />
                                     <DataGridCheckBoxColumn Header="V01" Width="50" Binding="{Binding V01, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" ElementStyle="{StaticResource VavleOnOffCheckBox}" />
                                     <DataGridCheckBoxColumn Header="V02" Width="50" Binding="{Binding V02, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" ElementStyle="{StaticResource VavleOnOffCheckBox}" />

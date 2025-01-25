@@ -14,7 +14,7 @@ END_VAR
 VAR_OUTPUT
 	bAlarmState_E3508 		: BOOL; //Alarm or Sensor Break Signal
 	bManAuto_E3508 			: BOOL; // 0:Manual, 1:Auto
-	rPowerRate				: REAL;	//Power rate for Monitoring
+	rE3508_PowerRate		: REAL;	//Power rate for Monitoring
 	
 	isHeaterReady			: BOOL; //Close : Ready
 	isHeaterRun				: BOOL; //Close : Running, Open : Stop
@@ -35,12 +35,12 @@ VAR
 	nInputAlarmBytes AT %I* 	: USINT; // Alarm State
 	nInputManAutoBytes AT %I* 	: USINT; // ManAuto State
 	
-	nTemperaturePV_E3508		: WORD;
-	nTemperatureSV_E3508		: WORD;
-	nPowerRate_E3508		: WORD; //To Induction Heater Control Values
-	nParameterP				: WORD; //PID Parameter P
-	nParameterI				: WORD; //PID Parameter I
-	nParameterD				: WORD; //PID Parameter D
+	wE3508_PV				: WORD;
+	wE3508_SV				: WORD;
+	wE3508_PowerRate		: WORD; //To Induction Heater Control Values
+	wE3508_P				: WORD; //PID Parameter P
+	wE3508_I				: WORD; //PID Parameter I
+	wE3508_D				: WORD; //PID Parameter D
 	//Output to E3508 Controller
 	wOutputSVBytes 				: outWord;
 	wOutputPowerSVBytes 		: outWord;
@@ -48,27 +48,7 @@ VAR
 	nOutputManAutoBytes AT %Q* 	: USINT; //ManAuto Change
 	aOutputPowerBytes AT %Q* 	: ARRAY[1..2]OF USINT; //Output Power in Manual State
 	//nOutputAlarmClear AT %Q* : USINT; //Alarm Clear Set
-	
 
-	
-	// for FB_CTRL_RAMP_GENERATOR Variable
-	(* input *)
-	bEnable					: BOOL;
-	rTemperatureStartValue	: REAL;
-	rTemperatureTargetValue	: REAL;
-	(* output *)
-	rTemperatureControlValue : LREAL;
-	bValueReached			: BOOL;
-	(* function block *)
-	fbCTRL_RAMP_GENERATOR		: FB_CTRL_RAMP_GENERATOR;
-	stCTRL_RAMP_GENERATOR_PARAMS: ST_CTRL_RAMP_GENERATOR_PARAMS;
-
-	eErrorId				: E_CTRL_ERRORCODES;
-	bError					: BOOL;
-	bInit					: BOOL := TRUE;
-
-	(* Induction Heating Operation Parameter*)
-	rRampingRatio			: REAL;	
 END_VAR
 ]]></Declaration>
     <Implementation>
@@ -81,17 +61,17 @@ END_VAR
 bInductionHeaterCB		:= GVL_IO.aDigitalInputIO[4].7;
 
 (* Read from E3508 Device Value *)
-nTemperaturePV_E3508	:= USINT_TO_WORD_Bit(aInputPVBytes[1], aInputPVBytes[2]);
-nTemperatureSV_E3508	:= USINT_TO_WORD_Bit(aInputSVBytes[1], aInputSVBytes[2]);
-nPowerRate_E3508		:= USINT_TO_WORD_Bit(aInputCVBytes[1], aInputCVBytes[2]); //divided to 10
-nParameterP 			:= USINT_TO_WORD_Bit(aInputProportional[1], aInputProportional[2]);
-nParameterI 			:= USINT_TO_WORD_Bit(aInputIntegral[1], aInputIntegral[2]);
-nParameterD 			:= USINT_TO_WORD_Bit(aInputDerivative[1], aInputDerivative[2]);
+wE3508_PV				:= USINT_TO_WORD_Bit(aInputPVBytes[1], aInputPVBytes[2]);
+wE3508_SV				:= USINT_TO_WORD_Bit(aInputSVBytes[1], aInputSVBytes[2]);
+wE3508_PowerRate		:= USINT_TO_WORD_Bit(aInputCVBytes[1], aInputCVBytes[2]); //divided to 10
+wE3508_P 				:= USINT_TO_WORD_Bit(aInputProportional[1], aInputProportional[2]);
+wE3508_I 				:= USINT_TO_WORD_Bit(aInputIntegral[1], aInputIntegral[2]);
+wE3508_D 				:= USINT_TO_WORD_Bit(aInputDerivative[1], aInputDerivative[2]);
 
 bAlarmState_E3508 		:= nInputAlarmBytes.7;
 bManAuto_E3508 			:= nInputManAutoBytes.7;
 
-rPowerRate				:= WORD_TO_REAL(nPowerRate_E3508)*0.1; //divided to 10
+rE3508_PowerRate		:= WORD_TO_REAL(wE3508_PowerRate)*0.1; //divided to 10
 
 (* Read from Induction Heater Value *)
 isHeaterReady 			:= GVL_IO.aDigitalInputIO[2].2;

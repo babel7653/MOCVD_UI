@@ -38,7 +38,10 @@ FOR i:=27 TO 29 DO
 			GVL_IO.aController[i].nRampTime := GVL_IO.aController_RampTime[i];
 			GVL_IO.aController[i].rTargetValue := GVL_IO.aController_TV[i];
 			P11_E3508.wControlValue := LREAL_TO_WORD(GVL_IO.aController[i].rControlValue); //Write to Temperature Controller
-
+			
+			GVL_IO.aController_PV[i] := WORD_TO_INT(P11_E3508.wE3508_PV);
+			GVL_IO.aController_CV[i] := WORD_TO_INT(P11_E3508.wE3508_SV);
+			
 		28 : // Pressure Controller
 			IF (GVL_IO.aController_TV[i] >= 0 ) THEN
 				GVL_IO.aController[i].nState := 10; //START
@@ -66,7 +69,11 @@ END_FOR
       <LineId Id="76" Count="0" />
       <LineId Id="80" Count="3" />
       <LineId Id="85" Count="9" />
-      <LineId Id="96" Count="9" />
+      <LineId Id="96" Count="0" />
+      <LineId Id="110" Count="0" />
+      <LineId Id="112" Count="0" />
+      <LineId Id="111" Count="0" />
+      <LineId Id="97" Count="8" />
       <LineId Id="78" Count="0" />
       <LineId Id="106" Count="0" />
       <LineId Id="108" Count="1" />

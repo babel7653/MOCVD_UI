@@ -50,7 +50,7 @@ namespace SapphireXR_App.Models
                 hWriteDeviceRampTimePLC = Ads.CreateVariableHandle("GVL_IO.aController_RampTime");
                 hTempShowerHead = Ads.CreateVariableHandle("GVL_IO.aAnalogInputIO[37]");
                 hTempInductionCoil = Ads.CreateVariableHandle("GVL_IO.aAnalogInputIO[38]");
-                hPowerRate = Ads.CreateVariableHandle("P11_E3508.rPowerRate");
+                hPowerRate = Ads.CreateVariableHandle("P11_E3508.rE3508_PowerRate");
 
                 hRcp = PLCService.Ads.CreateVariableHandle("RCP.aRecipe");
                 hRcpTotalStep = PLCService.Ads.CreateVariableHandle("RCP.iRcpTotalStep");

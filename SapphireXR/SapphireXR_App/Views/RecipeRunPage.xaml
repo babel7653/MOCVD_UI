@@ -7,7 +7,7 @@
       xmlns:local="clr-namespace:SapphireXR_App.Views"
       xmlns:control="clr-namespace:SapphireXR_App.Controls"
       mc:Ignorable="d"
-      d:DesignHeight="836" d:DesignWidth="1300"
+      d:DesignHeight="1037" d:DesignWidth="1300"
       Title="RecipeRunPage">
     <Page.Resources>
         <Style x:Key="BaseStyle" TargetType="{x:Type Control}">
@@ -60,6 +60,7 @@
                 <RowDefinition Height="490"/>
                 <RowDefinition Height="40"/>
                 <RowDefinition Height="*"/>
+                <RowDefinition Height="240"/>
             </Grid.RowDefinitions>
 
             <Canvas Grid.Row="0" Background="{StaticResource RecipeRunPageBackground}" >
@@ -583,7 +584,24 @@
                 </TabControl>
             </Grid>
             <!--#endregion-->
+
+            <Grid Grid.Row="3" Background="#3e4a4b">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition />
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="20"/>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
+                <StackPanel Grid.Column="0" Grid.Row="0" Orientation="Horizontal">
+                    <Button Content="LivePlot"/>
+                </StackPanel>
+                
+            </Grid>
             
+            <!-- Recipe RUN Live chart -->
         </Grid>
     </Grid>
+    
 </Page>

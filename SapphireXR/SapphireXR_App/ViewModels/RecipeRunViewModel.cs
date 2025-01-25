@@ -8,7 +8,6 @@ using System.Globalization;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Threading;
-using static SapphireXR_App.ViewModels.RecipeRunViewModel;
 
 namespace SapphireXR_App.ViewModels
 {
@@ -16,9 +15,10 @@ namespace SapphireXR_App.ViewModels
     {
         public class LogIntervalInRecipeRunListener : IObserver<int>
         {
-            public LogIntervalInRecipeRunListener(RecipeRunViewModel vm) 
+            public LogIntervalInRecipeRunListener(RecipeRunViewModel viewModel, int currentLogIntervalInRecipeRun) 
             {
-                recipeRunViewModel = vm;
+                recipeRunViewModel = viewModel;
+                currentValue = currentLogIntervalInRecipeRun;
             } 
 
             void IObserver<int>.OnCompleted()
@@ -33,9 +33,14 @@ namespace SapphireXR_App.ViewModels
 
             void IObserver<int>.OnNext(int value)
             {
-                recipeRunViewModel.resetLogTimer(value);
+                if (currentValue != value)
+                {
+                    recipeRunViewModel.resetLogTimer(value);
+                    currentValue = value;
+                }
             }
             RecipeRunViewModel recipeRunViewModel;
+            int currentValue;
         }
            
         private static RecipeContext EmptyRecipeContext = new RecipeContext();
@@ -137,7 +142,7 @@ namespace SapphireXR_App.ViewModels
 
         public RecipeRunViewModel()
         {
-            logIntervalInRecipeRunListener = new LogIntervalInRecipeRunListener(this);
+            logIntervalInRecipeRunListener = new LogIntervalInRecipeRunListener(this, GlobalSetting.LogIntervalInRecipeRunInMS);
             ObservableManager<int>.Subscribe("GlobalSetting.LogIntervalInRecipeRun", logIntervalInRecipeRunListener);
             ObservableManager<short>.Subscribe("RecipeRun.CurrentActiveRecipe", this);
 
@@ -145,7 +150,7 @@ namespace SapphireXR_App.ViewModels
             logTimer.Interval = new TimeSpan(TimeSpan.TicksPerMillisecond * GlobalSetting.LogIntervalInRecipeRunInMS);
             logTimer.Tick += (object? sender, EventArgs args) =>
             {
-                
+                CurrentRecipe.log();
             };
             logTimer.Start();
 

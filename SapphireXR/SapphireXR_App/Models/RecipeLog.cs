@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace SapphireXR_App.Models
 {
-    internal class RecipeLog
+    public class RecipeLog
     {
         public RecipeLog(Recipe recipe)
         {
@@ -70,6 +70,8 @@ namespace SapphireXR_App.Models
             PV_RTEMP = PLCService.ReadCurrentValue("Temperature");
             PV_PRES = PLCService.ReadCurrentValue("Pressure");
             PV_ROT = PLCService.ReadCurrentValue("Rotation");
+
+            LogTime = DateTime.Now;
         }
 
         public string Step { get; set; }

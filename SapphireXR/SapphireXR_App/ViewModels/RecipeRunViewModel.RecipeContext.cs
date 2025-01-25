@@ -1,8 +1,11 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
+using CsvHelper;
 using SapphireXR_App.Models;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Linq;
+using System.Windows;
 using System.Windows.Media;
 
 namespace SapphireXR_App.ViewModels
@@ -11,18 +14,29 @@ namespace SapphireXR_App.ViewModels
     {
         public class RecipeContext : ObservableObject, IDisposable
         {
-            public RecipeContext()
-            {
-                initialized = false;
-            }
+            public RecipeContext() { }
             public RecipeContext(string recipeFilePath, IList<Recipe> recipes)
             {
                 RecipeFilePath = recipeFilePath;
                 LogFilePath = RecipeFilePath.Replace(".csv", "_log.csv");
                 Recipes = recipes;
 
-                fileStream = new FileStream(LogFilePath, FileMode.Create);
-                streamWriter = new StreamWriter(fileStream);
+                try
+                {
+                    fileStream = new FileStream(LogFilePath, FileMode.Create);
+                    streamWriter = new StreamWriter(fileStream);
+                    csvWriter = new CsvWriter(streamWriter, Config);
+                }
+                catch (Exception)
+                {
+                    csvWriter?.Dispose();
+                    streamWriter?.Close();
+                    fileStream?.Close();
+
+                    MessageBox.Show(LogFilePath + "을 현재 이용할 수가 없습니다.\r\n해당 파일이 현재 사용중이거나 용량 부족 등이 문제일 수 있습니다.");
+                }
+                csvWriter!.WriteHeader<RecipeLog>();
+                csvWriter!.NextRecord();
 
                 initialized = true;
             }
@@ -91,7 +105,6 @@ namespace SapphireXR_App.ViewModels
                     {
                         PLCService.WriteRecipe(plcRecipes);
                         modifiedRecipeIndice.Clear();
-
                     }
                 }
             }
@@ -110,7 +123,21 @@ namespace SapphireXR_App.ViewModels
                 }
             }
 
-            private bool initialized;
+            public void log()
+            {
+                if(initialized == false)
+                {
+                    return;
+                }
+
+                if (currentRecipe != null)
+                {
+                    csvWriter!.WriteRecord<RecipeLog>(new RecipeLog(currentRecipe));
+                    csvWriter!.NextRecord();
+                }
+            }
+
+            private bool initialized = false;
             private bool firstStart = true;
             private HashSet<int> modifiedRecipeIndice = new HashSet<int>();
 
@@ -139,7 +166,14 @@ namespace SapphireXR_App.ViewModels
             public int currentRecipeIndex = -1;
             private FileStream? fileStream = null;
             private StreamWriter? streamWriter = null;
+            private CsvWriter? csvWriter = null;
             private bool disposedValue = false;
+
+            private static readonly CsvHelper.Configuration.CsvConfiguration Config = new CsvHelper.Configuration.CsvConfiguration(CultureInfo.InvariantCulture)
+            {
+                Delimiter = ",",
+                HasHeaderRecord = true
+            };
 
             protected virtual void Dispose(bool disposing)
             {
@@ -166,13 +200,15 @@ namespace SapphireXR_App.ViewModels
 
             public void DisposeResource()
             {
-                if (initialized == false)
+                if(initialized == false)
                 {
                     return;
                 }
 
-                streamWriter?.Close();
-                fileStream?.Close();
+                csvWriter!.Flush();
+                csvWriter!.Dispose();
+                streamWriter!.Close();
+                fileStream!.Close();
             }
         }
     }

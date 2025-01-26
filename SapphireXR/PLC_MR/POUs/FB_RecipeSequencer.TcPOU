@@ -26,12 +26,12 @@ GVL_IO.aController[27].rTargetValue := RCP.aRecipe[nRcpIndex].iRecipe[4];
 GVL_IO.aController[27].nRampTime := nRcpRampTime;
 
 (* Pressure Controller *)
-P12_IQ_PLUS.nPressureTargetValue := INT_TO_WORD(RCP.aRecipe[nRcpIndex].iRecipe[5]);
-P12_IQ_PLUS.nRampTime := nRcpRampTime;
+GVL_IO.aController[28].rTargetValue := RCP.aRecipe[nRcpIndex].iRecipe[5];
+GVL_IO.aController[28].nRampTime := nRcpRampTime;
 
 (* Susceptor Rotation *)
-P15_RotationOperation.nRotationTV_rpm := INT_TO_SINT(RCP.aRecipe[nRcpIndex].iRecipe[6]);
-P15_RotationOperation.nRampTime := nRcpRampTime;
+GVL_IO.aController[29].rTargetValue := RCP.aRecipe[nRcpIndex].iRecipe[6];
+GVL_IO.aController[29].nRampTime := nRcpRampTime;
 
 (* Gas Controller MFC / EPC *)
 FOR i:= 1 TO 26 DO
@@ -82,11 +82,12 @@ GVL_IO.aOutputSolValve[2].15 := RCP.aRecipe[nRcpIndex].dRecipe.25; //V32]]></ST>
       <LineId Id="189" Count="1" />
       <LineId Id="182" Count="0" />
       <LineId Id="166" Count="0" />
-      <LineId Id="162" Count="0" />
-      <LineId Id="175" Count="0" />
+      <LineId Id="191" Count="0" />
       <LineId Id="181" Count="0" />
-      <LineId Id="177" Count="1" />
-      <LineId Id="176" Count="0" />
+      <LineId Id="192" Count="0" />
+      <LineId Id="177" Count="0" />
+      <LineId Id="194" Count="0" />
+      <LineId Id="193" Count="0" />
       <LineId Id="180" Count="0" />
       <LineId Id="30" Count="4" />
       <LineId Id="129" Count="0" />

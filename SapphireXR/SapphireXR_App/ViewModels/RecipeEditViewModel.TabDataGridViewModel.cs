@@ -1,6 +1,7 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using SapphireXR_App.Bases;
+using SapphireXR_App.Common;
 using SapphireXR_App.Models;
 using System.Collections;
 using System.Windows.Controls;
@@ -108,6 +109,7 @@ namespace SapphireXR_App.ViewModels
             private IList? _selected;
             private IList<Recipe>? copied = null;
             public RecipeEditViewModel RecipeViewModel { get; set; }
+            internal ObservableManager<Recipe>.DataIssuer currentSelectedRecipe = ObservableManager<Recipe>.Get("CurrentSelectedRecipe");
 
             public IRelayCommand SelectionChangedCommand => new RelayCommand<object?>((object? args) =>
             {
@@ -129,6 +131,10 @@ namespace SapphireXR_App.ViewModels
                         }
                     }
                     select(dataGrid.SelectedItems);
+                    if (0 < dataGrid.SelectedItems.Count)
+                    {
+                        currentSelectedRecipe.Issue((Recipe)dataGrid.SelectedItems[dataGrid.SelectedItems.Count - 1]!);
+                    }
                 }
             });
             public IRelayCommand CopyCommand => new RelayCommand(() => {

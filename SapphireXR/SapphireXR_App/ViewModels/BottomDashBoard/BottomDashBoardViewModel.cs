@@ -15,29 +15,19 @@ using System.Windows.Input;
 using System.Windows.Threading;
 using SapphireXR_App.Common;
 using System.Windows;
+using OxyPlot.Legends;
 
 namespace SapphireXR_App.ViewModels
 {
-    public partial class BottomViewModel : ObservableObject
+    public partial class BottomDashBoardViewModel : ObservableObject
     {
-        class ControlTargetValueSeriesUpdater : IObserver<(int, int)>
+        public abstract class ControlTargetValueSeriesUpdater : IObserver<(int, int)>
         {
             public ControlTargetValueSeriesUpdater(string title)
             {
                 plotModel.Title = title;
                 plotModel.TitleFontSize = plotModel.TitleFontSize / 2;
-                plotModel.Axes.Add(new DateTimeAxis
-                {
-                    Title = "TimeStamp",
-                    Position = AxisPosition.Bottom,
-                    StringFormat = "HH:mm:ss",
-                    IntervalLength = 60,
-                    IsPanEnabled = true,
-                    IsZoomEnabled = true,
-                    IntervalType = DateTimeIntervalType.Seconds,
-                    MajorGridlineStyle = LineStyle.Solid,
-                    MinorGridlineStyle = LineStyle.Solid,
-                });
+                plotModel.Axes.Add(initializeXAxis());
 
                 plotModel.Axes.Add(new LinearAxis
                 {
@@ -47,6 +37,10 @@ namespace SapphireXR_App.ViewModels
                     IsZoomEnabled = true,
                 });
 
+                Legend legend = new Legend();
+                legend.Key = "ControlTargetValue";
+                plotModel.Legends.Add(legend);
+
                 plotModel.Series.Add(new LineSeries()
                 {
                     Title = "PV",
@@ -55,6 +49,7 @@ namespace SapphireXR_App.ViewModels
                     StrokeThickness = 1,
                     MarkerType = MarkerType.None,
                     MarkerSize = 2,
+                    LegendKey = legend.Key
                 });
                 plotModel.Series.Add(new LineSeries()
                 {
@@ -64,8 +59,11 @@ namespace SapphireXR_App.ViewModels
                     StrokeThickness = 1,
                     MarkerType = MarkerType.None,
                     MarkerSize = 2,
+                    LegendKey = legend.Key
                 });
             }
+
+            protected abstract Axis initializeXAxis();
 
             void IObserver<(int, int)>.OnCompleted()
             {
@@ -79,28 +77,11 @@ namespace SapphireXR_App.ViewModels
 
             void IObserver<(int, int)>.OnNext((int, int) value)
             {
-                var dateTimeAxis = plotModel.Axes.OfType<DateTimeAxis>().First();
-                var series1 = plotModel.Series.OfType<LineSeries>().ElementAt(0);
-                var series2 = plotModel.Series.OfType<LineSeries>().ElementAt(1);
-
-                if (!series1.Points.Any())
-                {
-                    dateTimeAxis.Minimum = DateTimeAxis.ToDouble(DateTime.Now);
-                    dateTimeAxis.Maximum = DateTimeAxis.ToDouble(DateTime.Now.AddSeconds(MaxSecondsToLiveShow));
-                }
-
-                double x = DateTimeAxis.ToDouble(DateTime.Now);
-                series1.Points.Add(new DataPoint(x, (double)value.Item1));
-                series2.Points.Add(new DataPoint(x, (double)value.Item2));
-
-             
-                dateTimeAxis.Minimum = DateTimeAxis.ToDouble(DateTime.Now.AddSeconds(-1 * MaxSecondsToLiveShow));
-                dateTimeAxis.Maximum = DateTimeAxis.ToDouble(DateTime.Now);
-                dateTimeAxis.Reset();
-                
-
+                update(value);
                 plotModel.InvalidatePlot(true);
             }
+
+            abstract protected void update((int, int) value);
 
             public void toggleControlValueSeries()
             {
@@ -117,7 +98,7 @@ namespace SapphireXR_App.ViewModels
 
         class SelectedFlowControllerListener : IObserver<string>
         {
-            public SelectedFlowControllerListener(BottomViewModel vm)
+            public SelectedFlowControllerListener(BottomDashBoardViewModel vm)
             {
                 bottomViewModel = vm;
             }
@@ -138,32 +119,22 @@ namespace SapphireXR_App.ViewModels
                 bottomViewModel.FlowControlLivePlot = currentSelectedFlowControllerListener.plotModel;
             }
 
-            private BottomViewModel bottomViewModel;
+            private BottomDashBoardViewModel bottomViewModel;
         }
 
         [ObservableProperty]
         public PlotModel? flowControlLivePlot;
-        private ControlTargetValueSeriesUpdater[] plotModels = new ControlTargetValueSeriesUpdater[PLCService.NumControllers];
+        protected ControlTargetValueSeriesUpdater[] plotModels = new ControlTargetValueSeriesUpdater[PLCService.NumControllers];
         private ControlTargetValueSeriesUpdater? currentSelectedFlowControllerListener;
 
-        public BottomViewModel()
+        public BottomDashBoardViewModel(string flowControlSelectedPostFix)
         {
             FlowControlLivePlot = new PlotModel();
-            LivePlotSetting();
-            ObservableManager<string>.Subscribe("FlowControl.Selected", flowContorllerSelectionChanged = new SelectedFlowControllerListener(this));
+            ObservableManager<string>.Subscribe("FlowControl.Selected." + flowControlSelectedPostFix, flowContorllerSelectionChanged = new SelectedFlowControllerListener(this));
             ControlValueOption = HideControlValueStr;
             TargetValueOption = HideTargetValueStr;
         }
-   
-        public void LivePlotSetting()
-        {
-            foreach(var (id, index) in PLCService.dIndexController)
-            {
-                ControlTargetValueSeriesUpdater controlCurrentValueSeriesUpdater = new ControlTargetValueSeriesUpdater(id);
-                ObservableManager<(int, int)>.Subscribe("FlowControl." + id + ".ControlTargetValue", controlCurrentValueSeriesUpdater);
-                plotModels[index] = controlCurrentValueSeriesUpdater;
-            }
-        }
+
 
         public ICommand ShowControlValue => new RelayCommand(() =>
         {
@@ -199,7 +170,6 @@ namespace SapphireXR_App.ViewModels
         });
 
         private IObserver<string> flowContorllerSelectionChanged;
-        public static readonly int MaxSecondsToLiveShow = 30;
 
         [ObservableProperty]
         public string controlValueOption;

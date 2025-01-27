@@ -1,4 +1,5 @@
 ﻿using CommunityToolkit.Mvvm.Input;
+using SapphireXR_App.ViewModels.BottomDashBoard;
 using System.ComponentModel;
 using System.Windows;
 using System.Windows.Input;
@@ -9,6 +10,7 @@ namespace SapphireXR_App.ViewModels
     {
         public HomeViewModel()
         {
+            DashBoardViewModel = new HomeBottomDashBoardViewModel();
             EnableLeakTestCommand = new RelayCommand<object>((object? menuName) =>
             {
                 switch ((string)menuName!)
@@ -114,5 +116,7 @@ namespace SapphireXR_App.ViewModels
         }
         public static readonly DependencyProperty ValveLabelVisibilityProperty =
             DependencyProperty.Register("ValveLabelVisibility", typeof(Visibility), typeof(HomeViewModel), new PropertyMetadata(Visibility.Visible));
+
+        public BottomDashBoardViewModel DashBoardViewModel { get; set; }
     }
 }

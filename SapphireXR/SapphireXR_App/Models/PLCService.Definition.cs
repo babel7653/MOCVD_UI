@@ -93,6 +93,6 @@ namespace SapphireXR_App.Models
             { "EPC01", 19 },  { "EPC02", 20 }, { "EPC03", 21 }, { "EPC04", 22 }, { "EPC05", 23 },
             { "EPC06", 24 }, { "EPC07", 25 }, {"Temperature", 26}, {"Pressure", 27}, {"Rotation", 28}
         };
-        public static int NumControllers = dIndexController.Count;
+        public static readonly int NumControllers = dIndexController.Count;
     }
 }

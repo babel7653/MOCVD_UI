@@ -6,6 +6,7 @@
       xmlns:local="clr-namespace:SapphireXR_App.Views"
       mc:Ignorable="d" 
       xmlns:control="clr-namespace:SapphireXR_App.Controls"
+      xmlns:oxy="http://oxyplot.org/wpf"
       d:DesignHeight="1037" d:DesignWidth="1300"
       Title="HomePage"
       x:Name="homePage">
@@ -313,15 +314,15 @@
 
             <Label Canvas.Left="768" Canvas.Top="54" Foreground="{StaticResource PrimaryFontColor}" Content="Temperature"
                 Width="80" HorizontalContentAlignment="Center"/>
-            <control:FlowController x:Name="susceptorTemperature" Canvas.Left="773" Canvas.Top="81" ControllerID="Temperature" Type="Reactor"/>
+            <control:HomeFlowController x:Name="susceptorTemperature" Canvas.Left="773" Canvas.Top="81" ControllerID="Temperature" Type="Reactor"/>
 
             <Label Canvas.Left="848" Canvas.Top="54" Foreground="{StaticResource PrimaryFontColor}" Content="Pressure"
                 Width="80" HorizontalContentAlignment="Center"/>
-            <control:FlowController x:Name="reactorPressure" Canvas.Left="853" Canvas.Top="81" ControllerID="Pressure" Type="Reactor"/>
+            <control:HomeFlowController x:Name="reactorPressure" Canvas.Left="853" Canvas.Top="81" ControllerID="Pressure" Type="Reactor"/>
 
             <Label Canvas.Left="928" Canvas.Top="54" Foreground="{StaticResource PrimaryFontColor}" Content="Rotation"
                 Width="80" HorizontalContentAlignment="Center"/>
-            <control:FlowController x:Name="susceptorRotation" Canvas.Left="933" Canvas.Top="81" ControllerID="Rotation" Type="Reactor"/>
+            <control:HomeFlowController x:Name="susceptorRotation" Canvas.Left="933" Canvas.Top="81" ControllerID="Rotation" Type="Reactor"/>
 
             <Label Canvas.Left="1220" Canvas.Top="92" Foreground="{StaticResource PrimaryFontColor}" Content="DOR"
                 Width="40" HorizontalContentAlignment="Center"/>
@@ -487,34 +488,34 @@
 
             <!-- #Region 6. 가스 제어(MFC, EPC) -->
             <!--MFC Contol Box!-->
-            <control:FlowController x:Name="MFC01" Canvas.Left="126" Canvas.Top="344" ControllerID="MFC01" Type="MFC" />
-            <control:FlowController x:Name="MFC02" Canvas.Left="126" Canvas.Top="290" ControllerID="MFC02" Type="MFC" />
-            <control:FlowController x:Name="MFC03" Canvas.Left="348" Canvas.Top="191" ControllerID="MFC03" Type="MFC" />
-            <control:FlowController x:Name="MFC04" Canvas.Left="268" Canvas.Top="191" ControllerID="MFC04" Type="MFC" />
-            <control:FlowController x:Name="MFC05" Canvas.Left="562" Canvas.Top="141" ControllerID="MFC05" Type="MFC" />
-            <control:FlowController x:Name="MFC06" Canvas.Left="482" Canvas.Top="141" ControllerID="MFC06" Type="MFC" />
-            <control:FlowController x:Name="MFC07" Canvas.Left="562" Canvas.Top="191" ControllerID="MFC07" Type="MFC" />
-            <control:FlowController x:Name="MFC08" Canvas.Left="184" Canvas.Top="575" ControllerID="MFC08" Type="MFC" />
-            <control:FlowController x:Name="MFC09" Canvas.Left="324" Canvas.Top="575" ControllerID="MFC09" Type="MFC" />
-            <control:FlowController x:Name="MFC10" Canvas.Left="464" Canvas.Top="575" ControllerID="MFC10" Type="MFC" />
-            <control:FlowController x:Name="MFC11" Canvas.Left="604" Canvas.Top="575" ControllerID="MFC11" Type="MFC" />
-            <control:FlowController x:Name="MFC12" Canvas.Left="744" Canvas.Top="575" ControllerID="MFC12" Type="MFC" />
-            <control:FlowController x:Name="MFC13" Canvas.Left="802" Canvas.Top="531" ControllerID="MFC13" Type="MFC" />
-            <control:FlowController x:Name="MFC14" Canvas.Left="860" Canvas.Top="575" ControllerID="MFC14" Type="MFC" />
-            <control:FlowController x:Name="MFC15" Canvas.Left="942" Canvas.Top="575" ControllerID="MFC15" Type="MFC" />
-            <control:FlowController x:Name="MFC16" Canvas.Left="802" Canvas.Top="183" ControllerID="MFC16" Type="MFC" />
-            <control:FlowController x:Name="MFC17" Canvas.Left="802" Canvas.Top="227" ControllerID="MFC17" Type="MFC" />
-            <control:FlowController x:Name="MFC18" Canvas.Left="126" Canvas.Top="388" ControllerID="MFC18" Type="MFC" />
-            <control:FlowController x:Name="MFC19" Canvas.Left="126" Canvas.Top="246" ControllerID="MFC19" Type="MFC" />
+            <control:HomeFlowController x:Name="MFC01" Canvas.Left="126" Canvas.Top="344" ControllerID="MFC01" Type="MFC" />
+            <control:HomeFlowController x:Name="MFC02" Canvas.Left="126" Canvas.Top="290" ControllerID="MFC02" Type="MFC" />
+            <control:HomeFlowController x:Name="MFC03" Canvas.Left="348" Canvas.Top="191" ControllerID="MFC03" Type="MFC" />
+            <control:HomeFlowController x:Name="MFC04" Canvas.Left="268" Canvas.Top="191" ControllerID="MFC04" Type="MFC" />
+            <control:HomeFlowController x:Name="MFC05" Canvas.Left="562" Canvas.Top="141" ControllerID="MFC05" Type="MFC" />
+            <control:HomeFlowController x:Name="MFC06" Canvas.Left="482" Canvas.Top="141" ControllerID="MFC06" Type="MFC" />
+            <control:HomeFlowController x:Name="MFC07" Canvas.Left="562" Canvas.Top="191" ControllerID="MFC07" Type="MFC" />
+            <control:HomeFlowController x:Name="MFC08" Canvas.Left="184" Canvas.Top="575" ControllerID="MFC08" Type="MFC" />
+            <control:HomeFlowController x:Name="MFC09" Canvas.Left="324" Canvas.Top="575" ControllerID="MFC09" Type="MFC" />
+            <control:HomeFlowController x:Name="MFC10" Canvas.Left="464" Canvas.Top="575" ControllerID="MFC10" Type="MFC" />
+            <control:HomeFlowController x:Name="MFC11" Canvas.Left="604" Canvas.Top="575" ControllerID="MFC11" Type="MFC" />
+            <control:HomeFlowController x:Name="MFC12" Canvas.Left="744" Canvas.Top="575" ControllerID="MFC12" Type="MFC" />
+            <control:HomeFlowController x:Name="MFC13" Canvas.Left="802" Canvas.Top="531" ControllerID="MFC13" Type="MFC" />
+            <control:HomeFlowController x:Name="MFC14" Canvas.Left="860" Canvas.Top="575" ControllerID="MFC14" Type="MFC" />
+            <control:HomeFlowController x:Name="MFC15" Canvas.Left="942" Canvas.Top="575" ControllerID="MFC15" Type="MFC" />
+            <control:HomeFlowController x:Name="MFC16" Canvas.Left="802" Canvas.Top="183" ControllerID="MFC16" Type="MFC" />
+            <control:HomeFlowController x:Name="MFC17" Canvas.Left="802" Canvas.Top="227" ControllerID="MFC17" Type="MFC" />
+            <control:HomeFlowController x:Name="MFC18" Canvas.Left="126" Canvas.Top="388" ControllerID="MFC18" Type="MFC" />
+            <control:HomeFlowController x:Name="MFC19" Canvas.Left="126" Canvas.Top="246" ControllerID="MFC19" Type="MFC" />
 
             <!--EPC Contol Box!-->
-            <control:FlowController x:Name="EPC01" Canvas.Left="642" Canvas.Top="191" ControllerID="EPC01" Type="EPC"/>
-            <control:FlowController x:Name="EPC02" Canvas.Left="242" Canvas.Top="531" ControllerID="EPC02" Type="EPC"/>
-            <control:FlowController x:Name="EPC03" Canvas.Left="382" Canvas.Top="531" ControllerID="EPC03" Type="EPC"/>
-            <control:FlowController x:Name="EPC04" Canvas.Left="522" Canvas.Top="531" ControllerID="EPC04" Type="EPC"/>
-            <control:FlowController x:Name="EPC05" Canvas.Left="662" Canvas.Top="531" ControllerID="EPC05" Type="EPC" />
-            <control:FlowController x:Name="EPC06" Canvas.Left="860" Canvas.Top="633" ControllerID="EPC06" Type="EPC"/>
-            <control:FlowController x:Name="EPC07" Canvas.Left="1000" Canvas.Top="531" ControllerID="EPC07" Type="EPC" />
+            <control:HomeFlowController x:Name="EPC01" Canvas.Left="642" Canvas.Top="191" ControllerID="EPC01" Type="EPC"/>
+            <control:HomeFlowController x:Name="EPC02" Canvas.Left="242" Canvas.Top="531" ControllerID="EPC02" Type="EPC"/>
+            <control:HomeFlowController x:Name="EPC03" Canvas.Left="382" Canvas.Top="531" ControllerID="EPC03" Type="EPC"/>
+            <control:HomeFlowController x:Name="EPC04" Canvas.Left="522" Canvas.Top="531" ControllerID="EPC04" Type="EPC"/>
+            <control:HomeFlowController x:Name="EPC05" Canvas.Left="662" Canvas.Top="531" ControllerID="EPC05" Type="EPC" />
+            <control:HomeFlowController x:Name="EPC06" Canvas.Left="860" Canvas.Top="633" ControllerID="EPC06" Type="EPC"/>
+            <control:HomeFlowController x:Name="EPC07" Canvas.Left="1000" Canvas.Top="531" ControllerID="EPC07" Type="EPC" />
             <!--#endregion-->
 
             <!-- #Region 7. Text ) -->
@@ -727,7 +728,7 @@
 
         </Canvas>
 
-        <Grid Grid.Row="1" Background="#3e4a4b">
+        <Grid DataContext="{Binding DashBoardViewModel}" Grid.Row="1" Background="#3e4a4b">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition />
                 <ColumnDefinition/>
@@ -739,10 +740,14 @@
             <StackPanel Grid.Column="0" Grid.Row="0" Orientation="Horizontal">
                 <Button Content="LivePlot"/>
             </StackPanel>
-
-                <!-- Manual Control Live chart -->
-
-
+            <oxy:PlotView Grid.Row="1" Grid.ColumnSpan="2" x:Name="FlowControlLive" Model="{Binding FlowControlLivePlot}">
+                <oxy:PlotView.ContextMenu>
+                    <ContextMenu >
+                        <MenuItem Header="{Binding ControlValueOption}" Command="{Binding ShowControlValue}"/>
+                        <MenuItem Header="{Binding TargetValueOption}" Command="{Binding ShowTargetValue}"/>
+                    </ContextMenu>
+                </oxy:PlotView.ContextMenu>
+            </oxy:PlotView>
         </Grid>
     </Grid>
 </Page>

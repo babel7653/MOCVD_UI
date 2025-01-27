@@ -24,6 +24,7 @@ namespace SapphireXR_App.ViewModels
         }
 
         public PlotModel PlotModel { get; set; } = default;
+        private CurrentRecipeStep currentRecipeStep = new CurrentRecipeStep();
 
         private void OnNavigationMessage(object recipient, NavigationMessage message)
         {

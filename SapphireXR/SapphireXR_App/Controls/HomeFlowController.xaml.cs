@@ -11,19 +11,19 @@ using SapphireXR_App.Enums;
 using SapphireXR_App.Models;
 using SapphireXR_App.ViewModels;
 using SapphireXR_App.Views;
-using static SapphireXR_App.ViewModels.FlowControlViewModel;
+using SapphireXR_App.ViewModels.FlowController;
 
 namespace SapphireXR_App.Controls
 {
     /// <summary>
     /// FlowController.xaml에 대한 상호 작용 논리
     /// </summary>
-    public partial class FlowController : UserControl
+    public partial class HomeFlowController : UserControl
     {
-        public FlowController()
+        public HomeFlowController()
         {
             InitializeComponent();
-            DataContext = new FlowControllerViewModel();
+            DataContext = new HomeFlowControllerViewModel();
             Binding binding = new Binding();
             binding.Source = DataContext;
             binding.Path = new PropertyPath("OnClickedCommand");
@@ -39,20 +39,20 @@ namespace SapphireXR_App.Controls
         {
             if (flowControlView == null)
             {
-                flowController = (FlowController)((Button)e.OriginalSource).Parent;
-                if (flowController != null)
+                homeFlowController = (HomeFlowController)((Button)e.OriginalSource).Parent;
+                if (homeFlowController != null)
                 {
-                    flowControlView = FlowControllerEx.Show("Flow Controller", $"{ControllerID} 유량을 변경하시겠습니까?", ControllerID, (PopupExResult result, ControlValues controlValues) => { 
+                    flowControlView = FlowControllerEx.Show("Flow Controller", $"{ControllerID} 유량을 변경하시겠습니까?", ControllerID, (PopupExResult result, FlowControlViewModel.ControlValues controlValues) => { 
                         if(OnFlowControllerConfirmed == null)
                         {
-                            OnFlowControllerConfirmed = ((FlowControllerViewModel)DataContext).OnFlowControllerConfirmedCommand;
+                            OnFlowControllerConfirmed = ((HomeFlowControllerViewModel)DataContext).OnFlowControllerConfirmedCommand;
                         }
                         OnFlowControllerConfirmed?.Execute(new object[2] { result, controlValues }); 
                     },
                     (PopupExResult result) => {
                         if(OnFlowControllerCanceled == null)
                         {
-                            OnFlowControllerCanceled = ((FlowControllerViewModel)DataContext).OnFlowControllerCanceledCommand;
+                            OnFlowControllerCanceled = ((HomeFlowControllerViewModel)DataContext).OnFlowControllerCanceledCommand;
                         }
                         OnFlowControllerCanceled?.Execute(result); 
                     });

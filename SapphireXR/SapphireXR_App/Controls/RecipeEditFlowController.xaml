@@ -1,12 +1,13 @@
-﻿<UserControl x:Class="SapphireXR_App.Controls.FlowController"
+﻿<UserControl x:Class="SapphireXR_App.Controls.RecipeEditFlowController"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:i="clr-namespace:Microsoft.Xaml.Behaviors;assembly=Microsoft.Xaml.Behaviors"
              xmlns:local="clr-namespace:SapphireXR_App.Controls"
+             xmlns:view="clr-namespace:SapphireXR_App.Views"
              mc:Ignorable="d"
-             x:Name="flowController"
+             x:Name="recipeEditFlowController"
              d:DesignHeight="34" d:DesignWidth="70">
     <UserControl.Resources>
         <local:OnLoadedCommandParamConverver x:Key="onLoadedCommandConverter" />
@@ -22,37 +23,20 @@
                             <Border  BorderBrush="LightGray" BorderThickness="1,1,1,0" CornerRadius="3,3,0,0">
                                 <StackPanel Orientation="Horizontal" >
                                     <Label x:Name="flowSet"  Height="16" Width="50" FontSize="12" HorizontalContentAlignment="Right" VerticalAlignment="Center" Padding="0"
-                                           Content="{Binding TargetValue}" Foreground="Lime" />
-                                    <Ellipse x:Name="LampWarning" Width="10" Height="10" Fill="Lime" HorizontalAlignment="Right"  Margin="5,0,0,0"/>
+                                     Content="{Binding ControllerID}" Foreground="Lime" />
                                 </StackPanel>
                             </Border>
                             <Border Grid.Row="1" BorderBrush="LightGray"  BorderThickness="1,0,1,1"  Background="{Binding BorderBackground}" 
-                                    CornerRadius="0,0,3,3" x:Name="controllerBorder">
-                                <i:Interaction.Triggers>
-                                    <i:EventTrigger EventName="MouseEnter">
-                                        <i:InvokeCommandAction Command="{Binding OnMouseEntered}" />
-                                    </i:EventTrigger>
-                                    <i:EventTrigger EventName="MouseLeave">
-                                        <i:InvokeCommandAction Command="{Binding OnMouseLeaved}" />
-                                    </i:EventTrigger>
-                                </i:Interaction.Triggers>
-                                <StackPanel   Orientation="Horizontal">
-                                    <Label x:Name="flowCurrent" Height="28" Width="68" FontSize="20" HorizontalContentAlignment="Right" VerticalAlignment="Center" Padding="0" Content="{Binding ControlValue}"/>
+                              CornerRadius="0,0,3,3" x:Name="controllerBorder">
+                                <StackPanel Orientation="Horizontal">
+                                    <view:NumberBox x:Name="flowCurrent"  local:SelectAllFocusBehavior.Enable="True" BorderThickness="0" Height="28" Width="68" FontSize="20" 
+                                              HorizontalContentAlignment="Right" VerticalAlignment="Center" Padding="0" Text="{Binding ControlValue, Mode=TwoWay}"/>
                                 </StackPanel>
                             </Border>
                         </Grid>
-                        <ControlTemplate.Triggers>
-                            <DataTrigger Binding="{Binding IsDeviationLimit, Mode=TwoWay}" Value="True">
-                                <Setter TargetName="LampWarning" Property="Fill" Value="Orangered"/>
-                            </DataTrigger>
-                            <DataTrigger Binding="{Binding IsDeviationLimit, Mode=TwoWay}" Value="False">
-                                <Setter TargetName="LampWarning" Property="Fill" Value="Lime"/>
-                            </DataTrigger>
-                        </ControlTemplate.Triggers>
                     </ControlTemplate>
                 </Setter.Value>
             </Setter>
-            <Setter Property="Cursor" Value="Hand"/>
         </Style>
     </UserControl.Resources>
     <i:Interaction.Triggers>
@@ -67,5 +51,5 @@
             </i:InvokeCommandAction>
         </i:EventTrigger>
     </i:Interaction.Triggers>
-    <Button Height="34" Width="70" Style="{StaticResource ControllerStyle}" Click="FlowController_Click" />
+    <Button Height="34" Width="70" Style="{StaticResource ControllerStyle}" />
 </UserControl>

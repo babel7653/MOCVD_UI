@@ -312,9 +312,9 @@
                             Width="70" HorizontalContentAlignment="Center"/>
                 <Label Canvas.Left="1178" Canvas.Top="50" Foreground="{StaticResource PrimaryFontColor}" Content="Rotation"
                             Width="70" HorizontalContentAlignment="Center"/>
-                <control:FlowControllerReadOnly x:Name="susceptorTemperature" Canvas.Left="1018" Canvas.Top="72" ControllerID="Temperature" Type="Reactor" />
-                <control:FlowControllerReadOnly x:Name="reactorPressure" Canvas.Left="1098" Canvas.Top="72" ControllerID="Pressure" Type="Reactor" />
-                <control:FlowControllerReadOnly x:Name="susceptorRotation" Canvas.Left="1178" Canvas.Top="72" ControllerID="Rotation" Type="Reactor" />
+                <control:RecipeEditFlowController x:Name="susceptorTemperature" Canvas.Left="1018" Canvas.Top="72" ControllerID="Temperature" Type="Reactor" />
+                <control:RecipeEditFlowController x:Name="reactorPressure" Canvas.Left="1098" Canvas.Top="72" ControllerID="Pressure" Type="Reactor" />
+                <control:RecipeEditFlowController x:Name="susceptorRotation" Canvas.Left="1178" Canvas.Top="72" ControllerID="Rotation" Type="Reactor" />
                 <!--#endregion-->
 
                 <!-- #Region 4. 가스제어용 밸브 -->
@@ -363,34 +363,34 @@
 
                 <!-- #Region 5. 가스제어(MFC, EPC) -->
                 <!-- MFC -->
-                <control:FlowControllerReadOnly x:Name="MFC01" Canvas.Left="106" Canvas.Top="192" ControllerID="MFC01" Type="MFC" />
-                <control:FlowControllerReadOnly x:Name="MFC02" Canvas.Left="106" Canvas.Top="128" ControllerID="MFC02" Type="MFC" />
-                <control:FlowControllerReadOnly x:Name="MFC03" Canvas.Left="398" Canvas.Top="73" ControllerID="MFC03" Type="MFC" />
-                <control:FlowControllerReadOnly x:Name="MFC04" Canvas.Left="308" Canvas.Top="73" ControllerID="MFC04" Type="MFC" />
-                <control:FlowControllerReadOnly x:Name="MFC05" Canvas.Left="622" Canvas.Top="23" ControllerID="MFC05" Type="MFC" />
-                <control:FlowControllerReadOnly x:Name="MFC06" Canvas.Left="532" Canvas.Top="23" ControllerID="MFC06" Type="MFC" />
-                <control:FlowControllerReadOnly x:Name="MFC07" Canvas.Left="622" Canvas.Top="73" ControllerID="MFC07" Type="MFC" />
-                <control:FlowControllerReadOnly x:Name="MFC08" Canvas.Left="134" Canvas.Top="356" ControllerID="MFC08" Type="MFC" />
-                <control:FlowControllerReadOnly x:Name="MFC09" Canvas.Left="284" Canvas.Top="356" ControllerID="MFC09" Type="MFC" />
-                <control:FlowControllerReadOnly x:Name="MFC10" Canvas.Left="434" Canvas.Top="356" ControllerID="MFC10" Type="MFC" />
-                <control:FlowControllerReadOnly x:Name="MFC11" Canvas.Left="584" Canvas.Top="356" ControllerID="MFC11" Type="MFC" />
-                <control:FlowControllerReadOnly x:Name="MFC12" Canvas.Left="734" Canvas.Top="356" ControllerID="MFC12" Type="MFC" />
-                <control:FlowControllerReadOnly x:Name="MFC13" Canvas.Left="792" Canvas.Top="312" ControllerID="MFC13" Type="MFC" />
-                <control:FlowControllerReadOnly x:Name="MFC14" Canvas.Left="850" Canvas.Top="356" ControllerID="MFC14" Type="MFC" />
-                <control:FlowControllerReadOnly x:Name="MFC15" Canvas.Left="942" Canvas.Top="356" ControllerID="MFC15" Type="MFC" />
-                <control:FlowControllerReadOnly x:Name="MFC16" Canvas.Left="1105" Canvas.Top="170" ControllerID="MFC16" Type="MFC" />
-                <control:FlowControllerReadOnly x:Name="MFC17" Canvas.Left="1105" Canvas.Top="214" ControllerID="MFC17" Type="MFC" />
-                <control:FlowControllerReadOnly x:Name="MFC18" Canvas.Left="184" Canvas.Top="207" ControllerID="MFC18" Type="MFC" />
-                <control:FlowControllerReadOnly x:Name="MFC19" Canvas.Left="184" Canvas.Top="113" ControllerID="MFC19" Type="MFC" />
+                <control:RecipeEditFlowController x:Name="MFC01" Canvas.Left="106" Canvas.Top="192" ControllerID="MFC01" Type="MFC" />
+                <control:RecipeEditFlowController x:Name="MFC02" Canvas.Left="106" Canvas.Top="128" ControllerID="MFC02" Type="MFC" />
+                <control:RecipeEditFlowController x:Name="MFC03" Canvas.Left="398" Canvas.Top="73" ControllerID="MFC03" Type="MFC" />
+                <control:RecipeEditFlowController x:Name="MFC04" Canvas.Left="308" Canvas.Top="73" ControllerID="MFC04" Type="MFC" />
+                <control:RecipeEditFlowController x:Name="MFC05" Canvas.Left="622" Canvas.Top="23" ControllerID="MFC05" Type="MFC" />
+                <control:RecipeEditFlowController x:Name="MFC06" Canvas.Left="532" Canvas.Top="23" ControllerID="MFC06" Type="MFC" />
+                <control:RecipeEditFlowController x:Name="MFC07" Canvas.Left="622" Canvas.Top="73" ControllerID="MFC07" Type="MFC" />
+                <control:RecipeEditFlowController x:Name="MFC08" Canvas.Left="134" Canvas.Top="356" ControllerID="MFC08" Type="MFC" />
+                <control:RecipeEditFlowController x:Name="MFC09" Canvas.Left="284" Canvas.Top="356" ControllerID="MFC09" Type="MFC" />
+                <control:RecipeEditFlowController x:Name="MFC10" Canvas.Left="434" Canvas.Top="356" ControllerID="MFC10" Type="MFC" />
+                <control:RecipeEditFlowController x:Name="MFC11" Canvas.Left="584" Canvas.Top="356" ControllerID="MFC11" Type="MFC" />
+                <control:RecipeEditFlowController x:Name="MFC12" Canvas.Left="734" Canvas.Top="356" ControllerID="MFC12" Type="MFC" />
+                <control:RecipeEditFlowController x:Name="MFC13" Canvas.Left="792" Canvas.Top="312" ControllerID="MFC13" Type="MFC" />
+                <control:RecipeEditFlowController x:Name="MFC14" Canvas.Left="850" Canvas.Top="356" ControllerID="MFC14" Type="MFC" />
+                <control:RecipeEditFlowController x:Name="MFC15" Canvas.Left="942" Canvas.Top="356" ControllerID="MFC15" Type="MFC" />
+                <control:RecipeEditFlowController x:Name="MFC16" Canvas.Left="1105" Canvas.Top="170" ControllerID="MFC16" Type="MFC" />
+                <control:RecipeEditFlowController x:Name="MFC17" Canvas.Left="1105" Canvas.Top="214" ControllerID="MFC17" Type="MFC" />
+                <control:RecipeEditFlowController x:Name="MFC18" Canvas.Left="184" Canvas.Top="207" ControllerID="MFC18" Type="MFC" />
+                <control:RecipeEditFlowController x:Name="MFC19" Canvas.Left="184" Canvas.Top="113" ControllerID="MFC19" Type="MFC" />
 
                 <!--EPC Contol Box!-->
-                <control:FlowControllerReadOnly x:Name="EPC01" Canvas.Left="192" Canvas.Top="312" ControllerID="EPC01" Type="EPC" />
-                <control:FlowControllerReadOnly x:Name="EPC02" Canvas.Left="342" Canvas.Top="312" ControllerID="EPC02" Type="EPC" />
-                <control:FlowControllerReadOnly x:Name="EPC03" Canvas.Left="492" Canvas.Top="312" ControllerID="EPC03" Type="EPC" />
-                <control:FlowControllerReadOnly x:Name="EPC04" Canvas.Left="642" Canvas.Top="312" ControllerID="EPC04" Type="EPC" />
-                <control:FlowControllerReadOnly x:Name="EPC05" Canvas.Left="850" Canvas.Top="400" ControllerID="EPC05" Type="EPC" />
-                <control:FlowControllerReadOnly x:Name="EPC06" Canvas.Left="1000" Canvas.Top="312" ControllerID="EPC06" Type="EPC" />
-                <control:FlowControllerReadOnly x:Name="EPC07" Canvas.Left="721" Canvas.Top="73" ControllerID="EPC07" Type="EPC" />
+                <control:RecipeEditFlowController x:Name="EPC01" Canvas.Left="192" Canvas.Top="312" ControllerID="EPC01" Type="EPC" />
+                <control:RecipeEditFlowController x:Name="EPC02" Canvas.Left="342" Canvas.Top="312" ControllerID="EPC02" Type="EPC" />
+                <control:RecipeEditFlowController x:Name="EPC03" Canvas.Left="492" Canvas.Top="312" ControllerID="EPC03" Type="EPC" />
+                <control:RecipeEditFlowController x:Name="EPC04" Canvas.Left="642" Canvas.Top="312" ControllerID="EPC04" Type="EPC" />
+                <control:RecipeEditFlowController x:Name="EPC05" Canvas.Left="850" Canvas.Top="400" ControllerID="EPC05" Type="EPC" />
+                <control:RecipeEditFlowController x:Name="EPC06" Canvas.Left="1000" Canvas.Top="312" ControllerID="EPC06" Type="EPC" />
+                <control:RecipeEditFlowController x:Name="EPC07" Canvas.Left="721" Canvas.Top="73" ControllerID="EPC07" Type="EPC" />
                 <!--#endregion-->
 
                 <!-- #Region 6. Text -->

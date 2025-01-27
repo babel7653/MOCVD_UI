@@ -3,6 +3,7 @@ using CommunityToolkit.Mvvm.Input;
 using SapphireXR_App.Bases;
 using SapphireXR_App.Common;
 using SapphireXR_App.Models;
+using SapphireXR_App.ViewModels.BottomDashBoard;
 using System.ComponentModel;
 using System.Globalization;
 using System.Windows;
@@ -74,6 +75,7 @@ namespace SapphireXR_App.ViewModels
                 {
                     CurrentRecipe?.DisposeResource();
                     CurrentRecipe = new RecipeContext(recipeFilePath!, recipes!);
+                    DashBoardViewModel.resetFlowChart(recipes!);
                 }
                 else
                 {
@@ -142,6 +144,7 @@ namespace SapphireXR_App.ViewModels
 
         public RecipeRunViewModel()
         {
+            DashBoardViewModel = new RecipeRunBottomDashBoardViewModel();
             logIntervalInRecipeRunListener = new LogIntervalInRecipeRunListener(this, GlobalSetting.LogIntervalInRecipeRunInMS);
             ObservableManager<int>.Subscribe("GlobalSetting.LogIntervalInRecipeRun", logIntervalInRecipeRunListener);
             ObservableManager<short>.Subscribe("RecipeRun.CurrentActiveRecipe", this);
@@ -231,6 +234,8 @@ namespace SapphireXR_App.ViewModels
             logTimer.Interval = new TimeSpan(intervalInMS * TimeSpan.TicksPerMillisecond);
             logTimer.Start();
         }
+
+        public RecipeRunBottomDashBoardViewModel DashBoardViewModel { get; set; }
 
         private DataGrid? reactorDataGrid;
         private DataGrid? flowDataGrid;

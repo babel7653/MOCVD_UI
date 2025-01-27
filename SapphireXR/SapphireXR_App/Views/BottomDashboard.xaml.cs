@@ -8,7 +8,7 @@ namespace SapphireXR_App.Views
         public BottomDashboard()
         {
             InitializeComponent();
-            DataContext = App.Current.Services.GetService(typeof(BottomViewModel));
+            DataContext = App.Current.Services.GetService(typeof(BottomDashBoardViewModel));
         }
     }
 }

@@ -1,11 +1,6 @@
 ﻿using SapphireXR_App.Common;
 using SapphireXR_App.Enums;
-using System;
 using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Threading;
 using TwinCAT.Ads;
 
@@ -33,6 +28,7 @@ namespace SapphireXR_App.Models
         private static short[]? aDeviceCurrentValues;
         private static short[]? aDeviceControlValues;
         private static short[]? aDeviceRampTimes;
+        private static float[]? aMonitoring_PVs;
         private static Dictionary<string, ObservableManager<int>.DataIssuer>? dCurrentValueIssuers;
         private static Dictionary<string, ObservableManager<int>.DataIssuer>? dControlValueIssuers;
         private static Dictionary<string, ObservableManager<(int, int)>.DataIssuer>? dControlCurrentValueIssuers;
@@ -61,6 +57,7 @@ namespace SapphireXR_App.Models
         private static uint hRcpStart;
         private static uint hRcpState;
         private static uint hRcpStepN;
+        private static uint hMonitoring_PV;
 
         private static ObservableManager<PLCConnection>.DataIssuer ConnectedNotifier;
 

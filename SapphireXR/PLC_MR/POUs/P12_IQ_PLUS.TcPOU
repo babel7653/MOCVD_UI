@@ -3,28 +3,23 @@
   <POU Name="P12_IQ_PLUS" Id="{e511b755-5d71-4ab9-9c97-639ef910a29b}" SpecialFunc="None">
     <Declaration><![CDATA[PROGRAM P12_IQ_PLUS
 VAR_INPUT
-	nPressureTargetValue : WORD := 760;//Pressure Set Value
-	nRampTime			: INT := 1; //Second
+	wControlValue 		: WORD := 760;//Pressure Set Value
 	//wSetPoint 			: WORD; //Set Point
-	nSetType 			: USINT; //1:Pressure Conrol, 2:Position Control
+	nSetType 			: USINT := 1; //1:Pressure Conrol, 2:Position Control
 	nTValveMode 		: USINT := 0; //Valve Mode
 	bPumpOn				: BOOL;
 	bPumpReset			: BOOL;
-	
-	bEnable				: BOOL; //Value Change
 
 END_VAR
 VAR_OUTPUT
-	rPressurePV_CD1 	: REAL; //CD2 Current Pressure
-	rPressurePV_CD2 	: REAL; //CD2 Current Pressure
-	rValvePosition 		: REAL; //Valve Position
+	wCDG1_PV 			: WORD; //CD2 Current Pressure
+	wCDG2_PV 			: WORD; //CD2 Current Pressure
 	bVacuumPumpCB		: BOOL;
 	bThrottleValveCP	: BOOL;
-	nPressureControlValue	: INT;
 
 	//nInputStatus
-	ingPressureControl 	: BOOL;
-	ingPositionControl 	: BOOL;
+	ingPressureControl 		: BOOL;
+	ingPositionControl 		: BOOL;
 	isValveOpen 			: BOOL;
 	isValveNotInitialized 	: BOOL;	
 	isValveClosed 			: BOOL;
@@ -48,34 +43,19 @@ VAR
 	aInputPressureSP AT %I* : ARRAY[1..2]OF USINT; //Set Point Pressure
 	aInputValvePosionPV AT %I* : ARRAY[1..2]OF USINT; //Current Valve Position
 	
-	wOutputSetPoint : WORD;
-	oSetPoint : outWord; //Word to Byte variable
+	wTypedControlValue 	: WORD;
+	wOutputSVBytes : outWord; //Word to Byte variable
 	
 	//Output to IQ-PLUS Throttle Valve
 	nOutputMode AT %Q* : USINT;
-	aOutputSPBytes AT %Q* : ARRAY[1..2]OF USINT; //Set Pressure
+	aOutputSVBytes AT %Q* : ARRAY[1..2]OF USINT; //Set Pressure
 	nOutputSetType AT %Q* : USINT; //1:Pressure Control, 2:Valve Position Control
-	wInputPressurePV_CDG1 : WORD; //CDG1 Current Pressure, Not Used
-	wInputPressurePV_CDG2 : WORD; //CDG2 Current Pressure
-	wInputValvePosition : WORD; //Current Valve Position (0~100%)
+	wByteCDG1_PV 			: WORD; //CDG1 Current Pressure, Not Used
+	wByteCDG2_PV 			: WORD; //CDG2 Current Pressure
+	wByteValvePosition_PV : WORD; //Current Valve Position (0~100%)
 	nInputStatusOld : USINT := 9; //Value Change Monitoring, First Temp value
-	
-	// for FB_CTRL_RAMP_GENERATOR Variable
-	(* input *)
-	rPressureTargetValue 		: REAL;
-	rPressureStartValue 		: REAL := 760;
-	(* output *)
-	rPressureControlValue		: LREAL;
-	bValueReached				: BOOL;
-	(* function block *)
-	fbCTRL_RAMP_GENERATOR			: FB_CTRL_RAMP_GENERATOR;
-	stCTRL_RAMP_GENERATOR_PARAMS	: ST_CTRL_RAMP_GENERATOR_PARAMS;
-	eErrorId						: E_CTRL_ERRORCODES;
-	bError							: BOOL;
-	bInit						: BOOL := TRUE;	
-	(* Operation Parameter*)
-	rRampingRatio				: REAL;	
 END_VAR
+
 VAR CONSTANT
 	//Conversion Parameter
 	SetPointFactor : REAL := 327.67; //Range 0~7FFFh
@@ -85,6 +65,7 @@ END_VAR
     <Implementation>
       <ST><![CDATA[//Model : IQ Plus 
 //Pressure Range : 0 ~ 1,000 Torr
+nSetType := 1; // Pressure Mode Setting
 
 (* Read from Power Distribution Pannel *)
 bVacuumPumpCB		:= GVL_IO.aDigitalInputIO[5].1;
@@ -99,69 +80,24 @@ isPumpRunning		:= GVL_IO.aDigitalInputIO[3].3;
 
 (* Read from Device Value *)
 // 2USINT to WORD
-wInputPressurePV_CDG1 	:= USINT_TO_WORD_Bit(aInputPressurePV_CDG1[1],aInputPressurePV_CDG1[2]);
-wInputPressurePV_CDG2 	:= USINT_TO_WORD_Bit(aInputPressurePV_CDG2[1],aInputPressurePV_CDG2[2]);
-wInputValvePosition 	:= USINT_TO_WORD_Bit(aInputValvePosionPV[1], aInputValvePosionPV[2]);
+wByteCDG1_PV 		:= USINT_TO_WORD_Bit(aInputPressurePV_CDG1[1],aInputPressurePV_CDG1[2]);
+wByteCDG2_PV 		:= USINT_TO_WORD_Bit(aInputPressurePV_CDG2[1],aInputPressurePV_CDG2[2]);
+wByteValvePosition_PV 	:= USINT_TO_WORD_Bit(aInputValvePosionPV[1], aInputValvePosionPV[2]);
 
 //From IQ Plus
-rPressurePV_CD1 := WORD_TO_REAL(wInputPressurePV_CDG1)/PressureFactor;
-rPressurePV_CD2 := WORD_TO_REAL(wInputPressurePV_CDG2)/PressureFactor;
-rValvePosition := WORD_TO_REAL(wInputValvePosition)/SetPointFactor;
+wCDG1_PV 			:= REAL_TO_WORD(wByteCDG1_PV/PressureFactor);
+wCDG2_PV 			:= REAL_TO_WORD(wByteCDG2_PV/PressureFactor);
 
 //To IQ Plus
 IF nTValveMode = 0 AND nSetType = 1 THEN
-	rPressureTargetValue := nPressureTargetValue * SetPointFactor * 0.1; //Pressure Control
+	wTypedControlValue := REAL_TO_WORD(wControlValue * SetPointFactor * 0.1); //Pressure Control
 ELSIF nTValveMode = 0 AND nSetType = 2 THEN
-	rPressureTargetValue := nPressureTargetValue * SetPointFactor; // Position Control
+	wTypedControlValue := REAL_TO_WORD(wControlValue * SetPointFactor); // Position Control
 END_IF
 
-//Ramp Generator
-IF nRampTime <> 0 THEN
-	rRampingRatio := ABS(rPressureTargetValue - rPressureStartValue) / nRampTime * 0.1; // Second
-END_IF
-
-bEnable	:= TRUE;
-
-IF (rPressureTargetValue > 0) OR (rPressureStartValue > 0) THEN
-	bInit := TRUE;
-ELSIF (rPressureTargetValue = 0) AND (rPressureStartValue = 0) THEN
-	bInit := FALSE;
-END_IF
-
-IF bInit THEN
-	(* init parameter struct *)
-	stCTRL_RAMP_GENERATOR_PARAMS.tTaskCycleTime		:= T#100MS;
-	stCTRL_RAMP_GENERATOR_PARAMS.tCtrlCycleTime		:= T#100MS;
-	stCTRL_RAMP_GENERATOR_PARAMS.fVeloPos			:= rRampingRatio; (* in units per second *)
-	stCTRL_RAMP_GENERATOR_PARAMS.fVeloNeg			:= rRampingRatio; (* in units per second *)
-	(* reset the init flag *)
-	bInit := FALSE;
-END_IF
-
-IF rPressureTargetValue <> rPressureStartValue THEN
-	bEnable := TRUE;
-	(* call function block *)
-	fbCTRL_RAMP_GENERATOR(
-		bEnable			:= bEnable,
-		fStart			:= rPressureStartValue,
-		fTarget			:= rPressureTargetValue,
-		stParams		:= stCTRL_RAMP_GENERATOR_PARAMS,
-		fOut			=> rPressureControlValue,
-		bValueReached	=> bValueReached,
-		bError			=> bError,
-		eErrorId		=> eErrorId);
-ELSE
-	fbCTRL_RAMP_GENERATOR.bEnable := FALSE;
-END_IF
-
-IF bValueReached THEN
-	rPressureStartValue := LREAL_TO_REAL(rPressureControlValue);
-END_IF
-
-wOutputSetPoint := LREAL_TO_WORD(rPressureControlValue);
-oSetPoint := WORD_TO_USINT_Bit(wOutputSetPoint);
-aOutputSPBytes[1] := oSetPoint.Lower;
-aOutputSPBytes[2] := oSetPoint.Upper;
+wOutputSVBytes 		:= WORD_TO_USINT_Bit(wTypedControlValue);
+aOutputSVBytes[1] 	:= wOutputSVBytes.Lower;
+aOutputSVBytes[2] 	:= wOutputSVBytes.Upper;
 
 nOutputSetType := nSetType;
 
@@ -198,13 +134,16 @@ END_CASE
 // 2 : Does not use setpoint and setpoint type to operate the valve.
 // 3 : Holds valve in current position.
 // 4 : Reset the controller.
+
 nOutputMode := nTValveMode;
-nPressureControlValue := LREAL_TO_INT(rPressureControlValue);
+
+GVL_IO.aMonitoring_PV[11] := wByteValvePosition_PV/SetPointFactor;
 GVL_IO.aDigitalOutputIO[2].2 := bPumpOn; //Pump On
 GVL_IO.aDigitalOutputIO[2].3 := bPumpReset; // Pump Reset]]></ST>
     </Implementation>
     <LineIds Name="P12_IQ_PLUS">
       <LineId Id="273" Count="2" />
+      <LineId Id="362" Count="0" />
       <LineId Id="209" Count="0" />
       <LineId Id="208" Count="0" />
       <LineId Id="210" Count="0" />
@@ -216,26 +155,13 @@ GVL_IO.aDigitalOutputIO[2].3 := bPumpReset; // Pump Reset]]></ST>
       <LineId Id="290" Count="0" />
       <LineId Id="277" Count="0" />
       <LineId Id="158" Count="0" />
-      <LineId Id="52" Count="15" />
-      <LineId Id="297" Count="1" />
-      <LineId Id="301" Count="0" />
-      <LineId Id="306" Count="1" />
-      <LineId Id="310" Count="0" />
-      <LineId Id="299" Count="0" />
-      <LineId Id="312" Count="4" />
-      <LineId Id="311" Count="0" />
-      <LineId Id="326" Count="0" />
-      <LineId Id="328" Count="7" />
-      <LineId Id="327" Count="0" />
-      <LineId Id="336" Count="14" />
-      <LineId Id="217" Count="0" />
-      <LineId Id="352" Count="0" />
-      <LineId Id="354" Count="1" />
-      <LineId Id="353" Count="0" />
-      <LineId Id="351" Count="0" />
-      <LineId Id="68" Count="39" />
+      <LineId Id="52" Count="7" />
+      <LineId Id="361" Count="0" />
+      <LineId Id="62" Count="45" />
+      <LineId Id="365" Count="0" />
       <LineId Id="5" Count="0" />
-      <LineId Id="356" Count="0" />
+      <LineId Id="366" Count="0" />
+      <LineId Id="364" Count="0" />
       <LineId Id="287" Count="0" />
       <LineId Id="293" Count="0" />
     </LineIds>

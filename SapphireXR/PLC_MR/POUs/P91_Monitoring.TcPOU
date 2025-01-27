@@ -2,20 +2,15 @@
 <TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4026.8">
   <POU Name="P91_Monitoring" Id="{4f91223e-09c8-40bc-a729-040528b0179c}" SpecialFunc="None">
     <Declaration><![CDATA[PROGRAM P91_Monitoring
-VAR_INPUT
-	
-END_VAR
 VAR_OUTPUT
 	
 END_VAR
 VAR
 	TimeCycle			: TON;
 	i 					: INT;
-	nGas 				: INT;
+	idx					: INT;
 	
 	(* Output *)
-	rTempShowerHead		: REAL;
-	rTempInductionCoil	: REAL;
 	bAirPressureSensor	: BOOL;
 	bWaterFlowSensor	: BOOL;
 	bSMPS24V480WFault	: BOOL;
@@ -23,31 +18,11 @@ VAR
 	bSMPS15VPlusFault	: BOOL;
 	bSMPS15VMinusFault	: BOOL;
 	
-	rGasPressure		: ARRAY[1..4]OF REAL;
-	rExhaustPressure	: REAL;
-	rUltimatePressure	: REAL;
-
 	(*Utility Input*)
 	bUtilityFault		: BYTE;	
-END_VAR
-
-VAR CONSTANT
-	KL3054MaxValue 	: REAL := 32767; //4~20mA
-	KL3152MaxValue	: REAL := 65535; //4~20mA
-	KL3204MaxValue 	: REAL := 32767; //4~20mA
-	KL3464MaxValue 	: REAL := 32767; //0~10V
-	KL3464MaxValueH	: REAL := 16383; //0~5V Half
 END_VAR]]></Declaration>
     <Implementation>
-      <ST><![CDATA[//Tempeary Value for TEST
-// GVL_IO.aMaxValue[27] := 10; //10 Torr
-// GVL_IO.aMaxValue[28] := 1000; //1,000 Torr
-// GVL_IO.aMaxValue[33] := 6.89;
-// GVL_IO.aMaxValue[34] := 6.89;
-// GVL_IO.aMaxValue[35] := 6.89;
-// GVL_IO.aMaxValue[36] := 6.89;
-
-(* Read from Device*)
+      <ST><![CDATA[(* Read from Device*)
 bAirPressureSensor	:= NOT(GVL_IO.aDigitalInputIO[2].0); //Normally Contacted
 bWaterFlowSensor	:= NOT(GVL_IO.aDigitalInputIO[2].1);
 bSMPS24V480WFault	:= NOT(GVL_IO.aDigitalInputIO[4].3);
@@ -55,59 +30,62 @@ bSMPS24V72WFault	:= NOT(GVL_IO.aDigitalInputIO[4].4);
 bSMPS15VPlusFault	:= NOT(GVL_IO.aDigitalInputIO[4].5);
 bSMPS15VMinusFault	:= NOT(GVL_IO.aDigitalInputIO[4].6);
 
-rTempShowerHead 	:= (GVL_IO.aAnalogInputIO[37]*0.1); 
-rTempInductionCoil 	:= (GVL_IO.aAnalogInputIO[38]*0.1); 
-
 (* Read from Utility Device*)
 bUtilityFault		:= GVL_IO.aDigitalInputIO[7]; // 1~5 BYTE Operation, Normally Contacted
 
-TimeCycle(IN:=TRUE, PT:=T#100MS);
+TimeCycle(IN:=TRUE, PT:=T#100MS); // 100MS Refresh Reading Time
 IF TimeCycle.Q THEN
 	TimeCycle(IN:=FALSE);
-	nGas := 4; //Gas Pressure Start Array
-	FOR i:=1 TO 4 DO
-		// 33 : N2, 34 : H2, 35 : NH3, 36 : SiH4
-		rGasPressure[i] := (GVL_IO.aAnalogInputIO[nGas] / KL3054MaxValue) * GVL_IO.aMaxValueGauge[nGas] ;
-		nGas := nGas + 1;
-	END_FOR	
 	
 	// Reactor Ultimate Pressure Gauge
-	rUltimatePressure := (GVL_IO.aAnalogInputIO[27] / KL3464MaxValue) * GVL_IO.aMaxValueGauge[1]; //10Torr, 0~10V
+	GVL_IO.aMonitoring_PV[1] := GVL_IO.aAnalogInputIO[27] / GVL_IO.KL3464MaxValue * 10; //10Torr, 0~10V, Cal. x10
 	
-	// Exhaust Vacuum Gauge
-	rExhaustPressure := (GVL_IO.aAnalogInputIO[28] / KL3464MaxValue) * GVL_IO.aMaxValueGauge[2]; //1,000Torr, 0~10V
+	// Exhaust Pressure Gauge
+	GVL_IO.aMonitoring_PV[2] := GVL_IO.aAnalogInputIO[28] / GVL_IO.KL3464MaxValue * 1000; //1,000Torr, 0~10V, Cal. x1000
+	GVL_IO.aAnalogOutputIO[27] := GVL_IO.aAnalogInputIO[28]; // Panel Meter Display
 	
-	// Exhaust Vacuum Panel Meter Display
-	GVL_IO.aAnalogOutputIO[27] := GVL_IO.aAnalogInputIO[28];
+	// Double O-Ring(DOR) Gauge
+	GVL_IO.aMonitoring_PV[3] := GVL_IO.aAnalogInputIO[29] / GVL_IO.KL3464MaxValueH * 100; //100kPa, 0~5V, Cal. x100
+		
+	//Gas Pressure 4 : N2, 5 : H2, 6 : NH3, 7 : SiH4
+	FOR i:=4 TO 7 DO
+		idx := i + 29;
+		GVL_IO.aMonitoring_PV[i] := GVL_IO.aAnalogInputIO[idx] / GVL_IO.KL3054MaxValue * 6.89; // Cal. 6.89 bar
+	END_FOR	
+	
+	// Cooling Water Temperature
+	GVL_IO.aMonitoring_PV[8] := GVL_IO.aAnalogInputIO[37] / GVL_IO.KL3204MaxValue * 0.1; // PT100, Shower Head, Cal. 0.1
+	GVL_IO.aMonitoring_PV[9] := GVL_IO.aAnalogInputIO[38] / GVL_IO.KL3204MaxValue * 0.1; // PT100, Shower Head, Cal. 0.1
+	
 END_IF
 ]]></ST>
     </Implementation>
     <LineIds Name="P91_Monitoring">
-      <LineId Id="38" Count="0" />
-      <LineId Id="67" Count="0" />
-      <LineId Id="66" Count="0" />
-      <LineId Id="24" Count="4" />
       <LineId Id="131" Count="0" />
       <LineId Id="137" Count="0" />
       <LineId Id="141" Count="0" />
       <LineId Id="144" Count="0" />
       <LineId Id="146" Count="2" />
-      <LineId Id="143" Count="0" />
-      <LineId Id="132" Count="0" />
-      <LineId Id="135" Count="0" />
       <LineId Id="185" Count="0" />
       <LineId Id="184" Count="0" />
       <LineId Id="187" Count="0" />
       <LineId Id="65" Count="0" />
-      <LineId Id="29" Count="8" />
+      <LineId Id="29" Count="2" />
+      <LineId Id="190" Count="0" />
+      <LineId Id="188" Count="1" />
+      <LineId Id="191" Count="2" />
+      <LineId Id="196" Count="0" />
+      <LineId Id="194" Count="0" />
+      <LineId Id="197" Count="2" />
+      <LineId Id="32" Count="1" />
+      <LineId Id="201" Count="0" />
+      <LineId Id="35" Count="0" />
+      <LineId Id="37" Count="0" />
       <LineId Id="58" Count="0" />
-      <LineId Id="71" Count="0" />
-      <LineId Id="70" Count="0" />
       <LineId Id="72" Count="0" />
-      <LineId Id="59" Count="1" />
+      <LineId Id="202" Count="0" />
+      <LineId Id="60" Count="0" />
       <LineId Id="128" Count="0" />
-      <LineId Id="63" Count="0" />
-      <LineId Id="74" Count="0" />
       <LineId Id="5" Count="0" />
       <LineId Id="73" Count="0" />
     </LineIds>

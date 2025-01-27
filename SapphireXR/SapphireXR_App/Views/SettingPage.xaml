@@ -5,7 +5,7 @@
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:SapphireXR_App.Views"
       mc:Ignorable="d" 
-      d:DesignHeight="836" d:DesignWidth="1300"
+      d:DesignHeight="1037" d:DesignWidth="1300"
       Title="SettingPage">
     <Page.Resources>
         <Style x:Key="BaseStyle" TargetType="{x:Type Control}">
@@ -50,13 +50,13 @@
             <Setter Property="Padding" Value="3"/>
         </Style>
     </Page.Resources>
-    
+
     <Grid>
         <TabControl TabStripPlacement="Left">
             <!--Tab for Alarm Setting -->
             <TabItem Name="AlarmSetting" Header="Alarm Setting">
                 <TabItem.Content>
-                    <Grid Width="1290">
+                    <Grid Width="1270">
                         <Grid.RowDefinitions>
                             <RowDefinition Height="30"/>
                             <RowDefinition Height="*"/>
@@ -68,7 +68,7 @@
                         <Grid Grid.Row="1">
                             <StackPanel Orientation="Horizontal">
                                 <!-- 알람(Analog) 설정  -->
-                                <GroupBox Header="Alarm Setting (Analog)" Width="430"
+                                <GroupBox Header="Alarm Setting (Analog)" Width="420"
                                           BorderBrush="LightSteelBlue" BorderThickness="2" Margin="2,10,2,0"
                                               FontSize="14">
                                     <Grid>
@@ -133,7 +133,7 @@
                                     </Grid>
                                 </GroupBox>
                                 <!-- 알람(Digital) 설정 -->
-                                <GroupBox Header="Alarm Setting (Digital)" Width="430"
+                                <GroupBox Header="Alarm Setting (Digital)" Width="420"
                                           BorderBrush="LightSteelBlue" BorderThickness="2" Margin="2,10,2,0"
                                           FontSize="14">
                                     <Grid>
@@ -343,7 +343,7 @@
                                 </GroupBox>
                                 <StackPanel>
                                     <!-- Interlock 설정 테이블 -->
-                                    <GroupBox Header="Interlock Setting" Width="640" BorderBrush="LightSteelBlue" BorderThickness="2" Margin="2,10,2,0"
+                                    <GroupBox Header="Interlock Setting" Width="625" BorderBrush="LightSteelBlue" BorderThickness="2" Margin="2,10,2,0"
                                               FontSize="14">
                                         <Grid>
                                             <Grid.ColumnDefinitions>
@@ -442,6 +442,35 @@
                                             </StackPanel>
                                         </Grid>
                                     </GroupBox>
+                                    
+                                    <!--Magnetic Contact-->
+                                    <GroupBox Header="Module Power (Magnetic Contact)" BorderBrush="LightSteelBlue" BorderThickness="2" Margin="2,10,2,0"
+                                              FontSize="14">
+                                        <Grid>
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition/>
+                                                <RowDefinition/>
+                                                <RowDefinition/>
+                                                <RowDefinition/>
+                                            </Grid.RowDefinitions>
+                                            <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="2">
+                                                <TextBlock Width="200" Text="Induction Heater Power"/>
+                                                <Button Content="ON"/>
+                                            </StackPanel>
+                                            <StackPanel Grid.Row="1" Orientation="Horizontal" Margin="2">
+                                                <TextBlock Width="200" Text="Thermal Bath Power"/>
+                                                <Button Content="ON"/>
+                                            </StackPanel>
+                                            <StackPanel Grid.Row="2" Orientation="Horizontal" Margin="2">
+                                                <TextBlock Width="200" Text="Vacuum Pump Power"/>
+                                                <Button Content="ON"/>
+                                            </StackPanel>
+                                            <StackPanel Grid.Row="3" Orientation="Horizontal" Margin="2">
+                                                <TextBlock Width="200" Text="Line Heater Power"/>
+                                                <Button Content="ON"/>
+                                            </StackPanel>
+                                        </Grid>
+                                    </GroupBox>
                                 </StackPanel>
                             </StackPanel>
                         </Grid>
@@ -474,15 +503,15 @@
                                                 </Style>
                                             </Button.Resources>
                                         </Button>
-                                        <Grid Height="740">
+                                        <Grid Height="950">
                                             <Grid.RowDefinitions>
                                                 <RowDefinition Height="50*"/>
                                                 <RowDefinition Height="Auto"/>
                                                 <RowDefinition Height="50*"/>
                                             </Grid.RowDefinitions>
                                             <!-- Analog Device Name 설정 테이블-->
-                                            <StackPanel>
-                                                <DataGrid x:Name="dgMaxValueSetting" Width="425" Height="360" AutoGenerateColumns="False" Margin="5,0,5,0"
+                                            <StackPanel Orientation="Vertical">
+                                                <DataGrid x:Name="dgMaxValueSetting" Width="425" Height="460" AutoGenerateColumns="False" Margin="5,0,5,0"
                                                            ItemsSource="{Binding lAnalogDeviceIO}" CanUserAddRows="False">
                                                     <DataGrid.Resources>
                                                         <Style TargetType="{x:Type DataGridColumnHeader}">
@@ -502,16 +531,16 @@
                                                                         Binding="{Binding Path=Name}"/>
                                                         <DataGridTextColumn Header="Max Value" CanUserSort="False" CanUserResize="False" Width="120"
                                                                         Binding="{Binding Path=MaxValue}"/>
-
                                                     </DataGrid.Columns>
                                                 </DataGrid>
+                                                
                                             </StackPanel>
                                             <GridSplitter Grid.Row="1" HorizontalAlignment="Stretch" VerticalAlignment="Center"  Background="LightSteelBlue"
                                                       ShowsPreview="True" Height="3"/>
                                             <!-- Digital Device Name 설정 테이블-->
                                             <StackPanel Grid.Row="2" Orientation="Horizontal">
                                                 <StackPanel>
-                                                    <DataGrid x:Name="DigitalMappingSetting" Width="425" Height="360" AutoGenerateColumns="False" Margin="5,0,5,0">
+                                                    <DataGrid x:Name="DigitalMappingSetting" Width="425" Height="460" AutoGenerateColumns="False" Margin="5,0,5,0">
                                                         <DataGrid.Resources>
                                                             <Style TargetType="{x:Type DataGridColumnHeader}">
                                                                 <Setter Property="HorizontalAlignment" Value="Center"/>

@@ -48,15 +48,14 @@ namespace SapphireXR_App.Models
                 hReadValveStatePLC2 = Ads.CreateVariableHandle("GVL_IO.aOutputSolValve[2]");
                 hWriteDeviceTargetValuePLC = Ads.CreateVariableHandle("GVL_IO.aController_TV");
                 hWriteDeviceRampTimePLC = Ads.CreateVariableHandle("GVL_IO.aController_RampTime");
-                hTempShowerHead = Ads.CreateVariableHandle("GVL_IO.aAnalogInputIO[37]");
-                hTempInductionCoil = Ads.CreateVariableHandle("GVL_IO.aAnalogInputIO[38]");
-                hPowerRate = Ads.CreateVariableHandle("P11_E3508.rE3508_PowerRate");
 
-                hRcp = PLCService.Ads.CreateVariableHandle("RCP.aRecipe");
-                hRcpTotalStep = PLCService.Ads.CreateVariableHandle("RCP.iRcpTotalStep");
-                hRcpStart = PLCService.Ads.CreateVariableHandle("RCP.bRcpStart");
-                hRcpState = PLCService.Ads.CreateVariableHandle("RCP.iRcpOperationState");
-                hRcpStepN = PLCService.Ads.CreateVariableHandle("RCP.iRcpStepN");
+                hMonitoring_PV = Ads.CreateVariableHandle("GVL_IO.aMonitoring_PV");
+                
+                hRcp = Ads.CreateVariableHandle("RCP.aRecipe");
+                hRcpTotalStep = Ads.CreateVariableHandle("RCP.iRcpTotalStep");
+                hRcpStart = Ads.CreateVariableHandle("RCP.bRcpStart");
+                hRcpState = Ads.CreateVariableHandle("RCP.iRcpOperationState");
+                hRcpStepN =Ads.CreateVariableHandle("RCP.iRcpStepN");
                 
 
                 aDeviceRampTimes = new short[dIndexController.Count];
@@ -192,6 +191,7 @@ namespace SapphireXR_App.Models
             aDeviceCurrentValues = Ads.ReadAny<short[]>(hDeviceCurrentValuePLC, [NumControllers]);
             aDeviceControlValues = Ads.ReadAny<short[]>(hDeviceControlValuePLC, [NumControllers]);
             aDeviceTargetValues = Ads.ReadAny<float[]>(hWriteDeviceTargetValuePLC, [NumControllers]);
+            aMonitoring_PVs = Ads.ReadAny<float[]>(hMonitoring_PV, [11]);
         }
 
         public static float ReadCurrentValue(string controllerID)
@@ -265,19 +265,22 @@ namespace SapphireXR_App.Models
                 }
 
                 float[] maxValue = new float[29];
-                uint index = 0;
-                uint count = 1;
+                int index = 0;
                 foreach (AnalogDeviceIO entry in analogDeviceIOs)
                 {
                     if (entry.ID == null)
                     {
                         throw new Exception("entry ID is null for AnalogDeviceIO");
                     }
-                    if (count > 3)
+                    if (index < 3)
                     {
-                        maxValue[index++] = entry.MaxValue;
+                        maxValue[index + 26] = entry.MaxValue;
                     }
-                    count++;
+                    else
+                    {
+                        maxValue[index - 3] = entry.MaxValue;
+                    }
+                        index++;
                 }
                 Ads.WriteAny(hDeviceMaxValuePLC, maxValue, [dIndexController.Count]);
                 // List Analog Device Input / Output

@@ -14,7 +14,6 @@ END_VAR
 VAR_OUTPUT
 	bAlarmState_E3508 		: BOOL; //Alarm or Sensor Break Signal
 	bManAuto_E3508 			: BOOL; // 0:Manual, 1:Auto
-	rE3508_PowerRate		: REAL;	//Power rate for Monitoring
 	
 	isHeaterReady			: BOOL; //Close : Ready
 	isHeaterRun				: BOOL; //Close : Running, Open : Stop
@@ -71,7 +70,7 @@ wE3508_D 				:= USINT_TO_WORD_Bit(aInputDerivative[1], aInputDerivative[2]);
 bAlarmState_E3508 		:= nInputAlarmBytes.7;
 bManAuto_E3508 			:= nInputManAutoBytes.7;
 
-rE3508_PowerRate		:= WORD_TO_REAL(wE3508_PowerRate)*0.1; //divided to 10
+GVL_IO.aMonitoring_PV[10] := WORD_TO_REAL(wE3508_PowerRate)*0.1; //divided to 10
 
 (* Read from Induction Heater Value *)
 isHeaterReady 			:= GVL_IO.aDigitalInputIO[2].2;

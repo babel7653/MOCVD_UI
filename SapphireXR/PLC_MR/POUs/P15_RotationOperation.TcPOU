@@ -3,37 +3,21 @@
   <POU Name="P15_RotationOperation" Id="{7f828812-d1bb-49a4-a03d-f3e347855c39}" SpecialFunc="None">
     <Declaration><![CDATA[PROGRAM P15_RotationOperation
 VAR_INPUT
+	rControlValue			: REAL; //rpm
 	bStart_Stop				: BOOL := TRUE;
 	bAlarmReset				: BOOL; //Motor Driver Alarm
-	nRotationTV_rpm			: SINT(0..100); //Input Range 0~100 rpm
-	nRampTime				: INT := 1; // Second
 END_VAR
 VAR_OUTPUT
 	isRotationErr			: BOOL; //Motor Driver
 	bRotationCP			: BOOL;
-	nRotationPV_rpm			: INT; //PV 0~100 rpm
+	nConvertedRotation_PV	: INT; //PV 0~100 rpm
 END_VAR
 VAR
-	// for FB_CTRL_RAMP_GENERATOR Variable
-	(* input *)
-	bEnable					: BOOL; // Reference
-	rRotationPV				: REAL;
-	rRotationTV				: REAL;
-	(* output *)
-	rRotationSV				: LREAL;
-	bValueReached			: BOOL;
-	(* function block *)
-	fbCTRL_RAMP_GENERATOR		: FB_CTRL_RAMP_GENERATOR;
-	stCTRL_RAMP_GENERATOR_PARAMS: ST_CTRL_RAMP_GENERATOR_PARAMS;
-
-	eErrorId				: E_CTRL_ERRORCODES;
-	bError					: BOOL;
-	bInit					: BOOL := TRUE;
+	rConvertedCV			:REAL;
 	(* Motor Driver *)
 	bBrake_Run				: BOOL;
-	nRotationPV				: UINT;
 	(* Rotation Operation Parameter*)
-	rRampingRatio			: REAL;	
+	wRotaion_PV				:WORD;	
 END_VAR
 
 VAR CONSTANT
@@ -50,58 +34,22 @@ bRotationCP :=  GVL_IO.aDigitalInputIO[5].3;
 
 //from Device Value
 isRotationErr := NOT(GVL_IO.aDigitalInputIO[2].5);
-nRotationPV := GVL_IO.aAnalogInputIO2[1];
-nRotationPV_rpm := REAL_TO_INT(nRotationPV/(5*ConversionFactor));
+wRotaion_PV := UINT_TO_WORD(GVL_IO.aAnalogInputIO2[1]);
+nConvertedRotation_PV := REAL_TO_INT(wRotaion_PV/(5*ConversionFactor));
 
-rRotationTV := nRotationTV_rpm * ConversionFactor; // Convert from RPM to control value
+//Write to Motor Driver
+rConvertedCV := rControlValue * ConversionFactor; // Convert from RPM to control value
 
-IF (rRotationTV > 0) OR (rRotationPV > 0) THEN // Motor Driver RUN
+IF (GVL_IO.aController_TV[29] > 0) OR (wRotaion_PV > 0) THEN // Motor Driver RUN
 	bBrake_Run := TRUE;
-	bInit := TRUE;
-ELSIF (rRotationTV = 0) AND (rRotationPV = 0) THEN
+ELSIF (GVL_IO.aController_TV[29] = 0) AND (wRotaion_PV = 0) THEN
 	bBrake_Run := FALSE;
-	bInit := TRUE;
 END_IF
 
-IF nRampTime <> 0 THEN
-rRampingRatio := ABS(rRotationTV - rRotationPV) / INT_TO_REAL(nRampTime) * 0.1; //Second
-END_IF
-
-IF bInit THEN
-	(* init parameter struct *)
-	stCTRL_RAMP_GENERATOR_PARAMS.tTaskCycleTime		:= T#100MS;
-	stCTRL_RAMP_GENERATOR_PARAMS.tCtrlCycleTime		:= T#100MS;
-	stCTRL_RAMP_GENERATOR_PARAMS.fVeloPos			:= rRampingRatio; (* in units per second *)
-	stCTRL_RAMP_GENERATOR_PARAMS.fVeloNeg			:= rRampingRatio; (* in units per second *)
-
-	(* reset the init flag *)
-	bInit := FALSE;
-END_IF
-
-IF rRotationTV <> rRotationPV THEN
-	bEnable := TRUE;
-	(* call function block *)
-	fbCTRL_RAMP_GENERATOR(	bEnable			:= bEnable,
-							fStart			:= rRotationPV,
-							fTarget			:= rRotationTV,
-							stParams		:= stCTRL_RAMP_GENERATOR_PARAMS,
-							fOut			=> rRotationSV,
-							bValueReached	=> bValueReached,
-							bError			=> bError,
-							eErrorId		=> eErrorId);
-ELSE
-	fbCTRL_RAMP_GENERATOR.bEnable := FALSE;
-END_IF
-
-IF bValueReached THEN
-	rRotationPV := LREAL_TO_REAL(rRotationSV);
-END_IF
-
-//to Device Value
 GVL_IO.aDigitalOutputIO[3].4 	:= bStart_Stop;
 GVL_IO.aDigitalOutputIO[3].5 	:= bBrake_Run;
 GVL_IO.aDigitalOutputIO[3].6 	:= bAlarmReset;
-GVL_IO.aAnalogOutputIO[28] 		:= LREAL_TO_INT(rRotationSV);]]></ST>
+GVL_IO.aAnalogOutputIO[28] 		:= REAL_TO_INT(rConvertedCV);]]></ST>
     </Implementation>
     <LineIds Name="P15_RotationOperation">
       <LineId Id="44" Count="0" />
@@ -109,7 +57,14 @@ GVL_IO.aAnalogOutputIO[28] 		:= LREAL_TO_INT(rRotationSV);]]></ST>
       <LineId Id="45" Count="0" />
       <LineId Id="140" Count="1" />
       <LineId Id="46" Count="1" />
-      <LineId Id="49" Count="50" />
+      <LineId Id="49" Count="1" />
+      <LineId Id="144" Count="0" />
+      <LineId Id="52" Count="1" />
+      <LineId Id="147" Count="2" />
+      <LineId Id="151" Count="1" />
+      <LineId Id="154" Count="0" />
+      <LineId Id="95" Count="0" />
+      <LineId Id="97" Count="2" />
       <LineId Id="5" Count="0" />
     </LineIds>
   </POU>

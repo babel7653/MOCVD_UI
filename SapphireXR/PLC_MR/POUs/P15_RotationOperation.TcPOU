@@ -8,7 +8,7 @@ VAR_INPUT
 	bAlarmReset				: BOOL; //Motor Driver Alarm
 END_VAR
 VAR_OUTPUT
-	isRotationErr			: BOOL; //Motor Driver
+
 	bRotationCP			: BOOL;
 	nConvertedRotation_PV	: INT; //PV 0~100 rpm
 END_VAR
@@ -17,7 +17,8 @@ VAR
 	(* Motor Driver *)
 	bBrake_Run				: BOOL;
 	(* Rotation Operation Parameter*)
-	wRotaion_PV				:WORD;	
+	wRotaion_PV				:WORD;
+	isRotationFault			: BOOL; //Motor Driver
 END_VAR
 
 VAR CONSTANT
@@ -33,7 +34,7 @@ END_VAR
 bRotationCP :=  GVL_IO.aDigitalInputIO[5].3;
 
 //from Device Value
-isRotationErr := NOT(GVL_IO.aDigitalInputIO[2].5);
+isRotationFault := NOT(GVL_IO.aDigitalInputIO[2].5);
 wRotaion_PV := UINT_TO_WORD(GVL_IO.aAnalogInputIO2[1]);
 nConvertedRotation_PV := REAL_TO_INT(wRotaion_PV/(5*ConversionFactor));
 

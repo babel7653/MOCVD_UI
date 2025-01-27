@@ -54,7 +54,7 @@
     <Grid>
         <TabControl TabStripPlacement="Left">
             <!--Tab for Alarm Setting -->
-            <TabItem Name="AlarmSetting" Header="Alarm Setting">
+            <TabItem Name="AlarmSetting" Header="Alarm">
                 <TabItem.Content>
                     <Grid Width="1270">
                         <Grid.RowDefinitions>
@@ -238,7 +238,7 @@
 
             </TabItem>
             <!--Tab for Safety Setting-->
-            <TabItem Name="UserStateSetting" Header="Safety Setting">
+            <TabItem Name="UserStateSetting" Header="Safety">
                 <TabItem.Content>
                     <Grid>
                         <Grid.RowDefinitions>
@@ -478,7 +478,7 @@
                 </TabItem.Content>
             </TabItem>
             <!-- Tab for Device Setting -->
-            <TabItem Name="DeviceSetting" Header="Device Setting">
+            <TabItem Name="DeviceSetting" Header="Device">
                 <TabItem.Content>
                     <Grid>
                         <Grid.RowDefinitions>

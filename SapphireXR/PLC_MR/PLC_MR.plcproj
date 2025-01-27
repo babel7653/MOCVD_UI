@@ -114,6 +114,9 @@
     <Compile Include="POUs\P50_RecipeControl.TcPOU">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="POUs\P70_Interface.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="POUs\P90_Interlock.TcPOU">
       <SubType>Code</SubType>
     </Compile>

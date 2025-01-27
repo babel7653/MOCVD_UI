@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4026.8">
   <POU Name="P14_ThermalBath" Id="{2c2b0e51-5635-46ea-83dc-d55165a0b5b4}" SpecialFunc="None">
     <Declaration><![CDATA[PROGRAM P14_ThermalBath
 VAR_INPUT
@@ -10,7 +10,7 @@ VAR_OUTPUT
 	bTempDeviationAlarm	: ARRAY[1..6] OF BOOL;
 	bCutOffAlarm		: ARRAY[1..6] OF BOOL;
 	
-	rTemperaturePV 		: ARRAY[1..6]OF REAL;
+	rTemperature_PV 		: ARRAY[1..6]OF REAL;
 	isBath_Err 			: ARRAY[1..6]OF BOOL;
 	isBath_TC_Broken 	: ARRAY[1..6]OF BOOL ; 
 END_VAR
@@ -48,6 +48,7 @@ VAR
 	
 	(* Input *)
 	bThermalBathCB		: BOOL;
+	index				: INT;
 END_VAR]]></Declaration>
     <Implementation>
       <ST><![CDATA[// Call the send block every second to repeat the transmission.
@@ -63,7 +64,7 @@ END_VAR]]></Declaration>
 bThermalBathCB := GVL_IO.aDigitalInputIO[5].0;
 
 (* Read from SMC Bath Device Value *)
-TimeOnDelay(IN:= P90_Interlock.bThermalBathMC, PT :=T#10S); //Time Delay after a Thermal Bath MC ON
+TimeOnDelay(IN:= P90_Interlock.bThermalBathMC, PT :=T#1S); //Time Delay after a Thermal Bath MC ON
 bTempDeviationAlarm[1]	:= GVL_IO.aDigitalInputIO[8].0;
 bTempDeviationAlarm[2]	:= GVL_IO.aDigitalInputIO[8].2;
 bTempDeviationAlarm[3]	:= GVL_IO.aDigitalInputIO[8].4;
@@ -160,15 +161,18 @@ IF TimeCycle.Q = TRUE THEN
 				IF sReceivedData = '' THEN
 					//isBath_Err[nReceivedBathNumber] := TRUE;
 				ELSIF sReceivedData = 'HHHHH' THEN
-					rTemperaturePV[nReceivedBathNumber] := -99.0;
+					rTemperature_PV[nReceivedBathNumber] := -99.0;
 					isBath_TC_Broken[nReceivedBathNumber] := TRUE;
 					isBath_Err[nReceivedBathNumber] := FALSE;
 				ELSE
-					rTemperaturePV[nReceivedBathNumber] := (STRING_TO_REAL(sReceivedData))/10;
+					rTemperature_PV[nReceivedBathNumber] := (STRING_TO_REAL(sReceivedData))/10;
 					isBath_TC_Broken[nReceivedBathNumber] := FALSE;
 					isBath_Err[nReceivedBathNumber] := FALSE;
 				END_IF
 			END_IF
+			index := nReceivedBathNumber + 11;
+			GVL_IO.aMonitoring_PV[index] := rTemperature_PV[nReceivedBathNumber];
+			
 		END_IF
 	END_IF
 	
@@ -195,7 +199,9 @@ END_IF
       <LineId Id="204" Count="0" />
       <LineId Id="58" Count="0" />
       <LineId Id="206" Count="0" />
-      <LineId Id="59" Count="98" />
+      <LineId Id="59" Count="89" />
+      <LineId Id="322" Count="2" />
+      <LineId Id="149" Count="8" />
       <LineId Id="5" Count="0" />
       <LineId Id="202" Count="0" />
       <LineId Id="201" Count="0" />

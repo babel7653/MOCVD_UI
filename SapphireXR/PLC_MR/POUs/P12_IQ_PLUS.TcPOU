@@ -27,13 +27,6 @@ VAR_OUTPUT
 	ingValveInitializing 	: BOOL;
 	ingHoldState 			: BOOL;
 	
-	// Vacuum Pump Status
-	isPumpFault				: BOOL;
-	isPumpWarning			: BOOL;
-	isPumpAlarm				: BOOL;
-	isFBRunning				: BOOL;
-	isPumpRunning			: BOOL;
-	
 END_VAR
 VAR
 	//Input from IQ-PLUS Throttle Valve
@@ -54,6 +47,13 @@ VAR
 	wByteCDG2_PV 			: WORD; //CDG2 Current Pressure
 	wByteValvePosition_PV : WORD; //Current Valve Position (0~100%)
 	nInputStatusOld : USINT := 9; //Value Change Monitoring, First Temp value
+			
+	// Vacuum Pump Status
+	isPumpFault				: BOOL;
+	isPumpWarning			: BOOL;
+	isPumpAlarm				: BOOL;
+	isFBRunning				: BOOL;
+	isPumpRunning			: BOOL;
 END_VAR
 
 VAR CONSTANT

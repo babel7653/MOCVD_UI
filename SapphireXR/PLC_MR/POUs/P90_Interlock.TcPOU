@@ -18,26 +18,31 @@ VAR_OUTPUT
 	bCoverOperationEnable	: BOOL;
 	bDORVacEnable			: BOOL;
 	bDORAtmEnable			: BOOL;
-	bMaintKey				: BOOL;
 	bPowerResetSwitch		: BOOL;
 	bMainPowerMonitor		: BOOL;
 	bRecipeEnable			: BOOL;
 END_VAR	
 VAR
+	bMaintKey				: BOOL;
 	bSafetyGasState			: BOOL;
 	bAlarmState				: BOOL;
 	bPowerResetLED			: BOOL;
 	bUPSMode				: BOOL;
 
+	bAirPressureSensor		: BOOL;
+	bWaterFlowSensor		: BOOL;
+	
 END_VAR
 ]]></Declaration>
     <Implementation>
       <ST><![CDATA[(* Read from Device*)
 bMaintKey := GVL_IO.aDigitalInputIO[1].0;
+
 bPowerResetSwitch := GVL_IO.aDigitalInputIO[1].1;
 bMainPowerMonitor := GVL_IO.aDigitalInputIO[7].5;
 
-
+bAirPressureSensor	:= NOT(GVL_IO.aDigitalInputIO[2].0); //Normally Contacted
+bWaterFlowSensor	:= NOT(GVL_IO.aDigitalInputIO[2].1);
 
 IF ManualOperation THEN
 	P92_Maintenance.nCaseSignalTower := 4;
@@ -71,10 +76,11 @@ GVL_IO.aDigitalOutputIO[2].4 := bUPSMode;]]></ST>
     </Implementation>
     <LineIds Name="P90_Interlock">
       <LineId Id="139" Count="0" />
-      <LineId Id="141" Count="0" />
+      <LineId Id="284" Count="0" />
+      <LineId Id="282" Count="0" />
       <LineId Id="140" Count="0" />
       <LineId Id="211" Count="0" />
-      <LineId Id="208" Count="0" />
+      <LineId Id="293" Count="1" />
       <LineId Id="145" Count="0" />
       <LineId Id="144" Count="0" />
       <LineId Id="20" Count="0" />

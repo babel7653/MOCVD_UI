@@ -51,6 +51,7 @@ P30_ManualControl();
 (* Recipe RUN *)
 P50_RecipeControl();
 
+P70_Interface();
 P90_Interlock();
 P91_Monitoring();
 P92_Maintenance();
@@ -84,6 +85,7 @@ P92_Maintenance();
       <LineId Id="362" Count="0" />
       <LineId Id="353" Count="0" />
       <LineId Id="349" Count="1" />
+      <LineId Id="363" Count="0" />
       <LineId Id="345" Count="0" />
       <LineId Id="282" Count="1" />
       <LineId Id="291" Count="0" />

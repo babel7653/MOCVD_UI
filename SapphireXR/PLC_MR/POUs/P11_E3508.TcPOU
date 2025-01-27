@@ -82,7 +82,7 @@ wOutputSVBytes 			:= WORD_TO_USINT_Bit(wControlValue);
 aOutputSVBytes[1] 		:= wOutputSVBytes.Lower;
 aOutputSVBytes[2] 		:= wOutputSVBytes.Upper;
 
-// PowerRate Operation
+(* PowerRate Operation *)
 nOutputManAutoBytes.0 	:= bOutputManAuto;
 
 wOutputPowerSVBytes 	:= WORD_TO_USINT_Bit(wPowerRateSetValue*10); //multiple to 10
@@ -91,8 +91,7 @@ aOutputPowerBytes[2] 	:= wOutputPowerSVBytes.Upper;
 
 (* Write to Induction Heater Value *)
 GVL_IO.aDigitalOutputIO[2].0 := bHeaterOn;
-GVL_IO.aDigitalOutputIO[2].1 := bHeaterReset;
-]]></ST>
+GVL_IO.aDigitalOutputIO[2].1 := bHeaterReset;]]></ST>
     </Implementation>
     <LineIds Name="P11_E3508">
       <LineId Id="302" Count="2" />
@@ -116,7 +115,6 @@ GVL_IO.aDigitalOutputIO[2].1 := bHeaterReset;
       <LineId Id="289" Count="0" />
       <LineId Id="292" Count="0" />
       <LineId Id="382" Count="0" />
-      <LineId Id="291" Count="0" />
     </LineIds>
   </POU>
 </TcPlcObject>

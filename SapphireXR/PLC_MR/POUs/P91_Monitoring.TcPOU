@@ -10,27 +10,11 @@ VAR
 	i 					: INT;
 	idx					: INT;
 	
-	(* Output *)
-	bAirPressureSensor	: BOOL;
-	bWaterFlowSensor	: BOOL;
-	bSMPS24V480WFault	: BOOL;
-	bSMPS24V72WFault		: BOOL;
-	bSMPS15VPlusFault	: BOOL;
-	bSMPS15VMinusFault	: BOOL;
-	
 	(*Utility Input*)
 	bUtilityFault		: BYTE;	
 END_VAR]]></Declaration>
     <Implementation>
-      <ST><![CDATA[(* Read from Device*)
-bAirPressureSensor	:= NOT(GVL_IO.aDigitalInputIO[2].0); //Normally Contacted
-bWaterFlowSensor	:= NOT(GVL_IO.aDigitalInputIO[2].1);
-bSMPS24V480WFault	:= NOT(GVL_IO.aDigitalInputIO[4].3);
-bSMPS24V72WFault	:= NOT(GVL_IO.aDigitalInputIO[4].4);
-bSMPS15VPlusFault	:= NOT(GVL_IO.aDigitalInputIO[4].5);
-bSMPS15VMinusFault	:= NOT(GVL_IO.aDigitalInputIO[4].6);
-
-(* Read from Utility Device*)
+      <ST><![CDATA[(* Read from Utility Device*)
 bUtilityFault		:= GVL_IO.aDigitalInputIO[7]; // 1~5 BYTE Operation, Normally Contacted
 
 TimeCycle(IN:=TRUE, PT:=T#100MS); // 100MS Refresh Reading Time
@@ -61,12 +45,6 @@ END_IF
 ]]></ST>
     </Implementation>
     <LineIds Name="P91_Monitoring">
-      <LineId Id="131" Count="0" />
-      <LineId Id="137" Count="0" />
-      <LineId Id="141" Count="0" />
-      <LineId Id="144" Count="0" />
-      <LineId Id="146" Count="2" />
-      <LineId Id="185" Count="0" />
       <LineId Id="184" Count="0" />
       <LineId Id="187" Count="0" />
       <LineId Id="65" Count="0" />

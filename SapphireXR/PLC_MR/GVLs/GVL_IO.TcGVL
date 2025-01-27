@@ -25,7 +25,7 @@ VAR_GLOBAL
 	aController_CV : ARRAY[1..29] OF INT; //Current Value from RampingController
 	
 	(* Present Value Meter Display*)
-	aMonitoring_PV : ARRAY[1..11] OF REAL; //Gauge Monitoring Value to UI
+	aMonitoring_PV : ARRAY[1..17] OF REAL; //Gauge Monitoring Value to UI
 END_VAR
 
 VAR_GLOBAL CONSTANT

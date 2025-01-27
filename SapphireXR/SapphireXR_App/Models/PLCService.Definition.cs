@@ -34,7 +34,6 @@ namespace SapphireXR_App.Models
         private static Dictionary<string, ObservableManager<(int, int)>.DataIssuer>? dControlCurrentValueIssuers;
         private static ObservableManager<short>.DataIssuer? dCurrentActiveRecipeIssue;
 
-
         //Create an instance of the TcAdsClient()
         public static AdsClient Ads { get; set; }
         private static AmsNetId amsNetId = new("10.10.10.10.1.1");
@@ -47,9 +46,6 @@ namespace SapphireXR_App.Models
         private static uint hDeviceMaxValuePLC;
         private static uint hDeviceControlValuePLC;
         private static uint hDeviceCurrentValuePLC;
-        private static uint hTempShowerHead;
-        private static uint hTempInductionCoil;
-        private static uint hPowerRate;
         private static uint hWriteDeviceTargetValuePLC;
         private static uint hWriteDeviceRampTimePLC;
         private static uint hRcp;

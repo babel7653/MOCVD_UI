@@ -29,6 +29,7 @@ namespace SapphireXR_App.Models
         private static short[]? aDeviceControlValues;
         private static short[]? aDeviceRampTimes;
         private static float[]? aMonitoring_PVs;
+        private static short[]? aInputState;
         private static Dictionary<string, ObservableManager<int>.DataIssuer>? dCurrentValueIssuers;
         private static Dictionary<string, ObservableManager<int>.DataIssuer>? dControlValueIssuers;
         private static Dictionary<string, ObservableManager<(int, int)>.DataIssuer>? dControlCurrentValueIssuers;
@@ -54,6 +55,7 @@ namespace SapphireXR_App.Models
         private static uint hRcpState;
         private static uint hRcpStepN;
         private static uint hMonitoring_PV;
+        private static uint hInputState;
 
         private static ObservableManager<PLCConnection>.DataIssuer ConnectedNotifier;
 

@@ -50,6 +50,7 @@ namespace SapphireXR_App.Models
                 hWriteDeviceRampTimePLC = Ads.CreateVariableHandle("GVL_IO.aController_RampTime");
 
                 hMonitoring_PV = Ads.CreateVariableHandle("GVL_IO.aMonitoring_PV");
+                hInputState = Ads.CreateVariableHandle("GVL_IO.aInputState");
                 
                 hRcp = Ads.CreateVariableHandle("RCP.aRecipe");
                 hRcpTotalStep = Ads.CreateVariableHandle("RCP.iRcpTotalStep");
@@ -192,6 +193,7 @@ namespace SapphireXR_App.Models
             aDeviceControlValues = Ads.ReadAny<short[]>(hDeviceControlValuePLC, [NumControllers]);
             aDeviceTargetValues = Ads.ReadAny<float[]>(hWriteDeviceTargetValuePLC, [NumControllers]);
             aMonitoring_PVs = Ads.ReadAny<float[]>(hMonitoring_PV, [17]);
+            aInputState = Ads.ReadAny<short[]>(hInputState, [4]);
         }
 
         public static float ReadCurrentValue(string controllerID)

@@ -7,271 +7,407 @@
       mc:Ignorable="d" 
       d:DesignHeight="1080" d:DesignWidth="300"
       Title="LeftDashboard">
+    
+    <Page.Resources>
+        <Style TargetType="{x:Type TextBlock}">
+            <Setter Property="Foreground" Value="{StaticResource PrimaryFontColor}"/>
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="FontFamily" Value="NanumGothic"/>
+        </Style>
+    </Page.Resources>
 
-    <Grid Grid.Column="0" x:Name="gridControlRight">
+    <Grid Background="{StaticResource DashboardBackground}">
         <Grid.RowDefinitions>
             <RowDefinition Height="*"/>
-            <RowDefinition Height="240"/>
+            <RowDefinition Height="40"/>
+            <RowDefinition Height="120"/>
+            <RowDefinition Height="120"/>
+            <RowDefinition Height="90"/>
+            <RowDefinition Height="280"/>
+            <RowDefinition Height="120"/>
+            <RowDefinition Height="120"/>
         </Grid.RowDefinitions>
-        <Border Grid.Row="0" Background="{StaticResource DashboardBackground}">
-        </Border>
-        <Border Grid.Row="1" Background="{StaticResource DashboardBackground}">
-        </Border>
+
+        <!-- Machine Information -->
         <Grid Grid.Row="0">
-            <StackPanel>
-                <Panel.Resources>
-                    <Style TargetType="TextBlock">
+            <StackPanel Orientation="Vertical">
+                <StackPanel.Resources>
+                    <Style TargetType="{x:Type TextBlock}">
                         <Setter Property="Foreground" Value="{StaticResource PrimaryFontColor}"/>
-                        <Setter Property="FontFamily" Value="Pretendard"/>
                         <Setter Property="FontSize" Value="14"/>
-                        <Setter Property="Margin" Value="0,2,0,2"/>
                         <Setter Property="Width" Value="200"/>
+                        <Setter Property="Margin" Value="20,2,0,2"/>
+                        <Setter Property="HorizontalAlignment" Value="Left"/>
+                        <Setter Property="VerticalAlignment" Value="Center"/>
                     </Style>
-                </Panel.Resources>
-                <!-- Machine Information -->
-                <StackPanel Height="160">
-                    <TextBlock Margin="10,20,0,2" Text="Machine Name : Marvel 180R"/>
-                    <TextBlock Text="Application : GaN"/>
-                    <TextBlock Text="System ID : 2024"/>
+                </StackPanel.Resources>
+                <TextBlock Text="Machine Name : Marvel 180R" />
+                <TextBlock Text="Application : GaN"/>
+                <TextBlock Text="System ID : 2024 SKKU2"/>
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Width="100" Text="PLC Status :"/>
                     <TextBlock Text="{Binding plcMode}"/>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Width="100" Text="PLC Address :"/>
                     <TextBlock Text="{Binding plcAddress}"/>
-                </StackPanel>
-                <!-- Heater Control Button -->
-                <StackPanel Height="100">
-                    <TextBlock Foreground="DarkBlue" FontSize="14" HorizontalAlignment="Center" Margin="2">
-                            <Bold>Heater Control</Bold></TextBlock>
-                    <Line X1="5" Y1="0" X2="295" Y2="0" Stroke="DarkBlue" StrokeThickness="2"/>
-                    <Grid>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition />
-                            <ColumnDefinition />
-                            <ColumnDefinition />
-                        </Grid.ColumnDefinitions>
-                        <Grid.RowDefinitions>
-                            <RowDefinition/>
-                            <RowDefinition/>
-                            <RowDefinition/>
-                        </Grid.RowDefinitions>
-                        <TextBlock FontSize="14" Grid.Column="0" Grid.Row="0" HorizontalAlignment="Center" Text="SP" Margin="2"/>
-                        <TextBlock FontSize="14" Grid.Column="1" Grid.Row="0" HorizontalAlignment="Center" Text="Temp." Margin="2"/>
-                        <TextBlock FontSize="14" Grid.Column="2" Grid.Row="0" HorizontalAlignment="Center" Text="Power(%)" Margin="2"/>
-                        <TextBox  Width="80" FontSize="14" Grid.Column="0" Grid.Row="1"
-												HorizontalAlignment="Center"
-												VerticalContentAlignment="Center"
-												HorizontalContentAlignment="Center">
-                            1,000
-                        </TextBox>
-                        <TextBox Width="80" FontSize="14" Grid.Column="1" Grid.Row="1"
-											 HorizontalAlignment="Center" Margin="2" 
-											 VerticalContentAlignment="Center"
-											 HorizontalContentAlignment="Center">
-                            1,000
-                        </TextBox>
-                        <TextBox Width="80" FontSize="14" Grid.Column="2" Grid.Row="1"
-											 HorizontalAlignment="Center" Margin="2" 
-											 VerticalContentAlignment="Center"
-											 HorizontalContentAlignment="Center">
-                            30
-                        </TextBox>
-                        <TextBlock FontSize="14" Grid.ColumnSpan="2" Grid.Row="2">Heater Control Mode :</TextBlock>
-                        <Button FontSize="14" Grid.Column="2" Grid.Row="2" Margin="5,2,10,2">Power Rate</Button>
-                    </Grid>
-                </StackPanel>
-                <!-- Pressure Control Button -->
-                <StackPanel Height="100">
-                    <TextBlock Foreground="DarkBlue" FontSize="14" HorizontalAlignment="Center" Margin="2">
-                            <Bold>Pressure Control</Bold></TextBlock>
-                    <Line X1="5" Y1="0" X2="295" Y2="0" Stroke="DarkBlue" StrokeThickness="2"/>
-                    <Grid>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition />
-                            <ColumnDefinition />
-                            <ColumnDefinition />
-                        </Grid.ColumnDefinitions>
-                        <Grid.RowDefinitions>
-                            <RowDefinition/>
-                            <RowDefinition/>
-                            <RowDefinition/>
-                        </Grid.RowDefinitions>
-                        <TextBlock FontSize="14" Grid.Column="0" Grid.Row="0" HorizontalAlignment="Center" Text="SP" Margin="2"/>
-                        <TextBlock FontSize="14" Grid.Column="1" Grid.Row="0" HorizontalAlignment="Center" Text="Pressure" Margin="2"/>
-                        <TextBlock FontSize="14" Grid.Column="2" Grid.Row="0" HorizontalAlignment="Center" Text="Position(%)" Margin="2"/>
-                        <TextBox  Width="80" FontSize="14" Grid.Column="0" Grid.Row="1" HorizontalAlignment="Center" 
-												VerticalContentAlignment="Center"	HorizontalContentAlignment="Center">
-                            760
-                        </TextBox>
-                        <TextBox Width="80" FontSize="14" Grid.Column="1" Grid.Row="1" HorizontalAlignment="Center" Margin="2"
-											 VerticalContentAlignment="Center" HorizontalContentAlignment="Center">
-                            760
-                        </TextBox>
-                        <TextBox Width="80" FontSize="14" Grid.Column="2" Grid.Row="1" HorizontalAlignment="Center" Margin="2"
-											 VerticalContentAlignment="Center" HorizontalContentAlignment="Center">
-                            10
-                        </TextBox>
-                        <TextBlock FontSize="14" Grid.ColumnSpan="2" Grid.Row="2">Heater Control Mode :</TextBlock>
-                        <Button FontSize="14" Grid.Column="2" Grid.Row="2" Margin="5,2,10,2">Position(%)</Button>
-                    </Grid>
-                </StackPanel>
-                <!-- Rotation Control Button -->
-                <StackPanel Height="100">
-                    <TextBlock Foreground="DarkBlue" FontSize="14" HorizontalAlignment="Center" Margin="2">
-							<Bold>Rotation Control</Bold>
-                    </TextBlock>
-                    <Line X1="5" Y1="0" X2="295" Y2="0" Stroke="DarkBlue" StrokeThickness="2"/>
-                    <Grid>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition />
-                            <ColumnDefinition />
-                            <ColumnDefinition />
-                        </Grid.ColumnDefinitions>
-                        <Grid.RowDefinitions>
-                            <RowDefinition/>
-                            <RowDefinition/>
-                        </Grid.RowDefinitions>
-                        <TextBlock FontSize="14" Grid.Column="0" Grid.Row="0" HorizontalAlignment="Center" Text="SP" Margin="2"/>
-                        <TextBlock FontSize="14" Grid.Column="1" Grid.Row="0" HorizontalAlignment="Center" Text="Rotation" Margin="2"/>
-                        <TextBlock FontSize="14" Grid.Column="2" Grid.Row="0" HorizontalAlignment="Center" Text="Power" Margin="2"/>
-                        <TextBox  Width="80" FontSize="14" Grid.Column="0" Grid.Row="1" HorizontalAlignment="Center"
-                                       VerticalContentAlignment="Center"
-                                      HorizontalContentAlignment="Center">
-                            50
-                        </TextBox>
-                        <TextBox  Width="80" FontSize="14" Grid.Column="1" Grid.Row="1" HorizontalAlignment="Center"
-                                       VerticalContentAlignment="Center"
-                                      HorizontalContentAlignment="Center">
-                            50
-                        </TextBox>
-                        <Button FontSize="14" Grid.Column="2" Grid.Row="2" Margin="5,2,10,2">ON</Button>
-                    </Grid>
-                </StackPanel>
-                <!-- Source Status Button -->
-                <StackPanel>
-                    <TextBlock Foreground="DarkBlue" FontSize="14" HorizontalAlignment="Center" Margin="2">
-                            <Bold>Source States</Bold></TextBlock>
-                    <Line X1="5" Y1="0" X2="295" Y2="0" Stroke="DarkBlue" StrokeThickness="2"/>
-                    <Grid VerticalAlignment="Top">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="100"/>
-                            <ColumnDefinition/>
-                            <ColumnDefinition/>
-                            <ColumnDefinition/>
-                        </Grid.ColumnDefinitions>
-                        <Grid.RowDefinitions>
-                            <RowDefinition/>
-                            <RowDefinition/>
-                            <RowDefinition/>
-                            <RowDefinition/>
-                            <RowDefinition/>
-                            <RowDefinition/>
-                            <RowDefinition/>
-                            <RowDefinition/>
-                            <RowDefinition/>
-                            <RowDefinition/>
-                            <RowDefinition/>
-                        </Grid.RowDefinitions>
-                        <TextBlock FontSize="14" Grid.Column="1" Grid.Row="0" Text="Carrier" HorizontalAlignment="Center"/>
-                        <TextBlock FontSize="14" Grid.Column="2" Grid.Row="0" Text="Source" HorizontalAlignment="Center"/>
-                        <TextBlock FontSize="14" Grid.Column="3" Grid.Row="0" Text="Manifold" HorizontalAlignment="Center"/>
-                        <TextBlock FontSize="14" Grid.Column="0" Grid.Row="1" Text="NH3 #1" Margin="2"/>
-                        <TextBlock FontSize="14" Grid.Column="0" Grid.Row="2" Text="NH3 #2" Margin="2"/>
-                        <TextBlock FontSize="14" Grid.Column="0" Grid.Row="3" Text="SiH4" Margin="2"/>
-                        <TextBlock FontSize="14" Grid.ColumnSpan="4" Grid.Row="4" Text="NH3 #1"/>
-                        <TextBlock FontSize="14" Grid.Column="0" Grid.Row="5" Text="TEB" Margin="2"/>
-                        <TextBlock FontSize="14" Grid.Column="0" Grid.Row="6" Text="TMAl" Margin="2"/>
-                        <TextBlock FontSize="14" Grid.Column="0" Grid.Row="7" Text="TMIn" Margin="2"/>
-                        <TextBlock FontSize="14" Grid.Column="0" Grid.Row="8" Text="TMGa" Margin="2"/>
-                        <TextBlock FontSize="14" Grid.Column="0" Grid.Row="9" Text="DTMGa" Margin="2"/>
-                        <TextBlock FontSize="14" Grid.Column="0" Grid.Row="10" Text="Cp2Mg" Margin="2"/>
-                        <Button FontSize="14" Grid.Column="1" Grid.Row="1" Margin="2">N2</Button>
-                        <Button FontSize="14" Grid.Column="2" Grid.Row="1" Margin="2">OFF</Button>
-                        <Button FontSize="14" Grid.Column="3" Grid.Row="1" Margin="2">VENT</Button>
-                        <Button FontSize="14" Grid.Column="1" Grid.Row="2" Margin="2">N2</Button>
-                        <Button FontSize="14" Grid.Column="2" Grid.Row="2" Margin="2">OFF</Button>
-                        <Button FontSize="14" Grid.Column="3" Grid.Row="2" Margin="2">VENT</Button>
-                        <Button FontSize="14" Grid.Column="1" Grid.Row="3" Margin="2">N2</Button>
-                        <Button FontSize="14" Grid.Column="2" Grid.Row="3" Margin="2">OFF</Button>
-                        <Button FontSize="14" Grid.Column="3" Grid.Row="3" Margin="2">VENT</Button>
-                        <Button FontSize="14" Grid.Column="1" Grid.Row="4" Margin="2">N2</Button>
-                        <Button FontSize="14" Grid.Column="2" Grid.Row="4" Margin="2">OFF</Button>
-                        <Button FontSize="14" Grid.Column="3" Grid.Row="4" Margin="2">VENT</Button>
-                        <Button FontSize="14" Grid.Column="1" Grid.Row="5" Margin="2">N2</Button>
-                        <Button FontSize="14" Grid.Column="2" Grid.Row="5" Margin="2">OFF</Button>
-                        <Button FontSize="14" Grid.Column="3" Grid.Row="5" Margin="2">VENT</Button>
-                        <Button FontSize="14" Grid.Column="1" Grid.Row="6" Margin="2">N2</Button>
-                        <Button FontSize="14" Grid.Column="2" Grid.Row="6" Margin="2">OFF</Button>
-                        <Button FontSize="14" Grid.Column="3" Grid.Row="6" Margin="2">VENT</Button>
-                        <Button FontSize="14" Grid.Column="1" Grid.Row="7" Margin="2">N2</Button>
-                        <Button FontSize="14" Grid.Column="2" Grid.Row="7" Margin="2">OFF</Button>
-                        <Button FontSize="14" Grid.Column="3" Grid.Row="7" Margin="2">VENT</Button>
-                        <Button FontSize="14" Grid.Column="1" Grid.Row="8" Margin="2">N2</Button>
-                        <Button FontSize="14" Grid.Column="2" Grid.Row="8" Margin="2">OFF</Button>
-                        <Button FontSize="14" Grid.Column="3" Grid.Row="8" Margin="2">VENT</Button>
-                        <Button FontSize="14" Grid.Column="1" Grid.Row="9" Margin="2">N2</Button>
-                        <Button FontSize="14" Grid.Column="2" Grid.Row="9" Margin="2">OFF</Button>
-                        <Button FontSize="14" Grid.Column="3" Grid.Row="9" Margin="2">VENT</Button>
-                        <Button FontSize="14" Grid.Column="1" Grid.Row="10" Margin="2" Background="Red">H2</Button>
-                        <Button FontSize="14" Grid.Column="2" Grid.Row="10" Margin="2" Background="LawnGreen">ON</Button>
-                        <Button FontSize="14" Grid.Column="3" Grid.Row="10" Margin="2" Background="Magenta">RUN</Button>
-                    </Grid>
                 </StackPanel>
             </StackPanel>
         </Grid>
-        <Border Grid.Row="1" BorderBrush="Black" BorderThickness="1">
-        </Border>
-        <!-- Line Heater Information-->
+        <!-- Signal Tower -->
         <Grid Grid.Row="1">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="20"/>
-                <RowDefinition Height="60"/>
-                <RowDefinition Height="20"/>
-                <RowDefinition/>
-            </Grid.RowDefinitions>
-            <Grid Grid.Row="0" Background="LightGray" Margin="1,0,1,0">
-                <TextBlock Foreground="Black" FontSize="14" Text="LINE HEATER" Margin="20,0,0,0"/>
-            </Grid>
-            <Grid Grid.Row="1" Margin="1,0,1,0">
-                <StackPanel Orientation="Vertical">
-                    <StackPanel Orientation="Horizontal" Height="30">
-                        <TextBlock Foreground="Black" FontSize="12" Text="1 " Height="18" Width="28" TextAlignment="Right"/>
-                        <TextBox Width="45" Height="20" VerticalContentAlignment="Center"/>
-                        <TextBlock Foreground="Black" FontSize="12" Text="2 " Height="18" Width="28" TextAlignment="Right"/>
-                        <TextBox Width="45" Height="20" VerticalContentAlignment="Center"/>
-                        <TextBlock Foreground="Black" FontSize="12" Text="3 " Height="18" Width="28" TextAlignment="Right"/>
-                        <TextBox Width="45" Height="20" VerticalContentAlignment="Center"/>
-                        <TextBlock Foreground="Black" FontSize="12" Text="4 " Height="18" Width="28" TextAlignment="Right"/>
-                        <TextBox Width="45" Height="20" VerticalContentAlignment="Center"/>
-                    </StackPanel>
-                    <StackPanel Orientation="Horizontal" Height="30">
-                        <TextBlock Foreground="Black" FontSize="12" Text="5 " Height="18" Width="28" TextAlignment="Right"/>
-                        <TextBox Width="45" Height="20" VerticalContentAlignment="Center"/>
-                        <TextBlock Foreground="Black" FontSize="12" Text="6 " Height="18" Width="28" TextAlignment="Right"/>
-                        <TextBox Width="45" Height="20" VerticalContentAlignment="Center"/>
-                        <TextBlock Foreground="Black" FontSize="12" Text="7 " Height="18" Width="28" TextAlignment="Right"/>
-                        <TextBox Width="45" Height="20" VerticalContentAlignment="Center"/>
-                        <TextBlock Foreground="Black" FontSize="12" Text="8 " Height="18" Width="28" TextAlignment="Right"/>
-                        <TextBox Width="45" Height="20" VerticalContentAlignment="Center"/>
-
-                    </StackPanel>
-                </StackPanel>
-            </Grid>
-
-            <Grid Grid.Row="2" Background="LightGray" Margin="1,0,1,0">
-                <TextBlock Foreground="Black" FontSize="14" Text="COOLING WATER TEMP." Margin="20,0,0,0"/>
-            </Grid>
-            <Grid Grid.Row="3">
-                <StackPanel Orientation="Vertical">
-                    <StackPanel Orientation="Horizontal">
-                        <TextBlock FontSize="14" Text=" Shower Head : " Width="150" />
-                        <TextBox Width="148"/>
-                    </StackPanel>
-                    <StackPanel Orientation="Horizontal">
-                        <TextBlock FontSize="14" Text=" Induction Coil : " Width="150" />
-                        <TextBox Width="149"/>
-                    </StackPanel>
-                </StackPanel>
-            </Grid>
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Center">
+                <StackPanel.Resources>
+                    <Style TargetType="{x:Type Rectangle}">
+                        <Setter Property="Width" Value="38"/>
+                        <Setter Property="Height" Value="30"/>
+                        <Setter Property="Stroke" Value="LightSlateGray"/>
+                       
+                    </Style>
+                </StackPanel.Resources>
+                <Rectangle x:Name="SignalTowerRed" Fill="#ffa0a0"/>
+                <Rectangle x:Name="SignalTowerYellow" Fill="#ffffC5"/>
+                <Rectangle x:Name="SignalTowerGreen" Fill="#cdf5dd"/>
+                <Rectangle x:Name="SignalTowerBlue" Fill="#86CEFA"/>
+                <Rectangle x:Name="SignalTowerWhite" Fill="LightGray"/>
+                <Rectangle x:Name="SignalTowerBuzzer" />
+            </StackPanel>
         </Grid>
+        <!-- Susceptor Temperature Control Current Status -->
+        <Grid Grid.Row="2">
+            <StackPanel Orientation="Vertical">
+                <StackPanel.Resources>
+                    <Style TargetType="{x:Type TextBlock}">
+                        <Setter Property="Foreground" Value="{StaticResource PrimaryFontColor}"/>
+                        <Setter Property="FontSize" Value="11"/>
+                        <Setter Property="HorizontalAlignment" Value="Center"/>
+                     </Style>
+                    <Style TargetType="{x:Type TextBox}">
+                        <Setter Property="Width" Value="64"/>
+                        <Setter Property="Height" Value="22"/>
+                        <Setter Property="Foreground" Value="DarkBlue"/>
+                        <Setter Property="Background" Value="LightGray"/>
+                        <Setter Property="FontSize" Value="11"/>
+                        <Setter Property="HorizontalAlignment" Value="Center"/>
+                        <Setter Property="VerticalAlignment" Value="Center"/>
+                        <Setter Property="TextAlignment" Value="Right"/>
+                    </Style>
+                </StackPanel.Resources>
+                <TextBlock Foreground="DeepSkyBlue" FontSize="14" HorizontalAlignment="Center" >
+                <Bold>Heater Control</Bold></TextBlock>
+                <Line X1="5" Y1="0" X2="295" Y2="0" Stroke="DeepSkyBlue" StrokeThickness="2"/>
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="22"/>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
+                    <TextBlock Grid.Column="0" Grid.Row="0" Text="Target Val." Margin="0,6,0,0"/>
+                    <TextBlock Grid.Column="1" Grid.Row="0" Text="Control Val." Margin="0,6,0,0"/>
+                    <TextBlock Grid.Column="2" Grid.Row="0" Text="Current Val." Margin="0,6,0,0" />
+                    <TextBlock Grid.Column="3" Grid.Row="0" Text="Power Rate" Margin="0,6,0,0"/>
+                    <TextBox x:Name="tbTargetTemp"  Grid.Column="0" Grid.Row="1"  Text="{Binding TargetTemp}"/>
+                    <TextBox x:Name="tbControlTemp"  Grid.Column="1" Grid.Row="1" Text="{Binding ControlTemp}"/>
+                    <TextBox x:Name="tbCurrentTemp"  Grid.Column="2" Grid.Row="1" Text="{Binding CurrentTemp}"/>
+                    <TextBox x:Name="tbPowerRateTemp" Grid.Column="3" Grid.Row="1" Text="{Binding PowerRateTemp}"/>
+                </Grid>
+                <Grid>
+                    <StackPanel Orientation="Horizontal" Height="30">
+                        <TextBlock Width="140"  Height="20" VerticalAlignment="Center" Text="Heater Control Mode"
+                                   Margin="0,14,0,0"/>
+                        <Button Height="20" Width="64"  VerticalAlignment="Bottom" FontSize="11" Content="Power Rate" />
+                    </StackPanel>
+                </Grid>
+            </StackPanel>
+        </Grid>
+        <!-- Reactor Pressure Control Current Status -->
+        <Grid Grid.Row="3">
+            <StackPanel Orientation="Vertical">
+                <StackPanel.Resources>
+                    <Style TargetType="{x:Type TextBlock}">
+                        <Setter Property="Foreground" Value="{StaticResource PrimaryFontColor}"/>
+                        <Setter Property="FontSize" Value="11"/>
+                        <Setter Property="HorizontalAlignment" Value="Center"/>
+                        <Setter Property="VerticalAlignment" Value="Center"/>
+                    </Style>
+                    <Style TargetType="{x:Type TextBox}">
+                        <Setter Property="Width" Value="64"/>
+                        <Setter Property="Height" Value="22" />
+                        <Setter Property="Background" Value="LightGray"/>
+                        <Setter Property="Foreground" Value="DarkBlue"/>
+                        <Setter Property="FontSize" Value="11"/>
+                        <Setter Property="HorizontalAlignment" Value="Center"/>
+                        <Setter Property="VerticalAlignment" Value="Center"/>
+                        <Setter Property="TextAlignment" Value="Right"/>
+                    </Style>
+                </StackPanel.Resources>
+                <TextBlock Foreground="DeepSkyBlue" FontSize="14" HorizontalAlignment="Center">
+                <Bold>Pressure Control</Bold></TextBlock>
+                <Line X1="5" Y1="0" X2="295" Y2="0" Stroke="DeepSkyBlue" StrokeThickness="2"/>
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="22"/>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
+                    <TextBlock Grid.Column="0" Grid.Row="0" Text="Target Val." Margin="0,6,0,0"/>
+                    <TextBlock Grid.Column="1" Grid.Row="0" Text="Control Val." Margin="0,6,0,0"/>
+                    <TextBlock Grid.Column="2" Grid.Row="0" Text="Current Val." Margin="0,6,0,0"/>
+                    <TextBlock Grid.Column="3" Grid.Row="0" Text="Position" Margin="0,6,0,0"/>
+                    <TextBox x:Name="tbTargetPress"  Grid.Column="0" Grid.Row="1"  Text="{Binding TargetPress}"/>
+                    <TextBox x:Name="tbControlPress"  Grid.Column="1" Grid.Row="1" Text="{Binding ControlPress}"/>
+                    <TextBox x:Name="tbCurrentPress"  Grid.Column="2" Grid.Row="1" Text="{Binding CurrentPress}"/>
+                    <TextBox x:Name="tbPosition" Grid.Column="3" Grid.Row="1" Text="{Binding ValvePosition}"/>
+                </Grid>
+                <Grid>
+                    <StackPanel Orientation="Horizontal" Height="30">
+                        <TextBlock Width="140"  Height="20" VerticalAlignment="Center" Text="Pressure Control Mode"
+                                   Margin="0,14,0,0"/>
+                        <Button Height="20" Width="64" VerticalAlignment="Bottom" FontSize="11" Content="Pressure" />
+                    </StackPanel>
+                </Grid>
+            </StackPanel>
+        </Grid>
+        <!-- Susceptor Rotation Current Status -->
+        <Grid Grid.Row="4">
+            <StackPanel Orientation="Vertical">
+                <StackPanel.Resources>
+                    <Style TargetType="{x:Type TextBlock}">
+                        <Setter Property="Foreground" Value="{StaticResource PrimaryFontColor}"/>
+                        <Setter Property="FontSize" Value="11"/>
+                        <Setter Property="HorizontalAlignment" Value="Center"/>
+                    </Style>
+                    <Style TargetType="{x:Type TextBox}">
+                        <Setter Property="Width" Value="64"/>
+                        <Setter Property="Height" Value="22"/>
+                        <Setter Property="Background" Value="LightGray"/>
+                        <Setter Property="Foreground" Value="DarkBlue"/>
+                        <Setter Property="FontSize" Value="11"/>
+                        <Setter Property="HorizontalAlignment" Value="Center"/>
+                        <Setter Property="VerticalAlignment" Value="Center"/>
+                        <Setter Property="TextAlignment" Value="Right"/>
+                    </Style>
+                </StackPanel.Resources>
+                <TextBlock Foreground="DeepSkyBlue" FontSize="14" HorizontalAlignment="Center" Margin="2">
+                <Bold>Rotation Status</Bold></TextBlock>
+                <Line X1="5" Y1="0" X2="295" Y2="0" Stroke="DeepSkyBlue" StrokeThickness="2"/>
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="22"/>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
+                    <TextBlock Grid.Column="0" Grid.Row="0" Text="Target Val." Margin="0,6,0,0"/>
+                    <TextBlock Grid.Column="1" Grid.Row="0" Text="Control Val." Margin="0,6,0,0"/>
+                    <TextBlock Grid.Column="2" Grid.Row="0" Text="Current Val." Margin="0,6,0,0"/>
+                    <TextBox x:Name="tbTargetRotation"  Grid.Column="0" Grid.Row="1"  Text="{Binding TargetRotation}"/>
+                    <TextBox x:Name="tbControlRotation"  Grid.Column="1" Grid.Row="1" Text="{Binding ControlRotation}"/>
+                    <TextBox x:Name="tbCurrentRotation"  Grid.Column="2" Grid.Row="1" Text="{Binding CurrentRotation}"/>
+                 </Grid>
+            </StackPanel>
+        </Grid>
+        <!-- Source Valve Current Status -->
+        <Grid Grid.Row="5">
+            <StackPanel Orientation="Vertical">
+                <StackPanel.Resources>
+                    <Style TargetType="{x:Type TextBlock}">
+                        <Setter Property="Foreground" Value="{StaticResource PrimaryFontColor}"/>
+                        <Setter Property="FontSize" Value="11"/>
+                        <Setter Property="HorizontalAlignment" Value="Right"/>
+                        <Setter Property="Margin" Value="0,6,5,0"/>
+                    </Style>
+                    <Style TargetType="{x:Type TextBox}">
+                        <Setter Property="Width" Value="64"/>
+                        <Setter Property="Height" Value="22"/>
+                        <Setter Property="Background" Value="LightGray"/>
+                        <Setter Property="Foreground" Value="DarkBlue"/>
+                        <Setter Property="FontSize" Value="11"/>
+                        <Setter Property="HorizontalAlignment" Value="Center"/>
+                        <Setter Property="VerticalAlignment" Value="Center"/>
+                        <Setter Property="TextAlignment" Value="Right"/>
+                    </Style>
+                    <Style TargetType="{x:Type Button}">
+                        <Setter Property="Margin" Value="2"/>
+                    </Style>
+                </StackPanel.Resources>
+                <TextBlock Foreground="DeepSkyBlue" FontSize="14" HorizontalAlignment="Center">
+                <Bold>Source Status</Bold></TextBlock>
+                <Line X1="5" Y1="0" X2="295" Y2="0" Stroke="DeepSkyBlue" StrokeThickness="2"/>
+                <Grid VerticalAlignment="Top">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="100"/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
+                    <TextBlock Grid.Row="0" Grid.Column="1" Text="Carrier" HorizontalAlignment="Center" Margin="0,6,0,0"/>
+                    <TextBlock Grid.Row="0" Grid.Column="2" Text="Source" HorizontalAlignment="Center" Margin="0,6,0,0"/>
+                    <TextBlock Grid.Row="0" Grid.Column="3" Text="Manifold" HorizontalAlignment="Center" Margin="0,6,0,0" />
+                    <TextBlock Grid.Row="1" Grid.Column="0"  Text="NH3 #1" />
+                    <TextBlock Grid.Row="2" Grid.Column="0" Text="NH3 #2" />
+                    <TextBlock Grid.Row="3" Grid.Column="0" Text="SiH4" />
+                    <TextBlock Grid.Row="4" Grid.Column="0"  Text="TEB" />
+                    <TextBlock Grid.Row="5" Grid.Column="0" Text="TMAl" />
+                    <TextBlock Grid.Row="6" Grid.Column="0"  Text="TMIn" />
+                    <TextBlock Grid.Row="7" Grid.Column="0" Text="TMGa" />
+                    <TextBlock Grid.Row="8" Grid.Column="0" Text="DTMGa" />
+                    <TextBlock Grid.Row="9" Grid.Column="0"  Text="Cp2Mg" />
 
+                    <Button Grid.Row="1" Grid.Column="1" >N2</Button>
+                    <Button Grid.Row="1" Grid.Column="2" >OFF</Button>
+                    <Button Grid.Row="1" Grid.Column="3" >VENT</Button>
+
+                    <Button Grid.Row="2" Grid.Column="1" >N2</Button>
+                    <Button Grid.Row="2" Grid.Column="2" >OFF</Button>
+                    <Button Grid.Row="2" Grid.Column="3" >VENT</Button>
+
+                    <Button Grid.Row="3" Grid.Column="1" >N2</Button>
+                    <Button Grid.Row="3" Grid.Column="2" >OFF</Button>
+                    <Button Grid.Row="3" Grid.Column="3" >VENT</Button>
+
+                    <Button Grid.Row="4" Grid.Column="1" >N2</Button>
+                    <Button Grid.Row="4" Grid.Column="2" >OFF</Button>
+                    <Button Grid.Row="4" Grid.Column="3" >VENT</Button>
+
+                    <Button Grid.Row="5" Grid.Column="1" >N2</Button>
+                    <Button Grid.Row="5" Grid.Column="2" >OFF</Button>
+                    <Button Grid.Row="5" Grid.Column="3" >VENT</Button>
+
+                    <Button Grid.Row="6" Grid.Column="1" >N2</Button>
+                    <Button Grid.Row="6" Grid.Column="2" >OFF</Button>
+                    <Button Grid.Row="6" Grid.Column="3" >VENT</Button>
+
+                    <Button Grid.Row="7" Grid.Column="1" >N2</Button>
+                    <Button Grid.Row="7" Grid.Column="2" >OFF</Button>
+                    <Button Grid.Row="7" Grid.Column="3" >VENT</Button>
+
+                    <Button Grid.Row="8" Grid.Column="1" >N2</Button>
+                    <Button Grid.Row="8" Grid.Column="2" >OFF</Button>
+                    <Button Grid.Row="8" Grid.Column="3" >VENT</Button>
+
+                    <Button Grid.Row="9" Grid.Column="1" >N2</Button>
+                    <Button Grid.Row="9" Grid.Column="2" >OFF</Button>
+                    <Button Grid.Row="9" Grid.Column="3" >VENT</Button>
+                    <Button Grid.Row="10" Grid.Column="1" Background="Red">H2</Button>
+                    <Button Grid.Row="10" Grid.Column="2" Background="LawnGreen">ON</Button>
+                    <Button Grid.Row="10" Grid.Column="3" Background="Magenta">RUN</Button>
+                </Grid>
+            </StackPanel>
+        </Grid>
+        <!-- Line Heater Current Value -->
+        <Grid Grid.Row="6">
+            <StackPanel Orientation="Vertical">
+                <StackPanel.Resources>
+                    <Style TargetType="{x:Type TextBlock}">
+                        <Setter Property="Foreground" Value="{StaticResource PrimaryFontColor}"/>
+                        <Setter Property="FontSize" Value="11"/>
+                        <Setter Property="TextAlignment" Value="Right"/>
+                        <Setter Property="Width" Value="16"/>
+                        <Setter Property="Height" Value="22"/>
+                        <Setter Property="Margin" Value="0,6,0,0"/>
+                    </Style>
+                    <Style TargetType="{x:Type TextBox}">
+                        <Setter Property="Width" Value="50"/>
+                        <Setter Property="Height" Value="22"/>
+                        <Setter Property="Background" Value="LightGray"/>
+                        <Setter Property="Foreground" Value="DarkBlue"/>
+                        <Setter Property="FontSize" Value="11"/>
+                        <Setter Property="TextAlignment" Value="Right"/>
+                        <Setter Property="Margin" Value="4"/>
+                    </Style>
+                </StackPanel.Resources>
+                <TextBlock Foreground="DeepSkyBlue" FontSize="14" Width="280" TextAlignment="Center">
+                <Bold>Line Heater</Bold></TextBlock>
+                <Line X1="5" Y1="0" X2="295" Y2="0" Stroke="DeepSkyBlue" StrokeThickness="2"/>
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="1"/>
+                    <TextBox x:Name="tbLineHeater1"/>
+                    <TextBlock Text="2"/>
+                    <TextBox x:Name="tbLineHeater2"/>
+                    <TextBlock Text="3"/>
+                    <TextBox x:Name="tbLineHeater3"/>
+                    <TextBlock Text="4"/>
+                    <TextBox x:Name="tbLineHeater4"/>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="5"/>
+                    <TextBox x:Name="tbLineHeater5"/>
+                    <TextBlock Text="6"/>
+                    <TextBox x:Name="tbLineHeater6"/>
+                    <TextBlock Text="7"/>
+                    <TextBox x:Name="tbLineHeater7"/>
+                    <TextBlock Text="8"/>
+                    <TextBox x:Name="tbLineHeater8"/>
+                </StackPanel>
+            </StackPanel>
+        </Grid>        
+        <!-- Colling Water Current Value -->
+        <Grid Grid.Row="7">
+            <StackPanel Orientation="Vertical">
+            <StackPanel.Resources>
+                <Style TargetType="{x:Type TextBlock}">
+                    <Setter Property="Foreground" Value="{StaticResource PrimaryFontColor}"/>
+                        <Setter Property="FontSize" Value="11"/>
+                        <Setter Property="TextAlignment" Value="Center"/>
+                        <Setter Property="Margin" Value="0,6,0,0"/>
+                                        </Style>
+                <Style TargetType="{x:Type TextBox}">
+                    <Setter Property="Width" Value="64"/>
+                    <Setter Property="Height" Value="22"/>
+                    <Setter Property="Background" Value="LightGray"/>
+                    <Setter Property="Foreground" Value="DarkBlue"/>
+                    <Setter Property="FontSize" Value="11"/>                    
+                    <Setter Property="TextAlignment" Value="Right"/>
+                        <Setter Property="Margin" Value="4"/>
+                    </Style>
+            </StackPanel.Resources>
+            <TextBlock Foreground="DeepSkyBlue" FontSize="14" Width="280" TextAlignment="Center">
+            <Bold>Cooling Water</Bold>
+            </TextBlock>
+            <Line X1="5" Y1="0" X2="295" Y2="0" Stroke="DeepSkyBlue" StrokeThickness="2"/>
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="22"/>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
+                    <TextBlock Grid.Column="1" Grid.Row="0" Text="Shower Head" />
+                    <TextBlock Grid.Column="2" Grid.Row="0" Text="Induction Coil" />
+                    <TextBox x:Name="tbShowerHeadTemp"  Grid.Column="1" Grid.Row="1"  Text="{Binding ShowerHeadTemp}"/>
+                    <TextBox x:Name="tbInductionCoilTemp"  Grid.Column="2" Grid.Row="1"  Text="{Binding InductionCoilTemp}"/>
+                </Grid>
+            </StackPanel>
+        </Grid>
     </Grid>
-
 </Page>

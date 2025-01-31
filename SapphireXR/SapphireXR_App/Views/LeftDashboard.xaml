@@ -7,7 +7,6 @@
       mc:Ignorable="d" 
       d:DesignHeight="1080" d:DesignWidth="300"
       Title="LeftDashboard">
-    
     <Page.Resources>
         <Style TargetType="{x:Type TextBlock}">
             <Setter Property="Foreground" Value="{StaticResource PrimaryFontColor}"/>

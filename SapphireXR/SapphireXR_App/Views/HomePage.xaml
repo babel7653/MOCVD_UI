@@ -312,13 +312,13 @@
 
             <Label Canvas.Left="758" Canvas.Top="33" Foreground="{StaticResource PrimaryFontColor}" Content="Temperature"
                 Width="80" HorizontalContentAlignment="Center"/>
-            <control:MonitoringMeter x:Name="heaterPowerRate" Canvas.Left="763" Canvas.Top="102" />
+            <control:MonitoringMeter x:Name="heaterPowerRate" Canvas.Left="763" Canvas.Top="102" Type="HeaterPowerRate" />
             <control:HomeFlowController x:Name="susceptorTemperature" Canvas.Left="763" Canvas.Top="60" ControllerID="Temperature" Type="Reactor"/>
 
             <Label Canvas.Left="848" Canvas.Top="33" Foreground="{StaticResource PrimaryFontColor}" Content="Pressure"
                 Width="80" HorizontalContentAlignment="Center"/>
             <control:HomeFlowController x:Name="reactorPressure" Canvas.Left="853" Canvas.Top="60" ControllerID="Pressure" Type="Reactor"/>
-            <control:MonitoringMeter x:Name="valvePositionPersent" Canvas.Left="853" Canvas.Top="102" />
+            <control:MonitoringMeter x:Name="valvePositionPersent" Canvas.Left="853" Canvas.Top="102" Type="ValvePosition" />
 
             <Label Canvas.Left="938" Canvas.Top="33" Foreground="{StaticResource PrimaryFontColor}" Content="Rotation"
                 Width="80" HorizontalContentAlignment="Center"/>
@@ -326,12 +326,12 @@
 
             <Label Canvas.Left="1220" Canvas.Top="92" Foreground="{StaticResource PrimaryFontColor}" Content="DOR"
                 Width="40" HorizontalContentAlignment="Center"/>
-            <control:MonitoringMeter x:Name="dorPressure" Canvas.Left="1205" Canvas.Top="74" />
+            <control:MonitoringMeter x:Name="dorPressure" Canvas.Left="1205" Canvas.Top="74" Type="DorPressure"/>
             <control:OnSwitch x:Name="dorState" Canvas.Left="1228" Canvas.Top="118"/>
 
             <Label Canvas.Left="1168" Canvas.Top="511" Foreground="{StaticResource PrimaryFontColor}" Content="Ext. Pressure"
                 Width="80" HorizontalContentAlignment="Center"/>
-            <control:MonitoringMeter x:Name="extPressure" Canvas.Left="1173" Canvas.Top="536" />
+            <control:MonitoringMeter x:Name="extPressure" Canvas.Left="1173" Canvas.Top="536"  Type="ExtPressure"/>
             <!--#endregion-->
 
             <!-- #Region 5. 가스제어용 밸브 -->

@@ -1,5 +1,6 @@
 ﻿using System.Windows;
 using System.Windows.Controls;
+using SapphireXR_App.ViewModels;
 
 namespace SapphireXR_App.Controls
 {
@@ -11,21 +12,16 @@ namespace SapphireXR_App.Controls
         public GasMonitor()
         {
             InitializeComponent();
+            DataContext = new GasMonitorViewModel();
         }
 
-        public string MonitorID
-        {
-            get { return (string)GetValue(MonitorIDProperty); }
-            set { SetValue(MonitorIDProperty, value); }
-        }
-
-        public static readonly DependencyProperty MonitorIDProperty =
-            DependencyProperty.Register("MonitorID", typeof(string), typeof(GasMonitor), new PropertyMetadata(default));
+        public string MonitorID { get; set; } = "";
 
         private void gasMonitor_Loaded(object sender, RoutedEventArgs e)
         {
             GasMonitor monitor = (GasMonitor)sender;
             gasName.Text = monitor.MonitorID;
+            ((GasMonitorViewModel)DataContext).OnLoadedCommand.Execute(monitor.MonitorID);
         }
     }
 }

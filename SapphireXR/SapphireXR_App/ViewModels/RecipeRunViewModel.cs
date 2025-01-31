@@ -75,7 +75,6 @@ namespace SapphireXR_App.ViewModels
                 {
                     CurrentRecipe?.DisposeResource();
                     CurrentRecipe = new RecipeContext(recipeFilePath!, recipes!);
-                    DashBoardViewModel.resetFlowChart(recipes!);
                 }
                 else
                 {
@@ -188,6 +187,7 @@ namespace SapphireXR_App.ViewModels
                         RecipeStopCommand.NotifyCanExecuteChanged();
                         RecipeRefreshCommand.NotifyCanExecuteChanged();
                         RecipeSkipCommand.NotifyCanExecuteChanged();
+                        DashBoardViewModel.resetFlowChart(CurrentRecipe.Recipes);
                         break;
                 }
             };

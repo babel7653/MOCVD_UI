@@ -49,6 +49,8 @@ namespace SapphireXR_App.ViewModels
         private Visibility _showCopyMenu;
         [ObservableProperty]
         private Visibility _showPasteMenu;
+        [ObservableProperty]
+        private bool _controlUIEnabled = false;
 
         public TabDataGridViewModel ReactorDataGridContext { get; set; }
         public TabDataGridViewModel FlowDataGridContext { get; set; }
@@ -155,6 +157,9 @@ namespace SapphireXR_App.ViewModels
                     {
                         RecipePLCLoadCommand.NotifyCanExecuteChanged();
                     };
+                    recipeStateUpdater?.clean();
+                    recipeStateUpdater = new RecipeStateUpader();
+                    ControlUIEnabled = false;
                     break;
 
                 case nameof(RecipeFilePath):
@@ -192,6 +197,13 @@ namespace SapphireXR_App.ViewModels
             newlyAddedForMarking.Clear();
         }
 
+        public void setSelectedRecipeStep(Recipe recipe)
+        {
+            ControlUIEnabled = true;
+            recipeStateUpdater?.setSelectedRecipeStep(recipe);
+        }
+
         public List<Recipe> newlyAddedForMarking = new List<Recipe>();
+        private RecipeStateUpader? recipeStateUpdater;
     }
 }

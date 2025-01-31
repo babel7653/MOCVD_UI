@@ -10,10 +10,11 @@ using SapphireXR_App.Enums;
 using SapphireXR_App.Common;
 using SapphireXR_App.Models;
 using static SapphireXR_App.ViewModels.FlowControlViewModel;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace SapphireXR_App.ViewModels.FlowController
 {
-    public class HomeFlowControllerViewModel : FlowControllerViewModelBase
+    public partial class HomeFlowControllerViewModel : FlowControllerViewModelBase
     {
         protected class ControlTargetValueSubscriber : IObserver<(int, int)>
         {
@@ -77,22 +78,9 @@ namespace SapphireXR_App.ViewModels.FlowController
         protected ControlTargetValueSubscriber? controlTargetValueSubscriber;
         private ObservableManager<string>.DataIssuer? selectedThis;
 
-        public string CurrentValue
-        {
-            get { return (string)GetValue(CurrentValueProperty); }
-            set { SetValue(CurrentValueProperty, value); }
-        }
-
-        public static readonly DependencyProperty CurrentValueProperty =
-            DependencyProperty.Register("CurrentValue", typeof(string), typeof(FlowControllerViewModelBase), new PropertyMetadata(default));
-
-        public string TargetValue
-        {
-            get { return (string)GetValue(TargetValueProperty); }
-            set { SetValue(TargetValueProperty, value); }
-        }
-
-        public static readonly DependencyProperty TargetValueProperty =
-            DependencyProperty.Register("TargetValue", typeof(string), typeof(FlowControllerViewModelBase), new PropertyMetadata(default));
+        [ObservableProperty]
+        private string _currentValue = "";
+        [ObservableProperty]
+        private string _targetValue = "";
     }
 }

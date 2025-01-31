@@ -8,11 +8,6 @@
              mc:Ignorable="d"
              x:Name="singleValve"
              d:DesignHeight="24" d:DesignWidth="24">
-    <i:Interaction.Triggers>
-        <i:EventTrigger EventName="Loaded">
-            <i:InvokeCommandAction Command="{Binding OnLoadedCommand}" CommandParameter="{Binding ValveID, RelativeSource={RelativeSource AncestorType=UserControl}}"/>
-        </i:EventTrigger>
-    </i:Interaction.Triggers>
     <local:Valve.Resources>
         <SolidColorBrush x:Key="BorderBrushOnMouseEnter" Color="#9dbce8" />
         <SolidColorBrush x:Key="BorderBrushOnMouseLeave" Color="#475569" />
@@ -31,12 +26,12 @@
                 <Setter.Value>
                     <ControlTemplate TargetType="{x:Type Button}">
                         <Border BorderBrush="LightGray" BorderThickness="1" Background="{StaticResource DashboardBackground}"  CornerRadius="2" x:Name="valveBorder">
-                                <Ellipse x:Name="on" Width="16" Height="16"/>
+                            <Ellipse x:Name="on" Width="16" Height="16"/>
                         </Border>
                         <ControlTemplate.Triggers>
                             <DataTrigger Binding="{Binding IsOpen, Mode=TwoWay}" Value="True">
                                 <Setter TargetName="on" Property="Fill" Value="Lime"/>
-                             </DataTrigger>
+                            </DataTrigger>
                             <DataTrigger Binding="{Binding IsOpen, Mode=TwoWay}"  Value="False">
                                 <Setter TargetName="on" Property="Fill" Value="White"/>
                             </DataTrigger>
@@ -52,7 +47,20 @@
             </Setter>
             <Setter Property="Cursor" Value="Hand"/>
         </Style>
+        <local:OnLoadedCommandParamConverver x:Key="onLoadedCommandConverter" />
     </local:Valve.Resources>
+    <i:Interaction.Triggers>
+        <i:EventTrigger EventName="Loaded">
+            <i:InvokeCommandAction Command="{Binding OnLoadedCommand}">
+                <i:InvokeCommandAction.CommandParameter>
+                    <MultiBinding Converter="{StaticResource onLoadedCommandConverter}">
+                        <Binding Path="ValveID" RelativeSource="{RelativeSource AncestorType=UserControl}" />
+                        <Binding Path="Target" RelativeSource="{RelativeSource AncestorType=UserControl}" />
+                    </MultiBinding>
+                </i:InvokeCommandAction.CommandParameter>
+            </i:InvokeCommandAction>
+        </i:EventTrigger>
+    </i:Interaction.Triggers>
     <Button Height="24" Width="24" Style="{StaticResource BlockValveStyle}">
         <i:Interaction.Triggers>
             <i:EventTrigger EventName="Click">

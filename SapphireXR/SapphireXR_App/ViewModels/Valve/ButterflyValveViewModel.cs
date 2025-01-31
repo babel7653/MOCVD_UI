@@ -9,14 +9,14 @@ using System.Windows.Input;
 using OxyPlot;
 using SapphireXR_App.Controls;
 using SapphireXR_App.Models;
+using static SapphireXR_App.ViewModels.ValveViewModel;
 
 namespace SapphireXR_App.ViewModels
 {
     class ButterflyValveViewModel : ValveViewModel
     {
-        protected override void Init(string? valveID)
+        protected override void OnClicked()
         {
-            base.Init(valveID);
         }
 
         public bool IsControl

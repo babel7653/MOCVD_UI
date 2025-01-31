@@ -112,13 +112,13 @@ namespace SapphireXR_App.ViewModels.BottomDashBoard
                         return recipe.E07;
 
                     case "Temperature":
-                        return recipe.sTemp;
+                        return recipe.STemp;
 
                     case "Pressure":
-                        return recipe.rPress;
+                        return recipe.RPress;
 
                     case "Rotation":
-                        return recipe.sRotation;
+                        return recipe.SRotation;
 
                     default:
                         return 0.0f;
@@ -187,7 +187,7 @@ namespace SapphireXR_App.ViewModels.BottomDashBoard
             }
         }
 
-        public void resetFlowChart(List<Recipe> recipes)
+        public void resetFlowChart(IList<Recipe> recipes)
         {
             foreach (ControlTargetValueSeriesUpdaterFromCurrentRecipeStage controlTargetValueSeriesUpdater in plotModels)
             {

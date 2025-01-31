@@ -10,94 +10,41 @@ using SapphireXR_App.Enums;
 using SapphireXR_App.Common;
 using SapphireXR_App.Models;
 using static SapphireXR_App.ViewModels.FlowControlViewModel;
+using SapphireXR_App.Bases;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace SapphireXR_App.ViewModels.FlowController
 {
-    public abstract class FlowControllerViewModelBase : DependencyObject, INotifyPropertyChanged
+    public abstract partial class FlowControllerViewModelBase : ViewModelBase, INotifyPropertyChanged
     {
         static FlowControllerViewModelBase()
         {
             MouseEnterColor = Application.Current.Resources.MergedDictionaries[0]["ValveOnMouseEnterColor"] as SolidColorBrush ?? MouseEnterColor;
         }
 
-        public string ControllerID
-        {
-            get { return (string)GetValue(ControllerIDProperty); }
-            set { SetValue(ControllerIDProperty, value); }
-        }
+        private static readonly SolidColorBrush DefaultBorderBackground = new SolidColorBrush(Colors.Black);
+        private static readonly SolidColorBrush DefaultMouseEnterColor = new SolidColorBrush(Color.FromRgb(0x9d, 0xbc, 0xe8));
+        private static readonly SolidColorBrush DefaultControllerBorderBackground = new SolidColorBrush(Color.FromRgb(0xCC, 0xDF, 0xEF));
 
-        public static readonly DependencyProperty ControllerIDProperty =
-            DependencyProperty.Register("ControllerID", typeof(string), typeof(FlowControllerViewModelBase), new PropertyMetadata(default));
+        public string Type { get; set; } = "";
 
-        public string ControlValue
-        {
-            get { return (string)GetValue(ControlValueProperty); }
-            set { 
-                SetValue(ControlValueProperty, value);
-                OnPropertyChanged(nameof(ControlValue));
-            }
-        }
-
-        public static readonly DependencyProperty ControlValueProperty =
-            DependencyProperty.Register("ControlValue", typeof(string), typeof(FlowControllerViewModelBase), new PropertyMetadata(default));
-
-        public string buttonBackground
-        {
-            get { return (string)GetValue(buttonBackgroundProperty); }
-            set { SetValue(buttonBackgroundProperty, value); }
-        }
-
-        public static readonly DependencyProperty buttonBackgroundProperty =
-            DependencyProperty.Register("buttonBackground", typeof(string), typeof(FlowControllerViewModelBase), new PropertyMetadata(default));
-
-        public bool IsDeviationLimit
-        {
-            get { return (bool)GetValue(IsDeviationLimitProperty); }
-            set { SetValue(IsDeviationLimitProperty, value); }
-        }
-        public string Type
-        {
-            get { return (string)GetValue(typeProperty); }
-            set
-            {
-                SetValue(typeProperty, value);
-                OnPropertyChanged(nameof(Type));
-            }
-        }
-
-        public static readonly DependencyProperty IsDeviationLimitProperty =
-            DependencyProperty.Register("IsDeviationLimit", typeof(bool), typeof(FlowControllerViewModelBase), new PropertyMetadata(default));
-
-        static uint TypeCount = 0;
-        public readonly DependencyProperty typeProperty =
-            DependencyProperty.Register("TypeProperty" + (TypeCount++), typeof(string), typeof(FlowControllerViewModelBase), new PropertyMetadata(""));
+        [ObservableProperty]
+        public string controllerID = "";
+        [ObservableProperty]
+        private string _controlValue = "";
+        [ObservableProperty]
+        private bool? _isDeviationLimit;
+        [ObservableProperty]
+        public SolidColorBrush _borderBackground = DefaultBorderBackground;
 
         public static SolidColorBrush MouseEnterColor
         {
             get; set;
-        } = new SolidColorBrush(Color.FromRgb(0x9d, 0xbc, 0xe8));
+        } = DefaultMouseEnterColor;
         public SolidColorBrush ControllerBorderBackground
         {
             get; set;
-        } = new SolidColorBrush(Color.FromRgb(0xCC, 0xDF, 0xEF));
-
-        public static readonly DependencyProperty BorderBackgroundProperty =
-           DependencyProperty.Register("BorderBackground", typeof(SolidColorBrush), typeof(FlowControllerViewModelBase), new PropertyMetadata(new SolidColorBrush(Color.FromRgb(0xCC, 0xDF, 0xEF))));
-        public SolidColorBrush BorderBackground
-        {
-            get { return (SolidColorBrush)GetValue(BorderBackgroundProperty); }
-            set
-            {
-                SetValue(BorderBackgroundProperty, value);
-                OnPropertyChanged(nameof(BorderBackground));
-            }
-        }
-
-        public event PropertyChangedEventHandler? PropertyChanged;
-        protected void OnPropertyChanged(string propertyName)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        }
+        } = DefaultControllerBorderBackground;
 
         protected virtual void onLoaded(object? param)
         {

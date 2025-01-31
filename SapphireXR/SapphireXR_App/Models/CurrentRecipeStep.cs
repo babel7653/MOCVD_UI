@@ -14,11 +14,11 @@ namespace SapphireXR_App.Models
             ObservableManager<Recipe>.Subscribe("CurrentSelectedRecipe", this);
             foreach((string valveID, int index) in PLCService.ValveIDtoOutputSolValveIdx1)
             {
-                valveStatePublishers[valveID] = ObservableManager<bool>.Get("Valve." + valveID + ".State");
+                valveStatePublishers[valveID] = ObservableManager<(object, bool)>.Get("Valve.OnOff." + valveID + ".CurrentRecipeStep");
             }
             foreach ((string valveID, int index) in PLCService.ValveIDtoOutputSolValveIdx2)
             {
-                valveStatePublishers[valveID] = ObservableManager<bool>.Get("Valve." + valveID + ".State");
+                valveStatePublishers[valveID] = ObservableManager<(object, bool) >.Get("Valve.OnOff." + valveID + ".CurrentRecipeStep");
             }
             foreach((string flowControllerID, int index) in PLCService.dIndexController)
             {
@@ -38,32 +38,32 @@ namespace SapphireXR_App.Models
 
         void IObserver<Recipe>.OnNext(Recipe value)
         {
-            valveStatePublishers["V01"].Issue(value.V01);
-            valveStatePublishers["V02"].Issue(value.V02);
-            valveStatePublishers["V03"].Issue(value.V03);
-            valveStatePublishers["V04"].Issue(value.V04);
-            valveStatePublishers["V05"].Issue(value.V05);
-            valveStatePublishers["V07"].Issue(value.V07);
-            valveStatePublishers["V08"].Issue(value.V08);
-            valveStatePublishers["V10"].Issue(value.V10);
-            valveStatePublishers["V11"].Issue(value.V11);
-            valveStatePublishers["V13"].Issue(value.V13);
-            valveStatePublishers["V14"].Issue(value.V14);
-            valveStatePublishers["V16"].Issue(value.V16);
-            valveStatePublishers["V17"].Issue(value.V17);
-            valveStatePublishers["V19"].Issue(value.V19);
-            valveStatePublishers["V20"].Issue(value.V20);
-            valveStatePublishers["V22"].Issue(value.V22);
-            valveStatePublishers["V23"].Issue(value.V23);
-            valveStatePublishers["V24"].Issue(value.V24);
-            valveStatePublishers["V25"].Issue(value.V25);
-            valveStatePublishers["V26"].Issue(value.V26);
-            valveStatePublishers["V27"].Issue(value.V27);
-            valveStatePublishers["V28"].Issue(value.V28);
-            valveStatePublishers["V29"].Issue(value.V29);
-            valveStatePublishers["V30"].Issue(value.V30);
-            valveStatePublishers["V31"].Issue(value.V31);
-            valveStatePublishers["V32"].Issue(value.V32);
+            valveStatePublishers["V01"].Issue((this, value.V01));
+            valveStatePublishers["V02"].Issue((this, value.V02));
+            valveStatePublishers["V03"].Issue((this, value.V03));
+            valveStatePublishers["V04"].Issue((this, value.V04));
+            valveStatePublishers["V05"].Issue((this, value.V05));
+            valveStatePublishers["V07"].Issue((this, value.V07));
+            valveStatePublishers["V08"].Issue((this, value.V08));
+            valveStatePublishers["V10"].Issue((this, value.V10));
+            valveStatePublishers["V11"].Issue((this, value.V11));
+            valveStatePublishers["V13"].Issue((this, value.V13));
+            valveStatePublishers["V14"].Issue((this, value.V14));
+            valveStatePublishers["V16"].Issue((this, value.V16));
+            valveStatePublishers["V17"].Issue((this, value.V17));
+            valveStatePublishers["V19"].Issue((this, value.V19));
+            valveStatePublishers["V20"].Issue((this, value.V20));
+            valveStatePublishers["V22"].Issue((this, value.V22));
+            valveStatePublishers["V23"].Issue((this, value.V23));
+            valveStatePublishers["V24"].Issue((this, value.V24));
+            valveStatePublishers["V25"].Issue((this, value.V25));
+            valveStatePublishers["V26"].Issue((this, value.V26));
+            valveStatePublishers["V27"].Issue((this, value.V27));
+            valveStatePublishers["V28"].Issue((this, value.V28));
+            valveStatePublishers["V29"].Issue((this, value.V29));
+            valveStatePublishers["V30"].Issue((this, value.V30));
+            valveStatePublishers["V31"].Issue((this, value.V31));
+            valveStatePublishers["V32"].Issue((this, value.V32));
 
             flowValuePublishers["MFC01"].Issue(value.M01);
             flowValuePublishers["MFC02"].Issue(value.M02);
@@ -91,12 +91,12 @@ namespace SapphireXR_App.Models
             flowValuePublishers["EPC05"].Issue(value.E05);
             flowValuePublishers["EPC06"].Issue(value.E06);
             flowValuePublishers["EPC07"].Issue(value.E07);
-            flowValuePublishers["Temperature"].Issue(value.sTemp);
-            flowValuePublishers["Pressure"].Issue(value.rPress);
-            flowValuePublishers["Rotation"].Issue(value.sRotation);
+            flowValuePublishers["Temperature"].Issue(value.STemp);
+            flowValuePublishers["Pressure"].Issue(value.RPress);
+            flowValuePublishers["Rotation"].Issue(value.SRotation);
         }
 
-        private Dictionary<string, ObservableManager<bool>.DataIssuer> valveStatePublishers = new Dictionary<string, ObservableManager<bool>.DataIssuer>();
-        private Dictionary<string, ObservableManager<float>.DataIssuer> flowValuePublishers = new Dictionary<string, ObservableManager<float>.DataIssuer> ();
+        private Dictionary<string, ObservableManager<(object, bool)>.DataIssuer> valveStatePublishers = new Dictionary<string, ObservableManager<(object, bool)>.DataIssuer>();
+        private Dictionary<string, ObservableManager<float>.DataIssuer> flowValuePublishers = new Dictionary<string, ObservableManager<float>.DataIssuer>();
     }
 }

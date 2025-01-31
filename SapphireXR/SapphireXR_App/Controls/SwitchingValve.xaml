@@ -8,12 +8,8 @@
              mc:Ignorable="d" 
              x:Name="switchingValve"
              d:DesignWidth="48" Height="24">
-    <i:Interaction.Triggers>
-        <i:EventTrigger EventName="Loaded">
-            <i:InvokeCommandAction Command="{Binding OnLoadedCommand}" CommandParameter="{Binding ValveID, RelativeSource={RelativeSource AncestorType=UserControl}}"/>
-        </i:EventTrigger>
-    </i:Interaction.Triggers>
     <local:Valve.Resources>
+        <local:OnLoadedCommandParamConverver x:Key="onLoadedCommandConverter" />
         <SolidColorBrush x:Key="BorderBrushOnMouseEnter" Color="#9dbce8" />
         <SolidColorBrush x:Key="BorderBrushOnMouseLeave" Color="#475569" />
         <Storyboard x:Key="ChangeBackgroundColorOnMouseEnter">
@@ -62,6 +58,18 @@
             <Setter Property="Cursor" Value="Hand"/>
         </Style>
     </local:Valve.Resources>
+    <i:Interaction.Triggers>
+        <i:EventTrigger EventName="Loaded">
+            <i:InvokeCommandAction Command="{Binding OnLoadedCommand}">
+                    <i:InvokeCommandAction.CommandParameter>
+                        <MultiBinding Converter="{StaticResource onLoadedCommandConverter}">
+                            <Binding Path="ValveID" RelativeSource="{RelativeSource AncestorType=UserControl}" />
+                            <Binding Path="Target" RelativeSource="{RelativeSource AncestorType=UserControl}" />
+                        </MultiBinding>
+                    </i:InvokeCommandAction.CommandParameter>
+                </i:InvokeCommandAction>
+        </i:EventTrigger>
+    </i:Interaction.Triggers>
     <Button Style="{StaticResource ValveStyle}" Width="48" Height="24">
         <i:Interaction.Triggers>
             <i:EventTrigger EventName="Click">

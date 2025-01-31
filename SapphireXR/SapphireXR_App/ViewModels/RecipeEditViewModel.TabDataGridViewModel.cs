@@ -109,7 +109,6 @@ namespace SapphireXR_App.ViewModels
             private IList? _selected;
             private IList<Recipe>? copied = null;
             public RecipeEditViewModel RecipeViewModel { get; set; }
-            internal ObservableManager<Recipe>.DataIssuer currentSelectedRecipe = ObservableManager<Recipe>.Get("CurrentSelectedRecipe");
 
             public IRelayCommand SelectionChangedCommand => new RelayCommand<object?>((object? args) =>
             {
@@ -133,7 +132,11 @@ namespace SapphireXR_App.ViewModels
                     select(dataGrid.SelectedItems);
                     if (0 < dataGrid.SelectedItems.Count)
                     {
-                        currentSelectedRecipe.Issue((Recipe)dataGrid.SelectedItems[dataGrid.SelectedItems.Count - 1]!);
+                        Recipe? selected = dataGrid.SelectedItems[0] as Recipe;
+                        if (selected != null)
+                        {
+                            RecipeViewModel.setSelectedRecipeStep(selected);
+                        }
                     }
                 }
             });

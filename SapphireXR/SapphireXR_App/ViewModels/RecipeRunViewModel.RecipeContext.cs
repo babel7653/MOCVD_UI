@@ -41,6 +41,11 @@ namespace SapphireXR_App.ViewModels
                 initialized = true;
             }
 
+            ~RecipeContext()
+            {
+                Dispose(disposing: false);
+            }
+
             public void onStart()
             {
                 if (initialized == false)

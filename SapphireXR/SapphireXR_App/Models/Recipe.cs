@@ -1,6 +1,8 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
 using CsvHelper.Configuration.Attributes;
 using System.Collections;
+using System.ComponentModel;
 using System.Diagnostics.CodeAnalysis;
 using System.Runtime.InteropServices;
 using System.Windows;
@@ -11,9 +13,7 @@ namespace SapphireXR_App.Models
 {
     public partial class Recipe : ObservableObject
     {
-        public Recipe()
-        {
-        }
+        public Recipe() {  }
 
         public Recipe(Recipe rhs)
         {
@@ -22,11 +22,11 @@ namespace SapphireXR_App.Models
             No = rhs.No;
             hTime = rhs.hTime;
             Jump = rhs.Jump;
-            rPress = rhs.rPress;
-            sRotation = rhs.sRotation;
+            RPress = rhs.RPress;
+            SRotation = rhs.SRotation;
             Loop = rhs.Loop;
             rTime = rhs.rTime;
-            sTemp = rhs.sTemp;
+            STemp = rhs.STemp;
             E01 = rhs.E01;
             E02 = rhs.E02;
             E03 = rhs.E03;
@@ -81,71 +81,127 @@ namespace SapphireXR_App.Models
             V32 = rhs.V32;
             Background = rhs.Background;
         }
+
         public string Name { get; set; } = "";
         // RecipeInt Array
         public short No { get; set; }
         public short rTime { get; set; }
         public short hTime { get; set; }
-        public short sTemp { get; set; }
-        public short rPress { get; set; }
-        public short sRotation { get; set; }
+        [ObservableProperty]
+        public short _sTemp;
+        [ObservableProperty]
+        public short _rPress;
+        [ObservableProperty]
+        public short _sRotation;
         public short cTemp { get; set; }
         public short Loop { get; set; }
         public short Jump { get; set; }
         //RecipeFloat Array
-        public float M01 { get; set; }
-        public float M02 { get; set; }
-        public float M03 { get; set; }
-        public float M04 { get; set; }
-        public float M05 { get; set; }
-        public float M06 { get; set; }
-        public float M07 { get; set; }
-        public float M08 { get; set; }
-        public float M09 { get; set; }
-        public float M10 { get; set; }
-        public float M11 { get; set; }
-        public float M12 { get; set; }
-        public float M13 { get; set; }
-        public float M14 { get; set; }
-        public float M15 { get; set; }
-        public float M16 { get; set; }
-        public float M17 { get; set; }
-        public float M18 { get; set; }
-        public float M19 { get; set; }
-        public float E01 { get; set; }
-        public float E02 { get; set; }
-        public float E03 { get; set; }
-        public float E04 { get; set; }
-        public float E05 { get; set; }
-        public float E06 { get; set; }
-        public float E07 { get; set; }
+        [ObservableProperty] 
+        private float _m01;
+        [ObservableProperty] 
+        private float _m02;
+        [ObservableProperty] 
+        private float _m03;
+        [ObservableProperty] 
+        private float _m04;
+        [ObservableProperty] 
+        private float _m05;
+        [ObservableProperty] 
+        private float _m06;
+        [ObservableProperty] 
+        private float _m07;
+        [ObservableProperty]
+        private float _m08;
+        [ObservableProperty] 
+        private float _m09;
+        [ObservableProperty] 
+        private float _m10;
+        [ObservableProperty] 
+        private float _m11;
+        [ObservableProperty] 
+        private float _m12;
+        [ObservableProperty] 
+        private float _m13;
+        [ObservableProperty] 
+        private float _m14;
+        [ObservableProperty] 
+        private float _m15;
+        [ObservableProperty]
+        private float _m16;
+        [ObservableProperty] 
+        private float _m17;
+        [ObservableProperty] 
+        private float _m18;
+        [ObservableProperty]
+        private float _m19;
+        [ObservableProperty] 
+        private float _e01;
+        [ObservableProperty]
+        private float _e02;
+        [ObservableProperty]
+        private float _e03;
+        [ObservableProperty] 
+        private float _e04;
+        [ObservableProperty] 
+        private float _e05;
+        [ObservableProperty]
+        private float _e06;
+        [ObservableProperty] 
+        private float _e07;
         //RecipeDouble Array
-        public bool V01 { get; set; } 
-        public bool V02 { get; set; }
-        public bool V03 { get; set; }
-        public bool V04 { get; set; }
-        public bool V05 { get; set; }  //TEB
-        public bool V07 { get; set; }
-        public bool V08 { get; set; } //TMAl
-        public bool V10 { get; set; }
-        public bool V11 { get; set; } //TMIn
-        public bool V13 { get; set; }
-        public bool V14 { get; set; } //TMGa
-        public bool V16 { get; set; }
-        public bool V17 { get; set; } //DTMGa
-        public bool V19 { get; set; }
-        public bool V20 { get; set; } //Cp2Mg
-        public bool V22 { get; set; }
-        public bool V23 { get; set; } //TEB Manifold
-        public bool V24 { get; set; } //TMAlManifold
-        public bool V25 { get; set; } //TMIn Manifold
-        public bool V26 { get; set; } //TMGa Manifold
-        public bool V27 { get; set; } //DTMGa Manifold
-        public bool V28 { get; set; } //Cp2Mg Manifold
-        public bool V29 { get; set; } //NH3_1 Manifold
-        public bool V30 { get; set; } //NH3_2 Manifold
-        public bool V31 { get; set; } //SiH4 Manifold
-        public bool V32 { get; set; } //Vent
+        [ObservableProperty]
+        private bool _v01;
+        [ObservableProperty]
+        private bool _v02;
+        [ObservableProperty]
+        private bool _v03;
+        [ObservableProperty]
+        private bool _v04;
+        [ObservableProperty]
+        private bool _v05;  //TEB
+        [ObservableProperty]
+        private bool _v07;
+        [ObservableProperty]
+        private bool _v08; //TMAl
+        [ObservableProperty]
+        private bool _v10;
+        [ObservableProperty]
+        private bool _v11; //TMIn
+        [ObservableProperty]
+        private bool _v13;
+        [ObservableProperty]
+        private bool _v14; //TMGa
+        [ObservableProperty]
+        private bool _v16;
+        [ObservableProperty]
+        private bool _v17; //DTMGa
+        [ObservableProperty]
+        private bool _v19;
+        [ObservableProperty]
+        private bool _v20; //Cp2Mg
+        [ObservableProperty]
+        private bool _v22;
+        [ObservableProperty]
+        private bool _v23; //TEB Manifold
+        [ObservableProperty]
+        private bool _v24; //TMAlManifold
+        [ObservableProperty]
+        private bool _v25; //TMIn Manifold
+        [ObservableProperty]
+        private bool _v26; //TMGa Manifold
+        [ObservableProperty]
+        private bool _v27; //DTMGa Manifold
+        [ObservableProperty]
+        private bool _v28; //Cp2Mg Manifold
+        [ObservableProperty]
+        private bool _v29; //NH3_1 Manifold
+        [ObservableProperty]
+        private bool _v30; //NH3_2 Manifold
+        [ObservableProperty]
+        private bool _v31; //SiH4 Manifold
+        [ObservableProperty]
+        private bool _v32; //_vent
 
         Brush _background = Brushes.White;
         [Ignore]
@@ -165,9 +221,9 @@ namespace SapphireXR_App.Models
             aRecipeShort[0] = rhs.No;
             aRecipeShort[1] = rhs.rTime;
             aRecipeShort[2] = rhs.hTime;
-            aRecipeShort[3] = rhs.sTemp;
-            aRecipeShort[4] = rhs.rPress;
-            aRecipeShort[5] = rhs.sRotation;
+            aRecipeShort[3] = rhs.STemp;
+            aRecipeShort[4] = rhs.RPress;
+            aRecipeShort[5] = rhs.SRotation;
             aRecipeShort[6] = rhs.cTemp;
             aRecipeShort[7] = rhs.Loop;
             aRecipeShort[8] = rhs.Jump;

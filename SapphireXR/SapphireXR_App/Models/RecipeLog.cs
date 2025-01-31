@@ -37,9 +37,9 @@ namespace SapphireXR_App.Models
             SV_E05 = recipe.E05;
             SV_E06 = recipe.E06;
             SV_E07 = recipe.E07;
-            SV_RTEMP = recipe.sTemp;
-            SV_PRES = recipe.rPress;
-            SV_ROT = recipe.sRotation;
+            SV_RTEMP = recipe.STemp;
+            SV_PRES = recipe.RPress;
+            SV_ROT = recipe.SRotation;
 
             PV_M01 = PLCService.ReadCurrentValue("MFC01");
             PV_M02 = PLCService.ReadCurrentValue("MFC02");

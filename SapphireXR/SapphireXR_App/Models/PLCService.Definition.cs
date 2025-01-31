@@ -33,6 +33,7 @@ namespace SapphireXR_App.Models
         private static Dictionary<string, ObservableManager<int>.DataIssuer>? dCurrentValueIssuers;
         private static Dictionary<string, ObservableManager<int>.DataIssuer>? dControlValueIssuers;
         private static Dictionary<string, ObservableManager<(int, int)>.DataIssuer>? dControlCurrentValueIssuers;
+        private static Dictionary<string, ObservableManager<float>.DataIssuer>? aMonitoringCurrentValueIssuers;
         private static ObservableManager<short>.DataIssuer? dCurrentActiveRecipeIssue;
 
         //Create an instance of the TcAdsClient()
@@ -59,7 +60,7 @@ namespace SapphireXR_App.Models
 
         private static ObservableManager<PLCConnection>.DataIssuer ConnectedNotifier;
 
-        public static Dictionary<string, int> ValveIDtoOutputSolValveIdx1 = new Dictionary<string, int>
+        public static readonly Dictionary<string, int> ValveIDtoOutputSolValveIdx1 = new Dictionary<string, int>
         {
             { "V01", 0 }, { "V02", 1 }, { "V03", 2 }, { "V04", 3 }, { "V05", 4 },
             { "V06", 5 }, { "V07", 6 }, { "V08", 7 }, { "V09", 8 }, { "V10", 9 },
@@ -69,7 +70,7 @@ namespace SapphireXR_App.Models
             { "V46", 25 }
         };
 
-        public static Dictionary<string, int> ValveIDtoOutputSolValveIdx2 = new Dictionary<string, int>
+        public static readonly Dictionary<string, int> ValveIDtoOutputSolValveIdx2 = new Dictionary<string, int>
         {
             { "V17", 0 }, { "V18", 1 }, { "V19", 2 }, { "V20", 3 }, { "V21", 4 },
             { "V22", 5 }, { "V23", 6 }, { "V24", 7 }, { "V25", 8 }, { "V26", 9 },
@@ -79,7 +80,7 @@ namespace SapphireXR_App.Models
             { "V52", 25 }, { "V53", 26 }
         };
 
-        public static Dictionary<string, int> dIndexController = new Dictionary<string, int>
+        public static readonly Dictionary<string, int> dIndexController = new Dictionary<string, int>
         {
             { "MFC01", 0 }, { "MFC02", 1 }, { "MFC03", 2 }, { "MFC04", 3 }, { "MFC05", 4 },
             { "MFC06", 5 }, { "MFC07", 6 }, { "MFC08", 7 }, { "MFC09", 8 }, { "MFC10", 9 },
@@ -89,5 +90,12 @@ namespace SapphireXR_App.Models
             { "EPC06", 24 }, { "EPC07", 25 }, {"Temperature", 26}, {"Pressure", 27}, {"Rotation", 28}
         };
         public static readonly int NumControllers = dIndexController.Count;
+
+        public static readonly Dictionary<string, int> dMonitoringMeterIndex = new Dictionary<string, int>
+        {
+            { "UltPressure", 0 },  { "ExtPressure", 1},  { "DorPressure", 2}, { "H2", 3}, { "N2", 4}, { "NH3", 5},
+            { "SiH4", 6}, { "ShowerHeadTemp", 7}, { "InductionCoilTemp", 8}, { "HeaterPowerRate", 9 }, { "ValvePosition", 10 }, { "TEB", 11},
+             { "TMAl", 12},  { "TMIn", 13},  { "TMGa", 14},  { "DTMGa", 15},  { "Cp2Mg", 16}
+        };
     }
 }

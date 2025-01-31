@@ -8,6 +8,7 @@ using static System.Net.Mime.MediaTypeNames;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows;
+using System.Windows.Controls.Primitives;
 
 namespace SapphireXR_App.Views
 {    public class NumberBox : TextBox
@@ -53,7 +54,11 @@ namespace SapphireXR_App.Views
 
         protected void OnlyAllowNumber(object sender, TextCompositionEventArgs e)
         {
-            e.Handled = !CheckValid(e.Text);
+            TextBox? textbox = sender as TextBox;
+            if (textbox != null)
+            {
+                Util.OnlyAllowConstrainedNumber(e, textbox.Text, e.Text, MaxValue);
+            }
         }
 
         public int MaxValue

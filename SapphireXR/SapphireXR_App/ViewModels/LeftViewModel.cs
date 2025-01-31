@@ -1,20 +1,61 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
+using SapphireXR_App.Common;
+using System.Reactive;
+using System.Windows.Controls;
 
 namespace SapphireXR_App.ViewModels
 {
-    public class LeftViewModel : ObservableObject
+    public partial class LeftViewModel : ObservableObject
     {
-        
-
-        public LeftViewModel() 
+        internal class CoolingWaterValueSubscriber : IObserver<float>
         {
-            Init();
+            internal CoolingWaterValueSubscriber(string coolingWaterIDStr, LeftViewModel vm)
+            {
+                coolingWaterID = coolingWaterIDStr;
+                leftViewModel = vm;
+            }
+
+            void IObserver<float>.OnCompleted()
+            {
+                throw new NotImplementedException();
+            }
+
+            void IObserver<float>.OnError(Exception error)
+            {
+                throw new NotImplementedException();
+            }
+
+            void IObserver<float>.OnNext(float value)
+            {
+                switch(coolingWaterID)
+                {
+                    case "ShowerHeadTemp":
+                        leftViewModel.ShowerHeadTemp = ((int)value).ToString();
+                    break;
+
+                    case "InductionCoilTemp":
+                        leftViewModel.InductionCoilTemp = ((int)value).ToString();
+                        break;
+                }
+            }
+
+            private string coolingWaterID;
+            private LeftViewModel leftViewModel;
         }
 
-        private void Init()
+        public LeftViewModel()
         {
-            
+            ObservableManager<float>.Subscribe("MonitoringPresentValue.ShowerHeadTemp.CurrentValue", showerHeaderTempSubscriber = new CoolingWaterValueSubscriber("ShowerHeadTemp", this));
+            ObservableManager<float>.Subscribe("MonitoringPresentValue.InductionCoilTemp.CurrentValue", inductionCoilTempSubscriber = new CoolingWaterValueSubscriber("InductionCoilTemp", this));
         }
 
+        [ObservableProperty]
+        private string _showerHeadTemp = "";
+
+        [ObservableProperty]
+        private string _inductionCoilTemp = "";
+
+        private CoolingWaterValueSubscriber showerHeaderTempSubscriber;
+        private CoolingWaterValueSubscriber inductionCoilTempSubscriber;
     }
 }

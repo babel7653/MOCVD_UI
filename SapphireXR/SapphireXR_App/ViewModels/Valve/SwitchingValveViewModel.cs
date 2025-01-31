@@ -3,25 +3,14 @@ using System.Windows.Input;
 using SapphireXR_App.Models;
 using SapphireXR_App.Enums;
 using System.Windows;
+using SapphireXR_App.Controls;
+using SapphireXR_App.ViewModels.Valve;
 
 
 namespace SapphireXR_App.ViewModels
 {
-    public class SwitchingValveViewModel: ValveViewModel
+    public class SwitchingValveViewModel: OnOffValveViewModel
     {
-        protected override void Init(string? valveID)
-        {
-            base.Init(valveID);
-            if (valveID != null)
-            {
-                IsOpen = PLCService.ReadValveState(valveID);
-            }
-            else
-            {
-                throw new Exception("ValveID is null, cannot set/get valve value from PLC\r\nCheck the SwitchValve ValveID value");
-            }
-        }
-
         protected override PopupMessage getPopupMessage()
         {
             return new PopupMessage()

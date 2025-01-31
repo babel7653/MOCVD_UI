@@ -108,6 +108,11 @@ namespace SapphireXR_App.Models
             {
                 dControlCurrentValueIssuers.Add(kv.Key, ObservableManager<(int, int)>.Get("FlowControl." + kv.Key + ".ControlTargetValue.CurrentPLCState"));
             }
+            aMonitoringCurrentValueIssuers = new Dictionary<string, ObservableManager<float>.DataIssuer>();
+            foreach(KeyValuePair<string, int> kv in dMonitoringMeterIndex)
+            {
+                aMonitoringCurrentValueIssuers.Add(kv.Key, ObservableManager<float>.Get("MonitoringPresentValue." + kv.Key + ".CurrentValue"));
+            }
             dCurrentActiveRecipeIssue = ObservableManager<short>.Get("RecipeRun.CurrentActiveRecipe");
 
             timer = new DispatcherTimer();
@@ -160,6 +165,14 @@ namespace SapphireXR_App.Models
                 }
             }
 
+            if(aMonitoring_PVs != null)
+            {
+                foreach(KeyValuePair<string, int> kv in dMonitoringMeterIndex)
+                {
+                    aMonitoringCurrentValueIssuers?[kv.Key].Issue(aMonitoring_PVs[kv.Value]);
+                }
+            }
+
             string expcetionStr = string.Empty;
             if(aDeviceControlValues == null)
             {
@@ -180,6 +193,14 @@ namespace SapphireXR_App.Models
                     expcetionStr += "\r\n";
                 }
                 expcetionStr += "aDeviceTargetValues is null in OnTick PLCService";
+            }
+            if(aMonitoring_PVs == null)
+            {
+                if (expcetionStr != string.Empty)
+                {
+                    expcetionStr += "\r\n";
+                }
+                expcetionStr += "aMonitoring_PVs is null in OnTick PLCService";
             }
             if(expcetionStr != string.Empty)
             {

@@ -5,24 +5,13 @@ using SapphireXR_App.Enums;
 using System.Windows;
 using SapphireXR_App.Controls;
 using System.Windows.Controls;
+using static SapphireXR_App.ViewModels.ValveViewModel;
+using SapphireXR_App.ViewModels.Valve;
 
 namespace SapphireXR_App.ViewModels
 {
-    public class LeakTestValveViewModel: ValveViewModel
+    public class LeakTestValveViewModel: OnOffValveViewModel
     {
-        protected override void Init(string? valveID)
-        {
-            base.Init(valveID);
-            if (valveID != null)
-            {
-                IsOpen = PLCService.ReadValveState(valveID);
-            }
-            else
-            {
-                throw new Exception("ValveID is null, cannot set/get valve value from PLC\r\nCheck the LeakTestValve ValveID value");
-            }
-        }
-
         protected override PopupMessage getPopupMessage()
         {
             return new PopupMessage()

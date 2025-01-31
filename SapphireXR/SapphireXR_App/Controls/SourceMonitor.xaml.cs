@@ -1,5 +1,6 @@
 ﻿using System.Windows;
 using System.Windows.Controls;
+using SapphireXR_App.ViewModels;
 
 namespace SapphireXR_App.Controls
 {
@@ -11,20 +12,15 @@ namespace SapphireXR_App.Controls
         public SourceMonitor()
         {
             InitializeComponent();
+            DataContext = new SourceMonitorViewModel();
         }
-        public string MonitorID
-        {
-            get { return (string)GetValue(MonitorIDProperty); }
-            set { SetValue(MonitorIDProperty, value); }
-        }
-
-        public static readonly DependencyProperty MonitorIDProperty =
-            DependencyProperty.Register("MonitorID", typeof(string), typeof(SourceMonitor), new PropertyMetadata(default));
+        public string MonitorID { get; set; } = "";
 
         private void sourceMonitor_Loaded(object sender, RoutedEventArgs e)
         {
             SourceMonitor monitor = (SourceMonitor)sender;
             sourceName.Text = monitor.MonitorID;
+            ((SourceMonitorViewModel)DataContext).OnLoadedCommand.Execute(monitor.MonitorID);
         }
     }
 }

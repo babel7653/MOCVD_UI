@@ -15,32 +15,30 @@
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="300"/>
             <ColumnDefinition/>
-            <ColumnDefinition Width="300"/>
         </Grid.ColumnDefinitions>
         <Frame Source="/Views/LeftDashboard.xaml" Grid.Column="0" NavigationUIVisibility="Hidden"/>
         <Grid Grid.Column="1">
             <TabControl Background="Transparent" >
-                <TabItem Header="System Control" Width="110" >
+                <TabItem Header="System Control" Width="150"  >
                     <Frame Source="/Views/HomePage.xaml" NavigationUIVisibility="Hidden"/>
                 </TabItem>
 
-                <TabItem Header="Recipe Control" Width="110">
+                <TabItem Header="Recipe Control" Width="150">
                     <Frame Source="/Views/RecipeRunPage.xaml" NavigationUIVisibility="Hidden"/>
                 </TabItem>
 
-                <TabItem Header="Recipe Editor" Width="110" >
+                <TabItem Header="Recipe Editor" Width="150" >
                     <Frame Source="/Views/RecipeEditPage.xaml" NavigationUIVisibility="Hidden"/>
                 </TabItem>
 
-                <TabItem Header="Report" Width="110">
+                <TabItem Header="Report" Width="150">
                     <Frame Source="/Views/ReportPage.xaml" NavigationUIVisibility="Hidden"/>
                 </TabItem>
 
-                <TabItem Header="Setting" Width="110">
+                <TabItem Header="Setting" Width="150">
                     <Frame Source="/Views/SettingPage.xaml" NavigationUIVisibility="Hidden"/>
                 </TabItem>
             </TabControl>
         </Grid>
-        <Frame Source="/Views/RightDashboard.xaml" Grid.Column="2" NavigationUIVisibility="Hidden"/>
     </Grid>
 </Window>

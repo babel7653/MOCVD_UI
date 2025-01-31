@@ -394,12 +394,12 @@
                 <!--#endregion-->
 
                 <!-- #Region 6. Text -->
-                <Label Canvas.Left="1185" Canvas.Top="135" Foreground="{StaticResource PrimaryFontColor}" Content="Shower Head(HYD)"/>
-                <Label Canvas.Left="1185" Canvas.Top="157" Foreground="{StaticResource PrimaryFontColor}" Content="Reactor Purge"/>
-                <Label Canvas.Left="1185" Canvas.Top="201" Foreground="{StaticResource PrimaryFontColor}" Content="Base Purge"/>
-                <Label Canvas.Left="1185" Canvas.Top="243" Foreground="{StaticResource PrimaryFontColor}" Content="Shower Head(MO)"/>
-                <Label Canvas.Left="1185" Canvas.Top="423" Foreground="{StaticResource PrimaryFontColor}" Content="to Reactor"/>
-                <Label Canvas.Left="1185" Canvas.Top="449" Foreground="{StaticResource PrimaryFontColor}" Content="to Scrubber"/>
+                <Label Canvas.Left="1180" Canvas.Top="134" Foreground="{StaticResource PrimaryFontColor}" Content="Shower Head(HYD)"/>
+                <Label Canvas.Left="1180" Canvas.Top="156" Foreground="{StaticResource PrimaryFontColor}" Content="Out Liner Purge"/>
+                <Label Canvas.Left="1180" Canvas.Top="200" Foreground="{StaticResource PrimaryFontColor}" Content="Rotation Seal Purge"/>
+                <Label Canvas.Left="1180" Canvas.Top="242" Foreground="{StaticResource PrimaryFontColor}" Content="Shower Head(MO)"/>
+                <Label Canvas.Left="1180" Canvas.Top="422" Foreground="{StaticResource PrimaryFontColor}" Content="to Reactor"/>
+                <Label Canvas.Left="1180" Canvas.Top="448" Foreground="{StaticResource PrimaryFontColor}" Content="to Scrubber"/>
                 <Label Canvas.Left="1116" Canvas.Top="320" Foreground="{StaticResource PrimaryFontColor}" Content="Vent"
                         Width="50" HorizontalContentAlignment="Center" />
                 <Label Canvas.Left="256" Canvas.Top="120" Foreground="{StaticResource PrimaryFontColor}" Content="Vent"

@@ -263,9 +263,10 @@
                 <Rectangle Canvas.Left="2" Canvas.Top="2" Width="90" Height="40" Stroke="{StaticResource ExhaustLineColor}" StrokeThickness="3"/>
                 <Ellipse Width="16" Height="16" Canvas.Left="14" Canvas.Top="39" Fill="{StaticResource ExhaustLineColor}" />
                 <Ellipse Width="16" Height="16" Canvas.Left="66" Canvas.Top="39" Fill="{StaticResource ExhaustLineColor}" />
-                <control:OnSwitch x:Name="PumpState" Canvas.Left="35" Canvas.Top="10"/>
+                <control:OnSwitch x:Name="PumpOn" Canvas.Left="35" Canvas.Top="10"/>
             </Canvas>
-
+            <control:OnSwitch x:Name="HeaterOn" Canvas.Left="1118" Canvas.Top="178"/>
+            
             <Border Canvas.Left="1137" Canvas.Top="470" BorderThickness="1" BorderBrush="{StaticResource ExhaustLineColor}" Width="46" Height="24">
                 <TextBlock Foreground="White" FontSize="16" VerticalAlignment="Center" HorizontalAlignment="Center">Filter</TextBlock>
             </Border>
@@ -675,58 +676,58 @@
                 <Label Canvas.Left="1076" Canvas.Top="715" Foreground="{StaticResource SecondaryFontColor}" Content="V53"
                 Width="40" HorizontalContentAlignment="Center" Visibility="{Binding OnLeakTestVisibility}" />
 
-                <Label Canvas.Left="190" Canvas.Top="339" Foreground="{StaticResource SecondaryFontColor}" Content="M01"
+                <Label Canvas.Left="121" Canvas.Top="354" Foreground="Black" Content="M01"
                 Width="40" HorizontalContentAlignment="Center" />
-                <Label Canvas.Left="190" Canvas.Top="304" Foreground="{StaticResource SecondaryFontColor}" Content="M02"
+                <Label Canvas.Left="121" Canvas.Top="300" Foreground="Black" Content="M02"
                 Width="40" HorizontalContentAlignment="Center" />
-                <Label Canvas.Left="412" Canvas.Top="186" Foreground="{StaticResource SecondaryFontColor}" Content="M03"
+                <Label Canvas.Left="343" Canvas.Top="201" Foreground="Black" Content="M03"
                 Width="40" HorizontalContentAlignment="Center" />
-                <Label Canvas.Left="234" Canvas.Top="186" Foreground="{StaticResource SecondaryFontColor}" Content="M04"
+                <Label Canvas.Left="263" Canvas.Top="201" Foreground="Black" Content="M04"
                 Width="40" HorizontalContentAlignment="Center" />
-                <Label Canvas.Left="626" Canvas.Top="136" Foreground="{StaticResource SecondaryFontColor}" Content="M05"
+                <Label Canvas.Left="557" Canvas.Top="151" Foreground="Black" Content="M05"
                 Width="40" HorizontalContentAlignment="Center" />
-                <Label Canvas.Left="448" Canvas.Top="136" Foreground="{StaticResource SecondaryFontColor}" Content="M06"
+                <Label Canvas.Left="477" Canvas.Top="151" Foreground="Black" Content="M06"
                 Width="40" HorizontalContentAlignment="Center" />
-                <Label Canvas.Left="528" Canvas.Top="186" Foreground="{StaticResource SecondaryFontColor}" Content="M07"
+                <Label Canvas.Left="557" Canvas.Top="201" Foreground="Black" Content="M07"
                 Width="40" HorizontalContentAlignment="Center" />
-                <Label Canvas.Left="150" Canvas.Top="570" Foreground="{StaticResource SecondaryFontColor}" Content="M08"
+                <Label Canvas.Left="179" Canvas.Top="585" Foreground="Black" Content="M08"
                 Width="40" HorizontalContentAlignment="Center" />
-                <Label Canvas.Left="290" Canvas.Top="570" Foreground="{StaticResource SecondaryFontColor}" Content="M09"
+                <Label Canvas.Left="319" Canvas.Top="585" Foreground="Black" Content="M09"
                 Width="40" HorizontalContentAlignment="Center" />
-                <Label Canvas.Left="430" Canvas.Top="570" Foreground="{StaticResource SecondaryFontColor}" Content="M10"
+                <Label Canvas.Left="459" Canvas.Top="585" Foreground="Black" Content="M10"
                 Width="40" HorizontalContentAlignment="Center" />
-                <Label Canvas.Left="570" Canvas.Top="570" Foreground="{StaticResource SecondaryFontColor}" Content="M11"
+                <Label Canvas.Left="599" Canvas.Top="585" Foreground="Black" Content="M11"
                 Width="40" HorizontalContentAlignment="Center" />
-                <Label Canvas.Left="710" Canvas.Top="570" Foreground="{StaticResource SecondaryFontColor}" Content="M12"
+                <Label Canvas.Left="739" Canvas.Top="585" Foreground="Black" Content="M12"
                 Width="40" HorizontalContentAlignment="Center" />
-                <Label Canvas.Left="866" Canvas.Top="526" Foreground="{StaticResource SecondaryFontColor}" Content="M13"
+                <Label Canvas.Left="797" Canvas.Top="541" Foreground="Black" Content="M13"
                 Width="40" HorizontalContentAlignment="Center" />
-                <Label Canvas.Left="826" Canvas.Top="570" Foreground="{StaticResource SecondaryFontColor}" Content="M14"
+                <Label Canvas.Left="855" Canvas.Top="585" Foreground="Black" Content="M14"
                 Width="40" HorizontalContentAlignment="Center" />
-                <Label Canvas.Left="935" Canvas.Top="554" Foreground="{StaticResource SecondaryFontColor}" Content="M15"
+                <Label Canvas.Left="937" Canvas.Top="585" Foreground="Black" Content="M15"
                 Width="40" HorizontalContentAlignment="Center" />
-                <Label Canvas.Left="867" Canvas.Top="196" Foreground="{StaticResource SecondaryFontColor}" Content="M16"
+                <Label Canvas.Left="797" Canvas.Top="193" Foreground="Black" Content="M16"
                 Width="40" HorizontalContentAlignment="Center" />
-                <Label Canvas.Left="867" Canvas.Top="240" Foreground="{StaticResource SecondaryFontColor}" Content="M17"
+                <Label Canvas.Left="797" Canvas.Top="237" Foreground="Black" Content="M17"
                 Width="40" HorizontalContentAlignment="Center" />
-                <Label Canvas.Left="190" Canvas.Top="402" Foreground="{StaticResource SecondaryFontColor}" Content="M18"
+                <Label Canvas.Left="121" Canvas.Top="398" Foreground="Black" Content="M18"
                 Width="40" HorizontalContentAlignment="Center" />
-                <Label Canvas.Left="190" Canvas.Top="241" Foreground="{StaticResource SecondaryFontColor}" Content="M19"
+                <Label Canvas.Left="121" Canvas.Top="256" Foreground="Black" Content="M19"
                 Width="40" HorizontalContentAlignment="Center" />
 
-                <Label Canvas.Left="706" Canvas.Top="186" Foreground="{StaticResource SecondaryFontColor}" Content="E01"
+                <Label Canvas.Left="634" Canvas.Top="201" Foreground="Black" Content="E01"
                 Width="40" HorizontalContentAlignment="Center" />
-                <Label Canvas.Left="306" Canvas.Top="526" Foreground="{StaticResource SecondaryFontColor}" Content="E02"
+                <Label Canvas.Left="234" Canvas.Top="541" Foreground="Black" Content="E02"
                 Width="40" HorizontalContentAlignment="Center" />
-                <Label Canvas.Left="446" Canvas.Top="526" Foreground="{StaticResource SecondaryFontColor}" Content="E03"
+                <Label Canvas.Left="374" Canvas.Top="541" Foreground="Black" Content="E03"
                 Width="40" HorizontalContentAlignment="Center" />
-                <Label Canvas.Left="586" Canvas.Top="526" Foreground="{StaticResource SecondaryFontColor}" Content="E04"
+                <Label Canvas.Left="514" Canvas.Top="541" Foreground="Black" Content="E04"
                 Width="40" HorizontalContentAlignment="Center" />
-                <Label Canvas.Left="726" Canvas.Top="526" Foreground="{StaticResource SecondaryFontColor}" Content="E05"
+                <Label Canvas.Left="654" Canvas.Top="541" Foreground="Black" Content="E05"
                 Width="40" HorizontalContentAlignment="Center" />
-                <Label Canvas.Left="899" Canvas.Top="613" Foreground="{StaticResource SecondaryFontColor}" Content="E06"
+                <Label Canvas.Left="852" Canvas.Top="643" Foreground="Black" Content="E06"
                 Width="40" HorizontalContentAlignment="Center" />
-                <Label Canvas.Left="1037" Canvas.Top="511" Foreground="{StaticResource SecondaryFontColor}" Content="E07"
+                <Label Canvas.Left="992" Canvas.Top="541" Foreground="Black" Content="E07"
                 Width="40" HorizontalContentAlignment="Center" />
             </Canvas>
             <!--#endregion-->

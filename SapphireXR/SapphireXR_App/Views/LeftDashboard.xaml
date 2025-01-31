@@ -18,10 +18,11 @@
 
     <Grid Background="{StaticResource DashboardBackground}">
         <Grid.RowDefinitions>
+            <RowDefinition Height="30"/>
             <RowDefinition Height="*"/>
             <RowDefinition Height="40"/>
             <RowDefinition Height="120"/>
-            <RowDefinition Height="120"/>
+            <RowDefinition Height="150"/>
             <RowDefinition Height="90"/>
             <RowDefinition Height="280"/>
             <RowDefinition Height="120"/>
@@ -29,7 +30,7 @@
         </Grid.RowDefinitions>
 
         <!-- Machine Information -->
-        <Grid Grid.Row="0">
+        <Grid Grid.Row="1">
             <StackPanel Orientation="Vertical">
                 <StackPanel.Resources>
                     <Style TargetType="{x:Type TextBlock}">
@@ -41,7 +42,7 @@
                         <Setter Property="VerticalAlignment" Value="Center"/>
                     </Style>
                 </StackPanel.Resources>
-                <TextBlock Text="Machine Name : Marvel 180R" />
+                <TextBlock Text="Machine Name : Marvel 180R"/>
                 <TextBlock Text="Application : GaN"/>
                 <TextBlock Text="System ID : 2024 SKKU2"/>
                 <StackPanel Orientation="Horizontal">
@@ -55,12 +56,12 @@
             </StackPanel>
         </Grid>
         <!-- Signal Tower -->
-        <Grid Grid.Row="1">
-            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Center">
+        <Grid Grid.Row="2">
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
                 <StackPanel.Resources>
                     <Style TargetType="{x:Type Rectangle}">
-                        <Setter Property="Width" Value="38"/>
-                        <Setter Property="Height" Value="30"/>
+                        <Setter Property="Width" Value="48"/>
+                        <Setter Property="Height" Value="26"/>
                         <Setter Property="Stroke" Value="LightSlateGray"/>
                        
                     </Style>
@@ -74,7 +75,7 @@
             </StackPanel>
         </Grid>
         <!-- Susceptor Temperature Control Current Status -->
-        <Grid Grid.Row="2">
+        <Grid Grid.Row="3">
             <StackPanel Orientation="Vertical">
                 <StackPanel.Resources>
                     <Style TargetType="{x:Type TextBlock}">
@@ -118,15 +119,15 @@
                 </Grid>
                 <Grid>
                     <StackPanel Orientation="Horizontal" Height="30">
-                        <TextBlock Width="140"  Height="20" VerticalAlignment="Center" Text="Heater Control Mode"
-                                   Margin="0,14,0,0"/>
-                        <Button Height="20" Width="64"  VerticalAlignment="Bottom" FontSize="11" Content="Power Rate" />
+                        <TextBlock Width="210"  Height="20" TextAlignment="Right" Text="Heater Control Mode"
+                                   Margin="0,2,6,0"/>
+                        <Button Height="20" Width="80" FontSize="11" Content="Power Rate" />
                     </StackPanel>
                 </Grid>
             </StackPanel>
         </Grid>
         <!-- Reactor Pressure Control Current Status -->
-        <Grid Grid.Row="3">
+        <Grid Grid.Row="4">
             <StackPanel Orientation="Vertical">
                 <StackPanel.Resources>
                     <Style TargetType="{x:Type TextBlock}">
@@ -169,17 +170,20 @@
                     <TextBox x:Name="tbCurrentPress"  Grid.Column="2" Grid.Row="1" Text="{Binding CurrentPress}"/>
                     <TextBox x:Name="tbPosition" Grid.Column="3" Grid.Row="1" Text="{Binding ValvePosition}"/>
                 </Grid>
-                <Grid>
-                    <StackPanel Orientation="Horizontal" Height="30">
-                        <TextBlock Width="140"  Height="20" VerticalAlignment="Center" Text="Pressure Control Mode"
-                                   Margin="0,14,0,0"/>
-                        <Button Height="20" Width="64" VerticalAlignment="Bottom" FontSize="11" Content="Pressure" />
-                    </StackPanel>
-                </Grid>
+                <StackPanel Orientation="Horizontal" Height="30">
+                    <TextBlock Width="210"  Height="20" TextAlignment="Right" Text="Pressure Control Mode"
+                               Margin="0,2,6,0"/>
+                    <Button Height="20" Width="80"  FontSize="11" Content="Pressure" />
+                </StackPanel>
+                <StackPanel Orientation="Horizontal" Height="30">
+                    <TextBlock Width="210" Height="20" TextAlignment="Right" Text="Throttle Valve Control"
+                               Margin="0,2,6,0"/>
+                    <Button Height="20" Width="80" FontSize="11" Content="RUN"/>
+                </StackPanel>
             </StackPanel>
         </Grid>
         <!-- Susceptor Rotation Current Status -->
-        <Grid Grid.Row="4">
+        <Grid Grid.Row="5">
             <StackPanel Orientation="Vertical">
                 <StackPanel.Resources>
                     <Style TargetType="{x:Type TextBlock}">
@@ -222,7 +226,7 @@
             </StackPanel>
         </Grid>
         <!-- Source Valve Current Status -->
-        <Grid Grid.Row="5">
+        <Grid Grid.Row="6">
             <StackPanel Orientation="Vertical">
                 <StackPanel.Resources>
                     <Style TargetType="{x:Type TextBlock}">
@@ -322,7 +326,7 @@
             </StackPanel>
         </Grid>
         <!-- Line Heater Current Value -->
-        <Grid Grid.Row="6">
+        <Grid Grid.Row="7">
             <StackPanel Orientation="Vertical">
                 <StackPanel.Resources>
                     <Style TargetType="{x:Type TextBlock}">
@@ -369,7 +373,7 @@
             </StackPanel>
         </Grid>        
         <!-- Colling Water Current Value -->
-        <Grid Grid.Row="7">
+        <Grid Grid.Row="8">
             <StackPanel Orientation="Vertical">
             <StackPanel.Resources>
                 <Style TargetType="{x:Type TextBlock}">

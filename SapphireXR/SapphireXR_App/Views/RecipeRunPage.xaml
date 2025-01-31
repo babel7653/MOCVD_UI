@@ -8,7 +8,7 @@
       xmlns:control="clr-namespace:SapphireXR_App.Controls"
       xmlns:oxy="http://oxyplot.org/wpf"
       mc:Ignorable="d"
-      d:DesignHeight="1037" d:DesignWidth="1300"
+      d:DesignHeight="1016" d:DesignWidth="1300"
       Title="RecipeRunPage">
     <Page.Resources>
         <Style x:Key="BaseStyle" TargetType="{x:Type Control}">
@@ -49,7 +49,7 @@
                 </Setter.Value>
             </Setter>
             <Setter Property="Width" Value="20"/>
-            <Setter Property="Height" Value="90"/>
+            <Setter Property="Height" Value="80"/>
             <Setter Property="Padding" Value="3"/>
         </Style>
     </Page.Resources>
@@ -65,7 +65,6 @@
             </Grid.RowDefinitions>
 
             <Canvas Grid.Row="0" Background="{StaticResource RecipeRunPageBackground}" >
-
                 <!-- #Region 1. 메인 공급 배관 -->
                 <!-- Nitrogen Gas Line -->
                 <Polyline Points="165,54 165,65 40,65 40,266 965,266 965,278" Stroke="{StaticResource NitrogenLineColor}" StrokeThickness="2" />
@@ -307,12 +306,12 @@
                     <!-- 반응기 콘트롤러 -->
                     <Rectangle Canvas.Left="965" Canvas.Top="5" Width="330" Height="120" Stroke="#3d495a" StrokeThickness="2" />
 
-                <Label Canvas.Left="1018" Canvas.Top="50" Foreground="{StaticResource PrimaryFontColor}" Content="Temperature"
-                            Width="70" HorizontalContentAlignment="Center"/>
-                <Label Canvas.Left="1098" Canvas.Top="50" Foreground="{StaticResource PrimaryFontColor}" Content="Pressure"
-                            Width="70" HorizontalContentAlignment="Center"/>
-                <Label Canvas.Left="1178" Canvas.Top="50" Foreground="{StaticResource PrimaryFontColor}" Content="Rotation"
-                            Width="70" HorizontalContentAlignment="Center"/>
+                <Label Canvas.Left="1013" Canvas.Top="50" Foreground="{StaticResource PrimaryFontColor}" Content="Temperature"
+                            Width="80" HorizontalContentAlignment="Center"/>
+                <Label Canvas.Left="1093" Canvas.Top="50" Foreground="{StaticResource PrimaryFontColor}" Content="Pressure"
+                            Width="80" HorizontalContentAlignment="Center"/>
+                <Label Canvas.Left="1173" Canvas.Top="50" Foreground="{StaticResource PrimaryFontColor}" Content="Rotation"
+                            Width="80" HorizontalContentAlignment="Center"/>
                 <control:RecipeRunFlowController x:Name="susceptorTemperature" Canvas.Left="1018" Canvas.Top="72" ControllerID="Temperature" Type="Reactor" />
                 <control:RecipeRunFlowController x:Name="reactorPressure" Canvas.Left="1098" Canvas.Top="72" ControllerID="Pressure" Type="Reactor" />
                 <control:RecipeRunFlowController x:Name="susceptorRotation" Canvas.Left="1178" Canvas.Top="72" ControllerID="Rotation" Type="Reactor" />
@@ -409,6 +408,69 @@
                        Width="33" HorizontalContentAlignment="Center"/>
                 <Label Canvas.Left="922" Canvas.Top="407" Foreground="{StaticResource PrimaryFontColor}" Content="Vent"
                        Width="33" HorizontalContentAlignment="Center" />
+
+                <Label Canvas.Left="50" Canvas.Top="116" Foreground="{StaticResource PrimaryFontColor}" Content="V01"
+                       Width="40" HorizontalContentAlignment="Center"/>
+                <Label Canvas.Left="50" Canvas.Top="185" Foreground="{StaticResource PrimaryFontColor}" Content="V02"
+                        Width="40" HorizontalContentAlignment="Center"/>
+                <Label Canvas.Left="764" Canvas.Top="32" Foreground="{StaticResource PrimaryFontColor}" Content="V03"
+                        Width="40" HorizontalContentAlignment="Center"/>
+                <Label Canvas.Left="360" Canvas.Top="32" Foreground="{StaticResource PrimaryFontColor}" Content="V04"
+                        Width="40" HorizontalContentAlignment="Center"/>
+                <Label Canvas.Left="112" Canvas.Top="277" Foreground="{StaticResource PrimaryFontColor}" Content="V05"
+                        Width="40" HorizontalContentAlignment="Center"/>
+                <Label Canvas.Left="186" Canvas.Top="277" Foreground="{StaticResource PrimaryFontColor}" Content="V06"
+                        Width="40" HorizontalContentAlignment="Center"/>
+                <Label Canvas.Left="138" Canvas.Top="408" Foreground="{StaticResource PrimaryFontColor}" Content="V07"
+                        Width="40" HorizontalContentAlignment="Center"/>
+                <Label Canvas.Left="262" Canvas.Top="277" Foreground="{StaticResource PrimaryFontColor}" Content="V08"
+                        Width="40" HorizontalContentAlignment="Center"/>
+                <Label Canvas.Left="336" Canvas.Top="277" Foreground="{StaticResource PrimaryFontColor}" Content="V09"
+                        Width="40" HorizontalContentAlignment="Center"/>
+                <Label Canvas.Left="288" Canvas.Top="408" Foreground="{StaticResource PrimaryFontColor}" Content="V10"
+                        Width="40" HorizontalContentAlignment="Center"/>
+                <Label Canvas.Left="412" Canvas.Top="277" Foreground="{StaticResource PrimaryFontColor}" Content="V11"
+                        Width="40" HorizontalContentAlignment="Center"/>
+                <Label Canvas.Left="486" Canvas.Top="277" Foreground="{StaticResource PrimaryFontColor}" Content="V12"
+                        Width="40" HorizontalContentAlignment="Center"/>
+                <Label Canvas.Left="438" Canvas.Top="408" Foreground="{StaticResource PrimaryFontColor}" Content="V13"
+                        Width="40" HorizontalContentAlignment="Center"/>
+                <Label Canvas.Left="562" Canvas.Top="277" Foreground="{StaticResource PrimaryFontColor}" Content="V14"
+                        Width="40" HorizontalContentAlignment="Center"/>
+                <Label Canvas.Left="636" Canvas.Top="277" Foreground="{StaticResource PrimaryFontColor}" Content="V15"
+                        Width="40" HorizontalContentAlignment="Center"/>
+                <Label Canvas.Left="588" Canvas.Top="408" Foreground="{StaticResource PrimaryFontColor}" Content="V16"
+                        Width="40" HorizontalContentAlignment="Center"/>
+                <Label Canvas.Left="712" Canvas.Top="277" Foreground="{StaticResource PrimaryFontColor}" Content="V17"
+                        Width="40" HorizontalContentAlignment="Center"/>
+                <Label Canvas.Left="786" Canvas.Top="277" Foreground="{StaticResource PrimaryFontColor}" Content="V18"
+                        Width="40" HorizontalContentAlignment="Center"/>
+                <Label Canvas.Left="738" Canvas.Top="408" Foreground="{StaticResource PrimaryFontColor}" Content="V19"
+                        Width="40" HorizontalContentAlignment="Center"/>
+                <Label Canvas.Left="922" Canvas.Top="277" Foreground="{StaticResource PrimaryFontColor}" Content="V20"
+                        Width="40" HorizontalContentAlignment="Center"/>
+                <Label Canvas.Left="994" Canvas.Top="277" Foreground="{StaticResource PrimaryFontColor}" Content="V21"
+                        Width="40" HorizontalContentAlignment="Center"/>
+                <Label Canvas.Left="946" Canvas.Top="398" Foreground="{StaticResource PrimaryFontColor}" Content="V22"
+                        Width="40" HorizontalContentAlignment="Center"/>
+                <Label Canvas.Left="360" Canvas.Top="210" Foreground="{StaticResource PrimaryFontColor}" Content="V23"
+                        Width="40" HorizontalContentAlignment="Center"/>
+                <Label Canvas.Left="480" Canvas.Top="210" Foreground="{StaticResource PrimaryFontColor}" Content="V24"
+                        Width="40" HorizontalContentAlignment="Center"/>
+                <Label Canvas.Left="600" Canvas.Top="210" Foreground="{StaticResource PrimaryFontColor}" Content="V25"
+                        Width="40" HorizontalContentAlignment="Center"/>
+                <Label Canvas.Left="720" Canvas.Top="210" Foreground="{StaticResource PrimaryFontColor}" Content="V26"
+                        Width="40" HorizontalContentAlignment="Center"/>
+                <Label Canvas.Left="840" Canvas.Top="210" Foreground="{StaticResource PrimaryFontColor}" Content="V27"
+                        Width="40" HorizontalContentAlignment="Center"/>
+                <Label Canvas.Left="960" Canvas.Top="210" Foreground="{StaticResource PrimaryFontColor}" Content="V28"
+                        Width="40" HorizontalContentAlignment="Center"/>
+                <Label Canvas.Left="360" Canvas.Top="118" Foreground="{StaticResource PrimaryFontColor}" Content="V29"
+                        Width="40" HorizontalContentAlignment="Center"/>
+                <Label Canvas.Left="450" Canvas.Top="118" Foreground="{StaticResource PrimaryFontColor}" Content="V30"
+                        Width="40" HorizontalContentAlignment="Center"/>
+                <Label Canvas.Left="674" Canvas.Top="118" Foreground="{StaticResource PrimaryFontColor}" Content="V31"
+                        Width="40" HorizontalContentAlignment="Center"/>
                 <!--#endregion-->
                 
             </Canvas>
@@ -475,8 +537,7 @@
                 </Grid.Resources>
                 <!-- 수직형 탭 설정-->
                 <TabControl TabStripPlacement="Left">
-                   
-                    <TabItem Header="Reactor Data">
+                    <TabItem Header="Reactor">
                         <TabItem.Content>
                             <DataGrid  HorizontalScrollBarVisibility="Visible" AutoGenerateColumns="False" ItemsSource="{Binding CurrentRecipe.Recipes}">
                                 <b:Interaction.Triggers>
@@ -503,7 +564,7 @@
                         </TabItem.Content>
                     </TabItem>
 
-                    <TabItem Header="FlowData">
+                    <TabItem Header="Flow">
                         <TabItem.Content>
                             <DataGrid HorizontalScrollBarVisibility="Visible" AutoGenerateColumns="False" ItemsSource="{Binding CurrentRecipe.Recipes}">
                                 <b:Interaction.Triggers>
@@ -540,7 +601,7 @@
                         </TabItem.Content>
                     </TabItem>
                     
-                    <TabItem Header="ValveData">
+                    <TabItem Header="Valve">
                         <TabItem.Content>
                             <DataGrid HorizontalScrollBarVisibility="Visible" AutoGenerateColumns="False" ItemsSource="{Binding CurrentRecipe.Recipes}">
                                 <b:Interaction.Triggers>
@@ -579,7 +640,6 @@
                             </DataGrid>
                         </TabItem.Content>
                     </TabItem>
-
                 </TabControl>
             </Grid>
             <!--#endregion-->
@@ -607,5 +667,5 @@
             </Grid>
         </Grid>
     </Grid>
-    
+
 </Page>

@@ -41,10 +41,25 @@ GVL_IO.aInputState[2].13	:= P15_RotationOperation.bRotationCP;
 GVL_IO.aInputState[2].14	:= P16_CoverOperation.bCoverCP;
 GVL_IO.aInputState[2].15	:= P12_IQ_PLUS.bThrottleValveCP;
 GVL_IO.aInputState[3].1		:= P92_Maintenance.bLightCP;
-GVL_IO.aInputState[3].2		:= P92_Maintenance.bSMPS15CP;]]></ST>
+GVL_IO.aInputState[3].2		:= P92_Maintenance.bSMPS15CP;
+GVL_IO.aInputState[3].3		:= GVL_IO.aDigitalInputIO[6].0; // Line Heater
+GVL_IO.aInputState[3].4		:= GVL_IO.aDigitalInputIO[6].1;
+GVL_IO.aInputState[3].5		:= GVL_IO.aDigitalInputIO[6].2;
+GVL_IO.aInputState[3].6		:= GVL_IO.aDigitalInputIO[6].3;
+GVL_IO.aInputState[3].7		:= GVL_IO.aDigitalInputIO[6].4;
+GVL_IO.aInputState[3].8		:= GVL_IO.aDigitalInputIO[6].5;
+GVL_IO.aInputState[3].9		:= GVL_IO.aDigitalInputIO[6].6;
+GVL_IO.aInputState[3].10	:= GVL_IO.aDigitalInputIO[6].7;
+GVL_IO.aInputState[3].11	:= GVL_IO.aDigitalInputIO[8].0; // Thermal Bath Temp. Deviation Alarm
+GVL_IO.aInputState[3].12	:= GVL_IO.aDigitalInputIO[8].2;
+GVL_IO.aInputState[3].13	:= GVL_IO.aDigitalInputIO[8].4;
+GVL_IO.aInputState[3].14	:= GVL_IO.aDigitalInputIO[8].6;
+GVL_IO.aInputState[3].15	:= GVL_IO.aDigitalInputIO[9].0;
+GVL_IO.aInputState[4].1		:= GVL_IO.aDigitalInputIO[9].2;]]></ST>
     </Implementation>
     <LineIds Name="P70_Interface">
       <LineId Id="1" Count="36" />
+      <LineId Id="39" Count="13" />
     </LineIds>
   </POU>
 </TcPlcObject>

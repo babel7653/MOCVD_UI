@@ -5,7 +5,7 @@
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:SapphireXR_App.Views"
       mc:Ignorable="d" 
-      d:DesignHeight="1080" d:DesignWidth="300"
+      d:DesignHeight="1040" d:DesignWidth="300"
       Title="LeftDashboard">
     <Page.Resources>
         <Style TargetType="{x:Type TextBlock}">
@@ -17,17 +17,16 @@
 
     <Grid Background="{StaticResource DashboardBackground}">
         <Grid.RowDefinitions>
-            <RowDefinition Height="30"/>
-            <RowDefinition Height="*"/>
+            <RowDefinition Height="20"/>
+            <RowDefinition Height="120"/>
             <RowDefinition Height="40"/>
-            <RowDefinition Height="120"/>
-            <RowDefinition Height="150"/>
-            <RowDefinition Height="90"/>
             <RowDefinition Height="280"/>
-            <RowDefinition Height="120"/>
-            <RowDefinition Height="120"/>
+            <RowDefinition Height="170"/>
+            <RowDefinition Height="230"/>
+            <RowDefinition Height="90"/>
+            <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
-
+        <Grid Grid.Row="0" Background="Black"/>
         <!-- Machine Information -->
         <Grid Grid.Row="1">
             <StackPanel Orientation="Vertical">
@@ -62,7 +61,7 @@
                         <Setter Property="Width" Value="48"/>
                         <Setter Property="Height" Value="26"/>
                         <Setter Property="Stroke" Value="LightSlateGray"/>
-                       
+
                     </Style>
                 </StackPanel.Resources>
                 <Rectangle x:Name="SignalTowerRed" Fill="#ffa0a0"/>
@@ -73,159 +72,8 @@
                 <Rectangle x:Name="SignalTowerBuzzer" />
             </StackPanel>
         </Grid>
-        <!-- Susceptor Temperature Control Current Status -->
-        <Grid Grid.Row="3">
-            <StackPanel Orientation="Vertical">
-                <StackPanel.Resources>
-                    <Style TargetType="{x:Type TextBlock}">
-                        <Setter Property="Foreground" Value="{StaticResource PrimaryFontColor}"/>
-                        <Setter Property="FontSize" Value="11"/>
-                        <Setter Property="HorizontalAlignment" Value="Center"/>
-                     </Style>
-                    <Style TargetType="{x:Type TextBox}">
-                        <Setter Property="Width" Value="64"/>
-                        <Setter Property="Height" Value="22"/>
-                        <Setter Property="Foreground" Value="DarkBlue"/>
-                        <Setter Property="Background" Value="LightGray"/>
-                        <Setter Property="FontSize" Value="11"/>
-                        <Setter Property="HorizontalAlignment" Value="Center"/>
-                        <Setter Property="VerticalAlignment" Value="Center"/>
-                        <Setter Property="TextAlignment" Value="Right"/>
-                    </Style>
-                </StackPanel.Resources>
-                <TextBlock Foreground="DeepSkyBlue" FontSize="14" HorizontalAlignment="Center" >
-                <Bold>Heater Control</Bold></TextBlock>
-                <Line X1="5" Y1="0" X2="295" Y2="0" Stroke="DeepSkyBlue" StrokeThickness="2"/>
-                <Grid>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition/>
-                        <ColumnDefinition/>
-                        <ColumnDefinition/>
-                        <ColumnDefinition/>
-                    </Grid.ColumnDefinitions>
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="22"/>
-                        <RowDefinition/>
-                    </Grid.RowDefinitions>
-                    <TextBlock Grid.Column="0" Grid.Row="0" Text="Target Val." Margin="0,6,0,0"/>
-                    <TextBlock Grid.Column="1" Grid.Row="0" Text="Control Val." Margin="0,6,0,0"/>
-                    <TextBlock Grid.Column="2" Grid.Row="0" Text="Current Val." Margin="0,6,0,0" />
-                    <TextBlock Grid.Column="3" Grid.Row="0" Text="Power Rate" Margin="0,6,0,0"/>
-                    <TextBox x:Name="tbTargetTemp"  Grid.Column="0" Grid.Row="1"  Text="{Binding TargetTemp}"/>
-                    <TextBox x:Name="tbControlTemp"  Grid.Column="1" Grid.Row="1" Text="{Binding ControlTemp}"/>
-                    <TextBox x:Name="tbCurrentTemp"  Grid.Column="2" Grid.Row="1" Text="{Binding CurrentTemp}"/>
-                    <TextBox x:Name="tbPowerRateTemp" Grid.Column="3" Grid.Row="1" Text="{Binding PowerRateTemp}"/>
-                </Grid>
-                <Grid>
-                    <StackPanel Orientation="Horizontal" Height="30">
-                        <TextBlock Width="210"  Height="20" TextAlignment="Right" Text="Heater Control Mode"
-                                   Margin="0,2,6,0"/>
-                        <Button Height="20" Width="80" FontSize="11" Content="Power Rate" />
-                    </StackPanel>
-                </Grid>
-            </StackPanel>
-        </Grid>
-        <!-- Reactor Pressure Control Current Status -->
-        <Grid Grid.Row="4">
-            <StackPanel Orientation="Vertical">
-                <StackPanel.Resources>
-                    <Style TargetType="{x:Type TextBlock}">
-                        <Setter Property="Foreground" Value="{StaticResource PrimaryFontColor}"/>
-                        <Setter Property="FontSize" Value="11"/>
-                        <Setter Property="HorizontalAlignment" Value="Center"/>
-                        <Setter Property="VerticalAlignment" Value="Center"/>
-                    </Style>
-                    <Style TargetType="{x:Type TextBox}">
-                        <Setter Property="Width" Value="64"/>
-                        <Setter Property="Height" Value="22" />
-                        <Setter Property="Background" Value="LightGray"/>
-                        <Setter Property="Foreground" Value="DarkBlue"/>
-                        <Setter Property="FontSize" Value="11"/>
-                        <Setter Property="HorizontalAlignment" Value="Center"/>
-                        <Setter Property="VerticalAlignment" Value="Center"/>
-                        <Setter Property="TextAlignment" Value="Right"/>
-                    </Style>
-                </StackPanel.Resources>
-                <TextBlock Foreground="DeepSkyBlue" FontSize="14" HorizontalAlignment="Center">
-                <Bold>Pressure Control</Bold></TextBlock>
-                <Line X1="5" Y1="0" X2="295" Y2="0" Stroke="DeepSkyBlue" StrokeThickness="2"/>
-                <Grid>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition/>
-                        <ColumnDefinition/>
-                        <ColumnDefinition/>
-                        <ColumnDefinition/>
-                    </Grid.ColumnDefinitions>
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="22"/>
-                        <RowDefinition/>
-                    </Grid.RowDefinitions>
-                    <TextBlock Grid.Column="0" Grid.Row="0" Text="Target Val." Margin="0,6,0,0"/>
-                    <TextBlock Grid.Column="1" Grid.Row="0" Text="Control Val." Margin="0,6,0,0"/>
-                    <TextBlock Grid.Column="2" Grid.Row="0" Text="Current Val." Margin="0,6,0,0"/>
-                    <TextBlock Grid.Column="3" Grid.Row="0" Text="Position" Margin="0,6,0,0"/>
-                    <TextBox x:Name="tbTargetPress"  Grid.Column="0" Grid.Row="1"  Text="{Binding TargetPress}"/>
-                    <TextBox x:Name="tbControlPress"  Grid.Column="1" Grid.Row="1" Text="{Binding ControlPress}"/>
-                    <TextBox x:Name="tbCurrentPress"  Grid.Column="2" Grid.Row="1" Text="{Binding CurrentPress}"/>
-                    <TextBox x:Name="tbPosition" Grid.Column="3" Grid.Row="1" Text="{Binding ValvePosition}"/>
-                </Grid>
-                <StackPanel Orientation="Horizontal" Height="30">
-                    <TextBlock Width="210"  Height="20" TextAlignment="Right" Text="Pressure Control Mode"
-                               Margin="0,2,6,0"/>
-                    <Button Height="20" Width="80"  FontSize="11" Content="Pressure" />
-                </StackPanel>
-                <StackPanel Orientation="Horizontal" Height="30">
-                    <TextBlock Width="210" Height="20" TextAlignment="Right" Text="Throttle Valve Control"
-                               Margin="0,2,6,0"/>
-                    <Button Height="20" Width="80" FontSize="11" Content="RUN"/>
-                </StackPanel>
-            </StackPanel>
-        </Grid>
-        <!-- Susceptor Rotation Current Status -->
-        <Grid Grid.Row="5">
-            <StackPanel Orientation="Vertical">
-                <StackPanel.Resources>
-                    <Style TargetType="{x:Type TextBlock}">
-                        <Setter Property="Foreground" Value="{StaticResource PrimaryFontColor}"/>
-                        <Setter Property="FontSize" Value="11"/>
-                        <Setter Property="HorizontalAlignment" Value="Center"/>
-                    </Style>
-                    <Style TargetType="{x:Type TextBox}">
-                        <Setter Property="Width" Value="64"/>
-                        <Setter Property="Height" Value="22"/>
-                        <Setter Property="Background" Value="LightGray"/>
-                        <Setter Property="Foreground" Value="DarkBlue"/>
-                        <Setter Property="FontSize" Value="11"/>
-                        <Setter Property="HorizontalAlignment" Value="Center"/>
-                        <Setter Property="VerticalAlignment" Value="Center"/>
-                        <Setter Property="TextAlignment" Value="Right"/>
-                    </Style>
-                </StackPanel.Resources>
-                <TextBlock Foreground="DeepSkyBlue" FontSize="14" HorizontalAlignment="Center" Margin="2">
-                <Bold>Rotation Status</Bold></TextBlock>
-                <Line X1="5" Y1="0" X2="295" Y2="0" Stroke="DeepSkyBlue" StrokeThickness="2"/>
-                <Grid>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition/>
-                        <ColumnDefinition/>
-                        <ColumnDefinition/>
-                        <ColumnDefinition/>
-                    </Grid.ColumnDefinitions>
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="22"/>
-                        <RowDefinition/>
-                    </Grid.RowDefinitions>
-                    <TextBlock Grid.Column="0" Grid.Row="0" Text="Target Val." Margin="0,6,0,0"/>
-                    <TextBlock Grid.Column="1" Grid.Row="0" Text="Control Val." Margin="0,6,0,0"/>
-                    <TextBlock Grid.Column="2" Grid.Row="0" Text="Current Val." Margin="0,6,0,0"/>
-                    <TextBox x:Name="tbTargetRotation"  Grid.Column="0" Grid.Row="1"  Text="{Binding TargetRotation}"/>
-                    <TextBox x:Name="tbControlRotation"  Grid.Column="1" Grid.Row="1" Text="{Binding ControlRotation}"/>
-                    <TextBox x:Name="tbCurrentRotation"  Grid.Column="2" Grid.Row="1" Text="{Binding CurrentRotation}"/>
-                 </Grid>
-            </StackPanel>
-        </Grid>
         <!-- Source Valve Current Status -->
-        <Grid Grid.Row="6">
+        <Grid Grid.Row="3">
             <StackPanel Orientation="Vertical">
                 <StackPanel.Resources>
                     <Style TargetType="{x:Type TextBlock}">
@@ -324,8 +172,108 @@
                 </Grid>
             </StackPanel>
         </Grid>
+        <!-- Logical Interlock -->
+        <Grid Grid.Row="4">
+            <StackPanel Orientation="Vertical">
+                <StackPanel.Resources>
+                    <Style TargetType="{x:Type TextBlock}">
+                        <Setter Property="Foreground" Value="{StaticResource PrimaryFontColor}"/>
+                        <Setter Property="Height" Value="20"/>
+                    </Style>
+                    <Style TargetType="{x:Type Rectangle}">
+                        <Setter Property="Width" Value="10"/>
+                        <Setter Property="Height" Value="10"/>
+                        <Setter Property="Margin" Value="20,0,10,4"/>
+                    </Style>
+                </StackPanel.Resources>
+                <TextBlock Foreground="DeepSkyBlue" FontSize="14"  HorizontalAlignment="Center" >
+                <Bold>Logical Interlock</Bold></TextBlock>
+                <Line X1="5" Y1="0" X2="295" Y2="0" Stroke="DeepSkyBlue" StrokeThickness="2" Margin="2,2,2,8"/>
+                <StackPanel Orientation="Horizontal">
+                    <Rectangle Fill="Lime"/>
+                    <TextBlock Text="Reacipe Start Available"/>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal">
+                    <Rectangle Fill="Lime"/>
+                    <TextBlock Text="Reactor Open Available"/>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal">
+                    <Rectangle Fill="Lime"/>
+                    <TextBlock Text="Induction Heater can be Turned On"/>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal">
+                    <Rectangle Fill="Lime"/>
+                    <TextBlock Text="Vacuum Pump can be Turned On"/>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal">
+                    <Rectangle Fill="Lime"/>
+                    <TextBlock Text="Double O-Ring Vacuum State"/>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal">
+                    <Rectangle Fill="Lime"/>
+                    <TextBlock Text="Process Gas Available"/>
+                </StackPanel>
+
+            </StackPanel>
+
+        </Grid>
+        <!-- Hardwire Interlock -->
+        <Grid Grid.Row="5">
+            <StackPanel Orientation="Vertical">
+                <StackPanel.Resources>
+                    <Style TargetType="{x:Type TextBlock}">
+                        <Setter Property="Foreground" Value="{StaticResource PrimaryFontColor}"/>
+                        <Setter Property="Height" Value="20"/>
+                    </Style>
+                    <Style TargetType="{x:Type Rectangle}">
+                        <Setter Property="Width" Value="10"/>
+                        <Setter Property="Height" Value="10"/>
+                        <Setter Property="Margin" Value="20,0,10,4"/>
+                    </Style>
+                </StackPanel.Resources>
+                <TextBlock Foreground="DeepSkyBlue" FontSize="14"  HorizontalAlignment="Center"  TextAlignment="Center">
+                <Bold>Hardwire Interlock</Bold></TextBlock>
+                <Line X1="5" Y1="0" X2="295" Y2="0" Stroke="DeepSkyBlue" StrokeThickness="2" Margin="2,2,2,8"/>
+                <StackPanel Orientation="Horizontal">
+                    <Rectangle Fill="Lime" />
+                    <TextBlock Text="Maintenance Key"/>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal">
+                    <Rectangle Fill="Lime" />
+                    <TextBlock Text="Induction Heater"/>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal">
+                    <Rectangle Fill="Lime" />
+                    <TextBlock Text="Vacuum Pump"/>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal">
+                    <Rectangle Fill="Lime" />
+                    <TextBlock Text="Susceptor Motor"/>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal">
+                    <Rectangle Fill="Lime" />
+                    <TextBlock Text="Cooling Water"/>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal">
+                    <Rectangle Fill="Lime" />
+                    <TextBlock Text="Clean Dry Air"/>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal">
+                    <Rectangle Fill="Lime" />
+                    <TextBlock Text="Door - Reactor Cabinet"/>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal">
+                    <Rectangle Fill="Lime" />
+                    <TextBlock Text="Door - Gas Delivery Cabinet"/>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal">
+                    <Rectangle Fill="Lime" />
+                    <TextBlock Text="Door - Power Distribute Cabinet"/>
+                </StackPanel>
+            </StackPanel>
+        </Grid>
         <!-- Line Heater Current Value -->
-        <Grid Grid.Row="7">
+        <Grid Grid.Row="6">
             <StackPanel Orientation="Vertical">
                 <StackPanel.Resources>
                     <Style TargetType="{x:Type TextBlock}">
@@ -372,7 +320,7 @@
             </StackPanel>
         </Grid>        
         <!-- Colling Water Current Value -->
-        <Grid Grid.Row="8">
+        <Grid Grid.Row="7">
             <StackPanel Orientation="Vertical">
             <StackPanel.Resources>
                 <Style TargetType="{x:Type TextBlock}">

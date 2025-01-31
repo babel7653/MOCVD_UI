@@ -605,30 +605,37 @@
                                         <b:InvokeCommandAction Command="{Binding SelectionChangedCommand}" PassEventArgsToCommand="True"/>
                                     </b:EventTrigger>
                                 </b:Interaction.Triggers>
+                                <DataGrid.Resources>
+                                    <Style x:Key="gridColumnTextBox" TargetType="TextBox">
+                                        <Style.Setters>
+                                            <EventSetter Event="PreviewTextInput" Handler="TextBox_PreviewTextInput" />
+                                        </Style.Setters>
+                                    </Style>
+                                </DataGrid.Resources>
                                 <DataGrid.Columns>
                                     <DataGridTextColumn Header="No" Width="30" Binding="{Binding No}"  IsReadOnly="True" />
                                     <DataGridTextColumn Header="Name" Width="200" Binding="{Binding Name}" />
                                     <DataGridTextColumn Header="Ramp" Width="100" Binding="{Binding rTime}" />
                                     <DataGridTextColumn Header="Hold" Width="100" Binding="{Binding hTime}" />
-                                    <DataGridTextColumn Header="M01" Width="70" Binding="{Binding M01, UpdateSourceTrigger=LostFocus}"/>
-                                    <DataGridTextColumn Header="M02" Width="70" Binding="{Binding M02, UpdateSourceTrigger=LostFocus}" />
-                                    <DataGridTextColumn Header="M03" Width="70" Binding="{Binding M03, UpdateSourceTrigger=LostFocus}" />
-                                    <DataGridTextColumn Header="M04" Width="70" Binding="{Binding M04, UpdateSourceTrigger=LostFocus}" />
-                                    <DataGridTextColumn Header="M05" Width="70" Binding="{Binding M05, UpdateSourceTrigger=LostFocus}" />
-                                    <DataGridTextColumn Header="M06" Width="70" Binding="{Binding M06, UpdateSourceTrigger=LostFocus}" />
-                                    <DataGridTextColumn Header="M07" Width="70" Binding="{Binding M07, UpdateSourceTrigger=LostFocus}" />
-                                    <DataGridTextColumn Header="M08" Width="70" Binding="{Binding M08, UpdateSourceTrigger=LostFocus}" />
-                                    <DataGridTextColumn Header="M09" Width="70" Binding="{Binding M09, UpdateSourceTrigger=LostFocus}" />
-                                    <DataGridTextColumn Header="M10" Width="70" Binding="{Binding M10, UpdateSourceTrigger=LostFocus}" />
-                                    <DataGridTextColumn Header="M11" Width="70" Binding="{Binding M11, UpdateSourceTrigger=LostFocus}" />
-                                    <DataGridTextColumn Header="M12" Width="70" Binding="{Binding M12, UpdateSourceTrigger=LostFocus}" />
-                                    <DataGridTextColumn Header="M13" Width="70" Binding="{Binding M13, UpdateSourceTrigger=LostFocus}" />
-                                    <DataGridTextColumn Header="M14" Width="70" Binding="{Binding M14, UpdateSourceTrigger=LostFocus}" />
-                                    <DataGridTextColumn Header="M15" Width="70" Binding="{Binding M15, UpdateSourceTrigger=LostFocus}" />
-                                    <DataGridTextColumn Header="M16" Width="70" Binding="{Binding M16, UpdateSourceTrigger=LostFocus}" />
-                                    <DataGridTextColumn Header="M17" Width="70" Binding="{Binding M17, UpdateSourceTrigger=LostFocus}" />
-                                    <DataGridTextColumn Header="M18" Width="70" Binding="{Binding M18, UpdateSourceTrigger=LostFocus}" />
-                                    <DataGridTextColumn Header="M19" Width="70" Binding="{Binding M19, UpdateSourceTrigger=LostFocus}" />
+                                    <DataGridTextColumn Header="M01" Width="70" Binding="{Binding M01, UpdateSourceTrigger=LostFocus}" EditingElementStyle="{StaticResource gridColumnTextBox}" />
+                                    <DataGridTextColumn Header="M02" Width="70" Binding="{Binding M02, UpdateSourceTrigger=LostFocus}" EditingElementStyle="{StaticResource gridColumnTextBox}" />
+                                    <DataGridTextColumn Header="M03" Width="70" Binding="{Binding M03, UpdateSourceTrigger=LostFocus}" EditingElementStyle="{StaticResource gridColumnTextBox}" />
+                                    <DataGridTextColumn Header="M04" Width="70" Binding="{Binding M04, UpdateSourceTrigger=LostFocus}" EditingElementStyle="{StaticResource gridColumnTextBox}" />
+                                    <DataGridTextColumn Header="M05" Width="70" Binding="{Binding M05, UpdateSourceTrigger=LostFocus}" EditingElementStyle="{StaticResource gridColumnTextBox}" />
+                                    <DataGridTextColumn Header="M06" Width="70" Binding="{Binding M06, UpdateSourceTrigger=LostFocus}" EditingElementStyle="{StaticResource gridColumnTextBox}" />
+                                    <DataGridTextColumn Header="M07" Width="70" Binding="{Binding M07, UpdateSourceTrigger=LostFocus}" EditingElementStyle="{StaticResource gridColumnTextBox}" />
+                                    <DataGridTextColumn Header="M08" Width="70" Binding="{Binding M08, UpdateSourceTrigger=LostFocus}" EditingElementStyle="{StaticResource gridColumnTextBox}" />
+                                    <DataGridTextColumn Header="M09" Width="70" Binding="{Binding M09, UpdateSourceTrigger=LostFocus}" EditingElementStyle="{StaticResource gridColumnTextBox}" />
+                                    <DataGridTextColumn Header="M10" Width="70" Binding="{Binding M10, UpdateSourceTrigger=LostFocus}" EditingElementStyle="{StaticResource gridColumnTextBox}" />
+                                    <DataGridTextColumn Header="M11" Width="70" Binding="{Binding M11, UpdateSourceTrigger=LostFocus}" EditingElementStyle="{StaticResource gridColumnTextBox}" />
+                                    <DataGridTextColumn Header="M12" Width="70" Binding="{Binding M12, UpdateSourceTrigger=LostFocus}" EditingElementStyle="{StaticResource gridColumnTextBox}" />
+                                    <DataGridTextColumn Header="M13" Width="70" Binding="{Binding M13, UpdateSourceTrigger=LostFocus}" EditingElementStyle="{StaticResource gridColumnTextBox}" />
+                                    <DataGridTextColumn Header="M14" Width="70" Binding="{Binding M14, UpdateSourceTrigger=LostFocus}" EditingElementStyle="{StaticResource gridColumnTextBox}" />
+                                    <DataGridTextColumn Header="M15" Width="70" Binding="{Binding M15, UpdateSourceTrigger=LostFocus}" EditingElementStyle="{StaticResource gridColumnTextBox}" />
+                                    <DataGridTextColumn Header="M16" Width="70" Binding="{Binding M16, UpdateSourceTrigger=LostFocus}" EditingElementStyle="{StaticResource gridColumnTextBox}" />
+                                    <DataGridTextColumn Header="M17" Width="70" Binding="{Binding M17, UpdateSourceTrigger=LostFocus}" EditingElementStyle="{StaticResource gridColumnTextBox}" />
+                                    <DataGridTextColumn Header="M18" Width="70" Binding="{Binding M18, UpdateSourceTrigger=LostFocus}" EditingElementStyle="{StaticResource gridColumnTextBox}" />
+                                    <DataGridTextColumn Header="M19" Width="70" Binding="{Binding M19, UpdateSourceTrigger=LostFocus}" EditingElementStyle="{StaticResource gridColumnTextBox}" />
                                 </DataGrid.Columns>
                             </DataGrid>
                         </TabItem.Content>
@@ -648,30 +655,30 @@
                                 <DataGrid.Columns>
                                     <DataGridTextColumn Header="No" Width="30" Binding="{Binding No}"  IsReadOnly="True" />
                                     <DataGridTextColumn Header="Name" Width="200" Binding="{Binding Name}" />
-                                    <DataGridCheckBoxColumn Header="V01" Width="50" Binding="{Binding V01, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" ElementStyle="{StaticResource VavleOnOffCheckBox}" />
-                                    <DataGridCheckBoxColumn Header="V02" Width="50" Binding="{Binding V02, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" ElementStyle="{StaticResource VavleOnOffCheckBox}" />
-                                    <DataGridCheckBoxColumn Header="V03" Width="50" Binding="{Binding V03, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" ElementStyle="{StaticResource VavleOnOffCheckBox}" />
-                                    <DataGridCheckBoxColumn Header="V04" Width="50" Binding="{Binding V04, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" ElementStyle="{StaticResource VavleOnOffCheckBox}" />
-                                    <DataGridCheckBoxColumn Header="V05" Width="50" Binding="{Binding V05, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" ElementStyle="{StaticResource VavleOnOffCheckBox}" />
-                                    <DataGridCheckBoxColumn Header="V07" Width="50" Binding="{Binding V07, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" ElementStyle="{StaticResource VavleOnOffCheckBox}" />
-                                    <DataGridCheckBoxColumn Header="V08" Width="50" Binding="{Binding V08, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" ElementStyle="{StaticResource VavleOnOffCheckBox}" />
-                                    <DataGridCheckBoxColumn Header="V10" Width="50" Binding="{Binding V10, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" ElementStyle="{StaticResource VavleOnOffCheckBox}" />
-                                    <DataGridCheckBoxColumn Header="V11" Width="50" Binding="{Binding V11, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" ElementStyle="{StaticResource VavleOnOffCheckBox}" />
-                                    <DataGridCheckBoxColumn Header="V13" Width="50" Binding="{Binding V13, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" ElementStyle="{StaticResource VavleOnOffCheckBox}" />
-                                    <DataGridCheckBoxColumn Header="V14" Width="50" Binding="{Binding V14, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" ElementStyle="{StaticResource VavleOnOffCheckBox}" />
-                                    <DataGridCheckBoxColumn Header="V16" Width="50" Binding="{Binding V16, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" ElementStyle="{StaticResource VavleOnOffCheckBox}" />
-                                    <DataGridCheckBoxColumn Header="V17" Width="50" Binding="{Binding V17, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" ElementStyle="{StaticResource VavleOnOffCheckBox}" />
-                                    <DataGridCheckBoxColumn Header="V19" Width="50" Binding="{Binding V19, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" ElementStyle="{StaticResource VavleOnOffCheckBox}" />
-                                    <DataGridCheckBoxColumn Header="V20" Width="50" Binding="{Binding V20, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" ElementStyle="{StaticResource VavleOnOffCheckBox}" />
-                                    <DataGridCheckBoxColumn Header="V22" Width="50" Binding="{Binding V22, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" ElementStyle="{StaticResource VavleOnOffCheckBox}" />
-                                    <DataGridCheckBoxColumn Header="V23" Width="50" Binding="{Binding V23, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" ElementStyle="{StaticResource VavleOnOffCheckBox}" />
-                                    <DataGridCheckBoxColumn Header="V25" Width="50" Binding="{Binding V25, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" ElementStyle="{StaticResource VavleOnOffCheckBox}" />
-                                    <DataGridCheckBoxColumn Header="V26" Width="50" Binding="{Binding V26, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" ElementStyle="{StaticResource VavleOnOffCheckBox}" />
-                                    <DataGridCheckBoxColumn Header="V28" Width="50" Binding="{Binding V28, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" ElementStyle="{StaticResource VavleOnOffCheckBox}" />
-                                    <DataGridCheckBoxColumn Header="V29" Width="50" Binding="{Binding V29, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" ElementStyle="{StaticResource VavleOnOffCheckBox}" />
-                                    <DataGridCheckBoxColumn Header="V30" Width="50" Binding="{Binding V30, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" ElementStyle="{StaticResource VavleOnOffCheckBox}" />
-                                    <DataGridCheckBoxColumn Header="V31" Width="50" Binding="{Binding V31, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" ElementStyle="{StaticResource VavleOnOffCheckBox}" />
-                                    <DataGridCheckBoxColumn Header="V32" Width="50" Binding="{Binding V32, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" ElementStyle="{StaticResource VavleOnOffCheckBox}" />
+                                    <DataGridCheckBoxColumn Header="V01" Width="50" Binding="{Binding V01, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" EditingElementStyle="{StaticResource VavleOnOffCheckBox}" ElementStyle="{StaticResource VavleOnOffCheckBox}" />
+                                    <DataGridCheckBoxColumn Header="V02" Width="50" Binding="{Binding V02, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" EditingElementStyle="{StaticResource VavleOnOffCheckBox}" ElementStyle="{StaticResource VavleOnOffCheckBox}" />
+                                    <DataGridCheckBoxColumn Header="V03" Width="50" Binding="{Binding V03, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" EditingElementStyle="{StaticResource VavleOnOffCheckBox}" ElementStyle="{StaticResource VavleOnOffCheckBox}" />
+                                    <DataGridCheckBoxColumn Header="V04" Width="50" Binding="{Binding V04, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" EditingElementStyle="{StaticResource VavleOnOffCheckBox}" ElementStyle="{StaticResource VavleOnOffCheckBox}" />
+                                    <DataGridCheckBoxColumn Header="V05" Width="50" Binding="{Binding V05, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" EditingElementStyle="{StaticResource VavleOnOffCheckBox}" ElementStyle="{StaticResource VavleOnOffCheckBox}" />
+                                    <DataGridCheckBoxColumn Header="V07" Width="50" Binding="{Binding V07, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" EditingElementStyle="{StaticResource VavleOnOffCheckBox}" ElementStyle="{StaticResource VavleOnOffCheckBox}" />
+                                    <DataGridCheckBoxColumn Header="V08" Width="50" Binding="{Binding V08, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" EditingElementStyle="{StaticResource VavleOnOffCheckBox}" ElementStyle="{StaticResource VavleOnOffCheckBox}" />
+                                    <DataGridCheckBoxColumn Header="V10" Width="50" Binding="{Binding V10, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" EditingElementStyle="{StaticResource VavleOnOffCheckBox}" ElementStyle="{StaticResource VavleOnOffCheckBox}" />
+                                    <DataGridCheckBoxColumn Header="V11" Width="50" Binding="{Binding V11, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" EditingElementStyle="{StaticResource VavleOnOffCheckBox}" ElementStyle="{StaticResource VavleOnOffCheckBox}" />
+                                    <DataGridCheckBoxColumn Header="V13" Width="50" Binding="{Binding V13, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" EditingElementStyle="{StaticResource VavleOnOffCheckBox}" ElementStyle="{StaticResource VavleOnOffCheckBox}" />
+                                    <DataGridCheckBoxColumn Header="V14" Width="50" Binding="{Binding V14, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" EditingElementStyle="{StaticResource VavleOnOffCheckBox}" ElementStyle="{StaticResource VavleOnOffCheckBox}" />
+                                    <DataGridCheckBoxColumn Header="V16" Width="50" Binding="{Binding V16, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" EditingElementStyle="{StaticResource VavleOnOffCheckBox}" ElementStyle="{StaticResource VavleOnOffCheckBox}" />
+                                    <DataGridCheckBoxColumn Header="V17" Width="50" Binding="{Binding V17, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" EditingElementStyle="{StaticResource VavleOnOffCheckBox}" ElementStyle="{StaticResource VavleOnOffCheckBox}" />
+                                    <DataGridCheckBoxColumn Header="V19" Width="50" Binding="{Binding V19, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" EditingElementStyle="{StaticResource VavleOnOffCheckBox}" ElementStyle="{StaticResource VavleOnOffCheckBox}" />
+                                    <DataGridCheckBoxColumn Header="V20" Width="50" Binding="{Binding V20, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" EditingElementStyle="{StaticResource VavleOnOffCheckBox}" ElementStyle="{StaticResource VavleOnOffCheckBox}" />
+                                    <DataGridCheckBoxColumn Header="V22" Width="50" Binding="{Binding V22, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" EditingElementStyle="{StaticResource VavleOnOffCheckBox}" ElementStyle="{StaticResource VavleOnOffCheckBox}" />
+                                    <DataGridCheckBoxColumn Header="V23" Width="50" Binding="{Binding V23, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" EditingElementStyle="{StaticResource VavleOnOffCheckBox}" ElementStyle="{StaticResource VavleOnOffCheckBox}" />
+                                    <DataGridCheckBoxColumn Header="V25" Width="50" Binding="{Binding V25, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" EditingElementStyle="{StaticResource VavleOnOffCheckBox}" ElementStyle="{StaticResource VavleOnOffCheckBox}" />
+                                    <DataGridCheckBoxColumn Header="V26" Width="50" Binding="{Binding V26, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" EditingElementStyle="{StaticResource VavleOnOffCheckBox}" ElementStyle="{StaticResource VavleOnOffCheckBox}" />
+                                    <DataGridCheckBoxColumn Header="V28" Width="50" Binding="{Binding V28, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" EditingElementStyle="{StaticResource VavleOnOffCheckBox}" ElementStyle="{StaticResource VavleOnOffCheckBox}" />
+                                    <DataGridCheckBoxColumn Header="V29" Width="50" Binding="{Binding V29, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" EditingElementStyle="{StaticResource VavleOnOffCheckBox}" ElementStyle="{StaticResource VavleOnOffCheckBox}" />
+                                    <DataGridCheckBoxColumn Header="V30" Width="50" Binding="{Binding V30, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" EditingElementStyle="{StaticResource VavleOnOffCheckBox}" ElementStyle="{StaticResource VavleOnOffCheckBox}" />
+                                    <DataGridCheckBoxColumn Header="V31" Width="50" Binding="{Binding V31, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" EditingElementStyle="{StaticResource VavleOnOffCheckBox}" ElementStyle="{StaticResource VavleOnOffCheckBox}" />
+                                    <DataGridCheckBoxColumn Header="V32" Width="50" Binding="{Binding V32, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" EditingElementStyle="{StaticResource VavleOnOffCheckBox}" ElementStyle="{StaticResource VavleOnOffCheckBox}" />
                                 </DataGrid.Columns>
                             </DataGrid>
                         </TabItem.Content>

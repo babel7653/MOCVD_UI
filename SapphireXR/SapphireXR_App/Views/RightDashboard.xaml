@@ -18,10 +18,10 @@
     <Grid Background="{StaticResource DashboardBackground}">
         <Grid.RowDefinitions>
             <RowDefinition Height="30"/>
-            <RowDefinition Height="220"/>
-            <RowDefinition Height="240"/>
+            <RowDefinition Height="210"/>
+            <RowDefinition Height="210"/>
+            <RowDefinition Height="280"/>
             <RowDefinition Height="*"/>
-            <RowDefinition Height="240"/>
         </Grid.RowDefinitions>
         
         <!-- User Status-->
@@ -53,24 +53,44 @@
                 <StackPanel.Resources>
                     <Style TargetType="{x:Type TextBlock}">
                         <Setter Property="Foreground" Value="{StaticResource PrimaryFontColor}"/>
-                        <Setter Property="FontSize" Value="11"/>
-                        <Setter Property="HorizontalAlignment" Value="Center"/>
+                        <Setter Property="Height" Value="24"/>
                     </Style>
-                    <Style TargetType="{x:Type TextBox}">
-                        <Setter Property="Width" Value="64"/>
-                        <Setter Property="Height" Value="22"/>
-                        <Setter Property="Foreground" Value="DarkBlue"/>
-                        <Setter Property="Background" Value="LightGray"/>
-                        <Setter Property="FontSize" Value="11"/>
-                        <Setter Property="HorizontalAlignment" Value="Center"/>
-                        <Setter Property="VerticalAlignment" Value="Center"/>
-                        <Setter Property="TextAlignment" Value="Right"/>
+                    <Style TargetType="{x:Type Rectangle}">
+                        <Setter Property="Width" Value="10"/>
+                        <Setter Property="Height" Value="10"/>
+                        <Setter Property="Margin" Value="20,0,10,8"/>
                     </Style>
                 </StackPanel.Resources>
                 <TextBlock Foreground="DeepSkyBlue" FontSize="14"  HorizontalAlignment="Center" >
                 <Bold>Logical Interlock</Bold></TextBlock>
                 <Line X1="5" Y1="0" X2="295" Y2="0" Stroke="DeepSkyBlue" StrokeThickness="2" Margin="2,2,2,8"/>
+                <StackPanel Orientation="Horizontal">
+                    <Rectangle Fill="Lime"/>
+                    <TextBlock Text="Reacipe Start Available"/>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal">
+                    <Rectangle Fill="Lime"/>
+                    <TextBlock Text="Reactor Open Available"/>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal">
+                    <Rectangle Fill="Lime"/>
+                    <TextBlock Text="Induction Heater can be Turned On"/>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal">
+                    <Rectangle Fill="Lime"/>
+                    <TextBlock Text="Vacuum Pump can be Turned On"/>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal">
+                    <Rectangle Fill="Lime"/>
+                    <TextBlock Text="Double O-Ring Vacuum State"/>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal">
+                    <Rectangle Fill="Lime"/>
+                    <TextBlock Text="Process Gas Available"/>
+                </StackPanel>
+
             </StackPanel>
+
         </Grid>
         <!-- Hardwire Interlock -->
         <Grid Grid.Row="3">
@@ -83,7 +103,7 @@
                     <Style TargetType="{x:Type Rectangle}">
                         <Setter Property="Width" Value="10"/>
                         <Setter Property="Height" Value="10"/>
-                        <Setter Property="Margin" Value="20,2,10,2"/>
+                        <Setter Property="Margin" Value="20,0,10,8"/>
                     </Style>
                 </StackPanel.Resources>
                 <TextBlock Foreground="DeepSkyBlue" FontSize="14"  HorizontalAlignment="Center"  TextAlignment="Center">
@@ -115,10 +135,6 @@
                 </StackPanel>
                 <StackPanel Orientation="Horizontal">
                     <Rectangle Fill="Lime" />
-                    <TextBlock Text="Clean Dry Air"/>
-                </StackPanel>
-                <StackPanel Orientation="Horizontal">
-                    <Rectangle Fill="Lime" />
                     <TextBlock Text="Door - Reactor Cabinet"/>
                 </StackPanel>
                 <StackPanel Orientation="Horizontal">
@@ -131,104 +147,30 @@
                 </StackPanel>
             </StackPanel>
         </Grid>
-        <!-- Device Information -->
+        <!-- Event Log -->
         <Grid Grid.Row="4" >
-            
-            <Grid.Resources>
-                <Style x:Key="Analog Device Stroke" TargetType="Rectangle">
-                    <Setter Property="Stroke" Value="Black"/>
-                    <Setter Property="StrokeThickness" Value="1"/>
-                </Style>
-            </Grid.Resources>
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="120"/>
-                <ColumnDefinition/>
-
-            </Grid.ColumnDefinitions>
-            <Grid.RowDefinitions>
-                <RowDefinition Height="25"/>
-                <RowDefinition/>
-                <RowDefinition/>
-                <RowDefinition/>
-                <RowDefinition/>
-                <RowDefinition/>
-                <RowDefinition/>
-                <RowDefinition/>
-                <RowDefinition/>
-            </Grid.RowDefinitions>
-            <Rectangle Grid.ColumnSpan="3" Style="{StaticResource Analog Device Stroke}" Fill="LightGray"/>
-            <TextBlock Grid.ColumnSpan="3" Grid.Row="0" FontSize="14" HorizontalAlignment="Center" VerticalAlignment="Center">
-                        Analog Device Information
-            </TextBlock>
-            <!-- Type of Value -->
-            <Rectangle Grid.Column="0" Grid.Row="1" Style="{StaticResource Analog Device Stroke}"/>
-            <TextBlock Grid.Column="0" Grid.Row="1" FontSize="12" VerticalAlignment="Center" Margin="5,0,0,0">
-                        Type of Value
-            </TextBlock>
-            <Rectangle Grid.Column="0" Grid.Row="2" Style="{StaticResource Analog Device Stroke}" Fill="Lavender"/>
-            <TextBlock Grid.Column="0" Grid.Row="2" FontSize="12" VerticalAlignment="Center" Margin="5,0,0,0" >
-                        Current Value
-            </TextBlock>
-            <Rectangle Grid.Column="0" Grid.Row="3" Style="{StaticResource Analog Device Stroke}"/>
-            <TextBlock Grid.Column="0" Grid.Row="3" FontSize="12" VerticalAlignment="Center" Margin="5,0,0,0">
-                        Setting Value
-            </TextBlock>
-            <Rectangle Grid.Column="0" Grid.Row="4" Style="{StaticResource Analog Device Stroke}" Fill="Lavender"/>
-            <TextBlock Grid.Column="0" Grid.Row="4" FontSize="12" VerticalAlignment="Center" Margin="5,0,0,0" >
-                        Max. Value
-            </TextBlock>
-            <Rectangle Grid.Column="0" Grid.Row="5" Style="{StaticResource Analog Device Stroke}"/>
-            <TextBlock Grid.Column="0" Grid.Row="5" FontSize="12" VerticalAlignment="Center" Margin="5,0,0,0">
-                        Alarm Deviation
-            </TextBlock>
-            <Rectangle Grid.Column="0" Grid.Row="6" Style="{StaticResource Analog Device Stroke}" Fill="Lavender"/>
-            <TextBlock Grid.Column="0" Grid.Row="6" FontSize="12" VerticalAlignment="Center" Margin="5,0,0,0">
-                        Warning Deviation
-            </TextBlock>
-            <Rectangle Grid.Column="0" Grid.Row="7" Style="{StaticResource Analog Device Stroke}"/>
-            <TextBlock Grid.Column="0" Grid.Row="7" FontSize="12" VerticalAlignment="Center" Margin="5,0,0,0">
-                        Ramping Time
-            </TextBlock>
-            <Rectangle Grid.Column="0" Grid.Row="8" Style="{StaticResource Analog Device Stroke}" Fill="Lavender"/>
-            <TextBlock Grid.Column="0" Grid.Row="8" FontSize="12" VerticalAlignment="Center" Margin="5,0,0,0">
-                        Note
-            </TextBlock>
-            <!-- Analog Value -->
-            <Rectangle Grid.Column="1" Grid.Row="1" Style="{StaticResource Analog Device Stroke}"/>
-            <TextBlock Grid.Column="1" Grid.Row="1" FontSize="12" VerticalAlignment="Center" Margin="5,0,0,0">
-
-            </TextBlock>
-            <Rectangle Grid.Column="1" Grid.Row="2" Style="{StaticResource Analog Device Stroke}" Fill="Lavender"/>
-            <TextBlock Grid.Column="1" Grid.Row="2" FontSize="12" VerticalAlignment="Center" Margin="5,0,0,0" >
-
-            </TextBlock>
-            <Rectangle Grid.Column="1" Grid.Row="3" Style="{StaticResource Analog Device Stroke}"/>
-            <TextBlock Grid.Column="1" Grid.Row="3" FontSize="12" VerticalAlignment="Center" Margin="5,0,0,0">
-
-            </TextBlock>
-            <Rectangle Grid.Column="1" Grid.Row="4" Style="{StaticResource Analog Device Stroke}" Fill="Lavender"/>
-            <TextBlock Grid.Column="1" Grid.Row="4" FontSize="12" VerticalAlignment="Center" Margin="5,0,0,0" >
-
-            </TextBlock>
-            <Rectangle Grid.Column="1" Grid.Row="5" Style="{StaticResource Analog Device Stroke}"/>
-            <TextBlock Grid.Column="1" Grid.Row="5" FontSize="12" VerticalAlignment="Center" Margin="5,0,0,0">
-
-            </TextBlock>
-            <Rectangle Grid.Column="1" Grid.Row="6" Style="{StaticResource Analog Device Stroke}" Fill="Lavender"/>
-            <TextBlock Grid.Column="1" Grid.Row="6" FontSize="12" VerticalAlignment="Center" Margin="5,0,0,0">
-
-            </TextBlock>
-            <Rectangle Grid.Column="1" Grid.Row="7" Style="{StaticResource Analog Device Stroke}"/>
-            <TextBlock Grid.Column="1" Grid.Row="7" FontSize="12" VerticalAlignment="Center" Margin="5,0,0,0">
-
-            </TextBlock>
-            <Rectangle Grid.Column="1" Grid.Row="8" Style="{StaticResource Analog Device Stroke}" Fill="Lavender"/>
-            <TextBlock Grid.Column="1" Grid.Row="8" FontSize="12" VerticalAlignment="Center" Margin="5,0,0,0">
-
-            </TextBlock>
-
+            <StackPanel Orientation="Vertical">
+                <StackPanel.Resources>
+                    <Style TargetType="{x:Type TextBlock}">
+                        <Setter Property="Foreground" Value="{StaticResource PrimaryFontColor}"/>
+                        <Setter Property="Height" Value="24"/>
+                    </Style>
+                </StackPanel.Resources>
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Foreground="DeepSkyBlue" FontSize="14" Width="120" HorizontalAlignment="Center" Margin="100,0,0,0">
+                    <Bold>Event Log</Bold></TextBlock>
+                    <Button Height="20" Width="80" Content="Clear"/>
+                </StackPanel>
+                <Line X1="5" Y1="0" X2="295" Y2="0" Stroke="DeepSkyBlue" StrokeThickness="2" Margin="2,2,2,8"/>
+                <DataGrid x:Name="dgEventLog">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="Type" Binding="{Binding Type}" Width="70"/>
+                        <DataGridTextColumn Header="Message" Binding="{Binding Message}" Width="160"/>
+                        <DataGridTextColumn Header="Date/Time" Binding="{Binding Date}" Width="70"/>
+                     </DataGrid.Columns>
+                    
+                </DataGrid>
+            </StackPanel>
         </Grid>
-
     </Grid>
-
 </Page>

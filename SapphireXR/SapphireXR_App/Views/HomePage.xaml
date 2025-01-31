@@ -7,7 +7,7 @@
       mc:Ignorable="d" 
       xmlns:control="clr-namespace:SapphireXR_App.Controls"
       xmlns:oxy="http://oxyplot.org/wpf"
-      d:DesignHeight="1037" d:DesignWidth="1300"
+      d:DesignHeight="1016" d:DesignWidth="1300"
       Title="HomePage"
       x:Name="homePage">
     <Page.Resources>
@@ -36,8 +36,6 @@
                     <MenuItem Header="{Binding ShowValveLabelStr}" Command="{Binding ShowValveLabelCommand}" CommandParameter="{Binding Header,  RelativeSource={RelativeSource Mode=Self}}"/>
                 </ContextMenu>
             </Canvas.ContextMenu>
-            <Rectangle Stroke="White" StrokeThickness="1" Width="1300" Height="795"/>
-
             <!-- #Region 1. 메인 공급 가스배관-->
             <!-- Nitrogen Gas Line -->
             <Polyline Points="165,54 165,65 60,65 60,475 965,475 965,487" Stroke="{StaticResource NitrogenLineColor}" StrokeThickness="2" />

@@ -7,6 +7,7 @@
       xmlns:behaviors="clr-namespace:SapphireXR_App.Behavior"
       xmlns:local="clr-namespace:SapphireXR_App.Views"
       xmlns:control="clr-namespace:SapphireXR_App.Controls"
+      xmlns:i="clr-namespace:Microsoft.Xaml.Behaviors;assembly=Microsoft.Xaml.Behaviors"
       mc:Ignorable="d" 
       d:DesignHeight="836" d:DesignWidth="1300"
       Title="RecipeEditPage">
@@ -63,7 +64,7 @@
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
 
-            <Canvas Grid.Row="0" Background="{StaticResource RecipeEditPageBackground}" >
+            <Canvas Grid.Row="0" Background="{StaticResource RecipeEditPageBackground}" IsEnabled="{Binding ControlUIEnabled}">
 
                 <!-- #Region 1. 메인 공급 배관 -->
                 <!-- Nitrogen Gas Line -->
@@ -318,52 +319,50 @@
                 <!--#endregion-->
 
                 <!-- #Region 4. 가스제어용 밸브 -->
-                <control:SwitchingValve  x:Name="V01" Canvas.Left="58" Canvas.Top="122" ValveID="V01" 
-                    RenderTransformOrigin="0,0">
+                <control:SwitchingValve  x:Name="V01" Canvas.Left="58" Canvas.Top="122" ValveID="V01"  Target="CurrentRecipeStep"  RenderTransformOrigin="0,0">
                     <control:SwitchingValve.RenderTransform>
                         <TransformGroup>
                             <RotateTransform Angle="270"/>
                         </TransformGroup>
                     </control:SwitchingValve.RenderTransform>
                 </control:SwitchingValve>
-                <control:SwitchingValve x:Name="V02" Canvas.Left="58" Canvas.Top="191" ValveID="V02"
-                    RenderTransformOrigin="0,0">
+                <control:SwitchingValve x:Name="V02" Canvas.Left="58" Canvas.Top="191" ValveID="V02"  Target="CurrentRecipeStep"  RenderTransformOrigin="0,0">
                     <control:SwitchingValve.RenderTransform>
                         <TransformGroup>
                             <RotateTransform Angle="270"/>
                         </TransformGroup>
                     </control:SwitchingValve.RenderTransform>
                 </control:SwitchingValve>
-                <control:SwitchingValve x:Name="V03" Canvas.Left="723" Canvas.Top="33" ValveID="V03"/>
-                <control:SwitchingValve x:Name="V04" Canvas.Left="319" Canvas.Top="33" ValveID="V04"/>
-                <control:SwitchingValve x:Name="V05" Canvas.Left="145" Canvas.Top="278" ValveID="V05"/>
-                <control:SwitchingValve x:Name="V08" Canvas.Left="295" Canvas.Top="278" ValveID="V08"/>
-                <control:SwitchingValve x:Name="V11" Canvas.Left="445" Canvas.Top="278" ValveID="V11"/>
-                <control:SwitchingValve x:Name="V14" Canvas.Left="595" Canvas.Top="278" ValveID="V14"/>
-                <control:SwitchingValve x:Name="V17" Canvas.Left="745" Canvas.Top="278" ValveID="V17" />
-                <control:SwitchingValve x:Name="V20" Canvas.Left="953" Canvas.Top="278" ValveID="V20" />
-                <control:SwitchingValve x:Name="V32" Canvas.Left="1105" Canvas.Top="400" ValveID="V32"/>
-                <control:SwitchingValve x:Name="V23" Canvas.Left="319" Canvas.Top="211" ValveID="V23" />
-                <control:SwitchingValve x:Name="V24" Canvas.Left="439" Canvas.Top="211" ValveID="V24" />
-                <control:SwitchingValve x:Name="V25" Canvas.Left="559" Canvas.Top="211" ValveID="V25" />
-                <control:SwitchingValve x:Name="V26" Canvas.Left="679" Canvas.Top="211" ValveID="V26" />
-                <control:SwitchingValve x:Name="V27" Canvas.Left="799" Canvas.Top="211" ValveID="V27" />
-                <control:SwitchingValve x:Name="V28" Canvas.Left="919" Canvas.Top="211" ValveID="V28" />
-                <control:SwitchingValve x:Name="V29" Canvas.Left="319" Canvas.Top="119" ValveID="V29" />
-                <control:SwitchingValve x:Name="V30" Canvas.Left="409" Canvas.Top="119" ValveID="V30" />
-                <control:SwitchingValve x:Name="V31" Canvas.Left="633" Canvas.Top="119" ValveID="V31" />
+                <control:SwitchingValve x:Name="V03" Canvas.Left="723" Canvas.Top="33" ValveID="V03" Target="CurrentRecipeStep" />
+                <control:SwitchingValve x:Name="V04" Canvas.Left="319" Canvas.Top="33" ValveID="V04" Target="CurrentRecipeStep" />
+                <control:SwitchingValve x:Name="V05" Canvas.Left="145" Canvas.Top="278" ValveID="V05" Target="CurrentRecipeStep" />
+                <control:SwitchingValve x:Name="V08" Canvas.Left="295" Canvas.Top="278" ValveID="V08" Target="CurrentRecipeStep" />
+                <control:SwitchingValve x:Name="V11" Canvas.Left="445" Canvas.Top="278" ValveID="V11" Target="CurrentRecipeStep" />
+                <control:SwitchingValve x:Name="V14" Canvas.Left="595" Canvas.Top="278" ValveID="V14" Target="CurrentRecipeStep" />
+                <control:SwitchingValve x:Name="V17" Canvas.Left="745" Canvas.Top="278" ValveID="V17" Target="CurrentRecipeStep" />
+                <control:SwitchingValve x:Name="V20" Canvas.Left="953" Canvas.Top="278" ValveID="V20" Target="CurrentRecipeStep" />
+                <control:SwitchingValve x:Name="V32" Canvas.Left="1105" Canvas.Top="400" ValveID="V32" Target="CurrentRecipeStep" />
+                <control:SwitchingValve x:Name="V23" Canvas.Left="319" Canvas.Top="211" ValveID="V23" Target="CurrentRecipeStep" />
+                <control:SwitchingValve x:Name="V24" Canvas.Left="439" Canvas.Top="211" ValveID="V24" Target="CurrentRecipeStep" />
+                <control:SwitchingValve x:Name="V25" Canvas.Left="559" Canvas.Top="211" ValveID="V25" Target="CurrentRecipeStep" />
+                <control:SwitchingValve x:Name="V26" Canvas.Left="679" Canvas.Top="211" ValveID="V26" Target="CurrentRecipeStep" />
+                <control:SwitchingValve x:Name="V27" Canvas.Left="799" Canvas.Top="211" ValveID="V27" Target="CurrentRecipeStep" />
+                <control:SwitchingValve x:Name="V28" Canvas.Left="919" Canvas.Top="211" ValveID="V28" Target="CurrentRecipeStep" />
+                <control:SwitchingValve x:Name="V29" Canvas.Left="319" Canvas.Top="119" ValveID="V29" Target="CurrentRecipeStep" />
+                <control:SwitchingValve x:Name="V30" Canvas.Left="409" Canvas.Top="119" ValveID="V30" Target="CurrentRecipeStep" />
+                <control:SwitchingValve x:Name="V31" Canvas.Left="633" Canvas.Top="119" ValveID="V31" Target="CurrentRecipeStep" />
 
-                <control:BypassValve x:Name="V07" Canvas.Left="172" Canvas.Top="400" ValveID="V07" />
-                <control:BypassValve x:Name="V10" Canvas.Left="322" Canvas.Top="400" ValveID="V10" />
-                <control:BypassValve x:Name="V13" Canvas.Left="472" Canvas.Top="400" ValveID="V13" />
-                <control:BypassValve x:Name="V16" Canvas.Left="622" Canvas.Top="400" ValveID="V16" />
-                <control:BypassValve x:Name="V19" Canvas.Left="772" Canvas.Top="400" ValveID="V19" />
-                <control:BypassValve x:Name="V22" Canvas.Left="980" Canvas.Top="400" ValveID="V22" />
+                <control:BypassValve x:Name="V07" Canvas.Left="172" Canvas.Top="400" ValveID="V07" Target="CurrentRecipeStep" />
+                <control:BypassValve x:Name="V10" Canvas.Left="322" Canvas.Top="400" ValveID="V10" Target="CurrentRecipeStep" />
+                <control:BypassValve x:Name="V13" Canvas.Left="472" Canvas.Top="400" ValveID="V13" Target="CurrentRecipeStep" />
+                <control:BypassValve x:Name="V16" Canvas.Left="622" Canvas.Top="400" ValveID="V16" Target="CurrentRecipeStep" />
+                <control:BypassValve x:Name="V19" Canvas.Left="772" Canvas.Top="400" ValveID="V19" Target="CurrentRecipeStep" />
+                <control:BypassValve x:Name="V22" Canvas.Left="980" Canvas.Top="400" ValveID="V22" Target="CurrentRecipeStep" />
                 <!--#endregion-->
 
                 <!-- #Region 5. 가스제어(MFC, EPC) -->
                 <!-- MFC -->
-                <control:RecipeEditFlowController x:Name="MFC01" Canvas.Left="106" Canvas.Top="192" ControllerID="MFC01" Type="MFC" />
+                <control:RecipeEditFlowController x:Name="MFC01" Canvas.Left="106" Canvas.Top="192" ControllerID="MFC01" Type="MFC"/>
                 <control:RecipeEditFlowController x:Name="MFC02" Canvas.Left="106" Canvas.Top="128" ControllerID="MFC02" Type="MFC" />
                 <control:RecipeEditFlowController x:Name="MFC03" Canvas.Left="398" Canvas.Top="73" ControllerID="MFC03" Type="MFC" />
                 <control:RecipeEditFlowController x:Name="MFC04" Canvas.Left="308" Canvas.Top="73" ControllerID="MFC04" Type="MFC" />
@@ -522,9 +521,9 @@
                                     <DataGridTextColumn Header="Hold" Width="100" Binding="{Binding hTime}" />
                                     <DataGridTextColumn Header="Loop" Width="100" Binding="{Binding Loop}" />
                                     <DataGridTextColumn Header="Jump" Width="100" Binding="{Binding Jump}" />
-                                    <DataGridTextColumn Header="Susceptor Temp." Width="100" Binding="{Binding sTemp}" />
-                                    <DataGridTextColumn Header="Reactor Press." Width="100" Binding="{Binding rPress}" />
-                                    <DataGridTextColumn Header="Sus. Rotation" Width="100" Binding="{Binding sRotation}" />
+                                    <DataGridTextColumn Header="Susceptor Temp." Width="100" Binding="{Binding STemp}" />
+                                    <DataGridTextColumn Header="Reactor Press." Width="100" Binding="{Binding RPress}" />
+                                    <DataGridTextColumn Header="Sus. Rotation" Width="100" Binding="{Binding SRotation}" />
                                     <DataGridTextColumn Header="Compare Temp." Width="100" Binding="{Binding cTemp}" />
                                 </DataGrid.Columns>
                             </DataGrid>
@@ -548,25 +547,25 @@
                                     <DataGridTextColumn Header="Name" Width="200" Binding="{Binding Name}" />
                                     <DataGridTextColumn Header="Ramp" Width="100" Binding="{Binding rTime}" />
                                     <DataGridTextColumn Header="Hold" Width="100" Binding="{Binding hTime}" />
-                                    <DataGridTextColumn Header="M01" Width="70" Binding="{Binding M01}"/>
-                                    <DataGridTextColumn Header="M02" Width="70" Binding="{Binding M02}" />
-                                    <DataGridTextColumn Header="M03" Width="70" Binding="{Binding M03}" />
-                                    <DataGridTextColumn Header="M04" Width="70" Binding="{Binding M04}" />
-                                    <DataGridTextColumn Header="M05" Width="70" Binding="{Binding M05}" />
-                                    <DataGridTextColumn Header="M06" Width="70" Binding="{Binding M06}" />
-                                    <DataGridTextColumn Header="M07" Width="70" Binding="{Binding M07}" />
-                                    <DataGridTextColumn Header="M08" Width="70" Binding="{Binding M08}" />
-                                    <DataGridTextColumn Header="M09" Width="70" Binding="{Binding M09}" />
-                                    <DataGridTextColumn Header="M10" Width="70" Binding="{Binding M10}" />
-                                    <DataGridTextColumn Header="M11" Width="70" Binding="{Binding M11}" />
-                                    <DataGridTextColumn Header="M12" Width="70" Binding="{Binding M12}" />
-                                    <DataGridTextColumn Header="M13" Width="70" Binding="{Binding M13}" />
-                                    <DataGridTextColumn Header="M14" Width="70" Binding="{Binding M14}" />
-                                    <DataGridTextColumn Header="M15" Width="70" Binding="{Binding M15}" />
-                                    <DataGridTextColumn Header="M16" Width="70" Binding="{Binding M16}" />
-                                    <DataGridTextColumn Header="M17" Width="70" Binding="{Binding M17}" />
-                                    <DataGridTextColumn Header="M18" Width="70" Binding="{Binding M18}" />
-                                    <DataGridTextColumn Header="M19" Width="70" Binding="{Binding M19}" />
+                                    <DataGridTextColumn Header="M01" Width="70" Binding="{Binding M01, UpdateSourceTrigger=LostFocus}"/>
+                                    <DataGridTextColumn Header="M02" Width="70" Binding="{Binding M02, UpdateSourceTrigger=LostFocus}" />
+                                    <DataGridTextColumn Header="M03" Width="70" Binding="{Binding M03, UpdateSourceTrigger=LostFocus}" />
+                                    <DataGridTextColumn Header="M04" Width="70" Binding="{Binding M04, UpdateSourceTrigger=LostFocus}" />
+                                    <DataGridTextColumn Header="M05" Width="70" Binding="{Binding M05, UpdateSourceTrigger=LostFocus}" />
+                                    <DataGridTextColumn Header="M06" Width="70" Binding="{Binding M06, UpdateSourceTrigger=LostFocus}" />
+                                    <DataGridTextColumn Header="M07" Width="70" Binding="{Binding M07, UpdateSourceTrigger=LostFocus}" />
+                                    <DataGridTextColumn Header="M08" Width="70" Binding="{Binding M08, UpdateSourceTrigger=LostFocus}" />
+                                    <DataGridTextColumn Header="M09" Width="70" Binding="{Binding M09, UpdateSourceTrigger=LostFocus}" />
+                                    <DataGridTextColumn Header="M10" Width="70" Binding="{Binding M10, UpdateSourceTrigger=LostFocus}" />
+                                    <DataGridTextColumn Header="M11" Width="70" Binding="{Binding M11, UpdateSourceTrigger=LostFocus}" />
+                                    <DataGridTextColumn Header="M12" Width="70" Binding="{Binding M12, UpdateSourceTrigger=LostFocus}" />
+                                    <DataGridTextColumn Header="M13" Width="70" Binding="{Binding M13, UpdateSourceTrigger=LostFocus}" />
+                                    <DataGridTextColumn Header="M14" Width="70" Binding="{Binding M14, UpdateSourceTrigger=LostFocus}" />
+                                    <DataGridTextColumn Header="M15" Width="70" Binding="{Binding M15, UpdateSourceTrigger=LostFocus}" />
+                                    <DataGridTextColumn Header="M16" Width="70" Binding="{Binding M16, UpdateSourceTrigger=LostFocus}" />
+                                    <DataGridTextColumn Header="M17" Width="70" Binding="{Binding M17, UpdateSourceTrigger=LostFocus}" />
+                                    <DataGridTextColumn Header="M18" Width="70" Binding="{Binding M18, UpdateSourceTrigger=LostFocus}" />
+                                    <DataGridTextColumn Header="M19" Width="70" Binding="{Binding M19, UpdateSourceTrigger=LostFocus}" />
                                 </DataGrid.Columns>
                             </DataGrid>
                         </TabItem.Content>

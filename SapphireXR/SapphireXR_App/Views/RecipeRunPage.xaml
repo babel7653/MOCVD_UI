@@ -494,9 +494,9 @@
                                     <DataGridTextColumn Header="Hold" Width="100" Binding="{Binding hTime}" />
                                     <DataGridTextColumn Header="Loop" Width="100" Binding="{Binding Loop}" />
                                     <DataGridTextColumn Header="Jump" Width="100" Binding="{Binding Jump}" />
-                                    <DataGridTextColumn Header="Susceptor Temp." Width="100" Binding="{Binding sTemp}" />
-                                    <DataGridTextColumn Header="Reactor Press." Width="100" Binding="{Binding rPress}" />
-                                    <DataGridTextColumn Header="Sus. Rotation" Width="100" Binding="{Binding sRotation}" />
+                                    <DataGridTextColumn Header="Susceptor Temp." Width="100" Binding="{Binding STemp}" />
+                                    <DataGridTextColumn Header="Reactor Press." Width="100" Binding="{Binding RPress}" />
+                                    <DataGridTextColumn Header="Sus. Rotation" Width="100" Binding="{Binding SRotation}" />
                                     <DataGridTextColumn Header="Compare Temp." Width="100" Binding="{Binding cTemp}" />
                                 </DataGrid.Columns>
                             </DataGrid>

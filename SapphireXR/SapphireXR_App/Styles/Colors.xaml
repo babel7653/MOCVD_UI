@@ -44,4 +44,9 @@
     <!-- Button Colors -->
     <SolidColorBrush x:Key="BtnBackground" Color="#003366"/>
     
+    <!-- Lamp State Colors-->
+    <SolidColorBrush x:Key="LampOnColor" Color="Lime" />
+    <SolidColorBrush x:Key="LampOffColor" Color="Red" />
+    <SolidColorBrush x:Key="LampReadyColor" Color="Yellow" />
+
 </ResourceDictionary>

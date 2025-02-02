@@ -573,7 +573,7 @@
                                           BorderBrush="LightSteelBlue" BorderThickness="2" Margin="2,10,2,0"
                                           FontSize="14">
                                     <StackPanel>
-                                        <DataGrid x:Name="IOList" AutoGenerateColumns="False" Margin="5,0,5,0">
+                                        <DataGrid x:Name="IOList" AutoGenerateColumns="False" Margin="5,0,5,0" ItemsSource="{Binding IOList}">
                                             <DataGrid.Resources>
                                                 <Style TargetType="{x:Type DataGridColumnHeader}">
                                                     <Setter Property="HorizontalAlignment" Value="Center"/>
@@ -585,24 +585,10 @@
                                                 </Style>
                                             </DataGrid.Resources>
                                             <DataGrid.Columns>
-                                                <DataGridTextColumn Header="ID" CanUserSort="False" CanUserResize="False" Width="60"
-                                                                Binding="{Binding}"/>
                                                 <DataGridTextColumn Header="Name" CanUserSort="False" CanUserResize="False" Width="*"
-                                                                Binding="{Binding}"/>
-                                                <DataGridTextColumn Header="Component" CanUserSort="False" CanUserResize="False" Width="120"
-                                                                Binding="{Binding}"/>
-                                                <DataGridTextColumn Header="Type" CanUserSort="False" CanUserResize="False" Width="60"
-                                                                Binding="{Binding}"/>
-                                                <DataGridTextColumn Header="Signal" CanUserSort="False" CanUserResize="False" Width="60"
-                                                                Binding="{Binding}"/>
-                                                <DataGridTextColumn Header="Terminal" CanUserSort="False" CanUserResize="False" Width="100"
-                                                                Binding="{Binding}"/>
-                                                <DataGridTextColumn Header="Pin No." CanUserSort="False" CanUserResize="False" Width="100"
-                                                                Binding="{Binding}"/>
-                                                <DataGridTextColumn Header="Org.Value" CanUserSort="False" CanUserResize="False" Width="60"
-                                                                Binding="{Binding}"/>
-                                                <DataGridTextColumn Header="Cal. Value" CanUserSort="False" CanUserResize="False" Width="60"
-                                                                Binding="{Binding}"/>
+                                                                Binding="{Binding Name}"/>
+                                                <DataGridCheckBoxColumn Header="On/Off" CanUserSort="False" CanUserResize="False" Width="60"
+                                                                Binding="{Binding OnOff}"/>
                                             </DataGrid.Columns>
                                         </DataGrid>
 

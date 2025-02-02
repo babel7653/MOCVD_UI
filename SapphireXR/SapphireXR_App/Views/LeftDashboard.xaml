@@ -131,37 +131,37 @@
                     <TextBlock Grid.Row="8" Grid.Column="0" Text="DTMGa" />
                     <TextBlock Grid.Row="9" Grid.Column="0"  Text="Cp2Mg" />
 
-                    <Button Grid.Row="1" Grid.Column="1" >N2</Button>
-                    <Button Grid.Row="1" Grid.Column="2" >OFF</Button>
-                    <Button Grid.Row="1" Grid.Column="3" >VENT</Button>
+                    <Button Grid.Row="1" Grid.Column="1" Content="{Binding NH3_1Carrier}" />
+                    <Button Grid.Row="1" Grid.Column="2" Content="{Binding NH3_1Source}" />
+                    <Button Grid.Row="1" Grid.Column="3" Content="{Binding NH3_1Vent}" />
 
-                    <Button Grid.Row="2" Grid.Column="1" >N2</Button>
-                    <Button Grid.Row="2" Grid.Column="2" >OFF</Button>
-                    <Button Grid.Row="2" Grid.Column="3" >VENT</Button>
+                    <Button Grid.Row="2" Grid.Column="1" Content="{Binding NH3_2Carrier}" />
+                    <Button Grid.Row="2" Grid.Column="2" Content="{Binding NH3_2Source}" />
+                    <Button Grid.Row="2" Grid.Column="3" Content="{Binding NH3_2Vent}" />
 
-                    <Button Grid.Row="3" Grid.Column="1" >N2</Button>
-                    <Button Grid.Row="3" Grid.Column="2" >OFF</Button>
-                    <Button Grid.Row="3" Grid.Column="3" >VENT</Button>
+                    <Button Grid.Row="3" Grid.Column="1" Content="{Binding SiH4Carrier}" />
+                    <Button Grid.Row="3" Grid.Column="2" Content="{Binding SiH4Source}" />
+                    <Button Grid.Row="3" Grid.Column="3" Content="{Binding SiH4Vent}" />
 
-                    <Button Grid.Row="4" Grid.Column="1" >N2</Button>
-                    <Button Grid.Row="4" Grid.Column="2" >OFF</Button>
-                    <Button Grid.Row="4" Grid.Column="3" >VENT</Button>
+                    <Button Grid.Row="4" Grid.Column="1" Content="{Binding TEBCarrier}" />
+                    <Button Grid.Row="4" Grid.Column="2" Content="{Binding TEBSource}" />
+                    <Button Grid.Row="4" Grid.Column="3" Content="{Binding TEBVent}" />
 
-                    <Button Grid.Row="5" Grid.Column="1" >N2</Button>
-                    <Button Grid.Row="5" Grid.Column="2" >OFF</Button>
-                    <Button Grid.Row="5" Grid.Column="3" >VENT</Button>
+                    <Button Grid.Row="5" Grid.Column="1" Content="{Binding TMAlCarrier}" />
+                    <Button Grid.Row="5" Grid.Column="2" Content="{Binding TMAlSource}" />
+                    <Button Grid.Row="5" Grid.Column="3" Content="{Binding TMAlVent}" />
 
-                    <Button Grid.Row="6" Grid.Column="1" >N2</Button>
-                    <Button Grid.Row="6" Grid.Column="2" >OFF</Button>
-                    <Button Grid.Row="6" Grid.Column="3" >VENT</Button>
+                    <Button Grid.Row="6" Grid.Column="1" Content="{Binding TMInCarrier}" />
+                    <Button Grid.Row="6" Grid.Column="2" Content="{Binding TMInSource}" />
+                    <Button Grid.Row="6" Grid.Column="3" Content="{Binding TMInVent}" />
 
-                    <Button Grid.Row="7" Grid.Column="1" >N2</Button>
-                    <Button Grid.Row="7" Grid.Column="2" >OFF</Button>
-                    <Button Grid.Row="7" Grid.Column="3" >VENT</Button>
+                    <Button Grid.Row="7" Grid.Column="1" Content="{Binding TMGaCarrier}" />
+                    <Button Grid.Row="7" Grid.Column="2" Content="{Binding TMGaSource}" />
+                    <Button Grid.Row="7" Grid.Column="3" Content="{Binding TMGaVent}" />
 
-                    <Button Grid.Row="8" Grid.Column="1" >N2</Button>
-                    <Button Grid.Row="8" Grid.Column="2" >OFF</Button>
-                    <Button Grid.Row="8" Grid.Column="3" >VENT</Button>
+                    <Button Grid.Row="8" Grid.Column="1" Content="{Binding DTMGaCarrier}" />
+                    <Button Grid.Row="8" Grid.Column="2" Content="{Binding DTMGaSource}" />
+                    <Button Grid.Row="8" Grid.Column="3" Content="{Binding DTMGaVent}" />
 
                     <Button Grid.Row="9" Grid.Column="1" >N2</Button>
                     <Button Grid.Row="9" Grid.Column="2" >OFF</Button>
@@ -235,39 +235,39 @@
                 <Bold>Hardwire Interlock</Bold></TextBlock>
                 <Line X1="5" Y1="0" X2="295" Y2="0" Stroke="DeepSkyBlue" StrokeThickness="2" Margin="2,2,2,8"/>
                 <StackPanel Orientation="Horizontal">
-                    <Rectangle Fill="Lime" />
+                    <Rectangle Fill="{Binding MaintenanceKeyLampColor}" />
                     <TextBlock Text="Maintenance Key"/>
                 </StackPanel>
                 <StackPanel Orientation="Horizontal">
-                    <Rectangle Fill="Lime" />
+                    <Rectangle Fill="{Binding InductionHeaterLampColor}" />
                     <TextBlock Text="Induction Heater"/>
                 </StackPanel>
                 <StackPanel Orientation="Horizontal">
-                    <Rectangle Fill="Lime" />
+                    <Rectangle Fill="{Binding VacuumPumpLampColor}" />
                     <TextBlock Text="Vacuum Pump"/>
                 </StackPanel>
                 <StackPanel Orientation="Horizontal">
-                    <Rectangle Fill="Lime" />
+                    <Rectangle Fill="{Binding SusceptorMotorLampColor}" />
                     <TextBlock Text="Susceptor Motor"/>
                 </StackPanel>
                 <StackPanel Orientation="Horizontal">
-                    <Rectangle Fill="Lime" />
+                    <Rectangle Fill="{Binding CoolingWaterLampColor}" />
                     <TextBlock Text="Cooling Water"/>
                 </StackPanel>
                 <StackPanel Orientation="Horizontal">
-                    <Rectangle Fill="Lime" />
+                    <Rectangle Fill="{Binding CleanDryAirLampColor}" />
                     <TextBlock Text="Clean Dry Air"/>
                 </StackPanel>
                 <StackPanel Orientation="Horizontal">
-                    <Rectangle Fill="Lime" />
+                    <Rectangle Fill="{Binding DoorReactorCabinetLampColor}" />
                     <TextBlock Text="Door - Reactor Cabinet"/>
                 </StackPanel>
                 <StackPanel Orientation="Horizontal">
-                    <Rectangle Fill="Lime" />
+                    <Rectangle Fill="{Binding DoorGasDeliveryCabinetLampColor}" />
                     <TextBlock Text="Door - Gas Delivery Cabinet"/>
                 </StackPanel>
                 <StackPanel Orientation="Horizontal">
-                    <Rectangle Fill="Lime" />
+                    <Rectangle Fill="{Binding DoorPowerDistributeCabinetLampColor}" />
                     <TextBlock Text="Door - Power Distribute Cabinet"/>
                 </StackPanel>
             </StackPanel>

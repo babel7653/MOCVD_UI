@@ -13,6 +13,13 @@ namespace SapphireXR_App.ViewModels
 {
     public partial class SettingViewModel : ObservableObject
     {
+        public partial class IOSetting: ObservableObject
+        {
+            required public string Name { get; set; } = "";
+            [ObservableProperty]
+            private bool _onOff;
+            
+        }
         public string fname = AppDomain.CurrentDomain.BaseDirectory + "..\\..\\..\\..\\Data\\Configuration\\" + @"DeviceIO.json";
         public Dictionary<string, AnalogDeviceIO>? dAnalogDeviceIO = [];
         public Dictionary<string, SwitchDI>? dSwitchDI = [];
@@ -24,6 +31,9 @@ namespace SapphireXR_App.ViewModels
         public List<SwitchDI>? lSwitchDI { get; set; } = [];
         public List<GasDO>? lGasDO { get; set; } = [];
         public UserState? userstate { get; set; } = new();
+
+        [ObservableProperty]
+        public IList<IOSetting> _iOList;
 
         public bool WithoutConnection { get; set; }
 
@@ -37,6 +47,20 @@ namespace SapphireXR_App.ViewModels
         public SettingViewModel()
         {
             AlarmSettingLoad();
+            IOList = new List<IOSetting> { 
+                new() { Name= "Power Reset Switch", OnOff = true },  new() { Name= "Cover", OnOff = true }, new() { Name= "Cover", OnOff = true },  
+                new() { Name= "SMPS", OnOff = true }, new() { Name= "SMPS", OnOff = true },  new() { Name= "SMPS", OnOff = true },
+                new() { Name= "SMPS", OnOff = true },  new() { Name= "CP", OnOff = true }, new() { Name= "CP", OnOff = true },
+                new() { Name= "CP", OnOff = true },  new() { Name= "CP", OnOff = true }, new() { Name= "CP", OnOff = true },
+                new() { Name= "CP", OnOff = true },  new() { Name= "CP", OnOff = true }, new() { Name= "CP", OnOff = true },
+                new() { Name= "CP", OnOff = true },  new() { Name= "Line Heater 1", OnOff = true }, new() { Name= "Line Heater 2", OnOff = true },
+                new() { Name= "Line Heater 3", OnOff = true },  new() { Name= "Line Heater 4", OnOff = true }, new() { Name= "Line Heater 5", OnOff = true },
+                new() { Name= "Line Heater 6", OnOff = true },  new() { Name= "Line Heater 7", OnOff = true }, new() { Name= "Thermal Bath", OnOff = true },
+                new() { Name= "Thermal Bath", OnOff = true },  new() { Name= "Thermal Bath", OnOff = true }, new() { Name= "Thermal Bath", OnOff = true },
+                new() { Name= "Thermal Bath", OnOff = true },  new() { Name= "Thermal Bath", OnOff = true }, new() { Name= "Singal Tower", OnOff = true },
+                new() { Name= "Singal Tower", OnOff = true },  new() { Name= "Singal Tower", OnOff = true }, new() { Name= "Singal Tower", OnOff = true },
+                new() { Name= "Singal Tower", OnOff = true },  new() { Name= "Singal Tower", OnOff = true }
+            };
         }
         public void AlarmSettingLoad()
         {

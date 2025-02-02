@@ -13,6 +13,20 @@ namespace SapphireXR_App.Models
             public ReadValveStateException(string message) : base(message) { }
         }
 
+        public enum HardWiringInterlockStateIndex
+        {
+            MaintainenceKey = 0, DoorReactorCabinet = 1, DoorGasDeliveryCabinet = 2, DoorPowerDistributeCabinet = 3, CleanDryAir = 4, CoolingWater = 5,
+            InductionHeaterReady = 6, inductionHeaterRun = 7, inductionHeaterFault = 8, SusceptorMotorStop = 9, SusceptorMotorRun = 10, SusceptorMotorFault = 11,
+            VacuumPumpWarning = 12, VacuumPumpRun = 13, VacuumPumpFault = 14,
+        };
+
+        public enum IOListIndex
+        {
+            PowerResetSwitch = 0, Cover1, Cover2, SMPS1, SMPS2, SMPS3, SMPS4, CP1, CP2, CP3, CP4, CP5, CP6, CP7, CP8, CP9, LineHeader1, LineHeader2, LineHeader3, LineHeader4,
+            LineHeader5, LineHeader6, LineHeader7, LineHeader8, ThermalBath1, ThermalBath2, ThermalBath3, ThermalBath4, ThermalBath5, ThermalBath6, SingalTower1, SingalTower2,
+            SingalTower3, SingalTower4, SingalTower5, SingalTower6
+        };
+
         // Connect to PLC
         public static string AddressPLC { get; set; } = "PLC Address : ";
         public static string ModePLC { get; set; } = "System Mode : ";
@@ -34,6 +48,8 @@ namespace SapphireXR_App.Models
         private static Dictionary<string, ObservableManager<int>.DataIssuer>? dControlValueIssuers;
         private static Dictionary<string, ObservableManager<(int, int)>.DataIssuer>? dControlCurrentValueIssuers;
         private static Dictionary<string, ObservableManager<float>.DataIssuer>? aMonitoringCurrentValueIssuers;
+        private static ObservableManager<BitArray>.DataIssuer? dHardWiringInterlockStateIssuers;
+
         private static ObservableManager<short>.DataIssuer? dCurrentActiveRecipeIssue;
 
         //Create an instance of the TcAdsClient()

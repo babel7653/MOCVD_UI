@@ -114,6 +114,7 @@ namespace SapphireXR_App.Models
                 aMonitoringCurrentValueIssuers.Add(kv.Key, ObservableManager<float>.Get("MonitoringPresentValue." + kv.Key + ".CurrentValue"));
             }
             dCurrentActiveRecipeIssue = ObservableManager<short>.Get("RecipeRun.CurrentActiveRecipe");
+            dHardWiringInterlockStateIssuers = ObservableManager<BitArray>.Get("HardWiringInterlockState");
 
             timer = new DispatcherTimer();
             timer.Interval = new TimeSpan(2000000);
@@ -170,6 +171,18 @@ namespace SapphireXR_App.Models
                 foreach(KeyValuePair<string, int> kv in dMonitoringMeterIndex)
                 {
                     aMonitoringCurrentValueIssuers?[kv.Key].Issue(aMonitoring_PVs[kv.Value]);
+                }
+            }
+
+            if(aInputState != null)
+            {
+                short value = aInputState[0];
+                dHardWiringInterlockStateIssuers?.Issue(new BitArray(BitConverter.IsLittleEndian == true? BitConverter.GetBytes(value) :BitConverter.GetBytes(value).Reverse().ToArray()));
+
+                bool[] ioList = new bool[48];
+                for(int inputState = 1; inputState < aInputState.Length; ++inputState)
+                {
+                    new BitArray(BitConverter.IsLittleEndian == true ? BitConverter.GetBytes(aInputState[inputState]) : BitConverter.GetBytes(aInputState[inputState]).Reverse().ToArray()).CopyTo(ioList, (inputState - 1) * sizeof(short));
                 }
             }
 

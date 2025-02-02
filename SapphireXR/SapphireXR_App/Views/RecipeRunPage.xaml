@@ -403,135 +403,213 @@
                     <Label Canvas.Left="1180" Canvas.Top="422" Foreground="{StaticResource PrimaryFontColor}" Content="to Reactor"/>
                     <Label Canvas.Left="1180" Canvas.Top="448" Foreground="{StaticResource PrimaryFontColor}" Content="to Scrubber"/>
                     <Label Canvas.Left="1116" Canvas.Top="320" Foreground="{StaticResource PrimaryFontColor}" Content="Vent"
-            Width="50" HorizontalContentAlignment="Center" />
+                                Width="50" HorizontalContentAlignment="Center" />
                     <Label Canvas.Left="256" Canvas.Top="120" Foreground="{StaticResource PrimaryFontColor}" Content="Vent"
-           Width="33" HorizontalContentAlignment="Center"/>
+                                Width="33" HorizontalContentAlignment="Center"/>
                     <Label Canvas.Left="256" Canvas.Top="214" Foreground="{StaticResource PrimaryFontColor}" Content="Vent"
-           Width="33" HorizontalContentAlignment="Center"/>
-                    <Label Canvas.Left="784" Canvas.Top="80" Foreground="{StaticResource PrimaryFontColor}" Content="Vent"
-           Width="33" HorizontalContentAlignment="Center"/>
+                                Width="33" HorizontalContentAlignment="Center"/>
+                    <Label Canvas.Left="788" Canvas.Top="80" Foreground="{StaticResource PrimaryFontColor}" Content="Vent"
+                                Width="33" HorizontalContentAlignment="Center"/>
                     <Label Canvas.Left="922" Canvas.Top="407" Foreground="{StaticResource PrimaryFontColor}" Content="Vent"
-           Width="33" HorizontalContentAlignment="Center" />
+                                Width="33" HorizontalContentAlignment="Center" />
 
                     <!--MFC/EPC Label !-->
-                    <Label Canvas.Left="101" Canvas.Top="202" Foreground="Black" Content="M01"
-           Width="40" HorizontalContentAlignment="Center" />
-                    <Label Canvas.Left="101" Canvas.Top="138" Foreground="Black" Content="M02"
-           Width="40" HorizontalContentAlignment="Center" />
-                    <Label Canvas.Left="393" Canvas.Top="83" Foreground="Black" Content="M03"
-           Width="40" HorizontalContentAlignment="Center" />
-                    <Label Canvas.Left="303" Canvas.Top="83" Foreground="Black" Content="M04"
-           Width="40" HorizontalContentAlignment="Center" />
-                    <Label Canvas.Left="617" Canvas.Top="33" Foreground="Black" Content="M05"
-           Width="40" HorizontalContentAlignment="Center" />
-                    <Label Canvas.Left="527" Canvas.Top="33" Foreground="Black" Content="M06"
-           Width="40" HorizontalContentAlignment="Center" />
-                    <Label Canvas.Left="617" Canvas.Top="83" Foreground="Black" Content="M07"
-           Width="40" HorizontalContentAlignment="Center" />
-                    <Label Canvas.Left="129" Canvas.Top="366" Foreground="Black" Content="M08"
-           Width="40" HorizontalContentAlignment="Center" />
-                    <Label Canvas.Left="279" Canvas.Top="366" Foreground="Black" Content="M09"
-           Width="40" HorizontalContentAlignment="Center" />
-                    <Label Canvas.Left="429" Canvas.Top="366" Foreground="Black" Content="M10"
-           Width="40" HorizontalContentAlignment="Center" />
-                    <Label Canvas.Left="579" Canvas.Top="366" Foreground="Black" Content="M11"
-           Width="40" HorizontalContentAlignment="Center" />
-                    <Label Canvas.Left="729" Canvas.Top="366" Foreground="Black" Content="M12"
-           Width="40" HorizontalContentAlignment="Center" />
-                    <Label Canvas.Left="787" Canvas.Top="322" Foreground="Black" Content="M13"
-           Width="40" HorizontalContentAlignment="Center" />
-                    <Label Canvas.Left="845" Canvas.Top="366" Foreground="Black" Content="M14"
-           Width="40" HorizontalContentAlignment="Center" />
-                    <Label Canvas.Left="937" Canvas.Top="366" Foreground="Black" Content="M15"
-           Width="40" HorizontalContentAlignment="Center" />
-                    <Label Canvas.Left="1100" Canvas.Top="180" Foreground="Black" Content="M16"
-           Width="40" HorizontalContentAlignment="Center" />
-                    <Label Canvas.Left="1100" Canvas.Top="224" Foreground="Black" Content="M17"
-           Width="40" HorizontalContentAlignment="Center" />
-                    <Label Canvas.Left="179" Canvas.Top="217" Foreground="Black" Content="M18"
-           Width="40" HorizontalContentAlignment="Center" />
-                    <Label Canvas.Left="179" Canvas.Top="123" Foreground="Black" Content="M19"
-           Width="40" HorizontalContentAlignment="Center" />
+                    <Label Canvas.Left="101" Canvas.Top="202" Foreground="DimGray" Content="M01"
+                                Width="40" HorizontalContentAlignment="Center" />
+                    <Label Canvas.Left="101" Canvas.Top="138" Foreground="DimGray" Content="M02"
+                                Width="40" HorizontalContentAlignment="Center" />
+                    <Label Canvas.Left="393" Canvas.Top="83" Foreground="DimGray" Content="M03"
+                                Width="40" HorizontalContentAlignment="Center" />
+                    <Label Canvas.Left="303" Canvas.Top="83" Foreground="DimGray" Content="M04"
+                                Width="40" HorizontalContentAlignment="Center" />
+                    <Label Canvas.Left="617" Canvas.Top="33" Foreground="DimGray" Content="M05"
+                                Width="40" HorizontalContentAlignment="Center" />
+                    <Label Canvas.Left="527" Canvas.Top="33" Foreground="DimGray" Content="M06"
+                                Width="40" HorizontalContentAlignment="Center" />
+                    <Label Canvas.Left="617" Canvas.Top="83" Foreground="DimGray" Content="M07"
+                                Width="40" HorizontalContentAlignment="Center" />
+                    <Label Canvas.Left="129" Canvas.Top="366" Foreground="DimGray" Content="M08"
+                                Width="40" HorizontalContentAlignment="Center" />
+                    <Label Canvas.Left="279" Canvas.Top="366" Foreground="DimGray" Content="M09"
+                                Width="40" HorizontalContentAlignment="Center" />
+                    <Label Canvas.Left="429" Canvas.Top="366" Foreground="DimGray" Content="M10"
+                                Width="40" HorizontalContentAlignment="Center" />
+                    <Label Canvas.Left="579" Canvas.Top="366" Foreground="DimGray" Content="M11"
+                                Width="40" HorizontalContentAlignment="Center" />
+                    <Label Canvas.Left="729" Canvas.Top="366" Foreground="DimGray" Content="M12"
+                                Width="40" HorizontalContentAlignment="Center" />
+                    <Label Canvas.Left="787" Canvas.Top="322" Foreground="DimGray" Content="M13"
+                                Width="40" HorizontalContentAlignment="Center" />
+                    <Label Canvas.Left="845" Canvas.Top="366" Foreground="DimGray" Content="M14"
+                                Width="40" HorizontalContentAlignment="Center" />
+                    <Label Canvas.Left="937" Canvas.Top="366" Foreground="DimGray" Content="M15"
+                                Width="40" HorizontalContentAlignment="Center" />
+                    <Label Canvas.Left="1100" Canvas.Top="180" Foreground="DimGray" Content="M16"
+                                Width="40" HorizontalContentAlignment="Center" />
+                    <Label Canvas.Left="1100" Canvas.Top="224" Foreground="DimGray" Content="M17"
+                                Width="40" HorizontalContentAlignment="Center" />
+                    <Label Canvas.Left="179" Canvas.Top="217" Foreground="DimGray" Content="M18"
+                                Width="40" HorizontalContentAlignment="Center" />
+                    <Label Canvas.Left="179" Canvas.Top="123" Foreground="DimGray" Content="M19"
+                                Width="40" HorizontalContentAlignment="Center" />
+                    <Label Canvas.Left="184" Canvas.Top="322" Foreground="DimGray" Content="E01"
+                                Width="40" HorizontalContentAlignment="Center" />
+                    <Label Canvas.Left="334" Canvas.Top="322" Foreground="DimGray" Content="E02"
+                                 Width="40" HorizontalContentAlignment="Center" />
+                    <Label Canvas.Left="484" Canvas.Top="322" Foreground="DimGray" Content="E03"
+                                 Width="40" HorizontalContentAlignment="Center" />
+                    <Label Canvas.Left="634" Canvas.Top="322" Foreground="DimGray" Content="E04"
+                                 Width="40" HorizontalContentAlignment="Center" />
+                    <Label Canvas.Left="842" Canvas.Top="410" Foreground="DimGray" Content="E05"
+                                 Width="40" HorizontalContentAlignment="Center" />
+                    <Label Canvas.Left="992" Canvas.Top="322" Foreground="DimGray" Content="E06"
+                                 Width="40" HorizontalContentAlignment="Center" />
+                    <Label Canvas.Left="713" Canvas.Top="83" Foreground="DimGray" Content="E07"
+                                 Width="40" HorizontalContentAlignment="Center" />
                     <!--Valve Label !-->
                     <Label Canvas.Left="50" Canvas.Top="116" Foreground="{StaticResource PrimaryFontColor}" Content="V01"
-           Width="40" HorizontalContentAlignment="Center"/>
+                                Width="40" HorizontalContentAlignment="Center"/>
                     <Label Canvas.Left="50" Canvas.Top="185" Foreground="{StaticResource PrimaryFontColor}" Content="V02"
-            Width="40" HorizontalContentAlignment="Center"/>
+                                 Width="40" HorizontalContentAlignment="Center"/>
                     <Label Canvas.Left="764" Canvas.Top="32" Foreground="{StaticResource PrimaryFontColor}" Content="V03"
-            Width="40" HorizontalContentAlignment="Center"/>
+                                 Width="40" HorizontalContentAlignment="Center"/>
                     <Label Canvas.Left="360" Canvas.Top="32" Foreground="{StaticResource PrimaryFontColor}" Content="V04"
-            Width="40" HorizontalContentAlignment="Center"/>
+                                 Width="40" HorizontalContentAlignment="Center"/>
                     <Label Canvas.Left="112" Canvas.Top="277" Foreground="{StaticResource PrimaryFontColor}" Content="V05"
-            Width="40" HorizontalContentAlignment="Center"/>
+                                 Width="40" HorizontalContentAlignment="Center"/>
                     <Label Canvas.Left="186" Canvas.Top="277" Foreground="{StaticResource PrimaryFontColor}" Content="V06"
-            Width="40" HorizontalContentAlignment="Center"/>
+                                 Width="40" HorizontalContentAlignment="Center"/>
                     <Label Canvas.Left="138" Canvas.Top="408" Foreground="{StaticResource PrimaryFontColor}" Content="V07"
-            Width="40" HorizontalContentAlignment="Center"/>
+                                 Width="40" HorizontalContentAlignment="Center"/>
                     <Label Canvas.Left="262" Canvas.Top="277" Foreground="{StaticResource PrimaryFontColor}" Content="V08"
-            Width="40" HorizontalContentAlignment="Center"/>
+                                 Width="40" HorizontalContentAlignment="Center"/>
                     <Label Canvas.Left="336" Canvas.Top="277" Foreground="{StaticResource PrimaryFontColor}" Content="V09"
-            Width="40" HorizontalContentAlignment="Center"/>
+                                 Width="40" HorizontalContentAlignment="Center"/>
                     <Label Canvas.Left="288" Canvas.Top="408" Foreground="{StaticResource PrimaryFontColor}" Content="V10"
-            Width="40" HorizontalContentAlignment="Center"/>
+                                 Width="40" HorizontalContentAlignment="Center"/>
                     <Label Canvas.Left="412" Canvas.Top="277" Foreground="{StaticResource PrimaryFontColor}" Content="V11"
-            Width="40" HorizontalContentAlignment="Center"/>
+                                 Width="40" HorizontalContentAlignment="Center"/>
                     <Label Canvas.Left="486" Canvas.Top="277" Foreground="{StaticResource PrimaryFontColor}" Content="V12"
-            Width="40" HorizontalContentAlignment="Center"/>
+                                 Width="40" HorizontalContentAlignment="Center"/>
                     <Label Canvas.Left="438" Canvas.Top="408" Foreground="{StaticResource PrimaryFontColor}" Content="V13"
-            Width="40" HorizontalContentAlignment="Center"/>
+                                 Width="40" HorizontalContentAlignment="Center"/>
                     <Label Canvas.Left="562" Canvas.Top="277" Foreground="{StaticResource PrimaryFontColor}" Content="V14"
-            Width="40" HorizontalContentAlignment="Center"/>
+                                 Width="40" HorizontalContentAlignment="Center"/>
                     <Label Canvas.Left="636" Canvas.Top="277" Foreground="{StaticResource PrimaryFontColor}" Content="V15"
-            Width="40" HorizontalContentAlignment="Center"/>
+                                 Width="40" HorizontalContentAlignment="Center"/>
                     <Label Canvas.Left="588" Canvas.Top="408" Foreground="{StaticResource PrimaryFontColor}" Content="V16"
-            Width="40" HorizontalContentAlignment="Center"/>
+                                 Width="40" HorizontalContentAlignment="Center"/>
                     <Label Canvas.Left="712" Canvas.Top="277" Foreground="{StaticResource PrimaryFontColor}" Content="V17"
-            Width="40" HorizontalContentAlignment="Center"/>
+                                 Width="40" HorizontalContentAlignment="Center"/>
                     <Label Canvas.Left="786" Canvas.Top="277" Foreground="{StaticResource PrimaryFontColor}" Content="V18"
-            Width="40" HorizontalContentAlignment="Center"/>
+                                 Width="40" HorizontalContentAlignment="Center"/>
                     <Label Canvas.Left="738" Canvas.Top="408" Foreground="{StaticResource PrimaryFontColor}" Content="V19"
-            Width="40" HorizontalContentAlignment="Center"/>
+                                 Width="40" HorizontalContentAlignment="Center"/>
                     <Label Canvas.Left="922" Canvas.Top="277" Foreground="{StaticResource PrimaryFontColor}" Content="V20"
-            Width="40" HorizontalContentAlignment="Center"/>
+                                 Width="40" HorizontalContentAlignment="Center"/>
                     <Label Canvas.Left="994" Canvas.Top="277" Foreground="{StaticResource PrimaryFontColor}" Content="V21"
-            Width="40" HorizontalContentAlignment="Center"/>
+                                 Width="40" HorizontalContentAlignment="Center"/>
                     <Label Canvas.Left="946" Canvas.Top="398" Foreground="{StaticResource PrimaryFontColor}" Content="V22"
-            Width="40" HorizontalContentAlignment="Center"/>
+                                 Width="40" HorizontalContentAlignment="Center"/>
                     <Label Canvas.Left="360" Canvas.Top="210" Foreground="{StaticResource PrimaryFontColor}" Content="V23"
-            Width="40" HorizontalContentAlignment="Center"/>
+                                 Width="40" HorizontalContentAlignment="Center"/>
                     <Label Canvas.Left="480" Canvas.Top="210" Foreground="{StaticResource PrimaryFontColor}" Content="V24"
-            Width="40" HorizontalContentAlignment="Center"/>
+                                 Width="40" HorizontalContentAlignment="Center"/>
                     <Label Canvas.Left="600" Canvas.Top="210" Foreground="{StaticResource PrimaryFontColor}" Content="V25"
-            Width="40" HorizontalContentAlignment="Center"/>
+                                 Width="40" HorizontalContentAlignment="Center"/>
                     <Label Canvas.Left="720" Canvas.Top="210" Foreground="{StaticResource PrimaryFontColor}" Content="V26"
-            Width="40" HorizontalContentAlignment="Center"/>
+                                 Width="40" HorizontalContentAlignment="Center"/>
                     <Label Canvas.Left="840" Canvas.Top="210" Foreground="{StaticResource PrimaryFontColor}" Content="V27"
-            Width="40" HorizontalContentAlignment="Center"/>
+                                 Width="40" HorizontalContentAlignment="Center"/>
                     <Label Canvas.Left="960" Canvas.Top="210" Foreground="{StaticResource PrimaryFontColor}" Content="V28"
-            Width="40" HorizontalContentAlignment="Center"/>
+                                 Width="40" HorizontalContentAlignment="Center"/>
                     <Label Canvas.Left="360" Canvas.Top="118" Foreground="{StaticResource PrimaryFontColor}" Content="V29"
-            Width="40" HorizontalContentAlignment="Center"/>
+                                 Width="40" HorizontalContentAlignment="Center"/>
                     <Label Canvas.Left="450" Canvas.Top="118" Foreground="{StaticResource PrimaryFontColor}" Content="V30"
-            Width="40" HorizontalContentAlignment="Center"/>
+                                 Width="40" HorizontalContentAlignment="Center"/>
                     <Label Canvas.Left="674" Canvas.Top="118" Foreground="{StaticResource PrimaryFontColor}" Content="V31"
-            Width="40" HorizontalContentAlignment="Center"/>
+                                 Width="40" HorizontalContentAlignment="Center"/>
                     <!--#endregion-->
 
                 </Canvas>
                 <Grid Grid.Column="1" Background="{StaticResource DashboardBackground}">
                     <Grid.RowDefinitions>
-                        <RowDefinition/>
+                        <RowDefinition Height="290"/>
                         <RowDefinition/>
                     </Grid.RowDefinitions>
                     <!-- Recipe Information -->
                     <Grid Grid.Row="0">
                         <StackPanel Orientation="Vertical">
-                            <StackPanel.Resources>
-                                
-                            </StackPanel.Resources>
-                            <TextBlock Foreground="DeepSkyBlue" FontSize="14"  HorizontalAlignment="Center" >
+                            <TextBlock Foreground="DeepSkyBlue" FontSize="14"  HorizontalAlignment="Center" Margin="0,8,0,0">
                                 <Bold>Recipe Information</Bold></TextBlock>
                             <Line X1="5" Y1="0" X2="295" Y2="0" Stroke="DeepSkyBlue" StrokeThickness="2" Margin="2,2,2,8"/>
+                            <Grid>
+                                <Grid.Resources>
+                                    <Style TargetType="{x:Type Label}">
+                                        <Setter Property="Foreground" Value="{StaticResource PrimaryFontColor}"/>
+                                        <Setter Property="FontSize" Value="11"/>
+                                        <Setter Property="HorizontalAlignment" Value="Right"/>
+                                    </Style>
+                                    <Style TargetType="{x:Type TextBox}">
+                                        <Setter Property="Width" Value="64"/>
+                                        <Setter Property="Height" Value="16"/>
+                                        <Setter Property="Background" Value="LightGray"/>
+                                        <Setter Property="Foreground" Value="DarkBlue"/>
+                                        <Setter Property="FontSize" Value="11"/>
+                                        <Setter Property="TextAlignment" Value="Right"/>
+                                        <Setter Property="Margin" Value="4"/>
+                                    </Style>
+                                </Grid.Resources>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="120"/>
+                                    <ColumnDefinition/>
+                                    <ColumnDefinition/>
+                                    <ColumnDefinition Width="20"/>
+                                </Grid.ColumnDefinitions>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition/>
+                                    <RowDefinition/>
+                                    <RowDefinition/>
+                                    <RowDefinition/>
+                                    <RowDefinition/>
+                                    <RowDefinition/>
+                                    <RowDefinition/>
+                                    <RowDefinition/>
+                                    <RowDefinition/>
+                                    <RowDefinition/>
+                                </Grid.RowDefinitions>
+                                
+                                <Label Grid.Row="0" Grid.Column="1" Content="Current" HorizontalAlignment="Center"/>
+                                <Label Grid.Row="0" Grid.Column="2" Content="Total" HorizontalAlignment="Center"/>
+                                <Label Grid.Row="1" Grid.Column="0" Content="Recipe Time" />
+                                <Label Grid.Row="2" Grid.Column="0" Content="Current Step" />
+                                <Label Grid.Row="3" Grid.Column="0" Content="Step Name" />
+                                <Label Grid.Row="4" Grid.Column="0" Content="Ramping Time" />
+                                <Label Grid.Row="5" Grid.Column="0" Content="Holding Time" />
+                                <Label Grid.Row="6" Grid.Column="0" Content="Pause Time" />
+                                <Label Grid.Row="7" Grid.Column="0" Content="Loop Step" />
+                                <Label Grid.Row="8" Grid.Column="0" Content="Loop Number" />
+                                <Label Grid.Row="9" Grid.Column="0" Content="Wait Temp" />
+                                
+                                <TextBox x:Name="tbRecipeCurrentTime" Grid.Row="1" Grid.Column="1" Text="{Binding RecipeCurrentTime}"/>
+                                <TextBox x:Name="tbRecipeTotalTime" Grid.Row="1" Grid.Column="2" Text="{Binding RecipeTotalTime}"/>
+                                <TextBox x:Name="tbRecipeCurrentStep" Grid.Row="2" Grid.Column="1" Text="{Binding RecipeCurrentStep}"/>
+                                <TextBox x:Name="tbRecipeTotalStep" Grid.Row="2" Grid.Column="2" Text="{Binding RecipeCurrentStep}"/>
+                                <TextBox x:Name="tbRecipeStepName" Grid.Row="3" Grid.Column="1" Grid.ColumnSpan="2" Width="146"
+                                         Text="{Binding CurrentStep}"/>
+                                <TextBox x:Name="tbRecipeCurrentRamp" Grid.Row="4" Grid.Column="1" Text="{Binding RecipeCurrentRamp}"/>
+                                <TextBox x:Name="tbRecipeTotalRamp" Grid.Row="4" Grid.Column="2" Text="{Binding RecipeTotalRamp}"/>
+                                <TextBox x:Name="tbRecipeCurrentHold" Grid.Row="5" Grid.Column="1" Text="{Binding RecipeCurrentHold}"/>
+                                <TextBox x:Name="tbRecipeTotalHold" Grid.Row="5" Grid.Column="2" Text="{Binding RecipeTotalHold}"/>
+                                <TextBox x:Name="tbRecipePauseTime" Grid.Row="6" Grid.Column="1" Grid.ColumnSpan="2" Width="146"
+                                         Text="{Binding RecipeCurrentRamp}"/>
+                                <TextBox x:Name="tbRecipeLoopStart" Grid.Row="7" Grid.Column="1" Text="{Binding RecipeLoopStart}"/>
+                                <TextBox x:Name="tbRecipeLoopEnd" Grid.Row="7" Grid.Column="2" Text="{Binding RecipeLoopEnd}"/>
+                                <TextBox x:Name="tbRecipeCurrentLoop" Grid.Row="8" Grid.Column="1" Text="{Binding RecipeCurrentLoop}"/>
+                                <TextBox x:Name="tbRecipeTotalLoop" Grid.Row="8" Grid.Column="2" Text="{Binding RecipeCurrentLoop}"/>
+                                <TextBox x:Name="tbSusceptorCurrentTemp" Grid.Row="9" Grid.Column="1" Text="{Binding SusceptorCurrentTemp}"/>
+                                <TextBox x:Name="tbRecipeWaitTemp" Grid.Row="9" Grid.Column="2" Text="{Binding SusceptorCurrentTemp}"/>
+                            </Grid>
                         </StackPanel>
                     </Grid>
                     <!-- Event Log -->

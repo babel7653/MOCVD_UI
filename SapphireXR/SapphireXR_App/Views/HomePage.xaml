@@ -518,13 +518,13 @@
                 <control:HomeFlowController x:Name="MFC19" Canvas.Left="126" Canvas.Top="246" ControllerID="MFC19" Type="MFC" />
 
                 <!--EPC Contol Box!-->
-                <control:HomeFlowController x:Name="EPC01" Canvas.Left="642" Canvas.Top="191" ControllerID="EPC01" Type="EPC"/>
-                <control:HomeFlowController x:Name="EPC02" Canvas.Left="242" Canvas.Top="531" ControllerID="EPC02" Type="EPC"/>
-                <control:HomeFlowController x:Name="EPC03" Canvas.Left="382" Canvas.Top="531" ControllerID="EPC03" Type="EPC"/>
-                <control:HomeFlowController x:Name="EPC04" Canvas.Left="522" Canvas.Top="531" ControllerID="EPC04" Type="EPC"/>
-                <control:HomeFlowController x:Name="EPC05" Canvas.Left="662" Canvas.Top="531" ControllerID="EPC05" Type="EPC" />
-                <control:HomeFlowController x:Name="EPC06" Canvas.Left="860" Canvas.Top="633" ControllerID="EPC06" Type="EPC"/>
-                <control:HomeFlowController x:Name="EPC07" Canvas.Left="1000" Canvas.Top="531" ControllerID="EPC07" Type="EPC" />
+                <control:HomeFlowController x:Name="EPC01" Canvas.Left="242" Canvas.Top="531" ControllerID="EPC01" Type="EPC"/>
+                <control:HomeFlowController x:Name="EPC02" Canvas.Left="382" Canvas.Top="531" ControllerID="EPC02" Type="EPC"/>
+                <control:HomeFlowController x:Name="EPC03" Canvas.Left="522" Canvas.Top="531" ControllerID="EPC03" Type="EPC"/>
+                <control:HomeFlowController x:Name="EPC04" Canvas.Left="662" Canvas.Top="531" ControllerID="EPC04" Type="EPC" />
+                <control:HomeFlowController x:Name="EPC05" Canvas.Left="860" Canvas.Top="633" ControllerID="EPC05" Type="EPC"/>
+                <control:HomeFlowController x:Name="EPC06" Canvas.Left="1000" Canvas.Top="531" ControllerID="EPC06" Type="EPC" />
+                <control:HomeFlowController x:Name="EPC07" Canvas.Left="642" Canvas.Top="191" ControllerID="EPC07" Type="EPC"/>
                 <!--#endregion-->
 
                 <!-- #Region 7. Text ) -->
@@ -679,59 +679,59 @@
                     <Label Canvas.Left="1076" Canvas.Top="715" Foreground="{StaticResource SecondaryFontColor}" Content="V53"
                 Width="40" HorizontalContentAlignment="Center" Visibility="{Binding OnLeakTestVisibility}" />
 
-                    <Label Canvas.Left="121" Canvas.Top="354" Foreground="Black" Content="M01"
+                    <Label Canvas.Left="121" Canvas.Top="354" Foreground="DimGray" Content="M01"
                 Width="40" HorizontalContentAlignment="Center" />
-                    <Label Canvas.Left="121" Canvas.Top="300" Foreground="Black" Content="M02"
+                    <Label Canvas.Left="121" Canvas.Top="300" Foreground="DimGray" Content="M02"
                 Width="40" HorizontalContentAlignment="Center" />
-                    <Label Canvas.Left="343" Canvas.Top="201" Foreground="Black" Content="M03"
+                    <Label Canvas.Left="343" Canvas.Top="201" Foreground="DimGray" Content="M03"
                 Width="40" HorizontalContentAlignment="Center" />
-                    <Label Canvas.Left="263" Canvas.Top="201" Foreground="Black" Content="M04"
+                    <Label Canvas.Left="263" Canvas.Top="201" Foreground="DimGray" Content="M04"
                 Width="40" HorizontalContentAlignment="Center" />
-                    <Label Canvas.Left="557" Canvas.Top="151" Foreground="Black" Content="M05"
+                    <Label Canvas.Left="557" Canvas.Top="151" Foreground="DimGray" Content="M05"
                 Width="40" HorizontalContentAlignment="Center" />
-                    <Label Canvas.Left="477" Canvas.Top="151" Foreground="Black" Content="M06"
+                    <Label Canvas.Left="477" Canvas.Top="151" Foreground="DimGray" Content="M06"
                 Width="40" HorizontalContentAlignment="Center" />
-                    <Label Canvas.Left="557" Canvas.Top="201" Foreground="Black" Content="M07"
+                    <Label Canvas.Left="557" Canvas.Top="201" Foreground="DimGray" Content="M07"
                 Width="40" HorizontalContentAlignment="Center" />
-                    <Label Canvas.Left="179" Canvas.Top="585" Foreground="Black" Content="M08"
+                    <Label Canvas.Left="179" Canvas.Top="585" Foreground="DimGray" Content="M08"
                 Width="40" HorizontalContentAlignment="Center" />
-                    <Label Canvas.Left="319" Canvas.Top="585" Foreground="Black" Content="M09"
+                    <Label Canvas.Left="319" Canvas.Top="585" Foreground="DimGray" Content="M09"
                 Width="40" HorizontalContentAlignment="Center" />
-                    <Label Canvas.Left="459" Canvas.Top="585" Foreground="Black" Content="M10"
+                    <Label Canvas.Left="459" Canvas.Top="585" Foreground="DimGray" Content="M10"
                 Width="40" HorizontalContentAlignment="Center" />
-                    <Label Canvas.Left="599" Canvas.Top="585" Foreground="Black" Content="M11"
+                    <Label Canvas.Left="599" Canvas.Top="585" Foreground="DimGray" Content="M11"
                 Width="40" HorizontalContentAlignment="Center" />
-                    <Label Canvas.Left="739" Canvas.Top="585" Foreground="Black" Content="M12"
+                    <Label Canvas.Left="739" Canvas.Top="585" Foreground="DimGray" Content="M12"
                 Width="40" HorizontalContentAlignment="Center" />
-                    <Label Canvas.Left="797" Canvas.Top="541" Foreground="Black" Content="M13"
+                    <Label Canvas.Left="797" Canvas.Top="541" Foreground="DimGray" Content="M13"
                 Width="40" HorizontalContentAlignment="Center" />
-                    <Label Canvas.Left="855" Canvas.Top="585" Foreground="Black" Content="M14"
+                    <Label Canvas.Left="855" Canvas.Top="585" Foreground="DimGray" Content="M14"
                 Width="40" HorizontalContentAlignment="Center" />
-                    <Label Canvas.Left="937" Canvas.Top="585" Foreground="Black" Content="M15"
+                    <Label Canvas.Left="937" Canvas.Top="585" Foreground="DimGray" Content="M15"
                 Width="40" HorizontalContentAlignment="Center" />
-                    <Label Canvas.Left="797" Canvas.Top="193" Foreground="Black" Content="M16"
+                    <Label Canvas.Left="797" Canvas.Top="193" Foreground="DimGray" Content="M16"
                 Width="40" HorizontalContentAlignment="Center" />
-                    <Label Canvas.Left="797" Canvas.Top="237" Foreground="Black" Content="M17"
+                    <Label Canvas.Left="797" Canvas.Top="237" Foreground="DimGray" Content="M17"
                 Width="40" HorizontalContentAlignment="Center" />
-                    <Label Canvas.Left="121" Canvas.Top="398" Foreground="Black" Content="M18"
+                    <Label Canvas.Left="121" Canvas.Top="398" Foreground="DimGray" Content="M18"
                 Width="40" HorizontalContentAlignment="Center" />
-                    <Label Canvas.Left="121" Canvas.Top="256" Foreground="Black" Content="M19"
+                    <Label Canvas.Left="121" Canvas.Top="256" Foreground="DimGray" Content="M19"
                 Width="40" HorizontalContentAlignment="Center" />
 
-                    <Label Canvas.Left="634" Canvas.Top="201" Foreground="Black" Content="E01"
-                Width="40" HorizontalContentAlignment="Center" />
-                    <Label Canvas.Left="234" Canvas.Top="541" Foreground="Black" Content="E02"
-                Width="40" HorizontalContentAlignment="Center" />
-                    <Label Canvas.Left="374" Canvas.Top="541" Foreground="Black" Content="E03"
-                Width="40" HorizontalContentAlignment="Center" />
-                    <Label Canvas.Left="514" Canvas.Top="541" Foreground="Black" Content="E04"
-                Width="40" HorizontalContentAlignment="Center" />
-                    <Label Canvas.Left="654" Canvas.Top="541" Foreground="Black" Content="E05"
-                Width="40" HorizontalContentAlignment="Center" />
-                    <Label Canvas.Left="852" Canvas.Top="643" Foreground="Black" Content="E06"
-                Width="40" HorizontalContentAlignment="Center" />
-                    <Label Canvas.Left="992" Canvas.Top="541" Foreground="Black" Content="E07"
-                Width="40" HorizontalContentAlignment="Center" />
+                    <Label Canvas.Left="234" Canvas.Top="541" Foreground="DimGray" Content="E01"
+                                 Width="40" HorizontalContentAlignment="Center" />
+                    <Label Canvas.Left="374" Canvas.Top="541" Foreground="DimGray" Content="E02"
+                                 Width="40" HorizontalContentAlignment="Center" />
+                    <Label Canvas.Left="514" Canvas.Top="541" Foreground="DimGray" Content="E03"
+                                 Width="40" HorizontalContentAlignment="Center" />
+                    <Label Canvas.Left="654" Canvas.Top="541" Foreground="DimGray" Content="E04"
+                                 Width="40" HorizontalContentAlignment="Center" />
+                    <Label Canvas.Left="852" Canvas.Top="643" Foreground="DimGray" Content="E05"
+                                 Width="40" HorizontalContentAlignment="Center" />
+                    <Label Canvas.Left="992" Canvas.Top="541" Foreground="DimGray" Content="E06"
+                                 Width="40" HorizontalContentAlignment="Center" />
+                    <Label Canvas.Left="634" Canvas.Top="201" Foreground="DimGray" Content="E07"
+                                Width="40" HorizontalContentAlignment="Center" />
                 </Canvas>
                 <!--#endregion-->
 
@@ -763,8 +763,8 @@
             <Grid.RowDefinitions>
                 <RowDefinition Height="210"/>
                 <RowDefinition Height="120"/>
-                <RowDefinition Height="150"/>
-                <RowDefinition Height="90"/>
+                <RowDefinition Height="180"/>
+                <RowDefinition Height="100"/>
                 <RowDefinition/>
             </Grid.RowDefinitions>
             <!-- User Status-->
@@ -892,9 +892,13 @@
                         <Button Height="20" Width="80"  FontSize="11" Content="Pressure" />
                     </StackPanel>
                     <StackPanel Orientation="Horizontal" Height="30">
-                        <TextBlock Width="210" Height="20" TextAlignment="Right" Text="Throttle Valve Control"
-                               Margin="0,2,6,0"/>
-                        <Button Height="20" Width="80" FontSize="11" Content="RUN"/>
+                        <TextBlock Height="20" Text="Throttle Valve Control" Margin="10,8,0,0"/>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal" Height="30" HorizontalAlignment="Center">
+                        <Button Height="20" Width="70" FontSize="11" Content="RUN"/>
+                        <Button Height="20" Width="70" FontSize="11" Content="OPEN"/>
+                        <Button Height="20" Width="70" FontSize="11" Content="CLOSE"/>
+                        <Button Height="20" Width="70" FontSize="11" Content="STOP"/>
                     </StackPanel>
                 </StackPanel>
             </Grid>

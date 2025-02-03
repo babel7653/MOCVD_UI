@@ -50,14 +50,19 @@ CASE nState OF
 			bEnable := FALSE;
 			bInit := FALSE;
 		END_IF
-	20: //STOP
+	20: //PAUSE
+		bEnable := FALSE;
+	30: //RESTART
+		bEnable := TRUE;	
+	40: //STOP
 		bEnable := FALSE;
 		bInit := TRUE;
 		bValueReached := TRUE;
-	30: //PAUSE
+	50: //END
 		bEnable := FALSE;
-	50: //RESTART
-		bEnable := TRUE;	
+		bInit := TRUE;
+		bValueReached := TRUE;
+
 END_CASE
 
 IF bInit THEN
@@ -93,7 +98,13 @@ END_IF
 //nControlValue := REAL_TO_INT(rControlValue);]]></ST>
     </Implementation>
     <LineIds Name="FB_RampGenerator">
-      <LineId Id="1" Count="57" />
+      <LineId Id="1" Count="16" />
+      <LineId Id="60" Count="3" />
+      <LineId Id="18" Count="3" />
+      <LineId Id="64" Count="0" />
+      <LineId Id="69" Count="1" />
+      <LineId Id="68" Count="0" />
+      <LineId Id="25" Count="33" />
     </LineIds>
   </POU>
 </TcPlcObject>

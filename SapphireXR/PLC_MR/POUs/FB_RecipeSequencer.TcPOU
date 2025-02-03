@@ -5,22 +5,13 @@
 VAR_INPUT
 	nRcpIndex	: INT;
 END_VAR
-VAR_OUTPUT
 
-END_VAR
 VAR
-	// for FB_Sequencer Variable
-	// 	aController : ARRAY[1..26] OF FB_RampGenerator; //MFC EPC 0 ~ 5V
-	// 	aController_PV : ARRAY[1..29] OF INT;
-	aGasController : ARRAY[1..29] OF FB_RampGenerator;
-	aGasController_PV : ARRAY[1..29] OF INT;
 	i 	: INT;
-	nRcpRampTime	: INT;
+
 END_VAR]]></Declaration>
     <Implementation>
-      <ST><![CDATA[nRcpRampTime := RCP.aRecipe[nRcpIndex].iRecipe[2]; // Current Recipe Step Ramp Time 
-
-(* Write a Controller MFC / EPC *)
+      <ST><![CDATA[(* Write a Controller MFC / EPC *)
 FOR i:= 1 TO 26 DO
 	IF GVL_IO.aMaxValueController[i] <> 0 THEN
 		GVL_IO.aController[i].nState := 10;
@@ -29,7 +20,7 @@ FOR i:= 1 TO 26 DO
 		GVL_IO.aAnalogOutputIO[i] := LREAL_TO_INT(GVL_IO.aController[i].rControlValue);
 		
 		GVL_IO.aController_PV[i] := REAL_TO_INT(GVL_IO.aAnalogInputIO[i] / GVL_IO.KL3464MaxValueH * GVL_IO.aMaxValueController[i]);
-		GVL_IO.aController[i]();
+		GVL_IO.aController[i]();	
 	END_IF
 END_FOR
 
@@ -46,8 +37,8 @@ FOR i:=27 TO 29 DO
 				P11_E3508.bHeaterOn := FALSE;
 			END_IF
 	
-			GVL_IO.aController[i].nRampTime := GVL_IO.aController_RampTime[i];
-			GVL_IO.aController[i].rTargetValue := GVL_IO.aController_TV[i];
+			GVL_IO.aController[i].nRampTime := RCP.aRecipe[nRcpIndex].iRecipe[2];
+			GVL_IO.aController[i].rTargetValue := RCP.aRecipe[nRcpIndex].rRecipe[i];
 			P11_E3508.wControlValue := LREAL_TO_WORD(GVL_IO.aController[i].rControlValue); //Write to Temperature Controller
 			
 			GVL_IO.aController_PV[i] := WORD_TO_INT(P11_E3508.wE3508_PV);
@@ -59,8 +50,8 @@ FOR i:=27 TO 29 DO
 				GVL_IO.aController[i].nState := 10; //START
 			END_IF
 			
-			GVL_IO.aController[i].nRampTime := GVL_IO.aController_RampTime[i];
-			GVL_IO.aController[i].rTargetValue := GVL_IO.aController_TV[i];
+			GVL_IO.aController[i].nRampTime := RCP.aRecipe[nRcpIndex].iRecipe[2];
+			GVL_IO.aController[i].rTargetValue := RCP.aRecipe[nRcpIndex].rRecipe[i];
 			P12_IQ_PLUS.wControlValue := LREAL_TO_WORD(GVL_IO.aController[i].rControlValue); //Write to Pressure Controller
 			
 			GVL_IO.aController_PV[i] := WORD_TO_INT(P12_IQ_PLUS.wCDG2_PV);
@@ -72,8 +63,8 @@ FOR i:=27 TO 29 DO
 				GVL_IO.aController[i].nState := 10; //START
 			END_IF
 			
-			GVL_IO.aController[i].nRampTime := GVL_IO.aController_RampTime[i];
-			GVL_IO.aController[i].rTargetValue := GVL_IO.aController_TV[i];
+			GVL_IO.aController[i].nRampTime := RCP.aRecipe[nRcpIndex].iRecipe[2];
+			GVL_IO.aController[i].rTargetValue := RCP.aRecipe[nRcpIndex].rRecipe[i];
 			P15_RotationOperation.rControlValue := LREAL_TO_REAL(GVL_IO.aController[i].rControlValue); //Write to Rotation Controller (rpm)
 			
 			GVL_IO.aController_PV[i] := P15_RotationOperation.nConvertedRotation_PV;
@@ -81,7 +72,6 @@ FOR i:=27 TO 29 DO
 			GVL_IO.aController[i]();		
 	END_CASE
 END_FOR
-
 
 (* Solenoid Valve Mapping *)
 GVL_IO.aOutputSolValve[1].0 := RCP.aRecipe[nRcpIndex].dRecipe.0; //V01 Hyd. Carrier
@@ -112,8 +102,6 @@ GVL_IO.aOutputSolValve[2].14 := RCP.aRecipe[nRcpIndex].dRecipe.24; //V31
 GVL_IO.aOutputSolValve[2].15 := RCP.aRecipe[nRcpIndex].dRecipe.25; //V32]]></ST>
     </Implementation>
     <LineIds Name="FB_RecipeSequencer">
-      <LineId Id="25" Count="0" />
-      <LineId Id="180" Count="0" />
       <LineId Id="30" Count="4" />
       <LineId Id="129" Count="0" />
       <LineId Id="36" Count="5" />
@@ -121,7 +109,6 @@ GVL_IO.aOutputSolValve[2].15 := RCP.aRecipe[nRcpIndex].dRecipe.25; //V32]]></ST>
       <LineId Id="197" Count="45" />
       <LineId Id="196" Count="0" />
       <LineId Id="244" Count="0" />
-      <LineId Id="195" Count="0" />
       <LineId Id="132" Count="26" />
       <LineId Id="131" Count="0" />
     </LineIds>

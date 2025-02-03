@@ -37,7 +37,7 @@ namespace SapphireXR_App.Models
             SV_E05 = recipe.E05;
             SV_E06 = recipe.E06;
             SV_E07 = recipe.E07;
-            SV_RTEMP = recipe.STemp;
+            SV_TEMP = recipe.STemp;
             SV_PRES = recipe.RPress;
             SV_ROT = recipe.SRotation;
 
@@ -67,7 +67,7 @@ namespace SapphireXR_App.Models
             PV_E05 = PLCService.ReadCurrentValue("EPC05");
             PV_E06 = PLCService.ReadCurrentValue("EPC06");
             PV_E07 = PLCService.ReadCurrentValue("EPC07");
-            PV_RTEMP = PLCService.ReadCurrentValue("Temperature");
+            PV_TEMP = PLCService.ReadCurrentValue("Temperature");
             PV_PRES = PLCService.ReadCurrentValue("Pressure");
             PV_ROT = PLCService.ReadCurrentValue("Rotation");
 
@@ -101,7 +101,7 @@ namespace SapphireXR_App.Models
         public float PV_E05 { get; set; }
         public float PV_E06 { get; set; }
         public float PV_E07 { get; set; }
-        public float PV_RTEMP { get; set; }
+        public float PV_TEMP { get; set; }
         public float PV_PRES { get; set; }
         public float PV_ROT { get; set; }
         public float PV_IHT_KW { get; set; }
@@ -133,7 +133,7 @@ namespace SapphireXR_App.Models
         public float SV_E05 { get; set; }
         public float SV_E06 { get; set; }
         public float SV_E07 { get; set; }
-        public float SV_RTEMP { get; set; }
+        public float SV_TEMP { get; set; }
         public float SV_PRES { get; set; }
         public float SV_ROT { get; set; }
                           

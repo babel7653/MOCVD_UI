@@ -37,7 +37,7 @@ END_VAR
 			END_IF
 		END_IF
 		//2nd Step to EOR(End of Recipe)-1 Step State
-		IF RCP.bRcpStart = FALSE AND nRcpIndex <> 0 AND nRcpIndex < RCP.iRcpTotalStep THEN
+		IF RCP.bRcpStart = FALSE AND nRcpIndex <> 1 AND nRcpIndex < RCP.iRcpTotalStep THEN
 			RCP.iRcpStepN := nRcpIndex;
 			nRcpStepTime := RCP.aRecipe[nRcpIndex].iRecipe[2] + RCP.aRecipe[nRcpIndex].iRecipe[3]; // Recipe Step Time
 			// Recipe Write to Device

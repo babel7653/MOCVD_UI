@@ -230,6 +230,17 @@
                 <Line X1="1160" Y1="629" X2="1160" Y2="694" Stroke="{StaticResource ExhaustLineColor}" StrokeThickness="4" />
                 <Line X1="1096" Y1="546" X2="1160" Y2="546" Stroke="{StaticResource ExhaustLineColor}" StrokeThickness="2" />
 
+                <!-- Reactor Over Pressure 화살표  -->
+                <Path Canvas.Left="1096" Canvas.Top="546" Fill="{StaticResource ExhaustLineColor}">
+                    <Path.Data>
+                        <PathGeometry>
+                            <PathFigure StartPoint="0 0" IsClosed="True">
+                                <LineSegment Point="12 -4"/>
+                                <LineSegment Point="12 4"/>
+                            </PathFigure>
+                        </PathGeometry>
+                    </Path.Data>
+                </Path>
                 <!-- 진공펌프 출력 화살표  -->
                 <Polyline Points="1240,720 1260,720 1260 676" Stroke="{StaticResource ExhaustLineColor}" StrokeThickness="2"/>
                 <Path Canvas.Left="1260" Canvas.Top="664" Fill="{StaticResource ExhaustLineColor}">

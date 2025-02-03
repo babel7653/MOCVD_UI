@@ -20,24 +20,11 @@ END_VAR]]></Declaration>
     <Implementation>
       <ST><![CDATA[nRcpRampTime := RCP.aRecipe[nRcpIndex].iRecipe[2]; // Current Recipe Step Ramp Time 
 
-(* Target Value Write to Device *)
-(* Heater Controller *)
-GVL_IO.aController[27].rTargetValue := RCP.aRecipe[nRcpIndex].iRecipe[4];
-GVL_IO.aController[27].nRampTime := nRcpRampTime;
-
-(* Pressure Controller *)
-GVL_IO.aController[28].rTargetValue := RCP.aRecipe[nRcpIndex].iRecipe[5];
-GVL_IO.aController[28].nRampTime := nRcpRampTime;
-
-(* Susceptor Rotation *)
-GVL_IO.aController[29].rTargetValue := RCP.aRecipe[nRcpIndex].iRecipe[6];
-GVL_IO.aController[29].nRampTime := nRcpRampTime;
-
-(* Gas Controller MFC / EPC *)
+(* Write a Controller MFC / EPC *)
 FOR i:= 1 TO 26 DO
 	IF GVL_IO.aMaxValueController[i] <> 0 THEN
 		GVL_IO.aController[i].nState := 10;
-		GVL_IO.aController[i].nRampTime := nRcpRampTime;
+		GVL_IO.aController[i].nRampTime := RCP.aRecipe[nRcpIndex].iRecipe[2]; //Current Recipe Step Ramp Time
 		GVL_IO.aController[i].rTargetValue := RCP.aRecipe[nRcpIndex].rRecipe[i] / GVL_IO.aMaxValueController[i] * GVL_IO.KL3464MaxValueH; //Input Set Value
 		GVL_IO.aAnalogOutputIO[i] := LREAL_TO_INT(GVL_IO.aController[i].rControlValue);
 		
@@ -45,6 +32,56 @@ FOR i:= 1 TO 26 DO
 		GVL_IO.aController[i]();
 	END_IF
 END_FOR
+
+FOR i:=27 TO 29 DO
+	CASE i OF
+		 27 : // Heater Controller 
+			IF GVL_IO.aMaxValueController[i]<> 0 THEN
+				GVL_IO.aController[i].nState := 10;
+			END_IF	
+
+			IF ( GVL_IO.aController_CV[i] > 10 ) THEN
+				P11_E3508.bHeaterOn := TRUE;
+			ELSE
+				P11_E3508.bHeaterOn := FALSE;
+			END_IF
+	
+			GVL_IO.aController[i].nRampTime := GVL_IO.aController_RampTime[i];
+			GVL_IO.aController[i].rTargetValue := GVL_IO.aController_TV[i];
+			P11_E3508.wControlValue := LREAL_TO_WORD(GVL_IO.aController[i].rControlValue); //Write to Temperature Controller
+			
+			GVL_IO.aController_PV[i] := WORD_TO_INT(P11_E3508.wE3508_PV);
+			GVL_IO.aController_CV[i] := WORD_TO_INT(P11_E3508.wControlValue);
+			GVL_IO.aController[i]();
+			
+		28 : // Pressure Controller
+			IF (GVL_IO.aController_TV[i] >= 0 ) THEN
+				GVL_IO.aController[i].nState := 10; //START
+			END_IF
+			
+			GVL_IO.aController[i].nRampTime := GVL_IO.aController_RampTime[i];
+			GVL_IO.aController[i].rTargetValue := GVL_IO.aController_TV[i];
+			P12_IQ_PLUS.wControlValue := LREAL_TO_WORD(GVL_IO.aController[i].rControlValue); //Write to Pressure Controller
+			
+			GVL_IO.aController_PV[i] := WORD_TO_INT(P12_IQ_PLUS.wCDG2_PV);
+			GVL_IO.aController_CV[i] := WORD_TO_INT(P12_IQ_PLUS.wControlValue);
+			GVL_IO.aController[i]();
+			
+		29 : // Rotation Controller
+			IF (GVL_IO.aController_TV[i] >= 0 ) THEN
+				GVL_IO.aController[i].nState := 10; //START
+			END_IF
+			
+			GVL_IO.aController[i].nRampTime := GVL_IO.aController_RampTime[i];
+			GVL_IO.aController[i].rTargetValue := GVL_IO.aController_TV[i];
+			P15_RotationOperation.rControlValue := LREAL_TO_REAL(GVL_IO.aController[i].rControlValue); //Write to Rotation Controller (rpm)
+			
+			GVL_IO.aController_PV[i] := P15_RotationOperation.nConvertedRotation_PV;
+			GVL_IO.aController_CV[i] := REAL_TO_INT(P15_RotationOperation.rControlValue);
+			GVL_IO.aController[i]();		
+	END_CASE
+END_FOR
+
 
 (* Solenoid Valve Mapping *)
 GVL_IO.aOutputSolValve[1].0 := RCP.aRecipe[nRcpIndex].dRecipe.0; //V01 Hyd. Carrier
@@ -76,22 +113,15 @@ GVL_IO.aOutputSolValve[2].15 := RCP.aRecipe[nRcpIndex].dRecipe.25; //V32]]></ST>
     </Implementation>
     <LineIds Name="FB_RecipeSequencer">
       <LineId Id="25" Count="0" />
-      <LineId Id="187" Count="0" />
-      <LineId Id="183" Count="0" />
-      <LineId Id="160" Count="0" />
-      <LineId Id="189" Count="1" />
-      <LineId Id="182" Count="0" />
-      <LineId Id="166" Count="0" />
-      <LineId Id="191" Count="0" />
-      <LineId Id="181" Count="0" />
-      <LineId Id="192" Count="0" />
-      <LineId Id="177" Count="0" />
-      <LineId Id="194" Count="0" />
-      <LineId Id="193" Count="0" />
       <LineId Id="180" Count="0" />
       <LineId Id="30" Count="4" />
       <LineId Id="129" Count="0" />
       <LineId Id="36" Count="5" />
+      <LineId Id="243" Count="0" />
+      <LineId Id="197" Count="45" />
+      <LineId Id="196" Count="0" />
+      <LineId Id="244" Count="0" />
+      <LineId Id="195" Count="0" />
       <LineId Id="132" Count="26" />
       <LineId Id="131" Count="0" />
     </LineIds>

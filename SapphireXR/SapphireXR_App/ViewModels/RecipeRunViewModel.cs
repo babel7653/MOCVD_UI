@@ -88,6 +88,14 @@ namespace SapphireXR_App.ViewModels
         private void RecipeStart()
         {
             RecipeStarted = !RecipeStarted;
+            if (RecipeStarted)
+            {
+                PLCService.WriteOperationState(10);
+            }
+            else
+            {
+                PLCService.WriteOperationState(40);
+            }
         }
 
         [RelayCommand(CanExecute = nameof(CurrentRecipeActive))]

@@ -588,7 +588,7 @@
                                                 <DataGridTextColumn Header="Name" CanUserSort="False" CanUserResize="False" Width="*"
                                                                 Binding="{Binding Name}"/>
                                                 <DataGridCheckBoxColumn Header="On/Off" CanUserSort="False" CanUserResize="False" Width="60"
-                                                                Binding="{Binding OnOff}"/>
+                                                               IsReadOnly="True" Binding="{Binding OnOff, UpdateSourceTrigger=PropertyChanged}" />
                                             </DataGrid.Columns>
                                         </DataGrid>
 

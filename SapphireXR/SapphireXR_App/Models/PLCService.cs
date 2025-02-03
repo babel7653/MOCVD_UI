@@ -114,7 +114,8 @@ namespace SapphireXR_App.Models
                 aMonitoringCurrentValueIssuers.Add(kv.Key, ObservableManager<float>.Get("MonitoringPresentValue." + kv.Key + ".CurrentValue"));
             }
             dCurrentActiveRecipeIssue = ObservableManager<short>.Get("RecipeRun.CurrentActiveRecipe");
-            dHardWiringInterlockStateIssuers = ObservableManager<BitArray>.Get("HardWiringInterlockState");
+            baHardWiringInterlockStateIssuers = ObservableManager<BitArray>.Get("HardWiringInterlockState");
+            dIOStateList = ObservableManager<BitArray>.Get("DeviceIOList");
 
             timer = new DispatcherTimer();
             timer.Interval = new TimeSpan(2000000);
@@ -177,13 +178,14 @@ namespace SapphireXR_App.Models
             if(aInputState != null)
             {
                 short value = aInputState[0];
-                dHardWiringInterlockStateIssuers?.Issue(new BitArray(BitConverter.IsLittleEndian == true? BitConverter.GetBytes(value) :BitConverter.GetBytes(value).Reverse().ToArray()));
+                baHardWiringInterlockStateIssuers?.Issue(new BitArray(BitConverter.IsLittleEndian == true? BitConverter.GetBytes(value) :BitConverter.GetBytes(value).Reverse().ToArray()));
 
                 bool[] ioList = new bool[48];
                 for(int inputState = 1; inputState < aInputState.Length; ++inputState)
                 {
-                    new BitArray(BitConverter.IsLittleEndian == true ? BitConverter.GetBytes(aInputState[inputState]) : BitConverter.GetBytes(aInputState[inputState]).Reverse().ToArray()).CopyTo(ioList, (inputState - 1) * sizeof(short));
+                    new BitArray(BitConverter.IsLittleEndian == true ? BitConverter.GetBytes(aInputState[inputState]) : BitConverter.GetBytes(aInputState[inputState]).Reverse().ToArray()).CopyTo(ioList, (inputState - 1) * sizeof(short) * 8);
                 }
+                dIOStateList?.Issue(new BitArray(ioList));
             }
 
             string expcetionStr = string.Empty;

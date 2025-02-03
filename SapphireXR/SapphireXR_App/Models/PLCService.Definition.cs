@@ -8,24 +8,31 @@ namespace SapphireXR_App.Models
 {
     public static partial class PLCService
     {
-        public class ReadValveStateException : Exception
+        internal class ReadValveStateException : Exception
         {
             public ReadValveStateException(string message) : base(message) { }
         }
 
-        public enum HardWiringInterlockStateIndex
+        internal enum HardWiringInterlockStateIndex
         {
             MaintainenceKey = 0, DoorReactorCabinet = 1, DoorGasDeliveryCabinet = 2, DoorPowerDistributeCabinet = 3, CleanDryAir = 4, CoolingWater = 5,
             InductionHeaterReady = 6, inductionHeaterRun = 7, inductionHeaterFault = 8, SusceptorMotorStop = 9, SusceptorMotorRun = 10, SusceptorMotorFault = 11,
             VacuumPumpWarning = 12, VacuumPumpRun = 13, VacuumPumpFault = 14,
         };
 
-        public enum IOListIndex
+        const int NumShortBits = sizeof(short) * 8;
+        internal enum IOListIndex
         {
-            PowerResetSwitch = 0, Cover1, Cover2, SMPS1, SMPS2, SMPS3, SMPS4, CP1, CP2, CP3, CP4, CP5, CP6, CP7, CP8, CP9, LineHeader1, LineHeader2, LineHeader3, LineHeader4,
-            LineHeader5, LineHeader6, LineHeader7, LineHeader8, ThermalBath1, ThermalBath2, ThermalBath3, ThermalBath4, ThermalBath5, ThermalBath6, SingalTower1, SingalTower2,
-            SingalTower3, SingalTower4, SingalTower5, SingalTower6
+            PowerResetSwitch = 1, Cover_UpperLimit = 2, Cover_LowerLimit = 3, SMPS_24V480 = 4, SMPS_24V72 = 5, SMPS_15VPlus= 6, SMPS_15VMinus = 7, CP_InudctionHeater = 8, 
+            CP_ThermalBath = 9,  CP_VaccumPump = 10, CP_LineHeater = 11, CP_RotationMotor = 12, CP_CoverMotor = 13, CP_ThrottleValve = 14, CP_Lamp = NumShortBits * 1, 
+            CP_SM515CP = NumShortBits * 1 + 1, LineHeader0 = NumShortBits * 1 + 2, LineHeader1 = NumShortBits * 1 + 3, LineHeader2 = NumShortBits * 1 + 4,  LineHeader3 = NumShortBits * 1 + 5, 
+            LineHeader4 = NumShortBits * 1 + 6, LineHeader5 = NumShortBits * 1 + 7, LineHeader6 = NumShortBits * 1 + 8, LineHeader7 = NumShortBits * 1 + 9, 
+            ThermalBath_DeviationAlaram1 = NumShortBits * 1 + 10, ThermalBath_DeviationAlaram2 = NumShortBits * 1 + 11, ThermalBath_DeviationAlaram3 = NumShortBits * 1 + 12, 
+            ThermalBath_DeviationAlaram4 = NumShortBits * 1 + 13,  ThermalBath_DeviationAlaram5 = NumShortBits * 1 + 14, ThermalBath_DeviationAlaram6 = NumShortBits * 2, 
+            SingalTower_RED = NumShortBits * 2 + 1, SingalTower_YELLOW = NumShortBits * 2 + 2, SingalTower_GREEN = NumShortBits * 2 + 3, SingalTower_BLUE = NumShortBits * 2 + 4, 
+            SingalTower_WHITE = NumShortBits * 2 + 5, SingalTower_BUZZWER = NumShortBits * 2 + 6
         };
+      
 
         // Connect to PLC
         public static string AddressPLC { get; set; } = "PLC Address : ";
@@ -48,7 +55,8 @@ namespace SapphireXR_App.Models
         private static Dictionary<string, ObservableManager<int>.DataIssuer>? dControlValueIssuers;
         private static Dictionary<string, ObservableManager<(int, int)>.DataIssuer>? dControlCurrentValueIssuers;
         private static Dictionary<string, ObservableManager<float>.DataIssuer>? aMonitoringCurrentValueIssuers;
-        private static ObservableManager<BitArray>.DataIssuer? dHardWiringInterlockStateIssuers;
+        private static ObservableManager<BitArray>.DataIssuer? baHardWiringInterlockStateIssuers;
+        private static ObservableManager<BitArray>.DataIssuer? dIOStateList;
 
         private static ObservableManager<short>.DataIssuer? dCurrentActiveRecipeIssue;
 

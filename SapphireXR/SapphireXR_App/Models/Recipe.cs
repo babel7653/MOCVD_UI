@@ -298,8 +298,8 @@ namespace SapphireXR_App.Models
         [MarshalAs(UnmanagedType.ByValArray, SizeConst = 9)]
         public short[] aRecipeShort = new short[9];
 
-        [MarshalAs(UnmanagedType.ByValArray, SizeConst = 29)]
-        public float[] aRecipeFloat = new float[PLCService.NumControllers];
+        [MarshalAs(UnmanagedType.ByValArray, SizeConst = 26)]
+        public float[] aRecipeFloat = new float[26];
 
         public int iValve;
     }

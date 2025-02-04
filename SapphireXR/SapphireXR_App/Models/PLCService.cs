@@ -341,7 +341,7 @@ namespace SapphireXR_App.Models
 
         public static void WriteRecipe(PlcRecipe[] recipe)
         {
-            Ads.WriteAny(hRcp, recipe);
+            Ads.WriteAny(hRcp, recipe, [recipe.Length]);
         }
 
         public static void WriteTotalStep(short totalStep)

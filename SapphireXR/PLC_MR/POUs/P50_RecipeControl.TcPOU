@@ -19,8 +19,8 @@ END_VAR
 	0: //Initial Operation Setting
 	10: //RUN
 		//Initial State
-		IF (RCP.bRcpStart) THEN //레시피 시작 조건 추가예정
-			nRcpIndex := 1;
+		IF RCP.bRcpStart AND nRcpIndex = 1 THEN //레시피 시작 조건 추가예정
+			//nRcpIndex := 1;
 			//RCP.bRcpStart := FALSE;
 			RCP.iRcpStepN := nRcpIndex;
 			nRcpStepTime := RCP.aRecipe[nRcpIndex].iRecipe[2] + RCP.aRecipe[nRcpIndex].iRecipe[3]; // Recipe Step Time
@@ -30,14 +30,14 @@ END_VAR
 			tMoveNext(IN:=bMoveNext, PT:=INT_TO_TIME(nRcpStepTime*1000));
 			rTrigMoveNext(CLK:=tMoveNext.Q);
 			IF rTrigMoveNext.Q THEN
-				RCP.bRcpStart := FALSE;
+				//RCP.bRcpStart := FALSE;
 				bMoveNext := FALSE;
 				tMoveNext(IN := FALSE);
 				nRcpIndex := nRcpIndex + 1;
 			END_IF
 		END_IF
 		//2nd Step to EOR(End of Recipe)-1 Step State
-		IF RCP.bRcpStart = FALSE AND nRcpIndex <> 1 AND nRcpIndex < RCP.iRcpTotalStep THEN
+		IF RCP.bRcpStart = TRUE AND nRcpIndex <> 1 AND nRcpIndex < RCP.iRcpTotalStep THEN
 			RCP.iRcpStepN := nRcpIndex;
 			nRcpStepTime := RCP.aRecipe[nRcpIndex].iRecipe[2] + RCP.aRecipe[nRcpIndex].iRecipe[3]; // Recipe Step Time
 			// Recipe Write to Device
@@ -52,7 +52,7 @@ END_VAR
 			END_IF
 		END_IF
 		// EOR(End of Recipe)
-		IF RCP.bRcpStart = FALSE AND RCP.iRcpStepN = RCP.iRcpTotalStep THEN
+		IF RCP.bRcpStart = TRUE AND RCP.iRcpStepN = RCP.iRcpTotalStep THEN
 			RCP.iRcpStepN := nRcpIndex;
 			nRcpStepTime := RCP.aRecipe[nRcpIndex].iRecipe[2] + RCP.aRecipe[nRcpIndex].iRecipe[3]; // Recipe Step Time
 			// Recipe Write to Device
@@ -65,6 +65,7 @@ END_VAR
 				tMoveNext(IN := FALSE);
 				// Satety State 전달
 			END_IF
+			RCP.bRcpStart := FALSE;
 		END_IF	
 	20: //PAUSE
 	30: //RESTART
@@ -122,6 +123,7 @@ END_CASE
       <LineId Id="80" Count="0" />
       <LineId Id="83" Count="0" />
       <LineId Id="82" Count="0" />
+      <LineId Id="123" Count="0" />
       <LineId Id="70" Count="0" />
       <LineId Id="7" Count="2" />
       <LineId Id="88" Count="0" />

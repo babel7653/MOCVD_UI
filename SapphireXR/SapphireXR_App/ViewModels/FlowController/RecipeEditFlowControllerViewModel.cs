@@ -42,7 +42,7 @@ namespace SapphireXR_App.ViewModels.FlowController
         protected override void onLoaded(string type, string controllerID)
         {
             base.onLoaded(type, controllerID);
-            string controlValuePubilshSubscribeTopic = "FlowControl." + controllerID + ".CurrentValue.CurrentRecipeStage";
+            string controlValuePubilshSubscribeTopic = "FlowControl." + controllerID + ".CurrentValue.CurrentRecipeStep";
             ObservableManager<float>.Subscribe(controlValuePubilshSubscribeTopic, this);
             controlValuePublisher = ObservableManager<float>.Get(controlValuePubilshSubscribeTopic);
             ObservableManager<bool>.Subscribe("Reset.CurrentRecipeStep", controlValueResetSubscriber = new ControlValueResetSubscriber(this));

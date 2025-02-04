@@ -131,44 +131,65 @@
                     <TextBlock Grid.Row="8" Grid.Column="0" Text="DTMGa" />
                     <TextBlock Grid.Row="9" Grid.Column="0"  Text="Cp2Mg" />
 
-                    <Button Grid.Row="1" Grid.Column="1" Content="{Binding NH3_1Carrier}" />
-                    <Button Grid.Row="1" Grid.Column="2" Content="{Binding NH3_1Source}" />
-                    <Button Grid.Row="1" Grid.Column="3" Content="{Binding NH3_1Vent}" />
+                    <Button Grid.Row="1" Grid.Column="1" Content="{Binding CurrentSourceStatusViewModel.NH3_1Carrier}" 
+                            Background="{Binding CurrentSourceStatusViewModel.NH3_1CarrierColor}" />
+                    <Button Grid.Row="1" Grid.Column="2" Content="{Binding CurrentSourceStatusViewModel.NH3_1Source}" 
+                            Background="{Binding CurrentSourceStatusViewModel.NH3_1SourceColor}" />
+                    <Button Grid.Row="1" Grid.Column="3" Content="{Binding CurrentSourceStatusViewModel.NH3_1Vent}"
+                            Background="{Binding CurrentSourceStatusViewModel.NH3_1VentColor}" />
 
-                    <Button Grid.Row="2" Grid.Column="1" Content="{Binding NH3_2Carrier}" />
-                    <Button Grid.Row="2" Grid.Column="2" Content="{Binding NH3_2Source}" />
-                    <Button Grid.Row="2" Grid.Column="3" Content="{Binding NH3_2Vent}" />
+                    <Button Grid.Row="2" Grid.Column="1" Content="{Binding CurrentSourceStatusViewModel.NH3_2Carrier}" 
+                            Background="{Binding CurrentSourceStatusViewModel.NH3_2CarrierColor}"/>
+                    <Button Grid.Row="2" Grid.Column="2" Content="{Binding CurrentSourceStatusViewModel.NH3_2Source}"
+                            Background="{Binding CurrentSourceStatusViewModel.NH3_2SourceColor}" />
+                    <Button Grid.Row="2" Grid.Column="3" Content="{Binding CurrentSourceStatusViewModel.NH3_2Vent}"
+                            Background="{Binding CurrentSourceStatusViewModel.NH3_2VentColor}" />
 
-                    <Button Grid.Row="3" Grid.Column="1" Content="{Binding SiH4Carrier}" />
-                    <Button Grid.Row="3" Grid.Column="2" Content="{Binding SiH4Source}" />
-                    <Button Grid.Row="3" Grid.Column="3" Content="{Binding SiH4Vent}" />
+                    <Button Grid.Row="3" Grid.Column="1" Content="{Binding CurrentSourceStatusViewModel.SiH4Carrier}"
+                            Background="{Binding CurrentSourceStatusViewModel.SiH4CarrierColor}" />
+                    <Button Grid.Row="3" Grid.Column="2" Content="{Binding CurrentSourceStatusViewModel.SiH4Source}"
+                            Background="{Binding CurrentSourceStatusViewModel.SiH4SourceColor}" />
+                    <Button Grid.Row="3" Grid.Column="3" Content="{Binding CurrentSourceStatusViewModel.SiH4Vent}" 
+                            Background="{Binding CurrentSourceStatusViewModel.SiH4VentColor}" />
 
-                    <Button Grid.Row="4" Grid.Column="1" Content="{Binding TEBCarrier}" />
-                    <Button Grid.Row="4" Grid.Column="2" Content="{Binding TEBSource}" />
-                    <Button Grid.Row="4" Grid.Column="3" Content="{Binding TEBVent}" />
+                    <Button Grid.Row="4" Grid.Column="1" Content="{Binding CurrentSourceStatusViewModel.TEBCarrier}" 
+                            Background="{Binding CurrentSourceStatusViewModel.TEBCarrierColor}" />
+                    <Button Grid.Row="4" Grid.Column="2" Content="{Binding CurrentSourceStatusViewModel.TEBSource}" 
+                            Background="{Binding CurrentSourceStatusViewModel.TEBSourceColor}"/>
+                    <Button Grid.Row="4" Grid.Column="3" Content="{Binding CurrentSourceStatusViewModel.TEBVent}"
+                            Background="{Binding CurrentSourceStatusViewModel.TEBVentColor}" />
 
-                    <Button Grid.Row="5" Grid.Column="1" Content="{Binding TMAlCarrier}" />
-                    <Button Grid.Row="5" Grid.Column="2" Content="{Binding TMAlSource}" />
-                    <Button Grid.Row="5" Grid.Column="3" Content="{Binding TMAlVent}" />
+                    <Button Grid.Row="5" Grid.Column="1" Content="{Binding CurrentSourceStatusViewModel.TMAlCarrier}"
+                            Background="{Binding CurrentSourceStatusViewModel.TMAlCarrierColor}" />
+                    <Button Grid.Row="5" Grid.Column="2" Content="{Binding CurrentSourceStatusViewModel.TMAlSource}"
+                            Background="{Binding CurrentSourceStatusViewModel.TMAlSourceColor}" />
+                    <Button Grid.Row="5" Grid.Column="3" Content="{Binding CurrentSourceStatusViewModel.TMAlVent}"
+                            Background="{Binding CurrentSourceStatusViewModel.TMAlVentColor}" />
 
-                    <Button Grid.Row="6" Grid.Column="1" Content="{Binding TMInCarrier}" />
-                    <Button Grid.Row="6" Grid.Column="2" Content="{Binding TMInSource}" />
-                    <Button Grid.Row="6" Grid.Column="3" Content="{Binding TMInVent}" />
+                    <Button Grid.Row="6" Grid.Column="1" Content="{Binding CurrentSourceStatusViewModel.TMInCarrier}"
+                            Background="{Binding CurrentSourceStatusViewModel.TMInCarrierColor}" />
+                    <Button Grid.Row="6" Grid.Column="2" Content="{Binding CurrentSourceStatusViewModel.TMInSource}"
+                            Background="{Binding CurrentSourceStatusViewModel.TMInSourceColor}" />
+                    <Button Grid.Row="6" Grid.Column="3" Content="{Binding CurrentSourceStatusViewModel.TMInVent}"
+                            Background="{Binding CurrentSourceStatusViewModel.TMInVentColor}" />
 
-                    <Button Grid.Row="7" Grid.Column="1" Content="{Binding TMGaCarrier}" />
-                    <Button Grid.Row="7" Grid.Column="2" Content="{Binding TMGaSource}" />
-                    <Button Grid.Row="7" Grid.Column="3" Content="{Binding TMGaVent}" />
+                    <Button Grid.Row="7" Grid.Column="1" Content="{Binding CurrentSourceStatusViewModel.TMGaCarrier}"
+                            Background="{Binding CurrentSourceStatusViewModel.TMGaCarrierColor}" />
+                    <Button Grid.Row="7" Grid.Column="2" Content="{Binding CurrentSourceStatusViewModel.TMGaSource}"
+                            Background="{Binding CurrentSourceStatusViewModel.TMGaSourceColor}" />
+                    <Button Grid.Row="7" Grid.Column="3" Content="{Binding CurrentSourceStatusViewModel.TMGaVent}"
+                            Background="{Binding CurrentSourceStatusViewModel.TMGaVentColor}" />
 
-                    <Button Grid.Row="8" Grid.Column="1" Content="{Binding DTMGaCarrier}" />
-                    <Button Grid.Row="8" Grid.Column="2" Content="{Binding DTMGaSource}" />
-                    <Button Grid.Row="8" Grid.Column="3" Content="{Binding DTMGaVent}" />
+                    <Button Grid.Row="8" Grid.Column="1" Content="{Binding CurrentSourceStatusViewModel.DTMGaCarrier}" 
+                            Background="{Binding CurrentSourceStatusViewModel.DTMGaCarrierColor}" />
+                    <Button Grid.Row="8" Grid.Column="2" Content="{Binding CurrentSourceStatusViewModel.DTMGaSource}"
+                            Background="{Binding CurrentSourceStatusViewModel.DTMGaSourceColor}" />
+                    <Button Grid.Row="8" Grid.Column="3" Content="{Binding CurrentSourceStatusViewModel.DTMGaVent}"
+                            Background="{Binding CurrentSourceStatusViewModel.DTMGaVentColor}" />
 
-                    <Button Grid.Row="9" Grid.Column="1" >N2</Button>
-                    <Button Grid.Row="9" Grid.Column="2" >OFF</Button>
-                    <Button Grid.Row="9" Grid.Column="3" >VENT</Button>
-                    <Button Grid.Row="10" Grid.Column="1" Background="Red">H2</Button>
-                    <Button Grid.Row="10" Grid.Column="2" Background="LawnGreen">ON</Button>
-                    <Button Grid.Row="10" Grid.Column="3" Background="Magenta">RUN</Button>
+                    <Button Grid.Row="9" Grid.Column="1" Content="{Binding CurrentSourceStatusViewModel.Cp2MgCarrier}" Background="{Binding CurrentSourceStatusViewModel.Cp2MgCarrierColor}" />
+                    <Button Grid.Row="9" Grid.Column="2" Content="{Binding CurrentSourceStatusViewModel.Cp2MgSource}" Background="{Binding CurrentSourceStatusViewModel.Cp2MgSourceColor}" />
+                    <Button Grid.Row="9" Grid.Column="3" Content="{Binding CurrentSourceStatusViewModel.Cp2MgVent}" Background="{Binding CurrentSourceStatusViewModel.Cp2MgVentColor}" /> 
                 </Grid>
             </StackPanel>
         </Grid>

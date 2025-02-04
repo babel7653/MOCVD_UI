@@ -73,7 +73,6 @@ namespace SapphireXR_App.ViewModels
             {
                 if (0 < recipes!.Count)
                 {
-                    CurrentRecipe?.DisposeResource();
                     CurrentRecipe = new RecipeContext(recipeFilePath!, recipes!);
                 }
                 else
@@ -133,6 +132,7 @@ namespace SapphireXR_App.ViewModels
         {
             PLCService.WriteStart(false);
             PLCService.WriteOperationState(40);
+            StartText = "Start";
         }
 
         [RelayCommand]
@@ -164,6 +164,16 @@ namespace SapphireXR_App.ViewModels
             };
             logTimer.Start();
 
+            PropertyChanging += (object? sender, PropertyChangingEventArgs e) =>
+            {
+                switch (e.PropertyName)
+                {
+                    case nameof(CurrentRecipe):
+                        CurrentRecipe.dispose();
+                        RecipeStop();
+                        break;
+                }
+            };
             PropertyChanged += (object? sender, PropertyChangedEventArgs e) =>
             {
                 var recipeStart = () =>
@@ -195,6 +205,7 @@ namespace SapphireXR_App.ViewModels
                         RecipeStopCommand.NotifyCanExecuteChanged();
                         RecipeRefreshCommand.NotifyCanExecuteChanged();
                         RecipeSkipCommand.NotifyCanExecuteChanged();
+                        PLCService.WriteOperationState(0);
                         DashBoardViewModel.resetFlowChart(CurrentRecipe.Recipes);
                         break;
                 }
@@ -218,12 +229,16 @@ namespace SapphireXR_App.ViewModels
 
         void IObserver<short>.OnNext(short value)
         {
-            Recipe? currentRecipe = CurrentRecipe.markCurrent(value);
-            if (currentRecipe != null)
+            if (currentRecipeNo != value)
             {
-                scrollIntoViewCurrentRecipe(reactorDataGrid, currentRecipe);
-                scrollIntoViewCurrentRecipe(flowDataGrid, currentRecipe);
-                scrollIntoViewCurrentRecipe(valveDataGrid, currentRecipe);
+                currentRecipeNo = value;
+                Recipe? currentRecipe = CurrentRecipe.markCurrent(value);
+                if (currentRecipe != null)
+                {
+                    scrollIntoViewCurrentRecipe(reactorDataGrid, currentRecipe);
+                    scrollIntoViewCurrentRecipe(flowDataGrid, currentRecipe);
+                    scrollIntoViewCurrentRecipe(valveDataGrid, currentRecipe);
+                }
             }
         }
 
@@ -251,5 +266,7 @@ namespace SapphireXR_App.ViewModels
 
         private LogIntervalInRecipeRunListener logIntervalInRecipeRunListener;
         private DispatcherTimer logTimer;
+
+        private short currentRecipeNo = -1;
     }
 }

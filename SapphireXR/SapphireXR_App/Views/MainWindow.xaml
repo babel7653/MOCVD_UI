@@ -18,7 +18,7 @@
         </Grid.ColumnDefinitions>
         <Frame Source="/Views/LeftDashboard.xaml" Grid.Column="0" NavigationUIVisibility="Hidden"/>
         <Grid Grid.Column="1">
-            <TabControl Background="Transparent" >
+            <TabControl Background="Transparent" SelectedIndex="{Binding SelectedTab}">
                 <TabItem Header="System Control" Width="150"  >
                     <Frame Source="/Views/HomePage.xaml" NavigationUIVisibility="Hidden"/>
                 </TabItem>

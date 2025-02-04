@@ -18,7 +18,7 @@ namespace SapphireXR_App.ViewModels.FlowController
         protected override void onLoaded(string type, string controllerID)
         {
             base.onLoaded(type, controllerID);
-            selectedThis = ObservableManager<string>.Get("FlowControl.Selected.CurrentRecipeStage");
+            selectedThis = ObservableManager<string>.Get("FlowControl.Selected.CurrentRecipeStep");
         }
 
         protected override void onClicked(object[]? args)

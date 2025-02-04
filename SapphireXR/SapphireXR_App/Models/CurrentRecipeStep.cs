@@ -22,7 +22,7 @@ namespace SapphireXR_App.Models
             }
             foreach((string flowControllerID, int index) in PLCService.dIndexController)
             {
-                flowValuePublishers[flowControllerID] = ObservableManager<float>.Get("FlowControl." + flowControllerID + ".CurrentValue.CurrentRecipeStage");
+                flowValuePublishers[flowControllerID] = ObservableManager<float>.Get("FlowControl." + flowControllerID + ".CurrentValue.CurrentRecipeStep");
             }
         }
 

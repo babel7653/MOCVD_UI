@@ -48,7 +48,6 @@ P22_Background_ThermalBath();
 
 P30_ManualControl();
 
-(* Recipe RUN *)
 P50_RecipeControl();
 
 P70_Interface();
@@ -83,7 +82,6 @@ P92_Maintenance();
       <LineId Id="344" Count="0" />
       <LineId Id="346" Count="0" />
       <LineId Id="362" Count="0" />
-      <LineId Id="353" Count="0" />
       <LineId Id="349" Count="1" />
       <LineId Id="363" Count="0" />
       <LineId Id="345" Count="0" />

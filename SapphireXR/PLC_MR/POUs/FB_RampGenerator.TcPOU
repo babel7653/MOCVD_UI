@@ -8,7 +8,7 @@ VAR_INPUT
 	rInitValue		: REAL;
 	rTargetValue	: REAL;
 	nRampTime		: INT := 1; // Second
-	nState			: SINT; //0:Init State
+	nState			: INT; //0:Init State
 END_VAR
 
 VAR_OUTPUT
@@ -33,9 +33,10 @@ VAR
 END_VAR
 ]]></Declaration>
     <Implementation>
-      <ST><![CDATA[// Ramp Value Genearation for MFC, EPC
-(* Convert to Normalization, Ramp Valve Calculation*)
-IF nRampTime <> 0 THEN
+      <ST><![CDATA[(* Convert to Normalization, Ramp Valve Calculation*)
+IF nRampTime = 0 THEN
+	nState :=50;
+ELSE
 	rRampingRatio := ABS(rTargetValue - rStartValue) / nRampTime * 0.1; //Second
 END_IF
 
@@ -98,7 +99,10 @@ END_IF
 //nControlValue := REAL_TO_INT(rControlValue);]]></ST>
     </Implementation>
     <LineIds Name="FB_RampGenerator">
-      <LineId Id="1" Count="16" />
+      <LineId Id="2" Count="1" />
+      <LineId Id="77" Count="0" />
+      <LineId Id="71" Count="0" />
+      <LineId Id="4" Count="13" />
       <LineId Id="60" Count="3" />
       <LineId Id="18" Count="3" />
       <LineId Id="64" Count="0" />

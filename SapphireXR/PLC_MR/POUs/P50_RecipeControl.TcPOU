@@ -6,7 +6,7 @@ VAR_INPUT
 
 END_VAR
 VAR
-	nRcpIndex		: INT :=1;
+	nRcpIndex		: INT;
 	nRcpStepTime 	: INT;
 	tMoveNext 		: TON;
 	bMoveNext		: BOOL;
@@ -16,13 +16,9 @@ END_VAR
 ]]></Declaration>
     <Implementation>
       <ST><![CDATA[CASE RCP.iRcpOperationState OF
-	0: //Initial Operation Setting
+	0: nRcpIndex := 1;
 	10: //RUN
-		//Initial State
-		IF RCP.bRcpStart AND nRcpIndex = 1 THEN //레시피 시작 조건 추가예정
-			//nRcpIndex := 1;
-			//RCP.bRcpStart := FALSE;
-			RCP.iRcpStepN := nRcpIndex;
+		IF nRcpIndex <= Rcp.iRcpTotalStep THEN
 			nRcpStepTime := RCP.aRecipe[nRcpIndex].iRecipe[2] + RCP.aRecipe[nRcpIndex].iRecipe[3]; // Recipe Step Time
 			// Recipe Write to Device
 			fbRecipeSequencer(nRcpIndex := nRcpIndex);
@@ -30,113 +26,57 @@ END_VAR
 			tMoveNext(IN:=bMoveNext, PT:=INT_TO_TIME(nRcpStepTime*1000));
 			rTrigMoveNext(CLK:=tMoveNext.Q);
 			IF rTrigMoveNext.Q THEN
-				//RCP.bRcpStart := FALSE;
-				bMoveNext := FALSE;
-				tMoveNext(IN := FALSE);
+				//bMoveNext := FALSE;
+				tMoveNext(IN := FALSE); //reset
 				nRcpIndex := nRcpIndex + 1;
 			END_IF
+
 		END_IF
-		//2nd Step to EOR(End of Recipe)-1 Step State
-		IF RCP.bRcpStart = TRUE AND nRcpIndex <> 1 AND nRcpIndex < RCP.iRcpTotalStep THEN
-			RCP.iRcpStepN := nRcpIndex;
-			nRcpStepTime := RCP.aRecipe[nRcpIndex].iRecipe[2] + RCP.aRecipe[nRcpIndex].iRecipe[3]; // Recipe Step Time
-			// Recipe Write to Device
-			fbRecipeSequencer(nRcpIndex := nRcpIndex);
-			bMoveNext := TRUE;
-			tMoveNext(IN:=bMoveNext, PT:=INT_TO_TIME(nRcpStepTime*1000));
-			rTrigMoveNext(CLK:=tMoveNext.Q);
-			IF rTrigMoveNext.Q THEN
-				bMoveNext := FALSE;
-				tMoveNext(IN := FALSE);
-				nRcpIndex := nRcpIndex + 1;
-			END_IF
-		END_IF
+
 		// EOR(End of Recipe)
-		IF RCP.bRcpStart = TRUE AND RCP.iRcpStepN = RCP.iRcpTotalStep THEN
-			RCP.iRcpStepN := nRcpIndex;
-			nRcpStepTime := RCP.aRecipe[nRcpIndex].iRecipe[2] + RCP.aRecipe[nRcpIndex].iRecipe[3]; // Recipe Step Time
-			// Recipe Write to Device
-			fbRecipeSequencer(nRcpIndex := nRcpIndex);
-			bMoveNext := TRUE;
-			tMoveNext(IN:=bMoveNext, PT:=INT_TO_TIME(nRcpStepTime*1000));
-			rTrigMoveNext(CLK:=tMoveNext.Q);
-			IF rTrigMoveNext.Q THEN
-				bMoveNext := FALSE;
-				tMoveNext(IN := FALSE);
-				// Satety State 전달
-			END_IF
+		IF nRcpIndex > RCP.iRcpTotalStep THEN
 			RCP.bRcpStart := FALSE;
+			RCP.iRcpOperationState :=50;
+			nRcpIndex := 1;
 		END_IF	
+		
 	20: //PAUSE
 	30: //RESTART
 	40: //STOP
-		RCP.bRcpStart := FALSE;
-		nRcpIndex := RCP.iRcpTotalStep;
-		nRcpStepTime := RCP.aRecipe[nRcpIndex].iRecipe[2] + RCP.aRecipe[nRcpIndex].iRecipe[3]; // Recipe Step Time
-		// Recipe Write to Device
-		fbRecipeSequencer(nRcpIndex := nRcpIndex);
-		bMoveNext := TRUE;
-		tMoveNext(IN:=bMoveNext, PT:=INT_TO_TIME(nRcpStepTime*1000));
-		rTrigMoveNext(CLK:=tMoveNext.Q);
-		IF rTrigMoveNext.Q THEN
-			bMoveNext := FALSE;
-			tMoveNext(IN := FALSE);
-			// Satety State 전달
-		END_IF
+		nRcpIndex := 1;
 	50: //END
 		//Safety State 
 END_CASE
-
 ]]></ST>
     </Implementation>
     <LineIds Name="P50_RecipeControl">
       <LineId Id="1" Count="1" />
       <LineId Id="6" Count="0" />
-      <LineId Id="42" Count="0" />
-      <LineId Id="33" Count="0" />
-      <LineId Id="115" Count="1" />
-      <LineId Id="36" Count="1" />
+      <LineId Id="140" Count="0" />
+      <LineId Id="37" Count="0" />
       <LineId Id="40" Count="0" />
       <LineId Id="118" Count="0" />
       <LineId Id="44" Count="0" />
       <LineId Id="41" Count="0" />
-      <LineId Id="43" Count="0" />
+      <LineId Id="144" Count="0" />
       <LineId Id="45" Count="0" />
-      <LineId Id="117" Count="0" />
       <LineId Id="57" Count="0" />
-      <LineId Id="50" Count="0" />
+      <LineId Id="145" Count="0" />
       <LineId Id="48" Count="0" />
       <LineId Id="47" Count="0" />
+      <LineId Id="143" Count="0" />
       <LineId Id="38" Count="0" />
-      <LineId Id="51" Count="2" />
-      <LineId Id="55" Count="0" />
-      <LineId Id="66" Count="0" />
-      <LineId Id="120" Count="0" />
-      <LineId Id="58" Count="4" />
-      <LineId Id="64" Count="1" />
-      <LineId Id="56" Count="0" />
       <LineId Id="54" Count="0" />
       <LineId Id="67" Count="1" />
-      <LineId Id="71" Count="2" />
-      <LineId Id="121" Count="0" />
-      <LineId Id="74" Count="4" />
-      <LineId Id="80" Count="0" />
-      <LineId Id="83" Count="0" />
-      <LineId Id="82" Count="0" />
       <LineId Id="123" Count="0" />
+      <LineId Id="149" Count="1" />
       <LineId Id="70" Count="0" />
+      <LineId Id="142" Count="0" />
       <LineId Id="7" Count="2" />
-      <LineId Id="88" Count="0" />
-      <LineId Id="87" Count="0" />
-      <LineId Id="86" Count="0" />
-      <LineId Id="112" Count="0" />
-      <LineId Id="122" Count="0" />
-      <LineId Id="105" Count="6" />
       <LineId Id="89" Count="0" />
       <LineId Id="10" Count="0" />
       <LineId Id="113" Count="0" />
-      <LineId Id="11" Count="0" />
-      <LineId Id="24" Count="0" />
+      <LineId Id="135" Count="0" />
       <LineId Id="15" Count="0" />
     </LineIds>
   </POU>

@@ -1,5 +1,6 @@
 ﻿using SapphireXR_App.Common;
 using SapphireXR_App.Enums;
+using SapphireXR_App.ViewModels;
 using System.Collections;
 using System.Security.Permissions;
 using System.Windows;
@@ -113,6 +114,15 @@ namespace SapphireXR_App.Models
             {
                 aMonitoringCurrentValueIssuers.Add(kv.Key, ObservableManager<float>.Get("MonitoringPresentValue." + kv.Key + ".CurrentValue"));
             }
+            dValveStateIssuers = new Dictionary<string, ObservableManager<bool>.DataIssuer>();
+            foreach((string valveID, int valveIndex) in ValveIDtoOutputSolValveIdx1)
+            {
+                dValveStateIssuers.Add(valveID, ObservableManager<bool>.Get("Valve.OnOff." + valveID + ".CurrentPLCState"));
+            }
+            foreach ((string valveID, int valveIndex) in ValveIDtoOutputSolValveIdx2)
+            {
+                dValveStateIssuers.Add(valveID, ObservableManager<bool>.Get("Valve.OnOff." + valveID + ".CurrentPLCState"));
+            }
             dCurrentActiveRecipeIssue = ObservableManager<short>.Get("RecipeRun.CurrentActiveRecipe");
             baHardWiringInterlockStateIssuers = ObservableManager<BitArray>.Get("HardWiringInterlockState");
             dIOStateList = ObservableManager<BitArray>.Get("DeviceIOList");
@@ -188,38 +198,69 @@ namespace SapphireXR_App.Models
                 dIOStateList?.Issue(new BitArray(ioList));
             }
 
-            string expcetionStr = string.Empty;
+            if(baReadValveStatePLC1 != null)
+            {
+                foreach((string valveID, int index) in ValveIDtoOutputSolValveIdx1)
+                {
+                    dValveStateIssuers?[valveID].Issue(baReadValveStatePLC1[index]);
+                }
+            }
+            if (baReadValveStatePLC2 != null)
+            {
+                foreach ((string valveID, int index) in ValveIDtoOutputSolValveIdx2)
+                {
+                    dValveStateIssuers?[valveID].Issue(baReadValveStatePLC2[index]);
+                }
+            }
+
+            string exceptionStr = string.Empty;
             if(aDeviceControlValues == null)
             {
-                expcetionStr += "aDeviceControlValues is null in OnTick PLCService";
+                exceptionStr += "aDeviceControlValues is null in OnTick PLCService";
             }
             if(aDeviceCurrentValues == null)
             {
-                if(expcetionStr != string.Empty)
+                if(exceptionStr != string.Empty)
                 {
-                    expcetionStr += "\r\n";
+                    exceptionStr += "\r\n";
                 }
-                expcetionStr += "aDeviceCurrentValues is null in OnTick PLCService";
+                exceptionStr += "aDeviceCurrentValues is null in OnTick PLCService";
             }
             if(aDeviceTargetValues == null)
             {
-                if (expcetionStr != string.Empty)
+                if (exceptionStr != string.Empty)
                 {
-                    expcetionStr += "\r\n";
+                    exceptionStr += "\r\n";
                 }
-                expcetionStr += "aDeviceTargetValues is null in OnTick PLCService";
+                exceptionStr += "aDeviceTargetValues is null in OnTick PLCService";
             }
             if(aMonitoring_PVs == null)
             {
-                if (expcetionStr != string.Empty)
+                if (exceptionStr != string.Empty)
                 {
-                    expcetionStr += "\r\n";
+                    exceptionStr += "\r\n";
                 }
-                expcetionStr += "aMonitoring_PVs is null in OnTick PLCService";
+                exceptionStr += "aMonitoring_PVs is null in OnTick PLCService";
             }
-            if(expcetionStr != string.Empty)
+            if(baReadValveStatePLC1 == null)
             {
-                throw new Exception(expcetionStr);
+                if (exceptionStr != string.Empty)
+                {
+                    exceptionStr += "\r\n";
+                }
+                exceptionStr += "baReadValveStatePLC1 is null in OnTick PLCService";
+            }
+            if (baReadValveStatePLC2 == null)
+            {
+                if (exceptionStr != string.Empty)
+                {
+                    exceptionStr += "\r\n";
+                }
+                exceptionStr += "baReadValveStatePLC2 is null in OnTick PLCService";
+            }
+            if (exceptionStr != string.Empty)
+            {
+                throw new Exception(exceptionStr);
             }
         }
 
@@ -230,6 +271,7 @@ namespace SapphireXR_App.Models
             aDeviceTargetValues = Ads.ReadAny<float[]>(hWriteDeviceTargetValuePLC, [NumControllers]);
             aMonitoring_PVs = Ads.ReadAny<float[]>(hMonitoring_PV, [17]);
             aInputState = Ads.ReadAny<short[]>(hInputState, [4]);
+            ReadValveStateFromPLC();
         }
 
         public static float ReadCurrentValue(string controllerID)

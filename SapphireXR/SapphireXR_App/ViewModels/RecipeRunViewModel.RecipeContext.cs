@@ -203,6 +203,11 @@ namespace SapphireXR_App.ViewModels
                 GC.SuppressFinalize(this);
             }
 
+            public void dispose()
+            {
+                Dispose(disposing: false);
+            }
+
             public void DisposeResource()
             {
                 if(initialized == false)
@@ -210,10 +215,16 @@ namespace SapphireXR_App.ViewModels
                     return;
                 }
 
-                csvWriter!.Flush();
-                csvWriter!.Dispose();
-                streamWriter!.Close();
-                fileStream!.Close();
+                try
+                {
+                    csvWriter!.Flush();
+                    csvWriter!.Dispose();
+                    streamWriter!.Close();
+                    fileStream!.Close();
+                }
+                catch (Exception)
+                {
+                }
             }
         }
     }

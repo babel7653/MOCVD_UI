@@ -30,7 +30,9 @@ namespace SapphireXR_App.ViewModels
             {
                 if (viewModel.ValveID != null)
                 {
+                    valveStatePublisher = ObservableManager<bool>.Get("Valve.OnOff." + valveViewModel.ValveID + ".CurrentPLCState");
                     viewModel.IsOpen = PLCService.ReadValveState(viewModel.ValveID);
+                    valveStatePublisher?.Issue(viewModel.IsOpen);
                 }
             }
 
@@ -54,6 +56,7 @@ namespace SapphireXR_App.ViewModels
                         {
                             PLCService.WriteValveState(viewModel.ValveID, isOpen);
                         }
+                        valveStatePublisher?.Issue(viewModel.IsOpen);
                         MessageBox.Show(confirmMessage);
                         break;
 
@@ -64,41 +67,48 @@ namespace SapphireXR_App.ViewModels
             }
 
             private PopupMessage? popUpMessage;
+            private ObservableManager<bool>.DataIssuer? valveStatePublisher;
         }
 
-        internal class ValveStateUpdaterFromCurrentRecipeStep : ValveStateUpdater, IObserver<(object, bool)>, IObserver<bool>
+        internal class ValveStateUpdaterFromCurrentRecipeStep : ValveStateUpdater, IObserver<bool>
         {
+            private class ResetValveStateSubscriber : IObserver<bool>
+            {
+                public ResetValveStateSubscriber(ValveViewModel vm)
+                {
+                    valveViewModel = vm;
+                }
+
+                public void OnCompleted()
+                {
+                    throw new NotImplementedException();
+                }
+
+                public void OnError(Exception error)
+                {
+                    throw new NotImplementedException();
+                }
+
+                public void OnNext(bool value)
+                {
+                    valveViewModel.IsOpen = false;
+                }
+
+                ValveViewModel valveViewModel;
+            }
             internal ValveStateUpdaterFromCurrentRecipeStep(ValveViewModel valveViewModel) : base(valveViewModel) 
             {
                 string topicName = "Valve.OnOff." + valveViewModel.ValveID + ".CurrentRecipeStep";
-                isOpenChangedPubisher = ObservableManager<(object, bool)>.Get(topicName);
-                ObservableManager<(object, bool)>.Subscribe(topicName, this);
-                ObservableManager<bool>.Subscribe("Reset.CurrentRecipeStep", this);
+                isOpenChangedPubisher = ObservableManager<bool>.Get(topicName);
+                ObservableManager<bool>.Subscribe(topicName, this);
+                ObservableManager<bool>.Subscribe("Reset.CurrentRecipeStep", resetValveStateSubscriber = new ResetValveStateSubscriber(valveViewModel));
             }
 
             public override void OnValveClicked()
             {
                 bool isOpen = !(viewModel.IsOpen);
                 viewModel.IsOpen = isOpen;
-                isOpenChangedPubisher.Issue((this, isOpen));
-            }
-
-            void IObserver<(object, bool)>.OnCompleted()
-            {
-                throw new NotImplementedException();
-            }
-
-            void IObserver<(object, bool)>.OnError(Exception error)
-            {
-                throw new NotImplementedException();
-            }
-
-            void IObserver<(object, bool)>.OnNext((object, bool) value)
-            {
-                if(value.Item1 != this && viewModel.IsOpen != value.Item2)
-                {
-                    viewModel.IsOpen = value.Item2;
-                }
+                isOpenChangedPubisher.Issue(isOpen);
             }
 
             void IObserver<bool>.OnCompleted()
@@ -113,10 +123,14 @@ namespace SapphireXR_App.ViewModels
 
             void IObserver<bool>.OnNext(bool value)
             {
-                viewModel.IsOpen = false;
+                if(viewModel.IsOpen != value)
+                {
+                    viewModel.IsOpen = value;
+                }
             }
 
-            ObservableManager<(object, bool)>.DataIssuer isOpenChangedPubisher;
+            ObservableManager<bool>.DataIssuer isOpenChangedPubisher;
+            ResetValveStateSubscriber resetValveStateSubscriber;
         }
 
         static internal ValveStateUpdater? CreateValveStateUpdater(SapphireXR_App.Controls.Valve.UpdateTarget target, ValveViewModel viewModel)

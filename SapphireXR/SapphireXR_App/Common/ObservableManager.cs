@@ -16,14 +16,14 @@ namespace SapphireXR_App.Common
     {
         internal sealed class Unsubscriber : IDisposable
         {
-            private readonly IList<IObserver<T>> _observers;
-            private readonly IObserver<T> _observer;
+            private IList<IObserver<T>> _observers;
+            private IObserver<T> _observer;
 
             internal Unsubscriber(
                 IList<IObserver<T>> observers,
                 IObserver<T> observer) => (_observers, _observer) = (observers, observer);
 
-            public void Dispose() => _observers.Remove(_observer);
+            public void Dispose() =>_observers.Remove(_observer);
         }
 
         public class DataIssuer : IObservable<T>

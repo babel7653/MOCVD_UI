@@ -172,7 +172,7 @@ namespace SapphireXR_App.ViewModels.BottomDashBoard
             public bool LegendUpdate { get; set; } = false;
         }
 
-        public RecipeRunBottomDashBoardViewModel(): base("CurrentRecipeStage")
+        public RecipeRunBottomDashBoardViewModel(): base("CurrentRecipeStep")
         {
             initSeriesUpdater();
         }

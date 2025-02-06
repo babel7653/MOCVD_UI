@@ -56,7 +56,7 @@ namespace SapphireXR_App.Models
                 hRcpTotalStep = Ads.CreateVariableHandle("RCP.iRcpTotalStep");
                 hRcpStart = Ads.CreateVariableHandle("RCP.bRcpStart");
                 hRcpState = Ads.CreateVariableHandle("RCP.iRcpOperationState");
-                hRcpStepN =Ads.CreateVariableHandle("RCP.iRcpStepN");
+                hRcpStepN =Ads.CreateVariableHandle("P50_RecipeControl.nRcpIndex");
                 
 
                 aDeviceRampTimes = new short[dIndexController.Count];

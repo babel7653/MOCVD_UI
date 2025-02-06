@@ -16,8 +16,11 @@ END_VAR
 ]]></Declaration>
     <Implementation>
       <ST><![CDATA[CASE RCP.iRcpOperationState OF
-	0: nRcpIndex := 1;
+	0: nRcpIndex := 0;
 	10: //RUN
+		IF nRcpIndex = 0 THEN
+			nRcpIndex := 1;
+		END_IF
 		IF nRcpIndex <= Rcp.iRcpTotalStep THEN
 			nRcpStepTime := RCP.aRecipe[nRcpIndex].iRecipe[2] + RCP.aRecipe[nRcpIndex].iRecipe[3]; // Recipe Step Time
 			// Recipe Write to Device
@@ -26,24 +29,22 @@ END_VAR
 			tMoveNext(IN:=bMoveNext, PT:=INT_TO_TIME(nRcpStepTime*1000));
 			rTrigMoveNext(CLK:=tMoveNext.Q);
 			IF rTrigMoveNext.Q THEN
-				//bMoveNext := FALSE;
-				tMoveNext(IN := FALSE); //reset
 				nRcpIndex := nRcpIndex + 1;
+				tMoveNext(IN := FALSE); //reset
 			END_IF
-
 		END_IF
 
 		// EOR(End of Recipe)
-		IF nRcpIndex > RCP.iRcpTotalStep THEN
+		IF RCP.iRcpTotalStep < nRcpIndex THEN
 			RCP.bRcpStart := FALSE;
 			RCP.iRcpOperationState :=50;
-			nRcpIndex := 1;
+			nRcpIndex := 0;
 		END_IF	
 		
 	20: //PAUSE
 	30: //RESTART
 	40: //STOP
-		nRcpIndex := 1;
+		nRcpIndex := 0;
 	50: //END
 		//Safety State 
 END_CASE
@@ -52,6 +53,7 @@ END_CASE
     <LineIds Name="P50_RecipeControl">
       <LineId Id="1" Count="1" />
       <LineId Id="6" Count="0" />
+      <LineId Id="152" Count="2" />
       <LineId Id="140" Count="0" />
       <LineId Id="37" Count="0" />
       <LineId Id="40" Count="0" />
@@ -62,9 +64,7 @@ END_CASE
       <LineId Id="45" Count="0" />
       <LineId Id="57" Count="0" />
       <LineId Id="145" Count="0" />
-      <LineId Id="48" Count="0" />
       <LineId Id="47" Count="0" />
-      <LineId Id="143" Count="0" />
       <LineId Id="38" Count="0" />
       <LineId Id="54" Count="0" />
       <LineId Id="67" Count="1" />

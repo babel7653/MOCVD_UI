@@ -50,8 +50,8 @@
     <SolidColorBrush x:Key="LampReadyColor" Color="Yellow" />
 
     <SolidColorBrush x:Key="SourceStatusDefault" Color="LightGray" />
-    <SolidColorBrush x:Key="SourceStatusH2" Color="Red" />
+    <SolidColorBrush x:Key="SourceStatusH2" Color="#C13E3E" />
     <SolidColorBrush x:Key="SourceStatusOn" Color="LawnGreen" />
-    <SolidColorBrush x:Key="SourceStatusRun" Color="Magenta" />
+    <SolidColorBrush x:Key="SourceStatusRun" Color="#ed7812" />
 
 </ResourceDictionary>

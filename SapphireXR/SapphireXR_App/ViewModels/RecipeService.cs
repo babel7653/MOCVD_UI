@@ -46,7 +46,7 @@ namespace SapphireXR_App.ViewModels
                 };
                 PLCService.WriteRecipe(aRecipePLC);
                 PLCService.WriteTotalStep((short)aRecipePLC.Length);
-                PLCService.WriteStart(true);
+                //PLCService.WriteStart(true);
                 PLCService.WriteOperationState(operationState);
             }
             catch (Exception err)

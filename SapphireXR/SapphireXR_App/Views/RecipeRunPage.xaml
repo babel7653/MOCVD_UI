@@ -651,7 +651,7 @@
                 <StackPanel Grid.Column="0" Orientation="Horizontal">
                     <Button x:Name="btnRecipeOpen" Content="Open" Style="{StaticResource RecipeOperationStyle}" Command="{Binding RecipeOpenCommand}"/>
                     <Button x:Name="btnRecipeStart" Content="{Binding StartText}"  Style="{StaticResource RecipeOperationStyle}" Command="{Binding RecipeStartCommand}"/>
-                    <Button x:Name="btnRecipeSkip"  FontSize="10" Content="Skip&#10;Current"  Style="{StaticResource RecipeOperationStyle}" Command="{Binding RecipeSkipCommand}"/>
+                    <Button x:Name="btnRecipeSkip"  FontSize="10" Content="Skip"  Style="{StaticResource RecipeOperationStyle}" Command="{Binding RecipeSkipCommand}"/>
                     <Button x:Name="btnRecipeStop" Content="Stop"  Style="{StaticResource RecipeOperationStyle}" Command="{Binding RecipeStopCommand}"/>
                     <Button x:Name="btnRecipeRefresh" Content="Refresh" Style="{StaticResource RecipeOperationStyle}" Command="{Binding RecipeRefreshCommand}"/>
                 </StackPanel>

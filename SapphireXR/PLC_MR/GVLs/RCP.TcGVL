@@ -10,6 +10,8 @@ VAR_GLOBAL
 	bRcpStart				: BOOL; //From UI Variable
 	iRcpOperationState		: INT; //0: Inital State, 10 : RUN, 20 : PAUSE, 30 : RESTART, 40: STOP, 50: END
 	iRcpStepN				: INT;
+	cmd_RcpOperation		: INT; // 0:Inital State, 10:RUN, 20:PAUSE, 30:STOP, 40:SKIP
+	state_RcpOperation		: INT; // 0:Inital State, 10:RUN, 20:PAUSE, 30:STOP, 50:END
 	
 // 	sRcpStepDescription		: STRING;
 // 	bRcpStepN_TaskDone		: BOOL;

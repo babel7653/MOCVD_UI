@@ -16,7 +16,7 @@ namespace SapphireXR_App.ViewModels
 {
     public partial class RecipeRunViewModel: ViewModelBase, IObserver<short>
     {
-        public enum RecipeRunState : short  { Uninitialized = -1, Initiated = 0, Run = 10, Pause = 20, Stop = 40, End = 50 };
+        public enum RecipeRunState : short  { Uninitialized = -1, Initiated = 0, Run = 10, Pause = 20, Restart = 30, Stop = 40, End = 50 };
 
         public class LogIntervalInRecipeRunListener : IObserver<int>
         {
@@ -121,7 +121,7 @@ namespace SapphireXR_App.ViewModels
 
         private void startCommand()
         {
-            SetState(RecipeRunState.Run);
+            SetState(Start);
         }
 
         private void pauseCommand()
@@ -270,14 +270,17 @@ namespace SapphireXR_App.ViewModels
                             case RecipeRunState.Initiated:
                                 DashBoardViewModel.resetFlowChart(CurrentRecipe.Recipes);
                                 StartOrPause = true;
+                                Start = RecipeRunState.Run;
                                 break;
 
                             case RecipeRunState.Run:
+                            case RecipeRunState.Restart:
                                 StartOrPause = false;
                                 break;
 
                             case RecipeRunState.Pause:
                                 StartOrPause = true;
+                                Start = RecipeRunState.Restart;
                                 break;
 
                             case RecipeRunState.Stop:
@@ -370,6 +373,7 @@ namespace SapphireXR_App.ViewModels
 
         private short currentRecipeNo = -1;
         private readonly RecipeEndedSubscriber? operationStateSubscriber = null;
+        private RecipeRunState Start = RecipeRunState.Uninitialized; 
 
         [ObservableProperty]
         private RecipeRunState _currentRecipeRunState = RecipeRunState.Uninitialized;

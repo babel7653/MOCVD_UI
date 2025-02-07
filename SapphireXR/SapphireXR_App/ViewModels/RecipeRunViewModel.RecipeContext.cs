@@ -1,10 +1,10 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CsvHelper;
 using SapphireXR_App.Models;
-using System.Collections.Generic;
+using System;
+using System.ComponentModel;
 using System.Globalization;
 using System.IO;
-using System.Linq;
 using System.Windows;
 using System.Windows.Media;
 
@@ -12,8 +12,13 @@ namespace SapphireXR_App.ViewModels
 {
     public partial class RecipeRunViewModel
     {
-        public class RecipeContext : ObservableObject, IDisposable
+        public partial class RecipeContext : ObservableObject, IDisposable
         {
+            internal class RecipeContextCreationException: Exception
+            {
+                internal RecipeContextCreationException(string message): base(message) {  }
+            }
+
             public RecipeContext() { }
             public RecipeContext(string recipeFilePath, IList<Recipe> recipes)
             {
@@ -26,43 +31,24 @@ namespace SapphireXR_App.ViewModels
                     fileStream = new FileStream(LogFilePath, FileMode.Create);
                     streamWriter = new StreamWriter(fileStream);
                     csvWriter = new CsvWriter(streamWriter, Config);
+
+                    csvWriter!.WriteHeader<RecipeLog>();
+                    csvWriter!.NextRecord();
+                    initialized = true;
                 }
-                catch (Exception)
+                catch (Exception exception)
                 {
                     csvWriter?.Dispose();
                     streamWriter?.Close();
                     fileStream?.Close();
-
-                    MessageBox.Show(LogFilePath + "을 현재 이용할 수가 없습니다.\r\n해당 파일이 현재 사용중이거나 용량 부족 등이 문제일 수 있습니다.");
+                    
+                    throw new RecipeContextCreationException(exception.Message);
                 }
-                csvWriter!.WriteHeader<RecipeLog>();
-                csvWriter!.NextRecord();
-
-                initialized = true;
             }
 
             ~RecipeContext()
             {
                 Dispose(disposing: false);
-            }
-
-            public void onStart()
-            {
-                if (initialized == false)
-                {
-                    return;
-                }
-
-                if (firstStart == true)
-                {
-                    RecipeService.PLCLoad(Recipes, 0);
-                    firstStart = false;
-                }
-                else
-                {
-                    //PLCService.WriteStart(true);
-                    PLCService.WriteOperationState(10);
-                }
             }
 
             public Recipe? markCurrent(short index)
@@ -108,7 +94,7 @@ namespace SapphireXR_App.ViewModels
                     PlcRecipe[] plcRecipes = modifiedRecipeIndice.Where((int recipeIndex) => currentRecipeIndex < recipeIndex).Select((int recipeIndex) => new PlcRecipe(Recipes[recipeIndex])).ToArray();
                     if (0 < plcRecipes.Length)
                     {
-                        PLCService.WriteRecipe(plcRecipes);
+                        PLCService.RefreshRecipe(plcRecipes);
                         modifiedRecipeIndice.Clear();
                     }
                 }
@@ -142,8 +128,18 @@ namespace SapphireXR_App.ViewModels
                 }
             }
 
-            private bool initialized = false;
-            private bool firstStart = true;
+            public void toLoadedFromFileState()
+            {
+                if (currentRecipe != null)
+                {
+                    currentRecipe.Background = Brushes.White;
+                }
+                currentRecipe = null;
+                currentRecipeIndex = -1;
+                modifiedRecipeIndice.Clear();
+            }
+
+            private readonly bool initialized = false;
             private HashSet<int> modifiedRecipeIndice = new HashSet<int>();
 
             private IList<Recipe> _recipes = new List<Recipe>();
@@ -167,11 +163,44 @@ namespace SapphireXR_App.ViewModels
                 set { SetProperty(ref _logFilePath, value); }
             }
 
+            [ObservableProperty]
+            private int _currentRecipeTime;
+            [ObservableProperty]
+            private int _totalRecipeTime;
+            [ObservableProperty]
+            private int _currentStep;
+            [ObservableProperty]
+            private int _totalStep;
+            [ObservableProperty]
+            private int _stepName;
+            [ObservableProperty]
+            private int _currentRampTime;
+            [ObservableProperty]
+            private int _totalRampTime;
+            [ObservableProperty]
+            private int _currentHoldTime;
+            [ObservableProperty]
+            private int _totalHoldTime;
+            [ObservableProperty]
+            private int _pauseTime;
+            [ObservableProperty]
+            private int _currentLoopStep;
+            [ObservableProperty]
+            private int _totalLoopStep;
+            [ObservableProperty]
+            private int _currentLoopNumber;
+            [ObservableProperty]
+            private int _totalLoopNumber;
+            [ObservableProperty]
+            private int _currentWaitTemp;
+            [ObservableProperty]
+            private int _totalWaitTemp;
+
             public Recipe? currentRecipe = null;
             public int currentRecipeIndex = -1;
-            private FileStream? fileStream = null;
-            private StreamWriter? streamWriter = null;
-            private CsvWriter? csvWriter = null;
+            private readonly FileStream? fileStream = null;
+            private readonly StreamWriter? streamWriter = null;
+            private readonly CsvWriter? csvWriter = null;
             private bool disposedValue = false;
 
             private static readonly CsvHelper.Configuration.CsvConfiguration Config = new CsvHelper.Configuration.CsvConfiguration(CultureInfo.InvariantCulture)
@@ -186,7 +215,6 @@ namespace SapphireXR_App.ViewModels
                 {
                     if (disposing)
                     {
-
                     }
 
                     // TODO: 비관리형 리소스(비관리형 개체)를 해제하고 종료자를 재정의합니다.

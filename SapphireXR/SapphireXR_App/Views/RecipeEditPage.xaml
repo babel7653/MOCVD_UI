@@ -741,6 +741,7 @@
                                     <Style x:Key="gridColumnTextBox" TargetType="TextBox">
                                         <Style.Setters>
                                             <EventSetter Event="PreviewTextInput" Handler="TextBox_PreviewTextInput" />
+                                            <EventSetter Event="TextChanged"  Handler="TextBox_TextChanged" />
                                         </Style.Setters>
                                     </Style>
                                 </DataGrid.Resources>

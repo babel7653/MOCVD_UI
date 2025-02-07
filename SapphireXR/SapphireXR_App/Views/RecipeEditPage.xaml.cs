@@ -16,9 +16,15 @@ namespace SapphireXR_App.Views
         {
             InitializeComponent();
             DataContext = App.Current.Services.GetService(typeof(RecipeEditViewModel));
+            flowControllerTextBoxValidater = new FlowControllerTextBoxValidater((RecipeEditViewModel)DataContext!, "Recipes");
         }
 
         private void TextBox_PreviewTextInput(object sender, TextCompositionEventArgs e)
+        {
+            Util.OnlyAllowNumber(e, e.Text);
+        }
+
+        private void TextBox_TextChanged(object sender, TextChangedEventArgs e)
         {
             TextBox? textBox = sender as TextBox;
             if (textBox != null)
@@ -32,11 +38,16 @@ namespace SapphireXR_App.Views
                         string? flowControllerID = null;
                         if (Util.RecipeFlowControlFieldToControllerID.TryGetValue(flowControlField, out flowControllerID) == true)
                         {
-                            Util.OnlyAllowConstrainedNumber(e, textBox.Text, e.Text, (int)PLCService.ReadMaxValue(flowControllerID));
+                            textBox.Text = flowControllerTextBoxValidater.valdiate(textBox, flowControllerID);
+                            return;
                         }
                     }
                 }
             }
+
+            throw new Exception("DataEditPage: TextBox_TextChanged must be called with TextBox in DataGridColumn whose header value has valid flow controller ");
         }
+
+        FlowControllerTextBoxValidater flowControllerTextBoxValidater;
     }
 }

@@ -64,6 +64,11 @@ namespace SapphireXR_App.Common
             }
         }
 
+        public static void OnlyAllowNumber(RoutedEventArgs e, string textInput)
+        {
+            e.Handled = !IsTextNumeric(textInput);
+        }
+
         static public void OnlyAllowConstrainedNumber(RoutedEventArgs e, string curStr,  string newStr, int maxValue)
         {
             e.Handled = !CheckValid(curStr, newStr, maxValue);

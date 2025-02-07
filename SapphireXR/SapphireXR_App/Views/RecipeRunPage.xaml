@@ -582,7 +582,7 @@
                                 <Label Grid.Row="0" Grid.Column="1" Content="Current" HorizontalAlignment="Center"/>
                                 <Label Grid.Row="0" Grid.Column="2" Content="Total" HorizontalAlignment="Center"/>
                                 <Label Grid.Row="1" Grid.Column="0" Content="Recipe Time" />
-                                <Label Grid.Row="2" Grid.Column="0" Content="Current Step" />
+                                <Label Grid.Row="2" Grid.Column="0" Content="Step" />
                                 <Label Grid.Row="3" Grid.Column="0" Content="Step Name" />
                                 <Label Grid.Row="4" Grid.Column="0" Content="Ramping Time" />
                                 <Label Grid.Row="5" Grid.Column="0" Content="Holding Time" />
@@ -590,25 +590,23 @@
                                 <Label Grid.Row="7" Grid.Column="0" Content="Loop Step" />
                                 <Label Grid.Row="8" Grid.Column="0" Content="Loop Number" />
                                 <Label Grid.Row="9" Grid.Column="0" Content="Wait Temp" />
-                                
-                                <TextBox x:Name="tbRecipeCurrentTime" Grid.Row="1" Grid.Column="1" Text="{Binding RecipeCurrentTime}"/>
-                                <TextBox x:Name="tbRecipeTotalTime" Grid.Row="1" Grid.Column="2" Text="{Binding RecipeTotalTime}"/>
-                                <TextBox x:Name="tbRecipeCurrentStep" Grid.Row="2" Grid.Column="1" Text="{Binding RecipeCurrentStep}"/>
-                                <TextBox x:Name="tbRecipeTotalStep" Grid.Row="2" Grid.Column="2" Text="{Binding RecipeCurrentStep}"/>
-                                <TextBox x:Name="tbRecipeStepName" Grid.Row="3" Grid.Column="1" Grid.ColumnSpan="2" Width="146"
-                                         Text="{Binding CurrentStep}"/>
-                                <TextBox x:Name="tbRecipeCurrentRamp" Grid.Row="4" Grid.Column="1" Text="{Binding RecipeCurrentRamp}"/>
-                                <TextBox x:Name="tbRecipeTotalRamp" Grid.Row="4" Grid.Column="2" Text="{Binding RecipeTotalRamp}"/>
-                                <TextBox x:Name="tbRecipeCurrentHold" Grid.Row="5" Grid.Column="1" Text="{Binding RecipeCurrentHold}"/>
-                                <TextBox x:Name="tbRecipeTotalHold" Grid.Row="5" Grid.Column="2" Text="{Binding RecipeTotalHold}"/>
-                                <TextBox x:Name="tbRecipePauseTime" Grid.Row="6" Grid.Column="1" Grid.ColumnSpan="2" Width="146"
-                                         Text="{Binding RecipeCurrentRamp}"/>
-                                <TextBox x:Name="tbRecipeLoopStart" Grid.Row="7" Grid.Column="1" Text="{Binding RecipeLoopStart}"/>
-                                <TextBox x:Name="tbRecipeLoopEnd" Grid.Row="7" Grid.Column="2" Text="{Binding RecipeLoopEnd}"/>
-                                <TextBox x:Name="tbRecipeCurrentLoop" Grid.Row="8" Grid.Column="1" Text="{Binding RecipeCurrentLoop}"/>
-                                <TextBox x:Name="tbRecipeTotalLoop" Grid.Row="8" Grid.Column="2" Text="{Binding RecipeCurrentLoop}"/>
-                                <TextBox x:Name="tbSusceptorCurrentTemp" Grid.Row="9" Grid.Column="1" Text="{Binding SusceptorCurrentTemp}"/>
-                                <TextBox x:Name="tbRecipeWaitTemp" Grid.Row="9" Grid.Column="2" Text="{Binding SusceptorCurrentTemp}"/>
+
+                                <TextBox x:Name="tbRecipeCurrentTime" Grid.Row="1" Grid.Column="1" Text="{Binding CurrentRecipeTime}"/>
+                                <TextBox x:Name="tbRecipeTotalTime" Grid.Row="1" Grid.Column="2" Text="{Binding TotalRecipeTime}"/>
+                                <TextBox x:Name="tbRecipeCurrentStep" Grid.Row="2" Grid.Column="1" Text="{Binding CurrentStep}"/>
+                                <TextBox x:Name="tbRecipeTotalStep" Grid.Row="2" Grid.Column="2" Text="{Binding TotalStep}"/>
+                                <TextBox x:Name="tbRecipeStepName" Grid.Row="3" Grid.Column="1" Grid.ColumnSpan="2" Width="146" Text="{Binding StepName}"/>
+                                <TextBox x:Name="tbRecipeCurrentRamp" Grid.Row="4" Grid.Column="1" Text="{Binding CurrentRampTime}"/>
+                                <TextBox x:Name="tbRecipeTotalRamp" Grid.Row="4" Grid.Column="2" Text="{Binding TotalRampTime}"/>
+                                <TextBox x:Name="tbRecipeCurrentHold" Grid.Row="5" Grid.Column="1" Text="{Binding CurrentHoldTime}"/>
+                                <TextBox x:Name="tbRecipeTotalHold" Grid.Row="5" Grid.Column="2" Text="{Binding TotalHoldTime}"/>
+                                <TextBox x:Name="tbRecipePauseTime" Grid.Row="6" Grid.Column="1" Grid.ColumnSpan="2" Width="146" Text="{Binding PauseTime}"/>
+                                <TextBox x:Name="tbRecipeLoopStart" Grid.Row="7" Grid.Column="1" Text="{Binding CurrentLoopStep}"/>
+                                <TextBox x:Name="tbRecipeLoopEnd" Grid.Row="7" Grid.Column="2" Text="{Binding TotalLoopStep}"/>
+                                <TextBox x:Name="tbRecipeCurrentLoop" Grid.Row="8" Grid.Column="1" Text="{Binding CurrentLoopNumber}"/>
+                                <TextBox x:Name="tbRecipeTotalLoop" Grid.Row="8" Grid.Column="2" Text="{Binding TotalLoopNumber}"/>
+                                <TextBox x:Name="tbSusceptorCurrentTemp" Grid.Row="9" Grid.Column="1" Text="{Binding CurrentWaitTemp}"/>
+                                <TextBox x:Name="tbRecipeWaitTemp" Grid.Row="9" Grid.Column="2" Text="{Binding TotalWaitTemp}"/>
                             </Grid>
                         </StackPanel>
                     </Grid>
@@ -651,7 +649,7 @@
                 <StackPanel Grid.Column="0" Orientation="Horizontal">
                     <Button x:Name="btnRecipeOpen" Content="Open" Style="{StaticResource RecipeOperationStyle}" Command="{Binding RecipeOpenCommand}"/>
                     <Button x:Name="btnRecipeStart" Content="{Binding StartText}"  Style="{StaticResource RecipeOperationStyle}" Command="{Binding RecipeStartCommand}"/>
-                    <Button x:Name="btnRecipeSkip"  FontSize="10" Content="Skip"  Style="{StaticResource RecipeOperationStyle}" Command="{Binding RecipeSkipCommand}"/>
+                    <Button x:Name="btnRecipeSkip"  Content="Skip"  Style="{StaticResource RecipeOperationStyle}" Command="{Binding RecipeSkipCommand}"/>
                     <Button x:Name="btnRecipeStop" Content="Stop"  Style="{StaticResource RecipeOperationStyle}" Command="{Binding RecipeStopCommand}"/>
                     <Button x:Name="btnRecipeRefresh" Content="Refresh" Style="{StaticResource RecipeOperationStyle}" Command="{Binding RecipeRefreshCommand}"/>
                 </StackPanel>

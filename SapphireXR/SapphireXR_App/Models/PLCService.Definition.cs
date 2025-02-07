@@ -39,7 +39,7 @@ namespace SapphireXR_App.Models
         public static string ModePLC { get; set; } = "System Mode : ";
 
         // Variable handles to be connected plc variables
-        static uint hStatePLC = 0;
+        private static uint hStatePLC = 0;
         public static bool TcStatePLC { get; set; }
 
         private static BitArray? baReadValveStatePLC1;
@@ -57,7 +57,8 @@ namespace SapphireXR_App.Models
         private static Dictionary<string, ObservableManager<float>.DataIssuer>? aMonitoringCurrentValueIssuers;
         private static ObservableManager<BitArray>.DataIssuer? baHardWiringInterlockStateIssuers;
         private static ObservableManager<BitArray>.DataIssuer? dIOStateList;
-
+        private static Dictionary<string, ObservableManager<bool>.DataIssuer>? dValveStateIssuers;
+        private static ObservableManager<bool>.DataIssuer? dRecipeEndedPublisher;
         private static ObservableManager<short>.DataIssuer? dCurrentActiveRecipeIssue;
 
         //Create an instance of the TcAdsClient()
@@ -76,11 +77,14 @@ namespace SapphireXR_App.Models
         private static uint hWriteDeviceRampTimePLC;
         private static uint hRcp;
         private static uint hRcpTotalStep;
-        private static uint hRcpStart;
-        private static uint hRcpState;
+        private static uint hCmd_RcpOperation;
         private static uint hRcpStepN;
         private static uint hMonitoring_PV;
         private static uint hInputState;
+        private static uint hState_RcpOperation;
+
+
+        private static bool RecipeRunEndNotified = false;
 
         private static ObservableManager<PLCConnection>.DataIssuer ConnectedNotifier;
 
@@ -93,7 +97,6 @@ namespace SapphireXR_App.Models
             { "V41", 20 }, { "V42", 21 }, { "V43", 22 }, { "V44", 23 },  { "V45", 24 },
             { "V46", 25 }
         };
-
         public static readonly Dictionary<string, int> ValveIDtoOutputSolValveIdx2 = new Dictionary<string, int>
         {
             { "V17", 0 }, { "V18", 1 }, { "V19", 2 }, { "V20", 3 }, { "V21", 4 },

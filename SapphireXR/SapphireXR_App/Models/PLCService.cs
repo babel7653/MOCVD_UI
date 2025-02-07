@@ -55,8 +55,8 @@ namespace SapphireXR_App.Models
                 
                 hRcp = Ads.CreateVariableHandle("RCP.aRecipe");
                 hRcpTotalStep = Ads.CreateVariableHandle("RCP.iRcpTotalStep");
-                hRcpStart = Ads.CreateVariableHandle("RCP.bRcpStart");
-                hRcpState = Ads.CreateVariableHandle("RCP.iRcpOperationState");
+                //hRcpStart = Ads.CreateVariableHandle("RCP.cmd_RcpOperation");
+                hRcpState = Ads.CreateVariableHandle("RCP.cmd_RcpOperation");
                 hRcpStepN =Ads.CreateVariableHandle("P50_RecipeControl.nRcpIndex");
                 
 
@@ -393,10 +393,10 @@ namespace SapphireXR_App.Models
            Ads.WriteAny(hRcpTotalStep, totalStep);
         }
 
-        public static void WriteStart(bool start)
-        {
-            Ads.WriteAny(hRcpStart, start);
-        }
+        //public static void WriteStart(bool start)
+        //{
+        //    Ads.WriteAny(hRcpStart, start);
+        //}
 
         public static void WriteOperationState(short operationState)
         {

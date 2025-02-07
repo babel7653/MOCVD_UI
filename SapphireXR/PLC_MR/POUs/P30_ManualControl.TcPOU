@@ -6,7 +6,7 @@ VAR
 	i 	: INT;
 END_VAR]]></Declaration>
     <Implementation>
-      <ST><![CDATA[IF RCP.bRcpStart = FALSE THEN
+      <ST><![CDATA[IF NOT((RCP.state_RcpOperation = 10) OR (Rcp.state_RcpOperation = 20)) THEN
 	FOR i:=1 TO 26 DO
 	IF GVL_IO.aMaxValueController[i] <> 0 THEN
 		GVL_IO.aController[i].nState := 10;

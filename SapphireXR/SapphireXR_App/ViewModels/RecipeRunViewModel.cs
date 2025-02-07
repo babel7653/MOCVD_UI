@@ -130,8 +130,8 @@ namespace SapphireXR_App.ViewModels
         [RelayCommand(CanExecute = nameof(CurrentRecipeActive))]
         private void RecipeStop()
         {
-            PLCService.WriteStart(false);
-            PLCService.WriteOperationState(40);
+            //PLCService.WriteStart(false);
+            PLCService.WriteOperationState(30);
             StartText = "Start";
         }
 

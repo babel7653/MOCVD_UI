@@ -60,7 +60,7 @@ namespace SapphireXR_App.ViewModels
                 }
                 else
                 {
-                    PLCService.WriteStart(true);
+                    //PLCService.WriteStart(true);
                     PLCService.WriteOperationState(10);
                 }
             }

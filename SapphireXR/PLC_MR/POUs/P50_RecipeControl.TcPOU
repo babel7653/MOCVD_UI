@@ -9,9 +9,13 @@ VAR
 	nRcpIndex		: INT;
 	nRcpStepTime 	: INT;
 	tMoveNext 		: TON;
-	bMoveNext		: BOOL;
 	rTrigMoveNext	: R_TRIG;
 	fbRecipeSequencer : FB_RecipeSequencer;
+	Pause_ET		: TIME;
+	Pause_MAX		: TIME := T#1800S;
+	Pause_Step		: INT;
+	//Pause_TON		: TON;			
+	Step_ET			: TIME;
 END_VAR
 ]]></Declaration>
     <Implementation>
@@ -26,8 +30,7 @@ END_VAR
 			nRcpStepTime := RCP.aRecipe[nRcpIndex].iRecipe[2] + RCP.aRecipe[nRcpIndex].iRecipe[3]; // Recipe Step Time
 			// Recipe Write to Device
 			fbRecipeSequencer(nRcpIndex := nRcpIndex);
-			bMoveNext := TRUE;
-			tMoveNext(IN:=bMoveNext, PT:=INT_TO_TIME(nRcpStepTime*1000));
+			tMoveNext(IN:=TRUE, PT:=INT_TO_TIME(nRcpStepTime*1000), ET=> Step_ET );
 			rTrigMoveNext(CLK:=tMoveNext.Q);
 			IF rTrigMoveNext.Q THEN
 				nRcpIndex := nRcpIndex + 1;
@@ -36,12 +39,11 @@ END_VAR
 		END_IF
 
 		// End of Recipe Step
-		IF RCP.iRcpTotalStep = nRcpIndex THEN
+		IF nRcpIndex >= RCP.iRcpTotalStep THEN
 			nRcpStepTime := RCP.aRecipe[nRcpIndex].iRecipe[2] + RCP.aRecipe[nRcpIndex].iRecipe[3]; // Recipe Step Time
 			// Recipe Write to Device
 			fbRecipeSequencer(nRcpIndex := nRcpIndex);
-			bMoveNext := TRUE;
-			tMoveNext(IN:=bMoveNext, PT:=INT_TO_TIME(nRcpStepTime*1000));
+			tMoveNext(IN:=TRUE, PT:=INT_TO_TIME(nRcpStepTime*1000), ET=> Step_ET );
 			rTrigMoveNext(CLK:=tMoveNext.Q);
 			IF rTrigMoveNext.Q THEN
 				Rcp.state_RcpOperation := 50; // Recipe End
@@ -50,11 +52,37 @@ END_VAR
 		END_IF	
 		
 	20: //PAUSE
+		Rcp.state_RcpOperation := 20;
+		tMoveNext(IN := FALSE);
+		tMoveNext(IN:=TRUE, PT:=Pause_MAX, ET=>Pause_ET);
+		rTrigMoveNext(CLK:=tMoveNext.Q);
+			IF rTrigMoveNext.Q THEN
+				Rcp.state_RcpOperation := 90; // Recipe_Alarm
+			END_IF
+		Pause_Step := nRcpIndex;
+		
 	30: //RESTART
+		Rcp.state_RcpOperation := 30;
+		tMoveNext(IN := FALSE);
+		tMoveNext(IN:=TRUE, PT:=INT_TO_TIME(nRcpStepTime*1000)-Step_ET);
+		rTrigMoveNext(CLK:=tMoveNext.Q);
+			IF rTrigMoveNext.Q THEN
+				nRcpIndex := nRcpIndex + 1;
+				tMoveNext(IN := FALSE); //reset
+				Rcp.state_RcpOperation := 10; // Recipe End
+			END_IF		
+			
 	40: //STOP
+		Rcp.state_RcpOperation := 40;
 		nRcpIndex := 0;
+		
 	50: //END
-		//Safety State 
+		Rcp.state_RcpOperation := 50;
+		nRcpIndex := 0;
+		
+	60: //SKIP
+		Rcp.state_RcpOperation := 60;
+
 END_CASE
 ]]></ST>
     </Implementation>
@@ -67,7 +95,6 @@ END_CASE
       <LineId Id="37" Count="0" />
       <LineId Id="40" Count="0" />
       <LineId Id="118" Count="0" />
-      <LineId Id="44" Count="0" />
       <LineId Id="41" Count="0" />
       <LineId Id="144" Count="0" />
       <LineId Id="45" Count="0" />
@@ -78,15 +105,38 @@ END_CASE
       <LineId Id="54" Count="0" />
       <LineId Id="67" Count="1" />
       <LineId Id="157" Count="2" />
-      <LineId Id="161" Count="3" />
+      <LineId Id="162" Count="2" />
       <LineId Id="168" Count="0" />
       <LineId Id="160" Count="0" />
       <LineId Id="169" Count="0" />
       <LineId Id="70" Count="0" />
       <LineId Id="142" Count="0" />
-      <LineId Id="7" Count="2" />
+      <LineId Id="7" Count="0" />
+      <LineId Id="170" Count="0" />
+      <LineId Id="195" Count="0" />
+      <LineId Id="178" Count="0" />
+      <LineId Id="185" Count="2" />
+      <LineId Id="184" Count="0" />
+      <LineId Id="179" Count="0" />
+      <LineId Id="197" Count="0" />
+      <LineId Id="8" Count="0" />
+      <LineId Id="191" Count="0" />
+      <LineId Id="196" Count="0" />
+      <LineId Id="182" Count="0" />
+      <LineId Id="188" Count="1" />
+      <LineId Id="192" Count="1" />
+      <LineId Id="190" Count="0" />
+      <LineId Id="183" Count="0" />
+      <LineId Id="198" Count="0" />
+      <LineId Id="9" Count="0" />
+      <LineId Id="173" Count="0" />
       <LineId Id="89" Count="0" />
+      <LineId Id="199" Count="0" />
       <LineId Id="10" Count="0" />
+      <LineId Id="174" Count="0" />
+      <LineId Id="194" Count="0" />
+      <LineId Id="200" Count="0" />
+      <LineId Id="175" Count="1" />
       <LineId Id="113" Count="0" />
       <LineId Id="135" Count="0" />
       <LineId Id="15" Count="0" />

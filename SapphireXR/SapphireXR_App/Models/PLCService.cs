@@ -55,8 +55,8 @@ namespace SapphireXR_App.Models
                 
                 hRcp = Ads.CreateVariableHandle("RCP.aRecipe");
                 hRcpTotalStep = Ads.CreateVariableHandle("RCP.iRcpTotalStep");
-                //hRcpStart = Ads.CreateVariableHandle("RCP.cmd_RcpOperation");
-                hRcpState = Ads.CreateVariableHandle("RCP.cmd_RcpOperation");
+                hCmd_RcpOperation = Ads.CreateVariableHandle("RCP.cmd_RcpOperation");
+                hState_RcpOperation = Ads.CreateVariableHandle("RCP.state_RcpOperation");
                 hRcpStepN =Ads.CreateVariableHandle("P50_RecipeControl.nRcpIndex");
                 
 
@@ -126,6 +126,7 @@ namespace SapphireXR_App.Models
             dCurrentActiveRecipeIssue = ObservableManager<short>.Get("RecipeRun.CurrentActiveRecipe");
             baHardWiringInterlockStateIssuers = ObservableManager<BitArray>.Get("HardWiringInterlockState");
             dIOStateList = ObservableManager<BitArray>.Get("DeviceIOList");
+            dRecipeEndedPublisher = ObservableManager<bool>.Get("RecipeEnded");
 
             timer = new DispatcherTimer();
             timer.Interval = new TimeSpan(2000000);
@@ -134,7 +135,19 @@ namespace SapphireXR_App.Models
 
             currentActiveRecipeListener = new DispatcherTimer();
             currentActiveRecipeListener.Interval = new TimeSpan(TimeSpan.TicksPerMillisecond * 500);
-            currentActiveRecipeListener.Tick += (object? sender, EventArgs e) => { dCurrentActiveRecipeIssue.Issue(Ads.ReadAny<short>(hRcpStepN)); };
+            currentActiveRecipeListener.Tick += (object? sender, EventArgs e) => {
+                dCurrentActiveRecipeIssue.Issue(Ads.ReadAny<short>(hRcpStepN));
+                if(RecipeRunEndNotified == false && Ads.ReadAny<short>(hCmd_RcpOperation) == 50)
+                {
+                    dRecipeEndedPublisher.Issue(true);
+                    RecipeRunEndNotified = true;
+                }
+                else
+                    if(RecipeRunEndNotified == true && Ads.ReadAny<short>(hCmd_RcpOperation) == 0)
+                    {
+                        RecipeRunEndNotified = false;
+                    }
+            };
             currentActiveRecipeListener.Start();
         }
 
@@ -388,19 +401,27 @@ namespace SapphireXR_App.Models
             Ads.WriteAny(hRcp, recipe, [recipe.Length]);
         }
 
+        public static void RefreshRecipe(PlcRecipe[] updates)
+        {
+            foreach(PlcRecipe recipe in updates)
+            {
+                 Ads.WriteAny(Ads.CreateVariableHandle("RCP.aRecipe[" + recipe.aRecipeShort[0] + "]"), recipe);
+            }
+        }
+
         public static void WriteTotalStep(short totalStep)
         {
            Ads.WriteAny(hRcpTotalStep, totalStep);
         }
 
-        //public static void WriteStart(bool start)
-        //{
-        //    Ads.WriteAny(hRcpStart, start);
-        //}
-
-        public static void WriteOperationState(short operationState)
+        public static void WriteRCPOperationCommand(short operationState)
         {
-            Ads.WriteAny(hRcpState, operationState);
+            Ads.WriteAny(hCmd_RcpOperation, operationState);
+        }
+
+        public static short ReadRCPOperationState()
+        {
+            return Ads.ReadAny<short>(hState_RcpOperation);
         }
     }
 }

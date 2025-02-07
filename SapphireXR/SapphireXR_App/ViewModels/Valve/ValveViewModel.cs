@@ -24,15 +24,14 @@ namespace SapphireXR_App.ViewModels
             protected ValveViewModel viewModel;
         }
 
-        internal class ValveStateUpdaterFromCurrentPLCState: ValveStateUpdater
+        internal class ValveStateUpdaterFromCurrentPLCState: ValveStateUpdater, IObserver<bool>
         {
             internal ValveStateUpdaterFromCurrentPLCState(ValveViewModel valveViewModel): base(valveViewModel) 
             {
                 if (viewModel.ValveID != null)
                 {
-                    valveStatePublisher = ObservableManager<bool>.Get("Valve.OnOff." + valveViewModel.ValveID + ".CurrentPLCState");
-                    viewModel.IsOpen = PLCService.ReadValveState(viewModel.ValveID);
-                    valveStatePublisher?.Issue(viewModel.IsOpen);
+                    string valveStateTopicName = "Valve.OnOff." + valveViewModel.ValveID + ".CurrentPLCState";
+                    ObservableManager<bool>.Subscribe(valveStateTopicName, this);
                 }
             }
 
@@ -56,7 +55,6 @@ namespace SapphireXR_App.ViewModels
                         {
                             PLCService.WriteValveState(viewModel.ValveID, isOpen);
                         }
-                        valveStatePublisher?.Issue(viewModel.IsOpen);
                         MessageBox.Show(confirmMessage);
                         break;
 
@@ -66,8 +64,25 @@ namespace SapphireXR_App.ViewModels
                 }
             }
 
+            void IObserver<bool>.OnCompleted()
+            {
+                throw new NotImplementedException();
+            }
+
+            void IObserver<bool>.OnError(Exception error)
+            {
+                throw new NotImplementedException();
+            }
+
+            void IObserver<bool>.OnNext(bool value)
+            {
+                if (value != viewModel.IsOpen)
+                {
+                    viewModel.IsOpen = value;
+                }
+            }
+
             private PopupMessage? popUpMessage;
-            private ObservableManager<bool>.DataIssuer? valveStatePublisher;
         }
 
         internal class ValveStateUpdaterFromCurrentRecipeStep : ValveStateUpdater, IObserver<bool>

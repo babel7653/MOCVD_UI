@@ -38,7 +38,7 @@ namespace SapphireXR_App.Models
         {
             CheckReentrancy();
             Items.Insert(index, recipe);
-            OnCollectionChanged(new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Reset));
+            OnCollectionChanged(new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Add, recipe, index));
         }
     }
 }

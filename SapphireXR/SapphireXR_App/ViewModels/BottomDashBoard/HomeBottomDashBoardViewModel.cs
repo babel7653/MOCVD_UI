@@ -8,7 +8,7 @@ namespace SapphireXR_App.ViewModels.BottomDashBoard
 {
     internal class HomeBottomDashBoardViewModel: BottomDashBoardViewModel
     {
-        class ControlTargetValueSeriesUpdaterFromCurrentPLCState : BottomDashBoardViewModel.ControlTargetValueSeriesUpdater
+        class ControlTargetValueSeriesUpdaterFromCurrentPLCState : BottomDashBoardViewModel.ControlTargetValueSeriesUpdater, IObserver<(int, int)>
         {
             internal ControlTargetValueSeriesUpdaterFromCurrentPLCState(string title) : base(title) { }
 
@@ -27,7 +27,7 @@ namespace SapphireXR_App.ViewModels.BottomDashBoard
                     MinorGridlineStyle = LineStyle.Solid,
                 };
             }
-            protected override void update((int, int) value)
+            protected void update((int, int) value)
             {
                 var dateTimeAxis = plotModel.Axes.OfType<DateTimeAxis>().First();
                 var series1 = plotModel.Series.OfType<LineSeries>().ElementAt(0);
@@ -43,10 +43,30 @@ namespace SapphireXR_App.ViewModels.BottomDashBoard
                 series1.Points.Add(new DataPoint(x, (double)value.Item1));
                 series2.Points.Add(new DataPoint(x, (double)value.Item2));
 
-
                 dateTimeAxis.Minimum = DateTimeAxis.ToDouble(DateTime.Now.AddSeconds(-1 * MaxSecondsToLiveShow));
                 dateTimeAxis.Maximum = DateTimeAxis.ToDouble(DateTime.Now);
+
+                series1.Points.RemoveAll((DataPoint dp) => dp.X < dateTimeAxis.Minimum);
+                series2.Points.RemoveAll((DataPoint dp) => dp.X < dateTimeAxis.Minimum);
+
                 dateTimeAxis.Reset();
+
+                plotModel.InvalidatePlot(true);
+            }
+
+            void IObserver<(int, int)>.OnCompleted()
+            {
+                throw new NotImplementedException();
+            }
+
+            void IObserver<(int, int)>.OnError(Exception error)
+            {
+                throw new NotImplementedException();
+            }
+
+            void IObserver<(int, int)>.OnNext((int, int) value)
+            {
+                update(value);
             }
 
             public static readonly int MaxSecondsToLiveShow = 30;
@@ -61,7 +81,7 @@ namespace SapphireXR_App.ViewModels.BottomDashBoard
         {
             foreach (var (id, index) in PLCService.dIndexController)
             {
-                ControlTargetValueSeriesUpdater controlCurrentValueSeriesUpdater = new ControlTargetValueSeriesUpdaterFromCurrentPLCState(id);
+                ControlTargetValueSeriesUpdaterFromCurrentPLCState controlCurrentValueSeriesUpdater = new ControlTargetValueSeriesUpdaterFromCurrentPLCState(id);
                 ObservableManager<(int, int)>.Subscribe("FlowControl." + id + ".ControlTargetValue.CurrentPLCState", controlCurrentValueSeriesUpdater);
                 plotModels[index] = controlCurrentValueSeriesUpdater;
             }

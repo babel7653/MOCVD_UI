@@ -54,4 +54,15 @@
     <SolidColorBrush x:Key="SourceStatusOn" Color="LawnGreen" />
     <SolidColorBrush x:Key="SourceStatusRun" Color="#ed7812" />
 
+    <SolidColorBrush x:Key="InActiveSignalTowerRed" Color="#ffa0a0"/>
+    <SolidColorBrush x:Key="InActiveSignalTowerYellow" Color="#ffffC5"/>
+    <SolidColorBrush x:Key="InActiveSignalTowerGreen" Color="#cdf5dd"/>
+    <SolidColorBrush x:Key="InActiveSignalTowerBlue" Color="#86CEFA"/>
+    <SolidColorBrush x:Key="InActiveSignalTowerWhite" Color="LightGray"/>
+    <SolidColorBrush x:Key="ActiveSignalTowerRed" Color="Red"/>
+    <SolidColorBrush x:Key="ActiveSignalTowerYellow" Color="Yellow"/>
+    <SolidColorBrush x:Key="ActiveSignalTowerGreen" Color="Green"/>
+    <SolidColorBrush x:Key="ActiveSignalTowerBlue" Color="Blue"/>
+    <SolidColorBrush x:Key="ActiveSignalTowerWhite" Color="White"/>
+
 </ResourceDictionary>

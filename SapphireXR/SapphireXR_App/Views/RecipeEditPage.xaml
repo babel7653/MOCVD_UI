@@ -580,11 +580,11 @@
                                 <Label Grid.Row="3" Grid.Column="0" Content="Ramping Rate Pressure"/>
                                 <Label Grid.Row="4" Grid.Column="0" Content="Total Flow Rate"/>
 
-                                <TextBox x:Name="tbTotalRecipeTime" Grid.Row="0" Grid.Column="1" Text="{Binding TotalRecipeTime}"/>
-                                <TextBox x:Name="tbTotalStepNumber" Grid.Row="1" Grid.Column="1" Text="{Binding TotalStepNumber}"/>
-                                <TextBox x:Name="tbRampingRateTemp" Grid.Row="2" Grid.Column="1" Text="{Binding RampingRateTemp}"/>
-                                <TextBox x:Name="tbRampingRatePress" Grid.Row="3" Grid.Column="1" Text="{Binding RampingRatePress}"/>
-                                <TextBox x:Name="tbTotalFlowRate" Grid.Row="4" Grid.Column="1" Text="{Binding TotalFlowRate}"/>
+                                <TextBox x:Name="tbTotalRecipeTime" Grid.Row="0" Grid.Column="1" Text="{Binding CurrentRecipeInformationViewModel.TotalRecipeTime}"/>
+                                <TextBox x:Name="tbTotalStepNumber" Grid.Row="1" Grid.Column="1" Text="{Binding CurrentRecipeInformationViewModel.TotalStepNumber}"/>
+                                <TextBox x:Name="tbRampingRateTemp" Grid.Row="2" Grid.Column="1" Text="{Binding CurrentRecipeInformationViewModel.RampingRateTemp}"/>
+                                <TextBox x:Name="tbRampingRatePress" Grid.Row="3" Grid.Column="1" Text="{Binding CurrentRecipeInformationViewModel.RampingRatePress}"/>
+                                <TextBox x:Name="tbTotalFlowRate" Grid.Row="4" Grid.Column="1" Text="{Binding CurrentRecipeInformationViewModel.TotalFlowRate}"/>
 
                                 <Label Grid.Row="0" Grid.Column="2" HorizontalAlignment="Left" Content="sec." />
                                 <Label Grid.Row="2" Grid.Column="2" HorizontalAlignment="Left"  Content="°C/sec." />
@@ -711,15 +711,15 @@
                                 </b:Interaction.Triggers>
                                 <DataGrid.Columns>
                                     <DataGridTextColumn Header="No" Width="30" Binding="{Binding No}"  IsReadOnly="True" />
-                                    <DataGridTextColumn Header="Name" Width="200" Binding="{Binding Name}" />
-                                    <DataGridTextColumn Header="Ramp" Width="100" Binding="{Binding rTime}" />
-                                    <DataGridTextColumn Header="Hold" Width="100" Binding="{Binding hTime}" />
-                                    <DataGridTextColumn Header="Loop" Width="100" Binding="{Binding Loop}" />
-                                    <DataGridTextColumn Header="Jump" Width="100" Binding="{Binding Jump}" />
-                                    <DataGridTextColumn Header="Susceptor Temp." Width="100" Binding="{Binding STemp}" />
-                                    <DataGridTextColumn Header="Reactor Press." Width="100" Binding="{Binding RPress}" />
-                                    <DataGridTextColumn Header="Sus. Rotation" Width="100" Binding="{Binding SRotation}" />
-                                    <DataGridTextColumn Header="Compare Temp." Width="100" Binding="{Binding cTemp}" />
+                                    <DataGridTextColumn Header="Name" Width="200" Binding="{Binding Name, UpdateSourceTrigger=LostFocus}" />
+                                    <DataGridTextColumn Header="Ramp" Width="100" Binding="{Binding RTime, UpdateSourceTrigger=LostFocus}" />
+                                    <DataGridTextColumn Header="Hold" Width="100" Binding="{Binding HTime, UpdateSourceTrigger=LostFocus}" />
+                                    <DataGridTextColumn Header="Loop" Width="100" Binding="{Binding Loop, UpdateSourceTrigger=LostFocus}" />
+                                    <DataGridTextColumn Header="Jump" Width="100" Binding="{Binding Jump, UpdateSourceTrigger=LostFocus}" />
+                                    <DataGridTextColumn Header="Susceptor Temp." Width="100" Binding="{Binding STemp, UpdateSourceTrigger=LostFocus}" />
+                                    <DataGridTextColumn Header="Reactor Press." Width="100" Binding="{Binding RPress, UpdateSourceTrigger=LostFocus}" />
+                                    <DataGridTextColumn Header="Sus. Rotation" Width="100" Binding="{Binding SRotation, UpdateSourceTrigger=LostFocus}" />
+                                    <DataGridTextColumn Header="Compare Temp." Width="100" Binding="{Binding cTemp, UpdateSourceTrigger=LostFocus}" />
                                 </DataGrid.Columns>
                             </DataGrid>
                         </TabItem.Content>
@@ -747,9 +747,9 @@
                                 </DataGrid.Resources>
                                 <DataGrid.Columns>
                                     <DataGridTextColumn Header="No" Width="30" Binding="{Binding No}"  IsReadOnly="True" />
-                                    <DataGridTextColumn Header="Name" Width="200" Binding="{Binding Name}" />
-                                    <DataGridTextColumn Header="Ramp" Width="100" Binding="{Binding rTime}" />
-                                    <DataGridTextColumn Header="Hold" Width="100" Binding="{Binding hTime}" />
+                                    <DataGridTextColumn Header="Name" Width="200" Binding="{Binding Name, UpdateSourceTrigger=LostFocus}" />
+                                    <DataGridTextColumn Header="Ramp" Width="100" Binding="{Binding RTime, UpdateSourceTrigger=LostFocus}" />
+                                    <DataGridTextColumn Header="Hold" Width="100" Binding="{Binding HTime, UpdateSourceTrigger=LostFocus}" />
                                     <DataGridTextColumn Header="M01" Width="70" Binding="{Binding M01, UpdateSourceTrigger=LostFocus}" EditingElementStyle="{StaticResource gridColumnTextBox}" />
                                     <DataGridTextColumn Header="M02" Width="70" Binding="{Binding M02, UpdateSourceTrigger=LostFocus}" EditingElementStyle="{StaticResource gridColumnTextBox}" />
                                     <DataGridTextColumn Header="M03" Width="70" Binding="{Binding M03, UpdateSourceTrigger=LostFocus}" EditingElementStyle="{StaticResource gridColumnTextBox}" />

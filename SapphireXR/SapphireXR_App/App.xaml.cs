@@ -24,6 +24,7 @@ namespace SapphireXR_App
                 var mainView = App.Current.Services.GetService<MainWindow>();
                 if (mainView != null)
                 {
+                    Application.Current.MainWindow.WindowState = WindowState.Maximized;
                     mainView.Show();
                 }
                 else
@@ -61,7 +62,6 @@ namespace SapphireXR_App
             services.AddTransient(typeof(RecipeEditViewModel));
             services.AddTransient(typeof(ReportViewModel));
             services.AddTransient(typeof(LeftViewModel));
-            services.AddTransient(typeof(RightViewModel));
             services.AddTransient(typeof(SettingViewModel));
             services.AddTransient(typeof(RecipeRunViewModel));
 

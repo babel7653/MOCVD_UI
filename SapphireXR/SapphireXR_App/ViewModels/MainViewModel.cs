@@ -11,7 +11,7 @@ using System.Windows.Input;
 
 namespace SapphireXR_App.ViewModels
 {
-    public partial class MainViewModel : ViewModelBase
+    public partial class MainViewModel : ViewModelBase, IObserver<RecipeRunViewModel.RecipeRunState>
     {
         [ObservableProperty]
         private string? navigationSource;
@@ -34,6 +34,7 @@ namespace SapphireXR_App.ViewModels
                         break;
                 }
             };
+            ObservableManager<RecipeRunViewModel.RecipeRunState>.Subscribe("RecipeRun.State", this);
         }
 
         public PlotModel PlotModel { get; set; } = default;
@@ -50,9 +51,32 @@ namespace SapphireXR_App.ViewModels
             NavigationSource = pageUri;
         }
 
+        public ICommand OnClosingCommand => new RelayCommand(() =>
+        {
+
+        });
+
+        void IObserver<RecipeRunViewModel.RecipeRunState>.OnCompleted()
+        {
+            throw new NotImplementedException();
+        }
+
+        void IObserver<RecipeRunViewModel.RecipeRunState>.OnError(Exception error)
+        {
+            throw new NotImplementedException();
+        }
+
+        void IObserver<RecipeRunViewModel.RecipeRunState>.OnNext(RecipeRunViewModel.RecipeRunState recipeRunState)
+        {
+            RecipeRunInactive = !(RecipeRunViewModel.RecipeRunState.Run <= recipeRunState && recipeRunState < RecipeRunViewModel.RecipeRunState.Restart);
+        }
+
         [ObservableProperty]
         private int _selectedTab;
+        [ObservableProperty]
+        private bool _recipeRunInactive = true;
 
         private ObservableManager<int>.DataIssuer selectedTabPublisher = ObservableManager<int>.Get("MainView.SelectedTabIndex");
+
     }
 }

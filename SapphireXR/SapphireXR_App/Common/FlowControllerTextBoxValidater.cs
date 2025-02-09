@@ -12,7 +12,36 @@ namespace SapphireXR_App.Common
 {
     internal class FlowControllerTextBoxValidater
     {
-        internal FlowControllerTextBoxValidater(ObservableObject viewModel, string recipesPropertyName)
+        public string valdiate(TextBox textBox, uint maxValue)
+        {
+            if (textBox.Text == "" || uint.Parse(textBox.Text) <= maxValue)
+            {
+                prevText = textBox.Text;
+                return textBox.Text;
+            }
+            else
+            {
+                return prevText;
+            }
+        }
+
+        public string valdiate(TextBox textBox, string flowControllerID)
+        {
+            if (textBox.Text == "" || uint.Parse(textBox.Text) <= PLCService.ReadMaxValue(flowControllerID))
+            {
+                prevText = textBox.Text;
+                return textBox.Text;
+            }
+            else
+            {
+                return prevText;
+            }
+        }
+        private string prevText = "";
+    }
+    internal class FlowControllerDataGridTextColumnTextBoxValidater
+    {
+        internal FlowControllerDataGridTextColumnTextBoxValidater(ObservableObject viewModel, string recipesPropertyName)
         {
             viewModel.PropertyChanged += (object? sender, PropertyChangedEventArgs args) =>
             {
@@ -23,18 +52,35 @@ namespace SapphireXR_App.Common
             };
         }
 
-        public string valdiate(TextBox textBox, string flowControllerID)
+        public string? validate(TextBox textBox, TextChangedEventArgs e)
         {
-            if (textBox.Text == "" || uint.Parse(textBox.Text) <= PLCService.ReadMaxValue(flowControllerID))
+            DataGridCell? dataGridCell = textBox.Parent as DataGridCell;
+            if (dataGridCell != null)
             {
-                prevTexts[textBox] = textBox.Text;
-                return textBox.Text;
+                string? flowControlField = dataGridCell.Column.Header as string;
+                if (flowControlField != null)
+                {
+                    string? flowControllerID = null;
+                    if (Util.RecipeFlowControlFieldToControllerID.TryGetValue(flowControlField, out flowControllerID) == true)
+                    {
+                        return valdiate(textBox, flowControllerID);
+                    }
+                }
             }
-            else
-            {
-                return prevTexts[textBox];
-            }
+            return null;
         }
-        private Dictionary<TextBox, string> prevTexts = new Dictionary<TextBox, string>();
+
+        private string valdiate(TextBox textBox, string flowControllerID)
+        {
+            FlowControllerTextBoxValidater? validater = null;
+            if(prevTexts.TryGetValue(textBox, out validater) == false)
+            {
+                validater = new FlowControllerTextBoxValidater();
+                prevTexts.Add(textBox, validater);
+            }
+            return validater.valdiate(textBox, flowControllerID);
+        }
+
+        private Dictionary<TextBox, FlowControllerTextBoxValidater> prevTexts = new Dictionary<TextBox, FlowControllerTextBoxValidater>();
     }
 }

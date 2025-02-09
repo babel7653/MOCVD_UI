@@ -715,8 +715,8 @@
                                 <DataGrid.Columns>
                                     <DataGridTextColumn Header="No" Width="30" Binding="{Binding No}" IsReadOnly="True"/>
                                     <DataGridTextColumn Header="Name" Width="200" Binding="{Binding Name}" />
-                                    <DataGridTextColumn Header="Ramp" Width="100" Binding="{Binding rTime}" />
-                                    <DataGridTextColumn Header="Hold" Width="100" Binding="{Binding hTime}" />
+                                    <DataGridTextColumn Header="Ramp" Width="100" Binding="{Binding RTime}" />
+                                    <DataGridTextColumn Header="Hold" Width="100" Binding="{Binding HTime}" />
                                     <DataGridTextColumn Header="Loop" Width="100" Binding="{Binding Loop}" />
                                     <DataGridTextColumn Header="Jump" Width="100" Binding="{Binding Jump}" />
                                     <DataGridTextColumn Header="Susceptor Temp." Width="100" Binding="{Binding STemp}" />
@@ -736,30 +736,38 @@
                                         <b:InvokeCommandAction Command="{Binding FlowDataGridLoadedCommand}" PassEventArgsToCommand="True"/>
                                     </b:EventTrigger>
                                 </b:Interaction.Triggers>
+                                <DataGrid.Resources>
+                                    <Style x:Key="gridColumnTextBox" TargetType="TextBox">
+                                        <Style.Setters>
+                                            <EventSetter Event="PreviewTextInput" Handler="TextBox_PreviewTextInput" />
+                                            <EventSetter Event="TextChanged"  Handler="TextBox_TextChanged" />
+                                        </Style.Setters>
+                                    </Style>
+                                </DataGrid.Resources>
                                 <DataGrid.Columns>
                                     <DataGridTextColumn Header="No" Width="30" Binding="{Binding No}"  IsReadOnly="True" />
-                                    <DataGridTextColumn Header="Name" Width="200" Binding="{Binding Name}" />
-                                    <DataGridTextColumn Header="Ramp" Width="100" Binding="{Binding rTime}" />
-                                    <DataGridTextColumn Header="Hold" Width="100" Binding="{Binding hTime}" />
-                                    <DataGridTextColumn Header="M01" Width="70" Binding="{Binding M01}" />
-                                    <DataGridTextColumn Header="M02" Width="70" Binding="{Binding M02}" />
-                                    <DataGridTextColumn Header="M03" Width="70" Binding="{Binding M03}" />
-                                    <DataGridTextColumn Header="M04" Width="70" Binding="{Binding M04}" />
-                                    <DataGridTextColumn Header="M05" Width="70" Binding="{Binding M05}" />
-                                    <DataGridTextColumn Header="M06" Width="70" Binding="{Binding M06}" />
-                                    <DataGridTextColumn Header="M07" Width="70" Binding="{Binding M07}" />
-                                    <DataGridTextColumn Header="M08" Width="70" Binding="{Binding M08}" />
-                                    <DataGridTextColumn Header="M09" Width="70" Binding="{Binding M09}" />
-                                    <DataGridTextColumn Header="M10" Width="70" Binding="{Binding M10}" />
-                                    <DataGridTextColumn Header="M11" Width="70" Binding="{Binding M11}" />
-                                    <DataGridTextColumn Header="M12" Width="70" Binding="{Binding M12}" />
-                                    <DataGridTextColumn Header="M13" Width="70" Binding="{Binding M13}" />
-                                    <DataGridTextColumn Header="M14" Width="70" Binding="{Binding M14}" />
-                                    <DataGridTextColumn Header="M15" Width="70" Binding="{Binding M15}" />
-                                    <DataGridTextColumn Header="M16" Width="70" Binding="{Binding M16}" />
-                                    <DataGridTextColumn Header="M17" Width="70" Binding="{Binding M17}" />
-                                    <DataGridTextColumn Header="M18" Width="70" Binding="{Binding M18}" />
-                                    <DataGridTextColumn Header="M19" Width="70" Binding="{Binding M19}" />
+                                    <DataGridTextColumn Header="Name" Width="200" Binding="{Binding Name, UpdateSourceTrigger=LostFocus}" />
+                                    <DataGridTextColumn Header="Ramp" Width="100" Binding="{Binding RTime, UpdateSourceTrigger=LostFocus}" />
+                                    <DataGridTextColumn Header="Hold" Width="100" Binding="{Binding HTime, UpdateSourceTrigger=LostFocus}" />
+                                    <DataGridTextColumn Header="M01" Width="70" Binding="{Binding M01, UpdateSourceTrigger=LostFocus}" EditingElementStyle="{StaticResource gridColumnTextBox}" />
+                                    <DataGridTextColumn Header="M02" Width="70" Binding="{Binding M02, UpdateSourceTrigger=LostFocus}" EditingElementStyle="{StaticResource gridColumnTextBox}" />
+                                    <DataGridTextColumn Header="M03" Width="70" Binding="{Binding M03, UpdateSourceTrigger=LostFocus}" EditingElementStyle="{StaticResource gridColumnTextBox}" />
+                                    <DataGridTextColumn Header="M04" Width="70" Binding="{Binding M04, UpdateSourceTrigger=LostFocus}" EditingElementStyle="{StaticResource gridColumnTextBox}" />
+                                    <DataGridTextColumn Header="M05" Width="70" Binding="{Binding M05, UpdateSourceTrigger=LostFocus}" EditingElementStyle="{StaticResource gridColumnTextBox}" />
+                                    <DataGridTextColumn Header="M06" Width="70" Binding="{Binding M06, UpdateSourceTrigger=LostFocus}" EditingElementStyle="{StaticResource gridColumnTextBox}" />
+                                    <DataGridTextColumn Header="M07" Width="70" Binding="{Binding M07, UpdateSourceTrigger=LostFocus}" EditingElementStyle="{StaticResource gridColumnTextBox}" />
+                                    <DataGridTextColumn Header="M08" Width="70" Binding="{Binding M08, UpdateSourceTrigger=LostFocus}" EditingElementStyle="{StaticResource gridColumnTextBox}" />
+                                    <DataGridTextColumn Header="M09" Width="70" Binding="{Binding M09, UpdateSourceTrigger=LostFocus}" EditingElementStyle="{StaticResource gridColumnTextBox}" />
+                                    <DataGridTextColumn Header="M10" Width="70" Binding="{Binding M10, UpdateSourceTrigger=LostFocus}" EditingElementStyle="{StaticResource gridColumnTextBox}" />
+                                    <DataGridTextColumn Header="M11" Width="70" Binding="{Binding M11, UpdateSourceTrigger=LostFocus}" EditingElementStyle="{StaticResource gridColumnTextBox}" />
+                                    <DataGridTextColumn Header="M12" Width="70" Binding="{Binding M12, UpdateSourceTrigger=LostFocus}" EditingElementStyle="{StaticResource gridColumnTextBox}" />
+                                    <DataGridTextColumn Header="M13" Width="70" Binding="{Binding M13, UpdateSourceTrigger=LostFocus}" EditingElementStyle="{StaticResource gridColumnTextBox}" />
+                                    <DataGridTextColumn Header="M14" Width="70" Binding="{Binding M14, UpdateSourceTrigger=LostFocus}" EditingElementStyle="{StaticResource gridColumnTextBox}" />
+                                    <DataGridTextColumn Header="M15" Width="70" Binding="{Binding M15, UpdateSourceTrigger=LostFocus}" EditingElementStyle="{StaticResource gridColumnTextBox}" />
+                                    <DataGridTextColumn Header="M16" Width="70" Binding="{Binding M16, UpdateSourceTrigger=LostFocus}" EditingElementStyle="{StaticResource gridColumnTextBox}" />
+                                    <DataGridTextColumn Header="M17" Width="70" Binding="{Binding M17, UpdateSourceTrigger=LostFocus}" EditingElementStyle="{StaticResource gridColumnTextBox}" />
+                                    <DataGridTextColumn Header="M18" Width="70" Binding="{Binding M18, UpdateSourceTrigger=LostFocus}" EditingElementStyle="{StaticResource gridColumnTextBox}" />
+                                    <DataGridTextColumn Header="M19" Width="70" Binding="{Binding M19, UpdateSourceTrigger=LostFocus}" EditingElementStyle="{StaticResource gridColumnTextBox}" />
                                 </DataGrid.Columns>
                             </DataGrid>
                         </TabItem.Content>

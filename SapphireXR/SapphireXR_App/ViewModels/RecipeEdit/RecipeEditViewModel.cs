@@ -11,81 +11,13 @@ using System.ComponentModel;
 using System.Globalization;
 using System.IO;
 using System.Windows;
+using System.Windows.Controls.Ribbon.Primitives;
 using System.Windows.Media;
 
 namespace SapphireXR_App.ViewModels
 {
     public partial class RecipeEditViewModel : ViewModelBase
     {
-        public partial class RecipeInformationViewModel : ObservableObject, IDisposable
-        {
-            public RecipeInformationViewModel(RecipeObservableCollection recipeList)
-            {
-                recipes = recipeList;
-                recipeList.CollectionChanged += recipeCollectionChanged;
-                
-            }
-
-            private void recipeCollectionChanged(object? sender, NotifyCollectionChangedEventArgs args)
-            {
-                int totalTime = 0;
-                foreach (Recipe recipe in recipes)
-                {
-                    totalTime += (recipe.rTime + recipe.hTime);
-                }
-                TotalRecipeTime = totalTime;
-                TotalStepNumber = recipes.Count;
-            }
-
-            private void setCurrentRecipe(Recipe recipe)
-            {
-                
-            }
-
-            protected virtual void Dispose(bool disposing)
-            {
-                if (!disposedValue)
-                {
-                    if (disposing)
-                    {
-                        
-                    }
-
-                    // TODO: 비관리형 리소스(비관리형 개체)를 해제하고 종료자를 재정의합니다.
-                    // TODO: 큰 필드를 null로 설정합니다.
-                    disposedValue = true;
-                }
-            }
-
-            // // TODO: 비관리형 리소스를 해제하는 코드가 'Dispose(bool disposing)'에 포함된 경우에만 종료자를 재정의합니다.
-            // ~RecipeInformationViewModel()
-            // {
-            //     // 이 코드를 변경하지 마세요. 'Dispose(bool disposing)' 메서드에 정리 코드를 입력합니다.
-            //     Dispose(disposing: false);
-            // }
-
-            void IDisposable.Dispose()
-            {
-                // 이 코드를 변경하지 마세요. 'Dispose(bool disposing)' 메서드에 정리 코드를 입력합니다.
-                Dispose(disposing: true);
-                GC.SuppressFinalize(this);
-            }
-
-            [ObservableProperty]
-            private int _totalRecipeTime;
-            [ObservableProperty]
-            private int _totalStepNumber;
-            [ObservableProperty]
-            private int _rampingRateTemp;
-            [ObservableProperty]
-            private int _rampingRatePress;
-            [ObservableProperty]
-            private int _totalFlowRate;
-
-            IList<Recipe> recipes;
-            private bool disposedValue = false;
-        }
-
         private RecipeObservableCollection _recipes;
         public RecipeObservableCollection Recipes
         {
@@ -210,6 +142,15 @@ namespace SapphireXR_App.ViewModels
 
             PropertyChanged += RecipeViewModel_PropertyChanged;
             Recipes = new RecipeObservableCollection();
+            PropertyChanging += (object? sender, PropertyChangingEventArgs args) =>
+            {
+                switch(args.PropertyName)
+                {
+                    case nameof(CurrentRecipeInformationViewModel):
+                        CurrentRecipeInformationViewModel?.dispose();
+                        break;
+                }
+            };
         }
 
         private void RecipeViewModel_PropertyChanged(object? sender, PropertyChangedEventArgs e)
@@ -230,9 +171,9 @@ namespace SapphireXR_App.ViewModels
                         RecipePLCLoadCommand.NotifyCanExecuteChanged();
                     };
                     recipeStateUpdater?.clean();
-                    recipeStateUpdater = new RecipeStateUpader();
+                    recipeStateUpdater = null;
                     ControlUIEnabled = false;
-                    
+                    CurrentRecipeInformationViewModel = new RecipeInformationViewModel(Recipes);
                     break;
 
                 case nameof(RecipeFilePath):
@@ -277,16 +218,31 @@ namespace SapphireXR_App.ViewModels
             newlyAddedForMarking.Clear();
         }
 
-        public void setSelectedRecipeStep(Recipe recipe)
+        public void onRecipeSelected(Recipe? recipe)
         {
-            ControlUIEnabled = true;
-            recipeStateUpdater?.setSelectedRecipeStep(recipe);
+            if(recipe != null)
+            {
+                ControlUIEnabled = true;
+                if (recipeStateUpdater == null)
+                {
+                    recipeStateUpdater = new RecipeStateUpader();
+                }
+                recipeStateUpdater.setSelectedRecipeStep(recipe);
+            }
+           else
+            {
+                ControlUIEnabled = false;
+                recipeStateUpdater?.clean();
+                recipeStateUpdater = null;
+            }
+            CurrentRecipeInformationViewModel?.setCurrentRecipe(recipe);
+
         }
 
         public List<Recipe> newlyAddedForMarking = new List<Recipe>();
         private RecipeStateUpader? recipeStateUpdater;
 
         [ObservableProperty]
-        private RecipeInformationViewModel _currentRecipeInformationViewModel;
+        private RecipeInformationViewModel? _currentRecipeInformationViewModel;
     }
 }

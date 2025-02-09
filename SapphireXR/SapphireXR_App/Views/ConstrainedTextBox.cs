@@ -28,36 +28,22 @@ namespace SapphireXR_App.Views
     {
         public NumberBoxWithMax() : base()
         {
-            PreviewTextInput += OnlyAllowNumber;
+            flowControllerTextBoxValidater = new FlowControllerTextBoxValidater();
+            PreviewTextInput += onlyAllowNumber;
+            TextChanged += validateWithinMax;
         }
 
-        protected bool CheckValid(string str)
+        protected void onlyAllowNumber(object sender, TextCompositionEventArgs e)
         {
-            if (Util.IsTextNumeric(str) == true)
-            {
-                string nextValueStr = Text + str;
-                int nextValue = int.Parse(nextValueStr);
-                if (nextValue <= MaxValue)
-                {
-                    return true;
-                }
-                else
-                {
-                    return false;
-                }
-            }
-            else
-            {
-                return false; ;
-            }
+            Util.OnlyAllowNumber(e, e.Text);
         }
 
-        protected void OnlyAllowNumber(object sender, TextCompositionEventArgs e)
+        protected void validateWithinMax(object sender, TextChangedEventArgs e)
         {
-            TextBox? textbox = sender as TextBox;
-            if (textbox != null)
+            TextBox? textBox = sender as TextBox;
+            if (textBox != null)
             {
-                Util.OnlyAllowConstrainedNumber(e, textbox.Text, e.Text, MaxValue);
+                textBox.Text = flowControllerTextBoxValidater.valdiate(textBox, (uint)MaxValue);
             }
         }
 
@@ -68,5 +54,6 @@ namespace SapphireXR_App.Views
         }
 
         private static readonly DependencyProperty MaxValueProperty = DependencyProperty.Register("MaxValue", typeof(int), typeof(NumberBoxWithMax), new PropertyMetadata(int.MinValue));
+        private FlowControllerTextBoxValidater flowControllerTextBoxValidater;
     }
 }

@@ -56,6 +56,7 @@ namespace SapphireXR_App.Models
                 hCmd_RcpOperation = Ads.CreateVariableHandle("RCP.cmd_RcpOperation");
                 hState_RcpOperation = Ads.CreateVariableHandle("RCP.state_RcpOperation");
                 hRcpStepN =Ads.CreateVariableHandle("P50_RecipeControl.nRcpIndex");
+                hTemperaturePV = Ads.CreateVariableHandle("P13_LineHeater.rTemperaturePV");
                 
 
                 aDeviceRampTimes = new short[dIndexController.Count];
@@ -125,6 +126,7 @@ namespace SapphireXR_App.Models
             baHardWiringInterlockStateIssuers = ObservableManager<BitArray>.Get("HardWiringInterlockState");
             dIOStateList = ObservableManager<BitArray>.Get("DeviceIOList");
             dRecipeEndedPublisher = ObservableManager<bool>.Get("RecipeEnded");
+            dLineHeaterTemperatureIssuers = ObservableManager<float[]>.Get("LineHeaterTemperature");
 
             timer = new DispatcherTimer();
             timer.Interval = new TimeSpan(2000000);
@@ -223,6 +225,9 @@ namespace SapphireXR_App.Models
                     dValveStateIssuers?[valveID].Issue(baReadValveStatePLC2[index]);
                 }
             }
+
+            dLineHeaterTemperatureIssuers?.Issue(Ads.ReadAny<float[]>(hTemperaturePV, [(int)LineHeaterTemperature]));
+            
 
             string exceptionStr = string.Empty;
             if(aDeviceControlValues == null)

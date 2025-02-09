@@ -6,11 +6,18 @@
         xmlns:behaviors="clr-namespace:SapphireXR_App.Behavior"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:SapphireXR_App.Views"
-        xmlns:oxy="http://oxyplot.org/wpf"
+        xmlns:oxy="http://oxyplot.org/wpf"        
+        xmlns:i="clr-namespace:Microsoft.Xaml.Behaviors;assembly=Microsoft.Xaml.Behaviors"
         mc:Ignorable="d"
         Background="Transparent"
         x:Name="mainWindow"
-        Title="Sapphire XR" Height="1080" Width="1920">
+        Title="Sapphire XR" Height="1080" Width="1920"
+        >
+    <i:Interaction.Triggers>
+        <i:EventTrigger EventName="Closing">
+            <i:InvokeCommandAction Command="{Binding OnClosingCommand}" />
+        </i:EventTrigger>
+    </i:Interaction.Triggers>
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="300"/>
@@ -19,7 +26,7 @@
         <Frame Source="/Views/LeftDashboard.xaml" Grid.Column="0" NavigationUIVisibility="Hidden"/>
         <Grid Grid.Column="1">
             <TabControl Background="Transparent" SelectedIndex="{Binding SelectedTab}">
-                <TabItem Header="System Control" Width="150"  >
+                <TabItem Header="System Control" Width="150"  IsEnabled="{Binding RecipeRunInactive}">
                     <Frame Source="/Views/HomePage.xaml" NavigationUIVisibility="Hidden"/>
                 </TabItem>
 
@@ -27,7 +34,7 @@
                     <Frame Source="/Views/RecipeRunPage.xaml" NavigationUIVisibility="Hidden"/>
                 </TabItem>
 
-                <TabItem Header="Recipe Editor" Width="150" >
+                <TabItem Header="Recipe Editor" Width="150" IsEnabled="{Binding RecipeRunInactive}">
                     <Frame Source="/Views/RecipeEditPage.xaml" NavigationUIVisibility="Hidden"/>
                 </TabItem>
 

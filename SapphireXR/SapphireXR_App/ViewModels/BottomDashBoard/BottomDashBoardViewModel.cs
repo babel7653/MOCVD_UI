@@ -21,7 +21,7 @@ namespace SapphireXR_App.ViewModels
 {
     public partial class BottomDashBoardViewModel : ObservableObject
     {
-        public abstract class ControlTargetValueSeriesUpdater : IObserver<(int, int)>
+        public abstract class ControlTargetValueSeriesUpdater
         {
             public ControlTargetValueSeriesUpdater(string title)
             {
@@ -64,24 +64,6 @@ namespace SapphireXR_App.ViewModels
             }
 
             protected abstract Axis initializeXAxis();
-
-            void IObserver<(int, int)>.OnCompleted()
-            {
-                throw new NotImplementedException();
-            }
-
-            void IObserver<(int, int)>.OnError(Exception error)
-            {
-                throw new NotImplementedException();
-            }
-
-            void IObserver<(int, int)>.OnNext((int, int) value)
-            {
-                update(value);
-                plotModel.InvalidatePlot(true);
-            }
-
-            abstract protected void update((int, int) value);
 
             public void toggleControlValueSeries()
             {
@@ -127,10 +109,10 @@ namespace SapphireXR_App.ViewModels
         protected ControlTargetValueSeriesUpdater[] plotModels = new ControlTargetValueSeriesUpdater[PLCService.NumControllers];
         private ControlTargetValueSeriesUpdater? currentSelectedFlowControllerListener;
 
-        public BottomDashBoardViewModel(string flowControlSelectedPostFix)
+        public BottomDashBoardViewModel(string flowControlSelectedPostFixStr)
         {
             FlowControlLivePlot = new PlotModel();
-            ObservableManager<string>.Subscribe("FlowControl.Selected." + flowControlSelectedPostFix, flowContorllerSelectionChanged = new SelectedFlowControllerListener(this));
+            ObservableManager<string>.Subscribe("FlowControl.Selected." + flowControlSelectedPostFixStr, flowContorllerSelectionChanged = new SelectedFlowControllerListener(this));
             ControlValueOption = HideControlValueStr;
             TargetValueOption = HideTargetValueStr;
         }
@@ -169,16 +151,16 @@ namespace SapphireXR_App.ViewModels
             }
         });
 
-        private IObserver<string> flowContorllerSelectionChanged;
+        private readonly IObserver<string> flowContorllerSelectionChanged;
 
         [ObservableProperty]
         public string controlValueOption;
         [ObservableProperty]
         public string targetValueOption;
 
-        private static string ShowControlValueStr = "Show Control Value";
-        private static string HideControlValueStr = "Hide Control Value";
-        private static string ShowTargetValueStr = "Show Target Value";
-        private static string HideTargetValueStr = "Hide Target Value";
+        private static readonly string ShowControlValueStr = "Show Control Value";
+        private static readonly string HideControlValueStr = "Hide Control Value";
+        private static readonly string ShowTargetValueStr = "Show Target Value";
+        private static readonly string HideTargetValueStr = "Hide Target Value";
     }
 }

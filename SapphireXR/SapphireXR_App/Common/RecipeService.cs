@@ -8,13 +8,13 @@ using CsvHelper;
 using Microsoft.Win32;
 using SapphireXR_App.Models;
 
-namespace SapphireXR_App.ViewModels
+namespace SapphireXR_App.Common
 {
     public static class RecipeService
     {
-        internal class OpenRecipeFileException: Exception
+        internal class OpenRecipeFileException : Exception
         {
-            internal OpenRecipeFileException(string  message) : base(message) { }    
+            internal OpenRecipeFileException(string message) : base(message) { }
         }
 
         public static (bool, string?, List<Recipe>?) OpenRecipe(CsvHelper.Configuration.CsvConfiguration config)
@@ -39,7 +39,7 @@ namespace SapphireXR_App.ViewModels
                     }
                 }
             }
-            catch(Exception exception)
+            catch (Exception exception)
             {
                 throw new OpenRecipeFileException(exception.Message);
             }

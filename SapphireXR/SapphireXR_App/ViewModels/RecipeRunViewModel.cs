@@ -10,7 +10,7 @@ using System.Globalization;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Threading;
-using static SapphireXR_App.ViewModels.RecipeService;
+using static SapphireXR_App.Common.RecipeService;
 
 namespace SapphireXR_App.ViewModels
 {

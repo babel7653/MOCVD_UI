@@ -2,83 +2,145 @@
 <TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4026.8">
   <POU Name="P50_RecipeControl" Id="{e332a806-fd31-4290-a7c3-27f42c11d38e}" SpecialFunc="None">
     <Declaration><![CDATA[PROGRAM P50_RecipeControl
-VAR_INPUT
-
-END_VAR
 VAR
 	nRcpIndex		: INT;
 	nRcpStepTime 	: INT;
-	MoveNext_TON	: TON;
-	rTrigMoveNext	: R_TRIG;
 	fbRecipeSequencer : FB_RecipeSequencer;
+	Pause_TIME		: TIME;
 	Pause_ET		: TIME;
 	Pause_MAX		: TIME := T#1800S;
 	Pause_Step		: INT;
-	Pause_TON		: TON;			
-	Step_ET			: TIME;
+	Pause_TON		: TON;
+	Pause_rTrig		: R_TRIG;
+	Pause_Ramp		: BOOL;
+	Pause_Hold		: BOOL;
 	ReStart_TON		: TON;
+	Ramp_TON		: TON;
+	Hold_TON		: TON;
+	Ramp_TIME		: TIME;
+	Hold_TIME		: TIME;
+	Ramp_ET			: TIME;
+	Hold_ET			: TIME;
+	rTrigRamp		: R_TRIG;
+	rTrigHold		: R_TRIG;
+	Ramp_On			: BOOL;
+	Hold_On			: BOOL;
+
 END_VAR
 ]]></Declaration>
     <Implementation>
       <ST><![CDATA[CASE RCP.cmd_RcpOperation OF
 	0: //Init State
 		nRcpIndex := 0;
-		MoveNext_TON(IN:=FALSE);
 		Pause_TON(IN:=FALSE);
 		ReStart_TON(IN:=FALSE);
+		Ramp_TON(IN:=FALSE);
+		Hold_TON(IN:=FALSE);
+		Ramp_On := TRUE;
+		Hold_On	:= FALSE;
 	10: //RUN
 		IF nRcpIndex = 0 THEN
 			nRcpIndex := 1;
 		END_IF
-		IF nRcpIndex < Rcp.iRcpTotalStep THEN
-			Rcp.state_RcpOperation := 10; // Recipe Running
-			nRcpStepTime := RCP.aRecipe[nRcpIndex].iRecipe[2] + RCP.aRecipe[nRcpIndex].iRecipe[3]; // Recipe Step Time
-			// Recipe Write to Device
-			fbRecipeSequencer(nRcpIndex := nRcpIndex);
-			MoveNext_TON(IN:=TRUE, PT:=INT_TO_TIME(nRcpStepTime*1000), ET=> Step_ET );
-			rTrigMoveNext(CLK:=MoveNext_TON.Q);
-			IF rTrigMoveNext.Q THEN
-				nRcpIndex := nRcpIndex + 1;
-				MoveNext_TON(IN := FALSE); //reset
-			END_IF
-		END_IF
 
-		// End of Recipe Step
-		IF nRcpIndex >= RCP.iRcpTotalStep THEN
-			nRcpStepTime := RCP.aRecipe[nRcpIndex].iRecipe[2] + RCP.aRecipe[nRcpIndex].iRecipe[3]; // Recipe Step Time
-			// Recipe Write to Device
+		IF nRcpIndex <= Rcp.iRcpTotalStep THEN
+			Rcp.state_RcpOperation := 10; // Recipe Running
+			Ramp_TIME := INT_TO_TIME(RCP.aRecipe[nRcpIndex].iRecipe[2]*1000); // second -> milisecond time
+			Hold_TIME := INT_TO_TIME(RCP.aRecipe[nRcpIndex].iRecipe[3]*1000);
 			fbRecipeSequencer(nRcpIndex := nRcpIndex);
-			MoveNext_TON(IN:=TRUE, PT:=INT_TO_TIME(nRcpStepTime*1000), ET=> Step_ET );
-			rTrigMoveNext(CLK:=MoveNext_TON.Q);
-			IF rTrigMoveNext.Q THEN
-				Rcp.state_RcpOperation := 50; // Recipe End
+			
+			Ramp_TON(IN:=Ramp_On, PT:=Ramp_TIME, ET=>Ramp_ET);
+			rTrigRamp(CLK:=Ramp_TON.Q);
+			IF rTrigRamp.Q THEN
+				Ramp_TON(IN:=FALSE);
+				Ramp_On := FALSE;
+				Hold_On := TRUE;
 			END_IF
-			MoveNext_TON(IN := FALSE); //reset
-		END_IF	
+			
+			Hold_TON(IN:=Hold_On, PT:=Hold_TIME, ET=>Hold_ET);
+			rTrigHold(CLK:=Hold_TON.Q);
+			IF rTrigHold.Q THEN
+				Hold_TON(IN:=FALSE);
+				Hold_On := FALSE;
+				Ramp_On := TRUE;
+				IF nRcpIndex < Rcp.iRcpTotalStep THEN
+					nRcpIndex := nRcpIndex + 1;
+				ELSE 
+					RCP.cmd_RcpOperation := 50;
+				END_IF
+			END_IF
+		ELSE
+			RCP.cmd_RcpOperation := 50;
+		END_IF
 		
 	20: //PAUSE
 		Rcp.state_RcpOperation := 20;
-		MoveNext_TON(IN := FALSE);
-		ReStart_TON(IN:=FALSE);
+		
+		IF Ramp_On THEN
+ 			Pause_TIME := Ramp_ET;
+			Pause_Ramp := TRUE;
+			Pause_Hold := FALSE;
+		ELSE
+			Pause_TIME := Hold_ET;
+			Pause_Ramp := FALSE;
+			Pause_Hold := TRUE;
+ 		END_IF
+		
+		Ramp_TON(IN:=FALSE);
+		Hold_TON(IN:=FALSE);
+		
 		Pause_TON(IN:=TRUE, PT:= Pause_MAX, ET=> Pause_ET);
-		rTrigMoveNext(CLK:=Pause_TON.Q);
-		IF rTrigMoveNext.Q THEN
+		Pause_rTrig(CLK:=Pause_TON.Q);
+		IF Pause_rTrig.Q THEN
 			Rcp.state_RcpOperation := 90; // Recipe_Alarm
 			Pause_TON(IN:=FALSE);
-		END_IF
+		END_IF	
 		Pause_Step := nRcpIndex;
 		
 	30: //RESTART
 		Rcp.state_RcpOperation := 30;
+		
 		Pause_TON(IN:=FALSE);
-		ReStart_TON(IN:=TRUE, PT:=INT_TO_TIME(nRcpStepTime*1000)-Step_ET);
-		rTrigMoveNext(CLK:=ReStart_TON.Q);
-		IF rTrigMoveNext.Q THEN
-			nRcpIndex := Pause_Step + 1;
-			MoveNext_TON(IN := FALSE); //reset
-			RCP.cmd_RcpOperation := 10;
-			ReStart_TON(IN:=FALSE);
-		END_IF		
+		
+		IF Pause_Ramp THEN
+			ReStart_TON(IN:=TRUE, PT:=Ramp_TIME - Pause_TIME, ET=>Ramp_ET);
+			rTrigRamp(CLK:=ReStart_TON.Q);
+			IF rTrigRamp.Q THEN
+				Ramp_TON(IN:=FALSE);
+				Ramp_On := FALSE;
+				Hold_On := TRUE;
+			END_IF
+			
+			Hold_TON(IN:=Hold_On, PT:=Hold_TIME, ET=>Hold_ET);
+			rTrigHold(CLK:=Hold_TON.Q);
+			IF rTrigHold.Q THEN
+				Hold_TON(IN:=FALSE);
+				Hold_On := FALSE;
+				Ramp_On := TRUE;
+				IF nRcpIndex < Rcp.iRcpTotalStep THEN
+					nRcpIndex := nRcpIndex + 1;
+					RCP.cmd_RcpOperation := 10;
+				ELSE 
+					RCP.cmd_RcpOperation := 50;
+				END_IF
+			END_IF
+			
+		ELSIF Pause_Hold THEN
+			ReStart_TON(IN:=TRUE, PT:=Hold_TIME - Pause_TIME, ET=>Hold_ET);
+			rTrigHold(CLK:=ReStart_TON.Q);
+			IF rTrigHold.Q THEN
+				Hold_TON(IN:=FALSE);
+				Hold_On := FALSE;
+				Ramp_On := TRUE;
+				IF nRcpIndex < Rcp.iRcpTotalStep THEN
+					nRcpIndex := nRcpIndex + 1;
+					RCP.cmd_RcpOperation := 10;
+				ELSE 
+					RCP.cmd_RcpOperation := 50;
+				END_IF
+				ReStart_TON(IN:=FALSE);
+			END_IF
+		END_IF
 		
 	40: //STOP
 		Rcp.state_RcpOperation := 40;
@@ -91,68 +153,98 @@ END_VAR
 		nRcpIndex := 0;
 		
 	60: //SKIP
-		Rcp.state_RcpOperation := 60;
-
+		Ramp_TON(IN:=FALSE);
+		Hold_TON(IN:=FALSE);
+		Ramp_On := TRUE;
+		Hold_On := FALSE;
+		nRcpIndex := nRcpIndex + 1;
+		RCP.cmd_RcpOperation := 10;
 END_CASE
 ]]></ST>
     </Implementation>
     <LineIds Name="P50_RecipeControl">
       <LineId Id="1" Count="1" />
-      <LineId Id="209" Count="3" />
+      <LineId Id="209" Count="0" />
+      <LineId Id="211" Count="1" />
+      <LineId Id="248" Count="1" />
+      <LineId Id="251" Count="1" />
       <LineId Id="6" Count="0" />
       <LineId Id="152" Count="2" />
-      <LineId Id="140" Count="0" />
-      <LineId Id="156" Count="0" />
-      <LineId Id="37" Count="0" />
-      <LineId Id="40" Count="0" />
-      <LineId Id="118" Count="0" />
-      <LineId Id="41" Count="0" />
-      <LineId Id="144" Count="0" />
-      <LineId Id="45" Count="0" />
-      <LineId Id="57" Count="0" />
-      <LineId Id="145" Count="0" />
-      <LineId Id="47" Count="0" />
       <LineId Id="38" Count="0" />
-      <LineId Id="54" Count="0" />
-      <LineId Id="67" Count="1" />
-      <LineId Id="157" Count="2" />
-      <LineId Id="162" Count="2" />
-      <LineId Id="168" Count="0" />
-      <LineId Id="160" Count="0" />
-      <LineId Id="169" Count="0" />
-      <LineId Id="70" Count="0" />
+      <LineId Id="230" Count="1" />
+      <LineId Id="233" Count="0" />
+      <LineId Id="236" Count="0" />
+      <LineId Id="234" Count="0" />
+      <LineId Id="266" Count="0" />
+      <LineId Id="235" Count="0" />
+      <LineId Id="238" Count="1" />
+      <LineId Id="250" Count="0" />
+      <LineId Id="253" Count="0" />
+      <LineId Id="257" Count="0" />
+      <LineId Id="241" Count="0" />
+      <LineId Id="267" Count="0" />
+      <LineId Id="259" Count="5" />
+      <LineId Id="276" Count="1" />
+      <LineId Id="280" Count="1" />
+      <LineId Id="278" Count="0" />
+      <LineId Id="258" Count="0" />
+      <LineId Id="285" Count="0" />
+      <LineId Id="287" Count="0" />
+      <LineId Id="232" Count="0" />
       <LineId Id="142" Count="0" />
       <LineId Id="7" Count="0" />
       <LineId Id="170" Count="0" />
-      <LineId Id="195" Count="0" />
-      <LineId Id="208" Count="0" />
-      <LineId Id="178" Count="0" />
-      <LineId Id="185" Count="2" />
-      <LineId Id="207" Count="0" />
-      <LineId Id="184" Count="0" />
+      <LineId Id="288" Count="1" />
+      <LineId Id="292" Count="0" />
+      <LineId Id="310" Count="0" />
+      <LineId Id="363" Count="0" />
+      <LineId Id="295" Count="0" />
+      <LineId Id="298" Count="0" />
+      <LineId Id="312" Count="0" />
+      <LineId Id="364" Count="0" />
+      <LineId Id="293" Count="0" />
+      <LineId Id="375" Count="0" />
+      <LineId Id="371" Count="0" />
+      <LineId Id="374" Count="0" />
+      <LineId Id="372" Count="0" />
+      <LineId Id="290" Count="0" />
+      <LineId Id="300" Count="3" />
+      <LineId Id="299" Count="0" />
       <LineId Id="179" Count="0" />
       <LineId Id="197" Count="0" />
+      <LineId Id="387" Count="1" />
       <LineId Id="8" Count="0" />
-      <LineId Id="191" Count="0" />
       <LineId Id="202" Count="0" />
-      <LineId Id="182" Count="0" />
-      <LineId Id="188" Count="1" />
-      <LineId Id="192" Count="1" />
-      <LineId Id="190" Count="0" />
-      <LineId Id="205" Count="0" />
-      <LineId Id="183" Count="0" />
+      <LineId Id="309" Count="0" />
+      <LineId Id="315" Count="1" />
+      <LineId Id="327" Count="4" />
+      <LineId Id="326" Count="0" />
+      <LineId Id="332" Count="0" />
+      <LineId Id="334" Count="7" />
+      <LineId Id="359" Count="0" />
+      <LineId Id="342" Count="2" />
+      <LineId Id="333" Count="0" />
+      <LineId Id="365" Count="0" />
+      <LineId Id="345" Count="0" />
+      <LineId Id="347" Count="7" />
+      <LineId Id="358" Count="0" />
+      <LineId Id="355" Count="2" />
+      <LineId Id="361" Count="0" />
+      <LineId Id="346" Count="0" />
+      <LineId Id="317" Count="0" />
       <LineId Id="201" Count="0" />
       <LineId Id="9" Count="0" />
-      <LineId Id="173" Count="0" />
+      <LineId Id="386" Count="0" />
       <LineId Id="203" Count="1" />
       <LineId Id="89" Count="0" />
       <LineId Id="199" Count="0" />
       <LineId Id="10" Count="0" />
-      <LineId Id="174" Count="0" />
+      <LineId Id="385" Count="0" />
       <LineId Id="194" Count="0" />
       <LineId Id="200" Count="0" />
-      <LineId Id="175" Count="1" />
-      <LineId Id="113" Count="0" />
+      <LineId Id="175" Count="0" />
+      <LineId Id="376" Count="3" />
+      <LineId Id="223" Count="1" />
       <LineId Id="135" Count="0" />
       <LineId Id="15" Count="0" />
     </LineIds>

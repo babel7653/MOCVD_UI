@@ -39,9 +39,6 @@ namespace SapphireXR_App.Models
         public static string ModePLC { get; set; } = "System Mode : ";
 
         // Variable handles to be connected plc variables
-        private static uint hStatePLC = 0;
-        public static bool TcStatePLC { get; set; }
-
         private static BitArray? baReadValveStatePLC1;
         private static BitArray? baReadValveStatePLC2;
         private static float[]? aDeviceMaxValue;

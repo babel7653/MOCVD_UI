@@ -35,7 +35,7 @@ END_VAR
     <Implementation>
       <ST><![CDATA[(* Convert to Normalization, Ramp Valve Calculation*)
 IF nRampTime = 0 THEN
-	nState :=50;
+	bEnable := FALSE;
 ELSE
 	rRampingRatio := ABS(rTargetValue - rStartValue) / nRampTime * 0.1; //Second
 END_IF
@@ -43,7 +43,9 @@ END_IF
 CASE nState OF
 	0: // Init Sate
 		rStartValue := rInitValue;
-	10: // START
+		bInit := TRUE;
+		bValueReached := TRUE;
+	10: // RUN
 		IF (rTargetValue > 0) OR (rStartValue > 0) THEN
 			bEnable := TRUE;
 			bInit := TRUE;
@@ -51,18 +53,18 @@ CASE nState OF
 			bEnable := FALSE;
 			bInit := FALSE;
 		END_IF
-	20: //PAUSE
-		bEnable := FALSE;
-	30: //RESTART
-		bEnable := TRUE;	
-	40: //STOP
-		bEnable := FALSE;
-		bInit := TRUE;
-		bValueReached := TRUE;
-	50: //END
-		bEnable := FALSE;
-		bInit := TRUE;
-		bValueReached := TRUE;
+// 	20: //PAUSE
+// 		bEnable := TRUE;
+// 	30: //RESTART
+// 		bEnable := TRUE;	
+// 	40: //STOP
+// 		bEnable := FALSE;
+// 		bInit := TRUE;
+// 		bValueReached := TRUE;
+// 	50: //END
+// 		bEnable := FALSE;
+// 		bInit := TRUE;
+// 		bValueReached := TRUE;
 
 END_CASE
 
@@ -100,9 +102,12 @@ END_IF
     </Implementation>
     <LineIds Name="FB_RampGenerator">
       <LineId Id="2" Count="1" />
-      <LineId Id="77" Count="0" />
+      <LineId Id="78" Count="0" />
       <LineId Id="71" Count="0" />
-      <LineId Id="4" Count="13" />
+      <LineId Id="4" Count="5" />
+      <LineId Id="80" Count="0" />
+      <LineId Id="79" Count="0" />
+      <LineId Id="10" Count="7" />
       <LineId Id="60" Count="3" />
       <LineId Id="18" Count="3" />
       <LineId Id="64" Count="0" />

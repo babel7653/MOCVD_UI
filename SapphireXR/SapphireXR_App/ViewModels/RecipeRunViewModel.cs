@@ -92,7 +92,8 @@ namespace SapphireXR_App.ViewModels
 
         bool canRecipeOpenExecute()
         {
-            return !canCommandsExecuteOnActive();
+            //return !canCommandsExecuteOnActive();
+            return true;
         }
         [RelayCommand(CanExecute =nameof(canRecipeOpenExecute))]
         private void RecipeOpen()
@@ -141,7 +142,8 @@ namespace SapphireXR_App.ViewModels
 
         bool canCommandsExecuteOnActive()
         {
-            return RecipeRunState.Run <= CurrentRecipeRunState && CurrentRecipeRunState <= RecipeRunState.Pause;
+            //return RecipeRunState.Run <= CurrentRecipeRunState && CurrentRecipeRunState <= RecipeRunState.Pause;
+            return true;
         }
 
         [RelayCommand(CanExecute = nameof(canCommandsExecuteOnActive))]

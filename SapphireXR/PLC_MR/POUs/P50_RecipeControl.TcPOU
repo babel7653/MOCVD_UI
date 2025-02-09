@@ -31,6 +31,7 @@ END_VAR
     <Implementation>
       <ST><![CDATA[CASE RCP.cmd_RcpOperation OF
 	0: //Init State
+		Rcp.state_RcpOperation := 0;
 		nRcpIndex := 0;
 		Pause_TON(IN:=FALSE);
 		ReStart_TON(IN:=FALSE);
@@ -38,6 +39,7 @@ END_VAR
 		Hold_TON(IN:=FALSE);
 		Ramp_On := TRUE;
 		Hold_On	:= FALSE;
+		//fbRecipeSequencer(nRcpIndex := nRcpIndex);
 	10: //RUN
 		IF nRcpIndex = 0 THEN
 			nRcpIndex := 1;
@@ -96,7 +98,7 @@ END_VAR
 			Pause_TON(IN:=FALSE);
 		END_IF	
 		Pause_Step := nRcpIndex;
-		
+
 	30: //RESTART
 		Rcp.state_RcpOperation := 30;
 		
@@ -141,17 +143,18 @@ END_VAR
 				ReStart_TON(IN:=FALSE);
 			END_IF
 		END_IF
-		
+		fbRecipeSequencer();
 	40: //STOP
 		Rcp.state_RcpOperation := 40;
 		Pause_TON(IN:=FALSE);
 		ReStart_TON(IN:=FALSE);
-		nRcpIndex := 0;
-		
+		//nRcpIndex := 1;
+		fbRecipeSequencer();
 	50: //END
 		Rcp.state_RcpOperation := 50;
-		nRcpIndex := 0;
-		
+		fbRecipeSequencer(nRcpIndex := nRcpIndex);
+		//nRcpIndex := 1;
+		fbRecipeSequencer();
 	60: //SKIP
 		Ramp_TON(IN:=FALSE);
 		Hold_TON(IN:=FALSE);
@@ -159,17 +162,21 @@ END_VAR
 		Hold_On := FALSE;
 		nRcpIndex := nRcpIndex + 1;
 		RCP.cmd_RcpOperation := 10;
+		fbRecipeSequencer();
 END_CASE
 ]]></ST>
     </Implementation>
     <LineIds Name="P50_RecipeControl">
       <LineId Id="1" Count="1" />
+      <LineId Id="393" Count="0" />
       <LineId Id="209" Count="0" />
       <LineId Id="211" Count="1" />
       <LineId Id="248" Count="1" />
       <LineId Id="251" Count="1" />
+      <LineId Id="394" Count="0" />
       <LineId Id="6" Count="0" />
-      <LineId Id="152" Count="2" />
+      <LineId Id="391" Count="1" />
+      <LineId Id="154" Count="0" />
       <LineId Id="38" Count="0" />
       <LineId Id="230" Count="1" />
       <LineId Id="233" Count="0" />
@@ -240,11 +247,13 @@ END_CASE
       <LineId Id="199" Count="0" />
       <LineId Id="10" Count="0" />
       <LineId Id="385" Count="0" />
+      <LineId Id="390" Count="0" />
       <LineId Id="194" Count="0" />
       <LineId Id="200" Count="0" />
       <LineId Id="175" Count="0" />
       <LineId Id="376" Count="3" />
       <LineId Id="223" Count="1" />
+      <LineId Id="389" Count="0" />
       <LineId Id="135" Count="0" />
       <LineId Id="15" Count="0" />
     </LineIds>

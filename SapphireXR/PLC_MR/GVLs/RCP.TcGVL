@@ -8,7 +8,7 @@ VAR_GLOBAL
 	iRcpTotalStep			: INT; //Recip Total Number
 	
 	iRcpStepN				: INT;
-	cmd_RcpOperation		: INT; // 0:Inital State, 10:RUN, 20:PAUSE, 30:RESTART, 40:STOP, 60:SKIP
+	cmd_RcpOperation		: INT; // 0:Inital State, 10:RUN, 20:PAUSE, 30:RESTART, 40:STOP, 60:SKIP, 90:ManualOperation
 	state_RcpOperation		: INT; // 0:Inital State, 10:RUN, 20:PAUSE, 30:RESTART, 40:STOP, 50:END
 	
 END_VAR]]></Declaration>

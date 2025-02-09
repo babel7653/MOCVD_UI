@@ -2,11 +2,15 @@
 using SapphireXR_App.ViewModels.BottomDashBoard;
 using System.ComponentModel;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Input;
+using static System.Net.Mime.MediaTypeNames;
+using System.Xml.Linq;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace SapphireXR_App.ViewModels
 {
-    public class HomeViewModel : DependencyObject, INotifyPropertyChanged
+    public partial class HomeViewModel : ObservableObject
     {
         public HomeViewModel()
         {
@@ -45,78 +49,51 @@ namespace SapphireXR_App.ViewModels
             });
         }
 
-        public event PropertyChangedEventHandler? PropertyChanged;
-
         public ICommand EnableLeakTestCommand { get; set; }
         public ICommand ShowValveLabelCommand { get; set; }
 
-        public string LeakTestModeStr
-        {
-            set {
-                SetValue(LeakTestModeStrProperty, value);
-                OnPropertyChanged(nameof(LeakTestModeStr));
-            }
-            get { return (string)GetValue(LeakTestModeStrProperty); }
-        }
+        [ObservableProperty]
+        private string _leakTestModeStr = disableLeakTestModeStr;
+        static private readonly string enableLeakTestModeStr = "Show Leak Test Valve";
+        static private readonly string disableLeakTestModeStr = "Hide Leak Test Mode";
 
-        const string enableLeakTestModeStr = "Show Leak Test Valve";
-        const string disableLeakTestModeStr = "Hide Leak Test Mode";
-        static readonly DependencyProperty LeakTestModeStrProperty = DependencyProperty.Register("LeakTestModeStr", typeof(string),
-            typeof(HomeViewModel), new PropertyMetadata(enableLeakTestModeStr));
+        [ObservableProperty]
+        private string _showValveLabelStr = hideValveLabelStr;
+        static private readonly string showValveLabelStr = "Show Label";
+        static private readonly string hideValveLabelStr = "Hide Label";
 
-        public string ShowValveLabelStr
-        {
-            get { return (string)GetValue(ShowValveLabelStrProperty); }
-            set
-            {
-                SetValue(ShowValveLabelStrProperty, value);
-                OnPropertyChanged(nameof(ShowValveLabelStr));
-            }
-        }
-        const string showValveLabelStr = "Show Label";
-        const string hideValveLabelStr = "Hide Label";
-        public static readonly DependencyProperty ShowValveLabelStrProperty =
-            DependencyProperty.Register("ShowValveLabelStr", typeof(string), typeof(HomeViewModel), new PropertyMetadata(hideValveLabelStr));
+        [ObservableProperty]
+        private Visibility _onLeakTestVisibility;
+        [ObservableProperty]
+        private Visibility _offLeakTestVisibility;
+        [ObservableProperty]
+        private Visibility _valveLabelVisibility;
 
-        protected void OnPropertyChanged(string propertyName)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        }
-
-        Visibility OnLeakTestVisibility
-        {
-            get { return (Visibility)GetValue(OnLeakTestVisibilityProperty); }
-            set
-            {
-                SetValue(OnLeakTestVisibilityProperty, value);
-                OnPropertyChanged(nameof(OnLeakTestVisibility));
-            }
-        }
-        static readonly DependencyProperty OnLeakTestVisibilityProperty = DependencyProperty.Register("OnLeakTestVisibility", typeof(Visibility),
-           typeof(HomeViewModel), new PropertyMetadata(Visibility.Hidden));
-
-        Visibility OffLeakTestVisibility
-        {
-            get { return (Visibility)GetValue(OffLeakTestVisibilityProperty); }
-            set
-            {
-                SetValue(OffLeakTestVisibilityProperty, value);
-                OnPropertyChanged(nameof(OffLeakTestVisibility));
-            }
-        }
-        static readonly DependencyProperty OffLeakTestVisibilityProperty = DependencyProperty.Register("OffLeakTestVisibility", typeof(Visibility),
-           typeof(HomeViewModel), new PropertyMetadata(Visibility.Visible));
-
-        Visibility ValveLabelVisibility
-        {
-            get { return (Visibility)GetValue(ValveLabelVisibilityProperty); }
-            set { SetValue(ValveLabelVisibilityProperty, value);
-            OnPropertyChanged(nameof (ValveLabelVisibility));
-            }
-        }
-        public static readonly DependencyProperty ValveLabelVisibilityProperty =
-            DependencyProperty.Register("ValveLabelVisibility", typeof(Visibility), typeof(HomeViewModel), new PropertyMetadata(Visibility.Visible));
+        [ObservableProperty]
+        private int _targetTemp;
+        [ObservableProperty]
+        private int _controlTemp;
+        [ObservableProperty]
+        private int _currentTemp;
+        [ObservableProperty]
+        private int _powerRateTemp;
+        [ObservableProperty]
+        private int _targetPress;
+        [ObservableProperty]
+        private int _controlPress;
+        [ObservableProperty]
+        private int _currentPress;
+        [ObservableProperty]
+        private int _valvePosition;
+        [ObservableProperty]
+        private int _targetRotation;
+        [ObservableProperty]
+        private int _controlRotation;
+        [ObservableProperty]
+        private int _currentRotation;
 
         public BottomDashBoardViewModel DashBoardViewModel { get; set; }
     }
 }
+
+

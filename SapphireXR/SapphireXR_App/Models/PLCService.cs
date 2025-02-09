@@ -59,7 +59,9 @@ namespace SapphireXR_App.Models
                 hState_RcpOperation = Ads.CreateVariableHandle("RCP.state_RcpOperation");
                 hRcpStepN =Ads.CreateVariableHandle("P50_RecipeControl.nRcpIndex");
                 hTemperaturePV = Ads.CreateVariableHandle("P13_LineHeater.rTemperaturePV");
-                
+                hHeaterOutputPowerSVBytes = Ads.CreateVariableHandle("P11_E3508.aOutputPowerBytes");
+                hPressureByteValuePostion_PV = Ads.CreateVariableHandle("P12_IQ_PLUS.wByteValvePosition_PV");
+
 
                 aDeviceRampTimes = new short[dIndexController.Count];
                 aDeviceTargetValues = new float[dIndexController.Count];
@@ -229,8 +231,6 @@ namespace SapphireXR_App.Models
             }
 
             dLineHeaterTemperatureIssuers?.Issue(Ads.ReadAny<float[]>(hTemperaturePV, [(int)LineHeaterTemperature]));
-            
-
             string exceptionStr = string.Empty;
             if(aDeviceControlValues == null)
             {

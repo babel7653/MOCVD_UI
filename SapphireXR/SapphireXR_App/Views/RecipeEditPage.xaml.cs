@@ -16,7 +16,7 @@ namespace SapphireXR_App.Views
         {
             InitializeComponent();
             DataContext = App.Current.Services.GetService(typeof(RecipeEditViewModel));
-            flowControllerTextBoxValidater = new FlowControllerTextBoxValidater((RecipeEditViewModel)DataContext!, "Recipes");
+            flowControllerDataGridTextColumnTextBoxValidater = new FlowControllerDataGridTextColumnTextBoxValidater((RecipeEditViewModel)DataContext!, "Recipes");
         }
 
         private void TextBox_PreviewTextInput(object sender, TextCompositionEventArgs e)
@@ -29,25 +29,17 @@ namespace SapphireXR_App.Views
             TextBox? textBox = sender as TextBox;
             if (textBox != null)
             {
-                DataGridCell? dataGridCell = textBox.Parent as DataGridCell;
-                if (dataGridCell != null)
+                string? validatedFlowControllerValue = flowControllerDataGridTextColumnTextBoxValidater.validate(textBox, e);
+                if(validatedFlowControllerValue != null)
                 {
-                    string? flowControlField = dataGridCell.Column.Header as string;
-                    if (flowControlField != null)
-                    {
-                        string? flowControllerID = null;
-                        if (Util.RecipeFlowControlFieldToControllerID.TryGetValue(flowControlField, out flowControllerID) == true)
-                        {
-                            textBox.Text = flowControllerTextBoxValidater.valdiate(textBox, flowControllerID);
-                            return;
-                        }
-                    }
+                    textBox.Text = validatedFlowControllerValue;
+                    return;
                 }
             }
 
             throw new Exception("DataEditPage: TextBox_TextChanged must be called with TextBox in DataGridColumn whose header value has valid flow controller ");
         }
 
-        FlowControllerTextBoxValidater flowControllerTextBoxValidater;
+        FlowControllerDataGridTextColumnTextBoxValidater flowControllerDataGridTextColumnTextBoxValidater;
     }
 }

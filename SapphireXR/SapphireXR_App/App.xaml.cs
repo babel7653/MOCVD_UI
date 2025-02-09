@@ -24,6 +24,7 @@ namespace SapphireXR_App
                 var mainView = App.Current.Services.GetService<MainWindow>();
                 if (mainView != null)
                 {
+                    Application.Current.MainWindow.WindowState = WindowState.Maximized;
                     mainView.Show();
                 }
                 else

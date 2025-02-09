@@ -146,53 +146,53 @@ namespace SapphireXR_App.ViewModels
                 return flowControllerID;
             }
 
-            public void setSelectedRecipeStep(Recipe recipe)
+            private void onRecipePropertyChanged(object? sender, PropertyChangedEventArgs args)
             {
-                PropertyChangedEventHandler onRecipePropertyChanged = (object? sender, PropertyChangedEventArgs args) =>
+                if (args.PropertyName != null)
                 {
-                    if (args.PropertyName != null)
+                    switch (args.PropertyName)
                     {
-                        switch(args.PropertyName)
-                        {
-                            case "STemp":
-                            case "RPress":
-                            case "SRotation":
-                                {
-                                    string flowControllerID = GetFlowControllerID(args.PropertyName);
-                                    propagateControlValue(flowControllerID, getControlValue(flowControllerID));
-                                }
-                                break;
+                        case "STemp":
+                        case "RPress":
+                        case "SRotation":
+                            {
+                                string flowControllerID = GetFlowControllerID(args.PropertyName);
+                                propagateControlValue(flowControllerID, getControlValue(flowControllerID));
+                            }
+                            break;
 
-                            default:
-                                if (2 <= args.PropertyName.Length)
+                        default:
+                            if (2 <= args.PropertyName.Length)
+                            {
+                                switch (args.PropertyName[0])
                                 {
-                                    switch (args.PropertyName[0])
-                                    {
-                                        case 'V':
+                                    case 'V':
+                                        if (CheckDigit(args.PropertyName, 1) == true)
+                                        {
+                                            propagateValveState(args.PropertyName, getValveState(args.PropertyName));
+                                        }
+                                        break;
+
+                                    case 'E':
+                                    case 'M':
+                                        {
                                             if (CheckDigit(args.PropertyName, 1) == true)
                                             {
-                                                propagateValveState(args.PropertyName, getValveState(args.PropertyName));
+                                                string flowControllerID = GetFlowControllerID(args.PropertyName);
+                                                propagateControlValue(flowControllerID, getControlValue(flowControllerID));
                                             }
-                                            break;
-
-                                        case 'E':
-                                        case 'M':
-                                            {
-                                                if (CheckDigit(args.PropertyName, 1) == true)
-                                                {
-                                                    string flowControllerID = GetFlowControllerID(args.PropertyName);
-                                                    propagateControlValue(flowControllerID, getControlValue(flowControllerID));
-                                                }
-                                            }
-                                            break;
-                                    }
+                                        }
+                                        break;
                                 }
-                                break;
-                        }
-                       
+                            }
+                            break;
                     }
-                };
 
+                }
+            }
+
+            public void setSelectedRecipeStep(Recipe recipe)
+            {
                 if(currentSelected != null)
                 {
                     currentSelected.PropertyChanged -= onRecipePropertyChanged;

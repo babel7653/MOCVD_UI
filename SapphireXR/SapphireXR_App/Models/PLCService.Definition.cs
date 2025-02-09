@@ -32,6 +32,7 @@ namespace SapphireXR_App.Models
             SingalTower_RED = NumShortBits * 2 + 1, SingalTower_YELLOW = NumShortBits * 2 + 2, SingalTower_GREEN = NumShortBits * 2 + 3, SingalTower_BLUE = NumShortBits * 2 + 4, 
             SingalTower_WHITE = NumShortBits * 2 + 5, SingalTower_BUZZWER = NumShortBits * 2 + 6
         };
+
       
 
         // Connect to PLC
@@ -51,6 +52,8 @@ namespace SapphireXR_App.Models
         private static short[]? aDeviceRampTimes;
         private static float[]? aMonitoring_PVs;
         private static short[]? aInputState;
+
+        private static ObservableManager<PLCConnection>.DataIssuer ConnectedNotifier;
         private static Dictionary<string, ObservableManager<int>.DataIssuer>? dCurrentValueIssuers;
         private static Dictionary<string, ObservableManager<int>.DataIssuer>? dControlValueIssuers;
         private static Dictionary<string, ObservableManager<(int, int)>.DataIssuer>? dControlCurrentValueIssuers;
@@ -60,6 +63,7 @@ namespace SapphireXR_App.Models
         private static Dictionary<string, ObservableManager<bool>.DataIssuer>? dValveStateIssuers;
         private static ObservableManager<bool>.DataIssuer? dRecipeEndedPublisher;
         private static ObservableManager<short>.DataIssuer? dCurrentActiveRecipeIssue;
+        private static ObservableManager<float[]>.DataIssuer? dLineHeaterTemperatureIssuers;
 
         //Create an instance of the TcAdsClient()
         public static AdsClient Ads { get; set; }
@@ -82,11 +86,9 @@ namespace SapphireXR_App.Models
         private static uint hMonitoring_PV;
         private static uint hInputState;
         private static uint hState_RcpOperation;
-
+        private static uint hTemperaturePV;
 
         private static bool RecipeRunEndNotified = false;
-
-        private static ObservableManager<PLCConnection>.DataIssuer ConnectedNotifier;
 
         public static readonly Dictionary<string, int> ValveIDtoOutputSolValveIdx1 = new Dictionary<string, int>
         {
@@ -124,5 +126,7 @@ namespace SapphireXR_App.Models
             { "SiH4", 6}, { "ShowerHeadTemp", 7}, { "InductionCoilTemp", 8}, { "HeaterPowerRate", 9 }, { "ValvePosition", 10 }, { "TEB", 11},
              { "TMAl", 12},  { "TMIn", 13},  { "TMGa", 14},  { "DTMGa", 15},  { "Cp2Mg", 16}
         };
+
+        public static readonly uint LineHeaterTemperature = 8;
     }
 }

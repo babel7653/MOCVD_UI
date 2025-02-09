@@ -5,6 +5,7 @@ using SapphireXR_App.Common;
 using SapphireXR_App.Models;
 using System.Collections;
 using System.Windows.Controls;
+using System.Windows.Controls.Primitives;
 using System.Windows.Media;
 
 namespace SapphireXR_App.ViewModels
@@ -91,6 +92,7 @@ namespace SapphireXR_App.ViewModels
             {
                 Recipe added = new Recipe();
                 RecipeViewModel.Recipes!.Insert(index, added);
+                recipeAddedPublishser.Issue(new List<Recipe>() { added });
                 added.Background = Brushes.LightPink;
                 RecipeViewModel.newlyAddedForMarking.Add(added);
                 rearangeNumber(index);
@@ -109,6 +111,7 @@ namespace SapphireXR_App.ViewModels
             private IList? _selected;
             private IList<Recipe>? copied = null;
             public RecipeEditViewModel RecipeViewModel { get; set; }
+            private ObservableManager<IList<Recipe>>.DataIssuer recipeAddedPublishser = ObservableManager<IList<Recipe>>.Get("RecipeEdit.TabDataGrid.RecipeAdded");
 
             public IRelayCommand SelectionChangedCommand => new RelayCommand<object?>((object? args) =>
             {
@@ -135,8 +138,12 @@ namespace SapphireXR_App.ViewModels
                         Recipe? selected = dataGrid.SelectedItems[0] as Recipe;
                         if (selected != null)
                         {
-                            RecipeViewModel.setSelectedRecipeStep(selected);
+                            RecipeViewModel.onRecipeSelected(selected);
                         }
+                    }
+                    else
+                    {
+                        RecipeViewModel.onRecipeSelected(null);
                     }
                 }
             });
@@ -157,6 +164,7 @@ namespace SapphireXR_App.ViewModels
                         {
                             recipe.Background = Brushes.LightPink;
                         }
+                        recipeAddedPublishser.Issue(added);
                         rearangeNumber(insert);
 
                         RecipeViewModel.newlyAddedForMarking.AddRange(added);

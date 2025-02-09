@@ -43,14 +43,8 @@
                 <TextBlock Text="Machine Name : Marvel 180R"/>
                 <TextBlock Text="Application : GaN"/>
                 <TextBlock Text="System ID : 2024 SKKU2"/>
-                <StackPanel Orientation="Horizontal">
-                    <TextBlock Width="100" Text="PLC Status :"/>
-                    <TextBlock Text="{Binding plcMode}"/>
-                </StackPanel>
-                <StackPanel Orientation="Horizontal">
-                    <TextBlock Width="100" Text="PLC Address :"/>
-                    <TextBlock Text="{Binding plcAddress}"/>
-                </StackPanel>
+                <TextBlock Text="{Binding PLCConnectionStatus}"/>
+                <TextBlock Text="{Binding PLCAddressText}"/>
             </StackPanel>
         </Grid>
         <!-- Signal Tower -->
@@ -64,11 +58,11 @@
 
                     </Style>
                 </StackPanel.Resources>
-                <Rectangle x:Name="SignalTowerRed" Fill="#ffa0a0"/>
-                <Rectangle x:Name="SignalTowerYellow" Fill="#ffffC5"/>
-                <Rectangle x:Name="SignalTowerGreen" Fill="#cdf5dd"/>
-                <Rectangle x:Name="SignalTowerBlue" Fill="#86CEFA"/>
-                <Rectangle x:Name="SignalTowerWhite" Fill="LightGray"/>
+                <Rectangle x:Name="SignalTowerRed" Fill="{Binding SignalTowerRed, UpdateSourceTrigger=PropertyChanged}"/>
+                <Rectangle x:Name="SignalTowerYellow" Fill="{Binding SignalTowerYellow, UpdateSourceTrigger=PropertyChanged}"/>
+                <Rectangle x:Name="SignalTowerGreen" Fill="{Binding SignalTowerGreen, UpdateSourceTrigger=PropertyChanged}"/>
+                <Rectangle x:Name="SignalTowerBlue" Fill="{Binding SignalTowerBlue, UpdateSourceTrigger=PropertyChanged}"/>
+                <Rectangle x:Name="SignalTowerWhite" Fill="{Binding SignalTowerWhite, UpdateSourceTrigger=PropertyChanged}"/>
                 <Rectangle x:Name="SignalTowerBuzzer" />
             </StackPanel>
         </Grid>
@@ -320,23 +314,23 @@
                 <Line X1="5" Y1="0" X2="295" Y2="0" Stroke="DeepSkyBlue" StrokeThickness="2"/>
                 <StackPanel Orientation="Horizontal">
                     <TextBlock Text="1"/>
-                    <TextBox x:Name="tbLineHeater1"/>
+                    <TextBox x:Name="tbLineHeater1" Text="{Binding LineHeater1, UpdateSourceTrigger=PropertyChanged}"/>
                     <TextBlock Text="2"/>
-                    <TextBox x:Name="tbLineHeater2"/>
+                    <TextBox x:Name="tbLineHeater2" Text="{Binding LineHeater2, UpdateSourceTrigger=PropertyChanged}" />
                     <TextBlock Text="3"/>
-                    <TextBox x:Name="tbLineHeater3"/>
+                    <TextBox x:Name="tbLineHeater3" Text="{Binding LineHeater3, UpdateSourceTrigger=PropertyChanged}"/>
                     <TextBlock Text="4"/>
-                    <TextBox x:Name="tbLineHeater4"/>
+                    <TextBox x:Name="tbLineHeater4" Text="{Binding LineHeater4, UpdateSourceTrigger=PropertyChanged}"/>
                 </StackPanel>
                 <StackPanel Orientation="Horizontal">
                     <TextBlock Text="5"/>
-                    <TextBox x:Name="tbLineHeater5"/>
+                    <TextBox x:Name="tbLineHeater5" Text="{Binding LineHeater5, UpdateSourceTrigger=PropertyChanged}"/>
                     <TextBlock Text="6"/>
-                    <TextBox x:Name="tbLineHeater6"/>
+                    <TextBox x:Name="tbLineHeater6" Text="{Binding LineHeater6, UpdateSourceTrigger=PropertyChanged}"/>
                     <TextBlock Text="7"/>
-                    <TextBox x:Name="tbLineHeater7"/>
+                    <TextBox x:Name="tbLineHeater7" Text="{Binding LineHeater7, UpdateSourceTrigger=PropertyChanged}"/>
                     <TextBlock Text="8"/>
-                    <TextBox x:Name="tbLineHeater8"/>
+                    <TextBox x:Name="tbLineHeater8" Text="{Binding LineHeater8, UpdateSourceTrigger=PropertyChanged}"/>
                 </StackPanel>
             </StackPanel>
         </Grid>        

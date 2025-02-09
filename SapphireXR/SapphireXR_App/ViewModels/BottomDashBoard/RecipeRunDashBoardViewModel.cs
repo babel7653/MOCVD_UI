@@ -10,14 +10,18 @@ using static SapphireXR_App.ViewModels.BottomDashBoardViewModel;
 using SapphireXR_App.Common;
 using SapphireXR_App.Models;
 using System.Windows.Media;
+using System.Reactive;
 
 namespace SapphireXR_App.ViewModels.BottomDashBoard
 {
     public class RecipeRunBottomDashBoardViewModel: BottomDashBoardViewModel
     {
-        class ControlTargetValueSeriesUpdaterFromCurrentRecipeStage : ControlTargetValueSeriesUpdater
+        class ControlTargetValueSeriesUpdaterForRecipeRun : ControlTargetValueSeriesUpdater, IObserver<RecipeRunViewModel.RecipeRunState>, IObserver<int>
         {
-            internal ControlTargetValueSeriesUpdaterFromCurrentRecipeStage(string title) : base(title) { }
+            internal ControlTargetValueSeriesUpdaterForRecipeRun(string title) : base(title) 
+            {
+                ObservableManager<RecipeRunViewModel.RecipeRunState>.Subscribe("RecipeRun.State", this);
+            }
 
             protected override Axis initializeXAxis()
             {
@@ -137,16 +141,16 @@ namespace SapphireXR_App.ViewModels.BottomDashBoard
                     foreach (Recipe recipe in recipes)
                     {
                         float flowControllerValue = GetFlowControllerValue(plotModel.Title, recipe);
-                        accumTime += (uint)recipe.rTime;
+                        accumTime += (uint)recipe.RTime;
                         series1.Points.Add(new DataPoint(TimeSpanAxis.ToDouble(TimeSpan.FromSeconds(accumTime)), flowControllerValue));
-                        accumTime += (uint)recipe.hTime;
+                        accumTime += (uint)recipe.HTime;
                         series1.Points.Add(new DataPoint(TimeSpanAxis.ToDouble(TimeSpan.FromSeconds(accumTime)), flowControllerValue));
                     }
                     plotModel.Axes[0].Maximum = TimeSpanAxis.ToDouble(TimeSpan.FromSeconds(accumTime));
                 }
             }
 
-            protected override void update((int, int) value)
+            protected void update(int value)
             {
                 if(LegendUpdate == false)
                 {
@@ -157,7 +161,9 @@ namespace SapphireXR_App.ViewModels.BottomDashBoard
                 DateTime now = DateTime.Now;
                 TimeSpan timeSpan = (now - (firstTime ??= now));
                 double x = TimeSpanAxis.ToDouble(timeSpan);
-                series2.Points.Add(new DataPoint(x, (double)value.Item2));
+                series2.Points.Add(new DataPoint(x, (double)value));
+
+                plotModel.InvalidatePlot(true);
             }
 
             private void cleanChart()
@@ -168,11 +174,41 @@ namespace SapphireXR_App.ViewModels.BottomDashBoard
                 LegendUpdate = false;
             }
 
+            void IObserver<RecipeRunViewModel.RecipeRunState>.OnCompleted()
+            {
+                throw new NotImplementedException();
+            }
+
+            void IObserver<RecipeRunViewModel.RecipeRunState>.OnError(Exception error)
+            {
+                throw new NotImplementedException();
+            }
+
+            void IObserver<RecipeRunViewModel.RecipeRunState>.OnNext(RecipeRunViewModel.RecipeRunState recipeRunState)
+            {
+                LegendUpdate = recipeRunState == RecipeRunViewModel.RecipeRunState.Run || recipeRunState == RecipeRunViewModel.RecipeRunState.Restart;
+            }
+
+            void IObserver<int>.OnCompleted()
+            {
+                throw new NotImplementedException();
+            }
+
+            void IObserver<int>.OnError(Exception error)
+            {
+                throw new NotImplementedException();
+            }
+
+            void IObserver<int>.OnNext(int value)
+            {
+                update(value);
+            }
+
             private DateTime? firstTime = null;
             public bool LegendUpdate { get; set; } = false;
         }
 
-        public RecipeRunBottomDashBoardViewModel(): base("CurrentRecipeStep")
+        public RecipeRunBottomDashBoardViewModel(): base("CurrentPLCState")
         {
             initSeriesUpdater();
         }
@@ -181,15 +217,15 @@ namespace SapphireXR_App.ViewModels.BottomDashBoard
         {
             foreach (var (id, index) in PLCService.dIndexController)
             {
-                ControlTargetValueSeriesUpdater controlCurrentValueSeriesUpdater = new ControlTargetValueSeriesUpdaterFromCurrentRecipeStage(id);
-                ObservableManager<(int, int)>.Subscribe("FlowControl." + id + ".ControlTargetValue.CurrentPLCState", controlCurrentValueSeriesUpdater);
+                ControlTargetValueSeriesUpdaterForRecipeRun controlCurrentValueSeriesUpdater = new ControlTargetValueSeriesUpdaterForRecipeRun(id);
+                ObservableManager<int>.Subscribe("FlowControl." + id + ".CurrentValue", controlCurrentValueSeriesUpdater);
                 plotModels[index] = controlCurrentValueSeriesUpdater;
             }
         }
 
         public void resetFlowChart(IList<Recipe> recipes)
         {
-            foreach (ControlTargetValueSeriesUpdaterFromCurrentRecipeStage controlTargetValueSeriesUpdater in plotModels)
+            foreach (ControlTargetValueSeriesUpdaterForRecipeRun controlTargetValueSeriesUpdater in plotModels)
             {
                 controlTargetValueSeriesUpdater.initChart(recipes);
             }

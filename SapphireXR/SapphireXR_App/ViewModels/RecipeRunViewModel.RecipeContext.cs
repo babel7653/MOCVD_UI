@@ -23,6 +23,8 @@ namespace SapphireXR_App.ViewModels
             public RecipeContext(string recipeFilePath, IList<Recipe> recipes)
             {
                 RecipeFilePath = recipeFilePath;
+                DirectoryInfo directoryInfo = new DirectoryInfo(recipeFilePath);
+                
                 LogFilePath = RecipeFilePath.Replace(".csv", "_log.csv");
                 Recipes = recipes;
 

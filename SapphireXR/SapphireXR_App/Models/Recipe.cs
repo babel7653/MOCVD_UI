@@ -20,12 +20,12 @@ namespace SapphireXR_App.Models
             Name = rhs.Name;
             cTemp = rhs.cTemp;
             No = rhs.No;
-            hTime = rhs.hTime;
+            HTime = rhs.HTime;
             Jump = rhs.Jump;
             RPress = rhs.RPress;
             SRotation = rhs.SRotation;
             Loop = rhs.Loop;
-            rTime = rhs.rTime;
+            RTime = rhs.RTime;
             STemp = rhs.STemp;
             E01 = rhs.E01;
             E02 = rhs.E02;
@@ -85,8 +85,10 @@ namespace SapphireXR_App.Models
         public string Name { get; set; } = "";
         // RecipeInt Array
         public short No { get; set; }
-        public short rTime { get; set; }
-        public short hTime { get; set; }
+        [ObservableProperty]
+        private short _rTime;
+        [ObservableProperty]
+        public short _hTime;
         [ObservableProperty]
         public short _sTemp;
         [ObservableProperty]
@@ -219,8 +221,8 @@ namespace SapphireXR_App.Models
         {
             //Short Type Array
             aRecipeShort[0] = rhs.No;
-            aRecipeShort[1] = rhs.rTime;
-            aRecipeShort[2] = rhs.hTime;
+            aRecipeShort[1] = rhs.RTime;
+            aRecipeShort[2] = rhs.HTime;
             aRecipeShort[3] = rhs.STemp;
             aRecipeShort[4] = rhs.RPress;
             aRecipeShort[5] = rhs.SRotation;

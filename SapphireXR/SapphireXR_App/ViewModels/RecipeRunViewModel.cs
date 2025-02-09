@@ -16,7 +16,8 @@ namespace SapphireXR_App.ViewModels
 {
     public partial class RecipeRunViewModel: ViewModelBase, IObserver<short>
     {
-        public enum RecipeRunState : short  { Uninitialized = -1, Initiated = 0, Run = 10, Pause = 20, Restart = 30, Stop = 40, End = 50 };
+        //public enum RecipeCommand : short { Initiate = 0, Run = 10, Pause = 20, Restart = 30, Stop = 40, End = 50 };
+        public enum RecipeRunState : short  { Uninitialized = -1, Initiated = 0, Run = 10, Pause = 20, Restart = 30, Stopped = 40, Ended = 50 };
 
         public class LogIntervalInRecipeRunListener : IObserver<int>
         {
@@ -67,7 +68,7 @@ namespace SapphireXR_App.ViewModels
 
             void IObserver<bool>.OnNext(bool value)
             {
-                recipeRunViewModel.CurrentRecipeRunState = RecipeRunState.End;
+                recipeRunViewModel.CurrentRecipeRunState = RecipeRunState.Ended;
             }
 
             private RecipeRunViewModel recipeRunViewModel;
@@ -177,7 +178,7 @@ namespace SapphireXR_App.ViewModels
         [RelayCommand(CanExecute = nameof(canCommandsExecuteOnActive))]
         private void RecipeStop()
         {
-            SetState(RecipeRunState.Stop);  
+            SetState(RecipeRunState.Stopped);  
         }
 
         [RelayCommand]
@@ -283,11 +284,11 @@ namespace SapphireXR_App.ViewModels
                                 Start = RecipeRunState.Restart;
                                 break;
 
-                            case RecipeRunState.Stop:
+                            case RecipeRunState.Stopped:
                                 toRecipeLoadedState();
                                 break;
 
-                            case RecipeRunState.End:
+                            case RecipeRunState.Ended:
                                 MessageBox.Show("Recipe가 종료되었습니다." + DateTime.Now.ToString("HH:mm"));
                                 toRecipeLoadedState();
                                 break;
@@ -302,6 +303,7 @@ namespace SapphireXR_App.ViewModels
             };
 
             ObservableManager<bool>.Subscribe("RecipeEnded", operationStateSubscriber = new RecipeEndedSubscriber(this));
+            recipeRunStatePublisher = ObservableManager<RecipeRunState>.Get("RecipeRun.State");
         }
 
         void IObserver<short>.OnCompleted()
@@ -354,6 +356,7 @@ namespace SapphireXR_App.ViewModels
                     PLCService.WriteRCPOperationCommand((short)state);
                 }
                 CurrentRecipeRunState = state;
+                recipeRunStatePublisher.Issue(state);
             }
             catch(Exception)
             {
@@ -373,7 +376,8 @@ namespace SapphireXR_App.ViewModels
 
         private short currentRecipeNo = -1;
         private readonly RecipeEndedSubscriber? operationStateSubscriber = null;
-        private RecipeRunState Start = RecipeRunState.Uninitialized; 
+        private RecipeRunState Start = RecipeRunState.Uninitialized;
+        private ObservableManager<RecipeRunState>.DataIssuer recipeRunStatePublisher;
 
         [ObservableProperty]
         private RecipeRunState _currentRecipeRunState = RecipeRunState.Uninitialized;

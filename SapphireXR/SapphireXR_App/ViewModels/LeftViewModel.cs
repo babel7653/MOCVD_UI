@@ -9,6 +9,9 @@ using static SapphireXR_App.ViewModels.LeftViewModel;
 using System.ComponentModel;
 using SapphireXR_App.Controls;
 using static SapphireXR_App.ViewModels.RecipeEditViewModel.RecipeStateUpader;
+using TwinCAT.Ads;
+using System.Security.Policy;
+using System.Reactive;
 
 namespace SapphireXR_App.ViewModels
 {
@@ -139,6 +142,99 @@ namespace SapphireXR_App.ViewModels
             private LeftViewModel leftViewModel;
         }
 
+        private class SignalTowerStateSubscriber : IObserver<BitArray>
+        {
+            internal SignalTowerStateSubscriber(LeftViewModel vm)
+            {
+                leftViewModel = vm;
+            }
+
+            void IObserver<BitArray>.OnCompleted()
+            {
+                throw new NotImplementedException();
+            }
+
+            void IObserver<BitArray>.OnError(Exception error)
+            {
+                throw new NotImplementedException();
+            }
+
+            void IObserver<BitArray>.OnNext(BitArray ioList)
+            {
+                setIfChange(ioList[(int)PLCService.IOListIndex.SingalTower_RED], (bool state) => { if (state == true) { leftViewModel.SignalTowerRed = ActiveSignalTowerRed;  } else { leftViewModel.SignalTowerRed = InActiveSignalTowerRed; } }, ref signalTowerRed);
+                setIfChange(ioList[(int)PLCService.IOListIndex.SingalTower_YELLOW], (bool state) => { if (state == true) { leftViewModel.SignalTowerYellow = ActiveSignalTowerYellow; } else { leftViewModel.SignalTowerYellow = InActiveSignalTowerYellow; } }, ref signalTowerYellow);
+                setIfChange(ioList[(int)PLCService.IOListIndex.SingalTower_GREEN], (bool state) => { if (state == true) { leftViewModel.SignalTowerGreen = ActiveSignalTowerGreen; } else { leftViewModel.SignalTowerGreen = InActiveSignalTowerGreen; } }, ref signalTowerGreen);
+                setIfChange(ioList[(int)PLCService.IOListIndex.SingalTower_BLUE], (bool state) => { if (state == true) { leftViewModel.SignalTowerBlue = ActiveSignalTowerBlue; } else { leftViewModel.SignalTowerBlue = InActiveSignalTowerBlue; } }, ref signalTowerBlue);
+                setIfChange(ioList[(int)PLCService.IOListIndex.SingalTower_WHITE], (bool state) => { if (state == true) { leftViewModel.SignalTowerWhite = ActiveSignalTowerWhite; } else { leftViewModel.SignalTowerWhite = InActiveSignalTowerWhite; } }, ref signalTowerWhite);
+            }
+
+            void setIfChange(bool ioState,  Action<bool> onChanged, ref bool? signalTowerState)
+            {
+                if (signalTowerState != ioState)
+                {
+                    onChanged(ioState);
+                    signalTowerState = ioState;
+                }
+            }
+
+            private LeftViewModel leftViewModel;
+            private bool? signalTowerRed = null;
+            private bool? signalTowerYellow = null;
+            private bool? signalTowerGreen = null;
+            private bool? signalTowerBlue = null;
+            private bool? signalTowerWhite = null;
+            private bool? signalTowerBuzzwer = null;
+        }
+
+        private class LineHeaterTemperatureSubscriber: IObserver<float[]>
+        {
+            internal LineHeaterTemperatureSubscriber(LeftViewModel vm)
+            {
+                leftViewModel = vm;
+            }
+
+            void IObserver<float[]>.OnCompleted()
+            {
+                throw new NotImplementedException();
+            }
+
+            void IObserver<float[]>.OnError(Exception error)
+            {
+                throw new NotImplementedException();
+            }
+
+            void setIfChanged(float newValue, Action<float> onChanged, ref float? lineHeaterTemperature)
+            {
+                if(lineHeaterTemperature != newValue)
+                {
+                    onChanged(newValue);
+                    lineHeaterTemperature = newValue;
+                }
+            }
+
+            void IObserver<float[]>.OnNext(float[] currentLineHeaterTemperatures)
+            {
+                setIfChanged(currentLineHeaterTemperatures[0], (float newTemperature) => { leftViewModel.LineHeater1 = (int)newTemperature; }, ref lineHeater1Temperatures);
+                setIfChanged(currentLineHeaterTemperatures[1], (float newTemperature) => { leftViewModel.LineHeater2 = (int)newTemperature; }, ref lineHeater2Temperatures);
+                setIfChanged(currentLineHeaterTemperatures[2], (float newTemperature) => { leftViewModel.LineHeater3 = (int)newTemperature; }, ref lineHeater3Temperatures);
+                setIfChanged(currentLineHeaterTemperatures[3], (float newTemperature) => { leftViewModel.LineHeater4 = (int)newTemperature; }, ref lineHeater4Temperatures);
+                setIfChanged(currentLineHeaterTemperatures[4], (float newTemperature) => { leftViewModel.LineHeater5 = (int)newTemperature; }, ref lineHeater5Temperatures);
+                setIfChanged(currentLineHeaterTemperatures[5], (float newTemperature) => { leftViewModel.LineHeater6 = (int)newTemperature; }, ref lineHeater6Temperatures);
+                setIfChanged(currentLineHeaterTemperatures[6], (float newTemperature) => { leftViewModel.LineHeater7 = (int)newTemperature; }, ref lineHeater7Temperatures);
+                setIfChanged(currentLineHeaterTemperatures[7], (float newTemperature) => { leftViewModel.LineHeater8 = (int)newTemperature; }, ref lineHeater8Temperatures);
+            }
+
+            LeftViewModel leftViewModel;
+            float? lineHeater1Temperatures;
+            float? lineHeater2Temperatures;
+            float? lineHeater3Temperatures;
+            float? lineHeater4Temperatures;
+            float? lineHeater5Temperatures;
+            float? lineHeater6Temperatures;
+            float? lineHeater7Temperatures;
+            float? lineHeater8Temperatures;
+        }
+
         public abstract partial class SourceStatusViewModel : ObservableObject
         {
             private class ValveStateSubscriber : IObserver<bool>
@@ -190,7 +286,8 @@ namespace SapphireXR_App.ViewModels
                     new ValveStateSubscriber(this, (bool nextValveState) => { if (nextValveState == true) { NH3_1Source = NH3_2Source = "On";  NH3_1SourceColor = NH3_2SourceColor = OnColor; } else { NH3_1Source = NH3_2Source = "Off";  NH3_1SourceColor = NH3_2SourceColor = DefaultColor;} }, "V04"),
                     new ValveStateSubscriber(this, (bool nextValveState) => { if (nextValveState == true) { SiH4Source = "On";  SiH4SourceColor = OnColor;} else { SiH4Source = "Off";  SiH4SourceColor =DefaultColor;} }, "V03"),
                     new ValveStateSubscriber(this, (bool nextValveState) => { if (nextValveState == true) { TEBSource = "On";  TEBSourceColor =OnColor;} else { TEBSource = "Off";  TEBSourceColor = DefaultColor;}  }, "V07"),
-                    new ValveStateSubscriber(this, (bool nextValveState) => { if (nextValveState == true) { TMAlSource = TMInSource = "On";  TMAlSourceColor = TMInSourceColor = OnColor;} else { TMAlSource = TMInSource = "Off";  TMAlSourceColor = TMInSourceColor = DefaultColor;} }, "V10"),
+                    new ValveStateSubscriber(this, (bool nextValveState) => { if (nextValveState == true) { TMAlSource = "On";  TMAlSourceColor = OnColor;} else { TMAlSource = "Off";  TMAlSourceColor = DefaultColor;} }, "V10"),
+                    new ValveStateSubscriber(this, (bool nextValveState) => { if (nextValveState == true) { TMInSource = "On";  TMInSourceColor = OnColor;} else { TMInSource = "Off";  TMInSourceColor = DefaultColor;} }, "V13"),
                     new ValveStateSubscriber(this, (bool nextValveState) => { if (nextValveState == true) { TMGaSource = "On"; TMGaSourceColor = OnColor; } else { TMGaSource = "Off"; TMGaSourceColor = DefaultColor; } }, "V16"),
                     new ValveStateSubscriber(this, (bool nextValveState) => { if (nextValveState == true) { DTMGaSource = "On"; DTMGaSourceColor = OnColor; } else { DTMGaSource = "Off"; DTMGaSourceColor =DefaultColor; } }, "V19"),
                     new ValveStateSubscriber(this, (bool nextValveState) => { if (nextValveState == true) { Cp2MgSource = "On"; Cp2MgSourceColor = OnColor; } else { Cp2MgSource = "Off"; Cp2MgSourceColor = DefaultColor; }  }, "V22"),
@@ -378,7 +475,9 @@ namespace SapphireXR_App.ViewModels
             ObservableManager<float>.Subscribe("MonitoringPresentValue.InductionCoilTemp.CurrentValue", inductionCoilTempSubscriber = new CoolingWaterValueSubscriber("InductionCoilTemp", this));
             ObservableManager<BitArray>.Subscribe("HardWiringInterlockState", hardWiringInterlockStateSubscriber = new HardWiringInterlockStateSubscriber(this));
             ObservableManager<int>.Subscribe("MainView.SelectedTabIndex", mainViewTabIndexChagedSubscriber = new MainViewTabIndexChagedSubscriber(this));
-
+            ObservableManager<BitArray>.Subscribe("DeviceIOList", signalTowerStateSubscriber = new SignalTowerStateSubscriber(this));
+            ObservableManager<float[]>.Subscribe("LineHeaterTemperature", lineHeaterTemperatureSubscriber = new LineHeaterTemperatureSubscriber(this));
+            
             PropertyChanged += (object? sender, PropertyChangedEventArgs args) =>
             {
                 switch(args.PropertyName)
@@ -403,6 +502,17 @@ namespace SapphireXR_App.ViewModels
         private static Brush OnLampColor = Application.Current.Resources.MergedDictionaries[0]["LampOnColor"] as Brush ?? Brushes.Lime;
         private static Brush OffLampColor = Application.Current.Resources.MergedDictionaries[0]["LampOffColor"] as Brush ?? Brushes.Red;
         private static Brush ReadyLampColor = Application.Current.Resources.MergedDictionaries[0]["LampReadyColor"] as Brush ?? Brushes.Yellow;
+
+        private static Brush InActiveSignalTowerRed = Application.Current.Resources.MergedDictionaries[0]["InActiveSignalTowerRed"] as Brush ?? new SolidColorBrush(Color.FromRgb(0xff, 0xa0, 0xa0));
+        private static Brush InActiveSignalTowerYellow = Application.Current.Resources.MergedDictionaries[0]["InActiveSignalTowerYellow"] as Brush ?? new SolidColorBrush(Color.FromRgb(0xff, 0xff, 0xC5));
+        private static Brush InActiveSignalTowerGreen = Application.Current.Resources.MergedDictionaries[0]["InActiveSignalTowerGreen"] as Brush ?? new SolidColorBrush(Color.FromRgb(0xcd, 0xf5, 0xdd));
+        private static Brush InActiveSignalTowerBlue = Application.Current.Resources.MergedDictionaries[0]["InActiveSignalTowerBlue"] as Brush ?? new SolidColorBrush(Color.FromRgb(0x86, 0xCE, 0xFA));
+        private static Brush InActiveSignalTowerWhite = Application.Current.Resources.MergedDictionaries[0]["InActiveSignalTowerWhite"] as Brush ?? Brushes.LightGray;
+        private static Brush ActiveSignalTowerRed = Application.Current.Resources.MergedDictionaries[0]["ActiveSignalTowerRed"] as Brush ?? Brushes.Red;
+        private static Brush ActiveSignalTowerYellow = Application.Current.Resources.MergedDictionaries[0]["ActiveSignalTowerYellow"] as Brush ?? Brushes.Yellow;
+        private static Brush ActiveSignalTowerGreen = Application.Current.Resources.MergedDictionaries[0]["ActiveSignalTowerGreen"] as Brush ?? Brushes.Green;
+        private static Brush ActiveSignalTowerBlue = Application.Current.Resources.MergedDictionaries[0]["ActiveSignalTowerBlue"] as Brush ?? Brushes.Blue;
+        private static Brush ActiveSignalTowerWhite = Application.Current.Resources.MergedDictionaries[0]["ActiveSignalTowerWhite"] as Brush ?? Brushes.White;
 
         [ObservableProperty]
         private string _showerHeadTemp = "";
@@ -429,6 +539,40 @@ namespace SapphireXR_App.ViewModels
         private Brush _vacuumPumpLampColor = OnLampColor;
 
         [ObservableProperty]
+        private Brush _signalTowerRed = Brushes.Transparent;
+        [ObservableProperty]
+        private Brush _signalTowerYellow = Brushes.Transparent;
+        [ObservableProperty]
+        private Brush _signalTowerGreen = Brushes.Transparent;
+        [ObservableProperty]
+        private Brush _signalTowerBlue = Brushes.Transparent;
+        [ObservableProperty]
+        private Brush _signalTowerWhite = Brushes.Transparent;
+
+        [ObservableProperty]
+        private int _lineHeater1;
+        [ObservableProperty]
+        private int _lineHeater2;
+        [ObservableProperty]
+        private int _lineHeater3;
+        [ObservableProperty]
+        private int _lineHeater4;
+        [ObservableProperty]
+        private int _lineHeater5;
+        [ObservableProperty]
+        private int _lineHeater6;
+        [ObservableProperty]
+        private int _lineHeater7;
+        [ObservableProperty]
+        private int _lineHeater8;
+
+
+        [ObservableProperty]
+        private string _pLCAddressText = "PLC Address : " + AmsNetId.Local.ToString();
+        [ObservableProperty]
+        private string _pLCConnectionStatus = "PLC Connection: Connected";
+
+        [ObservableProperty]
         private SourceStatusViewModel _currentSourceStatusViewModel;
 
         private SourceStatusFromCurrentPLCStateViewModel sourceStatusFromCurrentPLCStateViewModel = new SourceStatusFromCurrentPLCStateViewModel();
@@ -438,5 +582,7 @@ namespace SapphireXR_App.ViewModels
         private CoolingWaterValueSubscriber inductionCoilTempSubscriber;
         private HardWiringInterlockStateSubscriber hardWiringInterlockStateSubscriber;
         private MainViewTabIndexChagedSubscriber mainViewTabIndexChagedSubscriber;
+        private SignalTowerStateSubscriber signalTowerStateSubscriber;
+        private LineHeaterTemperatureSubscriber lineHeaterTemperatureSubscriber;
     }
 }

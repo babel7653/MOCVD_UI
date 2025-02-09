@@ -272,6 +272,13 @@
                                                 </Style>
                                             </Button.Resources>
                                         </Button>
+                                        <StackPanel Orientation="Horizontal">
+                                            <Label Content="Ramping Time(s)" Width="210" />
+                                            <TextBox Width="100"/>
+                                            <TextBox Width="100"/>
+                                            <TextBox Width="100"/>
+                                            <TextBox Width="100"/>
+                                        </StackPanel>
                                         <Grid Height="670">
                                             <Grid.RowDefinitions>
                                                 <RowDefinition Height="50*"/>

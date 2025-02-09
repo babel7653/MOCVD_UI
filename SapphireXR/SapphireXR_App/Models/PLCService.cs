@@ -34,8 +34,6 @@ namespace SapphireXR_App.Models
             Ads.Connect(AmsNetId.Local, 851);
             if (Ads.IsConnected == true)
             {
-                hStatePLC = Ads.CreateVariableHandle("MAIN.StatePLC");
-                TcStatePLC = (bool)Ads.ReadAny(hStatePLC, typeof(bool));
                 AddressPLC = $"PLC Address : {Ads.Address}";
                 ModePLC = "System Mode : Ready";
                 //Read Set Value from PLC 

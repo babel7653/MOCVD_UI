@@ -161,20 +161,20 @@
 		</System>
 		<Plc>
 			<Project GUID="{8B546B3A-EC4D-41CC-9C57-49402FFC4072}" Name="PLC_MR" PrjFilePath="PLC_MR\PLC_MR.plcproj" TmcFilePath="PLC_MR\PLC_MR.tmc" ReloadTmc="true" AmsPort="851" FileArchiveSettings="#x000e" SymbolicMapping="true">
-				<Instance Id="#x08502000" TcSmClass="TComPlcObjDef" KeepUnrestoredLinks="2" TmcHash="{1527DA08-B968-1748-0FE8-9CD627931997}" TmcPath="PLC_MR\PLC_MR.tmc">
+				<Instance Id="#x08502000" TcSmClass="TComPlcObjDef" KeepUnrestoredLinks="2" TmcHash="{9AB216CE-6A2D-F1E4-82CC-95A895698F25}" TmcPath="PLC_MR\PLC_MR.tmc">
 					<Name>PLC_MR Instance</Name>
 					<CLSID ClassFactory="TcPlc30">{08500001-0000-0000-F000-000000000064}</CLSID>
 					<Vars VarGrpType="2" ContextId="1" AreaNo="17">
 						<Name>PlcTask_Standard Outputs</Name>
 						<Var>
-							<Name>P11_E3508.nOutputManAutoBytes</Name>
-							<Comment><![CDATA[ManAuto Change]]></Comment>
-							<Type>USINT</Type>
-						</Var>
-						<Var>
 							<Name>P11_E3508.aOutputSVBytes</Name>
 							<Comment><![CDATA[Temperature Set Value]]></Comment>
 							<Type GUID="{AD55499D-583F-6E21-3376-A8B0BA3E2897}">ARRAY [1..2] OF USINT</Type>
+						</Var>
+						<Var>
+							<Name>P11_E3508.nOutputManAutoBytes</Name>
+							<Comment><![CDATA[ManAuto Change]]></Comment>
+							<Type>USINT</Type>
 						</Var>
 						<Var>
 							<Name>P11_E3508.aOutputPowerBytes</Name>
@@ -5179,6 +5179,35 @@ Catalog Number:  ]]></Comment>
 					</Fcxxxx>
 					<BusParameter MacId="63" Baudrate="1" VendorID="108" DeviceType="12" ProductCode="6752" MajorRevision="1" MinorRevision="1" SerialNumber="305419896" IOCycleTime="100"/>
 				</DeviceNet>
+			</Device>
+			<Device Id="3" Disabled="true" DevType="121">
+				<Name>Device 3 (NOV-DP-RAM)</Name>
+				<AddressInfo>
+					<Pci>
+						<Address>819200</Address>
+						<Size>1024</Size>
+						<BusNo>0</BusNo>
+						<SlotNo>0</SlotNo>
+					</Pci>
+				</AddressInfo>
+				<Vars VarGrpType="1" InsertType="1">
+					<Name>Inputs</Name>
+				</Vars>
+				<Vars VarGrpType="2" InsertType="1">
+					<Name>Outputs</Name>
+				</Vars>
+				<Image Id="4" AddrType="5" ImageType="2">
+					<Name>Image</Name>
+				</Image>
+				<Box Id="10" BoxType="6000">
+					<Name>Box 7 (Retain Handler)</Name>
+					<ImageId>276</ImageId>
+					<Vars VarGrpType="8">
+						<Name>Retains</Name>
+					</Vars>
+					<Retain AreaSize="1024" DataSize="480" ContextCnt="4"/>
+				</Box>
+				<DpRam/>
 			</Device>
 		</Io>
 	</Project>

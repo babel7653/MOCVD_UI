@@ -86,6 +86,7 @@ namespace SapphireXR_App.Models
         private static uint hTemperaturePV;
         private static uint hHeaterOutputPowerSVBytes;
         private static uint hPressureByteValuePostion_PV;
+        private static uint hOperationMode;
 
         private static bool RecipeRunEndNotified = false;
 

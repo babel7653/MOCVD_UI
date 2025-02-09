@@ -24,12 +24,22 @@ namespace SapphireXR_App.ViewModels
             NavigationSource = "Views/RecipeRunPage.xaml";
             //네비게이션 메시지 수신 등록
             WeakReferenceMessenger.Default.Register<NavigationMessage>(this, OnNavigationMessage);
-
+            PLCService.WriteOperationMode(false);
             PropertyChanged += (object? sender, PropertyChangedEventArgs args) =>
             {
                 switch(args.PropertyName)
                 {
                     case nameof(SelectedTab):
+                        switch(SelectedTab)
+                        {
+                            case 0:
+                                PLCService.WriteOperationMode(false);
+                                break;
+
+                            case 1:
+                                PLCService.WriteOperationMode(true);
+                                break;
+                        }
                         selectedTabPublisher.Issue(SelectedTab);
                         break;
                 }

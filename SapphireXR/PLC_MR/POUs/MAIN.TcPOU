@@ -8,7 +8,6 @@ END_VAR
 ]]></Declaration>
     <Implementation>
       <ST><![CDATA[(* Modify Program *)
-bOperationMode := TRUE; //for Test <--from UI 
 
 P11_E3508(); //Temp Controller
 P12_IQ_PLUS(); //Throttle Valve Controller
@@ -39,7 +38,7 @@ P92_Maintenance();
     </Implementation>
     <LineIds Name="MAIN">
       <LineId Id="217" Count="0" />
-      <LineId Id="368" Count="1" />
+      <LineId Id="369" Count="0" />
       <LineId Id="216" Count="0" />
       <LineId Id="240" Count="0" />
       <LineId Id="238" Count="0" />

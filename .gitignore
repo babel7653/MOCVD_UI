@@ -18,3 +18,12 @@
 /SapphireXR/PLC_MR/POUs/P30_GasFlowControl.TcPOU
 /SapphireXR/SapphireXR_App/SapphireXR_App.csproj.user
 /SapphireXR/PLC_MR/POUs/P30_GasFlowControl.TcPOU
+/SapphireXR/PLC_MR/_Libraries/beckhoff automation gmbh/tc2_controllertoolbox/3.6.1.0/Tc2_ControllerToolbox.compiled-library-ge33
+/SapphireXR/PLC_MR/_Libraries/beckhoff automation gmbh/Tc2_IoFunctions/3.4.4.0/Tc2_IoFunctions.compiled-library-ge33
+/SapphireXR/PLC_MR/_Libraries/beckhoff automation gmbh/tc2_serialcom/3.4.6.0/Tc2_SerialCom.compiled-library-ge33
+/SapphireXR/PLC_MR/_Libraries/beckhoff automation gmbh/tc2_serialcom/3.4.4.0/Tc2_SerialCom.compiled-library-ge33
+/SapphireXR/PLC_MR/_Libraries/beckhoff automation gmbh/tc2_standard/3.4.5.0/Tc2_Standard.compiled-library-ge33
+/SapphireXR/PLC_MR/_Libraries/beckhoff automation gmbh/tc2_system/3.6.4.0/Tc2_System.compiled-library-ge33
+/SapphireXR/PLC_MR/_Libraries/beckhoff automation gmbh/tc2_utilities/3.8.2.0/Tc2_Utilities.compiled-library-ge33
+/SapphireXR/PLC_MR/_Libraries/beckhoff automation gmbh/Tc3_BA_Common/2.2.4.0/Tc3_BA_Common.compiled-library-ge33
+/SapphireXR/PLC_MR/_Libraries/beckhoff automation gmbh/tc3_eventlogger/3.3.10.0/Tc3_EventLogger.compiled-library-ge33

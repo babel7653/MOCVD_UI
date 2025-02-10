@@ -130,11 +130,11 @@ namespace SapphireXR_App.ViewModels
                 {
                     case 0:
                     case 1:
-                        leftViewModel.CurrentSourceStatusViewModel = leftViewModel.sourceStatusFromCurrentPLCStateViewModel;
+                        leftViewModel.CurrentSourceStatusViewModel = new SourceStatusFromCurrentPLCStateViewModel();
                         break;
 
                     case 2:
-                        leftViewModel.CurrentSourceStatusViewModel = leftViewModel.sourceStatusFromCurrentRecipeStepViewModel;
+                        leftViewModel.CurrentSourceStatusViewModel = new SourceStatusFromCurrentRecipeStepViewModel();
                         break;
                 }
             }
@@ -235,7 +235,35 @@ namespace SapphireXR_App.ViewModels
             float? lineHeater8Temperatures;
         }
 
-        public abstract partial class SourceStatusViewModel : ObservableObject
+        private class ResetCurrentRecipeSubscriber : IObserver<bool>
+        {
+            internal ResetCurrentRecipeSubscriber(LeftViewModel vm)
+            {
+                leftViewModel = vm;
+            }
+
+            void IObserver<bool>.OnCompleted()
+            {
+                throw new NotImplementedException();
+            }
+
+            void IObserver<bool>.OnError(Exception error)
+            {
+                throw new NotImplementedException();
+            }
+
+            void IObserver<bool>.OnNext(bool value)
+            {
+                if (leftViewModel.CurrentSourceStatusViewModel is SourceStatusFromCurrentRecipeStepViewModel)
+                {
+                    leftViewModel.CurrentSourceStatusViewModel = new SourceStatusFromCurrentRecipeStepViewModel();
+                }
+            }
+
+            private LeftViewModel leftViewModel;
+        }
+
+        public abstract partial class SourceStatusViewModel : ObservableObject, IDisposable
         {
             private class ValveStateSubscriber : IObserver<bool>
             {
@@ -301,22 +329,42 @@ namespace SapphireXR_App.ViewModels
                     new ValveStateSubscriber(this, (bool nextValveState) => { if (nextValveState == true) { DTMGaVent = "Run"; DTMGaVentColor =RunColor; } else { DTMGaVent = "Vent"; DTMGaVentColor = DefaultColor; } }, "V27"),
                     new ValveStateSubscriber(this, (bool nextValveState) => { if (nextValveState == true) { Cp2MgVent = "Run"; Cp2MgVentColor =RunColor; } else { Cp2MgVent = "Vent"; Cp2MgVentColor = DefaultColor; } }, "V28")
                 ];
-            }
-
-            public void active()
-            {
-                foreach(ValveStateSubscriber valveStateSubscriber in valveStateSubscrbers)
+                foreach (ValveStateSubscriber valveStateSubscriber in valveStateSubscrbers)
                 {
                     unsubscribers.Add(ObservableManager<bool>.Subscribe("Valve.OnOff." + valveStateSubscriber.valveID + "." + valveStateSubscsribePostfix, valveStateSubscriber));
                 }
             }
-            public void inactive()
+
+            protected virtual void Dispose(bool disposing)
             {
-                foreach(IDisposable unsubscriber in unsubscribers)
+                if (!disposedValue)
                 {
-                    unsubscriber.Dispose();
+                    if (disposing)
+                    {
+                        foreach (IDisposable unsubscriber in unsubscribers)
+                        {
+                            unsubscriber.Dispose();
+                        }
+                        unsubscribers.Clear();
+                    }
+
+                    // TODO: 비관리형 리소스(비관리형 개체)를 해제하고 종료자를 재정의합니다.
+                    // TODO: 큰 필드를 null로 설정합니다.
+                    disposedValue = true;
                 }
-                unsubscribers.Clear();
+            }
+  
+
+            void IDisposable.Dispose()
+            {
+                // 이 코드를 변경하지 마세요. 'Dispose(bool disposing)' 메서드에 정리 코드를 입력합니다.
+                Dispose(disposing: true);
+                GC.SuppressFinalize(this);
+            }
+
+            public void dispose()
+            {
+                Dispose(disposing: true);
             }
 
             [ObservableProperty]
@@ -432,11 +480,13 @@ namespace SapphireXR_App.ViewModels
             private readonly ValveStateSubscriber[] valveStateSubscrbers;
             private IList<IDisposable> unsubscribers = new List<IDisposable>();
             private readonly string valveStateSubscsribePostfix;
-            
+
             private static Brush DefaultColor = Application.Current.Resources.MergedDictionaries[0]["SourceStatusDefault"] as Brush ?? Brushes.Black;
             private static Brush H2Color = Application.Current.Resources.MergedDictionaries[0]["SourceStatusH2"] as Brush ?? Brushes.Black;
             private static Brush OnColor = Application.Current.Resources.MergedDictionaries[0]["SourceStatusOn"] as Brush ?? Brushes.Black;
             private static Brush RunColor = Application.Current.Resources.MergedDictionaries[0]["SourceStatusRun"] as Brush ?? Brushes.Black;
+
+            private bool disposedValue = false;
         }
 
         public class SourceStatusFromCurrentPLCStateViewModel : SourceStatusViewModel
@@ -444,29 +494,9 @@ namespace SapphireXR_App.ViewModels
             public SourceStatusFromCurrentPLCStateViewModel() : base("CurrentPLCState") { }
         }
 
-        public class SourceStatusFromCurrentRecipeStepViewModel: SourceStatusViewModel, IObserver<bool>
+        public class SourceStatusFromCurrentRecipeStepViewModel: SourceStatusViewModel
         {
-            public SourceStatusFromCurrentRecipeStepViewModel() :base("CurrentRecipeStep") 
-            {
-                ObservableManager<bool>.Subscribe("Reset.CurrentRecipeStep", this);
-            }
-
-            void IObserver<bool>.OnCompleted()
-            {
-                throw new NotImplementedException();
-            }
-
-            void IObserver<bool>.OnError(Exception error)
-            {
-                throw new NotImplementedException();
-            }
-
-            void IObserver<bool>.OnNext(bool value)
-            {
-                NH3_1Carrier = NH3_2Carrier = SiH4Carrier = TEBCarrier = TMAlCarrier = TMInCarrier = TMGaCarrier = DTMGaCarrier = Cp2MgCarrier = "";
-                NH3_1Source = NH3_2Source = SiH4Source = TEBSource = TMAlSource = TMInSource = TMGaSource = DTMGaSource = Cp2MgSource = "";
-                NH3_1Vent = NH3_2Vent = SiH4Vent = TEBVent = TMAlVent = TMInVent = TMGaVent = DTMGaVent = Cp2MgVent = "";
-            }
+            public SourceStatusFromCurrentRecipeStepViewModel() :base("CurrentRecipeStep") {  }
         }
 
         public LeftViewModel()
@@ -477,26 +507,18 @@ namespace SapphireXR_App.ViewModels
             ObservableManager<int>.Subscribe("MainView.SelectedTabIndex", mainViewTabIndexChagedSubscriber = new MainViewTabIndexChagedSubscriber(this));
             ObservableManager<BitArray>.Subscribe("DeviceIOList", signalTowerStateSubscriber = new SignalTowerStateSubscriber(this));
             ObservableManager<float[]>.Subscribe("LineHeaterTemperature", lineHeaterTemperatureSubscriber = new LineHeaterTemperatureSubscriber(this));
-            
-            PropertyChanged += (object? sender, PropertyChangedEventArgs args) =>
+            ObservableManager<bool>.Subscribe("Reset.CurrentRecipeStep", resetCurrentRecipeSubscriber = new ResetCurrentRecipeSubscriber(this));
+          
+            CurrentSourceStatusViewModel = new SourceStatusFromCurrentPLCStateViewModel();
+            PropertyChanging += (object? sender, PropertyChangingEventArgs args) =>
             {
-                switch(args.PropertyName)
+                switch (args.PropertyName)
                 {
                     case nameof(CurrentSourceStatusViewModel):
-                        if(CurrentSourceStatusViewModel == sourceStatusFromCurrentRecipeStepViewModel)
-                        {
-                            sourceStatusFromCurrentPLCStateViewModel.inactive();
-                        }
-                        else
-                            if(CurrentSourceStatusViewModel == sourceStatusFromCurrentPLCStateViewModel)
-                            {
-                                sourceStatusFromCurrentRecipeStepViewModel.inactive();
-                            }
-                        CurrentSourceStatusViewModel.active();
+                        CurrentSourceStatusViewModel.dispose();
                         break;
                 }
             };
-            CurrentSourceStatusViewModel = sourceStatusFromCurrentPLCStateViewModel;
         }
 
         private static Brush OnLampColor = Application.Current.Resources.MergedDictionaries[0]["LampOnColor"] as Brush ?? Brushes.Lime;
@@ -566,7 +588,6 @@ namespace SapphireXR_App.ViewModels
         [ObservableProperty]
         private int _lineHeater8;
 
-
         [ObservableProperty]
         private string _pLCAddressText = "PLC Address : " + AmsNetId.Local.ToString();
         [ObservableProperty]
@@ -575,14 +596,12 @@ namespace SapphireXR_App.ViewModels
         [ObservableProperty]
         private SourceStatusViewModel _currentSourceStatusViewModel;
 
-        private SourceStatusFromCurrentPLCStateViewModel sourceStatusFromCurrentPLCStateViewModel = new SourceStatusFromCurrentPLCStateViewModel();
-        private SourceStatusFromCurrentRecipeStepViewModel sourceStatusFromCurrentRecipeStepViewModel = new SourceStatusFromCurrentRecipeStepViewModel();
-
         private CoolingWaterValueSubscriber showerHeaderTempSubscriber;
         private CoolingWaterValueSubscriber inductionCoilTempSubscriber;
         private HardWiringInterlockStateSubscriber hardWiringInterlockStateSubscriber;
         private MainViewTabIndexChagedSubscriber mainViewTabIndexChagedSubscriber;
         private SignalTowerStateSubscriber signalTowerStateSubscriber;
         private LineHeaterTemperatureSubscriber lineHeaterTemperatureSubscriber;
+        private readonly ResetCurrentRecipeSubscriber resetCurrentRecipeSubscriber;
     }
 }

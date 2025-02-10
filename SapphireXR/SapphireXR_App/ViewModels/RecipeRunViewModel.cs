@@ -11,13 +11,14 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Threading;
 using static SapphireXR_App.Common.RecipeService;
+using static SapphireXR_App.ViewModels.RecipeEditViewModel.TabDataGridViewModel;
 
 namespace SapphireXR_App.ViewModels
 {
     public partial class RecipeRunViewModel: ViewModelBase, IObserver<short>
     {
-        //public enum RecipeCommand : short { Initiate = 0, Run = 10, Pause = 20, Restart = 30, Stop = 40, End = 50 };
-        public enum RecipeRunState : short  { Uninitialized = -1, Initiated = 0, Run = 10, Pause = 20, Restart = 30, Stopped = 40, Ended = 50 };
+        public enum RecipeCommand : short { Initiate = 0, Run = 10, Pause = 20, Restart = 30, Stop = 40 };
+        public enum RecipeUserState : short  { Uninitialized = -1, Initiated = 0, Run = 10, Pause = 20, Stopped = 40, Ended = 50 };
 
         public class LogIntervalInRecipeRunListener : IObserver<int>
         {
@@ -68,7 +69,7 @@ namespace SapphireXR_App.ViewModels
 
             void IObserver<bool>.OnNext(bool value)
             {
-                recipeRunViewModel.CurrentRecipeRunState = RecipeRunState.Ended;
+                recipeRunViewModel.CurrentRecipeUserState = RecipeUserState.Ended;
             }
 
             private RecipeRunViewModel recipeRunViewModel;
@@ -93,8 +94,7 @@ namespace SapphireXR_App.ViewModels
 
         bool canRecipeOpenExecute()
         {
-            //return !canCommandsExecuteOnActive();
-            return true;
+            return !canCommandsExecuteOnActive();
         }
         [RelayCommand(CanExecute =nameof(canRecipeOpenExecute))]
         private void RecipeOpen()
@@ -123,17 +123,17 @@ namespace SapphireXR_App.ViewModels
 
         private void startCommand()
         {
-            SetState(Start);
+            SyncPLCState(Start);
         }
 
         private void pauseCommand()
         {
-            SetState(RecipeRunState.Pause);
+            SyncPLCState(RecipeCommand.Pause);
         }
 
         private bool canStartStopCommadExecute()
         {
-            return CurrentRecipeRunState != RecipeRunState.Uninitialized;
+            return CurrentRecipeUserState != RecipeUserState.Uninitialized;
         }
         [RelayCommand(CanExecute = nameof(canStartStopCommadExecute))]
         private void RecipeStart()
@@ -143,11 +143,14 @@ namespace SapphireXR_App.ViewModels
 
         bool canCommandsExecuteOnActive()
         {
-            //return RecipeRunState.Run <= CurrentRecipeRunState && CurrentRecipeRunState <= RecipeRunState.Pause;
-            return true;
+            return RecipeUserState.Run <= CurrentRecipeUserState && CurrentRecipeUserState <= RecipeUserState.Pause;
         }
 
-        [RelayCommand(CanExecute = nameof(canCommandsExecuteOnActive))]
+        bool canSkipCommandExecute()
+        {
+            return CurrentRecipeUserState == RecipeUserState.Run;
+        }
+        [RelayCommand(CanExecute = nameof(canSkipCommandExecute))]
         void RecipeSkip()
         {
             PLCService.WriteRCPOperationCommand(60);
@@ -180,7 +183,7 @@ namespace SapphireXR_App.ViewModels
         [RelayCommand(CanExecute = nameof(canCommandsExecuteOnActive))]
         private void RecipeStop()
         {
-            SetState(RecipeRunState.Stopped);  
+            SyncPLCState(RecipeCommand.Stop);  
         }
 
         [RelayCommand]
@@ -227,7 +230,7 @@ namespace SapphireXR_App.ViewModels
                 {
                     StartOrPause = true;
                     CurrentRecipe.toLoadedFromFileState();
-                    SetState(RecipeRunState.Initiated);
+                    SyncPLCState(RecipeCommand.Initiate);
                 };
                 switch (e.PropertyName)
                 {
@@ -254,43 +257,42 @@ namespace SapphireXR_App.ViewModels
                     case nameof(CurrentRecipe):
                         if (CurrentRecipe != EmptyRecipeContext)
                         {
-                            SetState(RecipeRunState.Initiated);
+                            SyncPLCState(RecipeCommand.Initiate);
                             RecipeService.PLCLoad(CurrentRecipe.Recipes);
                         }
                         else
                         {
-                            SetState(RecipeRunState.Uninitialized);
+                            CurrentRecipeUserState = RecipeUserState.Uninitialized;
                         }
                         break;
 
-                    case nameof(CurrentRecipeRunState):
-                        switch(CurrentRecipeRunState)
+                    case nameof(CurrentRecipeUserState):
+                        switch(CurrentRecipeUserState)
                         {
-                            case RecipeRunState.Uninitialized:
+                            case RecipeUserState.Uninitialized:
                                 StartOrPause = null;
                                 break;
 
-                            case RecipeRunState.Initiated:
+                            case RecipeUserState.Initiated:
                                 DashBoardViewModel.resetFlowChart(CurrentRecipe.Recipes);
                                 StartOrPause = true;
-                                Start = RecipeRunState.Run;
+                                Start = RecipeCommand.Run;
                                 break;
 
-                            case RecipeRunState.Run:
-                            case RecipeRunState.Restart:
+                            case RecipeUserState.Run:
                                 StartOrPause = false;
                                 break;
 
-                            case RecipeRunState.Pause:
+                            case RecipeUserState.Pause:
                                 StartOrPause = true;
-                                Start = RecipeRunState.Restart;
+                                Start = RecipeCommand.Restart;
                                 break;
 
-                            case RecipeRunState.Stopped:
+                            case RecipeUserState.Stopped:
                                 toRecipeLoadedState();
                                 break;
 
-                            case RecipeRunState.Ended:
+                            case RecipeUserState.Ended:
                                 MessageBox.Show("Recipe가 종료되었습니다." + DateTime.Now.ToString("HH:mm"));
                                 toRecipeLoadedState();
                                 break;
@@ -305,7 +307,7 @@ namespace SapphireXR_App.ViewModels
             };
 
             ObservableManager<bool>.Subscribe("RecipeEnded", operationStateSubscriber = new RecipeEndedSubscriber(this));
-            recipeRunStatePublisher = ObservableManager<RecipeRunState>.Get("RecipeRun.State");
+            recipeRunStatePublisher = ObservableManager<RecipeUserState>.Get("RecipeRun.State");
         }
 
         void IObserver<short>.OnCompleted()
@@ -349,16 +351,15 @@ namespace SapphireXR_App.ViewModels
             logTimer.Start();
         }
 
-        private void SetState(RecipeRunState state)
+        private void SyncPLCState(RecipeCommand command)
         {
             try
             {
-                if (state != RecipeRunState.Uninitialized)
-                {
-                    PLCService.WriteRCPOperationCommand((short)state);
-                }
-                CurrentRecipeRunState = state;
-                recipeRunStatePublisher.Issue(state);
+                PLCService.WriteRCPOperationCommand((short)command);
+                RecipeUserState stateToWait = (command != RecipeCommand.Restart) ? (RecipeUserState)(short)command : RecipeUserState.Run;
+                while((RecipeUserState)PLCService.ReadUserState() != stateToWait) ;
+                CurrentRecipeUserState = stateToWait;
+                recipeRunStatePublisher.Issue(stateToWait);
             }
             catch(Exception)
             {
@@ -378,10 +379,10 @@ namespace SapphireXR_App.ViewModels
 
         private short currentRecipeNo = -1;
         private readonly RecipeEndedSubscriber? operationStateSubscriber = null;
-        private RecipeRunState Start = RecipeRunState.Uninitialized;
-        private ObservableManager<RecipeRunState>.DataIssuer recipeRunStatePublisher;
+        private RecipeCommand Start = RecipeCommand.Run;
+        private ObservableManager<RecipeUserState>.DataIssuer recipeRunStatePublisher;
 
         [ObservableProperty]
-        private RecipeRunState _currentRecipeRunState = RecipeRunState.Uninitialized;
+        private RecipeUserState _currentRecipeUserState = RecipeUserState.Uninitialized;
     }
 }

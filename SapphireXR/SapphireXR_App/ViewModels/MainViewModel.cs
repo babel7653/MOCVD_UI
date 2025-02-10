@@ -11,7 +11,7 @@ using System.Windows.Input;
 
 namespace SapphireXR_App.ViewModels
 {
-    public partial class MainViewModel : ViewModelBase, IObserver<RecipeRunViewModel.RecipeRunState>
+    public partial class MainViewModel : ViewModelBase, IObserver<RecipeRunViewModel.RecipeUserState>
     {
         [ObservableProperty]
         private string? navigationSource;
@@ -44,7 +44,7 @@ namespace SapphireXR_App.ViewModels
                         break;
                 }
             };
-            ObservableManager<RecipeRunViewModel.RecipeRunState>.Subscribe("RecipeRun.State", this);
+            ObservableManager<RecipeRunViewModel.RecipeUserState>.Subscribe("RecipeRun.State", this);
         }
 
         public PlotModel PlotModel { get; set; } = default;
@@ -66,19 +66,19 @@ namespace SapphireXR_App.ViewModels
 
         });
 
-        void IObserver<RecipeRunViewModel.RecipeRunState>.OnCompleted()
+        void IObserver<RecipeRunViewModel.RecipeUserState>.OnCompleted()
         {
             throw new NotImplementedException();
         }
 
-        void IObserver<RecipeRunViewModel.RecipeRunState>.OnError(Exception error)
+        void IObserver<RecipeRunViewModel.RecipeUserState>.OnError(Exception error)
         {
             throw new NotImplementedException();
         }
 
-        void IObserver<RecipeRunViewModel.RecipeRunState>.OnNext(RecipeRunViewModel.RecipeRunState recipeRunState)
+        void IObserver<RecipeRunViewModel.RecipeUserState>.OnNext(RecipeRunViewModel.RecipeUserState recipeRunState)
         {
-            RecipeRunInactive = !(RecipeRunViewModel.RecipeRunState.Run <= recipeRunState && recipeRunState < RecipeRunViewModel.RecipeRunState.Restart);
+            RecipeRunInactive = !(RecipeRunViewModel.RecipeUserState.Run <= recipeRunState && recipeRunState < RecipeRunViewModel.RecipeUserState.Pause);
         }
 
         [ObservableProperty]

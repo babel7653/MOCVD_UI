@@ -60,7 +60,7 @@ namespace SapphireXR_App.Models
                 hHeaterOutputPowerSVBytes = Ads.CreateVariableHandle("P11_E3508.aOutputPowerBytes");
                 hPressureByteValuePostion_PV = Ads.CreateVariableHandle("P12_IQ_PLUS.wByteValvePosition_PV");
                 hOperationMode = Ads.CreateVariableHandle("MAIN.bOperationMode");
-
+                hUserState = Ads.CreateVariableHandle("RCP.userState");
 
                 aDeviceRampTimes = new short[dIndexController.Count];
                 aDeviceTargetValues = new float[dIndexController.Count];
@@ -431,6 +431,11 @@ namespace SapphireXR_App.Models
         public static void WriteOperationMode(bool operatonMode)
         {
             Ads.WriteAny(hOperationMode, operatonMode);
+        }
+
+        public static short ReadUserState()
+        {
+            return Ads.ReadAny<short>(hUserState);
         }
     }
 }

@@ -16,11 +16,11 @@ namespace SapphireXR_App.ViewModels.BottomDashBoard
 {
     public class RecipeRunBottomDashBoardViewModel: BottomDashBoardViewModel
     {
-        class ControlTargetValueSeriesUpdaterForRecipeRun : ControlTargetValueSeriesUpdater, IObserver<RecipeRunViewModel.RecipeRunState>, IObserver<int>
+        class ControlTargetValueSeriesUpdaterForRecipeRun : ControlTargetValueSeriesUpdater, IObserver<RecipeRunViewModel.RecipeUserState>, IObserver<int>
         {
             internal ControlTargetValueSeriesUpdaterForRecipeRun(string title) : base(title) 
             {
-                ObservableManager<RecipeRunViewModel.RecipeRunState>.Subscribe("RecipeRun.State", this);
+                ObservableManager<RecipeRunViewModel.RecipeUserState>.Subscribe("RecipeRun.State", this);
             }
 
             protected override Axis initializeXAxis()
@@ -174,19 +174,19 @@ namespace SapphireXR_App.ViewModels.BottomDashBoard
                 LegendUpdate = false;
             }
 
-            void IObserver<RecipeRunViewModel.RecipeRunState>.OnCompleted()
+            void IObserver<RecipeRunViewModel.RecipeUserState>.OnCompleted()
             {
                 throw new NotImplementedException();
             }
 
-            void IObserver<RecipeRunViewModel.RecipeRunState>.OnError(Exception error)
+            void IObserver<RecipeRunViewModel.RecipeUserState>.OnError(Exception error)
             {
                 throw new NotImplementedException();
             }
 
-            void IObserver<RecipeRunViewModel.RecipeRunState>.OnNext(RecipeRunViewModel.RecipeRunState recipeRunState)
+            void IObserver<RecipeRunViewModel.RecipeUserState>.OnNext(RecipeRunViewModel.RecipeUserState recipeRunState)
             {
-                LegendUpdate = recipeRunState == RecipeRunViewModel.RecipeRunState.Run || recipeRunState == RecipeRunViewModel.RecipeRunState.Restart;
+                LegendUpdate = recipeRunState == RecipeRunViewModel.RecipeUserState.Run;
             }
 
             void IObserver<int>.OnCompleted()
@@ -218,7 +218,7 @@ namespace SapphireXR_App.ViewModels.BottomDashBoard
             foreach (var (id, index) in PLCService.dIndexController)
             {
                 ControlTargetValueSeriesUpdaterForRecipeRun controlCurrentValueSeriesUpdater = new ControlTargetValueSeriesUpdaterForRecipeRun(id);
-                ObservableManager<int>.Subscribe("FlowControl." + id + ".CurrentValue", controlCurrentValueSeriesUpdater);
+                ObservableManager<int>.Subscribe("FlowControl." + id + ".ControlValue", controlCurrentValueSeriesUpdater);
                 plotModels[index] = controlCurrentValueSeriesUpdater;
             }
         }

@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4026.8">
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.15">
   <POU Name="P50_RecipeControl" Id="{e332a806-fd31-4290-a7c3-27f42c11d38e}" SpecialFunc="None">
     <Declaration><![CDATA[PROGRAM P50_RecipeControl
 VAR
@@ -39,12 +39,14 @@ END_VAR
 		Hold_TON(IN:=FALSE);
 		Ramp_On := TRUE;
 		Hold_On	:= FALSE;
+		Rcp.userState := 0;
 		//fbRecipeSequencer(nRcpIndex := nRcpIndex);
 	10: //RUN
 		IF nRcpIndex = 0 THEN
 			nRcpIndex := 1;
 		END_IF
 
+		Rcp.userState := 10;
 		IF nRcpIndex <= Rcp.iRcpTotalStep THEN
 			Rcp.state_RcpOperation := 10; // Recipe Running
 			Ramp_TIME := INT_TO_TIME(RCP.aRecipe[nRcpIndex].iRecipe[2]*1000); // second -> milisecond time
@@ -98,12 +100,13 @@ END_VAR
 			Pause_TON(IN:=FALSE);
 		END_IF	
 		Pause_Step := nRcpIndex;
+		Rcp.userState := 20;
 
 	30: //RESTART
 		Rcp.state_RcpOperation := 30;
 		
 		Pause_TON(IN:=FALSE);
-		
+		Rcp.userState := 10;
 		IF Pause_Ramp THEN
 			ReStart_TON(IN:=TRUE, PT:=Ramp_TIME - Pause_TIME, ET=>Ramp_ET);
 			rTrigRamp(CLK:=ReStart_TON.Q);
@@ -148,10 +151,12 @@ END_VAR
 		Rcp.state_RcpOperation := 40;
 		Pause_TON(IN:=FALSE);
 		ReStart_TON(IN:=FALSE);
+		Rcp.userState := 40;
 		//nRcpIndex := 1;
 		fbRecipeSequencer();
 	50: //END
 		Rcp.state_RcpOperation := 50;
+		Rcp.userState := 50;
 		fbRecipeSequencer(nRcpIndex := nRcpIndex);
 		//nRcpIndex := 1;
 		fbRecipeSequencer();
@@ -173,10 +178,12 @@ END_CASE
       <LineId Id="211" Count="1" />
       <LineId Id="248" Count="1" />
       <LineId Id="251" Count="1" />
+      <LineId Id="422" Count="0" />
       <LineId Id="394" Count="0" />
       <LineId Id="6" Count="0" />
       <LineId Id="391" Count="1" />
       <LineId Id="154" Count="0" />
+      <LineId Id="423" Count="0" />
       <LineId Id="38" Count="0" />
       <LineId Id="230" Count="1" />
       <LineId Id="233" Count="0" />
@@ -218,11 +225,12 @@ END_CASE
       <LineId Id="300" Count="3" />
       <LineId Id="299" Count="0" />
       <LineId Id="179" Count="0" />
+      <LineId Id="425" Count="0" />
       <LineId Id="197" Count="0" />
       <LineId Id="387" Count="1" />
       <LineId Id="8" Count="0" />
       <LineId Id="202" Count="0" />
-      <LineId Id="309" Count="0" />
+      <LineId Id="424" Count="0" />
       <LineId Id="315" Count="1" />
       <LineId Id="327" Count="4" />
       <LineId Id="326" Count="0" />
@@ -243,10 +251,12 @@ END_CASE
       <LineId Id="9" Count="0" />
       <LineId Id="386" Count="0" />
       <LineId Id="203" Count="1" />
+      <LineId Id="427" Count="0" />
       <LineId Id="89" Count="0" />
       <LineId Id="199" Count="0" />
       <LineId Id="10" Count="0" />
       <LineId Id="385" Count="0" />
+      <LineId Id="426" Count="0" />
       <LineId Id="390" Count="0" />
       <LineId Id="194" Count="0" />
       <LineId Id="200" Count="0" />

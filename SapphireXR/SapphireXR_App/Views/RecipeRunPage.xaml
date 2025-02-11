@@ -695,7 +695,24 @@
                     </Style>
                     <Style TargetType="DataGridRow">
                         <Style.Setters>
-                            <Setter Property="Background" Value="{Binding Background, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                            <Setter Property="Background" Value="{Binding Background, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" />
+                            <Setter Property="IsEnabled" Value="{Binding IsEnabled, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" />
+                        </Style.Setters>
+                    </Style>
+                    <Style TargetType="DataGrid">
+                        <Style.Setters>
+                            <Setter Property="SelectionMode" Value="Single" />
+                            <Setter Property="CellStyle">
+                                <Setter.Value>
+                                    <Style TargetType="{x:Type DataGridCell}">
+                                        <Style.Triggers>
+                                            <Trigger Property="IsEnabled" Value="false">
+                                                <Setter Property="Foreground" Value="{Binding Foreground}"/>
+                                            </Trigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </Setter.Value>
+                            </Setter>
                         </Style.Setters>
                     </Style>
                 </Grid.Resources>

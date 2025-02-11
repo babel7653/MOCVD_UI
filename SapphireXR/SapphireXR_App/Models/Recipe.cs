@@ -13,7 +13,7 @@ namespace SapphireXR_App.Models
 {
     public partial class Recipe : ObservableObject
     {
-        public Recipe() {  }
+        public Recipe() { }
 
         public Recipe(Recipe rhs)
         {
@@ -99,57 +99,57 @@ namespace SapphireXR_App.Models
         public short Loop { get; set; }
         public short Jump { get; set; }
         //RecipeFloat Array
-        [ObservableProperty] 
+        [ObservableProperty]
         private float _m01;
-        [ObservableProperty] 
+        [ObservableProperty]
         private float _m02;
-        [ObservableProperty] 
+        [ObservableProperty]
         private float _m03;
-        [ObservableProperty] 
+        [ObservableProperty]
         private float _m04;
-        [ObservableProperty] 
+        [ObservableProperty]
         private float _m05;
-        [ObservableProperty] 
+        [ObservableProperty]
         private float _m06;
-        [ObservableProperty] 
+        [ObservableProperty]
         private float _m07;
         [ObservableProperty]
         private float _m08;
-        [ObservableProperty] 
+        [ObservableProperty]
         private float _m09;
-        [ObservableProperty] 
+        [ObservableProperty]
         private float _m10;
-        [ObservableProperty] 
+        [ObservableProperty]
         private float _m11;
-        [ObservableProperty] 
+        [ObservableProperty]
         private float _m12;
-        [ObservableProperty] 
+        [ObservableProperty]
         private float _m13;
-        [ObservableProperty] 
+        [ObservableProperty]
         private float _m14;
-        [ObservableProperty] 
+        [ObservableProperty]
         private float _m15;
         [ObservableProperty]
         private float _m16;
-        [ObservableProperty] 
+        [ObservableProperty]
         private float _m17;
-        [ObservableProperty] 
+        [ObservableProperty]
         private float _m18;
         [ObservableProperty]
         private float _m19;
-        [ObservableProperty] 
+        [ObservableProperty]
         private float _e01;
         [ObservableProperty]
         private float _e02;
         [ObservableProperty]
         private float _e03;
-        [ObservableProperty] 
+        [ObservableProperty]
         private float _e04;
-        [ObservableProperty] 
+        [ObservableProperty]
         private float _e05;
         [ObservableProperty]
         private float _e06;
-        [ObservableProperty] 
+        [ObservableProperty]
         private float _e07;
         //RecipeDouble Array
         [ObservableProperty]
@@ -207,11 +207,27 @@ namespace SapphireXR_App.Models
 
         Brush _background = Brushes.White;
         [Ignore]
-        public Brush Background 
+        public Brush Background
         {
             get { return _background; }
             set { SetProperty(ref _background, value); }
-         }
+        }
+
+        bool _isEnabled = true;
+        [Ignore]
+        public bool IsEnabled
+        {
+            get { return _isEnabled; }
+            set { SetProperty(ref _isEnabled, value); }
+        }
+
+        Brush _foreGround = Brushes.Black;
+        [Ignore]
+        public Brush Foreground
+        {
+            get { return _foreGround;  }
+            set { SetProperty(ref _foreGround, value);  }
+        }
     }
 
     [StructLayout(LayoutKind.Sequential, Pack = 0)]

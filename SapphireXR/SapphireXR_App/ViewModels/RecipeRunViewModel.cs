@@ -156,7 +156,11 @@ namespace SapphireXR_App.ViewModels
             PLCService.WriteRCPOperationCommand(60);
         }
      
-        [RelayCommand(CanExecute = nameof(canCommandsExecuteOnActive))]
+        bool canRefreshCommandExecute()
+        {
+            return CurrentRecipeUserState == RecipeUserState.Pause;
+        }
+        [RelayCommand(CanExecute = nameof(canRefreshCommandExecute))]
         void RecipeRefresh()
         {
             CurrentRecipe.loadPLCSubRangeOfRecipes();

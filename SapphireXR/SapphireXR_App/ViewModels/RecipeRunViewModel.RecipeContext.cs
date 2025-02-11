@@ -71,10 +71,13 @@ namespace SapphireXR_App.ViewModels
                             if (currentRecipe != null)
                             {
                                 currentRecipe.Background = Brushes.White;
+                                currentRecipe.Foreground = Brushes.Black;
                             }
                             currentRecipe = next;
                             currentRecipeIndex = index;
                             currentRecipe.Background = Brushes.LightGoldenrodYellow;
+                            currentRecipe.Foreground = Brushes.Red;
+                            currentRecipe.IsEnabled = false;
 
                             return currentRecipe;
                         }
@@ -135,6 +138,12 @@ namespace SapphireXR_App.ViewModels
                 if (currentRecipe != null)
                 {
                     currentRecipe.Background = Brushes.White;
+                    currentRecipe.Foreground = Brushes.Black;
+
+                }
+                foreach(Recipe recipe in Recipes)
+                {
+                    recipe.IsEnabled = true;
                 }
                 currentRecipe = null;
                 currentRecipeIndex = -1;

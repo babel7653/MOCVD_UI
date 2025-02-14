@@ -166,7 +166,7 @@ namespace SapphireXR_App.ViewModels.BottomDashBoard
                 plotModel.InvalidatePlot(true);
             }
 
-            private void cleanChart()
+            public void cleanChart()
             {
                 plotModel.Series.OfType<LineSeries>().ElementAt(0).Points.Clear();
                 plotModel.Series.OfType<LineSeries>().ElementAt(1).Points.Clear();
@@ -225,6 +225,7 @@ namespace SapphireXR_App.ViewModels.BottomDashBoard
 
         public void resetFlowChart(IList<Recipe> recipes)
         {
+            init();
             foreach (ControlTargetValueSeriesUpdaterForRecipeRun controlTargetValueSeriesUpdater in plotModels)
             {
                 controlTargetValueSeriesUpdater.initChart(recipes);

@@ -106,17 +106,24 @@ namespace SapphireXR_App.ViewModels
 
         [ObservableProperty]
         public PlotModel? flowControlLivePlot;
-        protected ControlTargetValueSeriesUpdater[] plotModels = new ControlTargetValueSeriesUpdater[PLCService.NumControllers];
+        protected readonly ControlTargetValueSeriesUpdater[] plotModels = new ControlTargetValueSeriesUpdater[PLCService.NumControllers];
         private ControlTargetValueSeriesUpdater? currentSelectedFlowControllerListener;
 
+#pragma warning disable CS8618 // null을 허용하지 않는 필드는 생성자를 종료할 때 null이 아닌 값을 포함해야 합니다. 'required' 한정자를 추가하거나 nullable로 선언하는 것이 좋습니다.
         public BottomDashBoardViewModel(string flowControlSelectedPostFixStr)
+#pragma warning restore CS8618 // null을 허용하지 않는 필드는 생성자를 종료할 때 null이 아닌 값을 포함해야 합니다. 'required' 한정자를 추가하거나 nullable로 선언하는 것이 좋습니다.
         {
-            FlowControlLivePlot = new PlotModel();
             ObservableManager<string>.Subscribe("FlowControl.Selected." + flowControlSelectedPostFixStr, flowContorllerSelectionChanged = new SelectedFlowControllerListener(this));
-            ControlValueOption = HideControlValueStr;
-            TargetValueOption = HideTargetValueStr;
+            init();
         }
 
+        protected void init()
+        {
+            ControlValueOption = HideControlValueStr;
+            TargetValueOption = HideTargetValueStr;
+            currentSelectedFlowControllerListener = null;
+            FlowControlLivePlot = null;
+        }
 
         public ICommand ShowControlValue => new RelayCommand(() =>
         {

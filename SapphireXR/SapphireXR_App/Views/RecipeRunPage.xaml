@@ -652,6 +652,7 @@
                     <Button x:Name="btnRecipeSkip"  Content="Skip"  Style="{StaticResource RecipeOperationStyle}" Command="{Binding RecipeSkipCommand}"/>
                     <Button x:Name="btnRecipeStop" Content="Stop"  Style="{StaticResource RecipeOperationStyle}" Command="{Binding RecipeStopCommand}"/>
                     <Button x:Name="btnRecipeRefresh" Content="Refresh" Style="{StaticResource RecipeOperationStyle}" Command="{Binding RecipeRefreshCommand}"/>
+                    <Button x:Name="btnRecipeClean" Content="Clean" Style="{StaticResource RecipeOperationStyle}" Command="{Binding RecipeCleanCommand}"/>
                 </StackPanel>
                 <Grid Grid.Column="2">
                     <StackPanel DataContext="{Binding CurrentRecipe}">

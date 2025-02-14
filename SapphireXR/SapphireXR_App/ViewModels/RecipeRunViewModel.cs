@@ -75,23 +75,6 @@ namespace SapphireXR_App.ViewModels
             private RecipeRunViewModel recipeRunViewModel;
         }
 
-        private static RecipeContext EmptyRecipeContext = new RecipeContext();
-
-        [ObservableProperty]
-        private RecipeContext _currentRecipe = EmptyRecipeContext;
-
-        [ObservableProperty]
-        private string _startText = "";
-        [ObservableProperty]
-        private bool? _startOrPause;
-        private Action? startOrStopCommand = null;
-
-        private static readonly CsvHelper.Configuration.CsvConfiguration Config = new CsvHelper.Configuration.CsvConfiguration(CultureInfo.InvariantCulture)
-        {
-            Delimiter = ",",
-            HasHeaderRecord = true
-        };
-
         bool canRecipeOpenExecute()
         {
             return !canCommandsExecuteOnActive();
@@ -204,6 +187,12 @@ namespace SapphireXR_App.ViewModels
             }
         }
 
+        [RelayCommand]
+        private void RecipeCleanCommand()
+        {
+            CurrentRecipe = EmptyRecipeContext;
+        }
+
         public RecipeRunViewModel()
         {
             DashBoardViewModel = new RecipeRunBottomDashBoardViewModel();
@@ -235,6 +224,7 @@ namespace SapphireXR_App.ViewModels
                     StartOrPause = true;
                     CurrentRecipe.toLoadedFromFileState();
                     SyncPLCState(RecipeCommand.Initiate);
+                    currentRecipeNo = -1;
                 };
                 switch (e.PropertyName)
                 {
@@ -275,6 +265,9 @@ namespace SapphireXR_App.ViewModels
                         {
                             case RecipeUserState.Uninitialized:
                                 StartOrPause = null;
+                                Start = RecipeCommand.Run;
+                                currentRecipeNo = -1;
+                                DashBoardViewModel.resetFlowChart(CurrentRecipe.Recipes);
                                 break;
 
                             case RecipeUserState.Initiated:
@@ -306,6 +299,7 @@ namespace SapphireXR_App.ViewModels
                         RecipeSkipCommand.NotifyCanExecuteChanged();
                         RecipeRefreshCommand.NotifyCanExecuteChanged();
                         RecipeStopCommand.NotifyCanExecuteChanged();
+                        recipeRunStatePublisher?.Issue(CurrentRecipeUserState);
                         break;
                 }
             };
@@ -363,7 +357,6 @@ namespace SapphireXR_App.ViewModels
                 RecipeUserState stateToWait = (command != RecipeCommand.Restart) ? (RecipeUserState)(short)command : RecipeUserState.Run;
                 while((RecipeUserState)PLCService.ReadUserState() != stateToWait) ;
                 CurrentRecipeUserState = stateToWait;
-                recipeRunStatePublisher.Issue(stateToWait);
             }
             catch(Exception)
             {
@@ -371,6 +364,23 @@ namespace SapphireXR_App.ViewModels
             }
                
         }
+
+        private static RecipeContext EmptyRecipeContext = new RecipeContext();
+
+        [ObservableProperty]
+        private RecipeContext _currentRecipe = EmptyRecipeContext;
+
+        [ObservableProperty]
+        private string _startText = "";
+        [ObservableProperty]
+        private bool? _startOrPause = null;
+        private Action? startOrStopCommand = null;
+
+        private static readonly CsvHelper.Configuration.CsvConfiguration Config = new CsvHelper.Configuration.CsvConfiguration(CultureInfo.InvariantCulture)
+        {
+            Delimiter = ",",
+            HasHeaderRecord = true
+        };
 
         public RecipeRunBottomDashBoardViewModel DashBoardViewModel { get; set; }
 

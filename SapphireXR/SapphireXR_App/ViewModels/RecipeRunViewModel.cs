@@ -188,8 +188,9 @@ namespace SapphireXR_App.ViewModels
         }
 
         [RelayCommand]
-        private void RecipeCleanCommand()
+        private void RecipeClean()
         {
+            SyncPLCState(RecipeCommand.Initiate, false);
             CurrentRecipe = EmptyRecipeContext;
         }
 
@@ -349,21 +350,29 @@ namespace SapphireXR_App.ViewModels
             logTimer.Start();
         }
 
-        private void SyncPLCState(RecipeCommand command)
+        private void SyncPLCState(RecipeCommand command, bool updateState)
         {
             try
             {
                 PLCService.WriteRCPOperationCommand((short)command);
                 RecipeUserState stateToWait = (command != RecipeCommand.Restart) ? (RecipeUserState)(short)command : RecipeUserState.Run;
-                while((RecipeUserState)PLCService.ReadUserState() != stateToWait) ;
-                CurrentRecipeUserState = stateToWait;
+                while((RecipeUserState)PLCService.ReadUserState() != stateToWait);
+                if (updateState == true)
+                {
+                    CurrentRecipeUserState = stateToWait;
+                }
             }
             catch(Exception)
             {
 
             }
-               
         }
+
+        private void SyncPLCState(RecipeCommand command)
+        {
+            SyncPLCState(command, true);
+        }
+
 
         private static RecipeContext EmptyRecipeContext = new RecipeContext();
 

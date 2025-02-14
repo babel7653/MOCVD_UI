@@ -2,8 +2,10 @@
 using SapphireXR_App.Enums;
 using SapphireXR_App.ViewModels;
 using System.Collections;
+using System.Net.Sockets;
 using System.Security.Permissions;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Threading;
 using TwinCAT.Ads;
 
@@ -61,6 +63,10 @@ namespace SapphireXR_App.Models
                 hPressureByteValuePostion_PV = Ads.CreateVariableHandle("P12_IQ_PLUS.wByteValvePosition_PV");
                 hOperationMode = Ads.CreateVariableHandle("MAIN.bOperationMode");
                 hUserState = Ads.CreateVariableHandle("RCP.userState");
+                hRecipeControlHoldTime = Ads.CreateVariableHandle("P50_RecipeControl.Hold_TIME");
+                hRecipeControlRampTime = Ads.CreateVariableHandle("P50_RecipeControl.Ramp_TIME");
+                hRecipeControlHoldTime = Ads.CreateVariableHandle("P50_RecipeControl.Pause_TIME");
+                
 
                 aDeviceRampTimes = new short[dIndexController.Count];
                 aDeviceTargetValues = new float[dIndexController.Count];
@@ -105,6 +111,11 @@ namespace SapphireXR_App.Models
             foreach (KeyValuePair<string, int> kv in dIndexController)
             {
                 dControlValueIssuers.Add(kv.Key, ObservableManager<int>.Get("FlowControl." + kv.Key + ".ControlValue"));
+            }
+            dTargetValueIssuers = new Dictionary<string, ObservableManager<float>.DataIssuer>();
+            foreach (KeyValuePair<string, int> kv in dIndexController)
+            {
+                dTargetValueIssuers.Add(kv.Key, ObservableManager<float>.Get("FlowControl." + kv.Key + ".TargetValue"));
             }
             dControlCurrentValueIssuers = new Dictionary<string, ObservableManager<(int, int)>.DataIssuer>();
             foreach (KeyValuePair<string, int> kv in dIndexController)
@@ -185,6 +196,13 @@ namespace SapphireXR_App.Models
                     dCurrentValueIssuers?[kv.Key].Issue(aDeviceCurrentValues[dIndexController[kv.Key]]);
                 }
             }
+            if(aDeviceTargetValues != null)
+            {
+                foreach (KeyValuePair<string, int> kv in dIndexController)
+                {
+                    dTargetValueIssuers?[kv.Key].Issue(aDeviceTargetValues[dIndexController[kv.Key]]);
+                }
+            }
             if(aDeviceControlValues != null && aDeviceTargetValues != null)
             {
                 foreach (KeyValuePair<string, int> kv in dIndexController)
@@ -228,6 +246,7 @@ namespace SapphireXR_App.Models
                     dValveStateIssuers?[valveID].Issue(baReadValveStatePLC2[index]);
                 }
             }
+
 
             dLineHeaterTemperatureIssuers?.Issue(Ads.ReadAny<float[]>(hTemperaturePV, [(int)LineHeaterTemperature]));
             string exceptionStr = string.Empty;

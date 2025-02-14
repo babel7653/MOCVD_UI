@@ -53,6 +53,7 @@ namespace SapphireXR_App.Models
         private static ObservableManager<PLCConnection>.DataIssuer ConnectedNotifier;
         private static Dictionary<string, ObservableManager<int>.DataIssuer>? dCurrentValueIssuers;
         private static Dictionary<string, ObservableManager<int>.DataIssuer>? dControlValueIssuers;
+        private static Dictionary<string, ObservableManager<float>.DataIssuer>? dTargetValueIssuers;
         private static Dictionary<string, ObservableManager<(int, int)>.DataIssuer>? dControlCurrentValueIssuers;
         private static Dictionary<string, ObservableManager<float>.DataIssuer>? aMonitoringCurrentValueIssuers;
         private static ObservableManager<BitArray>.DataIssuer? baHardWiringInterlockStateIssuers;
@@ -88,6 +89,9 @@ namespace SapphireXR_App.Models
         private static uint hPressureByteValuePostion_PV;
         private static uint hOperationMode;
         private static uint hUserState;
+        private static uint hRecipeControlHoldTime;
+        private static uint hRecipeControlRampTime;
+        private static uint hRecipeControlPauseTime;
 
         private static bool RecipeRunEndNotified = false;
 

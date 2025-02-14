@@ -7,11 +7,41 @@ using System.Windows.Input;
 using static System.Net.Mime.MediaTypeNames;
 using System.Xml.Linq;
 using CommunityToolkit.Mvvm.ComponentModel;
+using SapphireXR_App.Common;
+using System.Diagnostics.CodeAnalysis;
 
 namespace SapphireXR_App.ViewModels
 {
     public partial class HomeViewModel : ObservableObject
     {
+        private abstract class FlowControllerValueSubscriber;
+        private class FlowControllerValueSubscriber<T> : FlowControllerValueSubscriber, IObserver<T>
+        {
+            internal FlowControllerValueSubscriber(Action<T> onNextAct, string topicNameStr)
+            {
+                onNext = onNextAct;
+                topicName = topicNameStr;
+            }
+
+            void IObserver<T>.OnCompleted()
+            {
+                throw new NotImplementedException();
+            }
+
+            void IObserver<T>.OnError(Exception error)
+            {
+                throw new NotImplementedException();
+            }
+
+            void IObserver<T>.OnNext(T value)
+            {
+                onNext(value);
+            }
+
+            public string topicName;
+            private readonly Action<T> onNext;
+        }
+
         public HomeViewModel()
         {
             DashBoardViewModel = new HomeBottomDashBoardViewModel();
@@ -47,6 +77,29 @@ namespace SapphireXR_App.ViewModels
                         break;
                 }
             });
+
+            flowControllerValueSubscribers = [new FlowControllerValueSubscriber<float>((float value) => { TargetTemp = (int)value; }, "FlowControl.Temperature.TargetValue"),
+                new FlowControllerValueSubscriber<int>((int value) => { ControlTemp = (int)value; }, "FlowControl.Temperature.ControlValue"),
+                new FlowControllerValueSubscriber<int>((int value) => { CurrentTemp = (int)value; }, "FlowControl.Temperature.CurrentValue"),
+                new FlowControllerValueSubscriber<float>((float value) => { PowerRateTemp = (int)value; }, "MonitoringPresentValue.HeaterPowerRate.CurrentValue"),
+                new FlowControllerValueSubscriber<float>((float value) => { TargetPress = (int)value; }, "FlowControl.Pressure.TargetValue"),
+                new FlowControllerValueSubscriber<int>((int value) => { ControlPress = (int)value; }, "FlowControl.Pressure.ControlValue"),
+                new FlowControllerValueSubscriber<int>((int value) => { CurrentPress = (int)value; }, "FlowControl.Pressure.CurrentValue"),
+                new FlowControllerValueSubscriber<float>((float value) => { ValvePosition = (int)value; }, "MonitoringPresentValue.ValvePosition.CurrentValue"),
+                new FlowControllerValueSubscriber<float>((float value) => { TargetRotation = (int)value; }, "FlowControl.Rotation.TargetValue"),
+                new FlowControllerValueSubscriber<int>((int value) => { ControlRotation = (int)value; }, "FlowControl.Rotation.ControlValue"),
+                new FlowControllerValueSubscriber<int>((int value) => { CurrentRotation = (int)value; }, "FlowControl.Rotation.CurrentValue")];
+            foreach(FlowControllerValueSubscriber subscriber in flowControllerValueSubscribers)
+            {
+                if(subscriber is FlowControllerValueSubscriber<int>)
+                {
+                    ObservableManager<int>.Subscribe(((FlowControllerValueSubscriber<int>)subscriber).topicName, (FlowControllerValueSubscriber<int>)subscriber);
+                }
+                else
+                {
+                    ObservableManager<float>.Subscribe(((FlowControllerValueSubscriber<float>)subscriber).topicName, (FlowControllerValueSubscriber<float>)subscriber);
+                }
+            }
         }
 
         public ICommand EnableLeakTestCommand { get; set; }
@@ -93,6 +146,8 @@ namespace SapphireXR_App.ViewModels
         private int _currentRotation;
 
         public BottomDashBoardViewModel DashBoardViewModel { get; set; }
+
+        private FlowControllerValueSubscriber[] flowControllerValueSubscribers;
     }
 }
 

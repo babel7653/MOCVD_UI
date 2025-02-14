@@ -172,6 +172,7 @@ namespace SapphireXR_App.ViewModels.BottomDashBoard
                 plotModel.Series.OfType<LineSeries>().ElementAt(1).Points.Clear();
                 firstTime = null;
                 LegendUpdate = false;
+                plotModel.InvalidatePlot(true);
             }
 
             void IObserver<RecipeRunViewModel.RecipeUserState>.OnCompleted()

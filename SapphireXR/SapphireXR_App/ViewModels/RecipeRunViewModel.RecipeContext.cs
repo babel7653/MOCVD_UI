@@ -1,12 +1,15 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CsvHelper;
+using SapphireXR_App.Common;
 using SapphireXR_App.Models;
 using System;
 using System.ComponentModel;
 using System.Globalization;
 using System.IO;
+using System.Printing;
 using System.Windows;
 using System.Windows.Media;
+using static SapphireXR_App.ViewModels.RecipeRunViewModel;
 
 namespace SapphireXR_App.ViewModels
 {
@@ -17,6 +20,36 @@ namespace SapphireXR_App.ViewModels
             internal class RecipeContextCreationException: Exception
             {
                 internal RecipeContextCreationException(string message): base(message) {  }
+            }
+
+            private class TemperatureControlValueSubscriber : IObserver<int>
+            {
+                internal TemperatureControlValueSubscriber(RecipeContext rc)
+                {
+                    recipeContext = rc;
+                }
+
+                void IObserver<int>.OnCompleted()
+                {
+                    throw new NotImplementedException();
+                }
+
+                void IObserver<int>.OnError(Exception error)
+                {
+                    throw new NotImplementedException();
+                }
+
+                void IObserver<int>.OnNext(int value)
+                {
+                    if(prevValue == null || prevValue != value)
+                    {
+                        recipeContext.CurrentWaitTemp = value;
+                        prevValue = value;
+                    }
+                }
+
+                private RecipeContext recipeContext;
+                private int? prevValue;
             }
 
             public RecipeContext() { }
@@ -36,6 +69,18 @@ namespace SapphireXR_App.ViewModels
 
                     csvWriter!.WriteHeader<RecipeLog>();
                     csvWriter!.NextRecord();
+
+                    int totalRecipeTime = 0;
+                    int totalCTtemp = 0;
+                    foreach(Recipe recipe in recipes)
+                    {
+                        totalRecipeTime += recipe.RTime;
+                        totalRecipeTime += recipe.HTime;
+                        totalCTtemp += recipe.cTemp;
+                    }
+                    TotalRecipeTime = totalRecipeTime;
+                    TotalStep = recipes.Count;
+
                     initialized = true;
                 }
                 catch (Exception exception)
@@ -78,6 +123,35 @@ namespace SapphireXR_App.ViewModels
                             currentRecipe.Background = Brushes.LightGoldenrodYellow;
                             currentRecipe.Foreground = Brushes.Red;
                             currentRecipe.IsEnabled = false;
+
+                            if(temperatureControlValueSubscriber == null)
+                            {
+                                temperatureControlValueSubscriber = new TemperatureControlValueSubscriber(this);
+                            }
+                            if(unsubscriber == null)
+                            {
+                                unsubscriber = ObservableManager<int>.Subscribe("FlowControl.Temperature.ControlValue", temperatureControlValueSubscriber!);
+                            }
+                            if(CurrentRecipeTime == null)
+                            {
+                                CurrentRecipeTime = 0;
+                            }
+                            CurrentRecipeTime += currentRecipe.RTime;
+                            CurrentRecipeTime += currentRecipe.HTime;
+                            CurrentStep = currentRecipe.No;
+                            StepName = currentRecipe.Name;
+                            TotalRampTime = currentRecipe.RTime;
+                            TotalHoldTime = currentRecipe.HTime;
+
+                            if (0 < currentRecipe.cTemp)
+                            {
+                                TotalWaitTemp = currentRecipe.cTemp;
+                            }
+                            else
+                            {
+                                TotalWaitTemp = null;
+                                CurrentWaitTemp = null;
+                            }
 
                             return currentRecipe;
                         }
@@ -148,6 +222,26 @@ namespace SapphireXR_App.ViewModels
                 currentRecipe = null;
                 currentRecipeIndex = -1;
                 modifiedRecipeIndice.Clear();
+                unsubscriber?.Dispose();
+                unsubscriber = null;
+                temperatureControlValueSubscriber = null;
+
+                CurrentRecipeTime = null;
+                TotalRecipeTime = null;
+                CurrentStep = null;
+                TotalStep = null;
+                StepName = "";
+                CurrentRampTime = null;
+                TotalRampTime = null;
+                CurrentHoldTime = null;
+                TotalHoldTime = null;
+                PauseTime = null;
+                CurrentLoopStep = null;
+                TotalLoopStep = null;
+                CurrentLoopNumber = null;
+                TotalLoopNumber = null;
+                CurrentWaitTemp = null;
+                TotalWaitTemp = null;
             }
 
             private readonly bool initialized = false;
@@ -175,37 +269,37 @@ namespace SapphireXR_App.ViewModels
             }
 
             [ObservableProperty]
-            private int _currentRecipeTime;
+            private int? _currentRecipeTime = null;
             [ObservableProperty]
-            private int _totalRecipeTime;
+            private int? _totalRecipeTime = null;
             [ObservableProperty]
-            private int _currentStep;
+            private int? _currentStep = null;
             [ObservableProperty]
-            private int _totalStep;
+            private int? _totalStep = null;
             [ObservableProperty]
-            private int _stepName;
+            private string _stepName = "";
             [ObservableProperty]
-            private int _currentRampTime;
+            private int? _currentRampTime = null;
             [ObservableProperty]
-            private int _totalRampTime;
+            private int? _totalRampTime = null;
             [ObservableProperty]
-            private int _currentHoldTime;
+            private int? _currentHoldTime = null;
             [ObservableProperty]
-            private int _totalHoldTime;
+            private int? _totalHoldTime = null;
             [ObservableProperty]
-            private int _pauseTime;
+            private int? _pauseTime = null;
             [ObservableProperty]
-            private int _currentLoopStep;
+            private int? _currentLoopStep = null;
             [ObservableProperty]
-            private int _totalLoopStep;
+            private int? _totalLoopStep = null;
             [ObservableProperty]
-            private int _currentLoopNumber;
+            private int? _currentLoopNumber = null;
             [ObservableProperty]
-            private int _totalLoopNumber;
+            private int? _totalLoopNumber = null;
             [ObservableProperty]
-            private int _currentWaitTemp;
+            private int? _currentWaitTemp = null;
             [ObservableProperty]
-            private int _totalWaitTemp;
+            private int? _totalWaitTemp = null;
 
             public Recipe? currentRecipe = null;
             public int currentRecipeIndex = -1;
@@ -213,6 +307,8 @@ namespace SapphireXR_App.ViewModels
             private readonly StreamWriter? streamWriter = null;
             private readonly CsvWriter? csvWriter = null;
             private bool disposedValue = false;
+            private TemperatureControlValueSubscriber? temperatureControlValueSubscriber;
+            private IDisposable? unsubscriber = null;
 
             private static readonly CsvHelper.Configuration.CsvConfiguration Config = new CsvHelper.Configuration.CsvConfiguration(CultureInfo.InvariantCulture)
             {
@@ -226,6 +322,7 @@ namespace SapphireXR_App.ViewModels
                 {
                     if (disposing)
                     {
+                        unsubscriber?.Dispose();
                     }
 
                     // TODO: 비관리형 리소스(비관리형 개체)를 해제하고 종료자를 재정의합니다.
@@ -244,7 +341,7 @@ namespace SapphireXR_App.ViewModels
 
             public void dispose()
             {
-                Dispose(disposing: false);
+                Dispose(disposing: true);
             }
 
             public void DisposeResource()

@@ -11,5 +11,10 @@ namespace SapphireXR_App.Views
             InitializeComponent();
             DataContext = App.Current.Services.GetService(typeof(MainViewModel));
         }
+
+        private void mainWindow_Closing(object sender, CancelEventArgs e)
+        {
+
+        }
     }
 }

@@ -591,22 +591,22 @@
                                 <Label Grid.Row="8" Grid.Column="0" Content="Loop Number" />
                                 <Label Grid.Row="9" Grid.Column="0" Content="Wait Temp" />
 
-                                <TextBox x:Name="tbRecipeCurrentTime" Grid.Row="1" Grid.Column="1" Text="{Binding CurrentRecipeTime}"/>
-                                <TextBox x:Name="tbRecipeTotalTime" Grid.Row="1" Grid.Column="2" Text="{Binding TotalRecipeTime}"/>
-                                <TextBox x:Name="tbRecipeCurrentStep" Grid.Row="2" Grid.Column="1" Text="{Binding CurrentStep}"/>
-                                <TextBox x:Name="tbRecipeTotalStep" Grid.Row="2" Grid.Column="2" Text="{Binding TotalStep}"/>
-                                <TextBox x:Name="tbRecipeStepName" Grid.Row="3" Grid.Column="1" Grid.ColumnSpan="2" Width="146" Text="{Binding StepName}"/>
-                                <TextBox x:Name="tbRecipeCurrentRamp" Grid.Row="4" Grid.Column="1" Text="{Binding CurrentRampTime}"/>
-                                <TextBox x:Name="tbRecipeTotalRamp" Grid.Row="4" Grid.Column="2" Text="{Binding TotalRampTime}"/>
-                                <TextBox x:Name="tbRecipeCurrentHold" Grid.Row="5" Grid.Column="1" Text="{Binding CurrentHoldTime}"/>
-                                <TextBox x:Name="tbRecipeTotalHold" Grid.Row="5" Grid.Column="2" Text="{Binding TotalHoldTime}"/>
-                                <TextBox x:Name="tbRecipePauseTime" Grid.Row="6" Grid.Column="1" Grid.ColumnSpan="2" Width="146" Text="{Binding PauseTime}"/>
-                                <TextBox x:Name="tbRecipeLoopStart" Grid.Row="7" Grid.Column="1" Text="{Binding CurrentLoopStep}"/>
-                                <TextBox x:Name="tbRecipeLoopEnd" Grid.Row="7" Grid.Column="2" Text="{Binding TotalLoopStep}"/>
-                                <TextBox x:Name="tbRecipeCurrentLoop" Grid.Row="8" Grid.Column="1" Text="{Binding CurrentLoopNumber}"/>
-                                <TextBox x:Name="tbRecipeTotalLoop" Grid.Row="8" Grid.Column="2" Text="{Binding TotalLoopNumber}"/>
-                                <TextBox x:Name="tbSusceptorCurrentTemp" Grid.Row="9" Grid.Column="1" Text="{Binding CurrentWaitTemp}"/>
-                                <TextBox x:Name="tbRecipeWaitTemp" Grid.Row="9" Grid.Column="2" Text="{Binding TotalWaitTemp}"/>
+                                <TextBox x:Name="tbRecipeCurrentTime" Grid.Row="1" Grid.Column="1" Text="{Binding CurrentRecipe.CurrentRecipeTime}"/>
+                                <TextBox x:Name="tbRecipeTotalTime" Grid.Row="1" Grid.Column="2" Text="{Binding CurrentRecipe.TotalRecipeTime}"/>
+                                <TextBox x:Name="tbRecipeCurrentStep" Grid.Row="2" Grid.Column="1" Text="{Binding CurrentRecipe.CurrentStep}"/>
+                                <TextBox x:Name="tbRecipeTotalStep" Grid.Row="2" Grid.Column="2" Text="{Binding CurrentRecipe.TotalStep}"/>
+                                <TextBox x:Name="tbRecipeStepName" Grid.Row="3" Grid.Column="1" Grid.ColumnSpan="2" Width="146" Text="{Binding CurrentRecipe.StepName}"/>
+                                <TextBox x:Name="tbRecipeCurrentRamp" Grid.Row="4" Grid.Column="1" Text="{Binding CurrentRecipe.CurrentRampTime}"/>
+                                <TextBox x:Name="tbRecipeTotalRamp" Grid.Row="4" Grid.Column="2" Text="{Binding CurrentRecipe.TotalRampTime}"/>
+                                <TextBox x:Name="tbRecipeCurrentHold" Grid.Row="5" Grid.Column="1" Text="{Binding CurrentRecipe.CurrentHoldTime}"/>
+                                <TextBox x:Name="tbRecipeTotalHold" Grid.Row="5" Grid.Column="2" Text="{Binding CurrentRecipe.TotalHoldTime}"/>
+                                <TextBox x:Name="tbRecipePauseTime" Grid.Row="6" Grid.Column="1" Grid.ColumnSpan="2" Width="146" Text="{Binding CurrentRecipe.PauseTime}"/>
+                                <TextBox x:Name="tbRecipeLoopStart" Grid.Row="7" Grid.Column="1" Text="{Binding CurrentRecipe.CurrentLoopStep}"/>
+                                <TextBox x:Name="tbRecipeLoopEnd" Grid.Row="7" Grid.Column="2" Text="{Binding CurrentRecipe.TotalLoopStep}"/>
+                                <TextBox x:Name="tbRecipeCurrentLoop" Grid.Row="8" Grid.Column="1" Text="{Binding CurrentRecipe.CurrentLoopNumber}"/>
+                                <TextBox x:Name="tbRecipeTotalLoop" Grid.Row="8" Grid.Column="2" Text="{Binding CurrentRecipe.TotalLoopNumber}"/>
+                                <TextBox x:Name="tbSusceptorCurrentTemp" Grid.Row="9" Grid.Column="1" Text="{Binding CurrentRecipe.CurrentWaitTemp}"/>
+                                <TextBox x:Name="tbRecipeWaitTemp" Grid.Row="9" Grid.Column="2" Text="{Binding CurrentRecipe.TotalWaitTemp}"/>
                             </Grid>
                         </StackPanel>
                     </Grid>

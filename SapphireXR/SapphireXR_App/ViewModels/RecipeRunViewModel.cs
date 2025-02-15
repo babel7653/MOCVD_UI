@@ -212,7 +212,11 @@ namespace SapphireXR_App.ViewModels
             }
         }
 
-        [RelayCommand]
+        bool canCleanCommandExecute()
+        {
+            return CurrentRecipeUserState == RecipeUserState.Initiated || (RecipeUserState.Stopped <= CurrentRecipeUserState && CurrentRecipeUserState <= RecipeUserState.Ended);
+        }
+        [RelayCommand(CanExecute = nameof(canCleanCommandExecute))]
         private void RecipeClean()
         {
             SyncPLCState(RecipeCommand.Initiate, false);

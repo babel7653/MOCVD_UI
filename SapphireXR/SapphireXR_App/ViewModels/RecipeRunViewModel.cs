@@ -50,6 +50,34 @@ namespace SapphireXR_App.ViewModels
             int currentValue;
         }
 
+        private class LoadFromRecipeEditSubscriber : IObserver<(string, IList<Recipe>)>
+        {
+            internal LoadFromRecipeEditSubscriber(RecipeRunViewModel vm)
+            {
+                recipeRunViewModel = vm;
+            }
+
+            void IObserver<(string, IList<Recipe>)>.OnCompleted()
+            {
+                throw new NotImplementedException();
+            }
+
+            void IObserver<(string, IList<Recipe>)>.OnError(Exception error)
+            {
+                throw new NotImplementedException();
+            }
+
+            void IObserver<(string, IList<Recipe>)>.OnNext((string, IList<Recipe>) value)
+            {
+               if(0 < value.Item2.Count)
+                {
+                    recipeRunViewModel.CurrentRecipe = new RecipeContext(value.Item1 != "" ? value.Item1 : DateTime.Now.ToString("yyyyMMddHHmm") + ".csv", value.Item2);
+                }
+            }
+
+            private RecipeRunViewModel recipeRunViewModel;
+        }
+
         internal class RecipeEndedSubscriber : IObserver<bool>
         {
             internal RecipeEndedSubscriber(RecipeRunViewModel vm)
@@ -307,6 +335,7 @@ namespace SapphireXR_App.ViewModels
 
             ObservableManager<bool>.Subscribe("RecipeEnded", operationStateSubscriber = new RecipeEndedSubscriber(this));
             recipeRunStatePublisher = ObservableManager<RecipeUserState>.Get("RecipeRun.State");
+            ObservableManager<(string, IList<Recipe>)>.Subscribe("RecipeEdit.LoadToRecipeRun", loadFromRecipeEditSubscriber = new LoadFromRecipeEditSubscriber(this));
         }
 
         void IObserver<short>.OnCompleted()
@@ -373,7 +402,6 @@ namespace SapphireXR_App.ViewModels
             SyncPLCState(command, true);
         }
 
-
         private static RecipeContext EmptyRecipeContext = new RecipeContext();
 
         [ObservableProperty]
@@ -404,6 +432,7 @@ namespace SapphireXR_App.ViewModels
         private readonly RecipeEndedSubscriber? operationStateSubscriber = null;
         private RecipeCommand Start = RecipeCommand.Run;
         private ObservableManager<RecipeUserState>.DataIssuer recipeRunStatePublisher;
+        private LoadFromRecipeEditSubscriber loadFromRecipeEditSubscriber;
 
         [ObservableProperty]
         private RecipeUserState _currentRecipeUserState = RecipeUserState.Uninitialized;

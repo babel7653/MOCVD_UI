@@ -25,7 +25,7 @@
         </Grid.ColumnDefinitions>
         <Frame Source="/Views/LeftDashboard.xaml" Grid.Column="0" NavigationUIVisibility="Hidden"/>
         <Grid Grid.Column="1">
-            <TabControl Background="Transparent" SelectedIndex="{Binding SelectedTab}">
+            <TabControl Background="Transparent" SelectedIndex="{Binding SelectedTab, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
                 <TabItem Header="System Control" Width="150"  IsEnabled="{Binding RecipeRunInactive}">
                     <Frame Source="/Views/HomePage.xaml" NavigationUIVisibility="Hidden"/>
                 </TabItem>

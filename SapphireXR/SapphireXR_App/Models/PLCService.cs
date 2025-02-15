@@ -8,6 +8,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Threading;
 using TwinCAT.Ads;
+using TwinCAT.PlcOpen;
 
 namespace SapphireXR_App.Models
 {
@@ -59,13 +60,11 @@ namespace SapphireXR_App.Models
                 hState_RcpOperation = Ads.CreateVariableHandle("RCP.state_RcpOperation");
                 hRcpStepN =Ads.CreateVariableHandle("P50_RecipeControl.nRcpIndex");
                 hTemperaturePV = Ads.CreateVariableHandle("P13_LineHeater.rTemperaturePV");
-                hHeaterOutputPowerSVBytes = Ads.CreateVariableHandle("P11_E3508.aOutputPowerBytes");
-                hPressureByteValuePostion_PV = Ads.CreateVariableHandle("P12_IQ_PLUS.wByteValvePosition_PV");
                 hOperationMode = Ads.CreateVariableHandle("MAIN.bOperationMode");
                 hUserState = Ads.CreateVariableHandle("RCP.userState");
                 hRecipeControlHoldTime = Ads.CreateVariableHandle("P50_RecipeControl.Hold_TIME");
                 hRecipeControlRampTime = Ads.CreateVariableHandle("P50_RecipeControl.Ramp_TIME");
-                hRecipeControlHoldTime = Ads.CreateVariableHandle("P50_RecipeControl.Pause_TIME");
+                hRecipeControlPauseTime = Ads.CreateVariableHandle("P50_RecipeControl.Pause_TIME");
                 
 
                 aDeviceRampTimes = new short[dIndexController.Count];
@@ -141,6 +140,9 @@ namespace SapphireXR_App.Models
             dIOStateList = ObservableManager<BitArray>.Get("DeviceIOList");
             dRecipeEndedPublisher = ObservableManager<bool>.Get("RecipeEnded");
             dLineHeaterTemperatureIssuers = ObservableManager<float[]>.Get("LineHeaterTemperature");
+            dRecipeControlHoldTimeIssuer = ObservableManager<int>.Get("RecipeControlTime.Hold");
+            dRecipeControlPauseTimeIssuer = ObservableManager<int>.Get("RecipeControlTime.Pause");
+            dRecipeControlRampTimeIssuer = ObservableManager<int>.Get("RecipeControlTime.Ramp");
 
             timer = new DispatcherTimer();
             timer.Interval = new TimeSpan(2000000);
@@ -246,9 +248,17 @@ namespace SapphireXR_App.Models
                     dValveStateIssuers?[valveID].Issue(baReadValveStatePLC2[index]);
                 }
             }
-
-
             dLineHeaterTemperatureIssuers?.Issue(Ads.ReadAny<float[]>(hTemperaturePV, [(int)LineHeaterTemperature]));
+
+            var readTime = (uint timeHandle) =>
+            {
+                return ;
+               
+            };
+            dRecipeControlHoldTimeIssuer?.Issue(Ads.ReadAny<TIME>(hRecipeControlHoldTime).Time.Seconds);
+            dRecipeControlRampTimeIssuer?.Issue(Ads.ReadAny<TIME>(hRecipeControlRampTime).Time.Seconds);
+            dRecipeControlPauseTimeIssuer?.Issue(Ads.ReadAny<TIME>(hRecipeControlPauseTime).Time.Seconds);
+
             string exceptionStr = string.Empty;
             if(aDeviceControlValues == null)
             {

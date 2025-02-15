@@ -7,6 +7,9 @@ namespace SapphireXR_App.Models
     public class RecipeObservableCollection : ObservableCollection<Recipe>
     {
         public RecipeObservableCollection() { }
+
+        public RecipeObservableCollection(RecipeObservableCollection rhs): base(rhs) { }
+
         public RecipeObservableCollection(List<Recipe> items) : base(items) { }
         public IList<Recipe> CopyInsertRange(int index, IEnumerable<Recipe> items)
         {

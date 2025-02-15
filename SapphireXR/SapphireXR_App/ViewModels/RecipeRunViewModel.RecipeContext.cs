@@ -52,6 +52,36 @@ namespace SapphireXR_App.ViewModels
                 private int? prevValue;
             }
 
+            private class RecipeTimeSubscriber : IObserver<int>
+            {
+                internal RecipeTimeSubscriber(Action<int> onNextAc)
+                {
+                    onNext = onNextAc;
+                }
+
+                void IObserver<int>.OnCompleted()
+                {
+                    throw new NotImplementedException();
+                }
+
+                void IObserver<int>.OnError(Exception error)
+                {
+                    throw new NotImplementedException();
+                }
+
+                void IObserver<int>.OnNext(int value)
+                {
+                    if(prevValue == null || prevValue != value)
+                    {
+                        onNext(value);
+                        prevValue = value;
+                    }
+                }
+
+                private int? prevValue = null;
+                private readonly Action<int> onNext;
+            }
+
             public RecipeContext() { }
             public RecipeContext(string recipeFilePath, IList<Recipe> recipes)
             {
@@ -124,18 +154,15 @@ namespace SapphireXR_App.ViewModels
                             currentRecipe.Foreground = Brushes.Red;
                             currentRecipe.IsEnabled = false;
 
-                            if(temperatureControlValueSubscriber == null)
-                            {
-                                temperatureControlValueSubscriber = new TemperatureControlValueSubscriber(this);
-                            }
-                            if(unsubscriber == null)
-                            {
-                                unsubscriber = ObservableManager<int>.Subscribe("FlowControl.Temperature.ControlValue", temperatureControlValueSubscriber!);
-                            }
-                            if(CurrentRecipeTime == null)
-                            {
-                                CurrentRecipeTime = 0;
-                            }
+                            temperatureControlValueSubscriber ??= new TemperatureControlValueSubscriber(this);
+                            unsubscriber ??= ObservableManager<int>.Subscribe("FlowControl.Temperature.ControlValue", temperatureControlValueSubscriber!);
+                            recipeControlHoldTimeSubscriber ??= new RecipeTimeSubscriber((int value) => { CurrentHoldTime = value; });
+                            recipeControlHoldTimeUnsubscriber ??= ObservableManager<int>.Subscribe("RecipeControlTime.Hold", recipeControlHoldTimeSubscriber);
+                            recipeControlPauseTimeSubscriber ??= new RecipeTimeSubscriber((int value) => { PauseTime = value; });
+                            recipeControlPauseTimeUnsubscriber ??= ObservableManager<int>.Subscribe("RecipeControlTime.Pause", recipeControlPauseTimeSubscriber);
+                            recipeControlRampTimeSubscriber ??= new RecipeTimeSubscriber((int value) => { CurrentRampTime = value; });
+                            recipeControlRampTimeUnsubscriber ??= ObservableManager<int>.Subscribe("RecipeControlTime.Ramp", recipeControlRampTimeSubscriber);
+                            CurrentRecipeTime ??= 0;
                             CurrentRecipeTime += currentRecipe.RTime;
                             CurrentRecipeTime += currentRecipe.HTime;
                             CurrentStep = currentRecipe.No;
@@ -207,6 +234,14 @@ namespace SapphireXR_App.ViewModels
                 }
             }
 
+            private void disposeSubscribe()
+            {
+                unsubscriber?.Dispose();
+                recipeControlHoldTimeUnsubscriber?.Dispose();
+                recipeControlRampTimeUnsubscriber?.Dispose();
+                recipeControlPauseTimeUnsubscriber?.Dispose();
+            }
+
             public void toLoadedFromFileState()
             {
                 if (currentRecipe != null)
@@ -222,9 +257,15 @@ namespace SapphireXR_App.ViewModels
                 currentRecipe = null;
                 currentRecipeIndex = -1;
                 modifiedRecipeIndice.Clear();
-                unsubscriber?.Dispose();
+                disposeSubscribe();
                 unsubscriber = null;
                 temperatureControlValueSubscriber = null;
+                recipeControlHoldTimeUnsubscriber = null;
+                recipeControlRampTimeUnsubscriber = null;
+                recipeControlPauseTimeUnsubscriber = null;
+                recipeControlHoldTimeSubscriber = null;
+                recipeControlRampTimeSubscriber = null;
+                recipeControlPauseTimeSubscriber = null;
 
                 CurrentRecipeTime = null;
                 TotalRecipeTime = null;
@@ -307,8 +348,16 @@ namespace SapphireXR_App.ViewModels
             private readonly StreamWriter? streamWriter = null;
             private readonly CsvWriter? csvWriter = null;
             private bool disposedValue = false;
+
             private TemperatureControlValueSubscriber? temperatureControlValueSubscriber;
             private IDisposable? unsubscriber = null;
+            private RecipeTimeSubscriber? recipeControlHoldTimeSubscriber = null;
+            private RecipeTimeSubscriber? recipeControlPauseTimeSubscriber = null;
+            private RecipeTimeSubscriber? recipeControlRampTimeSubscriber = null;
+            private IDisposable? recipeControlHoldTimeUnsubscriber = null;
+            private IDisposable? recipeControlPauseTimeUnsubscriber = null;
+            private IDisposable? recipeControlRampTimeUnsubscriber = null;
+
 
             private static readonly CsvHelper.Configuration.CsvConfiguration Config = new CsvHelper.Configuration.CsvConfiguration(CultureInfo.InvariantCulture)
             {
@@ -322,7 +371,7 @@ namespace SapphireXR_App.ViewModels
                 {
                     if (disposing)
                     {
-                        unsubscriber?.Dispose();
+                        disposeSubscribe();
                     }
 
                     // TODO: 비관리형 리소스(비관리형 개체)를 해제하고 종료자를 재정의합니다.

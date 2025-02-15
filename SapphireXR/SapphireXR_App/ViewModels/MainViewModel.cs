@@ -12,7 +12,7 @@ using System.Windows.Input;
 
 namespace SapphireXR_App.ViewModels
 {
-    public partial class MainViewModel : ViewModelBase, IObserver<RecipeRunViewModel.RecipeUserState>
+    public partial class MainViewModel : ViewModelBase, IObserver<RecipeRunViewModel.RecipeUserState>, IObserver<int>
     {
         [ObservableProperty]
         private string? navigationSource;
@@ -58,6 +58,7 @@ namespace SapphireXR_App.ViewModels
                 }
             };
             ObservableManager<RecipeRunViewModel.RecipeUserState>.Subscribe("RecipeRun.State", this);
+            ObservableManager<int>.Subscribe("SwitchTab", this);
             onClosing = onRecipeInactive;
         }
 
@@ -112,6 +113,24 @@ namespace SapphireXR_App.ViewModels
         void IObserver<RecipeRunViewModel.RecipeUserState>.OnNext(RecipeRunViewModel.RecipeUserState recipeRunState)
         {
             RecipeRunInactive = !(RecipeRunViewModel.RecipeUserState.Run <= recipeRunState && recipeRunState <= RecipeRunViewModel.RecipeUserState.Pause);
+        }
+
+        void IObserver<int>.OnCompleted()
+        {
+            throw new NotImplementedException();
+        }
+
+        void IObserver<int>.OnError(Exception error)
+        {
+            throw new NotImplementedException();
+        }
+
+        void IObserver<int>.OnNext(int value)
+        {
+            if (value < 5 && SelectedTab != value)
+            {
+                SelectedTab = value;
+            }
         }
 
         [ObservableProperty]

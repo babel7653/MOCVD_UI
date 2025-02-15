@@ -62,6 +62,9 @@ namespace SapphireXR_App.Models
         private static ObservableManager<bool>.DataIssuer? dRecipeEndedPublisher;
         private static ObservableManager<short>.DataIssuer? dCurrentActiveRecipeIssue;
         private static ObservableManager<float[]>.DataIssuer? dLineHeaterTemperatureIssuers;
+        private static ObservableManager<int>.DataIssuer? dRecipeControlHoldTimeIssuer;
+        private static ObservableManager<int>.DataIssuer? dRecipeControlRampTimeIssuer;
+        private static ObservableManager<int>.DataIssuer? dRecipeControlPauseTimeIssuer;
 
         //Create an instance of the TcAdsClient()
         public static AdsClient Ads { get; set; }
@@ -85,8 +88,6 @@ namespace SapphireXR_App.Models
         private static uint hInputState;
         private static uint hState_RcpOperation;
         private static uint hTemperaturePV;
-        private static uint hHeaterOutputPowerSVBytes;
-        private static uint hPressureByteValuePostion_PV;
         private static uint hOperationMode;
         private static uint hUserState;
         private static uint hRecipeControlHoldTime;

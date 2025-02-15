@@ -11,7 +11,6 @@ using System.ComponentModel;
 using System.Globalization;
 using System.IO;
 using System.Windows;
-using System.Windows.Controls.Ribbon.Primitives;
 using System.Windows.Media;
 
 namespace SapphireXR_App.ViewModels
@@ -39,7 +38,6 @@ namespace SapphireXR_App.ViewModels
         public IRelayCommand RecipeSaveCommand { get; set; }
         public IRelayCommand RecipeSaveAsCommand { get; set; }
 
-        private bool initialPLCLoadCommand = true;
         private string? _recipeFilePath = null;
         public string? RecipeFilePath
         {
@@ -85,19 +83,13 @@ namespace SapphireXR_App.ViewModels
             FlowDataGridContext = new TabDataGridViewModel(this);
             ValveDataGridContext = new TabDataGridViewModel(this);
 
+            loadToRecipeRunPublisher = ObservableManager<(string, IList<Recipe>)>.Get("RecipeEdit.LoadToRecipeRun");
+            switchTabToDataRunPublisher = ObservableManager<int>.Get("SwitchTab");
+
             RecipePLCLoadCommand = new RelayCommand(() =>
             {
-                if(initialPLCLoadCommand == false)
-                {
-                    PLCService.WriteRCPOperationCommand(10);
-                    RecipeService.PLCLoad(Recipes);
-                }
-                else
-                {
-                    PLCService.WriteRCPOperationCommand(0);
-                    RecipeService.PLCLoad(Recipes);
-                    initialPLCLoadCommand = false;
-                }
+                loadToRecipeRunPublisher.Issue(("", new RecipeObservableCollection(Recipes)));
+                switchTabToDataRunPublisher.Issue(1);
             },
              () => Recipes != null && 0 < Recipes.Count
              );
@@ -165,7 +157,6 @@ namespace SapphireXR_App.ViewModels
                     ReactorDataGridContext.reset();
                     FlowDataGridContext.reset();
                     ValveDataGridContext.reset();
-                    initialPLCLoadCommand = true;
                     Recipes.CollectionChanged += (object? sender, NotifyCollectionChangedEventArgs args) =>
                     {
                         RecipePLCLoadCommand.NotifyCanExecuteChanged();
@@ -241,6 +232,9 @@ namespace SapphireXR_App.ViewModels
 
         public List<Recipe> newlyAddedForMarking = new List<Recipe>();
         private RecipeStateUpader? recipeStateUpdater;
+        private ObservableManager<(string, IList<Recipe>)>.DataIssuer loadToRecipeRunPublisher;
+        private ObservableManager<int>.DataIssuer switchTabToDataRunPublisher;
+
 
         [ObservableProperty]
         private RecipeInformationViewModel? _currentRecipeInformationViewModel;

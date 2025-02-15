@@ -1,5 +1,4 @@
-﻿using Caliburn.Micro;
-using CommunityToolkit.Mvvm.ComponentModel;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using SapphireXR_App.Bases;
 using SapphireXR_App.Common;
@@ -10,8 +9,6 @@ using System.Globalization;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Threading;
-using static SapphireXR_App.Common.RecipeService;
-using static SapphireXR_App.ViewModels.RecipeEditViewModel.TabDataGridViewModel;
 
 namespace SapphireXR_App.ViewModels
 {
@@ -253,7 +250,6 @@ namespace SapphireXR_App.ViewModels
                     StartOrPause = true;
                     CurrentRecipe.toLoadedFromFileState();
                     SyncPLCState(RecipeCommand.Initiate);
-                    currentRecipeNo = -1;
                 };
                 switch (e.PropertyName)
                 {
@@ -294,8 +290,6 @@ namespace SapphireXR_App.ViewModels
                         {
                             case RecipeUserState.Uninitialized:
                                 StartOrPause = null;
-                                Start = RecipeCommand.Run;
-                                currentRecipeNo = -1;
                                 DashBoardViewModel.resetFlowChart(CurrentRecipe.Recipes);
                                 break;
 
@@ -303,6 +297,7 @@ namespace SapphireXR_App.ViewModels
                                 DashBoardViewModel.resetFlowChart(CurrentRecipe.Recipes);
                                 StartOrPause = true;
                                 Start = RecipeCommand.Run;
+                                currentRecipeNo = -1;
                                 break;
 
                             case RecipeUserState.Run:
@@ -319,7 +314,7 @@ namespace SapphireXR_App.ViewModels
                                 break;
 
                             case RecipeUserState.Ended:
-                                MessageBox.Show("Recipe가 종료되었습니다." + DateTime.Now.ToString("HH:mm"));
+                                MessageBox.Show("Recipe가 종료되었습니다. 종료시간: " + DateTime.Now.ToString("HH:mm"));
                                 toRecipeLoadedState();
                                 break;
                         }
@@ -333,7 +328,7 @@ namespace SapphireXR_App.ViewModels
                 }
             };
 
-            ObservableManager<bool>.Subscribe("RecipeEnded", operationStateSubscriber = new RecipeEndedSubscriber(this));
+            ObservableManager<bool>.Subscribe("RecipeEnded", recipeEndedSubscriber = new RecipeEndedSubscriber(this));
             recipeRunStatePublisher = ObservableManager<RecipeUserState>.Get("RecipeRun.State");
             ObservableManager<(string, IList<Recipe>)>.Subscribe("RecipeEdit.LoadToRecipeRun", loadFromRecipeEditSubscriber = new LoadFromRecipeEditSubscriber(this));
         }
@@ -429,7 +424,7 @@ namespace SapphireXR_App.ViewModels
         private DispatcherTimer logTimer;
 
         private short currentRecipeNo = -1;
-        private readonly RecipeEndedSubscriber? operationStateSubscriber = null;
+        private readonly RecipeEndedSubscriber? recipeEndedSubscriber = null;
         private RecipeCommand Start = RecipeCommand.Run;
         private ObservableManager<RecipeUserState>.DataIssuer recipeRunStatePublisher;
         private LoadFromRecipeEditSubscriber loadFromRecipeEditSubscriber;

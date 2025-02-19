@@ -9,6 +9,7 @@ using System.Xml.Linq;
 using CommunityToolkit.Mvvm.ComponentModel;
 using SapphireXR_App.Common;
 using System.Diagnostics.CodeAnalysis;
+using SapphireXR_App.Models;
 
 namespace SapphireXR_App.ViewModels
 {
@@ -104,6 +105,7 @@ namespace SapphireXR_App.ViewModels
 
         public ICommand EnableLeakTestCommand { get; set; }
         public ICommand ShowValveLabelCommand { get; set; }
+        public ICommand ManualBatchCommand => new RelayCommand(() => { ManualBatchEx.Show(); });
 
         [ObservableProperty]
         private string _leakTestModeStr = disableLeakTestModeStr;

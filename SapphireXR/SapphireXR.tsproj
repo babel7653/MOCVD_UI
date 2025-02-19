@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<TcSmProject xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://www.beckhoff.com/schemas/2012/07/TcSmProject" TcSmVersion="1.0" TcVersion="3.1.4026.12">
+<TcSmProject xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://www.beckhoff.com/schemas/2012/07/TcSmProject" TcSmVersion="1.0" TcVersion="3.1.4026.13">
 	<DataTypes>
 		<DataType>
 			<Name GUID="{F13B6D04-11D0-5217-2BF9-7A8308D2316E}" Namespace="Tc2_SerialCom" AutoDeleteType="true">KL6inData22B</Name>
@@ -161,20 +161,20 @@
 		</System>
 		<Plc>
 			<Project GUID="{8B546B3A-EC4D-41CC-9C57-49402FFC4072}" Name="PLC_MR" PrjFilePath="PLC_MR\PLC_MR.plcproj" TmcFilePath="PLC_MR\PLC_MR.tmc" ReloadTmc="true" AmsPort="851" FileArchiveSettings="#x000e" SymbolicMapping="true">
-				<Instance Id="#x08502000" TcSmClass="TComPlcObjDef" KeepUnrestoredLinks="2" TmcHash="{9AB216CE-6A2D-F1E4-82CC-95A895698F25}" TmcPath="PLC_MR\PLC_MR.tmc">
+				<Instance Id="#x08502000" TcSmClass="TComPlcObjDef" KeepUnrestoredLinks="2" TmcHash="{3A1D8C63-EEEC-15A1-CC96-0A48C5244F0C}" TmcPath="PLC_MR\PLC_MR.tmc">
 					<Name>PLC_MR Instance</Name>
 					<CLSID ClassFactory="TcPlc30">{08500001-0000-0000-F000-000000000064}</CLSID>
 					<Vars VarGrpType="2" ContextId="1" AreaNo="17">
 						<Name>PlcTask_Standard Outputs</Name>
 						<Var>
-							<Name>P11_E3508.aOutputSVBytes</Name>
-							<Comment><![CDATA[Temperature Set Value]]></Comment>
-							<Type GUID="{AD55499D-583F-6E21-3376-A8B0BA3E2897}">ARRAY [1..2] OF USINT</Type>
-						</Var>
-						<Var>
 							<Name>P11_E3508.nOutputManAutoBytes</Name>
 							<Comment><![CDATA[ManAuto Change]]></Comment>
 							<Type>USINT</Type>
+						</Var>
+						<Var>
+							<Name>P11_E3508.aOutputSVBytes</Name>
+							<Comment><![CDATA[Temperature Set Value]]></Comment>
+							<Type GUID="{AD55499D-583F-6E21-3376-A8B0BA3E2897}">ARRAY [1..2] OF USINT</Type>
 						</Var>
 						<Var>
 							<Name>P11_E3508.aOutputPowerBytes</Name>
@@ -382,7 +382,7 @@
 					<Box Id="2" BoxType="9095" BoxFlags="#x00000020">
 						<Name>Term 2 (EL6752)</Name>
 						<ImageId>1001</ImageId>
-						<EtherCAT SlaveType="5" AdsServerAddress="d3e1008202030000" PdiType="#x0008" ExecIo="true" MboxDataLinkLayer="true" StateMBoxPolling="true" CycleMBoxPollingTime="0" CoeType="39" FoeType="1" VendorId="#x00000002" ProductCode="#x1a603052" RevisionNo="#x00140000" InfoDataAddr="true" InfoDataNetId="true" RepeatSupport="true" TimeoutMailbox2="3000" GenerateOwnNetId="true" InitializeOwnNetId="true" CheckRevisionNoType="3" PortPhys="51" MaxSlotCount="256" MaxSlotGroupCount="1" SlotPdoIncrement="1" SlotIndexIncrement="16" Type="EL6752 DeviceNet Master" Desc="EL6752" PortABoxInfo="#x01000001">
+						<EtherCAT SlaveType="5" AdsServerAddress="d3e1007d02030000" FixedAdsServerNetId="true" PdiType="#x0008" ExecIo="true" MboxDataLinkLayer="true" StateMBoxPolling="true" CycleMBoxPollingTime="0" CoeType="39" FoeType="1" VendorId="#x00000002" ProductCode="#x1a603052" RevisionNo="#x00140000" InfoDataAddr="true" InfoDataNetId="true" RepeatSupport="true" TimeoutMailbox2="3000" GenerateOwnNetId="true" InitializeOwnNetId="true" CheckRevisionNoType="3" PortPhys="51" MaxSlotCount="256" MaxSlotGroupCount="1" SlotPdoIncrement="1" SlotIndexIncrement="16" Type="EL6752 DeviceNet Master" Desc="EL6752" PortABoxInfo="#x01000001">
 							<SyncMan>001000042600010001000000400000040004001026010000</SyncMan>
 							<SyncMan>001400042200010002000000400000040004001422010000</SyncMan>
 							<SyncMan>001800002400000003000000000000000000001824010000</SyncMan>

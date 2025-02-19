@@ -77,7 +77,7 @@ namespace SapphireXR_App.ViewModels
                 new() { Name= "SMPS - 24V 480", OnOff = true }, new() { Name= "SMPS - 24V 72", OnOff = true },  new() { Name= "SMPS - 15V Plus", OnOff = true },
                 new() { Name= "SMPS - 15V Minus", OnOff = true },  new() { Name= "CP - Induction Heater", OnOff = true }, new() { Name= "CP - Thermal Bath", OnOff = true },
                 new() { Name= "CP - Vacuum Pump", OnOff = true },  new() { Name= "CP - Line Heater", OnOff = true }, new() { Name= "CP - Rotation Motor", OnOff = true },
-                new() { Name= "CP - Cover Motor", OnOff = true },  new() { Name= "CP - Throttle Valve", OnOff = true }, new() { Name= "CP = Lamp", OnOff = true },
+                new() { Name= "CP - Cover Motor", OnOff = true },  new() { Name= "CP - Throttle Valve", OnOff = true }, new() { Name= "CP - Lamp", OnOff = true },
                 new() { Name= "CP - SMPS15CP", OnOff = true },  new() { Name= "Line Heater 0", OnOff = true }, new() { Name= "Line Heater 1", OnOff = true },
                 new() { Name= "Line Heater 2", OnOff = true }, new() { Name= "Line Heater 3", OnOff = true },  new() { Name= "Line Heater 4", OnOff = true },
                 new() { Name= "Line Heater 5", OnOff = true },  new() { Name= "Line Heater 6", OnOff = true },  new() { Name= "Line Heater 7", OnOff = true },

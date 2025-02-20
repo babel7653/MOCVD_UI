@@ -9,6 +9,11 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Resources\plus-icon-13071.png" />
+    <None Remove="Resources\subtract-icon-png-28153.png" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Beckhoff.TwinCAT.Ads" Version="6.1.294" />
     <PackageReference Include="Caliburn.Micro.Core" Version="4.0.230" />
     <PackageReference Include="CommunityToolkit.Mvvm" Version="8.3.2" />
@@ -17,6 +22,15 @@
     <PackageReference Include="Microsoft.Xaml.Behaviors.Wpf" Version="1.1.135" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
     <PackageReference Include="OxyPlot.Wpf" Version="2.2.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Resources\plus-icon-13071.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\subtract-icon-png-28153.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
   </ItemGroup>
 
 </Project>

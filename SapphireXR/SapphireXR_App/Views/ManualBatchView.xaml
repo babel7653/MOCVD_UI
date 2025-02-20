@@ -20,21 +20,30 @@
             <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="25" />
+                    <ColumnDefinition Width="25" />
                     <ColumnDefinition Width="90"/>
                     <ColumnDefinition Width="90" />
                 </Grid.ColumnDefinitions>
-                <ComboBox Grid.Column="0"></ComboBox>
-                <Button x:Name="UserSqtateBatch" Grid.Column="1" Content="Batch" Width="70" Margin="5" Command="{Binding BatchCommand}" />
-                <Button x:Name="UserStateSave" Grid.Column="2" Content="Save" Width="70" Margin="5" Command="{Binding SaveCommand}" />
+                <ComboBox Grid.Column="0" ItemsSource="{Binding Batches, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" DisplayMemberPath="Name" 
+                          SelectedItem="{Binding CurrentBatch, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                <Button Grid.Column="1" Width="20" Background="Transparent" BorderBrush="Transparent" Command="{Binding AddCommand}">
+                    <Image Source="/Resources/plus-icon-13071.png" />
+                </Button>
+                <Button Grid.Column="2" Width="20" Background="Transparent" BorderBrush="Transparent" Command="{Binding MinusCommand}">
+                    <Image Source="/Resources/subtract-icon-png-28153.png" />
+                </Button>
+                <Button x:Name="UserSqtateBatch" Grid.Column="3" Content="Batch" Width="70" Margin="5" Command="{Binding LoadToPLCCommand}" />
+                <Button x:Name="UserStateSave" Grid.Column="4" Content="Save" Width="70" Margin="5" Command="{Binding SaveCommand}" />
             </Grid>
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
                
             </StackPanel>
             <StackPanel Orientation="Horizontal">
                 <Label Content="Name" />
-                <TextBox Width="100"/>
+                <TextBox Width="100" Text="{Binding CurrentBatch.Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                 <Label Content="Ramping Time(s)" />
-                <TextBox Width="100"/>
+                <TextBox Width="100" Text="{Binding CurrentBatch.RampingTime, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
             </StackPanel>
             <Grid Height="Auto">
                 <Grid.RowDefinitions>
@@ -44,7 +53,7 @@
                 </Grid.RowDefinitions>
                 <StackPanel Grid.Row="0">
                     <DataGrid x:Name="dgUserSettingA" AutoGenerateColumns="False" Margin="5,0,5,0" Height="320"
-                       VerticalScrollBarVisibility="Auto" ItemsSource="{Binding lAnalogDeviceIO}" CanUserAddRows="False">
+                       VerticalScrollBarVisibility="Auto" ItemsSource="{Binding CurrentBatch.AnalogIOUserStates}" CanUserAddRows="False">
                         <DataGrid.Resources>
                             <Style TargetType="{x:Type DataGridColumnHeader}">
                                 <Setter Property="HorizontalAlignment" Value="Center"/>
@@ -56,12 +65,10 @@
                             </Style>
                         </DataGrid.Resources>
                         <DataGrid.Columns>
-                            <DataGridTextColumn Header="Device Id" CanUserSort="False" CanUserResize="False" Width="60"
-                                         Binding="{Binding Path=ID, Mode=TwoWay}"/>
-                            <DataGridTextColumn Header="Device Name" CanUserSort="False" CanUserResize="False" Width="*"
-                                         Binding="{Binding Path=Name}"/>
-                            <DataGridTextColumn Header="State" CanUserSort="False" CanUserResize="False" Width="100"
-                                         Binding="{Binding Path=UserState}"/>
+                            <DataGridTextColumn Header="Device Id" CanUserSort="False" CanUserResize="False" Width="60" Binding="{Binding Path=ID, Mode=OneWay,UpdateSourceTrigger=PropertyChanged}" IsReadOnly="True"/>
+                            <DataGridTextColumn Header="Device Name" CanUserSort="False" CanUserResize="False" Width="*" Binding="{Binding Path=Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                            <DataGridTextColumn Header="Value" CanUserSort="False" CanUserResize="False" Width="100" Binding="{Binding Path=Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                            <DataGridTextColumn Header="Max Value" CanUserSort="False" CanUserResize="False" Width="100" Binding="{Binding Path=MaxValue, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" IsReadOnly="True"/>
                         </DataGrid.Columns>
                     </DataGrid>
                 </StackPanel>
@@ -69,7 +76,7 @@
                 </StackPanel>
                 <StackPanel Grid.Row="2">
                     <DataGrid x:Name="dgUserSettingD" AutoGenerateColumns="False" Margin="5,0,5,0" Height="320"
-                       VerticalScrollBarVisibility="Auto" ItemsSource="{Binding lGasDO}" CanUserAddRows="False">
+                       VerticalScrollBarVisibility="Auto" ItemsSource="{Binding CurrentBatch.DigitalIOUserStates}" CanUserAddRows="False">
                         <DataGrid.Resources>
                             <Style TargetType="{x:Type DataGridColumnHeader}">
                                 <Setter Property="HorizontalAlignment" Value="Center"/>
@@ -81,12 +88,10 @@
                             </Style>
                         </DataGrid.Resources>
                         <DataGrid.Columns>
-                            <DataGridTextColumn Header="Device Id" CanUserSort="False" CanUserResize="False" Width="60"
-                                         Binding="{Binding Path=ID, Mode=TwoWay}"/>
-                            <DataGridTextColumn Header="Device Name" CanUserSort="False" CanUserResize="False" Width="*"
-                                         Binding="{Binding Path=Name}"/>
-                            <DataGridCheckBoxColumn Header="State" CanUserSort="False" CanUserResize="False" Width="100"
-                                         Binding="{Binding Path=UserState}"/>
+                            <DataGridTextColumn Header="Device Id" CanUserSort="False" CanUserResize="False" Width="60" Binding="{Binding Path=ID, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" IsReadOnly="True" />
+                            <DataGridTextColumn Header="Device Name" CanUserSort="False" CanUserResize="False" Width="*" Binding="{Binding Path=Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                            <DataGridCheckBoxColumn Header="State" CanUserSort="False" CanUserResize="False" Width="100" Binding="{Binding Path=On, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                    EditingElementStyle="{StaticResource VavleOnOffCheckBox}" ElementStyle="{StaticResource VavleOnOffCheckBox}"/>
                         </DataGrid.Columns>
                     </DataGrid>
                 </StackPanel>

@@ -63,22 +63,33 @@ namespace SapphireXR_App.Common
                     string? flowControllerID = null;
                     if (Util.RecipeFlowControlFieldToControllerID.TryGetValue(flowControlField, out flowControllerID) == true)
                     {
-                        return valdiate(textBox, flowControllerID);
+                        return validate(textBox, flowControllerID);
                     }
                 }
             }
             return null;
         }
 
-        private string valdiate(TextBox textBox, string flowControllerID)
+        private FlowControllerTextBoxValidater get(TextBox textBox)
         {
             FlowControllerTextBoxValidater? validater = null;
-            if(prevTexts.TryGetValue(textBox, out validater) == false)
+            if (prevTexts.TryGetValue(textBox, out validater) == false)
             {
                 validater = new FlowControllerTextBoxValidater();
                 prevTexts.Add(textBox, validater);
             }
-            return validater.valdiate(textBox, flowControllerID);
+            return validater;
+        }
+
+
+        public string validate(TextBox textBox, string flowControllerID)
+        {
+            return get(textBox).valdiate(textBox, flowControllerID);
+        }
+
+        public string validate(TextBox textBox, uint maxValue)
+        {
+            return get(textBox).valdiate(textBox, maxValue);
         }
 
         private Dictionary<TextBox, FlowControllerTextBoxValidater> prevTexts = new Dictionary<TextBox, FlowControllerTextBoxValidater>();

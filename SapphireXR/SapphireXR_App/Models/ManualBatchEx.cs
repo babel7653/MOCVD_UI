@@ -7,8 +7,7 @@ namespace SapphireXR_App.Models
     {
         internal static void Show()
         {
-            ManualBatchView manualBatchView = new ManualBatchView();
-            manualBatchView.DataContext = new ManualBatchViewModel();
+            ManualBatchView manualBatchView = new ManualBatchView(new ManualBatchViewModel());
             manualBatchView.ShowDialog();
         }
     }

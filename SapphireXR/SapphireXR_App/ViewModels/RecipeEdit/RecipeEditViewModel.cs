@@ -17,59 +17,6 @@ namespace SapphireXR_App.ViewModels
 {
     public partial class RecipeEditViewModel : ViewModelBase
     {
-        private RecipeObservableCollection _recipes;
-        public RecipeObservableCollection Recipes
-        {
-            get { return _recipes; }
-            set 
-            { 
-                SetProperty(ref _recipes, value);
-            }
-        }
-
-        public IRelayCommand RecipeNewCommand => new RelayCommand(() =>
-        {
-            Recipes = new RecipeObservableCollection();
-            RecipeFilePath = null;
-        });
-        public IRelayCommand RecipeOpenCommand => new RelayCommand(RecipeOpen);
-        public IRelayCommand NavigateCommand => new RelayCommand<string?>(OnNavigate);
-        public IRelayCommand RecipePLCLoadCommand { get; set; }
-        public IRelayCommand RecipeSaveCommand { get; set; }
-        public IRelayCommand RecipeSaveAsCommand { get; set; }
-
-        private string? _recipeFilePath = null;
-        public string? RecipeFilePath
-        {
-            get { return _recipeFilePath; }
-            set {  SetProperty(ref _recipeFilePath, value); }
-        }
-
-        [ObservableProperty]
-        private Visibility _showCopyMenu;
-        [ObservableProperty]
-        private Visibility _showPasteMenu;
-        [ObservableProperty]
-        private bool _controlUIEnabled = false;
-
-        public TabDataGridViewModel ReactorDataGridContext { get; set; }
-        public TabDataGridViewModel FlowDataGridContext { get; set; }
-        public TabDataGridViewModel ValveDataGridContext { get; set; }
-
-        // 네비게이션 소스
-        private string? _navigationSource;
-        public string? NavigationSource
-        {
-            get { return _navigationSource; }
-            set { SetProperty(ref _navigationSource, value); }
-        }
-
-        private static readonly CsvHelper.Configuration.CsvConfiguration Config = new CsvHelper.Configuration.CsvConfiguration(CultureInfo.InvariantCulture)
-        {
-            Delimiter = ",",
-            HasHeaderRecord = true
-        };
-
 #pragma warning disable CS8618 // null을 허용하지 않는 필드는 생성자를 종료할 때 null이 아닌 값을 포함해야 합니다. 'required' 한정자를 추가하거나 nullable로 선언하는 것이 좋습니다.
         public RecipeEditViewModel()
 #pragma warning restore CS8618 // null을 허용하지 않는 필드는 생성자를 종료할 때 null이 아닌 값을 포함해야 합니다. 'required' 한정자를 추가하거나 nullable로 선언하는 것이 좋습니다.
@@ -228,6 +175,59 @@ namespace SapphireXR_App.ViewModels
             }
             CurrentRecipeInformationViewModel?.setCurrentRecipe(recipe);
 
+        }
+
+        private static readonly CsvHelper.Configuration.CsvConfiguration Config = new CsvHelper.Configuration.CsvConfiguration(CultureInfo.InvariantCulture)
+        {
+            Delimiter = ",",
+            HasHeaderRecord = true
+        };
+
+        private RecipeObservableCollection _recipes;
+        public RecipeObservableCollection Recipes
+        {
+            get { return _recipes; }
+            set
+            {
+                SetProperty(ref _recipes, value);
+            }
+        }
+
+        public IRelayCommand RecipeNewCommand => new RelayCommand(() =>
+        {
+            Recipes = new RecipeObservableCollection();
+            RecipeFilePath = null;
+        });
+        public IRelayCommand RecipeOpenCommand => new RelayCommand(RecipeOpen);
+        public IRelayCommand NavigateCommand => new RelayCommand<string?>(OnNavigate);
+        public IRelayCommand RecipePLCLoadCommand { get; set; }
+        public IRelayCommand RecipeSaveCommand { get; set; }
+        public IRelayCommand RecipeSaveAsCommand { get; set; }
+
+        private string? _recipeFilePath = null;
+        public string? RecipeFilePath
+        {
+            get { return _recipeFilePath; }
+            set { SetProperty(ref _recipeFilePath, value); }
+        }
+
+        [ObservableProperty]
+        private Visibility _showCopyMenu;
+        [ObservableProperty]
+        private Visibility _showPasteMenu;
+        [ObservableProperty]
+        private bool _controlUIEnabled = false;
+
+        public TabDataGridViewModel ReactorDataGridContext { get; set; }
+        public TabDataGridViewModel FlowDataGridContext { get; set; }
+        public TabDataGridViewModel ValveDataGridContext { get; set; }
+
+        // 네비게이션 소스
+        private string? _navigationSource;
+        public string? NavigationSource
+        {
+            get { return _navigationSource; }
+            set { SetProperty(ref _navigationSource, value); }
         }
 
         public List<Recipe> newlyAddedForMarking = new List<Recipe>();

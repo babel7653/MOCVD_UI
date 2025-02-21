@@ -7,6 +7,9 @@ using System.Windows.Media;
 using System.Windows;
 using static System.Net.Mime.MediaTypeNames;
 using System.Windows.Input;
+using System.IO;
+using System.Security.Policy;
+using System.Windows.Resources;
 
 namespace SapphireXR_App.Common
 {
@@ -69,9 +72,19 @@ namespace SapphireXR_App.Common
             e.Handled = !IsTextNumeric(textInput);
         }
 
-        static public void OnlyAllowConstrainedNumber(RoutedEventArgs e, string curStr,  string newStr, int maxValue)
+        public static void OnlyAllowConstrainedNumber(RoutedEventArgs e, string curStr,  string newStr, int maxValue)
         {
             e.Handled = !CheckValid(curStr, newStr, maxValue);
+        }
+
+        public static string? GetResourceAbsoluteFilePath(string subPath)
+        {
+            Uri uri = new Uri("/Resources/" + subPath.TrimStart('/'), UriKind.Relative);
+            StreamResourceInfo info = System.Windows.Application.GetContentStream(uri);
+            string? filePath = (info.Stream as FileStream)?.Name;
+            info.Stream.Close();
+
+            return filePath;
         }
         
         public static readonly Dictionary<string, string> RecipeFlowControlFieldToControllerID = new Dictionary<string, string>

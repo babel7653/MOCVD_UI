@@ -25,12 +25,15 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Resource Include="Resources\plus-icon-13071.png">
+    <Resource Include="Resources\Images\plus-icon-13071.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Resource>
-    <Resource Include="Resources\subtract-icon-png-28153.png">
+    <Resource Include="Resources\Images\subtract-icon-png-28153.png">
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </Resource>
+    <Content Include="Resources\Configurations\IOBatch.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
 
 </Project>

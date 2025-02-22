@@ -347,7 +347,8 @@
                 <Label Canvas.Left="1168" Canvas.Top="511" Foreground="{StaticResource PrimaryFontColor}" Content="Ext. Pressure"
                 Width="80" HorizontalContentAlignment="Center"/>
             <control:MonitoringMeter x:Name="extPressure" Canvas.Left="1173" Canvas.Top="536"  Type="ExtPressure"/>
-            <!--#endregion-->
+
+                <!--#endregion-->
 
                 <!-- #Region 5. 가스제어용 밸브 -->
                 <!-- Button for Valve Control -->
@@ -771,55 +772,58 @@
             </Grid>
         </Grid>
         <Grid Grid.Column="1" Background="{StaticResource DashboardBackground}">
+            <Grid.Resources>
+                <Style TargetType="{x:Type Label}">
+                    <Setter Property="Foreground" Value="{StaticResource PrimaryFontColor}"/>
+                    <Setter Property="FontSize" Value="11"/>
+                    <Setter Property="Height" Value="30"/>
+                    <Setter Property="VerticalAlignment" Value="Bottom"/>
+                </Style>
+                <Style TargetType="{x:Type Button}">
+                    <Setter Property="Width" Value="70"/>
+                    <Setter Property="Height" Value="20"/>
+                    <Setter Property="Margin" Value="4"/>
+                    <Setter Property="FontSize" Value="11"/>
+                </Style>
+                <Style TargetType="{x:Type TextBlock}">
+                    <Setter Property="Foreground" Value="{StaticResource PrimaryFontColor}"/>
+                    <Setter Property="FontSize" Value="11"/>
+                    <Setter Property="HorizontalAlignment" Value="Center"/>
+                </Style>
+                <Style TargetType="{x:Type TextBox}">
+                    <Setter Property="Width" Value="64"/>
+                    <Setter Property="Height" Value="22"/>
+                    <Setter Property="Background" Value="LightGray"/>
+                    <Setter Property="Foreground" Value="DarkBlue"/>
+                    <Setter Property="FontSize" Value="11"/>
+                    <Setter Property="HorizontalAlignment" Value="Center"/>
+                    <Setter Property="VerticalAlignment" Value="Center"/>
+                    <Setter Property="TextAlignment" Value="Right"/>
+                </Style>
+            </Grid.Resources>
             <Grid.RowDefinitions>
-                <RowDefinition Height="210"/>
-                <RowDefinition Height="120"/>
-                <RowDefinition Height="180"/>
                 <RowDefinition Height="100"/>
+                <RowDefinition Height="180"/>
+                <RowDefinition Height="240"/>
+                <RowDefinition Height="180"/>
                 <RowDefinition/>
             </Grid.RowDefinitions>
             <!-- User Status-->
             <Grid Grid.Row="0">
                 <StackPanel Orientation="Vertical">
-                    <StackPanel.Resources>
-                        <Style TargetType="{x:Type Button}">
-                            <Setter Property="Width" Value="240"/>
-                            <Setter Property="Height" Value="32"/>
-                            <Setter Property="Margin" Value="4"/>
-                            <Setter Property="FontSize" Value="14"/>
-                            <Setter Property="HorizontalAlignment" Value="Center"/>
-                        </Style>
-                    </StackPanel.Resources>
-                    <TextBlock Foreground="DeepSkyBlue" FontSize="14"  HorizontalAlignment="Center" >
-                <Bold>User Status</Bold></TextBlock>
+                    <Label Foreground="DeepSkyBlue" FontSize="14" HorizontalContentAlignment="Center">
+                        <Bold>User Status </Bold>
+                    </Label>
                     <Line X1="5" Y1="0" X2="295" Y2="0" Stroke="DeepSkyBlue" StrokeThickness="2" Margin="2,2,2,8"/>
-                    <StackPanel Orientation="Vertical">
-                        <Button Content="User State" Command="{Binding ManualBatchCommand}"/>
-                    </StackPanel>
+                    <Button Content="User State" Width="240" Height="24" Margin="4" Command="{Binding ManualBatchCommand}"/>
                 </StackPanel>
             </Grid>
             <!-- Susceptor Temperature Control Current Status -->
             <Grid Grid.Row="1">
                 <StackPanel Orientation="Vertical">
-                    <StackPanel.Resources>
-                        <Style TargetType="{x:Type TextBlock}">
-                            <Setter Property="Foreground" Value="{StaticResource PrimaryFontColor}"/>
-                            <Setter Property="FontSize" Value="11"/>
-                            <Setter Property="HorizontalAlignment" Value="Center"/>
-                        </Style>
-                        <Style TargetType="{x:Type TextBox}">
-                            <Setter Property="Width" Value="64"/>
-                            <Setter Property="Height" Value="22"/>
-                            <Setter Property="Foreground" Value="DarkBlue"/>
-                            <Setter Property="Background" Value="LightGray"/>
-                            <Setter Property="FontSize" Value="11"/>
-                            <Setter Property="HorizontalAlignment" Value="Center"/>
-                            <Setter Property="VerticalAlignment" Value="Center"/>
-                            <Setter Property="TextAlignment" Value="Right"/>
-                        </Style>
-                    </StackPanel.Resources>
-                    <TextBlock Foreground="DeepSkyBlue" FontSize="14" HorizontalAlignment="Center" >
-                <Bold>Heater Control</Bold></TextBlock>
+                    <Label Foreground="DeepSkyBlue" FontSize="14" HorizontalContentAlignment="Center">
+                        <Bold>Heater Controller</Bold>
+                    </Label>
                     <Line X1="5" Y1="0" X2="295" Y2="0" Stroke="DeepSkyBlue" StrokeThickness="2"/>
                     <Grid>
                         <Grid.ColumnDefinitions>
@@ -841,38 +845,24 @@
                         <TextBox x:Name="tbCurrentTemp"  Grid.Column="2" Grid.Row="1" Text="{Binding CurrentTemp}"/>
                         <TextBox x:Name="tbPowerRateTemp" Grid.Column="3" Grid.Row="1" Text="{Binding PowerRateTemp}"/>
                     </Grid>
-                    <Grid>
-                        <StackPanel Orientation="Horizontal" Height="30">
-                            <TextBlock Width="210"  Height="20" TextAlignment="Right" Text="Heater Control Mode"
-                                   Margin="0,2,6,0"/>
-                            <Button Height="20" Width="80" FontSize="11" Content="Power Rate" />
-                        </StackPanel>
-                    </Grid>
+                    <StackPanel Orientation="Horizontal" Height="30">
+                        <TextBlock Width="210"  Height="20" TextAlignment="Right" Text="Heater Control Mode"
+                                Margin="0,2,6,0"/>
+                        <Button Height="20" Width="80" FontSize="11" Content="Power Rate" />
+                    </StackPanel>
+                    <Label Content="Induction Heater Control" VerticalContentAlignment="Bottom"/>
+                    <StackPanel Orientation="Horizontal" Height="30" Margin="10,0,0,0">
+                        <Button x:Name="btHeaterOn" Content="ON"/>
+                        <Button x:Name="btHeaterReset" Content="RESET"/>
+                    </StackPanel>
                 </StackPanel>
             </Grid>
             <!-- Reactor Pressure Control Current Status -->
             <Grid Grid.Row="2">
                 <StackPanel Orientation="Vertical">
-                    <StackPanel.Resources>
-                        <Style TargetType="{x:Type TextBlock}">
-                            <Setter Property="Foreground" Value="{StaticResource PrimaryFontColor}"/>
-                            <Setter Property="FontSize" Value="11"/>
-                            <Setter Property="HorizontalAlignment" Value="Center"/>
-                            <Setter Property="VerticalAlignment" Value="Center"/>
-                        </Style>
-                        <Style TargetType="{x:Type TextBox}">
-                            <Setter Property="Width" Value="64"/>
-                            <Setter Property="Height" Value="22" />
-                            <Setter Property="Background" Value="LightGray"/>
-                            <Setter Property="Foreground" Value="DarkBlue"/>
-                            <Setter Property="FontSize" Value="11"/>
-                            <Setter Property="HorizontalAlignment" Value="Center"/>
-                            <Setter Property="VerticalAlignment" Value="Center"/>
-                            <Setter Property="TextAlignment" Value="Right"/>
-                        </Style>
-                    </StackPanel.Resources>
-                    <TextBlock Foreground="DeepSkyBlue" FontSize="14" HorizontalAlignment="Center">
-                <Bold>Pressure Control</Bold></TextBlock>
+                    <Label Foreground="DeepSkyBlue" FontSize="14" HorizontalContentAlignment="Center">
+                        <Bold>Pressure Controller</Bold>
+                    </Label>
                     <Line X1="5" Y1="0" X2="295" Y2="0" Stroke="DeepSkyBlue" StrokeThickness="2"/>
                     <Grid>
                         <Grid.ColumnDefinitions>
@@ -899,39 +889,26 @@
                                Margin="0,2,6,0"/>
                         <Button Height="20" Width="80"  FontSize="11" Content="Pressure" />
                     </StackPanel>
-                    <StackPanel Orientation="Horizontal" Height="30">
-                        <TextBlock Height="20" Text="Throttle Valve Control" Margin="10,8,0,0"/>
-                    </StackPanel>
+                    <Label Content="Throttle Valve Control" VerticalContentAlignment="Bottom"/>
                     <StackPanel Orientation="Horizontal" Height="30" HorizontalAlignment="Center">
-                        <Button Height="20" Width="70" FontSize="11" Content="RUN"/>
-                        <Button Height="20" Width="70" FontSize="11" Content="OPEN"/>
-                        <Button Height="20" Width="70" FontSize="11" Content="CLOSE"/>
-                        <Button Height="20" Width="70" FontSize="11" Content="STOP"/>
+                        <Button x:Name="btThrottleRun" Content="RUN"/>
+                        <Button x:Name="btThrottleOpen" Content="OPEN"/>
+                        <Button x:Name="btThrottleClose" Content="CLOSE"/>
+                        <Button x:Name="btThrottleStop" Content="STOP"/>
+                    </StackPanel>
+                    <Label Content="Vacuum Pump Control" VerticalContentAlignment="Bottom"/>
+                    <StackPanel Orientation="Horizontal" Height="30" Margin="10,0,0,0">
+                        <Button x:Name="btPumpOn" Content="ON"/>
+                        <Button x:Name="btPumpReset" Content="RESET"/>
                     </StackPanel>
                 </StackPanel>
             </Grid>
             <!-- Susceptor Rotation Current Status -->
             <Grid Grid.Row="3">
                 <StackPanel Orientation="Vertical">
-                    <StackPanel.Resources>
-                        <Style TargetType="{x:Type TextBlock}">
-                            <Setter Property="Foreground" Value="{StaticResource PrimaryFontColor}"/>
-                            <Setter Property="FontSize" Value="11"/>
-                            <Setter Property="HorizontalAlignment" Value="Center"/>
-                        </Style>
-                        <Style TargetType="{x:Type TextBox}">
-                            <Setter Property="Width" Value="64"/>
-                            <Setter Property="Height" Value="22"/>
-                            <Setter Property="Background" Value="LightGray"/>
-                            <Setter Property="Foreground" Value="DarkBlue"/>
-                            <Setter Property="FontSize" Value="11"/>
-                            <Setter Property="HorizontalAlignment" Value="Center"/>
-                            <Setter Property="VerticalAlignment" Value="Center"/>
-                            <Setter Property="TextAlignment" Value="Right"/>
-                        </Style>
-                    </StackPanel.Resources>
-                    <TextBlock Foreground="DeepSkyBlue" FontSize="14" HorizontalAlignment="Center" Margin="2">
-                <Bold>Rotation Status</Bold></TextBlock>
+                    <Label Foreground="DeepSkyBlue" FontSize="14" HorizontalContentAlignment="Center">
+                        <Bold>Rotation Controller</Bold>
+                    </Label>
                     <Line X1="5" Y1="0" X2="295" Y2="0" Stroke="DeepSkyBlue" StrokeThickness="2"/>
                     <Grid>
                         <Grid.ColumnDefinitions>
@@ -951,20 +928,17 @@
                         <TextBox x:Name="tbControlRotation"  Grid.Column="1" Grid.Row="1" Text="{Binding ControlRotation}"/>
                         <TextBox x:Name="tbCurrentRotation"  Grid.Column="2" Grid.Row="1" Text="{Binding CurrentRotation}"/>
                     </Grid>
+                        <Label Content="Motor Control" VerticalContentAlignment="Bottom"/>
+                        <Button x:Name="btMotorReset" Content="RESET" HorizontalAlignment="Left" Margin="10,0,0,0"/>
                 </StackPanel>
             </Grid>
             <!-- Event Log -->
             <Grid Grid.Row="4" >
                 <StackPanel Orientation="Vertical">
-                    <StackPanel.Resources>
-                        <Style TargetType="{x:Type TextBlock}">
-                            <Setter Property="Foreground" Value="{StaticResource PrimaryFontColor}"/>
-                            <Setter Property="Height" Value="24"/>
-                        </Style>
-                    </StackPanel.Resources>
                     <StackPanel Orientation="Horizontal">
-                        <TextBlock Foreground="DeepSkyBlue" FontSize="14" Width="120" HorizontalAlignment="Center" Margin="100,0,0,0">
-                    <Bold>Event Log</Bold></TextBlock>
+                        <Label Foreground="DeepSkyBlue" FontSize="14" HorizontalContentAlignment="Center" Margin="100,0,0,0">
+                            <Bold>Event Log</Bold>
+                        </Label>
                         <Button Height="20" Width="80" Content="Clear"/>
                     </StackPanel>
                     <Line X1="5" Y1="0" X2="295" Y2="0" Stroke="DeepSkyBlue" StrokeThickness="2" Margin="2,2,2,8"/>

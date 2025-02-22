@@ -5,7 +5,6 @@
 VAR_INPUT
 	wControlValue 		: WORD := 760;//Pressure Set Value
 	//wSetPoint 			: WORD; //Set Point
-	nSetType 			: USINT := 1; //1:Pressure Conrol, 2:Position Control
 	nTValveMode 		: USINT := 0; //Valve Mode
 	bPumpOn				: BOOL;
 	bPumpReset			: BOOL;
@@ -38,6 +37,7 @@ VAR
 	
 	wTypedControlValue 	: WORD;
 	wOutputSVBytes : outWord; //Word to Byte variable
+	nSetType 			: USINT; //1:Pressure Conrol, 2:Position Control
 	
 	//Output to IQ-PLUS Throttle Valve
 	nOutputMode AT %Q* : USINT;
@@ -65,7 +65,12 @@ END_VAR
     <Implementation>
       <ST><![CDATA[//Model : IQ Plus 
 //Pressure Range : 0 ~ 1,000 Torr
-nSetType := 1; // Pressure Mode Setting
+IF GVL_IO.aOutputCmd[1].12 THEN // Pressure Mode Setting
+	nSetType := 1; // Pressure Control
+ELSE
+	nSetType := 2; // Position Control
+END_IF
+
 
 (* Read from Power Distribution Pannel *)
 bVacuumPumpCB		:= GVL_IO.aDigitalInputIO[5].1;
@@ -142,7 +147,11 @@ GVL_IO.aDigitalOutputIO[2].2 := bPumpOn; //Pump On
 GVL_IO.aDigitalOutputIO[2].3 := bPumpReset; // Pump Reset]]></ST>
     </Implementation>
     <LineIds Name="P12_IQ_PLUS">
-      <LineId Id="273" Count="2" />
+      <LineId Id="273" Count="1" />
+      <LineId Id="367" Count="1" />
+      <LineId Id="370" Count="1" />
+      <LineId Id="369" Count="0" />
+      <LineId Id="275" Count="0" />
       <LineId Id="362" Count="0" />
       <LineId Id="209" Count="0" />
       <LineId Id="208" Count="0" />

@@ -82,12 +82,12 @@ namespace SapphireXR_App.ViewModels
 
                     if (value[startIndex + 1] == true)
                     {
-                        return OnLampColor;
+                        return RunLampColor;
                     }
 
                     if (value[startIndex + 2] == true)
                     {
-                        return OffLampColor;
+                        return FaultLampColor;
                     }
 
                     return null;
@@ -522,8 +522,10 @@ namespace SapphireXR_App.ViewModels
         }
 
         private static Brush OnLampColor = Application.Current.Resources.MergedDictionaries[0]["LampOnColor"] as Brush ?? Brushes.Lime;
-        private static Brush OffLampColor = Application.Current.Resources.MergedDictionaries[0]["LampOffColor"] as Brush ?? Brushes.Red;
+        private static Brush OffLampColor = Application.Current.Resources.MergedDictionaries[0]["LampOffColor"] as Brush ?? Brushes.DarkGray;
         private static Brush ReadyLampColor = Application.Current.Resources.MergedDictionaries[0]["LampReadyColor"] as Brush ?? Brushes.Yellow;
+        private static Brush RunLampColor = Application.Current.Resources.MergedDictionaries[0]["LampRunolor"] as Brush ?? Brushes.Lime;
+        private static Brush FaultLampColor = Application.Current.Resources.MergedDictionaries[0]["LampFaultColor"] as Brush ?? Brushes.Red;
 
         private static Brush InActiveSignalTowerRed = Application.Current.Resources.MergedDictionaries[0]["InActiveSignalTowerRed"] as Brush ?? new SolidColorBrush(Color.FromRgb(0xff, 0xa0, 0xa0));
         private static Brush InActiveSignalTowerYellow = Application.Current.Resources.MergedDictionaries[0]["InActiveSignalTowerYellow"] as Brush ?? new SolidColorBrush(Color.FromRgb(0xff, 0xff, 0xC5));
@@ -544,7 +546,7 @@ namespace SapphireXR_App.ViewModels
         [ObservableProperty]
         private Brush _maintenanceKeyLampColor = OnLampColor;
         [ObservableProperty]
-        private Brush _inductionHeaterLampColor = OnLampColor;
+        private Brush _inductionHeaterLampColor = ReadyLampColor;
         [ObservableProperty]
         private Brush _cleanDryAirLampColor = OnLampColor;
         [ObservableProperty]
@@ -558,7 +560,7 @@ namespace SapphireXR_App.ViewModels
         [ObservableProperty]
         private Brush _susceptorMotorLampColor = OnLampColor;
         [ObservableProperty]
-        private Brush _vacuumPumpLampColor = OnLampColor;
+        private Brush _vacuumPumpLampColor = ReadyLampColor;
 
         [ObservableProperty]
         private Brush _signalTowerRed = Brushes.Transparent;

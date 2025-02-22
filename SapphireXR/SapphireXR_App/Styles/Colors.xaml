@@ -46,8 +46,10 @@
     
     <!-- Lamp State Colors-->
     <SolidColorBrush x:Key="LampOnColor" Color="Lime" />
-    <SolidColorBrush x:Key="LampOffColor" Color="Red" />
+    <SolidColorBrush x:Key="LampOffColor" Color="DarkGray" />
     <SolidColorBrush x:Key="LampReadyColor" Color="Yellow" />
+    <SolidColorBrush x:Key="LampRunColor" Color="Lime" />
+    <SolidColorBrush x:Key="LampFaultolor" Color="Red" />
 
     <SolidColorBrush x:Key="SourceStatusDefault" Color="LightGray" />
     <SolidColorBrush x:Key="SourceStatusH2" Color="#C13E3E" />

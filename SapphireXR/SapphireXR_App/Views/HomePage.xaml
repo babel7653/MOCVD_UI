@@ -794,10 +794,7 @@
                 <Bold>User Status</Bold></TextBlock>
                     <Line X1="5" Y1="0" X2="295" Y2="0" Stroke="DeepSkyBlue" StrokeThickness="2" Margin="2,2,2,8"/>
                     <StackPanel Orientation="Vertical">
-                        <Button Content="Batch" Command="{Binding ManualBatchCommand}"/>
-                        <Button Content="Chamber Open"/>
-                        <Button Content="Leak Test"/>
-                        <Button Content="Soft OFF"/>
+                        <Button Content="User State" Command="{Binding ManualBatchCommand}"/>
                     </StackPanel>
                 </StackPanel>
             </Grid>

@@ -15,8 +15,8 @@ namespace SapphireXR_App.Models
 
         internal enum HardWiringInterlockStateIndex
         {
-            MaintainenceKey = 0, DoorReactorCabinet = 1, DoorGasDeliveryCabinet = 2, DoorPowerDistributeCabinet = 3, CleanDryAir = 4, CoolingWater = 5,
-            InductionHeaterReady = 6, inductionHeaterRun = 7, inductionHeaterFault = 8, SusceptorMotorStop = 9, SusceptorMotorRun = 10, SusceptorMotorFault = 11,
+            MaintenanceKey = 0, DoorReactorCabinet = 1, DoorGasDeliveryCabinet = 2, DoorPowerDistributeCabinet = 3, CleanDryAir = 4, CoolingWater = 5,
+            InductionHeaterReady = 6, InductionHeaterRun = 7, InductionHeaterFault = 8, SusceptorMotorStop = 9, SusceptorMotorRun = 10, SusceptorMotorFault = 11,
             VacuumPumpWarning = 12, VacuumPumpRun = 13, VacuumPumpFault = 14,
         };
 
@@ -27,8 +27,8 @@ namespace SapphireXR_App.Models
             CP_ThermalBath = 9,  CP_VaccumPump = 10, CP_LineHeater = 11, CP_RotationMotor = 12, CP_CoverMotor = 13, CP_ThrottleValve = 14, CP_Lamp = NumShortBits * 1, 
             CP_SM515CP = NumShortBits * 1 + 1, LineHeader0 = NumShortBits * 1 + 2, LineHeader1 = NumShortBits * 1 + 3, LineHeader2 = NumShortBits * 1 + 4,  LineHeader3 = NumShortBits * 1 + 5, 
             LineHeader4 = NumShortBits * 1 + 6, LineHeader5 = NumShortBits * 1 + 7, LineHeader6 = NumShortBits * 1 + 8, LineHeader7 = NumShortBits * 1 + 9, 
-            ThermalBath_DeviationAlaram1 = NumShortBits * 1 + 10, ThermalBath_DeviationAlaram2 = NumShortBits * 1 + 11, ThermalBath_DeviationAlaram3 = NumShortBits * 1 + 12, 
-            ThermalBath_DeviationAlaram4 = NumShortBits * 1 + 13,  ThermalBath_DeviationAlaram5 = NumShortBits * 1 + 14, ThermalBath_DeviationAlaram6 = NumShortBits * 2, 
+            Bath_DeviationAlaram1 = NumShortBits * 1 + 10, Bath_DeviationAlaram2 = NumShortBits * 1 + 11, Bath_DeviationAlaram3 = NumShortBits * 1 + 12, 
+            Bath_DeviationAlaram4 = NumShortBits * 1 + 13,  Bath_DeviationAlaram5 = NumShortBits * 1 + 14, Bath_DeviationAlaram6 = NumShortBits * 1 + 15, 
             SingalTower_RED = NumShortBits * 2 + 1, SingalTower_YELLOW = NumShortBits * 2 + 2, SingalTower_GREEN = NumShortBits * 2 + 3, SingalTower_BLUE = NumShortBits * 2 + 4, 
             SingalTower_WHITE = NumShortBits * 2 + 5, SingalTower_BUZZWER = NumShortBits * 2 + 6
         };

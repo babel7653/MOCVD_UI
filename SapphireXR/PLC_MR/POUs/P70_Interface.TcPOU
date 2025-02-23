@@ -15,7 +15,6 @@ GVL_IO.aInputState[1].3		:= P92_Maintenance.bPowerDistributeLamp; // Power Cabin
 GVL_IO.aInputState[1].4 	:= P90_Interlock.bAirPressureSensor; //CDA Alarm Switch
 GVL_IO.aInputState[1].5		:= P90_Interlock.bWaterFlowSensor; //Water Flow Sensor
 GVL_IO.aInputState[1].6 	:= P11_E3508.isHeaterReady; //Induction Heater
-
 GVL_IO.aInputState[1].7 	:= P11_E3508.isHeaterRun; //Induction Heater
 GVL_IO.aInputState[1].8 	:= P11_E3508.isHeaterFault; //Induction Heater
 GVL_IO.aInputState[1].9		:= P15_RotationOperation.bStart_Stop; //Susceptor Rotation Motor
@@ -25,6 +24,7 @@ GVL_IO.aInputState[1].12 	:= P12_IQ_PLUS.isPumpWarning; //Vacuum Pump
 GVL_IO.aInputState[1].13 	:= P12_IQ_PLUS.isPumpRunning; //Vacuum Pump
 GVL_IO.aInputState[1].14 	:= P12_IQ_PLUS.isPumpFault; //Vacuum Pump
 GVL_IO.aInputState[1].15	:= P92_Maintenance.bReactorCabientMagnet; //Door Sensor
+
 GVL_IO.aInputState[2].0		:= P92_Maintenance.bGasCabinetMagnet; //Door Sensor
 GVL_IO.aInputState[2].1		:= P92_Maintenance.bPowerDistributeMagnet; //Door Sensor
 GVL_IO.aInputState[2].2		:= P90_Interlock.bPowerResetSwitch; //Power Reset Switch
@@ -60,9 +60,9 @@ GVL_IO.aInputState[4].15	:= GVL_IO.aDigitalInputIO[9].2; //Thermal Bath Temp. De
 GVL_IO.aInputState[4]		:= GVL_IO.aDigitalOutputIO[1]; // Signal]]></ST>
     </Implementation>
     <LineIds Name="P70_Interface">
-      <LineId Id="1" Count="7" />
-      <LineId Id="54" Count="0" />
-      <LineId Id="9" Count="10" />
+      <LineId Id="1" Count="16" />
+      <LineId Id="60" Count="0" />
+      <LineId Id="18" Count="1" />
       <LineId Id="22" Count="15" />
       <LineId Id="39" Count="13" />
       <LineId Id="58" Count="0" />

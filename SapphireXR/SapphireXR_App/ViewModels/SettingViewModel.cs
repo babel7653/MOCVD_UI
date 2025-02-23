@@ -73,7 +73,7 @@ namespace SapphireXR_App.ViewModels
         {
             AlarmSettingLoad();
             IOList = new List<IOSetting> {
-                new() { Name= "Power Reset Switch", OnOff = true },  new() { Name= "Cover - Upper Limit", OnOff = true }, new() { Name= "Cover - Lower Limit", OnOff = true },
+                new() { Name= "Power Reset Switch", OnOff = true },new() { Name= "Cover - Upper Limit", OnOff = true }, new() { Name= "Cover - Lower Limit", OnOff = true },
                 new() { Name= "SMPS - 24V 480", OnOff = true }, new() { Name= "SMPS - 24V 72", OnOff = true },  new() { Name= "SMPS - 15V Plus", OnOff = true },
                 new() { Name= "SMPS - 15V Minus", OnOff = true },  new() { Name= "CP - Induction Heater", OnOff = true }, new() { Name= "CP - Thermal Bath", OnOff = true },
                 new() { Name= "CP - Vacuum Pump", OnOff = true },  new() { Name= "CP - Line Heater", OnOff = true }, new() { Name= "CP - Rotation Motor", OnOff = true },
@@ -170,8 +170,8 @@ namespace SapphireXR_App.ViewModels
         private void updateIOState(BitArray ioStateList)
         {
             int io = 0;
-            IOList[io++].OnOff = ioStateList[(int)PLCService.IOListIndex.PowerResetSwitch];
-            IOList[io++].OnOff = ioStateList[(int)PLCService.IOListIndex.Cover_UpperLimit];
+            IOList[++io].OnOff = ioStateList[(int)PLCService.IOListIndex.PowerResetSwitch];
+            IOList[++io].OnOff = ioStateList[(int)PLCService.IOListIndex.Cover_UpperLimit];
             IOList[io++].OnOff = ioStateList[(int)PLCService.IOListIndex.Cover_LowerLimit];
             IOList[io++].OnOff = ioStateList[(int)PLCService.IOListIndex.SMPS_24V480];
             IOList[io++].OnOff = ioStateList[(int)PLCService.IOListIndex.SMPS_24V72];

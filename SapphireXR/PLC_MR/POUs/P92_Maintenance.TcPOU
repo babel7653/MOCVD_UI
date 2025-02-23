@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4026.8">
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4026.11">
   <POU Name="P92_Maintenance" Id="{17478ea4-373a-4676-aa4e-f86e85a19514}" SpecialFunc="None">
     <Declaration><![CDATA[PROGRAM P92_Maintenance
 VAR_INPUT
@@ -77,11 +77,7 @@ ELSIF rTrigGasCabinetMagnet.Q THEN
 	bGasCabinetLamp := FALSE;
 END_IF
 // Power Distribute Unit Lamp
-IF bPowerDistributeMagnet THEN //Magnet Switch
-	bPowerDistributeLamp := FALSE;
-ELSE
-	bPowerDistributeLamp := TRUE;
-END_IF
+bPowerDistributeLamp := NOT(bPowerDistributeMagnet); //Magnet Switch
 
 (* Blink Signal Tower *)
 CASE nCaseSignalTower OF
@@ -154,10 +150,9 @@ GVL_IO.aDigitalOutputIO[1].5 		:= bSignalTower.5; //5:BUZZER-Alarm
       <LineId Id="299" Count="0" />
       <LineId Id="301" Count="2" />
       <LineId Id="42" Count="0" />
-      <LineId Id="38" Count="2" />
-      <LineId Id="43" Count="1" />
-      <LineId Id="41" Count="0" />
+      <LineId Id="38" Count="0" />
       <LineId Id="381" Count="0" />
+      <LineId Id="397" Count="0" />
       <LineId Id="146" Count="0" />
       <LineId Id="156" Count="0" />
       <LineId Id="147" Count="0" />

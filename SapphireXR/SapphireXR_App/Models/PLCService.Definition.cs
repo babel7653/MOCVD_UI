@@ -23,17 +23,25 @@ namespace SapphireXR_App.Models
         const int NumShortBits = sizeof(short) * 8;
         internal enum IOListIndex
         {
-            PowerResetSwitch = 1, Cover_UpperLimit = 2, Cover_LowerLimit = 3, SMPS_24V480 = 4, SMPS_24V72 = 5, SMPS_15VPlus= 6, SMPS_15VMinus = 7, CP_InudctionHeater = 8, 
-            CP_ThermalBath = 9,  CP_VaccumPump = 10, CP_LineHeater = 11, CP_RotationMotor = 12, CP_CoverMotor = 13, CP_ThrottleValve = 14, CP_Lamp = NumShortBits * 1, 
-            CP_SM515CP = NumShortBits * 1 + 1, LineHeader0 = NumShortBits * 1 + 2, LineHeader1 = NumShortBits * 1 + 3, LineHeader2 = NumShortBits * 1 + 4,  LineHeader3 = NumShortBits * 1 + 5, 
-            LineHeader4 = NumShortBits * 1 + 6, LineHeader5 = NumShortBits * 1 + 7, LineHeader6 = NumShortBits * 1 + 8, LineHeader7 = NumShortBits * 1 + 9, 
+            PowerResetSwitch = 2, Cover_UpperLimit = 3, Cover_LowerLimit = 4, SMPS_24V480 = 5, SMPS_24V72 = 6, SMPS_15VPlus= 7, SMPS_15VMinus = 8, CP_InudctionHeater = 9, 
+            CP_ThermalBath = 10,  CP_VaccumPump = 11, CP_LineHeater = 12, CP_RotationMotor = 13, CP_CoverMotor = 14, CP_ThrottleValve = 15, CP_Lamp = NumShortBits * 1, 
+            CP_SM515CP = NumShortBits * 1 + 1, LineHeader1 = NumShortBits * 1 + 2, LineHeader2 = NumShortBits * 1 + 3, LineHeader3 = NumShortBits * 1 + 4,  LineHeader4 = NumShortBits * 1 + 5, 
+            LineHeader5 = NumShortBits * 1 + 6, LineHeader6 = NumShortBits * 1 + 7, LineHeader7 = NumShortBits * 1 + 8, LineHeader8 = NumShortBits * 1 + 9, 
             Bath_DeviationAlaram1 = NumShortBits * 1 + 10, Bath_DeviationAlaram2 = NumShortBits * 1 + 11, Bath_DeviationAlaram3 = NumShortBits * 1 + 12, 
             Bath_DeviationAlaram4 = NumShortBits * 1 + 13,  Bath_DeviationAlaram5 = NumShortBits * 1 + 14, Bath_DeviationAlaram6 = NumShortBits * 1 + 15, 
-            SingalTower_RED = NumShortBits * 2 + 1, SingalTower_YELLOW = NumShortBits * 2 + 2, SingalTower_GREEN = NumShortBits * 2 + 3, SingalTower_BLUE = NumShortBits * 2 + 4, 
-            SingalTower_WHITE = NumShortBits * 2 + 5, SingalTower_BUZZWER = NumShortBits * 2 + 6
+            SingalTower_RED = NumShortBits * 2, SingalTower_YELLOW = NumShortBits * 2 + 1, SingalTower_GREEN = NumShortBits * 2 + 2, SingalTower_BLUE = NumShortBits * 2 + 3, 
+            SingalTower_WHITE = NumShortBits * 2 + 4, SingalTower_BUZZWER = NumShortBits * 2 + 5
         };
 
-      
+        internal enum DigitalOutput2Index
+        {
+            InductionHeaterOn = 0, InductionHeaterReset, VaccumPumpOn, VaccumPumpReset, 
+        }
+
+        internal enum DigitalOutput3Index
+        {
+            InductionHeaterMC = 0, ThermalBathMC, VaccumPumpMC, LineHeaterMC, RotationAlaramReset = 6
+        }
 
         // Connect to PLC
         public static string AddressPLC { get; set; } = "PLC Address : ";
@@ -65,6 +73,9 @@ namespace SapphireXR_App.Models
         private static ObservableManager<int>.DataIssuer? dRecipeControlHoldTimeIssuer;
         private static ObservableManager<int>.DataIssuer? dRecipeControlRampTimeIssuer;
         private static ObservableManager<int>.DataIssuer? dRecipeControlPauseTimeIssuer;
+        private static ObservableManager<BitArray>.DataIssuer? dDigitalOutput2;
+        private static ObservableManager<BitArray>.DataIssuer? dDigitalOutput3;
+        private static ObservableManager<BitArray>.DataIssuer? dOutputCmd1;
 
         //Create an instance of the TcAdsClient()
         public static AdsClient Ads { get; set; }
@@ -93,6 +104,8 @@ namespace SapphireXR_App.Models
         private static uint hRecipeControlHoldTime;
         private static uint hRecipeControlRampTime;
         private static uint hRecipeControlPauseTime;
+        private static uint hDigitalOutput;
+        private static uint hOutputCmd;
 
         private static bool RecipeRunEndNotified = false;
 

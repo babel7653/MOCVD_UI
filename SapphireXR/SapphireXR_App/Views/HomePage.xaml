@@ -852,8 +852,8 @@
                     </StackPanel>
                     <Label Content="Induction Heater Control" VerticalContentAlignment="Bottom"/>
                     <StackPanel Orientation="Horizontal" Height="30" Margin="10,0,0,0">
-                        <Button x:Name="btHeaterOn" Content="ON"/>
-                        <Button x:Name="btHeaterReset" Content="RESET"/>
+                        <Button x:Name="btHeaterOn" Content="{Binding InductionHeaterOn}"/>
+                        <Button x:Name="btHeaterReset" Content="{Binding InductionHeaterReset}"/>
                     </StackPanel>
                 </StackPanel>
             </Grid>
@@ -887,7 +887,7 @@
                     <StackPanel Orientation="Horizontal" Height="30">
                         <TextBlock Width="210"  Height="20" TextAlignment="Right" Text="Pressure Control Mode"
                                Margin="0,2,6,0"/>
-                        <Button Height="20" Width="80"  FontSize="11" Content="Pressure" />
+                        <Button Height="20" Width="80"  FontSize="11" Content="{Binding PressureControlMode}" />
                     </StackPanel>
                     <Label Content="Throttle Valve Control" VerticalContentAlignment="Bottom"/>
                     <StackPanel Orientation="Horizontal" Height="30" HorizontalAlignment="Center">
@@ -898,8 +898,8 @@
                     </StackPanel>
                     <Label Content="Vacuum Pump Control" VerticalContentAlignment="Bottom"/>
                     <StackPanel Orientation="Horizontal" Height="30" Margin="10,0,0,0">
-                        <Button x:Name="btPumpOn" Content="ON"/>
-                        <Button x:Name="btPumpReset" Content="RESET"/>
+                        <Button x:Name="btPumpOn" Content="{Binding VaccumPumpOn}"/>
+                        <Button x:Name="btPumpReset" Content="{Binding VaccumPumpReset}"/>
                     </StackPanel>
                 </StackPanel>
             </Grid>
@@ -929,7 +929,7 @@
                         <TextBox x:Name="tbCurrentRotation"  Grid.Column="2" Grid.Row="1" Text="{Binding CurrentRotation}"/>
                     </Grid>
                         <Label Content="Motor Control" VerticalContentAlignment="Bottom"/>
-                        <Button x:Name="btMotorReset" Content="RESET" HorizontalAlignment="Left" Margin="10,0,0,0"/>
+                        <Button x:Name="btMotorReset" Content="{Binding RotationReset}" HorizontalAlignment="Left" Margin="10,0,0,0"/>
                 </StackPanel>
             </Grid>
             <!-- Event Log -->

@@ -38,6 +38,37 @@ namespace SapphireXR_App.ViewModels
 
             private SettingViewModel settingViewModel;
         }
+        private class ModulePowerStateSubscriber : IObserver<BitArray>
+        {
+            internal ModulePowerStateSubscriber(SettingViewModel vm)
+            {
+                settingViewModel = vm;
+            }
+
+            void IObserver<BitArray>.OnCompleted()
+            {
+                throw new NotImplementedException();
+            }
+
+            void IObserver<BitArray>.OnError(Exception error)
+            {
+                throw new NotImplementedException();
+            }
+
+            void IObserver<BitArray>.OnNext(BitArray value)
+            {
+                Util.SetIfChanged(value[(int)PLCService.DigitalOutput3Index.InductionHeaterMC], ref prevInpudctionHeaterPowerOn, (bool value) => { settingViewModel.InductionHeaterPowerOn = (value == true ? "On" : "Off"); });
+                Util.SetIfChanged(value[(int)PLCService.DigitalOutput3Index.ThermalBathMC], ref prevThermalBatchPowerOn, (bool value) => { settingViewModel.ThermalBathPowerOn = (value == true ? "On" : "Off"); });
+                Util.SetIfChanged(value[(int)PLCService.DigitalOutput3Index.VaccumPumpMC], ref prevVaccumPumpPowerOn, (bool value) => { settingViewModel.VaccumPumpPowerOn = (value == true ? "On" : "Off"); });
+                Util.SetIfChanged(value[(int)PLCService.DigitalOutput3Index.LineHeaterMC], ref prevLineHeaterPowerOn, (bool value) => { settingViewModel.LineHeaterPowerOn = (value == true ? "On" : "Off"); });
+            }
+
+            private SettingViewModel settingViewModel;
+            private bool? prevInpudctionHeaterPowerOn = null;
+            private bool? prevThermalBatchPowerOn = null;
+            private bool? prevVaccumPumpPowerOn = null;
+            private bool? prevLineHeaterPowerOn = null;
+        }
         public partial class IOSetting: ObservableObject
         {
             required public string Name { get; set; } = "";
@@ -45,6 +76,7 @@ namespace SapphireXR_App.ViewModels
             private bool _onOff;
             
         }
+
         public string fname = AppDomain.CurrentDomain.BaseDirectory + "..\\..\\..\\..\\Data\\Configuration\\" + @"DeviceIO.json";
         public Dictionary<string, AnalogDeviceIO>? dAnalogDeviceIO = [];
         public Dictionary<string, SwitchDI>? dSwitchDI = [];
@@ -68,7 +100,6 @@ namespace SapphireXR_App.ViewModels
         [ObservableProperty]
         private string? _logIntervalInRecipeRun;
 
-
         public SettingViewModel()
         {
             AlarmSettingLoad();
@@ -88,6 +119,7 @@ namespace SapphireXR_App.ViewModels
                 new() { Name= "Singal Tower - BLUE", OnOff = true },  new() { Name= "Singal Tower - WHITE", OnOff = true }, new() { Name= "Singal Tower - BUZZWER", OnOff = true }
             };
             ObservableManager<BitArray>.Subscribe("DeviceIOList", iOStateListSubscriber = new IOStateListSubscriber(this));
+            ObservableManager<BitArray>.Subscribe("DigitalOutput3", modulePowerStateSubscriber = new ModulePowerStateSubscriber(this));
         }
         public void AlarmSettingLoad()
         {
@@ -170,8 +202,8 @@ namespace SapphireXR_App.ViewModels
         private void updateIOState(BitArray ioStateList)
         {
             int io = 0;
-            IOList[++io].OnOff = ioStateList[(int)PLCService.IOListIndex.PowerResetSwitch];
-            IOList[++io].OnOff = ioStateList[(int)PLCService.IOListIndex.Cover_UpperLimit];
+            IOList[io++].OnOff = ioStateList[(int)PLCService.IOListIndex.PowerResetSwitch];
+            IOList[io++].OnOff = ioStateList[(int)PLCService.IOListIndex.Cover_UpperLimit];
             IOList[io++].OnOff = ioStateList[(int)PLCService.IOListIndex.Cover_LowerLimit];
             IOList[io++].OnOff = ioStateList[(int)PLCService.IOListIndex.SMPS_24V480];
             IOList[io++].OnOff = ioStateList[(int)PLCService.IOListIndex.SMPS_24V72];
@@ -186,7 +218,6 @@ namespace SapphireXR_App.ViewModels
             IOList[io++].OnOff = ioStateList[(int)PLCService.IOListIndex.CP_ThrottleValve];
             IOList[io++].OnOff = ioStateList[(int)PLCService.IOListIndex.CP_Lamp];
             IOList[io++].OnOff = ioStateList[(int)PLCService.IOListIndex.CP_SM515CP];
-            IOList[io++].OnOff = ioStateList[(int)PLCService.IOListIndex.LineHeader0];
             IOList[io++].OnOff = ioStateList[(int)PLCService.IOListIndex.LineHeader1];
             IOList[io++].OnOff = ioStateList[(int)PLCService.IOListIndex.LineHeader2];
             IOList[io++].OnOff = ioStateList[(int)PLCService.IOListIndex.LineHeader3];
@@ -194,6 +225,7 @@ namespace SapphireXR_App.ViewModels
             IOList[io++].OnOff = ioStateList[(int)PLCService.IOListIndex.LineHeader5];
             IOList[io++].OnOff = ioStateList[(int)PLCService.IOListIndex.LineHeader6];
             IOList[io++].OnOff = ioStateList[(int)PLCService.IOListIndex.LineHeader7];
+            IOList[io++].OnOff = ioStateList[(int)PLCService.IOListIndex.LineHeader8];
             IOList[io++].OnOff = ioStateList[(int)PLCService.IOListIndex.Bath_DeviationAlaram1];
             IOList[io++].OnOff = ioStateList[(int)PLCService.IOListIndex.Bath_DeviationAlaram2];
             IOList[io++].OnOff = ioStateList[(int)PLCService.IOListIndex.Bath_DeviationAlaram3];
@@ -209,5 +241,16 @@ namespace SapphireXR_App.ViewModels
         }
 
         private IOStateListSubscriber iOStateListSubscriber;
+
+        [ObservableProperty]
+        private string _inductionHeaterPowerOn = "";
+        [ObservableProperty]
+        private string _thermalBathPowerOn = "";
+        [ObservableProperty]
+        private string _vaccumPumpPowerOn = "";
+        [ObservableProperty]
+        private string _lineHeaterPowerOn = "";
+
+        ModulePowerStateSubscriber modulePowerStateSubscriber;
     }
 }

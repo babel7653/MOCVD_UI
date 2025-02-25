@@ -462,19 +462,19 @@
                                             </Grid.RowDefinitions>
                                             <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="2">
                                                 <TextBlock Width="200" Text="Induction Heater Power"/>
-                                                <Button Content="ON"/>
+                                                <Button Content="{Binding InductionHeaterPowerOn}"/>
                                             </StackPanel>
                                             <StackPanel Grid.Row="1" Orientation="Horizontal" Margin="2">
                                                 <TextBlock Width="200" Text="Thermal Bath Power"/>
-                                                <Button Content="ON"/>
+                                                <Button Content="{Binding ThermalBathPowerOn}"/>
                                             </StackPanel>
                                             <StackPanel Grid.Row="2" Orientation="Horizontal" Margin="2">
                                                 <TextBlock Width="200" Text="Vacuum Pump Power"/>
-                                                <Button Content="ON"/>
+                                                <Button Content="{Binding VaccumPumpPowerOn}"/>
                                             </StackPanel>
                                             <StackPanel Grid.Row="3" Orientation="Horizontal" Margin="2">
                                                 <TextBlock Width="200" Text="Line Heater Power"/>
-                                                <Button Content="ON"/>
+                                                <Button Content="{Binding LineHeaterPowerOn}"/>
                                             </StackPanel>
                                         </Grid>
                                     </GroupBox>

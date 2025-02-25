@@ -53,7 +53,9 @@ namespace SapphireXR_App.Models
 
                 hMonitoring_PV = Ads.CreateVariableHandle("GVL_IO.aMonitoring_PV");
                 hInputState = Ads.CreateVariableHandle("GVL_IO.aInputState");
-                
+                hDigitalOutput = Ads.CreateVariableHandle("GVL_IO.aDigitalOutputIO");
+                hOutputCmd = Ads.CreateVariableHandle("GVL_IO.aOutputCmd");
+
                 hRcp = Ads.CreateVariableHandle("RCP.aRecipe");
                 hRcpTotalStep = Ads.CreateVariableHandle("RCP.iRcpTotalStep");
                 hCmd_RcpOperation = Ads.CreateVariableHandle("RCP.cmd_RcpOperation");
@@ -143,6 +145,9 @@ namespace SapphireXR_App.Models
             dRecipeControlHoldTimeIssuer = ObservableManager<int>.Get("RecipeControlTime.Hold");
             dRecipeControlPauseTimeIssuer = ObservableManager<int>.Get("RecipeControlTime.Pause");
             dRecipeControlRampTimeIssuer = ObservableManager<int>.Get("RecipeControlTime.Ramp");
+            dDigitalOutput2 = ObservableManager<BitArray>.Get("DigitalOutput2");
+            dDigitalOutput3 = ObservableManager<BitArray>.Get("DigitalOutput3");
+            dOutputCmd1 = ObservableManager<BitArray>.Get("OutputCmd1");
 
             timer = new DispatcherTimer();
             timer.Interval = new TimeSpan(2000000);
@@ -249,6 +254,12 @@ namespace SapphireXR_App.Models
                 }
             }
             dLineHeaterTemperatureIssuers?.Issue(Ads.ReadAny<float[]>(hTemperaturePV, [(int)LineHeaterTemperature]));
+
+            byte[] digitalOutput = Ads.ReadAny<byte[]>(hDigitalOutput, [4]);
+            dDigitalOutput2?.Issue(new BitArray(new byte[1] { digitalOutput[1] }));
+            dDigitalOutput3?.Issue(new BitArray(new byte[1] { digitalOutput[2] }));
+            short[] outputCmd = Ads.ReadAny<short[]>(hOutputCmd, [3]);
+            dOutputCmd1?.Issue(new BitArray(BitConverter.IsLittleEndian == true ? BitConverter.GetBytes(outputCmd[0]) : BitConverter.GetBytes(outputCmd[0]).Reverse().ToArray()));
 
             var readTime = (uint timeHandle) =>
             {

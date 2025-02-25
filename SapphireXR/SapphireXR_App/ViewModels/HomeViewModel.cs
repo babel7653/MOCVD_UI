@@ -10,6 +10,8 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using SapphireXR_App.Common;
 using System.Diagnostics.CodeAnalysis;
 using SapphireXR_App.Models;
+using System.Reactive;
+using System.Collections;
 
 namespace SapphireXR_App.ViewModels
 {
@@ -43,6 +45,89 @@ namespace SapphireXR_App.ViewModels
             private readonly Action<T> onNext;
         }
 
+        private class DigitalOutput2Subscriber : IObserver<BitArray>
+        {
+            internal DigitalOutput2Subscriber(HomeViewModel vm)
+            {
+                homeViewMode = vm;
+            }
+
+            void IObserver<BitArray>.OnCompleted()
+            {
+                throw new NotImplementedException();
+            }
+
+            void IObserver<BitArray>.OnError(Exception error)
+            {
+                throw new NotImplementedException();
+            }
+
+            void IObserver<BitArray>.OnNext(BitArray value)
+            {
+                Util.SetIfChanged(value[(int)PLCService.DigitalOutput2Index.InductionHeaterOn], ref prevInductionHeaterOn, (bool value) => { homeViewMode.InductionHeaterOn = (value == true ? "On" : "Off"); });
+                Util.SetIfChanged(value[(int)PLCService.DigitalOutput2Index.InductionHeaterReset], ref prevInductionHeaterReset, (bool value) => { homeViewMode.InductionHeaterReset = (value == true ? "Reset" : "No Reset"); });
+                Util.SetIfChanged(value[(int)PLCService.DigitalOutput2Index.VaccumPumpOn], ref prevVaccumPumpOn, (bool value) => { homeViewMode.VaccumPumpOn = (value == true ? "On" : "Off"); });
+                Util.SetIfChanged(value[(int)PLCService.DigitalOutput2Index.VaccumPumpReset], ref prevVacuumPumpReset, (bool value) => { homeViewMode.VaccumPumpReset = (value == true ? "Reset" : "No Reset"); });
+            }
+
+            private HomeViewModel homeViewMode;
+            private bool? prevInductionHeaterOn = null;
+            private bool? prevInductionHeaterReset = null;
+            private bool? prevVaccumPumpOn = null;
+            private bool? prevVacuumPumpReset = null;
+        }
+        private class DigitalOutput3Subscriber : IObserver<BitArray>
+        {
+            internal DigitalOutput3Subscriber(HomeViewModel vm)
+            {
+                homeViewMode = vm;
+            }
+
+            void IObserver<BitArray>.OnCompleted()
+            {
+                throw new NotImplementedException();
+            }
+
+            void IObserver<BitArray>.OnError(Exception error)
+            {
+                throw new NotImplementedException();
+            }
+
+            void IObserver<BitArray>.OnNext(BitArray value)
+            {
+                Util.SetIfChanged(value[(int)PLCService.DigitalOutput3Index.RotationAlaramReset], ref prevRotationAlarmReset, (bool value) => { homeViewMode.RotationReset = (value == true ? "Reset" : "No Reset"); });
+            }
+
+            private HomeViewModel homeViewMode;
+            private bool? prevRotationAlarmReset;
+        }
+
+        private class OutputCmd1Subscriber : IObserver<BitArray>
+        {
+            internal OutputCmd1Subscriber(HomeViewModel vm)
+            {
+                homeViewMode = vm;
+            }
+
+            void IObserver<BitArray>.OnCompleted()
+            {
+                throw new NotImplementedException();
+            }
+
+            void IObserver<BitArray>.OnError(Exception error)
+            {
+                throw new NotImplementedException();
+            }
+
+            void IObserver<BitArray>.OnNext(BitArray value)
+            {
+                Util.SetIfChanged(value[12], ref prevPressureControlMode, (bool value) => { homeViewMode.PressureControlMode = (value == true ? "Position" : "Pressure"); });
+              
+            }
+
+            private HomeViewModel homeViewMode;
+            private bool? prevPressureControlMode = null;
+        }
         public HomeViewModel()
         {
             DashBoardViewModel = new HomeBottomDashBoardViewModel();
@@ -101,6 +186,9 @@ namespace SapphireXR_App.ViewModels
                     ObservableManager<float>.Subscribe(((FlowControllerValueSubscriber<float>)subscriber).topicName, (FlowControllerValueSubscriber<float>)subscriber);
                 }
             }
+            ObservableManager<BitArray>.Subscribe("DigitalOutput2", digitalOutput2Subscriber = new DigitalOutput2Subscriber(this));
+            ObservableManager<BitArray>.Subscribe("DigitalOutput3", digitalOutput3Subscriber = new DigitalOutput3Subscriber(this));
+            ObservableManager<BitArray>.Subscribe("OutputCmd1", outputCmd1Subscriber = new OutputCmd1Subscriber(this));
         }
 
         public ICommand EnableLeakTestCommand { get; set; }
@@ -147,9 +235,25 @@ namespace SapphireXR_App.ViewModels
         [ObservableProperty]
         private int _currentRotation;
 
+        [ObservableProperty]
+        private string _pressureControlMode = "";
+        [ObservableProperty]
+        private string _vaccumPumpOn = "";
+        [ObservableProperty]
+        private string _vaccumPumpReset = "";
+        [ObservableProperty]
+        private string _inductionHeaterOn = "";
+        [ObservableProperty]
+        private string _inductionHeaterReset = "";
+        [ObservableProperty]
+        private string _rotationReset = "";
+
         public BottomDashBoardViewModel DashBoardViewModel { get; set; }
 
         private FlowControllerValueSubscriber[] flowControllerValueSubscribers;
+        private OutputCmd1Subscriber outputCmd1Subscriber;
+        private DigitalOutput2Subscriber digitalOutput2Subscriber;
+        private DigitalOutput3Subscriber digitalOutput3Subscriber;
     }
 }
 

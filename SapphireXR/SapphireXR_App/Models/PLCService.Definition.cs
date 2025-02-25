@@ -33,7 +33,15 @@ namespace SapphireXR_App.Models
             SingalTower_WHITE = NumShortBits * 2 + 4, SingalTower_BUZZWER = NumShortBits * 2 + 5
         };
 
-      
+        internal enum DigitalOutput2Index
+        {
+            InductionHeaterOn = 0, InductionHeaterReset, VaccumPumpOn, VaccumPumpReset, 
+        }
+
+        internal enum DigitalOutput3Index
+        {
+            InductionHeaterMC = 0, ThermalBathMC, VaccumPumpMC, LineHeaterMC, RotationAlaramReset = 6
+        }
 
         // Connect to PLC
         public static string AddressPLC { get; set; } = "PLC Address : ";
@@ -65,6 +73,9 @@ namespace SapphireXR_App.Models
         private static ObservableManager<int>.DataIssuer? dRecipeControlHoldTimeIssuer;
         private static ObservableManager<int>.DataIssuer? dRecipeControlRampTimeIssuer;
         private static ObservableManager<int>.DataIssuer? dRecipeControlPauseTimeIssuer;
+        private static ObservableManager<BitArray>.DataIssuer? dDigitalOutput2;
+        private static ObservableManager<BitArray>.DataIssuer? dDigitalOutput3;
+        private static ObservableManager<BitArray>.DataIssuer? dOutputCmd1;
 
         //Create an instance of the TcAdsClient()
         public static AdsClient Ads { get; set; }
@@ -93,6 +104,8 @@ namespace SapphireXR_App.Models
         private static uint hRecipeControlHoldTime;
         private static uint hRecipeControlRampTime;
         private static uint hRecipeControlPauseTime;
+        private static uint hDigitalOutput;
+        private static uint hOutputCmd;
 
         private static bool RecipeRunEndNotified = false;
 

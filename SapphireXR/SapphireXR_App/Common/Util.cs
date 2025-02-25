@@ -86,7 +86,17 @@ namespace SapphireXR_App.Common
 
             return filePath;
         }
-        
+
+        public static void SetIfChanged(bool newValue, ref bool? prevValue, Action<bool> onChanged)
+        {
+            if (prevValue == null || prevValue != newValue)
+            {
+                onChanged(newValue);
+                prevValue = newValue;
+            }
+        }
+
+
         public static readonly Dictionary<string, string> RecipeFlowControlFieldToControllerID = new Dictionary<string, string>
         {
             { "M01", "MFC01" }, { "M02", "MFC02" }, { "M03", "MFC03" }, { "M04", "MFC04" }, { "M05", "MFC05" },

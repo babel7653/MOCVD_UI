@@ -170,8 +170,8 @@ namespace SapphireXR_App.ViewModels
         private void updateIOState(BitArray ioStateList)
         {
             int io = 0;
-            IOList[++io].OnOff = ioStateList[(int)PLCService.IOListIndex.PowerResetSwitch];
-            IOList[++io].OnOff = ioStateList[(int)PLCService.IOListIndex.Cover_UpperLimit];
+            IOList[io++].OnOff = ioStateList[(int)PLCService.IOListIndex.PowerResetSwitch];
+            IOList[io++].OnOff = ioStateList[(int)PLCService.IOListIndex.Cover_UpperLimit];
             IOList[io++].OnOff = ioStateList[(int)PLCService.IOListIndex.Cover_LowerLimit];
             IOList[io++].OnOff = ioStateList[(int)PLCService.IOListIndex.SMPS_24V480];
             IOList[io++].OnOff = ioStateList[(int)PLCService.IOListIndex.SMPS_24V72];
@@ -186,7 +186,6 @@ namespace SapphireXR_App.ViewModels
             IOList[io++].OnOff = ioStateList[(int)PLCService.IOListIndex.CP_ThrottleValve];
             IOList[io++].OnOff = ioStateList[(int)PLCService.IOListIndex.CP_Lamp];
             IOList[io++].OnOff = ioStateList[(int)PLCService.IOListIndex.CP_SM515CP];
-            IOList[io++].OnOff = ioStateList[(int)PLCService.IOListIndex.LineHeader0];
             IOList[io++].OnOff = ioStateList[(int)PLCService.IOListIndex.LineHeader1];
             IOList[io++].OnOff = ioStateList[(int)PLCService.IOListIndex.LineHeader2];
             IOList[io++].OnOff = ioStateList[(int)PLCService.IOListIndex.LineHeader3];
@@ -194,6 +193,7 @@ namespace SapphireXR_App.ViewModels
             IOList[io++].OnOff = ioStateList[(int)PLCService.IOListIndex.LineHeader5];
             IOList[io++].OnOff = ioStateList[(int)PLCService.IOListIndex.LineHeader6];
             IOList[io++].OnOff = ioStateList[(int)PLCService.IOListIndex.LineHeader7];
+            IOList[io++].OnOff = ioStateList[(int)PLCService.IOListIndex.LineHeader8];
             IOList[io++].OnOff = ioStateList[(int)PLCService.IOListIndex.Bath_DeviationAlaram1];
             IOList[io++].OnOff = ioStateList[(int)PLCService.IOListIndex.Bath_DeviationAlaram2];
             IOList[io++].OnOff = ioStateList[(int)PLCService.IOListIndex.Bath_DeviationAlaram3];

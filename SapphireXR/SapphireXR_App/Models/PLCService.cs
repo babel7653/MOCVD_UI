@@ -62,9 +62,9 @@ namespace SapphireXR_App.Models
                 hTemperaturePV = Ads.CreateVariableHandle("P13_LineHeater.rTemperaturePV");
                 hOperationMode = Ads.CreateVariableHandle("MAIN.bOperationMode");
                 hUserState = Ads.CreateVariableHandle("RCP.userState");
-                hRecipeControlHoldTime = Ads.CreateVariableHandle("P50_RecipeControl.Hold_TIME");
-                hRecipeControlRampTime = Ads.CreateVariableHandle("P50_RecipeControl.Ramp_TIME");
-                hRecipeControlPauseTime = Ads.CreateVariableHandle("P50_RecipeControl.Pause_TIME");
+                hRecipeControlHoldTime = Ads.CreateVariableHandle("P50_RecipeControl.Hold_ET");
+                hRecipeControlRampTime = Ads.CreateVariableHandle("P50_RecipeControl.Ramp_ET");
+                hRecipeControlPauseTime = Ads.CreateVariableHandle("P50_RecipeControl.Pause_ET");
                 
 
                 aDeviceRampTimes = new short[dIndexController.Count];

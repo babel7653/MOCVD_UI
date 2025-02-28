@@ -100,12 +100,12 @@ namespace SapphireXR_App.ViewModels
                 leftViewModel.DoorPowerDistributeCabinetLampColor = convertOnOffStateColor(value[(int)PLCService.HardWiringInterlockStateIndex.DoorPowerDistributeCabinet]);
                 leftViewModel.CleanDryAirLampColor = convertOnOffStateColor(value[(int)PLCService.HardWiringInterlockStateIndex.CleanDryAir]);
                 leftViewModel.CoolingWaterLampColor = convertOnOffStateColor(value[(int)PLCService.HardWiringInterlockStateIndex.CoolingWater]);
-                leftViewModel.TempControllerAlarmLampColor = convertOnOffStateColor(value[(int)PLCService.HardWiringInterlockStateIndex.TempControllerAlarmLampColor]);
+                //leftViewModel.TempControllerAlarmLampColor = convertOnOffStateColor(value[(int)PLCService.HardWiringInterlockStateIndex.TempControllerAlarmLampColor]);
 
                 leftViewModel.InductionHeaterLampColor = convertThreeStateColor(value, (int)PLCService.HardWiringInterlockStateIndex.InductionHeaterReady) ?? leftViewModel.InductionHeaterLampColor;
                 leftViewModel.SusceptorMotorLampColor = convertThreeStateColor(value, (int)PLCService.HardWiringInterlockStateIndex.SusceptorMotorStop) ?? leftViewModel.SusceptorMotorLampColor;
                 leftViewModel.VacuumPumpLampColor = convertThreeStateColor(value, (int)PLCService.HardWiringInterlockStateIndex.VacuumPumpWarning) ?? leftViewModel.VacuumPumpLampColor;
-                leftViewModel.DorVacuumStateLampColor = convertThreeStateColor(value, (int)PLCService.HardWiringInterlockStateIndex.DorVacuumState) ?? leftViewModel.DorVacuumStateLampColor;
+                //leftViewModel.DorVacuumStateLampColor = convertThreeStateColor(value, (int)PLCService.HardWiringInterlockStateIndex.DorVacuumState) ?? leftViewModel.DorVacuumStateLampColor;
             }
 
             LeftViewModel leftViewModel;

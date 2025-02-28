@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4026.8">
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4026.11">
   <POU Name="P90_Interlock" Id="{c8b81d81-de46-4c7a-a894-4387b2cd9bf7}" SpecialFunc="None">
     <Declaration><![CDATA[PROGRAM P90_Interlock
 VAR_INPUT
@@ -36,7 +36,14 @@ END_VAR
 ]]></Declaration>
     <Implementation>
       <ST><![CDATA[(* Read from Device*)
+//Maintenance Mode
 bMaintKey := GVL_IO.aDigitalInputIO[1].0;
+
+IF bMaintKey THEN
+	P92_Maintenance.nCaseSignalTower		:= 5;
+ELSE
+	P92_Maintenance.nCaseSignalTower		:= 4;
+END_IF
 
 bPowerResetSwitch := GVL_IO.aDigitalInputIO[1].1;
 bMainPowerMonitor := GVL_IO.aDigitalInputIO[7].5;
@@ -76,7 +83,13 @@ GVL_IO.aDigitalOutputIO[2].4 := bUPSMode;]]></ST>
     </Implementation>
     <LineIds Name="P90_Interlock">
       <LineId Id="139" Count="0" />
+      <LineId Id="300" Count="0" />
       <LineId Id="284" Count="0" />
+      <LineId Id="296" Count="0" />
+      <LineId Id="298" Count="0" />
+      <LineId Id="295" Count="0" />
+      <LineId Id="301" Count="1" />
+      <LineId Id="299" Count="0" />
       <LineId Id="282" Count="0" />
       <LineId Id="140" Count="0" />
       <LineId Id="211" Count="0" />

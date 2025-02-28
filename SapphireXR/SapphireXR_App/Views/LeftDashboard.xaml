@@ -20,7 +20,7 @@
             <RowDefinition Height="20"/>
             <RowDefinition Height="110"/>
             <RowDefinition Height="40"/>
-            <RowDefinition Height="250"/>
+            <RowDefinition Height="260"/>
             <RowDefinition Height="140"/>
             <RowDefinition Height="270"/>
             <RowDefinition Height="90"/>
@@ -287,7 +287,7 @@
                 </StackPanel>
                 <StackPanel Orientation="Horizontal">
                     <Rectangle Fill="{Binding TempControllerAlarmLampColor}"/>
-                    <TextBlock Text="Suscepor Temp. Controller Alarm"/>
+                    <TextBlock Text="Susceptor Temp. Controller Alarm"/>
                 </StackPanel>
             </StackPanel>
         </Grid>

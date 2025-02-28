@@ -102,7 +102,15 @@ CASE nCaseSignalTower OF
 			END_IF
 		END_IF
 	3: //GREEN
-		bSignalTower := 2#0000_0100;
+		TimerSignalTower(IN:=TRUE, PT:=T#1S);
+		IF TimerSignalTower.Q THEN
+			TimerSignalTower(IN:=FALSE);
+			IF bSignalTower = 0 THEN
+				bSignalTower := 2#0000_0100; // GREEN
+			ELSE
+				bSignalTower := 0;
+			END_IF
+		END_IF		
 	4: //BLUE
 		bSignalTower := 2#0000_1000;
 	5: //WHITE
@@ -165,7 +173,12 @@ GVL_IO.aDigitalOutputIO[1].5 		:= bSignalTower.5; //5:BUZZER-Alarm
       <LineId Id="223" Count="0" />
       <LineId Id="163" Count="0" />
       <LineId Id="170" Count="0" />
-      <LineId Id="174" Count="2" />
+      <LineId Id="399" Count="2" />
+      <LineId Id="403" Count="1" />
+      <LineId Id="406" Count="1" />
+      <LineId Id="405" Count="0" />
+      <LineId Id="402" Count="0" />
+      <LineId Id="175" Count="1" />
       <LineId Id="178" Count="1" />
       <LineId Id="169" Count="0" />
       <LineId Id="183" Count="0" />

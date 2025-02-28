@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4026.8">
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4026.11">
   <POU Name="P91_Monitoring" Id="{4f91223e-09c8-40bc-a729-040528b0179c}" SpecialFunc="None">
     <Declaration><![CDATA[PROGRAM P91_Monitoring
 VAR_OUTPUT

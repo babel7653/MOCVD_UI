@@ -60,7 +60,7 @@
     <SolidColorBrush x:Key="InActiveSignalTowerYellow" Color="#ffffC5"/>
     <SolidColorBrush x:Key="InActiveSignalTowerGreen" Color="#cdf5dd"/>
     <SolidColorBrush x:Key="InActiveSignalTowerBlue" Color="#86CEFA"/>
-    <SolidColorBrush x:Key="InActiveSignalTowerWhite" Color="LightGray"/>
+    <SolidColorBrush x:Key="InActiveSignalTowerWhite" Color="DarkGray"/>
     <SolidColorBrush x:Key="ActiveSignalTowerRed" Color="Red"/>
     <SolidColorBrush x:Key="ActiveSignalTowerYellow" Color="Yellow"/>
     <SolidColorBrush x:Key="ActiveSignalTowerGreen" Color="Green"/>

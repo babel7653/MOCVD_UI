@@ -848,7 +848,7 @@
                     <StackPanel Orientation="Horizontal" Height="30">
                         <TextBlock Width="210"  Height="20" TextAlignment="Right" Text="Heater Control Mode"
                                 Margin="0,2,6,0"/>
-                        <Button Height="20" Width="80" FontSize="11" Content="Power Rate" />
+                        <Button Height="20" Width="80" FontSize="11" Content="{Binding InputManualAuto}" />
                     </StackPanel>
                     <Label Content="Induction Heater Control" VerticalContentAlignment="Bottom"/>
                     <StackPanel Orientation="Horizontal" Height="30" Margin="10,0,0,0">
@@ -891,10 +891,7 @@
                     </StackPanel>
                     <Label Content="Throttle Valve Control" VerticalContentAlignment="Bottom"/>
                     <StackPanel Orientation="Horizontal" Height="30" HorizontalAlignment="Center">
-                        <Button x:Name="btThrottleRun" Content="RUN"/>
-                        <Button x:Name="btThrottleOpen" Content="OPEN"/>
-                        <Button x:Name="btThrottleClose" Content="CLOSE"/>
-                        <Button x:Name="btThrottleStop" Content="STOP"/>
+                        <Button x:Name="btThrottleRun" Content="{Binding ThrottleValveControlMode}"/>
                     </StackPanel>
                     <Label Content="Vacuum Pump Control" VerticalContentAlignment="Bottom"/>
                     <StackPanel Orientation="Horizontal" Height="30" Margin="10,0,0,0">

@@ -333,7 +333,7 @@
                 <Label Canvas.Left="848" Canvas.Top="33" Foreground="{StaticResource PrimaryFontColor}" Content="Pressure"
                 Width="80" HorizontalContentAlignment="Center"/>
             <control:HomeFlowController x:Name="reactorPressure" Canvas.Left="853" Canvas.Top="60" ControllerID="Pressure" Type="Reactor"/>
-            <control:MonitoringMeter x:Name="valvePositionPersent" Canvas.Left="853" Canvas.Top="102" Type="ValvePosition" />
+            <control:MonitoringMeter x:Name="ultimatePressure" Canvas.Left="853" Canvas.Top="102" Type="UltimatePressure" />
 
                 <Label Canvas.Left="938" Canvas.Top="33" Foreground="{StaticResource PrimaryFontColor}" Content="Rotation"
                 Width="80" HorizontalContentAlignment="Center"/>

@@ -76,6 +76,8 @@ namespace SapphireXR_App.Models
         private static ObservableManager<BitArray>.DataIssuer? dDigitalOutput2;
         private static ObservableManager<BitArray>.DataIssuer? dDigitalOutput3;
         private static ObservableManager<BitArray>.DataIssuer? dOutputCmd1;
+        private static ObservableManager<BitArray>.DataIssuer? dInputManAuto;
+        private static ObservableManager<short>.DataIssuer? dThrottleValveControlMode;
 
         //Create an instance of the TcAdsClient()
         public static AdsClient Ads { get; set; }
@@ -106,6 +108,7 @@ namespace SapphireXR_App.Models
         private static uint hRecipeControlPauseTime;
         private static uint hDigitalOutput;
         private static uint hOutputCmd;
+        private static uint hE3508InputManAuto;
 
         private static bool RecipeRunEndNotified = false;
 

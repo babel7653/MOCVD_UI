@@ -1,10 +1,4 @@
-﻿using System.ComponentModel;
-using System.Windows;
-using SapphireXR_App.Controls;
-using SapphireXR_App.Views;
-using System.Windows.Media;
-using CommunityToolkit.Mvvm.Input;
-using System.Reactive;
+﻿using CommunityToolkit.Mvvm.Input;
 using System.Windows.Input;
 using SapphireXR_App.Enums;
 using SapphireXR_App.Common;

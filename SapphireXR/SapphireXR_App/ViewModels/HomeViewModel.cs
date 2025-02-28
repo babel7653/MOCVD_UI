@@ -128,6 +128,85 @@ namespace SapphireXR_App.ViewModels
             private HomeViewModel homeViewMode;
             private bool? prevPressureControlMode = null;
         }
+
+        private class ThrottleValveControlModeSubscriber : IObserver<short>
+        {
+            internal ThrottleValveControlModeSubscriber(HomeViewModel vm)
+            {
+                homeViewModel = vm;
+            }
+
+            void IObserver<short>.OnCompleted()
+            {
+                throw new NotImplementedException();
+            }
+
+            void IObserver<short>.OnError(Exception error)
+            {
+                throw new NotImplementedException();
+            }
+
+            void IObserver<short>.OnNext(short value)
+            {
+                if(prevThrottleValveControlMode == null || prevThrottleValveControlMode != value)
+                {
+                    switch(value)
+                    {
+                        case 0:
+                            homeViewModel.ThrottleValveControlMode = "Run";
+                            break;
+
+                        case 1:
+                            homeViewModel.ThrottleValveControlMode = "Close";
+                            break;
+
+                        case 2:
+                            homeViewModel.ThrottleValveControlMode = "Open";
+                            break;
+
+                        case 3:
+                            homeViewModel.ThrottleValveControlMode = "Hold";
+                            break;
+
+                        case 4:
+                            homeViewModel.ThrottleValveControlMode = "Reset";
+                            break;
+                    }
+                    prevThrottleValveControlMode = value;
+                }
+            }
+
+            private HomeViewModel homeViewModel;
+            private short? prevThrottleValveControlMode = null;
+        }
+
+        private class InputManAutoSubscriber: IObserver<BitArray>
+        {
+            internal InputManAutoSubscriber(HomeViewModel vm)
+            {
+                homeViewModel = vm;
+            }
+
+            void IObserver<BitArray>.OnCompleted()
+            {
+                throw new NotImplementedException();
+            }
+
+            void IObserver<BitArray>.OnError(Exception error)
+            {
+                throw new NotImplementedException();
+            }
+
+            void IObserver<BitArray>.OnNext(BitArray value)
+            {
+                Util.SetIfChanged(value[7], ref prevManAuto, (bool value) => { homeViewModel.InputManualAuto = (value == true ? "Auto" : "Manual"); });
+
+            }
+
+            private HomeViewModel homeViewModel;
+            private bool? prevManAuto = null;
+        }
+
         public HomeViewModel()
         {
             DashBoardViewModel = new HomeBottomDashBoardViewModel();
@@ -189,6 +268,9 @@ namespace SapphireXR_App.ViewModels
             ObservableManager<BitArray>.Subscribe("DigitalOutput2", digitalOutput2Subscriber = new DigitalOutput2Subscriber(this));
             ObservableManager<BitArray>.Subscribe("DigitalOutput3", digitalOutput3Subscriber = new DigitalOutput3Subscriber(this));
             ObservableManager<BitArray>.Subscribe("OutputCmd1", outputCmd1Subscriber = new OutputCmd1Subscriber(this));
+            ObservableManager<BitArray>.Subscribe("InputManAuto", inputManAutoSubscriber = new InputManAutoSubscriber(this));
+            ObservableManager<short>.Subscribe("ThrottleValveControlMode", throttleValveControlModeSubscriber = new ThrottleValveControlModeSubscriber(this));
+           
         }
 
         public ICommand EnableLeakTestCommand { get; set; }
@@ -247,6 +329,10 @@ namespace SapphireXR_App.ViewModels
         private string _inductionHeaterReset = "";
         [ObservableProperty]
         private string _rotationReset = "";
+        [ObservableProperty]
+        private string _inputManualAuto = "";
+        [ObservableProperty]
+        private string _throttleValveControlMode = "";
 
         public BottomDashBoardViewModel DashBoardViewModel { get; set; }
 
@@ -254,6 +340,8 @@ namespace SapphireXR_App.ViewModels
         private OutputCmd1Subscriber outputCmd1Subscriber;
         private DigitalOutput2Subscriber digitalOutput2Subscriber;
         private DigitalOutput3Subscriber digitalOutput3Subscriber;
+        private InputManAutoSubscriber inputManAutoSubscriber;
+        private ThrottleValveControlModeSubscriber throttleValveControlModeSubscriber;
     }
 }
 

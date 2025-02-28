@@ -4,6 +4,7 @@ using SapphireXR_App.ViewModels;
 using System.Collections;
 using System.Net.Sockets;
 using System.Security.Permissions;
+using System.Security.RightsManagement;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Threading;
@@ -68,7 +69,7 @@ namespace SapphireXR_App.Models
                 hRecipeControlHoldTime = Ads.CreateVariableHandle("P50_RecipeControl.Hold_ET");
                 hRecipeControlRampTime = Ads.CreateVariableHandle("P50_RecipeControl.Ramp_ET");
                 hRecipeControlPauseTime = Ads.CreateVariableHandle("P50_RecipeControl.Pause_ET");
-                
+                hE3508InputManAuto = Ads.CreateVariableHandle("P11_E3508.nInputManAutoBytes");
 
                 aDeviceRampTimes = new short[dIndexController.Count];
                 aDeviceTargetValues = new float[dIndexController.Count];
@@ -149,6 +150,8 @@ namespace SapphireXR_App.Models
             dDigitalOutput2 = ObservableManager<BitArray>.Get("DigitalOutput2");
             dDigitalOutput3 = ObservableManager<BitArray>.Get("DigitalOutput3");
             dOutputCmd1 = ObservableManager<BitArray>.Get("OutputCmd1");
+            dInputManAuto = ObservableManager<BitArray>.Get("InputManAuto");
+            dThrottleValveControlMode = ObservableManager<short>.Get("ThrottleValveControlMode");
 
             timer = new DispatcherTimer();
             timer.Interval = new TimeSpan(2000000);
@@ -211,11 +214,11 @@ namespace SapphireXR_App.Models
                     dTargetValueIssuers?[kv.Key].Issue(aDeviceTargetValues[dIndexController[kv.Key]]);
                 }
             }
-            if(aDeviceControlValues != null && aDeviceTargetValues != null)
+            if(aDeviceControlValues != null && aDeviceCurrentValues != null)
             {
                 foreach (KeyValuePair<string, int> kv in dIndexController)
                 {
-                    dControlCurrentValueIssuers?[kv.Key].Issue((aDeviceControlValues[dIndexController[kv.Key]], (int)aDeviceTargetValues[dIndexController[kv.Key]]));
+                    dControlCurrentValueIssuers?[kv.Key].Issue((aDeviceCurrentValues[dIndexController[kv.Key]], (int)aDeviceControlValues[dIndexController[kv.Key]]));
                 }
             }
 
@@ -261,12 +264,10 @@ namespace SapphireXR_App.Models
             dDigitalOutput3?.Issue(new BitArray(new byte[1] { digitalOutput[2] }));
             short[] outputCmd = Ads.ReadAny<short[]>(hOutputCmd, [3]);
             dOutputCmd1?.Issue(new BitArray(BitConverter.IsLittleEndian == true ? BitConverter.GetBytes(outputCmd[0]) : BitConverter.GetBytes(outputCmd[0]).Reverse().ToArray()));
+            dThrottleValveControlMode?.Issue(outputCmd[1]);
+            ushort inputManAuto = Ads.ReadAny<ushort>(hE3508InputManAuto);
+            dInputManAuto?.Issue(new BitArray(BitConverter.IsLittleEndian == true ? BitConverter.GetBytes(inputManAuto) : BitConverter.GetBytes(inputManAuto).Reverse().ToArray()));
 
-            var readTime = (uint timeHandle) =>
-            {
-                return ;
-               
-            };
             dRecipeControlHoldTimeIssuer?.Issue(Ads.ReadAny<TIME>(hRecipeControlHoldTime).Time.Seconds);
             dRecipeControlRampTimeIssuer?.Issue(Ads.ReadAny<TIME>(hRecipeControlRampTime).Time.Seconds);
             dRecipeControlPauseTimeIssuer?.Issue(Ads.ReadAny<TIME>(hRecipeControlPauseTime).Time.Seconds);

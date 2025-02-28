@@ -4,15 +4,8 @@ using SapphireXR_App.Models;
 using System.Windows.Media;
 using System.Windows;
 using System.Collections;
-using System.Configuration;
-using static SapphireXR_App.ViewModels.LeftViewModel;
 using System.ComponentModel;
-using SapphireXR_App.Controls;
-using static SapphireXR_App.ViewModels.RecipeEditViewModel.RecipeStateUpader;
 using TwinCAT.Ads;
-using System.Security.Policy;
-using System.Reactive;
-using CsvHelper.Configuration.Attributes;
 
 namespace SapphireXR_App.ViewModels
 {
@@ -100,12 +93,10 @@ namespace SapphireXR_App.ViewModels
                 leftViewModel.DoorPowerDistributeCabinetLampColor = convertOnOffStateColor(value[(int)PLCService.HardWiringInterlockStateIndex.DoorPowerDistributeCabinet]);
                 leftViewModel.CleanDryAirLampColor = convertOnOffStateColor(value[(int)PLCService.HardWiringInterlockStateIndex.CleanDryAir]);
                 leftViewModel.CoolingWaterLampColor = convertOnOffStateColor(value[(int)PLCService.HardWiringInterlockStateIndex.CoolingWater]);
-                leftViewModel.TempControllerAlarmLampColor = convertOnOffStateColor(value[(int)PLCService.HardWiringInterlockStateIndex.TempControllerAlarmLampColor]);
 
                 leftViewModel.InductionHeaterLampColor = convertThreeStateColor(value, (int)PLCService.HardWiringInterlockStateIndex.InductionHeaterReady) ?? leftViewModel.InductionHeaterLampColor;
                 leftViewModel.SusceptorMotorLampColor = convertThreeStateColor(value, (int)PLCService.HardWiringInterlockStateIndex.SusceptorMotorStop) ?? leftViewModel.SusceptorMotorLampColor;
                 leftViewModel.VacuumPumpLampColor = convertThreeStateColor(value, (int)PLCService.HardWiringInterlockStateIndex.VacuumPumpWarning) ?? leftViewModel.VacuumPumpLampColor;
-                leftViewModel.DorVacuumStateLampColor = convertThreeStateColor(value, (int)PLCService.HardWiringInterlockStateIndex.DorVacuumState) ?? leftViewModel.DorVacuumStateLampColor;
             }
 
             LeftViewModel leftViewModel;
@@ -164,20 +155,13 @@ namespace SapphireXR_App.ViewModels
 
             void IObserver<BitArray>.OnNext(BitArray ioList)
             {
-                setIfChange(ioList[(int)PLCService.IOListIndex.SingalTower_RED], (bool state) => { if (state == true) { leftViewModel.SignalTowerRed = ActiveSignalTowerRed;  } else { leftViewModel.SignalTowerRed = InActiveSignalTowerRed; } }, ref signalTowerRed);
-                setIfChange(ioList[(int)PLCService.IOListIndex.SingalTower_YELLOW], (bool state) => { if (state == true) { leftViewModel.SignalTowerYellow = ActiveSignalTowerYellow; } else { leftViewModel.SignalTowerYellow = InActiveSignalTowerYellow; } }, ref signalTowerYellow);
-                setIfChange(ioList[(int)PLCService.IOListIndex.SingalTower_GREEN], (bool state) => { if (state == true) { leftViewModel.SignalTowerGreen = ActiveSignalTowerGreen; } else { leftViewModel.SignalTowerGreen = InActiveSignalTowerGreen; } }, ref signalTowerGreen);
-                setIfChange(ioList[(int)PLCService.IOListIndex.SingalTower_BLUE], (bool state) => { if (state == true) { leftViewModel.SignalTowerBlue = ActiveSignalTowerBlue; } else { leftViewModel.SignalTowerBlue = InActiveSignalTowerBlue; } }, ref signalTowerBlue);
-                setIfChange(ioList[(int)PLCService.IOListIndex.SingalTower_WHITE], (bool state) => { if (state == true) { leftViewModel.SignalTowerWhite = ActiveSignalTowerWhite; } else { leftViewModel.SignalTowerWhite = InActiveSignalTowerWhite; } }, ref signalTowerWhite);
-            }
-
-            void setIfChange(bool ioState,  Action<bool> onChanged, ref bool? signalTowerState)
-            {
-                if (signalTowerState != ioState)
-                {
-                    onChanged(ioState);
-                    signalTowerState = ioState;
-                }
+                Util.SetIfChanged(ioList[(int)PLCService.IOListIndex.SingalTower_RED], ref signalTowerRed, (bool state) => { if (state == true) { leftViewModel.SignalTowerRed = ActiveSignalTowerRed;  } else { leftViewModel.SignalTowerRed = InActiveSignalTowerRed; } });
+                Util.SetIfChanged(ioList[(int)PLCService.IOListIndex.SingalTower_YELLOW], ref signalTowerYellow, (bool state) => { if (state == true) { leftViewModel.SignalTowerYellow = ActiveSignalTowerYellow; } else { leftViewModel.SignalTowerYellow = InActiveSignalTowerYellow; } });
+                Util.SetIfChanged(ioList[(int)PLCService.IOListIndex.SingalTower_GREEN], ref signalTowerGreen, (bool state) => { if (state == true) { leftViewModel.SignalTowerGreen = ActiveSignalTowerGreen; } else { leftViewModel.SignalTowerGreen = InActiveSignalTowerGreen; } });
+                Util.SetIfChanged(ioList[(int)PLCService.IOListIndex.SingalTower_BLUE], ref signalTowerBlue, (bool state) => { if (state == true) { leftViewModel.SignalTowerBlue = ActiveSignalTowerBlue; } else { leftViewModel.SignalTowerBlue = InActiveSignalTowerBlue; } });
+                Util.SetIfChanged(ioList[(int)PLCService.IOListIndex.SingalTower_WHITE], ref signalTowerWhite, (bool state) => { if (state == true) { leftViewModel.SignalTowerWhite = ActiveSignalTowerWhite; } else { leftViewModel.SignalTowerWhite = InActiveSignalTowerWhite; } });
+                Util.SetIfChanged(ioList[(int)PLCService.IOListIndex.DOR_Vaccum_State], ref dorVaccumState, (bool state) => { if (state == true) { leftViewModel.DorVacuumStateLampColor = OnLampColor; } else { leftViewModel.DorVacuumStateLampColor = ReadyLampColor; } });
+                Util.SetIfChanged(ioList[(int)PLCService.IOListIndex.Temp_Controller_Alarm], ref tempControllerAlarm, (bool state) => { if (state == true) { leftViewModel.TempControllerAlarmLampColor = FaultLampColor; } else { leftViewModel.TempControllerAlarmLampColor = OffLampColor; } });
             }
 
             private LeftViewModel leftViewModel;
@@ -187,6 +171,8 @@ namespace SapphireXR_App.ViewModels
             private bool? signalTowerBlue = null;
             private bool? signalTowerWhite = null;
             private bool? signalTowerBuzzwer = null;
+            private bool? dorVaccumState = null;
+            private bool? tempControllerAlarm = null;
         }
 
         private class LineHeaterTemperatureSubscriber: IObserver<float[]>

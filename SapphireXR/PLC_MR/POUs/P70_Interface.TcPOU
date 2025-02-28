@@ -56,8 +56,17 @@ GVL_IO.aInputState[3].11	:= GVL_IO.aDigitalInputIO[8].2;
 GVL_IO.aInputState[3].12	:= GVL_IO.aDigitalInputIO[8].4;
 GVL_IO.aInputState[3].13	:= GVL_IO.aDigitalInputIO[8].6;
 GVL_IO.aInputState[3].14	:= GVL_IO.aDigitalInputIO[9].0;
-GVL_IO.aInputState[4].15	:= GVL_IO.aDigitalInputIO[9].2; //Thermal Bath Temp. Deviation Alarm #6
-GVL_IO.aInputState[4]		:= GVL_IO.aDigitalOutputIO[1]; // Signal]]></ST>
+GVL_IO.aInputState[3].15	:= GVL_IO.aDigitalInputIO[9].2; //Thermal Bath Temp. Deviation Alarm #6
+
+GVL_IO.aInputState[4].0		:= GVL_IO.aDigitalOutputIO[1].0; // RED - Alarm
+GVL_IO.aInputState[4].1		:= GVL_IO.aDigitalOutputIO[1].1; // YELLOW - Waring
+GVL_IO.aInputState[4].2		:= GVL_IO.aDigitalOutputIO[1].2; // GREEN - Running
+GVL_IO.aInputState[4].3		:= GVL_IO.aDigitalOutputIO[1].3; // BLUE - Idle
+GVL_IO.aInputState[4].4		:= GVL_IO.aDigitalOutputIO[1].4; // WHITE - Maint
+GVL_IO.aInputState[4].5		:= GVL_IO.aDigitalOutputIO[1].5; // BUZZER - Alarm
+GVL_IO.aInputState[4].6		:= GVL_IO.aDigitalOutputIO[4].1; // DOR Atm State
+GVL_IO.aInputState[4].7		:= GVL_IO.aDigitalOutputIO[4].0; // DOR Vacuum
+GVL_IO.aInputState[4].8	:= P11_E3508.nInputAlarmBytes.7; // Temp Conroller Alarm]]></ST>
     </Implementation>
     <LineIds Name="P70_Interface">
       <LineId Id="1" Count="16" />
@@ -65,7 +74,14 @@ GVL_IO.aInputState[4]		:= GVL_IO.aDigitalOutputIO[1]; // Signal]]></ST>
       <LineId Id="18" Count="1" />
       <LineId Id="22" Count="15" />
       <LineId Id="39" Count="13" />
+      <LineId Id="61" Count="0" />
       <LineId Id="58" Count="0" />
+      <LineId Id="66" Count="0" />
+      <LineId Id="63" Count="2" />
+      <LineId Id="62" Count="0" />
+      <LineId Id="69" Count="0" />
+      <LineId Id="71" Count="0" />
+      <LineId Id="70" Count="0" />
     </LineIds>
   </POU>
 </TcPlcObject>

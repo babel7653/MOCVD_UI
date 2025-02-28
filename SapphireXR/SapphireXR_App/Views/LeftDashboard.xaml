@@ -18,11 +18,11 @@
     <Grid Background="{StaticResource DashboardBackground}">
         <Grid.RowDefinitions>
             <RowDefinition Height="20"/>
-            <RowDefinition Height="120"/>
+            <RowDefinition Height="110"/>
             <RowDefinition Height="40"/>
-            <RowDefinition Height="280"/>
-            <RowDefinition Height="170"/>
-            <RowDefinition Height="230"/>
+            <RowDefinition Height="250"/>
+            <RowDefinition Height="140"/>
+            <RowDefinition Height="270"/>
             <RowDefinition Height="90"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
@@ -222,10 +222,6 @@
                 </StackPanel>
                 <StackPanel Orientation="Horizontal">
                     <Rectangle Fill="Lime"/>
-                    <TextBlock Text="Double O-Ring Vacuum State"/>
-                </StackPanel>
-                <StackPanel Orientation="Horizontal">
-                    <Rectangle Fill="Lime"/>
                     <TextBlock Text="Process Gas Available"/>
                 </StackPanel>
 
@@ -284,6 +280,14 @@
                 <StackPanel Orientation="Horizontal">
                     <Rectangle Fill="{Binding DoorPowerDistributeCabinetLampColor}" />
                     <TextBlock Text="Door - Power Distribute Cabinet"/>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal">
+                    <Rectangle Fill="{Binding DorVacuumState}"/>
+                    <TextBlock Text="Double O-Ring Vacuum"/>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal">
+                    <Rectangle Fill="{Binding TempControllerAlarmLampColor}"/>
+                    <TextBlock Text="Suscepor Temp. Controller Alarm"/>
                 </StackPanel>
             </StackPanel>
         </Grid>

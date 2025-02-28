@@ -17,7 +17,7 @@ namespace SapphireXR_App.Models
         {
             MaintenanceKey = 0, DoorReactorCabinet = 1, DoorGasDeliveryCabinet = 2, DoorPowerDistributeCabinet = 3, CleanDryAir = 4, CoolingWater = 5,
             InductionHeaterReady = 6, InductionHeaterRun = 7, InductionHeaterFault = 8, SusceptorMotorStop = 9, SusceptorMotorRun = 10, SusceptorMotorFault = 11,
-            VacuumPumpWarning = 12, VacuumPumpRun = 13, VacuumPumpFault = 14,
+            VacuumPumpWarning = 12, VacuumPumpRun = 13, VacuumPumpFault = 14, DORAtmState = 15, DorVacuumState = 16, TempControllerAlarmLampColor = 17
         };
 
         const int NumShortBits = sizeof(short) * 8;

@@ -12,6 +12,7 @@ using static SapphireXR_App.ViewModels.RecipeEditViewModel.RecipeStateUpader;
 using TwinCAT.Ads;
 using System.Security.Policy;
 using System.Reactive;
+using CsvHelper.Configuration.Attributes;
 
 namespace SapphireXR_App.ViewModels
 {
@@ -99,10 +100,12 @@ namespace SapphireXR_App.ViewModels
                 leftViewModel.DoorPowerDistributeCabinetLampColor = convertOnOffStateColor(value[(int)PLCService.HardWiringInterlockStateIndex.DoorPowerDistributeCabinet]);
                 leftViewModel.CleanDryAirLampColor = convertOnOffStateColor(value[(int)PLCService.HardWiringInterlockStateIndex.CleanDryAir]);
                 leftViewModel.CoolingWaterLampColor = convertOnOffStateColor(value[(int)PLCService.HardWiringInterlockStateIndex.CoolingWater]);
+                leftViewModel.TempControllerAlarmLampColor = convertOnOffStateColor(value[(int)PLCService.HardWiringInterlockStateIndex.TempControllerAlarmLampColor]);
 
                 leftViewModel.InductionHeaterLampColor = convertThreeStateColor(value, (int)PLCService.HardWiringInterlockStateIndex.InductionHeaterReady) ?? leftViewModel.InductionHeaterLampColor;
                 leftViewModel.SusceptorMotorLampColor = convertThreeStateColor(value, (int)PLCService.HardWiringInterlockStateIndex.SusceptorMotorStop) ?? leftViewModel.SusceptorMotorLampColor;
                 leftViewModel.VacuumPumpLampColor = convertThreeStateColor(value, (int)PLCService.HardWiringInterlockStateIndex.VacuumPumpWarning) ?? leftViewModel.VacuumPumpLampColor;
+                leftViewModel.DorVacuumStateLampColor = convertThreeStateColor(value, (int)PLCService.HardWiringInterlockStateIndex.DorVacuumState) ?? leftViewModel.DorVacuumStateLampColor;
             }
 
             LeftViewModel leftViewModel;
@@ -561,6 +564,11 @@ namespace SapphireXR_App.ViewModels
         private Brush _susceptorMotorLampColor = OnLampColor;
         [ObservableProperty]
         private Brush _vacuumPumpLampColor = ReadyLampColor;
+        [ObservableProperty]
+        private Brush _dorVacuumStateLampColor = ReadyLampColor;
+        [ObservableProperty]
+        private Brush _tempControllerAlarmLampColor = OnLampColor;
+
 
         [ObservableProperty]
         private Brush _signalTowerRed = Brushes.Transparent;

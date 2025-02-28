@@ -282,7 +282,7 @@
                     <TextBlock Text="Door - Power Distribute Cabinet"/>
                 </StackPanel>
                 <StackPanel Orientation="Horizontal">
-                    <Rectangle Fill="{Binding DorVacuumState}"/>
+                    <Rectangle Fill="{Binding DorVacuumStateLampColor}"/>
                     <TextBlock Text="Double O-Ring Vacuum"/>
                 </StackPanel>
                 <StackPanel Orientation="Horizontal">

@@ -16,7 +16,7 @@ namespace SapphireXR_App.Views
         {
             InitializeComponent();
             DataContext = App.Current.Services.GetService(typeof(RecipeEditViewModel));
-            flowControllerDataGridTextColumnTextBoxValidater = new FlowControllerDataGridTextColumnTextBoxValidater((RecipeEditViewModel)DataContext!, "Recipes");
+            //flowControllerDataGridTextColumnTextBoxValidater = new FlowControllerDataGridTextColumnTextBoxValidater((RecipeEditViewModel)DataContext!, "Recipes");
         }
 
         private void TextBox_PreviewTextInput(object sender, TextCompositionEventArgs e)
@@ -29,17 +29,17 @@ namespace SapphireXR_App.Views
             TextBox? textBox = sender as TextBox;
             if (textBox != null)
             {
-                string? validatedFlowControllerValue = flowControllerDataGridTextColumnTextBoxValidater.validate(textBox, e);
-                if(validatedFlowControllerValue != null)
-                {
-                    textBox.Text = validatedFlowControllerValue;
-                    return;
-                }
+                //string? validatedFlowControllerValue = flowControllerDataGridTextColumnTextBoxValidater.validate(textBox, e);
+                //if(validatedFlowControllerValue != null)
+                //{
+                //    textBox.Text = validatedFlowControllerValue;
+                //    return;
+                //}
             }
 
             throw new Exception("DataEditPage: TextBox_TextChanged must be called with TextBox in DataGridColumn whose header value has valid flow controller ");
         }
 
-        FlowControllerDataGridTextColumnTextBoxValidater flowControllerDataGridTextColumnTextBoxValidater;
+        //FlowControllerDataGridTextColumnTextBoxValidater flowControllerDataGridTextColumnTextBoxValidater;
     }
 }

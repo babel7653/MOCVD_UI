@@ -1,49 +1,68 @@
 ﻿using SapphireXR_App.Common;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using static System.Net.Mime.MediaTypeNames;
 using System.Windows.Controls;
-using System.Windows.Input;
 using System.Windows;
-using System.Windows.Controls.Primitives;
 
 namespace SapphireXR_App.Views
 {    public class NumberBox : TextBox
     {
         public NumberBox() : base()
         {
-            PreviewTextInput += OnlyAllowNumber;
+            TextChanged += OnlyAllowNumber;
+            flowControllerTextBoxValidaterOnlyNumber = new FlowControllerTextBoxValidaterOnlyNumber();
         }
 
-        protected void OnlyAllowNumber(object sender, TextCompositionEventArgs e)
+        protected void OnlyAllowNumber(object sender, TextChangedEventArgs e)
         {
-            e.Handled = !Util.IsTextNumeric(e.Text);
+            TextBox? textBox = sender as TextBox;
+            if (textBox != null)
+            {
+                string validatedFlowControllerValue = flowControllerTextBoxValidaterOnlyNumber.valdiate(textBox);
+                if (validatedFlowControllerValue != textBox.Text)
+                {
+                    int caretIndex = textBox.CaretIndex - 1;
+                    textBox.Text = validatedFlowControllerValue;
+                    textBox.CaretIndex = caretIndex;
+                }
+                
+            }
         }
+
+        private FlowControllerTextBoxValidaterOnlyNumber flowControllerTextBoxValidaterOnlyNumber;
     }
 
     public class NumberBoxWithMax : TextBox
     {
         public NumberBoxWithMax() : base()
         {
-            flowControllerTextBoxValidater = new FlowControllerTextBoxValidater();
-            PreviewTextInput += onlyAllowNumber;
-            TextChanged += validateWithinMax;
+            flowControllerTextBoxValidater = new FlowControllerTextBoxValidaterMaxValue();
+            TextChanged += onlyAllowNumberWithMax;
         }
 
-        protected void onlyAllowNumber(object sender, TextCompositionEventArgs e)
-        {
-            Util.OnlyAllowNumber(e, e.Text);
-        }
-
-        protected void validateWithinMax(object sender, TextChangedEventArgs e)
+        protected void onlyAllowNumberWithMax(object sender, TextChangedEventArgs e)
         {
             TextBox? textBox = sender as TextBox;
             if (textBox != null)
             {
-                textBox.Text = flowControllerTextBoxValidater.valdiate(textBox, (uint)MaxValue);
+                (string validatedFlowControllerValue, FlowControllerTextBoxValidaterMaxValue.Result result) = flowControllerTextBoxValidater.valdiate(textBox, (uint)MaxValue);
+                switch(result)
+                {
+                    case FlowControllerTextBoxValidaterMaxValue.Result.Valid:
+                        textBox.ClearValue(ToolTipProperty);
+                        break;
+
+                    case FlowControllerTextBoxValidaterMaxValue.Result.NotNumber:
+                    case FlowControllerTextBoxValidaterMaxValue.Result.ExceedMax:
+                        int caretIndex = textBox.CaretIndex - 1;
+                        textBox.Text = validatedFlowControllerValue;
+                        textBox.CaretIndex = caretIndex;
+                        if(result == FlowControllerTextBoxValidaterMaxValue.Result.ExceedMax)
+                        {
+                            ToolTip toolTip = new ToolTip();
+                            toolTip.Content = "최대값 " + MaxValue + "보다 클 수 없습니다.";
+                            textBox.ToolTip = toolTip;
+                        }
+                        break;
+                }
             }
         }
 
@@ -54,6 +73,6 @@ namespace SapphireXR_App.Views
         }
 
         private static readonly DependencyProperty MaxValueProperty = DependencyProperty.Register("MaxValue", typeof(int), typeof(NumberBoxWithMax), new PropertyMetadata(int.MinValue));
-        private FlowControllerTextBoxValidater flowControllerTextBoxValidater;
+        private FlowControllerTextBoxValidaterMaxValue flowControllerTextBoxValidater;
     }
 }

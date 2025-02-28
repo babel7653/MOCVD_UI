@@ -1,15 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Media;
+﻿using System.Windows.Media;
 using System.Windows;
-using static System.Net.Mime.MediaTypeNames;
-using System.Windows.Input;
 using System.IO;
-using System.Security.Policy;
 using System.Windows.Resources;
+using System.Windows.Controls;
 
 namespace SapphireXR_App.Common
 {
@@ -44,13 +37,14 @@ namespace SapphireXR_App.Common
             return reg.IsMatch(str);
 
         }
-        static readonly System.Text.RegularExpressions.Regex reg = new System.Text.RegularExpressions.Regex("[0-9]");
+        static readonly System.Text.RegularExpressions.Regex reg = new System.Text.RegularExpressions.Regex("^\\d+$");
 
-        static public bool CheckValid(string curStr, string newStr, int maxValue)
+        static public bool CheckValid(string curStr, string newStr, int caretPosition, int maxValue)
         {
             if (IsTextNumeric(newStr) == true)
             {
-                string nextValueStr = curStr + newStr;
+                
+                string nextValueStr = curStr.Substring(0, caretPosition) + newStr + curStr.Substring(caretPosition);
                 int nextValue = int.Parse(nextValueStr);
                 if (nextValue <= maxValue)
                 {
@@ -72,9 +66,9 @@ namespace SapphireXR_App.Common
             e.Handled = !IsTextNumeric(textInput);
         }
 
-        public static void OnlyAllowConstrainedNumber(RoutedEventArgs e, string curStr,  string newStr, int maxValue)
+        public static void OnlyAllowConstrainedNumber(RoutedEventArgs e, string curStr,  string newStr, int caretPosition, int maxValue)
         {
-            e.Handled = !CheckValid(curStr, newStr, maxValue);
+            e.Handled = !CheckValid(curStr, newStr, caretPosition, maxValue);
         }
 
         public static string? GetResourceAbsoluteFilePath(string subPath)
@@ -96,6 +90,16 @@ namespace SapphireXR_App.Common
             }
         }
 
+        public static void CostraintTextBoxColumnOnlyNumber(TextBox textBox, FlowControllerDataGridTextColumnTextBoxValidaterOnlyNumber flowControllerDataGridTextColumnTextBoxValidaterOnlyNumber)
+        {
+            string validatedFlowControllerValue = flowControllerDataGridTextColumnTextBoxValidaterOnlyNumber.validate(textBox);
+            if (validatedFlowControllerValue != textBox.Text)
+            {
+                int textCaret = textBox.CaretIndex;
+                textBox.Text = validatedFlowControllerValue;
+                textBox.CaretIndex = textCaret;
+            }
+        }
 
         public static readonly Dictionary<string, string> RecipeFlowControlFieldToControllerID = new Dictionary<string, string>
         {

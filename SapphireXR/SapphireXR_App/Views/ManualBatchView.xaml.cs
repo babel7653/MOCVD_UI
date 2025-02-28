@@ -15,10 +15,10 @@ namespace SapphireXR_App.Views
         {
             InitializeComponent();
             DataContext = viewModel;
-            flowControllerDataGridTextColumnTextBoxValidater = new FlowControllerDataGridTextColumnTextBoxValidater(viewModel, nameof(viewModel.CurrentBatch));
+            //flowControllerDataGridTextColumnTextBoxValidater = new FlowControllerDataGridTextColumnTextBoxValidater(viewModel, nameof(viewModel.CurrentBatch));
         }
 
-        private FlowControllerDataGridTextColumnTextBoxValidater flowControllerDataGridTextColumnTextBoxValidater;
+        //private FlowControllerDataGridTextColumnTextBoxValidater flowControllerDataGridTextColumnTextBoxValidater;
 
         private void TextBox_PreviewTextInput(object sender, System.Windows.Input.TextCompositionEventArgs e)
         {
@@ -33,7 +33,7 @@ namespace SapphireXR_App.Views
                 ManualBatchViewModel.AnalogIOUserState? dataContext = textBox.DataContext as ManualBatchViewModel.AnalogIOUserState;
                 if (dataContext != null)
                 {
-                    textBox.Text = flowControllerDataGridTextColumnTextBoxValidater.validate(textBox, (uint)dataContext.MaxValue);
+                    //textBox.Text = flowControllerDataGridTextColumnTextBoxValidater.validate(textBox, (uint)dataContext.MaxValue);
                 }
             }
            

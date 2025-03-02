@@ -9,6 +9,7 @@ using System.IO;
 using System.Printing;
 using System.Windows;
 using System.Windows.Media;
+using System.Windows.Threading;
 using static SapphireXR_App.ViewModels.RecipeRunViewModel;
 
 namespace SapphireXR_App.ViewModels
@@ -82,45 +83,94 @@ namespace SapphireXR_App.ViewModels
                 private readonly Action<int> onNext;
             }
 
+            private class Logger: IDisposable
+            {
+                internal Logger(string logFilePath)
+                {
+                    try
+                    {
+                        fileStream = new FileStream(logFilePath, FileMode.Create);
+                        streamWriter = new StreamWriter(fileStream);
+                        csvWriter = new CsvWriter(streamWriter, Config);
+
+                        csvWriter.WriteHeader<RecipeLog>();
+                        csvWriter.NextRecord();
+                    }
+                    catch (Exception exception)
+                    {
+                        csvWriter?.Dispose();
+                        streamWriter?.Close();
+                        fileStream?.Close();
+
+                        throw new RecipeContextCreationException(exception.Message);
+                    }
+
+                    logTimer = new DispatcherTimer();
+                    logTimer.Interval = new TimeSpan(TimeSpan.TicksPerMillisecond * GlobalSetting.LogIntervalInRecipeRunInMS);
+                    logTimer.Tick += (object? sender, EventArgs args) =>
+                    {
+                        //if (currentRecipe != null)
+                        //{
+                        //    csvWriter!.WriteRecord(new RecipeLog(currentRecipe));
+                        //    csvWriter!.NextRecord();
+                        //}
+                    };
+
+            
+
+                    if (logTimer != null)
+                    {
+
+                    }
+                    logTimer!.Start();
+                }
+
+                protected virtual void Dispose(bool disposing)
+                {
+                    if (!disposedValue)
+                    {
+                        if (disposing)
+                        {
+
+                        }
+
+                        // TODO: 비관리형 리소스(비관리형 개체)를 해제하고 종료자를 재정의합니다.
+                        // TODO: 큰 필드를 null로 설정합니다.
+                        disposedValue = true;
+                    }
+                }
+
+                public void Dispose()
+                {
+                    // 이 코드를 변경하지 마세요. 'Dispose(bool disposing)' 메서드에 정리 코드를 입력합니다.
+                    Dispose(disposing: true);
+                    GC.SuppressFinalize(this);
+                }
+
+                private DispatcherTimer logTimer;
+                private FileStream? fileStream = null;
+                private StreamWriter? streamWriter = null;
+                private CsvWriter? csvWriter = null;
+                private bool disposedValue = false;
+            }
+
+
             public RecipeContext() { }
             public RecipeContext(string recipeFilePath, IList<Recipe> recipes)
             {
                 RecipeFilePath = recipeFilePath;
-                DirectoryInfo directoryInfo = new DirectoryInfo(recipeFilePath);
-                
-                LogFilePath = RecipeFilePath.Replace(".csv", "_log.csv");
                 Recipes = recipes;
 
-                try
+                int totalRecipeTime = 0;
+                foreach (Recipe recipe in Recipes)
                 {
-                    fileStream = new FileStream(LogFilePath, FileMode.Create);
-                    streamWriter = new StreamWriter(fileStream);
-                    csvWriter = new CsvWriter(streamWriter, Config);
-
-                    csvWriter!.WriteHeader<RecipeLog>();
-                    csvWriter!.NextRecord();
-
-                    int totalRecipeTime = 0;
-                    int totalCTtemp = 0;
-                    foreach(Recipe recipe in recipes)
-                    {
-                        totalRecipeTime += recipe.RTime;
-                        totalRecipeTime += recipe.HTime;
-                        totalCTtemp += recipe.cTemp;
-                    }
-                    TotalRecipeTime = totalRecipeTime;
-                    TotalStep = recipes.Count;
-
-                    initialized = true;
+                    totalRecipeTime += recipe.RTime;
+                    totalRecipeTime += recipe.HTime;
                 }
-                catch (Exception exception)
-                {
-                    csvWriter?.Dispose();
-                    streamWriter?.Close();
-                    fileStream?.Close();
-                    
-                    throw new RecipeContextCreationException(exception.Message);
-                }
+                TotalRecipeTime = totalRecipeTime;
+                TotalStep = Recipes.Count;
+
+                initialized = true;
             }
 
             ~RecipeContext()
@@ -188,6 +238,22 @@ namespace SapphireXR_App.ViewModels
                 return null;
             }
 
+            public void startLog()
+            {
+                if(initialized == false)
+                {
+                    return;
+                }
+
+                LogFilePath = RecipeFilePath.Replace(".csv", DateTime.Now.ToString("_yyyy_MM_dd_HH_mm_ss") + "_log.csv");
+            
+            }
+
+            private void stopLog()
+            {
+               
+            }
+
             public void loadPLCSubRangeOfRecipes()
             {
                 if(initialized == false)
@@ -217,20 +283,6 @@ namespace SapphireXR_App.ViewModels
                 if(recipeIndex != -1)
                 {
                     modifiedRecipeIndice.Add(recipeIndex);
-                }
-            }
-
-            public void log()
-            {
-                if(initialized == false)
-                {
-                    return;
-                }
-
-                if (currentRecipe != null)
-                {
-                    csvWriter!.WriteRecord<RecipeLog>(new RecipeLog(currentRecipe));
-                    csvWriter!.NextRecord();
                 }
             }
 
@@ -344,9 +396,6 @@ namespace SapphireXR_App.ViewModels
 
             public Recipe? currentRecipe = null;
             public int currentRecipeIndex = -1;
-            private readonly FileStream? fileStream = null;
-            private readonly StreamWriter? streamWriter = null;
-            private readonly CsvWriter? csvWriter = null;
             private bool disposedValue = false;
 
             private TemperatureControlValueSubscriber? temperatureControlValueSubscriber;
@@ -402,10 +451,10 @@ namespace SapphireXR_App.ViewModels
 
                 try
                 {
-                    csvWriter!.Flush();
-                    csvWriter!.Dispose();
-                    streamWriter!.Close();
-                    fileStream!.Close();
+                    //csvWriter!.Flush();
+                    //csvWriter!.Dispose();
+                    //streamWriter!.Close();
+                    //fileStream!.Close();
                 }
                 catch (Exception)
                 {

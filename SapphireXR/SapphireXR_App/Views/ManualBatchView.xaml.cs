@@ -1,5 +1,6 @@
 ﻿using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Data;
 using SapphireXR_App.Common;
 using SapphireXR_App.Models;
 using SapphireXR_App.ViewModels;
@@ -15,15 +16,10 @@ namespace SapphireXR_App.Views
         {
             InitializeComponent();
             DataContext = viewModel;
-            //flowControllerDataGridTextColumnTextBoxValidater = new FlowControllerDataGridTextColumnTextBoxValidater(viewModel, nameof(viewModel.CurrentBatch));
+            flowControllerDataGridTextColumnTextBoxValidaterMaxValue = new FlowControllerDataGridTextColumnTextBoxValidaterMaxValue(viewModel, nameof(viewModel.CurrentBatch));
         }
 
-        //private FlowControllerDataGridTextColumnTextBoxValidater flowControllerDataGridTextColumnTextBoxValidater;
-
-        private void TextBox_PreviewTextInput(object sender, System.Windows.Input.TextCompositionEventArgs e)
-        {
-            Util.OnlyAllowNumber(e, e.Text);
-        }
+        private FlowControllerDataGridTextColumnTextBoxValidaterMaxValue flowControllerDataGridTextColumnTextBoxValidaterMaxValue;
 
         private void TextBox_TextChanged(object sender, TextChangedEventArgs e)
         {
@@ -33,10 +29,23 @@ namespace SapphireXR_App.Views
                 ManualBatchViewModel.AnalogIOUserState? dataContext = textBox.DataContext as ManualBatchViewModel.AnalogIOUserState;
                 if (dataContext != null)
                 {
-                    //textBox.Text = flowControllerDataGridTextColumnTextBoxValidater.validate(textBox, (uint)dataContext.MaxValue);
+                    Util.CostraintTextBoxColumnMaxNumber(textBox, flowControllerDataGridTextColumnTextBoxValidaterMaxValue, (uint)dataContext.MaxValue);
                 }
             }
-           
+        }
+
+        private void dgUserSettingA_CellEditEnding(object sender, DataGridCellEditEndingEventArgs e)
+        {
+            Util.ConstraintEmptyToZeroOnDataGridCellCommit(sender, e, ["Value"]);
+        }
+
+        private void NumberBox_LostFocus(object sender, RoutedEventArgs e)
+        {
+            TextBox? textBox = e.OriginalSource as TextBox;
+            if(textBox != null && textBox.Text == "")
+            {
+                textBox.Text = "0";
+            }
         }
     }
 }

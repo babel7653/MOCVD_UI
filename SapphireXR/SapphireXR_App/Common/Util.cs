@@ -90,15 +90,71 @@ namespace SapphireXR_App.Common
             }
         }
 
-        public static void CostraintTextBoxColumnOnlyNumber(TextBox textBox, FlowControllerDataGridTextColumnTextBoxValidaterOnlyNumber flowControllerDataGridTextColumnTextBoxValidaterOnlyNumber)
+        public static void CostraintTextBoxColumnOnlyNumber(object sender, FlowControllerDataGridTextColumnTextBoxValidaterOnlyNumber flowControllerDataGridTextColumnTextBoxValidaterOnlyNumber)
         {
-            string validatedFlowControllerValue = flowControllerDataGridTextColumnTextBoxValidaterOnlyNumber.validate(textBox);
-            if (validatedFlowControllerValue != textBox.Text)
+            TextBox? textBox = sender as TextBox;
+            if (textBox != null)
             {
-                int textCaret = textBox.CaretIndex;
-                textBox.Text = validatedFlowControllerValue;
-                textBox.CaretIndex = textCaret;
+                string validatedStr = flowControllerDataGridTextColumnTextBoxValidaterOnlyNumber.validate(textBox);
+                if (validatedStr != textBox.Text)
+                {
+                    int textCaret = Math.Max(textBox.CaretIndex - 1, 0);
+                    textBox.Text = validatedStr;
+                    textBox.CaretIndex = textCaret;
+                }
             }
+        }
+
+        public static void CostraintTextBoxColumnMaxNumber(object sender, FlowControllerDataGridTextColumnTextBoxValidaterMaxValue flowControllerDataGridTextColumnTextBoxValidaterMaxValue, uint maxValue)
+        {
+            TextBox? textBox = sender as TextBox;
+            if (textBox != null)
+            {
+                (string valiatedStr, FlowControllerTextBoxValidaterMaxValue.Result result) = flowControllerDataGridTextColumnTextBoxValidaterMaxValue.validate(textBox, maxValue);
+                if (FlowControllerTextBoxValidaterMaxValue.Result.NotNumber <= result && result <= FlowControllerTextBoxValidaterMaxValue.Result.ExceedMax)
+                {
+                    int textCaret = Math.Max(textBox.CaretIndex - 1, 0);
+                    textBox.Text = valiatedStr;
+                    textBox.CaretIndex = textCaret;
+                }
+            }
+        }
+
+        public static void CostraintTextBoxColumnMaxNumber(object sender, FlowControllerDataGridTextColumnTextBoxValidaterMaxValue flowControllerDataGridTextColumnTextBoxValidaterMaxValue, TextChangedEventArgs e)
+        {
+            TextBox? textBox = sender as TextBox;
+            if (textBox != null)
+            {
+                (string? validatedStr, FlowControllerTextBoxValidaterMaxValue.Result result) = flowControllerDataGridTextColumnTextBoxValidaterMaxValue.validate(textBox, e);
+                if (FlowControllerTextBoxValidaterMaxValue.Result.NotNumber <= result && result <= FlowControllerTextBoxValidaterMaxValue.Result.ExceedMax)
+                {
+                    int caretIndex = Math.Max(textBox.CaretIndex - 1, 0);
+                    textBox.Text = validatedStr;
+                    textBox.CaretIndex = caretIndex;
+                }
+            }
+        }
+
+        public static void ConstraintEmptyToZeroOnDataGridCellCommit(object sender, DataGridCellEditEndingEventArgs e, IList<string> headers)
+        {
+            if (e.EditAction == DataGridEditAction.Commit)
+            {
+                string? columnHeader = e.Column.Header as string;
+                if (columnHeader != null && headers.Contains(columnHeader) == true)
+                {
+                    TextBox? editingElement = e.EditingElement as TextBox;
+                    if (editingElement != null && editingElement.Text == "")
+                    {
+                        editingElement.Text = "0";
+                    }
+                }
+            }
+        }
+
+        public static void ConstraintEmptyToZeroOnDataGridCellCommitForRecipeRunEdit(object sender, DataGridCellEditEndingEventArgs e)
+        {
+            Util.ConstraintEmptyToZeroOnDataGridCellCommit(sender, e, ["Ramp", "Hold", "M01", "M02", "M03", "M04", "M05", "M06", "M07", "M08", "M09", "M10", "M11", "M12", "M13", "M14", "M15", "M16",
+               "M17", "M18", "M19", "Loop", "Jump", "Susceptor Temp.", "Reactor Press.", "Sus. Rotation", "Compare Temp."]);
         }
 
         public static readonly Dictionary<string, string> RecipeFlowControlFieldToControllerID = new Dictionary<string, string>

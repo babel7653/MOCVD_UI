@@ -13,30 +13,28 @@ namespace SapphireXR_App.Views
         {
             InitializeComponent();
             DataContext = App.Current.Services.GetService(typeof(RecipeRunViewModel));
-            //flowControllerDataGridTextColumnTextBoxValidater = new FlowControllerDataGridTextColumnTextBoxValidater((ObservableObject)DataContext!, "CurrentRecipe");
+            flowControllerDataGridTextColumnTextBoxValidaterMaxValue = new FlowControllerDataGridTextColumnTextBoxValidaterMaxValue((ObservableObject)DataContext!, "CurrentRecipe");
+            flowControllerDataGridTextColumnTextBoxValidaterOnlyNumber = new FlowControllerDataGridTextColumnTextBoxValidaterOnlyNumber((ObservableObject)DataContext!, "CurrentRecipe");
         }
 
-        private void TextBox_PreviewTextInput(object sender, TextCompositionEventArgs e)
+        private void TextBox_TextChangedMaxNumber(object sender, TextChangedEventArgs e)
         {
-            Util.OnlyAllowNumber(e, e.Text);
+            Util.CostraintTextBoxColumnMaxNumber(sender, flowControllerDataGridTextColumnTextBoxValidaterMaxValue, e);
         }
 
-        private void TextBox_TextChanged(object sender, TextChangedEventArgs e)
+        private void TextBox_TextChangedOnlyNumber(object sender, TextChangedEventArgs e)
         {
-            TextBox? textBox = sender as TextBox;
-            if (textBox != null)
-            {
-                //string? validatedFlowControllerValue = flowControllerDataGridTextColumnTextBoxValidater.validate(textBox, e);
-                //if (validatedFlowControllerValue != null)
-                //{
-                //    textBox.Text = validatedFlowControllerValue;
-                //    return;
-                //}
-            }
-
-            throw new Exception("DataRunPage: TextBox_TextChanged must be called with TextBox in DataGridColumn whose header value has valid flow controller ");
+            
+             Util.CostraintTextBoxColumnOnlyNumber(sender, flowControllerDataGridTextColumnTextBoxValidaterOnlyNumber);
+        }
+      
+        private void DataGrid_CellEditEnding(object sender, DataGridCellEditEndingEventArgs e)
+        {
+            Util.ConstraintEmptyToZeroOnDataGridCellCommitForRecipeRunEdit(sender, e);
         }
 
-        //FlowControllerDataGridTextColumnTextBoxValidater flowControllerDataGridTextColumnTextBoxValidater;
+        FlowControllerDataGridTextColumnTextBoxValidaterMaxValue flowControllerDataGridTextColumnTextBoxValidaterMaxValue;
+        FlowControllerDataGridTextColumnTextBoxValidaterOnlyNumber flowControllerDataGridTextColumnTextBoxValidaterOnlyNumber;
+
     }
 }

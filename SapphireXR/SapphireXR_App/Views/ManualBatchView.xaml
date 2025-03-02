@@ -26,7 +26,6 @@
             <StackPanel.Resources>
                 <Style x:Key="gridColumnTextBox" TargetType="TextBox">
                     <Style.Setters>
-                        <EventSetter Event="PreviewTextInput" Handler="TextBox_PreviewTextInput" />
                         <EventSetter Event="TextChanged"  Handler="TextBox_TextChanged" />
                     </Style.Setters>
                 </Style>
@@ -57,7 +56,7 @@
                 <Label Content="Name" />
                 <TextBox Width="100" Text="{Binding CurrentBatch.Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" IsEnabled="{Binding NameEnabled}"/>
                 <Label Content="Ramping Time(s)" />
-                <local:NumberBox Width="100" Text="{Binding CurrentBatch.RampingTime, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" IsEnabled="{Binding RampingTimeEnabled}" />
+                <local:NumberBox Width="100" Text="{Binding CurrentBatch.RampingTime, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" IsEnabled="{Binding RampingTimeEnabled}" LostFocus="NumberBox_LostFocus"/>
             </StackPanel>
             <Grid Height="Auto">
                 <Grid.RowDefinitions>
@@ -66,8 +65,12 @@
                     <RowDefinition Height="50*"/>
                 </Grid.RowDefinitions>
                 <StackPanel Grid.Row="0">
-                    <DataGrid x:Name="dgUserSettingA" AutoGenerateColumns="False" Margin="5,0,5,0" Height="320"
-                       VerticalScrollBarVisibility="Auto" ItemsSource="{Binding CurrentBatch.AnalogIOUserStates}" CanUserAddRows="False">
+                    <DataGrid x:Name="dgUserSettingA" AutoGenerateColumns="False" Margin="5,0,5,0" Height="320" VerticalScrollBarVisibility="Auto" ItemsSource="{Binding CurrentBatch.AnalogIOUserStates}" CanUserAddRows="False" CellEditEnding="dgUserSettingA_CellEditEnding">
+                        <i:Interaction.Triggers>
+                            <i:EventTrigger EventName="CellEditEnding" >
+                                <i:InvokeCommandAction Command="{Binding CellEditEndingCommand}" PassEventArgsToCommand="True"/>
+                            </i:EventTrigger>
+                        </i:Interaction.Triggers>
                         <DataGrid.Resources>
                             <Style TargetType="{x:Type DataGridColumnHeader}">
                                 <Setter Property="HorizontalAlignment" Value="Center"/>

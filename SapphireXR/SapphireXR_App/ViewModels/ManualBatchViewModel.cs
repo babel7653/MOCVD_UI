@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.ComponentModel;
+using System.Data.Common;
 using System.Globalization;
 using System.IO;
 using System.Linq;
@@ -10,6 +11,7 @@ using System.Security.Policy;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Resources;
 using CommunityToolkit.Mvvm.ComponentModel;
@@ -56,7 +58,7 @@ namespace SapphireXR_App.ViewModels
             private string _name = "";
 
             [ObservableProperty]
-            private int? _rampingTime = null;
+            private int _rampingTime = 0;
 
             [ObservableProperty]
             private IList<AnalogIOUserState> _analogIOUserStates = new List<AnalogIOUserState>();
@@ -203,6 +205,16 @@ namespace SapphireXR_App.ViewModels
             }
         }
 
+        [RelayCommand]
+        private void CellEditEnding(object? args)
+        {
+            DataGridCellEditEndingEventArgs? editEndingEventArgs = args as DataGridCellEditEndingEventArgs;
+            if(editEndingEventArgs != null)
+            {
+               
+            }
+        }
+
         [ObservableProperty]
         private ObservableCollection<Batch> _batches = new ObservableCollection<Batch>();
 
@@ -216,5 +228,7 @@ namespace SapphireXR_App.ViewModels
 
         [ObservableProperty]
         private string? _batchFIlePath = null;
+
+        
     }
 }

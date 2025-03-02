@@ -719,9 +719,21 @@
                 </Grid.Resources>
                 <!-- 수직형 탭 설정-->
                 <TabControl TabStripPlacement="Left">
+                    <TabControl.Resources>
+                        <Style x:Key="gridColumnTextBoxMaxNumber" TargetType="TextBox">
+                            <Style.Setters>
+                                <EventSetter Event="TextChanged"  Handler="TextBox_TextChangedMaxNumber" />
+                            </Style.Setters>
+                        </Style>
+                        <Style x:Key="gridColumnTextBoxOnlyNumber" TargetType="TextBox">
+                            <Style.Setters>
+                                <EventSetter Event="TextChanged"  Handler="TextBox_TextChangedOnlyNumber" />
+                            </Style.Setters>
+                        </Style>
+                    </TabControl.Resources>
                     <TabItem Header="Reactor">
                         <TabItem.Content>
-                            <DataGrid  HorizontalScrollBarVisibility="Visible" AutoGenerateColumns="False" ItemsSource="{Binding CurrentRecipe.Recipes}">
+                            <DataGrid  HorizontalScrollBarVisibility="Visible" AutoGenerateColumns="False" ItemsSource="{Binding CurrentRecipe.Recipes}" CellEditEnding="DataGrid_CellEditEnding">
                                 <b:Interaction.Triggers>
                                     <b:EventTrigger EventName="Loaded">
                                         <b:InvokeCommandAction Command="{Binding ReactorDataGridLoadedCommand}" PassEventArgsToCommand="True"/>
@@ -733,14 +745,14 @@
                                 <DataGrid.Columns>
                                     <DataGridTextColumn Header="No" Width="30" Binding="{Binding No}" IsReadOnly="True"/>
                                     <DataGridTextColumn Header="Name" Width="200" Binding="{Binding Name}" />
-                                    <DataGridTextColumn Header="Ramp" Width="100" Binding="{Binding RTime}" />
-                                    <DataGridTextColumn Header="Hold" Width="100" Binding="{Binding HTime}" />
-                                    <DataGridTextColumn Header="Loop" Width="100" Binding="{Binding Loop}" />
-                                    <DataGridTextColumn Header="Jump" Width="100" Binding="{Binding Jump}" />
-                                    <DataGridTextColumn Header="Susceptor Temp." Width="100" Binding="{Binding STemp}" />
-                                    <DataGridTextColumn Header="Reactor Press." Width="100" Binding="{Binding RPress}" />
-                                    <DataGridTextColumn Header="Sus. Rotation" Width="100" Binding="{Binding SRotation}" />
-                                    <DataGridTextColumn Header="Compare Temp." Width="100" Binding="{Binding cTemp}" />
+                                    <DataGridTextColumn Header="Ramp" Width="100" Binding="{Binding RTime, UpdateSourceTrigger=PropertyChanged}" EditingElementStyle="{StaticResource gridColumnTextBoxOnlyNumber}" />
+                                    <DataGridTextColumn Header="Hold" Width="100" Binding="{Binding HTime, UpdateSourceTrigger=PropertyChanged}" EditingElementStyle="{StaticResource gridColumnTextBoxOnlyNumber}" />
+                                    <DataGridTextColumn Header="Loop" Width="100" Binding="{Binding Loop, UpdateSourceTrigger=PropertyChanged}" EditingElementStyle="{StaticResource gridColumnTextBoxOnlyNumber}" />
+                                    <DataGridTextColumn Header="Jump" Width="100" Binding="{Binding Jump, UpdateSourceTrigger=PropertyChanged}" EditingElementStyle="{StaticResource gridColumnTextBoxOnlyNumber}" />
+                                    <DataGridTextColumn Header="Susceptor Temp." Width="100" Binding="{Binding STemp, UpdateSourceTrigger=PropertyChanged}" EditingElementStyle="{StaticResource gridColumnTextBoxOnlyNumber}" />
+                                    <DataGridTextColumn Header="Reactor Press." Width="100" Binding="{Binding RPress, UpdateSourceTrigger=PropertyChanged}" EditingElementStyle="{StaticResource gridColumnTextBoxOnlyNumber}" />
+                                    <DataGridTextColumn Header="Sus. Rotation" Width="100" Binding="{Binding SRotation, UpdateSourceTrigger=PropertyChanged}" EditingElementStyle="{StaticResource gridColumnTextBoxOnlyNumber}" />
+                                    <DataGridTextColumn Header="Compare Temp." Width="100" Binding="{Binding cTemp, UpdateSourceTrigger=PropertyChanged}"  EditingElementStyle="{StaticResource gridColumnTextBoxOnlyNumber}" />
                                 </DataGrid.Columns>
                             </DataGrid>
                         </TabItem.Content>
@@ -748,44 +760,36 @@
 
                     <TabItem Header="Flow">
                         <TabItem.Content>
-                            <DataGrid HorizontalScrollBarVisibility="Visible" AutoGenerateColumns="False" ItemsSource="{Binding CurrentRecipe.Recipes}">
+                            <DataGrid HorizontalScrollBarVisibility="Visible" AutoGenerateColumns="False" ItemsSource="{Binding CurrentRecipe.Recipes}" CellEditEnding="DataGrid_CellEditEnding">
                                 <b:Interaction.Triggers>
                                     <b:EventTrigger EventName="Loaded">
                                         <b:InvokeCommandAction Command="{Binding FlowDataGridLoadedCommand}" PassEventArgsToCommand="True"/>
                                     </b:EventTrigger>
                                 </b:Interaction.Triggers>
-                                <DataGrid.Resources>
-                                    <Style x:Key="gridColumnTextBox" TargetType="TextBox">
-                                        <Style.Setters>
-                                            <EventSetter Event="PreviewTextInput" Handler="TextBox_PreviewTextInput" />
-                                            <EventSetter Event="TextChanged"  Handler="TextBox_TextChanged" />
-                                        </Style.Setters>
-                                    </Style>
-                                </DataGrid.Resources>
                                 <DataGrid.Columns>
                                     <DataGridTextColumn Header="No" Width="30" Binding="{Binding No}"  IsReadOnly="True" />
-                                    <DataGridTextColumn Header="Name" Width="200" Binding="{Binding Name, UpdateSourceTrigger=LostFocus}" />
-                                    <DataGridTextColumn Header="Ramp" Width="100" Binding="{Binding RTime, UpdateSourceTrigger=LostFocus}" />
-                                    <DataGridTextColumn Header="Hold" Width="100" Binding="{Binding HTime, UpdateSourceTrigger=LostFocus}" />
-                                    <DataGridTextColumn Header="M01" Width="70" Binding="{Binding M01, UpdateSourceTrigger=LostFocus}" EditingElementStyle="{StaticResource gridColumnTextBox}" />
-                                    <DataGridTextColumn Header="M02" Width="70" Binding="{Binding M02, UpdateSourceTrigger=LostFocus}" EditingElementStyle="{StaticResource gridColumnTextBox}" />
-                                    <DataGridTextColumn Header="M03" Width="70" Binding="{Binding M03, UpdateSourceTrigger=LostFocus}" EditingElementStyle="{StaticResource gridColumnTextBox}" />
-                                    <DataGridTextColumn Header="M04" Width="70" Binding="{Binding M04, UpdateSourceTrigger=LostFocus}" EditingElementStyle="{StaticResource gridColumnTextBox}" />
-                                    <DataGridTextColumn Header="M05" Width="70" Binding="{Binding M05, UpdateSourceTrigger=LostFocus}" EditingElementStyle="{StaticResource gridColumnTextBox}" />
-                                    <DataGridTextColumn Header="M06" Width="70" Binding="{Binding M06, UpdateSourceTrigger=LostFocus}" EditingElementStyle="{StaticResource gridColumnTextBox}" />
-                                    <DataGridTextColumn Header="M07" Width="70" Binding="{Binding M07, UpdateSourceTrigger=LostFocus}" EditingElementStyle="{StaticResource gridColumnTextBox}" />
-                                    <DataGridTextColumn Header="M08" Width="70" Binding="{Binding M08, UpdateSourceTrigger=LostFocus}" EditingElementStyle="{StaticResource gridColumnTextBox}" />
-                                    <DataGridTextColumn Header="M09" Width="70" Binding="{Binding M09, UpdateSourceTrigger=LostFocus}" EditingElementStyle="{StaticResource gridColumnTextBox}" />
-                                    <DataGridTextColumn Header="M10" Width="70" Binding="{Binding M10, UpdateSourceTrigger=LostFocus}" EditingElementStyle="{StaticResource gridColumnTextBox}" />
-                                    <DataGridTextColumn Header="M11" Width="70" Binding="{Binding M11, UpdateSourceTrigger=LostFocus}" EditingElementStyle="{StaticResource gridColumnTextBox}" />
-                                    <DataGridTextColumn Header="M12" Width="70" Binding="{Binding M12, UpdateSourceTrigger=LostFocus}" EditingElementStyle="{StaticResource gridColumnTextBox}" />
-                                    <DataGridTextColumn Header="M13" Width="70" Binding="{Binding M13, UpdateSourceTrigger=LostFocus}" EditingElementStyle="{StaticResource gridColumnTextBox}" />
-                                    <DataGridTextColumn Header="M14" Width="70" Binding="{Binding M14, UpdateSourceTrigger=LostFocus}" EditingElementStyle="{StaticResource gridColumnTextBox}" />
-                                    <DataGridTextColumn Header="M15" Width="70" Binding="{Binding M15, UpdateSourceTrigger=LostFocus}" EditingElementStyle="{StaticResource gridColumnTextBox}" />
-                                    <DataGridTextColumn Header="M16" Width="70" Binding="{Binding M16, UpdateSourceTrigger=LostFocus}" EditingElementStyle="{StaticResource gridColumnTextBox}" />
-                                    <DataGridTextColumn Header="M17" Width="70" Binding="{Binding M17, UpdateSourceTrigger=LostFocus}" EditingElementStyle="{StaticResource gridColumnTextBox}" />
-                                    <DataGridTextColumn Header="M18" Width="70" Binding="{Binding M18, UpdateSourceTrigger=LostFocus}" EditingElementStyle="{StaticResource gridColumnTextBox}" />
-                                    <DataGridTextColumn Header="M19" Width="70" Binding="{Binding M19, UpdateSourceTrigger=LostFocus}" EditingElementStyle="{StaticResource gridColumnTextBox}" />
+                                    <DataGridTextColumn Header="Name" Width="200" Binding="{Binding Name}" />
+                                    <DataGridTextColumn Header="Ramp" Width="100" Binding="{Binding RTime, UpdateSourceTrigger=PropertyChanged}" EditingElementStyle="{StaticResource gridColumnTextBoxOnlyNumber}"/>
+                                    <DataGridTextColumn Header="Hold" Width="100" Binding="{Binding HTime, UpdateSourceTrigger=PropertyChanged}" EditingElementStyle="{StaticResource gridColumnTextBoxOnlyNumber}"/>
+                                    <DataGridTextColumn Header="M01" Width="70" Binding="{Binding M01, UpdateSourceTrigger=PropertyChanged}" EditingElementStyle="{StaticResource gridColumnTextBoxMaxNumber}" />
+                                    <DataGridTextColumn Header="M02" Width="70" Binding="{Binding M02, UpdateSourceTrigger=PropertyChanged}" EditingElementStyle="{StaticResource gridColumnTextBoxMaxNumber}" />
+                                    <DataGridTextColumn Header="M03" Width="70" Binding="{Binding M03, UpdateSourceTrigger=PropertyChanged}" EditingElementStyle="{StaticResource gridColumnTextBoxMaxNumber}" />
+                                    <DataGridTextColumn Header="M04" Width="70" Binding="{Binding M04, UpdateSourceTrigger=PropertyChanged}" EditingElementStyle="{StaticResource gridColumnTextBoxMaxNumber}" />
+                                    <DataGridTextColumn Header="M05" Width="70" Binding="{Binding M05, UpdateSourceTrigger=PropertyChanged}" EditingElementStyle="{StaticResource gridColumnTextBoxMaxNumber}" />
+                                    <DataGridTextColumn Header="M06" Width="70" Binding="{Binding M06, UpdateSourceTrigger=PropertyChanged}" EditingElementStyle="{StaticResource gridColumnTextBoxMaxNumber}" />
+                                    <DataGridTextColumn Header="M07" Width="70" Binding="{Binding M07, UpdateSourceTrigger=PropertyChanged}" EditingElementStyle="{StaticResource gridColumnTextBoxMaxNumber}" />
+                                    <DataGridTextColumn Header="M08" Width="70" Binding="{Binding M08, UpdateSourceTrigger=PropertyChanged}" EditingElementStyle="{StaticResource gridColumnTextBoxMaxNumber}" />
+                                    <DataGridTextColumn Header="M09" Width="70" Binding="{Binding M09, UpdateSourceTrigger=PropertyChanged}" EditingElementStyle="{StaticResource gridColumnTextBoxMaxNumber}" />
+                                    <DataGridTextColumn Header="M10" Width="70" Binding="{Binding M10, UpdateSourceTrigger=PropertyChanged}" EditingElementStyle="{StaticResource gridColumnTextBoxMaxNumber}" />
+                                    <DataGridTextColumn Header="M11" Width="70" Binding="{Binding M11, UpdateSourceTrigger=PropertyChanged}" EditingElementStyle="{StaticResource gridColumnTextBoxMaxNumber}" />
+                                    <DataGridTextColumn Header="M12" Width="70" Binding="{Binding M12, UpdateSourceTrigger=PropertyChanged}" EditingElementStyle="{StaticResource gridColumnTextBoxMaxNumber}" />
+                                    <DataGridTextColumn Header="M13" Width="70" Binding="{Binding M13, UpdateSourceTrigger=PropertyChanged}" EditingElementStyle="{StaticResource gridColumnTextBoxMaxNumber}" />
+                                    <DataGridTextColumn Header="M14" Width="70" Binding="{Binding M14, UpdateSourceTrigger=PropertyChanged}" EditingElementStyle="{StaticResource gridColumnTextBoxMaxNumber}" />
+                                    <DataGridTextColumn Header="M15" Width="70" Binding="{Binding M15, UpdateSourceTrigger=PropertyChanged}" EditingElementStyle="{StaticResource gridColumnTextBoxMaxNumber}" />
+                                    <DataGridTextColumn Header="M16" Width="70" Binding="{Binding M16, UpdateSourceTrigger=PropertyChanged}" EditingElementStyle="{StaticResource gridColumnTextBoxMaxNumber}" />
+                                    <DataGridTextColumn Header="M17" Width="70" Binding="{Binding M17, UpdateSourceTrigger=PropertyChanged}" EditingElementStyle="{StaticResource gridColumnTextBoxMaxNumber}" />
+                                    <DataGridTextColumn Header="M18" Width="70" Binding="{Binding M18, UpdateSourceTrigger=PropertyChanged}" EditingElementStyle="{StaticResource gridColumnTextBoxMaxNumber}" />
+                                    <DataGridTextColumn Header="M19" Width="70" Binding="{Binding M19, UpdateSourceTrigger=PropertyChanged}" EditingElementStyle="{StaticResource gridColumnTextBoxMaxNumber}" />
                                 </DataGrid.Columns>
                             </DataGrid>
                         </TabItem.Content>
@@ -817,7 +821,6 @@
                                     <DataGridCheckBoxColumn Header="V17" Width="50" Binding="{Binding V17, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" EditingElementStyle="{StaticResource VavleOnOffCheckBox}" ElementStyle="{StaticResource VavleOnOffCheckBox}" />
                                     <DataGridCheckBoxColumn Header="V19" Width="50" Binding="{Binding V19, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" EditingElementStyle="{StaticResource VavleOnOffCheckBox}" ElementStyle="{StaticResource VavleOnOffCheckBox}" />
                                     <DataGridCheckBoxColumn Header="V20" Width="50" Binding="{Binding V20, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" EditingElementStyle="{StaticResource VavleOnOffCheckBox}" ElementStyle="{StaticResource VavleOnOffCheckBox}" />
-
                                     <DataGridCheckBoxColumn Header="V22" Width="50" Binding="{Binding V22, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" EditingElementStyle="{StaticResource VavleOnOffCheckBox}" ElementStyle="{StaticResource VavleOnOffCheckBox}" />
                                     <DataGridCheckBoxColumn Header="V23" Width="50" Binding="{Binding V23, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" EditingElementStyle="{StaticResource VavleOnOffCheckBox}" ElementStyle="{StaticResource VavleOnOffCheckBox}" />
                                     <DataGridCheckBoxColumn Header="V25" Width="50" Binding="{Binding V25, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" EditingElementStyle="{StaticResource VavleOnOffCheckBox}" ElementStyle="{StaticResource VavleOnOffCheckBox}" />

@@ -230,14 +230,6 @@ namespace SapphireXR_App.ViewModels
             ObservableManager<int>.Subscribe("GlobalSetting.LogIntervalInRecipeRun", logIntervalInRecipeRunListener);
             ObservableManager<short>.Subscribe("RecipeRun.CurrentActiveRecipe", this);
 
-            logTimer = new DispatcherTimer();
-            logTimer.Interval = new TimeSpan(TimeSpan.TicksPerMillisecond * GlobalSetting.LogIntervalInRecipeRunInMS);
-            logTimer.Tick += (object? sender, EventArgs args) =>
-            {
-                CurrentRecipe.log();
-            };
-            logTimer.Start();
-
             PropertyChanging += (object? sender, PropertyChangingEventArgs e) =>
             {
                 switch (e.PropertyName)
@@ -305,19 +297,23 @@ namespace SapphireXR_App.ViewModels
                                 break;
 
                             case RecipeUserState.Run:
+                             //   logTimer.Start();
                                 StartOrPause = false;
                                 break;
 
                             case RecipeUserState.Pause:
                                 StartOrPause = true;
                                 Start = RecipeCommand.Restart;
+                             //   logTimer.Stop();
                                 break;
 
                             case RecipeUserState.Stopped:
+                              //  logTimer.Stop();
                                 toRecipeLoadedState();
                                 break;
 
                             case RecipeUserState.Ended:
+                               // logTimer.Stop();
                                 MessageBox.Show("Recipe가 종료되었습니다. 종료시간: " + DateTime.Now.ToString("HH:mm"));
                                 toRecipeLoadedState();
                                 break;
@@ -373,9 +369,9 @@ namespace SapphireXR_App.ViewModels
 
         public void resetLogTimer(int intervalInMS)
         {
-            logTimer.Stop();
-            logTimer.Interval = new TimeSpan(intervalInMS * TimeSpan.TicksPerMillisecond);
-            logTimer.Start();
+            //logTimer.Stop();
+            //logTimer.Interval = new TimeSpan(intervalInMS * TimeSpan.TicksPerMillisecond);
+            //logTimer.Start();
         }
 
         private void SyncPLCState(RecipeCommand command, bool updateState)
@@ -425,7 +421,6 @@ namespace SapphireXR_App.ViewModels
         private DataGrid? valveDataGrid;
 
         private LogIntervalInRecipeRunListener logIntervalInRecipeRunListener;
-        private DispatcherTimer logTimer;
 
         private short currentRecipeNo = -1;
         private readonly RecipeEndedSubscriber? recipeEndedSubscriber = null;

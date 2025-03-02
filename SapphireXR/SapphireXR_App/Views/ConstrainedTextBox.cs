@@ -19,7 +19,7 @@ namespace SapphireXR_App.Views
                 string validatedFlowControllerValue = flowControllerTextBoxValidaterOnlyNumber.valdiate(textBox);
                 if (validatedFlowControllerValue != textBox.Text)
                 {
-                    int caretIndex = textBox.CaretIndex - 1;
+                    int caretIndex = Math.Max(textBox.CaretIndex - 1, 0);
                     textBox.Text = validatedFlowControllerValue;
                     textBox.CaretIndex = caretIndex;
                 }
@@ -46,21 +46,11 @@ namespace SapphireXR_App.Views
                 (string validatedFlowControllerValue, FlowControllerTextBoxValidaterMaxValue.Result result) = flowControllerTextBoxValidater.valdiate(textBox, (uint)MaxValue);
                 switch(result)
                 {
-                    case FlowControllerTextBoxValidaterMaxValue.Result.Valid:
-                        textBox.ClearValue(ToolTipProperty);
-                        break;
-
                     case FlowControllerTextBoxValidaterMaxValue.Result.NotNumber:
                     case FlowControllerTextBoxValidaterMaxValue.Result.ExceedMax:
-                        int caretIndex = textBox.CaretIndex - 1;
+                        int caretIndex = Math.Max(0, textBox.CaretIndex - 1);
                         textBox.Text = validatedFlowControllerValue;
                         textBox.CaretIndex = caretIndex;
-                        if(result == FlowControllerTextBoxValidaterMaxValue.Result.ExceedMax)
-                        {
-                            ToolTip toolTip = new ToolTip();
-                            toolTip.Content = "최대값 " + MaxValue + "보다 클 수 없습니다.";
-                            textBox.ToolTip = toolTip;
-                        }
                         break;
                 }
             }

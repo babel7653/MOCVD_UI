@@ -56,6 +56,7 @@ namespace SapphireXR_App.Models
                 hMonitoring_PV = Ads.CreateVariableHandle("GVL_IO.aMonitoring_PV");
                 hInputState = Ads.CreateVariableHandle("GVL_IO.aInputState");
                 hDigitalOutput = Ads.CreateVariableHandle("GVL_IO.aDigitalOutputIO");
+                hDigitalOutput3 = Ads.CreateVariableHandle("GVL_IO.aDigitalOutputIO[3]");
                 hOutputCmd = Ads.CreateVariableHandle("GVL_IO.aOutputCmd");
 
                 hRcp = Ads.CreateVariableHandle("RCP.aRecipe");
@@ -261,7 +262,7 @@ namespace SapphireXR_App.Models
 
             byte[] digitalOutput = Ads.ReadAny<byte[]>(hDigitalOutput, [4]);
             dDigitalOutput2?.Issue(new BitArray(new byte[1] { digitalOutput[1] }));
-            dDigitalOutput3?.Issue(new BitArray(new byte[1] { digitalOutput[2] }));
+            dDigitalOutput3?.Issue(digitalOutput3 = new BitArray(new byte[1] { digitalOutput[2] }));
             short[] outputCmd = Ads.ReadAny<short[]>(hOutputCmd, [3]);
             dOutputCmd1?.Issue(new BitArray(BitConverter.IsLittleEndian == true ? BitConverter.GetBytes(outputCmd[0]) : BitConverter.GetBytes(outputCmd[0]).Reverse().ToArray()));
             dThrottleValveControlMode?.Issue(outputCmd[1]);
@@ -478,6 +479,18 @@ namespace SapphireXR_App.Models
         public static short ReadUserState()
         {
             return Ads.ReadAny<short>(hUserState);
+        }
+
+        public static void WriteModulePowerState(DigitalOutput3Index index, bool powerOn)
+        {
+            if(digitalOutput3 != null)
+            {
+                digitalOutput3[(int)index] = powerOn;
+                byte[] byteArray = new byte[1];
+                digitalOutput3.CopyTo(byteArray, 0);
+                Ads.WriteAny(hDigitalOutput3, byteArray[0]);
+
+            }
         }
     }
 }

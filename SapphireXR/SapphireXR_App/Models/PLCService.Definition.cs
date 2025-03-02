@@ -38,7 +38,7 @@ namespace SapphireXR_App.Models
             InductionHeaterOn = 0, InductionHeaterReset, VaccumPumpOn, VaccumPumpReset, 
         }
 
-        internal enum DigitalOutput3Index
+        public enum DigitalOutput3Index
         {
             InductionHeaterMC = 0, ThermalBathMC, VaccumPumpMC, LineHeaterMC, RotationAlaramReset = 6
         }
@@ -48,15 +48,16 @@ namespace SapphireXR_App.Models
         public static string ModePLC { get; set; } = "System Mode : ";
 
         // Variable handles to be connected plc variables
-        private static BitArray? baReadValveStatePLC1;
-        private static BitArray? baReadValveStatePLC2;
-        private static float[]? aDeviceMaxValue;
-        private static float[]? aDeviceTargetValues;
-        private static short[]? aDeviceCurrentValues;
-        private static short[]? aDeviceControlValues;
-        private static short[]? aDeviceRampTimes;
-        private static float[]? aMonitoring_PVs;
-        private static short[]? aInputState;
+        private static BitArray? baReadValveStatePLC1 = null;
+        private static BitArray? baReadValveStatePLC2 = null;
+        private static float[]? aDeviceMaxValue = null;
+        private static float[]? aDeviceTargetValues = null;
+        private static short[]? aDeviceCurrentValues = null;
+        private static short[]? aDeviceControlValues = null;
+        private static short[]? aDeviceRampTimes = null;
+        private static float[]? aMonitoring_PVs = null;
+        private static short[]? aInputState = null;
+        private static BitArray? digitalOutput3 = null;
 
         private static ObservableManager<PLCConnection>.DataIssuer ConnectedNotifier;
         private static Dictionary<string, ObservableManager<int>.DataIssuer>? dCurrentValueIssuers;
@@ -106,6 +107,7 @@ namespace SapphireXR_App.Models
         private static uint hRecipeControlHoldTime;
         private static uint hRecipeControlRampTime;
         private static uint hRecipeControlPauseTime;
+        private static uint hDigitalOutput3;
         private static uint hDigitalOutput;
         private static uint hOutputCmd;
         private static uint hE3508InputManAuto;

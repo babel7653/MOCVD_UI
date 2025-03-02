@@ -16,9 +16,9 @@ namespace SapphireXR_App.Views
         public RecipeEditPage()
         {
             InitializeComponent();
-            DataContext = App.Current.Services.GetService(typeof(RecipeEditViewModel));
-            flowControllerDataGridTextColumnTextBoxValidaterMaxValue = new FlowControllerDataGridTextColumnTextBoxValidaterMaxValue((ObservableObject)DataContext!, "Recipes");
-            flowControllerDataGridTextColumnTextBoxValidaterOnlyNumber = new FlowControllerDataGridTextColumnTextBoxValidaterOnlyNumber((ObservableObject)DataContext!, "Recipes");
+            RecipeEditViewModel viewModel = (RecipeEditViewModel)(DataContext = App.Current.Services.GetService(typeof(RecipeEditViewModel)))!;
+            flowControllerDataGridTextColumnTextBoxValidaterMaxValue = new FlowControllerDataGridTextColumnTextBoxValidaterMaxValue(viewModel, nameof(viewModel.Recipes));
+            flowControllerDataGridTextColumnTextBoxValidaterOnlyNumber = new FlowControllerDataGridTextColumnTextBoxValidaterOnlyNumber(viewModel, nameof(viewModel.Recipes));
         }
 
         private void TextBox_TextChangedMaxNumber(object sender, TextChangedEventArgs e)

@@ -68,7 +68,7 @@ namespace SapphireXR_App.ViewModels
             {
                if(0 < value.Item2.Count)
                 {
-                    recipeRunViewModel.CurrentRecipe = new RecipeContext(value.Item1 != "" ? value.Item1 : DateTime.Now.ToString("yyyyMMddHHmm") + ".csv", value.Item2);
+                    recipeRunViewModel.CurrentRecipe = new RecipeContext(value.Item1 != "" ? value.Item1 : "recipe_" + DateTime.Now.ToString("yyyyMMddHHmm") + ".csv", value.Item2);
                 }
             }
 
@@ -297,23 +297,23 @@ namespace SapphireXR_App.ViewModels
                                 break;
 
                             case RecipeUserState.Run:
-                             //   logTimer.Start();
+                                CurrentRecipe.startLog();
                                 StartOrPause = false;
                                 break;
 
                             case RecipeUserState.Pause:
                                 StartOrPause = true;
                                 Start = RecipeCommand.Restart;
-                             //   logTimer.Stop();
+                                CurrentRecipe.pauseLog();
                                 break;
 
                             case RecipeUserState.Stopped:
-                              //  logTimer.Stop();
+                                CurrentRecipe.stopLog();
                                 toRecipeLoadedState();
                                 break;
 
                             case RecipeUserState.Ended:
-                               // logTimer.Stop();
+                                CurrentRecipe.stopLog();
                                 MessageBox.Show("Recipe가 종료되었습니다. 종료시간: " + DateTime.Now.ToString("HH:mm"));
                                 toRecipeLoadedState();
                                 break;
@@ -323,6 +323,7 @@ namespace SapphireXR_App.ViewModels
                         RecipeSkipCommand.NotifyCanExecuteChanged();
                         RecipeRefreshCommand.NotifyCanExecuteChanged();
                         RecipeStopCommand.NotifyCanExecuteChanged();
+                        RecipeCleanCommand.NotifyCanExecuteChanged();
                         recipeRunStatePublisher?.Issue(CurrentRecipeUserState);
                         break;
                 }

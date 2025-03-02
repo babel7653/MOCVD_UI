@@ -18,11 +18,7 @@ namespace SapphireXR_App.ViewModels
     {
         public partial class RecipeContext : ObservableObject, IDisposable
         {
-            internal class RecipeContextCreationException: Exception
-            {
-                internal RecipeContextCreationException(string message): base(message) {  }
-            }
-
+         
             private class TemperatureControlValueSubscriber : IObserver<int>
             {
                 internal TemperatureControlValueSubscriber(RecipeContext rc)
@@ -83,46 +79,50 @@ namespace SapphireXR_App.ViewModels
                 private readonly Action<int> onNext;
             }
 
-            private class Logger: IDisposable
+            public class Logger: IDisposable
             {
-                internal Logger(string logFilePath)
+                internal Logger(RecipeContext recipeContextObj)
                 {
                     try
                     {
-                        fileStream = new FileStream(logFilePath, FileMode.Create);
+                        fileStream = new FileStream(recipeContextObj.LogFilePath, FileMode.Create);
                         streamWriter = new StreamWriter(fileStream);
                         csvWriter = new CsvWriter(streamWriter, Config);
 
                         csvWriter.WriteHeader<RecipeLog>();
                         csvWriter.NextRecord();
                     }
-                    catch (Exception exception)
+                    catch (Exception)
                     {
                         csvWriter?.Dispose();
                         streamWriter?.Close();
                         fileStream?.Close();
 
-                        throw new RecipeContextCreationException(exception.Message);
+                        throw;
                     }
+
+                    recipeContext = recipeContextObj;
 
                     logTimer = new DispatcherTimer();
                     logTimer.Interval = new TimeSpan(TimeSpan.TicksPerMillisecond * GlobalSetting.LogIntervalInRecipeRunInMS);
                     logTimer.Tick += (object? sender, EventArgs args) =>
                     {
-                        //if (currentRecipe != null)
-                        //{
-                        //    csvWriter!.WriteRecord(new RecipeLog(currentRecipe));
-                        //    csvWriter!.NextRecord();
-                        //}
+                        if (recipeContext.currentRecipe != null)
+                        {
+                            csvWriter!.WriteRecord(new RecipeLog(recipeContext.currentRecipe));
+                            csvWriter!.NextRecord();
+                        }
                     };
+                }
 
-            
+                public void pause()
+                {
+                    logTimer?.Stop();
+                }
 
-                    if (logTimer != null)
-                    {
-
-                    }
-                    logTimer!.Start();
+                public void start()
+                {
+                    logTimer?.Start();
                 }
 
                 protected virtual void Dispose(bool disposing)
@@ -131,11 +131,21 @@ namespace SapphireXR_App.ViewModels
                     {
                         if (disposing)
                         {
-
+                            logTimer?.Stop();
+                            logTimer = null;
                         }
 
-                        // TODO: 비관리형 리소스(비관리형 개체)를 해제하고 종료자를 재정의합니다.
-                        // TODO: 큰 필드를 null로 설정합니다.
+                        try
+                        {
+                            csvWriter!.Flush();
+                            csvWriter!.Dispose();
+                            streamWriter!.Close();
+                            fileStream!.Close();
+                        }
+                        catch (Exception)
+                        {
+                        }
+                   
                         disposedValue = true;
                     }
                 }
@@ -147,11 +157,17 @@ namespace SapphireXR_App.ViewModels
                     GC.SuppressFinalize(this);
                 }
 
-                private DispatcherTimer logTimer;
+                public void dispose()
+                {
+                    Dispose(true);
+                }
+
+                private DispatcherTimer? logTimer = null;
                 private FileStream? fileStream = null;
                 private StreamWriter? streamWriter = null;
                 private CsvWriter? csvWriter = null;
                 private bool disposedValue = false;
+                private RecipeContext? recipeContext = null;
             }
 
 
@@ -169,6 +185,16 @@ namespace SapphireXR_App.ViewModels
                 }
                 TotalRecipeTime = totalRecipeTime;
                 TotalStep = Recipes.Count;
+
+                PropertyChanging += (object? sender, PropertyChangingEventArgs args) =>
+                {
+                    switch(args.PropertyName)
+                    {
+                        case nameof(FileLogger):
+                            FileLogger?.dispose();
+                            break;
+                    }
+                };
 
                 initialized = true;
             }
@@ -245,13 +271,38 @@ namespace SapphireXR_App.ViewModels
                     return;
                 }
 
-                LogFilePath = RecipeFilePath.Replace(".csv", DateTime.Now.ToString("_yyyy_MM_dd_HH_mm_ss") + "_log.csv");
-            
+                if (FileLogger == null)
+                {
+                    LogFilePath = RecipeFilePath.Replace(".csv", DateTime.Now.ToString("_yyyy_MM_dd_HH_mm_ss") + "_log.csv");
+                    try
+                    {
+                        FileLogger = new Logger(this);
+                    }
+                    catch (Exception exception)
+                    {
+                        FileLogger = null;
+                        MessageBox.Show("로그 파일을 여는데 실패했습니다. 로그 기능은 작동하지 않은 채로 동작합니다. 원인은 다음과 같습니다: " + exception.Message);
+                    }
+                }
+                FileLogger?.start();
             }
 
-            private void stopLog()
+            public void pauseLog()
             {
-               
+                if (initialized == false)
+                {
+                    return;
+                }
+                FileLogger?.pause();
+            }
+
+            public void stopLog()
+            {
+                if (initialized == false)
+                {
+                    return;
+                }
+                FileLogger = null;
             }
 
             public void loadPLCSubRangeOfRecipes()
@@ -306,10 +357,12 @@ namespace SapphireXR_App.ViewModels
                 {
                     recipe.IsEnabled = true;
                 }
+
                 currentRecipe = null;
                 currentRecipeIndex = -1;
                 modifiedRecipeIndice.Clear();
                 disposeSubscribe();
+                disposeResource();
                 unsubscriber = null;
                 temperatureControlValueSubscriber = null;
                 recipeControlHoldTimeUnsubscriber = null;
@@ -407,6 +460,8 @@ namespace SapphireXR_App.ViewModels
             private IDisposable? recipeControlPauseTimeUnsubscriber = null;
             private IDisposable? recipeControlRampTimeUnsubscriber = null;
 
+            [ObservableProperty]
+            private Logger? _fileLogger = null;
 
             private static readonly CsvHelper.Configuration.CsvConfiguration Config = new CsvHelper.Configuration.CsvConfiguration(CultureInfo.InvariantCulture)
             {
@@ -425,7 +480,7 @@ namespace SapphireXR_App.ViewModels
 
                     // TODO: 비관리형 리소스(비관리형 개체)를 해제하고 종료자를 재정의합니다.
                     // TODO: 큰 필드를 null로 설정합니다.
-                    DisposeResource();
+                    disposeResource();
                     disposedValue = true;
                 }
             }
@@ -442,23 +497,13 @@ namespace SapphireXR_App.ViewModels
                 Dispose(disposing: true);
             }
 
-            public void DisposeResource()
+            public void disposeResource()
             {
                 if(initialized == false)
                 {
                     return;
                 }
-
-                try
-                {
-                    //csvWriter!.Flush();
-                    //csvWriter!.Dispose();
-                    //streamWriter!.Close();
-                    //fileStream!.Close();
-                }
-                catch (Exception)
-                {
-                }
+                FileLogger?.dispose();
             }
         }
     }

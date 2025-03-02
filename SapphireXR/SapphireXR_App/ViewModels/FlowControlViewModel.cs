@@ -160,8 +160,8 @@ namespace SapphireXR_App.ViewModels
             public short? rampTime;
         }
 
-        public delegate void ConfiredEventHandler(PopupExResult result, ControlValues controlValues);
-        public event ConfiredEventHandler? Confirmed;
+        public delegate void ConfirmedEventHandler(PopupExResult result, ControlValues controlValues);
+        public event ConfirmedEventHandler? Confirmed;
         public delegate void CanceledEventHandler(PopupExResult result);
         public event CanceledEventHandler? Canceled;
 

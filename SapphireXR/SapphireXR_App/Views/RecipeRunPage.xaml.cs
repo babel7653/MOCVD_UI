@@ -12,9 +12,9 @@ namespace SapphireXR_App.Views
         public RecipeRunPage()
         {
             InitializeComponent();
-            DataContext = App.Current.Services.GetService(typeof(RecipeRunViewModel));
-            flowControllerDataGridTextColumnTextBoxValidaterMaxValue = new FlowControllerDataGridTextColumnTextBoxValidaterMaxValue((ObservableObject)DataContext!, "CurrentRecipe");
-            flowControllerDataGridTextColumnTextBoxValidaterOnlyNumber = new FlowControllerDataGridTextColumnTextBoxValidaterOnlyNumber((ObservableObject)DataContext!, "CurrentRecipe");
+            RecipeRunViewModel viewModel = (RecipeRunViewModel)(DataContext = App.Current.Services.GetService(typeof(RecipeRunViewModel)))!;
+            flowControllerDataGridTextColumnTextBoxValidaterMaxValue = new FlowControllerDataGridTextColumnTextBoxValidaterMaxValue(viewModel, nameof(viewModel.CurrentRecipe));
+            flowControllerDataGridTextColumnTextBoxValidaterOnlyNumber = new FlowControllerDataGridTextColumnTextBoxValidaterOnlyNumber(viewModel, nameof(viewModel.CurrentRecipe));
         }
 
         private void TextBox_TextChangedMaxNumber(object sender, TextChangedEventArgs e)

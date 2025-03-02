@@ -66,7 +66,11 @@
                                            VerticalAlignment="Center" HorizontalAlignment="Center"/>
                         </Grid>
                         <Grid Grid.Row="1">
-                            <StackPanel Orientation="Horizontal">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="120*"/>
+                                <RowDefinition Height="881*"/>
+                            </Grid.RowDefinitions>
+                            <StackPanel Orientation="Horizontal" Grid.RowSpan="2">
                                 <!-- 알람(Analog) 설정  -->
                                 <GroupBox Header="Alarm Setting (Analog)" Width="420"
                                           BorderBrush="LightSteelBlue" BorderThickness="2" Margin="2,10,2,0"
@@ -353,7 +357,7 @@
                                             </StackPanel>
                                         </Grid>
                                     </GroupBox>
-                                     <!--Magnetic Contact-->
+                                    <!--Magnetic Contact-->
                                     <GroupBox Header="Module Power (Magnetic Contact)" BorderBrush="LightSteelBlue" BorderThickness="2" Margin="2,10,2,0"
                                               FontSize="14">
                                         <Grid>
@@ -365,19 +369,19 @@
                                             </Grid.RowDefinitions>
                                             <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="2">
                                                 <TextBlock Width="200" Text="Induction Heater Power"/>
-                                                <Button Content="{Binding InductionHeaterPowerOn}"/>
+                                                <Button Content="{Binding InductionHeaterPowerOn}" Command="{Binding ToggleInductionHeaterPowerCommand}" />
                                             </StackPanel>
                                             <StackPanel Grid.Row="1" Orientation="Horizontal" Margin="2">
                                                 <TextBlock Width="200" Text="Thermal Bath Power"/>
-                                                <Button Content="{Binding ThermalBathPowerOn}"/>
+                                                <Button Content="{Binding ThermalBathPowerOn}" Command="{Binding ToggleThermalBathPowerCommand}" />
                                             </StackPanel>
                                             <StackPanel Grid.Row="2" Orientation="Horizontal" Margin="2">
                                                 <TextBlock Width="200" Text="Vacuum Pump Power"/>
-                                                <Button Content="{Binding VaccumPumpPowerOn}"/>
+                                                <Button Content="{Binding VaccumPumpPowerOn}" Command="{Binding ToggleVaccumPumpPowerCommand}" />
                                             </StackPanel>
                                             <StackPanel Grid.Row="3" Orientation="Horizontal" Margin="2">
                                                 <TextBlock Width="200" Text="Line Heater Power"/>
-                                                <Button Content="{Binding LineHeaterPowerOn}"/>
+                                                <Button Content="{Binding LineHeaterPowerOn}" Command="{Binding ToggleLineHeaterPowerCommand}" />
                                             </StackPanel>
                                         </Grid>
                                     </GroupBox>

@@ -240,6 +240,36 @@ namespace SapphireXR_App.ViewModels
             IOList[io++].OnOff = ioStateList[(int)PLCService.IOListIndex.SingalTower_BUZZWER];
         }
 
+        private void showConfirmWindow(string onOff, PLCService.DigitalOutput3Index index)
+        {
+            string nextState = (onOff == "On" ? "Off" : "On");
+            if(ValveOperationEx.Show("Moduel Power 상태 변경", nextState + " 상태로 변경하시겠습니까?") == Enums.ValveOperationExResult.Ok)
+            {
+                PLCService.WriteModulePowerState(index, (nextState == "On") ? true : false);
+            }
+        }
+
+        [RelayCommand]
+        private void ToggleInductionHeaterPower()
+        {
+            showConfirmWindow(InductionHeaterPowerOn, PLCService.DigitalOutput3Index.InductionHeaterMC);
+        }
+        [RelayCommand]
+        private void ToggleThermalBathPower()
+        {
+            showConfirmWindow(ThermalBathPowerOn, PLCService.DigitalOutput3Index.ThermalBathMC);
+        }
+        [RelayCommand]
+        private void ToggleVaccumPumpPower()
+        {
+            showConfirmWindow(VaccumPumpPowerOn, PLCService.DigitalOutput3Index.VaccumPumpMC);
+        }
+        [RelayCommand]
+        private void ToggleLineHeaterPower()
+        {
+            showConfirmWindow(LineHeaterPowerOn, PLCService.DigitalOutput3Index.LineHeaterMC);
+        }
+
         private IOStateListSubscriber iOStateListSubscriber;
 
         [ObservableProperty]

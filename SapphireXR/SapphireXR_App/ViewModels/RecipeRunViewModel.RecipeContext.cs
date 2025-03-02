@@ -105,14 +105,16 @@ namespace SapphireXR_App.ViewModels
 
                     logTimer = new DispatcherTimer();
                     logTimer.Interval = new TimeSpan(TimeSpan.TicksPerMillisecond * GlobalSetting.LogIntervalInRecipeRunInMS);
-                    logTimer.Tick += (object? sender, EventArgs args) =>
+                    logTimer.Tick += log;
+                }
+
+                private void log(object? sender, EventArgs args)
+                {
+                    if (recipeContext != null && recipeContext.currentRecipe != null)
                     {
-                        if (recipeContext.currentRecipe != null)
-                        {
-                            csvWriter!.WriteRecord(new RecipeLog(recipeContext.currentRecipe));
-                            csvWriter!.NextRecord();
-                        }
-                    };
+                        csvWriter!.WriteRecord(new RecipeLog(recipeContext.currentRecipe));
+                        csvWriter!.NextRecord();
+                    }
                 }
 
                 public void pause()
@@ -131,10 +133,14 @@ namespace SapphireXR_App.ViewModels
                     {
                         if (disposing)
                         {
-                            logTimer?.Stop();
-                            logTimer = null;
+                          
                         }
 
+                        if (logTimer != null)
+                        {
+                            logTimer.Stop();
+                            logTimer.Tick -= log;
+                        }
                         try
                         {
                             csvWriter!.Flush();
@@ -166,8 +172,9 @@ namespace SapphireXR_App.ViewModels
                 private FileStream? fileStream = null;
                 private StreamWriter? streamWriter = null;
                 private CsvWriter? csvWriter = null;
-                private bool disposedValue = false;
                 private RecipeContext? recipeContext = null;
+
+                private bool disposedValue = false;
             }
 
 
@@ -231,7 +238,7 @@ namespace SapphireXR_App.ViewModels
                             currentRecipe.IsEnabled = false;
 
                             temperatureControlValueSubscriber ??= new TemperatureControlValueSubscriber(this);
-                            unsubscriber ??= ObservableManager<int>.Subscribe("FlowControl.Temperature.ControlValue", temperatureControlValueSubscriber!);
+                            temperatureControlValueUnsubscriber ??= ObservableManager<int>.Subscribe("FlowControl.Temperature.ControlValue", temperatureControlValueSubscriber!);
                             recipeControlHoldTimeSubscriber ??= new RecipeTimeSubscriber((int value) => { CurrentHoldTime = value; });
                             recipeControlHoldTimeUnsubscriber ??= ObservableManager<int>.Subscribe("RecipeControlTime.Hold", recipeControlHoldTimeSubscriber);
                             recipeControlPauseTimeSubscriber ??= new RecipeTimeSubscriber((int value) => { PauseTime = value; });
@@ -339,7 +346,7 @@ namespace SapphireXR_App.ViewModels
 
             private void disposeSubscribe()
             {
-                unsubscriber?.Dispose();
+                temperatureControlValueUnsubscriber?.Dispose();
                 recipeControlHoldTimeUnsubscriber?.Dispose();
                 recipeControlRampTimeUnsubscriber?.Dispose();
                 recipeControlPauseTimeUnsubscriber?.Dispose();
@@ -363,7 +370,7 @@ namespace SapphireXR_App.ViewModels
                 modifiedRecipeIndice.Clear();
                 disposeSubscribe();
                 disposeResource();
-                unsubscriber = null;
+                temperatureControlValueUnsubscriber = null;
                 temperatureControlValueSubscriber = null;
                 recipeControlHoldTimeUnsubscriber = null;
                 recipeControlRampTimeUnsubscriber = null;
@@ -452,7 +459,7 @@ namespace SapphireXR_App.ViewModels
             private bool disposedValue = false;
 
             private TemperatureControlValueSubscriber? temperatureControlValueSubscriber;
-            private IDisposable? unsubscriber = null;
+            private IDisposable? temperatureControlValueUnsubscriber = null;
             private RecipeTimeSubscriber? recipeControlHoldTimeSubscriber = null;
             private RecipeTimeSubscriber? recipeControlPauseTimeSubscriber = null;
             private RecipeTimeSubscriber? recipeControlRampTimeSubscriber = null;
@@ -474,12 +481,12 @@ namespace SapphireXR_App.ViewModels
                 if (!disposedValue)
                 {
                     if (disposing)
-                    {
-                        disposeSubscribe();
+                    { 
                     }
 
                     // TODO: 비관리형 리소스(비관리형 개체)를 해제하고 종료자를 재정의합니다.
                     // TODO: 큰 필드를 null로 설정합니다.
+                    disposeSubscribe();
                     disposeResource();
                     disposedValue = true;
                 }
@@ -499,10 +506,6 @@ namespace SapphireXR_App.ViewModels
 
             public void disposeResource()
             {
-                if(initialized == false)
-                {
-                    return;
-                }
                 FileLogger?.dispose();
             }
         }

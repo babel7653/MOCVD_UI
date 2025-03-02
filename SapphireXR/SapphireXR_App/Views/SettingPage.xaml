@@ -126,7 +126,7 @@
 																									Binding="{Binding Path=AlarmSet}"/>
                                                     <DataGridCheckBoxColumn Header="Warning" Width="50"	CanUserSort="False"
 																									Binding="{Binding Path=WarningSet}"/>
-                                                    
+
                                                 </DataGrid.Columns>
                                             </DataGrid>
                                         </StackPanel>
@@ -237,29 +237,25 @@
                 </TabItem.Content>
 
             </TabItem>
-            <!--Tab for Safety Setting-->
-            <TabItem Name="UserStateSetting" Header="Safety">
+            <!-- Tab for Device Setting -->
+            <TabItem Name="DeviceSetting" Header="Device">
                 <TabItem.Content>
                     <Grid>
                         <Grid.RowDefinitions>
                             <RowDefinition Height="30"/>
-                            <RowDefinition/>
+                            <RowDefinition Height="*" />
                         </Grid.RowDefinitions>
-                        <Grid Grid.Row="0" Background="Green">
-                            <TextBlock FontSize="14" Text="Safety Setting" FontWeight="Bold" Foreground="White"
+                        <Grid Grid.Row="0" Background="Blue">
+                            <TextBlock FontSize="14" Text="Device Setting" FontWeight="Bold" Foreground="White"
                                            VerticalAlignment="Center" HorizontalAlignment="Center"/>
                         </Grid>
                         <Grid Grid.Row="1">
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="28*"/>
-                                <RowDefinition Height="723*"/>
-                            </Grid.RowDefinitions>
-                            <StackPanel Orientation="Horizontal" Grid.ColumnSpan="2" Grid.RowSpan="2">
+                            <StackPanel Orientation="Horizontal">
 
-                                <StackPanel>
-                                    <!-- Interlock 설정 테이블 -->
-                                    <GroupBox Header="Interlock Setting" Width="625" BorderBrush="LightSteelBlue" BorderThickness="2" Margin="2,10,2,0"
-                                              FontSize="14">
+                                <StackPanel Orientation="Vertical" Width="420">
+                                    <!-- Interlock 설정 테이블-->
+                                    <GroupBox Header="Interlock Setting" BorderBrush="LightSteelBlue" BorderThickness="2" Margin="2,10,2,0"
+                                             FontSize="14">
                                         <Grid>
                                             <Grid.ColumnDefinitions>
                                                 <ColumnDefinition/>
@@ -285,7 +281,7 @@
                                             <!-- DOR Release -->
                                             <TextBlock Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Text="Double O-Ring Release" FontWeight="Bold" VerticalAlignment="Bottom"/>
                                             <Button Grid.Row="0" Grid.Column="1" x:Name="InterlockSave" Content="Save" Width="70" HorizontalAlignment="Left"
-                                                    Command="{Binding AlarmSettingSaveCommand}">
+                                                   Command="{Binding AlarmSettingSaveCommand}">
                                                 <Button.Resources>
                                                     <Style TargetType="Border">
                                                         <Setter Property="CornerRadius" Value="6"/>
@@ -293,38 +289,38 @@
                                                 </Button.Resources>
                                             </Button>
                                             <CheckBox x:Name="cbRecipeNotRunning"  Grid.Row="1" Grid.Column="0" Content="Recipe Not Running" 
-                                                      IsChecked="{Binding Path=dInterLockD[RecipeNotRunning]}" VerticalAlignment="Center" Margin="15,0,0,0"/>
+                                                     IsChecked="{Binding Path=dInterLockD[RecipeNotRunning]}" VerticalAlignment="Center" Margin="15,0,0,0"/>
                                             <CheckBox x:Name="cbReactorPressureLimit" Grid.Row="2" Grid.Column="0" Content="Reactor Pressure(Torr) >="
-                                                      IsChecked="{Binding Path=dInterLockA[DORReactorPressure].IsEnable}" VerticalAlignment="Center" Margin="15,0,0,0"/>
+                                                     IsChecked="{Binding Path=dInterLockA[DORReactorPressure].IsEnable}" VerticalAlignment="Center" Margin="15,0,0,0"/>
                                             <TextBox x:Name="tbReactorPressureLimit" Grid.Row="2" Grid.Column="1" Width="150" HorizontalAlignment="Left" Margin="2"
-                                                     Text="{Binding Path=dInterLockA[DORReactorPressure].Treshold}"/>
+                                                    Text="{Binding Path=dInterLockA[DORReactorPressure].Treshold}"/>
                                             <CheckBox x:Name="cbSusceptorTemperature" Grid.Row="3" Grid.Column="0" Content="Susceptor Temperature" 
-                                                      IsChecked="{Binding Path=dInterLockA[DORSusceptorTemperature].IsEnable}" VerticalAlignment="Center" Margin="15,0,0,0"/>
+                                                     IsChecked="{Binding Path=dInterLockA[DORSusceptorTemperature].IsEnable}" VerticalAlignment="Center" Margin="15,0,0,0"/>
                                             <TextBox x:Name="DORTemperatureSet" Grid.Row="3" Grid.Column="1" Width="150" HorizontalAlignment="Left" Margin="2"
-                                                     Text="{Binding Path=dInterLockA[DORSusceptorTemperature].Treshold}"/>
+                                                    Text="{Binding Path=dInterLockA[DORSusceptorTemperature].Treshold}"/>
 
                                             <!-- DOR Lock -->
                                             <TextBlock Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="2" Text="Double O-Ring Lock" FontWeight="Bold" VerticalAlignment="Bottom"/>
                                             <CheckBox Grid.Row="5" Grid.Column="0" Content=" Vacuum Valve Close"
-                                                      IsChecked="{Binding Path=dInterLockD[VacuumValveClose]}" VerticalAlignment="Center" Margin="15,0,0,0"/>
+                                                     IsChecked="{Binding Path=dInterLockD[VacuumValveClose]}" VerticalAlignment="Center" Margin="15,0,0,0"/>
                                             <CheckBox Grid.Row="6" Grid.Column="0" Content="Pressure Limit" 
-                                                      IsChecked="{Binding Path=dInterLockA[DORPressureLimit].IsEnable}" VerticalAlignment="Center" Margin="15,0,0,0"/>
+                                                     IsChecked="{Binding Path=dInterLockA[DORPressureLimit].IsEnable}" VerticalAlignment="Center" Margin="15,0,0,0"/>
                                             <TextBox x:Name="DORPressureLimit" Grid.Row="6" Grid.Column="1" Width="150" HorizontalAlignment="Left" Margin="2"
-                                                     Text="{Binding Path=dInterLockA[DORSusceptorTemperature].Treshold}"/>
+                                                    Text="{Binding Path=dInterLockA[DORSusceptorTemperature].Treshold}"/>
                                             <CheckBox Grid.Row="7" Grid.Column="0" Content=" Alarm Limit Value" 
-                                                      IsChecked="{Binding Path=dInterLockA[AlarmLimit].IsEnable}" VerticalAlignment="Center" Margin="15,0,0,0"/>
+                                                     IsChecked="{Binding Path=dInterLockA[AlarmLimit].IsEnable}" VerticalAlignment="Center" Margin="15,0,0,0"/>
                                             <TextBox x:Name="DORAlarmLimit" Grid.Row="7" Grid.Column="1" Width="150" HorizontalAlignment="Left" Margin="2"
-                                                     Text="{Binding Path=dInterLockA[AlarmLimit].Treshold}"/>
+                                                    Text="{Binding Path=dInterLockA[AlarmLimit].Treshold}"/>
                                             <!-- Auto Power ON -->
                                             <TextBlock Grid.Row="8" Grid.Column="0" Grid.ColumnSpan="2" Text="Auto Power ON" FontWeight="Bold" VerticalAlignment="Bottom"/>
                                             <CheckBox Grid.Row="9" Grid.Column="0" Content=" Induction Power Supply" 
-                                                     IsChecked="{Binding Path=dInterLockD[InductionPowerSupply]}" VerticalAlignment="Center" Margin="15,0,0,0"/>
+                                                    IsChecked="{Binding Path=dInterLockD[InductionPowerSupply]}" VerticalAlignment="Center" Margin="15,0,0,0"/>
                                             <CheckBox Grid.Row="10" Grid.Column="0" Content=" Susceptor Rotation Motor"
-                                                     IsChecked="{Binding Path=dInterLockD[SusceptorRotationMotor]}" VerticalAlignment="Center" Margin="15,0,0,0"/>
+                                                    IsChecked="{Binding Path=dInterLockD[SusceptorRotationMotor]}" VerticalAlignment="Center" Margin="15,0,0,0"/>
                                             <CheckBox Grid.Row="11" Grid.Column="0" Content=" Reactor Cabinet Lamp" 
-                                                      IsChecked="{Binding Path=dInterLockD[ReactorCabinetLamp]}" VerticalAlignment="Center" Margin="15,0,0,0"/>
+                                                     IsChecked="{Binding Path=dInterLockD[ReactorCabinetLamp]}" VerticalAlignment="Center" Margin="15,0,0,0"/>
                                             <CheckBox Grid.Row="12" Grid.Column="0" Content=" Gas Control Cabinet Lamp" 
-                                                      IsChecked="{Binding Path=dInterLockD[GasControlLamp]}" VerticalAlignment="Center" Margin="15,0,0,0"/>
+                                                     IsChecked="{Binding Path=dInterLockD[GasControlLamp]}" VerticalAlignment="Center" Margin="15,0,0,0"/>
                                             <TextBlock Grid.Row="13" Grid.Column="0" Grid.ColumnSpan="2" Text="Misc." FontWeight="Bold" VerticalAlignment="Bottom"/>
                                             <TextBlock Grid.Row="14" Grid.Column="0" Margin="15,0,0,0" Text="Log Interval in Recipe Run (Millisecond)" />
                                             <local:NumberBox Grid.Row="14" Grid.Column="1" Width="150" HorizontalAlignment="Left" Margin="2" Text="{Binding LogIntervalInRecipeRun}"/>
@@ -357,8 +353,7 @@
                                             </StackPanel>
                                         </Grid>
                                     </GroupBox>
-                                    
-                                    <!--Magnetic Contact-->
+                                     <!--Magnetic Contact-->
                                     <GroupBox Header="Module Power (Magnetic Contact)" BorderBrush="LightSteelBlue" BorderThickness="2" Margin="2,10,2,0"
                                               FontSize="14">
                                         <Grid>
@@ -387,27 +382,8 @@
                                         </Grid>
                                     </GroupBox>
                                 </StackPanel>
-                            </StackPanel>
-                        </Grid>
-                    </Grid>
-                </TabItem.Content>
-            </TabItem>
-            <!-- Tab for Device Setting -->
-            <TabItem Name="DeviceSetting" Header="Device">
-                <TabItem.Content>
-                    <Grid>
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="30"/>
-                            <RowDefinition />
-                        </Grid.RowDefinitions>
-                        <Grid Grid.Row="0" Background="Blue">
-                            <TextBlock FontSize="14" Text="Device Setting" FontWeight="Bold" Foreground="White"
-                                           VerticalAlignment="Center" HorizontalAlignment="Center"/>
-                        </Grid>
-                        <Grid Grid.Row="1">
-                            <StackPanel Orientation="Horizontal">
                                 <!-- Device Name 설정 테이블-->
-                                <GroupBox Header="Device Naming" Width="450"
+                                <GroupBox Header="Device Naming" Width="420"
                                           BorderBrush="LightSteelBlue" BorderThickness="2" Margin="2,10,2,0"
                                           FontSize="14">
                                     <StackPanel>
@@ -448,7 +424,7 @@
                                                                         Binding="{Binding Path=MaxValue}"/>
                                                     </DataGrid.Columns>
                                                 </DataGrid>
-                                                
+
                                             </StackPanel>
                                             <GridSplitter Grid.Row="1" HorizontalAlignment="Stretch" VerticalAlignment="Center"  Background="LightSteelBlue"
                                                       ShowsPreview="True" Height="3"/>
@@ -477,14 +453,14 @@
                                                         </DataGrid.Columns>
                                                     </DataGrid>
                                                 </StackPanel>
-         
+
 
                                             </StackPanel>
                                         </Grid>
                                     </StackPanel>
                                 </GroupBox>
                                 <!-- Component I/O List 테이블-->
-                                <GroupBox Header="I/O List" Width="815"
+                                <GroupBox Header="I/O List" Width="420"
                                           BorderBrush="LightSteelBlue" BorderThickness="2" Margin="2,10,2,0"
                                           FontSize="14">
                                     <StackPanel>

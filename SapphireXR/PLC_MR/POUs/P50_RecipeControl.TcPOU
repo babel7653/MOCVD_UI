@@ -46,7 +46,6 @@ END_VAR
 		IF nRcpIndex = 0 THEN
 			nRcpIndex := 1;
 		END_IF
-
 		Rcp.userState := 10;
 		IF nRcpIndex <= Rcp.iRcpTotalStep THEN
 			Rcp.state_RcpOperation := 10; // Recipe Running
@@ -193,7 +192,6 @@ END_CASE
       <LineId Id="6" Count="0" />
       <LineId Id="391" Count="1" />
       <LineId Id="154" Count="0" />
-      <LineId Id="423" Count="0" />
       <LineId Id="38" Count="0" />
       <LineId Id="230" Count="1" />
       <LineId Id="233" Count="0" />

@@ -41,7 +41,7 @@ bMaintKey := GVL_IO.aDigitalInputIO[1].0;
 
 IF bMaintKey THEN
 	P92_Maintenance.nCaseSignalTower		:= 5;
-ELSE
+ELSIF bMaintKey = FALSE AND MAIN.bOperationMode = FALSE THEN
 	P92_Maintenance.nCaseSignalTower		:= 4;
 END_IF
 

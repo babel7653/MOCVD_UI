@@ -57,10 +57,10 @@ namespace SapphireXR_App.ViewModels
 
             void IObserver<BitArray>.OnNext(BitArray value)
             {
-                Util.SetIfChanged(value[(int)PLCService.DigitalOutput3Index.InductionHeaterMC], ref prevInpudctionHeaterPowerOn, (bool value) => { settingViewModel.InductionHeaterPowerOn = (value == true ? "On" : "Off"); });
-                Util.SetIfChanged(value[(int)PLCService.DigitalOutput3Index.ThermalBathMC], ref prevThermalBatchPowerOn, (bool value) => { settingViewModel.ThermalBathPowerOn = (value == true ? "On" : "Off"); });
-                Util.SetIfChanged(value[(int)PLCService.DigitalOutput3Index.VaccumPumpMC], ref prevVaccumPumpPowerOn, (bool value) => { settingViewModel.VaccumPumpPowerOn = (value == true ? "On" : "Off"); });
-                Util.SetIfChanged(value[(int)PLCService.DigitalOutput3Index.LineHeaterMC], ref prevLineHeaterPowerOn, (bool value) => { settingViewModel.LineHeaterPowerOn = (value == true ? "On" : "Off"); });
+                Util.SetIfChanged(value[(int)PLCService.OutputCmd2Index.InductionHeaterPower], ref prevInpudctionHeaterPowerOn, (bool value) => { settingViewModel.InductionHeaterPowerOn = (value == true ? "On" : "Off"); });
+                Util.SetIfChanged(value[(int)PLCService.OutputCmd2Index.ThermalBathPower], ref prevThermalBatchPowerOn, (bool value) => { settingViewModel.ThermalBathPowerOn = (value == true ? "On" : "Off"); });
+                Util.SetIfChanged(value[(int)PLCService.OutputCmd2Index.VaccumPumpPower], ref prevVaccumPumpPowerOn, (bool value) => { settingViewModel.VaccumPumpPowerOn = (value == true ? "On" : "Off"); });
+                Util.SetIfChanged(value[(int)PLCService.OutputCmd2Index.LineHeaterPower], ref prevLineHeaterPowerOn, (bool value) => { settingViewModel.LineHeaterPowerOn = (value == true ? "On" : "Off"); });
             }
 
             private SettingViewModel settingViewModel;
@@ -119,7 +119,7 @@ namespace SapphireXR_App.ViewModels
                 new() { Name= "Singal Tower - BLUE", OnOff = true },  new() { Name= "Singal Tower - WHITE", OnOff = true }, new() { Name= "Singal Tower - BUZZWER", OnOff = true }
             };
             ObservableManager<BitArray>.Subscribe("DeviceIOList", iOStateListSubscriber = new IOStateListSubscriber(this));
-            ObservableManager<BitArray>.Subscribe("DigitalOutput3", modulePowerStateSubscriber = new ModulePowerStateSubscriber(this));
+            ObservableManager<BitArray>.Subscribe("OutputCmd1", modulePowerStateSubscriber = new ModulePowerStateSubscriber(this));
         }
         public void AlarmSettingLoad()
         {
@@ -240,34 +240,26 @@ namespace SapphireXR_App.ViewModels
             IOList[io++].OnOff = ioStateList[(int)PLCService.IOListIndex.SingalTower_BUZZWER];
         }
 
-        private void showConfirmWindow(string onOff, PLCService.DigitalOutput3Index index)
-        {
-            string nextState = (onOff == "On" ? "Off" : "On");
-            if(ValveOperationEx.Show("Moduel Power 상태 변경", nextState + " 상태로 변경하시겠습니까?") == Enums.ValveOperationExResult.Ok)
-            {
-                PLCService.WriteModulePowerState(index, (nextState == "On") ? true : false);
-            }
-        }
-
+  
         [RelayCommand]
         private void ToggleInductionHeaterPower()
         {
-            showConfirmWindow(InductionHeaterPowerOn, PLCService.DigitalOutput3Index.InductionHeaterMC);
+            OutputCmd1OnOffConfirmWindow.Show(InductionHeaterPowerOn, PLCService.OutputCmd2Index.InductionHeaterPower);
         }
         [RelayCommand]
         private void ToggleThermalBathPower()
         {
-            showConfirmWindow(ThermalBathPowerOn, PLCService.DigitalOutput3Index.ThermalBathMC);
+            OutputCmd1OnOffConfirmWindow.Show(ThermalBathPowerOn, PLCService.OutputCmd2Index.ThermalBathPower);
         }
         [RelayCommand]
         private void ToggleVaccumPumpPower()
         {
-            showConfirmWindow(VaccumPumpPowerOn, PLCService.DigitalOutput3Index.VaccumPumpMC);
+            OutputCmd1OnOffConfirmWindow.Show(VaccumPumpPowerOn, PLCService.OutputCmd2Index.VaccumPumpPower);
         }
         [RelayCommand]
         private void ToggleLineHeaterPower()
         {
-            showConfirmWindow(LineHeaterPowerOn, PLCService.DigitalOutput3Index.LineHeaterMC);
+            OutputCmd1OnOffConfirmWindow.Show(LineHeaterPowerOn, PLCService.OutputCmd2Index.LineHeaterPower);
         }
 
         private IOStateListSubscriber iOStateListSubscriber;

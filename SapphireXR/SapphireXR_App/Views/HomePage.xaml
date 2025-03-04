@@ -852,7 +852,7 @@
                     </StackPanel>
                     <Label Content="Induction Heater Control" VerticalContentAlignment="Bottom"/>
                     <StackPanel Orientation="Horizontal" Height="30" Margin="10,0,0,0">
-                        <Button x:Name="btHeaterOn" Content="{Binding InductionHeaterOn}"/>
+                        <Button x:Name="btHeaterOn" Content="{Binding InductionHeaterOn}" Command="{Binding InductionHeaterToggleCommand}"/>
                         <Button x:Name="btHeaterReset" Content="{Binding InductionHeaterReset}"/>
                     </StackPanel>
                 </StackPanel>
@@ -895,7 +895,7 @@
                     </StackPanel>
                     <Label Content="Vacuum Pump Control" VerticalContentAlignment="Bottom"/>
                     <StackPanel Orientation="Horizontal" Height="30" Margin="10,0,0,0">
-                        <Button x:Name="btPumpOn" Content="{Binding VaccumPumpOn}"/>
+                        <Button x:Name="btPumpOn" Content="{Binding VaccumPumpOn}" Command="{Binding VacuumPumpToggleCommand}"/>
                         <Button x:Name="btPumpReset" Content="{Binding VaccumPumpReset}"/>
                     </StackPanel>
                 </StackPanel>

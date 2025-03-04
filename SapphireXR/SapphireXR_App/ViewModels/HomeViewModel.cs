@@ -106,7 +106,7 @@ namespace SapphireXR_App.ViewModels
         {
             internal OutputCmd1Subscriber(HomeViewModel vm)
             {
-                homeViewMode = vm;
+                homeViewModel = vm;
             }
 
             void IObserver<BitArray>.OnCompleted()
@@ -121,12 +121,16 @@ namespace SapphireXR_App.ViewModels
 
             void IObserver<BitArray>.OnNext(BitArray value)
             {
-                Util.SetIfChanged(value[12], ref prevPressureControlMode, (bool value) => { homeViewMode.PressureControlMode = (value == true ? "Position" : "Pressure"); });
-              
+                Util.SetIfChanged(value[12], ref prevPressureControlMode, (bool value) => { homeViewModel.PressureControlMode = (value == true ? "Position" : "Pressure"); });
+                Util.SetIfChanged(value[(int)PLCService.OutputCmd2Index.InductionHeaterControl], ref prevInpudctionHeaterOn, (bool value) => { homeViewModel.InductionHeaterOn = (value == true ? "On" : "Off"); });
+                Util.SetIfChanged(value[(int)PLCService.OutputCmd2Index.VaccumPumpControl], ref prevVaccumPumpOn, (bool value) => { homeViewModel.VaccumPumpOn = (value == true ? "On" : "Off"); });
+
             }
 
-            private HomeViewModel homeViewMode;
+            private HomeViewModel homeViewModel;
             private bool? prevPressureControlMode = null;
+            private bool? prevInpudctionHeaterOn = null;
+            private bool? prevVaccumPumpOn = null;
         }
 
         private class ThrottleValveControlModeSubscriber : IObserver<short>
@@ -271,7 +275,18 @@ namespace SapphireXR_App.ViewModels
             ObservableManager<BitArray>.Subscribe("OutputCmd1", outputCmd1Subscriber = new OutputCmd1Subscriber(this));
             ObservableManager<BitArray>.Subscribe("InputManAuto", inputManAutoSubscriber = new InputManAutoSubscriber(this));
             ObservableManager<short>.Subscribe("ThrottleValveControlMode", throttleValveControlModeSubscriber = new ThrottleValveControlModeSubscriber(this));
-           
+        }
+
+        [RelayCommand]
+        private void VacuumPumpToggle()
+        {
+            OutputCmd1OnOffConfirmWindow.Show(VaccumPumpOn, PLCService.OutputCmd2Index.VaccumPumpControl);
+        }
+
+        [RelayCommand]
+        private void  InductionHeaterToggle()
+        {
+            OutputCmd1OnOffConfirmWindow.Show(InductionHeaterOn, PLCService.OutputCmd2Index.InductionHeaterControl);
         }
 
         public ICommand EnableLeakTestCommand { get; set; }

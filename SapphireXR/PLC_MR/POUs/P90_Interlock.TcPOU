@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4026.11">
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.15">
   <POU Name="P90_Interlock" Id="{c8b81d81-de46-4c7a-a894-4387b2cd9bf7}" SpecialFunc="None">
     <Declaration><![CDATA[PROGRAM P90_Interlock
 VAR_INPUT
@@ -48,10 +48,10 @@ END_IF
 bPowerResetSwitch := GVL_IO.aDigitalInputIO[1].1;
 bMainPowerMonitor := GVL_IO.aDigitalInputIO[7].5;
 
-bAirPressureSensor	:= NOT(GVL_IO.aDigitalInputIO[2].0); //Normally Contacted
-bWaterFlowSensor	:= NOT(GVL_IO.aDigitalInputIO[2].1);
+bAirPressureSensor	:= GVL_IO.aDigitalInputIO[2].0; //Normally Contacted
+bWaterFlowSensor	:= GVL_IO.aDigitalInputIO[2].1;
 
-IF ManualOperation THEN
+IF P90_Interlock.bMaintKey THEN
 	P92_Maintenance.nCaseSignalTower := 4;
 	GVL_IO.aDigitalOutputIO[3].0 := bInductionHeaterMC;
 	GVL_IO.aDigitalOutputIO[3].1 := bThermalBathMC;

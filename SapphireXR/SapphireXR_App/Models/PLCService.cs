@@ -58,6 +58,7 @@ namespace SapphireXR_App.Models
                 hDigitalOutput = Ads.CreateVariableHandle("GVL_IO.aDigitalOutputIO");
                 hDigitalOutput3 = Ads.CreateVariableHandle("GVL_IO.aDigitalOutputIO[3]");
                 hOutputCmd = Ads.CreateVariableHandle("GVL_IO.aOutputCmd");
+                hOutputCmd1 = Ads.CreateVariableHandle("GVL_IO.aOutputCmd[1]");
 
                 hRcp = Ads.CreateVariableHandle("RCP.aRecipe");
                 hRcpTotalStep = Ads.CreateVariableHandle("RCP.iRcpTotalStep");
@@ -264,7 +265,7 @@ namespace SapphireXR_App.Models
             dDigitalOutput2?.Issue(new BitArray(new byte[1] { digitalOutput[1] }));
             dDigitalOutput3?.Issue(digitalOutput3 = new BitArray(new byte[1] { digitalOutput[2] }));
             short[] outputCmd = Ads.ReadAny<short[]>(hOutputCmd, [3]);
-            dOutputCmd1?.Issue(new BitArray(BitConverter.IsLittleEndian == true ? BitConverter.GetBytes(outputCmd[0]) : BitConverter.GetBytes(outputCmd[0]).Reverse().ToArray()));
+            dOutputCmd1?.Issue(bOutputCmd1 = new BitArray(BitConverter.IsLittleEndian == true ? BitConverter.GetBytes(outputCmd[0]) : BitConverter.GetBytes(outputCmd[0]).Reverse().ToArray()));
             dThrottleValveControlMode?.Issue(outputCmd[1]);
             ushort inputManAuto = Ads.ReadAny<ushort>(hE3508InputManAuto);
             dInputManAuto?.Issue(new BitArray(BitConverter.IsLittleEndian == true ? BitConverter.GetBytes(inputManAuto) : BitConverter.GetBytes(inputManAuto).Reverse().ToArray()));
@@ -481,15 +482,14 @@ namespace SapphireXR_App.Models
             return Ads.ReadAny<short>(hUserState);
         }
 
-        public static void WriteModulePowerState(DigitalOutput3Index index, bool powerOn)
+        public static void WriteOutputCmd2OnOffState(OutputCmd2Index index, bool powerOn)
         {
-            if(digitalOutput3 != null)
+            if(bOutputCmd1 != null)
             {
-                digitalOutput3[(int)index] = powerOn;
-                byte[] byteArray = new byte[1];
-                digitalOutput3.CopyTo(byteArray, 0);
-                Ads.WriteAny(hDigitalOutput3, byteArray[0]);
-
+                bOutputCmd1[(int)index] = powerOn;              
+                int[] array = new int[1];
+                bOutputCmd1.CopyTo(array, 0);
+                Ads.WriteAny(hOutputCmd1, (short)array[0]);
             }
         }
     }

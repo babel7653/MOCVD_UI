@@ -43,6 +43,11 @@ namespace SapphireXR_App.Models
             InductionHeaterMC = 0, ThermalBathMC, VaccumPumpMC, LineHeaterMC, RotationAlaramReset = 6
         }
 
+        public enum OutputCmd2Index
+        {
+            InductionHeaterPower = 0, ThermalBathPower, VaccumPumpPower, LineHeaterPower,InductionHeaterControl, VaccumPumpControl = 6
+        }
+
         // Connect to PLC
         public static string AddressPLC { get; set; } = "PLC Address : ";
         public static string ModePLC { get; set; } = "System Mode : ";
@@ -58,6 +63,7 @@ namespace SapphireXR_App.Models
         private static float[]? aMonitoring_PVs = null;
         private static short[]? aInputState = null;
         private static BitArray? digitalOutput3 = null;
+        private static BitArray? bOutputCmd1 = null;
 
         private static ObservableManager<PLCConnection>.DataIssuer ConnectedNotifier;
         private static Dictionary<string, ObservableManager<int>.DataIssuer>? dCurrentValueIssuers;
@@ -111,6 +117,7 @@ namespace SapphireXR_App.Models
         private static uint hDigitalOutput;
         private static uint hOutputCmd;
         private static uint hE3508InputManAuto;
+        private static uint hOutputCmd1;
 
         private static bool RecipeRunEndNotified = false;
 

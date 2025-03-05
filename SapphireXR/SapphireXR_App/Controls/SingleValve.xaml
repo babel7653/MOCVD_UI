@@ -30,10 +30,10 @@
                         </Border>
                         <ControlTemplate.Triggers>
                             <DataTrigger Binding="{Binding IsOpen, Mode=TwoWay}" Value="True">
-                                <Setter TargetName="on" Property="Fill" Value="Lime"/>
+                                <Setter TargetName="on" Property="Fill" Value="{Binding OnColor}"/>
                             </DataTrigger>
                             <DataTrigger Binding="{Binding IsOpen, Mode=TwoWay}"  Value="False">
-                                <Setter TargetName="on" Property="Fill" Value="White"/>
+                                <Setter TargetName="on" Property="Fill" Value="{Binding OffColor}"/>
                             </DataTrigger>
                             <EventTrigger RoutedEvent="MouseEnter">
                                 <BeginStoryboard Storyboard="{StaticResource ChangeBackgroundColorOnMouseEnter}" />
@@ -56,6 +56,8 @@
                     <MultiBinding Converter="{StaticResource onLoadedCommandConverter}">
                         <Binding Path="ValveID" RelativeSource="{RelativeSource AncestorType=UserControl}" />
                         <Binding Path="Target" RelativeSource="{RelativeSource AncestorType=UserControl}" />
+                        <Binding Path="IterlockMode" RelativeSource="{RelativeSource AncestorType=UserControl}" />
+                        <Binding Path="Coupled" RelativeSource="{RelativeSource AncestorType=UserControl}" />
                     </MultiBinding>
                 </i:InvokeCommandAction.CommandParameter>
             </i:InvokeCommandAction>

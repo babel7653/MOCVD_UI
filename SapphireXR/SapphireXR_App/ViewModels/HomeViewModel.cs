@@ -1,16 +1,10 @@
 ﻿using CommunityToolkit.Mvvm.Input;
 using SapphireXR_App.ViewModels.BottomDashBoard;
-using System.ComponentModel;
 using System.Windows;
-using System.Windows.Controls;
 using System.Windows.Input;
-using static System.Net.Mime.MediaTypeNames;
-using System.Xml.Linq;
 using CommunityToolkit.Mvvm.ComponentModel;
 using SapphireXR_App.Common;
-using System.Diagnostics.CodeAnalysis;
 using SapphireXR_App.Models;
-using System.Reactive;
 using System.Collections;
 
 namespace SapphireXR_App.ViewModels
@@ -214,6 +208,7 @@ namespace SapphireXR_App.ViewModels
         public HomeViewModel()
         {
             DashBoardViewModel = new HomeBottomDashBoardViewModel();
+            leakTestModePublisher = ObservableManager<bool>.Get("Leak Test Mode");
             EnableLeakTestCommand = new RelayCommand<object>((object? menuName) =>
             {
                 switch ((string)menuName!)
@@ -221,12 +216,14 @@ namespace SapphireXR_App.ViewModels
                     case "Show Leak Test Valve":
                         OnLeakTestVisibility = Visibility.Visible;
                         OffLeakTestVisibility = Visibility.Hidden;
+                        leakTestModePublisher.Issue(true);
                         LeakTestModeStr = disableLeakTestModeStr;
                         break;
 
-                    case "Hide Leak Test Mode":
+                    case "Hide Leak Test Valve":
                         OnLeakTestVisibility = Visibility.Hidden;
                         OffLeakTestVisibility = Visibility.Visible;
+                        leakTestModePublisher.Issue(false);
                         LeakTestModeStr = enableLeakTestModeStr;
                         break;
                 }
@@ -296,7 +293,7 @@ namespace SapphireXR_App.ViewModels
         [ObservableProperty]
         private string _leakTestModeStr = disableLeakTestModeStr;
         static private readonly string enableLeakTestModeStr = "Show Leak Test Valve";
-        static private readonly string disableLeakTestModeStr = "Hide Leak Test Mode";
+        static private readonly string disableLeakTestModeStr = "Hide Leak Test Valve";
 
         [ObservableProperty]
         private string _showValveLabelStr = hideValveLabelStr;
@@ -360,6 +357,7 @@ namespace SapphireXR_App.ViewModels
         private DigitalOutput3Subscriber digitalOutput3Subscriber;
         private InputManAutoSubscriber inputManAutoSubscriber;
         private ThrottleValveControlModeSubscriber throttleValveControlModeSubscriber;
+        private ObservableManager<bool>.DataIssuer leakTestModePublisher;
     }
 }
 

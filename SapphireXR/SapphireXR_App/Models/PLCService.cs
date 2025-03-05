@@ -1,12 +1,7 @@
 ﻿using SapphireXR_App.Common;
 using SapphireXR_App.Enums;
-using SapphireXR_App.ViewModels;
 using System.Collections;
-using System.Net.Sockets;
-using System.Security.Permissions;
-using System.Security.RightsManagement;
 using System.Windows;
-using System.Windows.Controls;
 using System.Windows.Threading;
 using TwinCAT.Ads;
 using TwinCAT.PlcOpen;
@@ -56,7 +51,6 @@ namespace SapphireXR_App.Models
                 hMonitoring_PV = Ads.CreateVariableHandle("GVL_IO.aMonitoring_PV");
                 hInputState = Ads.CreateVariableHandle("GVL_IO.aInputState");
                 hDigitalOutput = Ads.CreateVariableHandle("GVL_IO.aDigitalOutputIO");
-                hDigitalOutput3 = Ads.CreateVariableHandle("GVL_IO.aDigitalOutputIO[3]");
                 hOutputCmd = Ads.CreateVariableHandle("GVL_IO.aOutputCmd");
                 hOutputCmd1 = Ads.CreateVariableHandle("GVL_IO.aOutputCmd[1]");
 
@@ -154,6 +148,8 @@ namespace SapphireXR_App.Models
             dOutputCmd1 = ObservableManager<BitArray>.Get("OutputCmd1");
             dInputManAuto = ObservableManager<BitArray>.Get("InputManAuto");
             dThrottleValveControlMode = ObservableManager<short>.Get("ThrottleValveControlMode");
+
+            ObservableManager<bool>.Subscribe("Leak Test Mode", leakTestModeSubscriber = new LeakTestModeSubscriber());
 
             timer = new DispatcherTimer();
             timer.Interval = new TimeSpan(2000000);
@@ -353,7 +349,7 @@ namespace SapphireXR_App.Models
             return buffer[index];
         }
 
-        public static void WriteValveState(string valveID, bool onOff)
+        private static void DoWriteValveState(string valveID, bool onOff)
         {
             (BitArray buffer, int index, uint variableHandle) = GetBuffer(valveID);
             buffer[index] = onOff;
@@ -361,6 +357,60 @@ namespace SapphireXR_App.Models
             uint[] sentBuffer = new uint[1];
             buffer.CopyTo(sentBuffer, 0);
             Ads.WriteAny(variableHandle, sentBuffer);
+        }
+
+        public static void AddCoupledValves(string leftValveID, string rightValveID)
+        {
+            LeftCoupled[rightValveID] = leftValveID;
+            RightCoupled[leftValveID] = rightValveID;
+        }
+
+        public static void WriteValveState(string valveID, bool onOff)
+        {
+            Func<string, bool, bool> checkValidWriteValve = (string valveID, bool onOff) =>
+            {
+                if (LeakTestMode == true)
+                {
+                    string? coupled = null;
+                    if (LeftCoupled.TryGetValue(valveID, out coupled) == true)
+                    {
+                        (BitArray lBuffer, int lIndex, uint lVariableHandle) = GetBuffer(coupled);
+                        return !(lBuffer[lIndex] == false && onOff == true);
+                    }
+                    else
+                        if (RightCoupled.TryGetValue(valveID, out coupled) == true)
+                        {
+                            (BitArray rBuffer, int rIndex, uint rVariableHandle) = GetBuffer(coupled);
+                            return !(onOff == false && rBuffer[rIndex] == true);
+                        }
+                }
+
+                return true;
+            };
+
+            if (LeakTestMode == true && checkValidWriteValve(valveID, onOff) == false)
+            {
+                string? coupled = null;
+                if (LeftCoupled.TryGetValue(valveID, out coupled) == true)
+                {
+                    throw new WriteValveStateException("왼쪽 " + coupled + "가 Open 상태이므로 오른쪽 " + valveID + "의 값을 Open 할 수 없습니다. 왼쪽 " + coupled + "를 닫아 주십시요.");
+                }
+                else
+                    if (RightCoupled.TryGetValue(valveID, out coupled) == true)
+                    {
+                        throw new WriteValveStateException("오른쪽 " + coupled + "가 Open 상태이므로 왼쪽 " + valveID + "의 값을 Open 할 수 없습니다. 오른쪽 " + coupled + "를 닫아 주십시요.");
+                    }
+            }
+
+            DoWriteValveState(valveID, onOff);
+            if(LeakTestMode == false)
+            {
+                string? coupled = null;
+                if (RightCoupled.TryGetValue(valveID, out coupled) == true)
+                {
+                    DoWriteValveState(coupled, onOff);
+                }
+            }
         }
 
         private static (BitArray, int, uint) GetBuffer(string valveID)

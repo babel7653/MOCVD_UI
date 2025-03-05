@@ -885,13 +885,17 @@
                         <TextBox x:Name="tbPosition" Grid.Column="3" Grid.Row="1" Text="{Binding ValvePosition}"/>
                     </Grid>
                     <StackPanel Orientation="Horizontal" Height="30">
-                        <TextBlock Width="210"  Height="20" TextAlignment="Right" Text="Pressure Control Mode"
-                               Margin="0,2,6,0"/>
-                        <Button Height="20" Width="80"  FontSize="11" Content="{Binding PressureControlMode}" />
+                        <Label Width="150" VerticalContentAlignment="Bottom" Content="Pressure Control Mode" />
+                        <Button Height="20" FontSize="11" Content="{Binding PressureControlMode}" />
                     </StackPanel>
-                    <Label Content="Throttle Valve Control" VerticalContentAlignment="Bottom"/>
-                    <StackPanel Orientation="Horizontal" Height="30" HorizontalAlignment="Center">
+                    <StackPanel Orientation="Horizontal" Height="30">
+                        <Label  Width="150" VerticalContentAlignment="Bottom" Content="Throttle Valve Mode" />
                         <Button x:Name="btThrottleRun" Content="{Binding ThrottleValveControlMode}"/>
+                    </StackPanel>
+
+                    <StackPanel Orientation="Horizontal" Height="30">
+                        <Label Width="150" VerticalContentAlignment="Bottom" Content="Throttle Valve Status" />
+                        <Button x:Name="btTrottleStatus" Content=""/>
                     </StackPanel>
                     <Label Content="Vacuum Pump Control" VerticalContentAlignment="Bottom"/>
                     <StackPanel Orientation="Horizontal" Height="30" Margin="10,0,0,0">

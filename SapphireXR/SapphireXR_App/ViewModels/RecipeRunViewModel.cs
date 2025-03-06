@@ -211,7 +211,6 @@ namespace SapphireXR_App.ViewModels
                 }
             }
         }
-
         bool canCleanCommandExecute()
         {
             return CurrentRecipeUserState == RecipeUserState.Initiated || (RecipeUserState.Stopped <= CurrentRecipeUserState && CurrentRecipeUserState <= RecipeUserState.Ended);

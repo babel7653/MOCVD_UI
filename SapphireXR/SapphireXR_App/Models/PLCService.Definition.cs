@@ -12,10 +12,6 @@ namespace SapphireXR_App.Models
         {
             public ReadValveStateException(string message) : base(message) { }
         }
-        internal class WriteValveStateException: Exception
-        {
-            public WriteValveStateException(string message) : base(message) { }
-        }
 
         internal class LeakTestModeSubscriber : IObserver<bool>
         {

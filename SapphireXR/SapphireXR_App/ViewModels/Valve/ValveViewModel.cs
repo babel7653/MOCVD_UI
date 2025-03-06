@@ -51,14 +51,7 @@ namespace SapphireXR_App.ViewModels
                         viewModel.IsOpen = isOpen;
                         if (viewModel.ValveID != null)
                         {
-                            try
-                            {
-                                PLCService.WriteValveState(viewModel.ValveID, isOpen);
-                            }
-                            catch(PLCService.WriteValveStateException exception)
-                            {
-                                confirmMessage = exception.Message;
-                            }
+                            PLCService.WriteValveState(viewModel.ValveID, isOpen);
                             MessageBox.Show(confirmMessage);
                         }
                         break;

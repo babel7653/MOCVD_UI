@@ -367,43 +367,8 @@ namespace SapphireXR_App.Models
 
         public static void WriteValveState(string valveID, bool onOff)
         {
-            Func<string, bool, bool> checkValidWriteValve = (string valveID, bool onOff) =>
-            {
-                if (LeakTestMode == true)
-                {
-                    string? coupled = null;
-                    if (LeftCoupled.TryGetValue(valveID, out coupled) == true)
-                    {
-                        (BitArray lBuffer, int lIndex, uint lVariableHandle) = GetBuffer(coupled);
-                        return !(lBuffer[lIndex] == false && onOff == true);
-                    }
-                    else
-                        if (RightCoupled.TryGetValue(valveID, out coupled) == true)
-                        {
-                            (BitArray rBuffer, int rIndex, uint rVariableHandle) = GetBuffer(coupled);
-                            return !(onOff == false && rBuffer[rIndex] == true);
-                        }
-                }
 
-                return true;
-            };
-
-            if (LeakTestMode == true && checkValidWriteValve(valveID, onOff) == false)
-            {
-                string? coupled = null;
-                if (LeftCoupled.TryGetValue(valveID, out coupled) == true)
-                {
-                    throw new WriteValveStateException("왼쪽 " + coupled + "가 Open 상태이므로 오른쪽 " + valveID + "의 값을 Open 할 수 없습니다. 왼쪽 " + coupled + "를 닫아 주십시요.");
-                }
-                else
-                    if (RightCoupled.TryGetValue(valveID, out coupled) == true)
-                    {
-                        throw new WriteValveStateException("오른쪽 " + coupled + "가 Open 상태이므로 왼쪽 " + valveID + "의 값을 Open 할 수 없습니다. 오른쪽 " + coupled + "를 닫아 주십시요.");
-                    }
-            }
-
-            DoWriteValveState(valveID, onOff);
-            if(LeakTestMode == false)
+            if (LeakTestMode == false)
             {
                 string? coupled = null;
                 if (RightCoupled.TryGetValue(valveID, out coupled) == true)
@@ -411,6 +376,27 @@ namespace SapphireXR_App.Models
                     DoWriteValveState(coupled, onOff);
                 }
             }
+            else
+            {
+                string? coupled = null;
+                if(LeftCoupled.TryGetValue(valveID, out coupled) == true)
+                {
+                    if(onOff == true)
+                    {
+                        DoWriteValveState(coupled, onOff);
+                    }
+                }
+                else
+                    if(RightCoupled.TryGetValue(valveID, out coupled) == true)
+                    {
+                        if(onOff == false)
+                        {
+                            DoWriteValveState(coupled, onOff);
+                        }
+                    }
+            }
+            DoWriteValveState(valveID, onOff);
+          
         }
 
         private static (BitArray, int, uint) GetBuffer(string valveID)
@@ -429,20 +415,20 @@ namespace SapphireXR_App.Models
             }
             else
                 if (ValveIDtoOutputSolValveIdx2.TryGetValue(valveID, out index) == true)
-            {
-                if (baReadValveStatePLC2 == null)
                 {
-                    throw new ReadValveStateException("PLC Service: baReadValveStatePLC1 accessed without initialization \r\n Call ReadValveStateFromPLC first");
+                    if (baReadValveStatePLC2 == null)
+                    {
+                        throw new ReadValveStateException("PLC Service: baReadValveStatePLC1 accessed without initialization \r\n Call ReadValveStateFromPLC first");
+                    }
+                    else
+                    {
+                        return (baReadValveStatePLC2, index, hReadValveStatePLC2);
+                    }
                 }
                 else
                 {
-                    return (baReadValveStatePLC2, index, hReadValveStatePLC2);
+                    throw new ReadValveStateException("PLC Service: non-exsiting valve ID entered to GetReadValveStateBuffer()");
                 }
-            }
-            else
-            {
-                throw new ReadValveStateException("PLC Service: non-exsiting valve ID entered to GetReadValveStateBuffer()");
-            }
         }
 
         public static void WriteDeviceMaxValue(List<AnalogDeviceIO>? analogDeviceIOs)

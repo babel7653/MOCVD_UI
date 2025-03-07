@@ -69,9 +69,9 @@ namespace SapphireXR_App.Models
             InductionHeaterMC = 0, ThermalBathMC, VaccumPumpMC, LineHeaterMC, RotationAlaramReset = 6
         }
 
-        public enum OutputCmd2Index
+        public enum OutputCmd1Index
         {
-            InductionHeaterPower = 0, ThermalBathPower, VaccumPumpPower, LineHeaterPower, InductionHeaterControl, VaccumPumpControl = 6, PressureControlMode = 12
+            InductionHeaterPower = 0, ThermalBathPower, VaccumPumpPower, LineHeaterPower, InductionHeaterControl, VaccumPumpControl = 6, VaccumPumpReset = 7, PressureControlMode = 12
         }
 
         public enum OutputSetType: ushort

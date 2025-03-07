@@ -8,6 +8,8 @@ using SapphireXR_App.Models;
 using System.Collections;
 using System.Numerics;
 using System.Windows.Controls;
+using System;
+using System.ComponentModel;
 
 namespace SapphireXR_App.ViewModels
 {
@@ -41,37 +43,6 @@ namespace SapphireXR_App.ViewModels
             private readonly Action<T> onNext;
         }
 
-        private class DigitalOutput2Subscriber : IObserver<BitArray>
-        {
-            internal DigitalOutput2Subscriber(HomeViewModel vm)
-            {
-                homeViewMode = vm;
-            }
-
-            void IObserver<BitArray>.OnCompleted()
-            {
-                throw new NotImplementedException();
-            }
-
-            void IObserver<BitArray>.OnError(Exception error)
-            {
-                throw new NotImplementedException();
-            }
-
-            void IObserver<BitArray>.OnNext(BitArray value)
-            {
-                Util.SetIfChanged(value[(int)PLCService.DigitalOutput2Index.InductionHeaterOn], ref prevInductionHeaterOn, (bool value) => { homeViewMode.InductionHeaterOn = (value == true ? "On" : "Off"); });
-                Util.SetIfChanged(value[(int)PLCService.DigitalOutput2Index.InductionHeaterReset], ref prevInductionHeaterReset, (bool value) => { homeViewMode.InductionHeaterReset = (value == true ? "Reset" : "No Reset"); });
-                Util.SetIfChanged(value[(int)PLCService.DigitalOutput2Index.VaccumPumpOn], ref prevVaccumPumpOn, (bool value) => { homeViewMode.VaccumPumpOn = (value == true ? "On" : "Off"); });
-                Util.SetIfChanged(value[(int)PLCService.DigitalOutput2Index.VaccumPumpReset], ref prevVacuumPumpReset, (bool value) => { homeViewMode.VaccumPumpReset = (value == true ? "Reset" : "No Reset"); });
-            }
-
-            private HomeViewModel homeViewMode;
-            private bool? prevInductionHeaterOn = null;
-            private bool? prevInductionHeaterReset = null;
-            private bool? prevVaccumPumpOn = null;
-            private bool? prevVacuumPumpReset = null;
-        }
         private class DigitalOutput3Subscriber : IObserver<BitArray>
         {
             internal DigitalOutput3Subscriber(HomeViewModel vm)
@@ -220,7 +191,7 @@ namespace SapphireXR_App.ViewModels
                     ObservableManager<float>.Subscribe(((FlowControllerValueSubscriber<float>)subscriber).topicName, (FlowControllerValueSubscriber<float>)subscriber);
                 }
             }
-            ObservableManager<BitArray>.Subscribe("DigitalOutput2", digitalOutput2Subscriber = new DigitalOutput2Subscriber(this));
+       
             ObservableManager<BitArray>.Subscribe("DigitalOutput3", digitalOutput3Subscriber = new DigitalOutput3Subscriber(this));
             ObservableManager<BitArray>.Subscribe("InputManAuto", inputManAutoSubscriber = new InputManAutoSubscriber(this));
             ObservableManager<short>.Subscribe("ThrottleValveStatus", throttleValveStatusSubscriber = new ThrottleValveStatusSubscriber(this));
@@ -233,39 +204,74 @@ namespace SapphireXR_App.ViewModels
                 CurrentThrottleValveControlMode = ThrottleValveModeCmdToString[throttleValveMode];
                 prevThrottleValveControlMode = CurrentThrottleValveControlMode;
             }
+
+            BitArray outputCmd1 = PLCService.ReadOutputCmd1();
+            InductionHeaterOn = (outputCmd1[(int)PLCService.OutputCmd1Index.InductionHeaterControl] == true) ? "On" : "Off";
+            VaccumPumpOn = (outputCmd1[(int)PLCService.OutputCmd1Index.VaccumPumpControl] == true) ? "On" : "Off";
+
+            PropertyChanged += (object? sender, PropertyChangedEventArgs args) =>
+            {
+                if(args.PropertyName == nameof(ThrottleValveStatus))
+                {
+                    VacuumPumpResetCommand.NotifyCanExecuteChanged();
+                }
+            };
         }
+
 
         [RelayCommand]
         private void VacuumPumpToggle()
         {
-            OutputCmd1OnOffConfirmWindow.Show(VaccumPumpOn, PLCService.OutputCmd2Index.VaccumPumpControl);
+            if(OutputCmd1ToggleConfirmService.OnOff(VaccumPumpOn, PLCService.OutputCmd1Index.VaccumPumpControl, "Vaccum Pump On/Off") == true)
+            {
+                VaccumPumpOn = (VaccumPumpOn == "On" ? "Off" : "On");
+            }
+        }
+
+        bool CanVacuumPumpResetExecute()
+        {
+            return ThrottleValveStatus == "Valve Fault";
+        }
+
+        [RelayCommand(CanExecute = "CanVacuumPumpResetExecute")]
+        private void VacuumPumpReset()
+        {
+            if (ValveOperationEx.Show("Vaccum Pump Reset", "Reset 하시겠습니까?") == Enums.ValveOperationExResult.Ok)
+            {
+                PLCService.WriteOutputCmd1(PLCService.OutputCmd1Index.VaccumPumpReset, true);
+            }
         }
 
         [RelayCommand]
         private void InductionHeaterToggle()
         {
-            OutputCmd1OnOffConfirmWindow.Show(InductionHeaterOn, PLCService.OutputCmd2Index.InductionHeaterControl);
+            if(OutputCmd1ToggleConfirmService.OnOff(InductionHeaterOn, PLCService.OutputCmd1Index.InductionHeaterControl, "Induction Power Supply On/Off") == true)
+            {
+                InductionHeaterOn = (InductionHeaterOn == "On" ? "Off" : "On");
+            }
         }
 
         [RelayCommand]
         private void TogglePressureControlMode()
         {
-            if(PressureControlMode == PressureControlModePressure)
+            if (ValveOperationEx.Show("Pressure Control Mode 변경", (PressureControlMode == PressureControlModePressure ? PressureControlModePosition : PressureControlModePressure) + "로 변경하시겠습니까?") == Enums.ValveOperationExResult.Ok)
             {
-                PLCService.WriteOutputCmd1(PLCService.OutputCmd2Index.PressureControlMode, true);
-                SynchronizeExpected<ushort>(2, PLCService.ReadPressureControlMode, onPressureControlModeUpdated, null, 3000, 
-                    "장비의 Pressure Control Mode가 " + PressureControlModePosition + "값으로 설정되지 않았습니다. 프로그램과 장비 간에 Pressure Control Mode 상태 동기화가 되지 않았습니다.");
-
-            }
-            else
-                if(PressureControlMode == PressureControlModePosition)
+                if (PressureControlMode == PressureControlModePressure)
                 {
-                    PLCService.WriteOutputCmd1(PLCService.OutputCmd2Index.PressureControlMode, false);
-                    SynchronizeExpected<ushort>(1, PLCService.ReadPressureControlMode, onPressureControlModeUpdated, null,  3000, 
+                    PLCService.WriteOutputCmd1(PLCService.OutputCmd1Index.PressureControlMode, true);
+                    SynchronizeExpected<ushort>(2, PLCService.ReadPressureControlMode, onPressureControlModeUpdated, null, 3000,
+                        "장비의 Pressure Control Mode가 " + PressureControlModePosition + "값으로 설정되지 않았습니다. 프로그램과 장비 간에 Pressure Control Mode 상태 동기화가 되지 않았습니다.");
+
+                }
+                else
+                    if (PressureControlMode == PressureControlModePosition)
+                {
+                    PLCService.WriteOutputCmd1(PLCService.OutputCmd1Index.PressureControlMode, false);
+                    SynchronizeExpected<ushort>(1, PLCService.ReadPressureControlMode, onPressureControlModeUpdated, null, 3000,
                         "장비의 Pressure Control Mode가 " + PressureControlModePressure + "값으로 설정되지 않았습니다. 프로그램과 장비 간에 Pressure Control Mode 상태 동기화가 되지 않았습니다.");
+                }
             }
         }
-
 
         public ICommand OnThrottleValveModeChangedCommand => new RelayCommand<object?>((object? args) =>
         {
@@ -370,8 +376,6 @@ namespace SapphireXR_App.ViewModels
         [ObservableProperty]
         private string _inductionHeaterOn = "";
         [ObservableProperty]
-        private string _inductionHeaterReset = "";
-        [ObservableProperty]
         private string _rotationReset = "";
         [ObservableProperty]
         private string _inputManualAuto = "";
@@ -391,11 +395,9 @@ namespace SapphireXR_App.ViewModels
         private static readonly string[] ThrottleValveModeCmdToString = [ "Control", "Close", "Open", "Hold", "Reset"];
         private static readonly string[] ThrottleValveStatusToString = ["Pressure Control", "Position Control", "Valve Open", "Not Initialized", "Valve Closed", "Valve Fault", "Valve Initializing", "", "Valve Hold"];
 
-
         public BottomDashBoardViewModel DashBoardViewModel { get; set; }
 
         private FlowControllerValueSubscriber[] flowControllerValueSubscribers;
-        private DigitalOutput2Subscriber digitalOutput2Subscriber;
         private DigitalOutput3Subscriber digitalOutput3Subscriber;
         private InputManAutoSubscriber inputManAutoSubscriber;
         private ThrottleValveStatusSubscriber throttleValveStatusSubscriber;

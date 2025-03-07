@@ -5,7 +5,6 @@ using System.Windows;
 using System.Windows.Threading;
 using TwinCAT.Ads;
 using TwinCAT.PlcOpen;
-using static SapphireXR_App.Models.PLCService;
 
 namespace SapphireXR_App.Models
 {
@@ -523,7 +522,7 @@ namespace SapphireXR_App.Models
             return Ads.ReadAny<short>(hUserState);
         }
      
-        public static void WriteOutputCmd1(OutputCmd2Index index, bool powerOn)
+        public static void WriteOutputCmd1(OutputCmd1Index index, bool powerOn)
         {
             if(bOutputCmd1 != null)
             {
@@ -532,6 +531,13 @@ namespace SapphireXR_App.Models
                 bOutputCmd1.CopyTo(array, 0);
                 Ads.WriteAny(hOutputCmd1, (short)array[0]);
             }
+        }
+
+        public static BitArray ReadOutputCmd1()
+        {
+            short outputCmd1 = Ads.ReadAny<short>(hOutputCmd1);
+            return new BitArray(BitConverter.IsLittleEndian == true ? BitConverter.GetBytes(outputCmd1) : BitConverter.GetBytes(outputCmd1).Reverse().ToArray());
+            
         }
 
         public static ushort ReadPressureControlMode()

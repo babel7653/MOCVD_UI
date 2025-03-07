@@ -906,12 +906,12 @@
 
                     <StackPanel Orientation="Horizontal" Height="30">
                         <Label Width="140" VerticalContentAlignment="Bottom" Content="Throttle Valve Status" />
-                        <TextBox x:Name="btTrottleStatus" IsReadOnly="True" Text="{Binding ThrottleValveStatus}" Width="121" HorizontalContentAlignment="Left"/>
+                        <TextBox x:Name="btTrottleStatus" IsReadOnly="True" Text="{Binding ThrottleValveStatus}" Width="121" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Style="{StaticResource InfoTextBoxStyle}" />
                     </StackPanel>
                     <StackPanel Orientation="Horizontal" Height="30">
                         <Label Width="140" Content="Vacuum Pump" VerticalContentAlignment="Bottom"/>
                         <Button x:Name="btPumpOn" Content="{Binding VaccumPumpOn}" Command="{Binding VacuumPumpToggleCommand}"/>
-                        <Button x:Name="btPumpReset" Content="{Binding VaccumPumpReset}"/>
+                        <Button x:Name="btPumpReset" Content="Reset" Command="{Binding VacuumPumpResetCommand}"/>
                     </StackPanel>
                 </StackPanel>
             </Grid>

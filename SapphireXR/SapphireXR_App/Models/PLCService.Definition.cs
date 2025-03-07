@@ -96,8 +96,8 @@ namespace SapphireXR_App.Models
         private static BitArray? bOutputCmd1 = null;
 
         private static ObservableManager<PLCConnection>.DataIssuer ConnectedNotifier;
-        private static Dictionary<string, ObservableManager<int>.DataIssuer>? dCurrentValueIssuers;
-        private static Dictionary<string, ObservableManager<int>.DataIssuer>? dControlValueIssuers;
+        private static Dictionary<string, ObservableManager<float>.DataIssuer>? dCurrentValueIssuers;
+        private static Dictionary<string, ObservableManager<float>.DataIssuer>? dControlValueIssuers;
         private static Dictionary<string, ObservableManager<float>.DataIssuer>? dTargetValueIssuers;
         private static Dictionary<string, ObservableManager<(float, float)>.DataIssuer>? dControlCurrentValueIssuers;
         private static Dictionary<string, ObservableManager<float>.DataIssuer>? aMonitoringCurrentValueIssuers;

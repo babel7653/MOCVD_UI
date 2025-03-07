@@ -101,15 +101,15 @@ namespace SapphireXR_App.Models
             ReadMaxValueFromPLC();
             ReadCurrentValueFromPLC();
 
-            dCurrentValueIssuers = new Dictionary<string, ObservableManager<int>.DataIssuer>();
+            dCurrentValueIssuers = new Dictionary<string, ObservableManager<float>.DataIssuer>();
             foreach (KeyValuePair<string, int> kv in dIndexController)
             {
-                dCurrentValueIssuers.Add(kv.Key, ObservableManager<int>.Get("FlowControl." + kv.Key + ".CurrentValue"));
+                dCurrentValueIssuers.Add(kv.Key, ObservableManager<float>.Get("FlowControl." + kv.Key + ".CurrentValue"));
             }
-            dControlValueIssuers = new Dictionary<string, ObservableManager<int>.DataIssuer>();
+            dControlValueIssuers = new Dictionary<string, ObservableManager<float>.DataIssuer>();
             foreach (KeyValuePair<string, int> kv in dIndexController)
             {
-                dControlValueIssuers.Add(kv.Key, ObservableManager<int>.Get("FlowControl." + kv.Key + ".ControlValue"));
+                dControlValueIssuers.Add(kv.Key, ObservableManager<float>.Get("FlowControl." + kv.Key + ".ControlValue"));
             }
             dTargetValueIssuers = new Dictionary<string, ObservableManager<float>.DataIssuer>();
             foreach (KeyValuePair<string, int> kv in dIndexController)
@@ -233,7 +233,7 @@ namespace SapphireXR_App.Models
                 short value = aInputState[0];
                 baHardWiringInterlockStateIssuers?.Issue(new BitArray(BitConverter.IsLittleEndian == true? BitConverter.GetBytes(value) :BitConverter.GetBytes(value).Reverse().ToArray()));
 
-                bool[] ioList = new bool[48];
+                bool[] ioList = new bool[64];
                 for(int inputState = 1; inputState < aInputState.Length; ++inputState)
                 {
                     new BitArray(BitConverter.IsLittleEndian == true ? BitConverter.GetBytes(aInputState[inputState]) : BitConverter.GetBytes(aInputState[inputState]).Reverse().ToArray()).CopyTo(ioList, (inputState - 1) * sizeof(short) * 8);
@@ -327,7 +327,7 @@ namespace SapphireXR_App.Models
             aDeviceControlValues = Ads.ReadAny<short[]>(hDeviceControlValuePLC, [NumControllers]);
             aDeviceTargetValues = Ads.ReadAny<float[]>(hWriteDeviceTargetValuePLC, [NumControllers]);
             aMonitoring_PVs = Ads.ReadAny<float[]>(hMonitoring_PV, [18]);
-            aInputState = Ads.ReadAny<short[]>(hInputState, [4]);
+            aInputState = Ads.ReadAny<short[]>(hInputState, [5]);
             ReadValveStateFromPLC();
         }
 

@@ -6,9 +6,8 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using SapphireXR_App.Common;
 using SapphireXR_App.Models;
 using System.Collections;
-using System.Diagnostics;
 using System.Numerics;
-using System.ComponentModel;
+using System.Windows.Controls;
 
 namespace SapphireXR_App.ViewModels
 {
@@ -99,9 +98,9 @@ namespace SapphireXR_App.ViewModels
             private bool? prevRotationAlarmReset;
         }
 
-        private class ThrottleValveControlModeSubscriber : IObserver<short>
+        private class ThrottleValveStatusSubscriber : IObserver<short>
         {
-            internal ThrottleValveControlModeSubscriber(HomeViewModel vm)
+            internal ThrottleValveStatusSubscriber(HomeViewModel vm)
             {
                 homeViewModel = vm;
             }
@@ -120,23 +119,9 @@ namespace SapphireXR_App.ViewModels
             {
                 if(prevThrottleValveControlMode == null || prevThrottleValveControlMode != value)
                 {
-                    switch(value)
+                    if (value < ThrottleValveStatusToString.Length)
                     {
-                        case 0:
-                          
-                            break;
-
-                        case 1:
-                            break;
-
-                        case 2:
-                            break;
-
-                        case 3:
-                            break;
-
-                        case 4:
-                            break;
+                        homeViewModel.ThrottleValveStatus = ThrottleValveStatusToString[value];
                     }
                     prevThrottleValveControlMode = value;
                 }
@@ -238,26 +223,16 @@ namespace SapphireXR_App.ViewModels
             ObservableManager<BitArray>.Subscribe("DigitalOutput2", digitalOutput2Subscriber = new DigitalOutput2Subscriber(this));
             ObservableManager<BitArray>.Subscribe("DigitalOutput3", digitalOutput3Subscriber = new DigitalOutput3Subscriber(this));
             ObservableManager<BitArray>.Subscribe("InputManAuto", inputManAutoSubscriber = new InputManAutoSubscriber(this));
-            ObservableManager<short>.Subscribe("ThrottleValveControlMode", throttleValveControlModeSubscriber = new ThrottleValveControlModeSubscriber(this));
+            ObservableManager<short>.Subscribe("ThrottleValveStatus", throttleValveStatusSubscriber = new ThrottleValveStatusSubscriber(this));
             onPressureControlModeUpdated(PLCService.ReadPressureControlMode());
 
-            ThrottleValveControlModes = ["Control", "Open", "Close", "Hold", "Rest"];
+            ThrottleValveControlModes = ["Control", "Open", "Close", "Hold", "Reset"];
             ushort throttleValveMode = PLCService.ReadThrottleValveMode();
             if(throttleValveMode < ThrottleValveModeCmdToString.Length)
             {
                 CurrentThrottleValveControlMode = ThrottleValveModeCmdToString[throttleValveMode];
                 prevThrottleValveControlMode = CurrentThrottleValveControlMode;
             }
-           
-            PropertyChanged += (object? sender, PropertyChangedEventArgs args) =>
-            {
-                if(args.PropertyName == nameof(CurrentThrottleValveControlMode) && CurrentThrottleValveControlMode != null)
-                {
-                    SynchronizeExpected(ThrottleValveModeStringToCmdOutputMode[CurrentThrottleValveControlMode], PLCService.ReadThrottleValveMode, (ushort throttleValveMode) => prevThrottleValveControlMode = CurrentThrottleValveControlMode,
-                            (ushort throttleValveMode) => CurrentThrottleValveControlMode = prevThrottleValveControlMode, 3000,
-                            "장비의 Throttle Valve Mode가 " + CurrentThrottleValveControlMode + "값으로 설정되지 않았습니다. 프로그램과 장비 간에 Pressure Control Mode 상태 동기화가 되지 않았습니다.");
-                }
-            };
         }
 
         [RelayCommand]
@@ -290,6 +265,29 @@ namespace SapphireXR_App.ViewModels
                         "장비의 Pressure Control Mode가 " + PressureControlModePressure + "값으로 설정되지 않았습니다. 프로그램과 장비 간에 Pressure Control Mode 상태 동기화가 되지 않았습니다.");
             }
         }
+
+
+        public ICommand OnThrottleValveModeChangedCommand => new RelayCommand<object?>((object? args) =>
+        {
+            SelectionChangedEventArgs? selectionChangedEventArgs = args as SelectionChangedEventArgs;
+            if (selectionChangedEventArgs != null)
+            {
+                ComboBox? comboBox = selectionChangedEventArgs.Source as ComboBox;
+                if (comboBox != null)
+                {
+                    string? selectedMode = comboBox.SelectedItem as string;
+                    if (selectedMode != null)
+                    {
+                        ushort cmdOutputMode = ThrottleValveModeStringToCmdOutputMode[selectedMode];
+                        PLCService.WriteThrottleValveMode((short)cmdOutputMode);
+                        SynchronizeExpected(cmdOutputMode, PLCService.ReadThrottleValveMode, (ushort throttleValveMode) => prevThrottleValveControlMode = CurrentThrottleValveControlMode,
+                                (ushort throttleValveMode) => CurrentThrottleValveControlMode = prevThrottleValveControlMode, 3000,
+                                "장비의 Throttle Valve Mode가 " + CurrentThrottleValveControlMode + "값으로 설정되지 않았습니다. 프로그램과 장비 간에 Pressure Control Mode 상태 동기화가 되지 않았습니다.");
+                    }
+                }
+            }
+        });
+
 
         private static void SynchronizeExpected<T>(T expected, Func<T> checkFunc, Action<T>? onSync, Action<T>? onFailed, long timeOutMS, string messageOnTimeout) where T : INumber<T>
         {
@@ -381,14 +379,18 @@ namespace SapphireXR_App.ViewModels
         private List<string> _throttleValveControlModes;
         [ObservableProperty]
         private string? _currentThrottleValveControlMode = null;
+        [ObservableProperty]
+        private string _throttleValveStatus = "";
 
         private string? prevThrottleValveControlMode = null;
 
         private static readonly string PressureControlModePressure = "Pressure";
         private static readonly string PressureControlModePosition = "Position";
 
-        private readonly Dictionary<string, ushort> ThrottleValveModeStringToCmdOutputMode = new Dictionary<string, ushort>() { { "Control", 0 }, { "Close", 1 }, { "Open", 2 }, { "Hold", 3 }, { "Reset", 4 } };
-        private readonly string[] ThrottleValveModeCmdToString = [ "Control", "Close", "Open", "Hold", "Reset" ];
+        private static readonly Dictionary<string, ushort> ThrottleValveModeStringToCmdOutputMode = new Dictionary<string, ushort>() { { "Control", 0 }, { "Close", 1 }, { "Open", 2 }, { "Hold", 3 }, { "Reset", 4 } };
+        private static readonly string[] ThrottleValveModeCmdToString = [ "Control", "Close", "Open", "Hold", "Reset"];
+        private static readonly string[] ThrottleValveStatusToString = ["Pressure Control", "Position Control", "Valve Open", "Not Initialized", "Valve Closed", "Valve Fault", "Valve Initializing", "", "Valve Hold"];
+
 
         public BottomDashBoardViewModel DashBoardViewModel { get; set; }
 
@@ -396,7 +398,7 @@ namespace SapphireXR_App.ViewModels
         private DigitalOutput2Subscriber digitalOutput2Subscriber;
         private DigitalOutput3Subscriber digitalOutput3Subscriber;
         private InputManAutoSubscriber inputManAutoSubscriber;
-        private ThrottleValveControlModeSubscriber throttleValveControlModeSubscriber;
+        private ThrottleValveStatusSubscriber throttleValveStatusSubscriber;
         private ObservableManager<bool>.DataIssuer leakTestModePublisher;
     }
 }

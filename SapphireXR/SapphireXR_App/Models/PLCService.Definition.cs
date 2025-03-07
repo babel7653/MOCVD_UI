@@ -116,6 +116,7 @@ namespace SapphireXR_App.Models
         private static ObservableManager<BitArray>.DataIssuer? dInputManAuto;
         private static ObservableManager<short>.DataIssuer? dThrottleValveControlMode;
         private static ObservableManager<ushort>.DataIssuer? dPressureControlModeIssuer;
+        private static ObservableManager<short>.DataIssuer? dThrottleValveStatusIssuer;
 
         private static LeakTestModeSubscriber? leakTestModeSubscriber = null;
 

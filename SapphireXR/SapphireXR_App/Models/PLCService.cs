@@ -153,6 +153,7 @@ namespace SapphireXR_App.Models
             dInputManAuto = ObservableManager<BitArray>.Get("InputManAuto");
             dThrottleValveControlMode = ObservableManager<short>.Get("ThrottleValveControlMode");
             dPressureControlModeIssuer = ObservableManager<ushort>.Get("PressureControlMode");
+            dThrottleValveStatusIssuer = ObservableManager<short>.Get("ThrottleValveStatus");
 
             ObservableManager<bool>.Subscribe("Leak Test Mode", leakTestModeSubscriber = new LeakTestModeSubscriber());
 
@@ -237,6 +238,7 @@ namespace SapphireXR_App.Models
             {
                 short value = aInputState[0];
                 baHardWiringInterlockStateIssuers?.Issue(new BitArray(BitConverter.IsLittleEndian == true? BitConverter.GetBytes(value) :BitConverter.GetBytes(value).Reverse().ToArray()));
+                dThrottleValveStatusIssuer?.Issue(aInputState[4]);
 
                 bool[] ioList = new bool[64];
                 for(int inputState = 1; inputState < aInputState.Length; ++inputState)

@@ -4,6 +4,7 @@
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:SapphireXR_App.Views"
+      xmlns:i="clr-namespace:Microsoft.Xaml.Behaviors;assembly=Microsoft.Xaml.Behaviors"
       mc:Ignorable="d" 
       xmlns:control="clr-namespace:SapphireXR_App.Controls"
       xmlns:oxy="http://oxyplot.org/wpf"
@@ -894,12 +895,18 @@
                     </StackPanel>
                     <StackPanel Orientation="Horizontal" Height="30">
                         <Label  Width="140" VerticalContentAlignment="Bottom" Content="Throttle Valve Mode" />
-                        <ComboBox ItemsSource="{Binding ThrottleValveControlModes, Mode=OneTime}" SelectedItem="{Binding CurrentThrottleValveControlMode, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                        <ComboBox ItemsSource="{Binding ThrottleValveControlModes, Mode=OneTime}" SelectedItem="{Binding CurrentThrottleValveControlMode, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                            <i:Interaction.Triggers>
+                                <i:EventTrigger EventName="SelectionChanged">
+                                    <i:InvokeCommandAction Command="{Binding OnThrottleValveModeChangedCommand}" PassEventArgsToCommand="True"/>
+                                </i:EventTrigger>
+                            </i:Interaction.Triggers>
+                        </ComboBox>
                     </StackPanel>
 
                     <StackPanel Orientation="Horizontal" Height="30">
                         <Label Width="140" VerticalContentAlignment="Bottom" Content="Throttle Valve Status" />
-                        <TextBox x:Name="btTrottleStatus" Text="" IsReadOnly="True" />
+                        <TextBox x:Name="btTrottleStatus" IsReadOnly="True" Text="{Binding ThrottleValveStatus}" Width="121" HorizontalContentAlignment="Left"/>
                     </StackPanel>
                     <StackPanel Orientation="Horizontal" Height="30">
                         <Label Width="140" Content="Vacuum Pump" VerticalContentAlignment="Bottom"/>

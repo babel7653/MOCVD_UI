@@ -1,12 +1,9 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4026.8">
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4026.11">
   <POU Name="P11_E3508" Id="{a7e3d6a1-82f0-4607-8ac9-093cb5f931f5}" SpecialFunc="None">
     <Declaration><![CDATA[PROGRAM P11_E3508
 VAR_INPUT
 	wControlValue			: WORD;
-	wPowerRateSetValue		: WORD;	
-	bOutputManAuto 			: BOOL; // 0:Auto, 1:Manual Operation
-	
 	bHeaterOn				: BOOL := FALSE; //to PSTEK
 	bHeaterReset			: BOOL; //to PSTEK
 END_VAR
@@ -78,16 +75,18 @@ isHeaterRun		 		:= GVL_IO.aDigitalInputIO[2].3;
 isHeaterFault 			:= GVL_IO.aDigitalInputIO[2].4;
 
 (* Write to E3508 Device Value *)
-wOutputSVBytes 			:= WORD_TO_USINT_Bit(wControlValue);
-aOutputSVBytes[1] 		:= wOutputSVBytes.Lower;
-aOutputSVBytes[2] 		:= wOutputSVBytes.Upper;
+nOutputManAutoBytes.0 	:= GVL_IO.aOutputCmd[1].11; // 0:Auto, 1:Manual Operation
 
-(* PowerRate Operation *)
-nOutputManAutoBytes.0 	:= bOutputManAuto;
+IF nOutputManAutoBytes.0 THEN
+	wOutputSVBytes 			:= WORD_TO_USINT_Bit(wControlValue); //Temperature SetValue
+	aOutputSVBytes[1] 		:= wOutputSVBytes.Lower;
+	aOutputSVBytes[2] 		:= wOutputSVBytes.Upper;
+ELSE
+	wOutputPowerSVBytes 	:= WORD_TO_USINT_Bit(wControlValue*10); //multiple to 10, PowerRate SetValue
+	aOutputPowerBytes[1] 	:= wOutputPowerSVBytes.Lower;
+	aOutputPowerBytes[2] 	:= wOutputPowerSVBytes.Upper;
+END_IF
 
-wOutputPowerSVBytes 	:= WORD_TO_USINT_Bit(wPowerRateSetValue*10); //multiple to 10
-aOutputPowerBytes[1] 	:= wOutputPowerSVBytes.Lower;
-aOutputPowerBytes[2] 	:= wOutputPowerSVBytes.Upper;
 
 (* Write to Induction Heater Value *)
 GVL_IO.aDigitalOutputIO[2].0 := bHeaterOn;
@@ -107,9 +106,16 @@ GVL_IO.aDigitalOutputIO[2].1 := bHeaterReset;]]></ST>
       <LineId Id="296" Count="0" />
       <LineId Id="309" Count="1" />
       <LineId Id="254" Count="0" />
-      <LineId Id="269" Count="3" />
-      <LineId Id="311" Count="0" />
-      <LineId Id="273" Count="4" />
+      <LineId Id="269" Count="0" />
+      <LineId Id="535" Count="0" />
+      <LineId Id="547" Count="0" />
+      <LineId Id="536" Count="0" />
+      <LineId Id="540" Count="1" />
+      <LineId Id="539" Count="0" />
+      <LineId Id="542" Count="0" />
+      <LineId Id="545" Count="1" />
+      <LineId Id="544" Count="0" />
+      <LineId Id="538" Count="0" />
       <LineId Id="257" Count="0" />
       <LineId Id="290" Count="0" />
       <LineId Id="289" Count="0" />

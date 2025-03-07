@@ -116,10 +116,10 @@ namespace SapphireXR_App.Models
             {
                 dTargetValueIssuers.Add(kv.Key, ObservableManager<float>.Get("FlowControl." + kv.Key + ".TargetValue"));
             }
-            dControlCurrentValueIssuers = new Dictionary<string, ObservableManager<(int, int)>.DataIssuer>();
+            dControlCurrentValueIssuers = new Dictionary<string, ObservableManager<(float, float)>.DataIssuer>();
             foreach (KeyValuePair<string, int> kv in dIndexController)
             {
-                dControlCurrentValueIssuers.Add(kv.Key, ObservableManager<(int, int)>.Get("FlowControl." + kv.Key + ".ControlTargetValue.CurrentPLCState"));
+                dControlCurrentValueIssuers.Add(kv.Key, ObservableManager<(float, float)>.Get("FlowControl." + kv.Key + ".ControlTargetValue.CurrentPLCState"));
             }
             aMonitoringCurrentValueIssuers = new Dictionary<string, ObservableManager<float>.DataIssuer>();
             foreach(KeyValuePair<string, int> kv in dMonitoringMeterIndex)
@@ -216,7 +216,7 @@ namespace SapphireXR_App.Models
             {
                 foreach (KeyValuePair<string, int> kv in dIndexController)
                 {
-                    dControlCurrentValueIssuers?[kv.Key].Issue((aDeviceCurrentValues[dIndexController[kv.Key]], (int)aDeviceControlValues[dIndexController[kv.Key]]));
+                    dControlCurrentValueIssuers?[kv.Key].Issue((aDeviceCurrentValues[dIndexController[kv.Key]],aDeviceControlValues[dIndexController[kv.Key]]));
                 }
             }
 

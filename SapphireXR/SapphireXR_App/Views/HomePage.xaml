@@ -935,8 +935,11 @@
                         <TextBox x:Name="tbControlRotation"  Grid.Column="1" Grid.Row="1" Text="{Binding ControlRotation}"/>
                         <TextBox x:Name="tbCurrentRotation"  Grid.Column="2" Grid.Row="1" Text="{Binding CurrentRotation}"/>
                     </Grid>
-                        <Label Content="Motor Control" VerticalContentAlignment="Bottom"/>
-                        <Button x:Name="btMotorReset" Content="{Binding RotationReset}" HorizontalAlignment="Left" Margin="10,0,0,0"/>
+                    <StackPanel Orientation="Horizontal" Height="30">
+                        <Label Width="140" Content="Motor Control" VerticalContentAlignment="Bottom"/>
+                        <Button x:Name="btMotorReset" Content="{Binding RotationReset}" HorizontalAlignment="Left"/>
+                    </StackPanel>
+
                 </StackPanel>
             </Grid>
             <!-- Event Log -->

@@ -161,7 +161,7 @@ IF TimeOnDelay.Q THEN
 			nStrPosition := 11;			
 			FOR nHeaterNumber := 1 TO 8 DO
 				hStrReceivedPV := MID(STR:=sReceivedString, LEN:=4, POS:=nStrPosition);
-				rTemperaturePV[nHeaterNumber] := (HEXSTR_TO_REAL_LHeaterPV(hStrReceivedPV))/10; //Move the decimal point by 1
+				rTemperaturePV[nHeaterNumber] := (HEXSTR_TO_REAL_LHeaterPV(hStrReceivedPV))/10; //Move the decimal point by 10
 				nStrPosition := nStrPosition + 5;
 			END_FOR
 		ELSE

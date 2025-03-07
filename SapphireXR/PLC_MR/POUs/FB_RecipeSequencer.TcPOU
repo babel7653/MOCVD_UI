@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4026.8">
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4026.11">
   <POU Name="FB_RecipeSequencer" Id="{eaa1ede0-1851-426e-9c35-61099dc6c976}" SpecialFunc="None">
     <Declaration><![CDATA[FUNCTION_BLOCK FB_RecipeSequencer
 VAR_INPUT
@@ -19,8 +19,8 @@ FOR i:= 1 TO 26 DO
 		GVL_IO.aController[i].rTargetValue := RCP.aRecipe[nRcpIndex].rRecipe[i] / GVL_IO.aMaxValueController[i] * GVL_IO.KL3464MaxValueH; //Input Set Value
 		GVL_IO.aAnalogOutputIO[i] := LREAL_TO_INT(GVL_IO.aController[i].rControlValue);
 		
-		GVL_IO.aController_PV[i] := REAL_TO_INT(GVL_IO.aAnalogInputIO[i] / GVL_IO.KL3464MaxValueH * GVL_IO.aMaxValueController[i]);
-		GVL_IO.aController_CV[i] := LREAL_TO_INT((GVL_IO.aController[i].rControlValue / GVL_IO.KL3464MaxValueH)*GVL_IO.aMaxValueController[i]);
+		GVL_IO.aController_PV[i] := GVL_IO.aAnalogInputIO[i] / GVL_IO.KL3464MaxValueH * GVL_IO.aMaxValueController[i];
+		GVL_IO.aController_CV[i] := LREAL_TO_REAL((GVL_IO.aController[i].rControlValue / GVL_IO.KL3464MaxValueH)*GVL_IO.aMaxValueController[i]);
 		GVL_IO.aController[i]();	
 	END_IF
 END_FOR
@@ -37,8 +37,8 @@ GVL_IO.aController[27].nRampTime := RCP.aRecipe[nRcpIndex].iRecipe[2];
 GVL_IO.aController[27].rTargetValue := RCP.aRecipe[nRcpIndex].iRecipe[4];
 P11_E3508.wControlValue := LREAL_TO_WORD(GVL_IO.aController[27].rControlValue); //Write to Temperature Controller
 
-GVL_IO.aController_PV[27] := WORD_TO_INT(P11_E3508.wE3508_PV);
-GVL_IO.aController_CV[27] := WORD_TO_INT(P11_E3508.wControlValue);
+GVL_IO.aController_PV[27] := WORD_TO_REAL(P11_E3508.wE3508_PV);
+GVL_IO.aController_CV[27] := WORD_TO_REAL(P11_E3508.wControlValue);
 GVL_IO.aController[27]();
 
 (* Reactor Pressure Control *)
@@ -47,8 +47,8 @@ GVL_IO.aController[28].nRampTime := RCP.aRecipe[nRcpIndex].iRecipe[2];
 GVL_IO.aController[28].rTargetValue := RCP.aRecipe[nRcpIndex].iRecipe[5];
 P12_IQ_PLUS.wControlValue := LREAL_TO_WORD(GVL_IO.aController[28].rControlValue); //Write to Pressure Controller
 
-GVL_IO.aController_PV[28] := WORD_TO_INT(P12_IQ_PLUS.wCDG2_PV);
-GVL_IO.aController_CV[28] := WORD_TO_INT(P12_IQ_PLUS.wControlValue);
+GVL_IO.aController_PV[28] := WORD_TO_REAL(P12_IQ_PLUS.wCDG2_PV);
+GVL_IO.aController_CV[28] := WORD_TO_REAL(P12_IQ_PLUS.wControlValue);
 GVL_IO.aController[28]();
 
 (* Suceptor Rotation Control *)
@@ -58,7 +58,7 @@ GVL_IO.aController[29].rTargetValue := RCP.aRecipe[nRcpIndex].iRecipe[6];
 P15_RotationOperation.rControlValue := LREAL_TO_REAL(GVL_IO.aController[29].rControlValue); //Write to Rotation Controller (rpm)
 
 GVL_IO.aController_PV[29] := P15_RotationOperation.nConvertedRotation_PV;
-GVL_IO.aController_CV[29] := REAL_TO_INT(P15_RotationOperation.rControlValue);
+GVL_IO.aController_CV[29] := P15_RotationOperation.rControlValue;
 GVL_IO.aController[29]();		
 
 (* Solenoid Valve Mapping *)

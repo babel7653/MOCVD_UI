@@ -800,6 +800,10 @@
                     <Setter Property="VerticalAlignment" Value="Center"/>
                     <Setter Property="TextAlignment" Value="Right"/>
                 </Style>
+                <Style TargetType="{x:Type ComboBox}">
+                    <Setter Property="Width" Value="90"/>
+                    <Setter Property="Height" Value="20"/>
+                </Style>
             </Grid.Resources>
             <Grid.RowDefinitions>
                 <RowDefinition Height="100"/>
@@ -886,11 +890,13 @@
                     </Grid>
                     <StackPanel Orientation="Horizontal" Height="30">
                         <Label Width="150" VerticalContentAlignment="Bottom" Content="Pressure Control Mode" />
-                        <Button Height="20" FontSize="11" Content="{Binding PressureControlMode}" />
+                        <ComboBox ItemsSource="{Binding PressureControlMode, Mode=OneWay}" DisplayMemberPath="Name"
+                                  SelectedItem="{}"/>
                     </StackPanel>
                     <StackPanel Orientation="Horizontal" Height="30">
                         <Label  Width="150" VerticalContentAlignment="Bottom" Content="Throttle Valve Mode" />
-                        <Button x:Name="btThrottleRun" Content="{Binding ThrottleValveControlMode}"/>
+                        <ComboBox ItemsSource="{Binding ThrottleValveControlMode, Mode=OneWay}" DisplayMemberPath="Name"
+                                  SelectedItem="{}"/>
                     </StackPanel>
 
                     <StackPanel Orientation="Horizontal" Height="30">

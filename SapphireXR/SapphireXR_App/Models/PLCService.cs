@@ -5,6 +5,7 @@ using System.Windows;
 using System.Windows.Threading;
 using TwinCAT.Ads;
 using TwinCAT.PlcOpen;
+using static SapphireXR_App.Models.PLCService;
 
 namespace SapphireXR_App.Models
 {
@@ -53,6 +54,7 @@ namespace SapphireXR_App.Models
                 hDigitalOutput = Ads.CreateVariableHandle("GVL_IO.aDigitalOutputIO");
                 hOutputCmd = Ads.CreateVariableHandle("GVL_IO.aOutputCmd");
                 hOutputCmd1 = Ads.CreateVariableHandle("GVL_IO.aOutputCmd[1]");
+                hOutputCmd2 = Ads.CreateVariableHandle("GVL_IO.aOutputCmd[2]");
 
                 hRcp = Ads.CreateVariableHandle("RCP.aRecipe");
                 hRcpTotalStep = Ads.CreateVariableHandle("RCP.iRcpTotalStep");
@@ -66,6 +68,8 @@ namespace SapphireXR_App.Models
                 hRecipeControlRampTime = Ads.CreateVariableHandle("P50_RecipeControl.Ramp_ET");
                 hRecipeControlPauseTime = Ads.CreateVariableHandle("P50_RecipeControl.Pause_ET");
                 hE3508InputManAuto = Ads.CreateVariableHandle("P11_E3508.nInputManAutoBytes");
+                hOutputSetType = Ads.CreateVariableHandle("P12_IQ_PLUS.nOutputSetType");
+                hOutputMode = Ads.CreateVariableHandle("P12_IQ_PLUS.nOutputMode"); 
 
                 aDeviceRampTimes = new short[dIndexController.Count];
                 aDeviceTargetValues = new float[dIndexController.Count];
@@ -148,6 +152,7 @@ namespace SapphireXR_App.Models
             dOutputCmd1 = ObservableManager<BitArray>.Get("OutputCmd1");
             dInputManAuto = ObservableManager<BitArray>.Get("InputManAuto");
             dThrottleValveControlMode = ObservableManager<short>.Get("ThrottleValveControlMode");
+            dPressureControlModeIssuer = ObservableManager<ushort>.Get("PressureControlMode");
 
             ObservableManager<bool>.Subscribe("Leak Test Mode", leakTestModeSubscriber = new LeakTestModeSubscriber());
 
@@ -259,13 +264,13 @@ namespace SapphireXR_App.Models
 
             byte[] digitalOutput = Ads.ReadAny<byte[]>(hDigitalOutput, [4]);
             dDigitalOutput2?.Issue(new BitArray(new byte[1] { digitalOutput[1] }));
-            dDigitalOutput3?.Issue(digitalOutput3 = new BitArray(new byte[1] { digitalOutput[2] }));
+            dDigitalOutput3?.Issue(new BitArray(new byte[1] { digitalOutput[2] }));
             short[] outputCmd = Ads.ReadAny<short[]>(hOutputCmd, [3]);
             dOutputCmd1?.Issue(bOutputCmd1 = new BitArray(BitConverter.IsLittleEndian == true ? BitConverter.GetBytes(outputCmd[0]) : BitConverter.GetBytes(outputCmd[0]).Reverse().ToArray()));
             dThrottleValveControlMode?.Issue(outputCmd[1]);
             ushort inputManAuto = Ads.ReadAny<ushort>(hE3508InputManAuto);
             dInputManAuto?.Issue(new BitArray(BitConverter.IsLittleEndian == true ? BitConverter.GetBytes(inputManAuto) : BitConverter.GetBytes(inputManAuto).Reverse().ToArray()));
-
+            dPressureControlModeIssuer?.Issue(Ads.ReadAny<ushort>(hOutputSetType));
             dRecipeControlHoldTimeIssuer?.Issue(Ads.ReadAny<TIME>(hRecipeControlHoldTime).Time.Seconds);
             dRecipeControlRampTimeIssuer?.Issue(Ads.ReadAny<TIME>(hRecipeControlRampTime).Time.Seconds);
             dRecipeControlPauseTimeIssuer?.Issue(Ads.ReadAny<TIME>(hRecipeControlPauseTime).Time.Seconds);
@@ -515,8 +520,8 @@ namespace SapphireXR_App.Models
         {
             return Ads.ReadAny<short>(hUserState);
         }
-
-        public static void WriteOutputCmd2OnOffState(OutputCmd2Index index, bool powerOn)
+     
+        public static void WriteOutputCmd1(OutputCmd2Index index, bool powerOn)
         {
             if(bOutputCmd1 != null)
             {
@@ -525,6 +530,21 @@ namespace SapphireXR_App.Models
                 bOutputCmd1.CopyTo(array, 0);
                 Ads.WriteAny(hOutputCmd1, (short)array[0]);
             }
+        }
+
+        public static ushort ReadPressureControlMode()
+        {
+            return Ads.ReadAny<ushort>(hOutputSetType);
+        }
+
+        public static void WriteThrottleValveMode(short value)
+        {
+            Ads.WriteAny(hOutputCmd2, value);
+        }
+
+        public static ushort ReadThrottleValveMode()
+        {
+            return Ads.ReadAny<ushort>(hOutputMode);
         }
     }
 }

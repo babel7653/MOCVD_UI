@@ -3,6 +3,8 @@ using System.Windows;
 using System.IO;
 using System.Windows.Resources;
 using System.Windows.Controls;
+using System.Diagnostics;
+using System.Numerics;
 
 namespace SapphireXR_App.Common
 {
@@ -151,9 +153,27 @@ namespace SapphireXR_App.Common
             }
         }
 
+        public static bool SynchronizeExpected<T>(T expected, Func<T> checkFunc, long timeOutMS) where T : INumber<T>
+        {
+            Stopwatch stopwatch = new Stopwatch();
+            stopwatch.Start();
+            while (true)
+            {
+                if (checkFunc() == expected)
+                {
+                    return true;
+                }
+
+                if (timeOutMS <= stopwatch.ElapsedMilliseconds)
+                {
+                    return false;
+                }
+            }
+        }
+
         public static void ConstraintEmptyToZeroOnDataGridCellCommitForRecipeRunEdit(object sender, DataGridCellEditEndingEventArgs e)
         {
-            Util.ConstraintEmptyToZeroOnDataGridCellCommit(sender, e, ["Ramp", "Hold", "M01", "M02", "M03", "M04", "M05", "M06", "M07", "M08", "M09", "M10", "M11", "M12", "M13", "M14", "M15", "M16",
+            ConstraintEmptyToZeroOnDataGridCellCommit(sender, e, ["Ramp", "Hold", "M01", "M02", "M03", "M04", "M05", "M06", "M07", "M08", "M09", "M10", "M11", "M12", "M13", "M14", "M15", "M16",
                "M17", "M18", "M19", "Loop", "Jump", "Susceptor Temp.", "Reactor Press.", "Sus. Rotation", "Compare Temp."]);
         }
 

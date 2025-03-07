@@ -844,10 +844,10 @@
                         <TextBlock Grid.Column="1" Grid.Row="0" Text="Control Val." Margin="0,6,0,0"/>
                         <TextBlock Grid.Column="2" Grid.Row="0" Text="Current Val." Margin="0,6,0,0" />
                         <TextBlock Grid.Column="3" Grid.Row="0" Text="Power Rate" Margin="0,6,0,0"/>
-                        <TextBox x:Name="tbTargetTemp"  Grid.Column="0" Grid.Row="1"  Text="{Binding TargetTemp}"/>
-                        <TextBox x:Name="tbControlTemp"  Grid.Column="1" Grid.Row="1" Text="{Binding ControlTemp}"/>
-                        <TextBox x:Name="tbCurrentTemp"  Grid.Column="2" Grid.Row="1" Text="{Binding CurrentTemp}"/>
-                        <TextBox x:Name="tbPowerRateTemp" Grid.Column="3" Grid.Row="1" Text="{Binding PowerRateTemp}"/>
+                        <TextBox x:Name="tbTargetTemp"  Grid.Column="0" Grid.Row="1"  Text="{Binding TargetTemp}" IsReadOnly="True"/>
+                        <TextBox x:Name="tbControlTemp"  Grid.Column="1" Grid.Row="1" Text="{Binding ControlTemp}" IsReadOnly="True"/>
+                        <TextBox x:Name="tbCurrentTemp"  Grid.Column="2" Grid.Row="1" Text="{Binding CurrentTemp}" IsReadOnly="True"/>
+                        <TextBox x:Name="tbPowerRateTemp" Grid.Column="3" Grid.Row="1" Text="{Binding PowerRateTemp}" IsReadOnly="True"/>
                     </Grid>
                     <StackPanel Orientation="Horizontal" Height="30">
                         <TextBlock Width="210"  Height="20" TextAlignment="Right" Text="Heater Control Mode"
@@ -883,25 +883,23 @@
                         <TextBlock Grid.Column="1" Grid.Row="0" Text="Control Val." Margin="0,6,0,0"/>
                         <TextBlock Grid.Column="2" Grid.Row="0" Text="Current Val." Margin="0,6,0,0"/>
                         <TextBlock Grid.Column="3" Grid.Row="0" Text="Position" Margin="0,6,0,0"/>
-                        <TextBox x:Name="tbTargetPress"  Grid.Column="0" Grid.Row="1"  Text="{Binding TargetPress}"/>
-                        <TextBox x:Name="tbControlPress"  Grid.Column="1" Grid.Row="1" Text="{Binding ControlPress}"/>
-                        <TextBox x:Name="tbCurrentPress"  Grid.Column="2" Grid.Row="1" Text="{Binding CurrentPress}"/>
-                        <TextBox x:Name="tbPosition" Grid.Column="3" Grid.Row="1" Text="{Binding ValvePosition}"/>
+                        <TextBox x:Name="tbTargetPress"  Grid.Column="0" Grid.Row="1"  Text="{Binding TargetPress}" IsReadOnly="True"/>
+                        <TextBox x:Name="tbControlPress"  Grid.Column="1" Grid.Row="1" Text="{Binding ControlPress}" IsReadOnly="True"/>
+                        <TextBox x:Name="tbCurrentPress"  Grid.Column="2" Grid.Row="1" Text="{Binding CurrentPress}" IsReadOnly="True"/>
+                        <TextBox x:Name="tbPosition" Grid.Column="3" Grid.Row="1" Text="{Binding ValvePosition}" IsReadOnly="True"/>
                     </Grid>
                     <StackPanel Orientation="Horizontal" Height="30">
                         <Label Width="150" VerticalContentAlignment="Bottom" Content="Pressure Control Mode" />
-                        <ComboBox ItemsSource="{Binding PressureControlMode, Mode=OneWay}" DisplayMemberPath="Name"
-                                  SelectedItem="{}"/>
+                        <Button Content="{Binding PressureControlMode}" Command="{Binding TogglePressureControlModeCommand}"/>
                     </StackPanel>
                     <StackPanel Orientation="Horizontal" Height="30">
                         <Label  Width="150" VerticalContentAlignment="Bottom" Content="Throttle Valve Mode" />
-                        <ComboBox ItemsSource="{Binding ThrottleValveControlMode, Mode=OneWay}" DisplayMemberPath="Name"
-                                  SelectedItem="{}"/>
+                        <ComboBox ItemsSource="{Binding ThrottleValveControlModes, Mode=OneTime}" SelectedItem="{Binding CurrentThrottleValveControlMode, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
                     </StackPanel>
 
                     <StackPanel Orientation="Horizontal" Height="30">
                         <Label Width="150" VerticalContentAlignment="Bottom" Content="Throttle Valve Status" />
-                        <Button x:Name="btTrottleStatus" Content=""/>
+                        <TextBox x:Name="btTrottleStatus" Text="" IsReadOnly="True" />
                     </StackPanel>
                     <Label Content="Vacuum Pump Control" VerticalContentAlignment="Bottom"/>
                     <StackPanel Orientation="Horizontal" Height="30" Margin="10,0,0,0">
@@ -931,9 +929,9 @@
                         <TextBlock Grid.Column="0" Grid.Row="0" Text="Target Val." Margin="0,6,0,0"/>
                         <TextBlock Grid.Column="1" Grid.Row="0" Text="Control Val." Margin="0,6,0,0"/>
                         <TextBlock Grid.Column="2" Grid.Row="0" Text="Current Val." Margin="0,6,0,0"/>
-                        <TextBox x:Name="tbTargetRotation"  Grid.Column="0" Grid.Row="1"  Text="{Binding TargetRotation}"/>
-                        <TextBox x:Name="tbControlRotation"  Grid.Column="1" Grid.Row="1" Text="{Binding ControlRotation}"/>
-                        <TextBox x:Name="tbCurrentRotation"  Grid.Column="2" Grid.Row="1" Text="{Binding CurrentRotation}"/>
+                        <TextBox x:Name="tbTargetRotation"  Grid.Column="0" Grid.Row="1"  Text="{Binding TargetRotation}" IsReadOnly="True"/>
+                        <TextBox x:Name="tbControlRotation"  Grid.Column="1" Grid.Row="1" Text="{Binding ControlRotation}" IsReadOnly="True"/>
+                        <TextBox x:Name="tbCurrentRotation"  Grid.Column="2" Grid.Row="1" Text="{Binding CurrentRotation}" IsReadOnly="True"/>
                     </Grid>
                         <Label Content="Motor Control" VerticalContentAlignment="Bottom"/>
                         <Button x:Name="btMotorReset" Content="{Binding RotationReset}" HorizontalAlignment="Left" Margin="10,0,0,0"/>

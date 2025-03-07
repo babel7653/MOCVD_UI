@@ -1,12 +1,7 @@
 ﻿using SapphireXR_App.Common;
 using SapphireXR_App.Enums;
-using SapphireXR_App.ViewModels;
 using System.Collections;
-using System.Net.Sockets;
-using System.Security.Permissions;
-using System.Security.RightsManagement;
 using System.Windows;
-using System.Windows.Controls;
 using System.Windows.Threading;
 using TwinCAT.Ads;
 using TwinCAT.PlcOpen;
@@ -122,10 +117,10 @@ namespace SapphireXR_App.Models
             {
                 dTargetValueIssuers.Add(kv.Key, ObservableManager<float>.Get("FlowControl." + kv.Key + ".TargetValue"));
             }
-            dControlCurrentValueIssuers = new Dictionary<string, ObservableManager<(int, int)>.DataIssuer>();
+            dControlCurrentValueIssuers = new Dictionary<string, ObservableManager<(float, float)>.DataIssuer>();
             foreach (KeyValuePair<string, int> kv in dIndexController)
             {
-                dControlCurrentValueIssuers.Add(kv.Key, ObservableManager<(int, int)>.Get("FlowControl." + kv.Key + ".ControlTargetValue.CurrentPLCState"));
+                dControlCurrentValueIssuers.Add(kv.Key, ObservableManager<(float, float)>.Get("FlowControl." + kv.Key + ".ControlTargetValue.CurrentPLCState"));
             }
             aMonitoringCurrentValueIssuers = new Dictionary<string, ObservableManager<float>.DataIssuer>();
             foreach(KeyValuePair<string, int> kv in dMonitoringMeterIndex)
@@ -220,7 +215,7 @@ namespace SapphireXR_App.Models
             {
                 foreach (KeyValuePair<string, int> kv in dIndexController)
                 {
-                    dControlCurrentValueIssuers?[kv.Key].Issue((aDeviceCurrentValues[dIndexController[kv.Key]], (int)aDeviceControlValues[dIndexController[kv.Key]]));
+                    dControlCurrentValueIssuers?[kv.Key].Issue((aDeviceCurrentValues[dIndexController[kv.Key]],aDeviceControlValues[dIndexController[kv.Key]]));
                 }
             }
 

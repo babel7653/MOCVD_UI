@@ -5,31 +5,40 @@ using SapphireXR_App.Common;
 using SapphireXR_App.Models;
 using static SapphireXR_App.ViewModels.FlowControlViewModel;
 using CommunityToolkit.Mvvm.ComponentModel;
+using System.Globalization;
 
 namespace SapphireXR_App.ViewModels.FlowController
 {
     public partial class HomeFlowControllerViewModel : FlowControllerViewModelBase
     {
-        protected class ControlTargetValueSubscriber : IObserver<(int, int)>
+        protected class ControlTargetValueSubscriber : IObserver<(float, float)>
         {
             public ControlTargetValueSubscriber(HomeFlowControllerViewModel viewModel)
             {
                 flowControllerViewModel = viewModel;
             }
-            void IObserver<(int, int)>.OnCompleted()
+            void IObserver<(float, float)>.OnCompleted()
             {
                 throw new NotImplementedException();
             }
 
-            void IObserver<(int, int)>.OnError(Exception error)
+            void IObserver<(float, float)>.OnError(Exception error)
             {
                 throw new NotImplementedException();
             }
 
-            void IObserver<(int, int)>.OnNext((int, int) values)
+            void IObserver<(float, float)>.OnNext((float, float) values)
             {
-                flowControllerViewModel.ControlValue = values.Item1.ToString();
-                flowControllerViewModel.TargetValue = values.Item2.ToString();
+                string controlValue = values.Item1.ToString("F", CultureInfo.InvariantCulture);
+                if(controlValue != flowControllerViewModel.ControlValue)
+                {
+                    flowControllerViewModel.ControlValue = controlValue;
+                }
+                string targetValue = values.Item2.ToString("F", CultureInfo.InvariantCulture);
+                if (targetValue != flowControllerViewModel.TargetValue)
+                {
+                    flowControllerViewModel.TargetValue = targetValue;
+                }
             }
 
             private HomeFlowControllerViewModel flowControllerViewModel;
@@ -57,7 +66,7 @@ namespace SapphireXR_App.ViewModels.FlowController
         protected override void onLoaded(string type, string controllerID)
         {
             base.onLoaded(type, controllerID);
-            ObservableManager<(int, int)>.Subscribe("FlowControl." + ControllerID + ".ControlTargetValue.CurrentPLCState", controlTargetValueSubscriber = new ControlTargetValueSubscriber(this));
+            ObservableManager<(float, float)>.Subscribe("FlowControl." + ControllerID + ".ControlTargetValue.CurrentPLCState", controlTargetValueSubscriber = new ControlTargetValueSubscriber(this));
             selectedThis = ObservableManager<string>.Get("FlowControl.Selected.CurrentPLCState");
         }
 

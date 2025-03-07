@@ -8,7 +8,7 @@ namespace SapphireXR_App.ViewModels.BottomDashBoard
 {
     internal class HomeBottomDashBoardViewModel: BottomDashBoardViewModel
     {
-        class ControlTargetValueSeriesUpdaterFromCurrentPLCState : BottomDashBoardViewModel.ControlTargetValueSeriesUpdater, IObserver<(int, int)>
+        class ControlTargetValueSeriesUpdaterFromCurrentPLCState : ControlTargetValueSeriesUpdater, IObserver<(float, float)>
         {
             internal ControlTargetValueSeriesUpdaterFromCurrentPLCState(string title) : base(title) { }
 
@@ -27,7 +27,7 @@ namespace SapphireXR_App.ViewModels.BottomDashBoard
                     MinorGridlineStyle = LineStyle.Solid,
                 };
             }
-            protected void update((int, int) value)
+            protected void update((float, float) value)
             {
                 var dateTimeAxis = plotModel.Axes.OfType<DateTimeAxis>().First();
                 var series1 = plotModel.Series.OfType<LineSeries>().ElementAt(0);
@@ -54,17 +54,17 @@ namespace SapphireXR_App.ViewModels.BottomDashBoard
                 plotModel.InvalidatePlot(true);
             }
 
-            void IObserver<(int, int)>.OnCompleted()
+            void IObserver<(float, float)>.OnCompleted()
             {
                 throw new NotImplementedException();
             }
 
-            void IObserver<(int, int)>.OnError(Exception error)
+            void IObserver<(float, float)>.OnError(Exception error)
             {
                 throw new NotImplementedException();
             }
 
-            void IObserver<(int, int)>.OnNext((int, int) value)
+            void IObserver<(float, float)>.OnNext((float, float) value)
             {
                 update(value);
             }
@@ -82,7 +82,7 @@ namespace SapphireXR_App.ViewModels.BottomDashBoard
             foreach (var (id, index) in PLCService.dIndexController)
             {
                 ControlTargetValueSeriesUpdaterFromCurrentPLCState controlCurrentValueSeriesUpdater = new ControlTargetValueSeriesUpdaterFromCurrentPLCState(id);
-                ObservableManager<(int, int)>.Subscribe("FlowControl." + id + ".ControlTargetValue.CurrentPLCState", controlCurrentValueSeriesUpdater);
+                ObservableManager<(float, float)>.Subscribe("FlowControl." + id + ".ControlTargetValue.CurrentPLCState", controlCurrentValueSeriesUpdater);
                 plotModels[index] = controlCurrentValueSeriesUpdater;
             }
         }

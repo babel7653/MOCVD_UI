@@ -87,8 +87,8 @@ namespace SapphireXR_App.Models
         private static BitArray? baReadValveStatePLC2 = null;
         private static float[]? aDeviceMaxValue = null;
         private static float[]? aDeviceTargetValues = null;
-        private static short[]? aDeviceCurrentValues = null;
-        private static short[]? aDeviceControlValues = null;
+        private static float[]? aDeviceCurrentValues = null;
+        private static float[]? aDeviceControlValues = null;
         private static short[]? aDeviceRampTimes = null;
         private static float[]? aMonitoring_PVs = null;
         private static short[]? aInputState = null;

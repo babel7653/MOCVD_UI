@@ -375,44 +375,44 @@
                 <control:SwitchingValve x:Name="V05" Canvas.Left="195" Canvas.Top="487" ValveID="V05" 
                                 Visibility="{Binding DataContext.OffLeakTestVisibility, ElementName=homePage}"/>
                 <control:SingleValve x:Name="V05N" Canvas.Left="195" Canvas.Top="487" ValveID="V05"
-                              Visibility="{Binding DataContext.OnLeakTestVisibility, ElementName=homePage}"/>
+                              Visibility="{Binding DataContext.OnLeakTestVisibility, ElementName=homePage}" IterlockMode="Left" Coupled="V06" />
                 <control:SingleValve x:Name="V06H" Canvas.Left="219" Canvas.Top="487" ValveID="V06"
-                              Visibility="{Binding DataContext.OnLeakTestVisibility, ElementName=homePage}"/>
+                              Visibility="{Binding DataContext.OnLeakTestVisibility, ElementName=homePage}" IterlockMode="Right" Coupled="V05" />
 
                 <control:SwitchingValve x:Name="V08" Canvas.Left="335" Canvas.Top="487" ValveID="V08"
                               Visibility="{Binding DataContext.OffLeakTestVisibility, ElementName=homePage}"/>
                 <control:SingleValve x:Name="V08N" Canvas.Left="335" Canvas.Top="487" ValveID="V08"
-                       Visibility="{Binding DataContext.OnLeakTestVisibility, ElementName=homePage}"/>
+                       Visibility="{Binding DataContext.OnLeakTestVisibility, ElementName=homePage}" IterlockMode="Left" Coupled="V09" />
                 <control:SingleValve x:Name="V09H" Canvas.Left="359" Canvas.Top="487" ValveID="V09"
-                       Visibility="{Binding DataContext.OnLeakTestVisibility, ElementName=homePage}"/>
+                       Visibility="{Binding DataContext.OnLeakTestVisibility, ElementName=homePage}" IterlockMode="Right" Coupled="V08" />
 
                 <control:SwitchingValve x:Name="V11" Canvas.Left="475" Canvas.Top="487" ValveID="V11"
                              Visibility="{Binding DataContext.OffLeakTestVisibility, ElementName=homePage}"/>
                 <control:SingleValve x:Name="V11N" Canvas.Left="475" Canvas.Top="487" ValveID="V11"
-                     Visibility="{Binding DataContext.OnLeakTestVisibility, ElementName=homePage}"/>
+                     Visibility="{Binding DataContext.OnLeakTestVisibility, ElementName=homePage}" IterlockMode="Left"  Coupled="V12" />
                 <control:SingleValve x:Name="V12H" Canvas.Left="499" Canvas.Top="487" ValveID="V12"
-                     Visibility="{Binding DataContext.OnLeakTestVisibility, ElementName=homePage}"/>
+                     Visibility="{Binding DataContext.OnLeakTestVisibility, ElementName=homePage}" IterlockMode="Right"  Coupled="V11" />
 
                 <control:SwitchingValve x:Name="V14" Canvas.Left="615" Canvas.Top="487" ValveID="V14" 
                           Visibility="{Binding DataContext.OffLeakTestVisibility, ElementName=homePage}"/>
                 <control:SingleValve x:Name="V14N" Canvas.Left="615" Canvas.Top="487" ValveID="V14" 
-                   Visibility="{Binding DataContext.OnLeakTestVisibility, ElementName=homePage}"/>
+                   Visibility="{Binding DataContext.OnLeakTestVisibility, ElementName=homePage}" IterlockMode="Left" Coupled="V15" />
                 <control:SingleValve x:Name="V15" Canvas.Left="639" Canvas.Top="487" ValveID="V15" 
-                   Visibility="{Binding DataContext.OnLeakTestVisibility, ElementName=homePage}"/>
+                   Visibility="{Binding DataContext.OnLeakTestVisibility, ElementName=homePage}" IterlockMode="Right" Coupled="V14" />
 
                 <control:SwitchingValve x:Name="V17" Canvas.Left="755" Canvas.Top="487" ValveID="V17" 
                             Visibility="{Binding DataContext.OffLeakTestVisibility, ElementName=homePage}"/>
                 <control:SingleValve x:Name="V17N" Canvas.Left="755" Canvas.Top="487" ValveID="V17" 
-                     Visibility="{Binding DataContext.OnLeakTestVisibility, ElementName=homePage}"/>
+                     Visibility="{Binding DataContext.OnLeakTestVisibility, ElementName=homePage}" IterlockMode="Left" Coupled="V18" />
                 <control:SingleValve x:Name="V18H" Canvas.Left="779" Canvas.Top="487" ValveID="V18" 
-             Visibility="{Binding DataContext.OnLeakTestVisibility, ElementName=homePage}"/>
+             Visibility="{Binding DataContext.OnLeakTestVisibility, ElementName=homePage}" IterlockMode="Right" Coupled="V17" />
 
                 <control:SwitchingValve x:Name="V20" Canvas.Left="953" Canvas.Top="487" ValveID="V20" 
                             Visibility="{Binding DataContext.OffLeakTestVisibility, ElementName=homePage}"/>
                 <control:SingleValve x:Name="V20N" Canvas.Left="953" Canvas.Top="487" ValveID="V20" 
-                      Visibility="{Binding DataContext.OnLeakTestVisibility, ElementName=homePage}"/>
+                      Visibility="{Binding DataContext.OnLeakTestVisibility, ElementName=homePage}" IterlockMode="Left" Coupled="V21"/>
                 <control:SingleValve x:Name="V21H" Canvas.Left="977" Canvas.Top="487" ValveID="V21" 
-                      Visibility="{Binding DataContext.OnLeakTestVisibility, ElementName=homePage}"/>
+                      Visibility="{Binding DataContext.OnLeakTestVisibility, ElementName=homePage}" IterlockMode="Right" Coupled="V20" />
 
                 <control:SwitchingValve x:Name="V32" Canvas.Left="1084" Canvas.Top="407" ValveID="V32" />
                 <control:SwitchingValve x:Name="V23" Canvas.Left="229" Canvas.Top="407" ValveID="V23" />
@@ -885,13 +885,17 @@
                         <TextBox x:Name="tbPosition" Grid.Column="3" Grid.Row="1" Text="{Binding ValvePosition}"/>
                     </Grid>
                     <StackPanel Orientation="Horizontal" Height="30">
-                        <TextBlock Width="210"  Height="20" TextAlignment="Right" Text="Pressure Control Mode"
-                               Margin="0,2,6,0"/>
-                        <Button Height="20" Width="80"  FontSize="11" Content="{Binding PressureControlMode}" />
+                        <Label Width="150" VerticalContentAlignment="Bottom" Content="Pressure Control Mode" />
+                        <Button Height="20" FontSize="11" Content="{Binding PressureControlMode}" />
                     </StackPanel>
-                    <Label Content="Throttle Valve Control" VerticalContentAlignment="Bottom"/>
-                    <StackPanel Orientation="Horizontal" Height="30" HorizontalAlignment="Center">
+                    <StackPanel Orientation="Horizontal" Height="30">
+                        <Label  Width="150" VerticalContentAlignment="Bottom" Content="Throttle Valve Mode" />
                         <Button x:Name="btThrottleRun" Content="{Binding ThrottleValveControlMode}"/>
+                    </StackPanel>
+
+                    <StackPanel Orientation="Horizontal" Height="30">
+                        <Label Width="150" VerticalContentAlignment="Bottom" Content="Throttle Valve Status" />
+                        <Button x:Name="btTrottleStatus" Content=""/>
                     </StackPanel>
                     <Label Content="Vacuum Pump Control" VerticalContentAlignment="Bottom"/>
                     <StackPanel Orientation="Horizontal" Height="30" Margin="10,0,0,0">

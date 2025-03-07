@@ -1,15 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
-using CommunityToolkit.Mvvm.Input;
-using System.Windows.Input;
-using OxyPlot;
-using SapphireXR_App.Controls;
-using SapphireXR_App.Models;
-using static SapphireXR_App.ViewModels.ValveViewModel;
+﻿using System.Windows;
 
 namespace SapphireXR_App.ViewModels
 {

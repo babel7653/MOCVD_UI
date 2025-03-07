@@ -57,10 +57,14 @@ namespace SapphireXR_App.ViewModels
 
             void IObserver<BitArray>.OnNext(BitArray value)
             {
-                Util.SetIfChanged(value[(int)PLCService.OutputCmd2Index.InductionHeaterPower], ref prevInpudctionHeaterPowerOn, (bool value) => { settingViewModel.InductionHeaterPowerOn = (value == true ? "On" : "Off"); });
-                Util.SetIfChanged(value[(int)PLCService.OutputCmd2Index.ThermalBathPower], ref prevThermalBatchPowerOn, (bool value) => { settingViewModel.ThermalBathPowerOn = (value == true ? "On" : "Off"); });
-                Util.SetIfChanged(value[(int)PLCService.OutputCmd2Index.VaccumPumpPower], ref prevVaccumPumpPowerOn, (bool value) => { settingViewModel.VaccumPumpPowerOn = (value == true ? "On" : "Off"); });
-                Util.SetIfChanged(value[(int)PLCService.OutputCmd2Index.LineHeaterPower], ref prevLineHeaterPowerOn, (bool value) => { settingViewModel.LineHeaterPowerOn = (value == true ? "On" : "Off"); });
+                Util.SetIfChanged(value[(int)PLCService.DigitalOutput3Index.InductionHeaterMC], ref prevInpudctionHeaterPowerOn, (bool value) 
+                    => { settingViewModel.InductionHeaterPowerOn = (value == true ? "ON" : "OFF"); });
+                Util.SetIfChanged(value[(int)PLCService.DigitalOutput3Index.ThermalBathMC], ref prevThermalBatchPowerOn, (bool value) 
+                    => { settingViewModel.ThermalBathPowerOn = (value == true ? "ON" : "OFF"); });
+                Util.SetIfChanged(value[(int)PLCService.DigitalOutput3Index.VaccumPumpMC], ref prevVaccumPumpPowerOn, (bool value) 
+                    => { settingViewModel.VaccumPumpPowerOn = (value == true ? "ON" : "OFF"); });
+                Util.SetIfChanged(value[(int)PLCService.DigitalOutput3Index.LineHeaterMC], ref prevLineHeaterPowerOn, (bool value) 
+                    => { settingViewModel.LineHeaterPowerOn = (value == true ? "ON" : "OFF"); });
             }
 
             private SettingViewModel settingViewModel;

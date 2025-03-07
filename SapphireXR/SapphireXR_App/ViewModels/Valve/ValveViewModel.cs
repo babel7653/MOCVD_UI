@@ -5,8 +5,6 @@ using System.Windows.Input;
 using CommunityToolkit.Mvvm.Input;
 using SapphireXR_App.Enums;
 using SapphireXR_App.Models;
-using SapphireXR_App.Controls;
-using static SapphireXR_App.ViewModels.ValveViewModel;
 
 namespace SapphireXR_App.ViewModels
 {
@@ -53,9 +51,16 @@ namespace SapphireXR_App.ViewModels
                         viewModel.IsOpen = isOpen;
                         if (viewModel.ValveID != null)
                         {
-                            PLCService.WriteValveState(viewModel.ValveID, isOpen);
+                            try
+                            {
+                                PLCService.WriteValveState(viewModel.ValveID, isOpen);
+                            }
+                            catch(PLCService.WriteValveStateException exception)
+                            {
+                                confirmMessage = exception.Message;
+                            }
+                            MessageBox.Show(confirmMessage);
                         }
-                        MessageBox.Show(confirmMessage);
                         break;
 
                     case ValveOperationExResult.Cancel:
@@ -163,6 +168,21 @@ namespace SapphireXR_App.ViewModels
             }
         }
 
+        public ValveViewModel()
+        {
+            OnLoadedCommand = new RelayCommand<object?>((object? args) =>
+            {
+                if (args != null)
+                {
+                    object[] argArray = (object[])args;
+                    if (argArray[0] is string && argArray[1] is SapphireXR_App.Controls.Valve.UpdateTarget)
+                    {
+                        Init((string)argArray[0], (SapphireXR_App.Controls.Valve.UpdateTarget)argArray[1]);
+                    }
+                }
+            });
+        }
+
         protected virtual void Init(string valveID, SapphireXR_App.Controls.Valve.UpdateTarget target)
         {
             ValveID = valveID;
@@ -170,17 +190,7 @@ namespace SapphireXR_App.ViewModels
 
         public event PropertyChangedEventHandler? PropertyChanged;
 
-        public ICommand OnLoadedCommand => new RelayCommand<object?>((object? args) =>
-        {
-            if (args != null)
-            {
-                object[] argArray = (object[])args;
-                if (argArray[0] is string && argArray[1] is SapphireXR_App.Controls.Valve.UpdateTarget)
-                {
-                    Init((string)argArray[0], (SapphireXR_App.Controls.Valve.UpdateTarget)argArray[1]);
-                }
-            }
-        });
+        public ICommand OnLoadedCommand { get; set; }
         public ICommand OnClickCommand => new RelayCommand(OnClicked);
 
         protected abstract void OnClicked();

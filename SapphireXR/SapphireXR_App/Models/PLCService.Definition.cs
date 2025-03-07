@@ -12,6 +12,36 @@ namespace SapphireXR_App.Models
         {
             public ReadValveStateException(string message) : base(message) { }
         }
+        internal class WriteValveStateException: Exception
+        {
+            public WriteValveStateException(string message) : base(message) { }
+        }
+
+        internal class LeakTestModeSubscriber : IObserver<bool>
+        {
+            void IObserver<bool>.OnCompleted()
+            {
+                throw new NotImplementedException();
+            }
+
+            void IObserver<bool>.OnError(Exception error)
+            {
+                throw new NotImplementedException();
+            }
+
+            void IObserver<bool>.OnNext(bool value)
+            {
+                LeakTestMode = value;
+                if(value == false)
+                {
+                    foreach((string valveID, string coupled) in LeftCoupled)
+                    {
+                        DoWriteValveState(valveID, false);
+                        DoWriteValveState(coupled, false);
+                    }
+                }
+            }
+        }
 
         internal enum HardWiringInterlockStateIndex
         {
@@ -86,6 +116,8 @@ namespace SapphireXR_App.Models
         private static ObservableManager<BitArray>.DataIssuer? dInputManAuto;
         private static ObservableManager<short>.DataIssuer? dThrottleValveControlMode;
 
+        private static LeakTestModeSubscriber? leakTestModeSubscriber = null;
+
         //Create an instance of the TcAdsClient()
         public static AdsClient Ads { get; set; }
         private static AmsNetId amsNetId = new("10.10.10.10.1.1");
@@ -113,13 +145,13 @@ namespace SapphireXR_App.Models
         private static uint hRecipeControlHoldTime;
         private static uint hRecipeControlRampTime;
         private static uint hRecipeControlPauseTime;
-        private static uint hDigitalOutput3;
         private static uint hDigitalOutput;
         private static uint hOutputCmd;
         private static uint hE3508InputManAuto;
         private static uint hOutputCmd1;
 
         private static bool RecipeRunEndNotified = false;
+        private static bool LeakTestMode = true;
 
         public static readonly Dictionary<string, int> ValveIDtoOutputSolValveIdx1 = new Dictionary<string, int>
         {
@@ -159,5 +191,8 @@ namespace SapphireXR_App.Models
         };
 
         public static readonly uint LineHeaterTemperature = 8;
+
+        private static Dictionary<string, string> LeftCoupled = new Dictionary<string, string>();
+        private static Dictionary<string, string> RightCoupled = new Dictionary<string, string>();
     }
 }

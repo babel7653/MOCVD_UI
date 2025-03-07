@@ -1,11 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Controls;
-
-namespace SapphireXR_App.ViewModels.Valve
+﻿namespace SapphireXR_App.ViewModels.Valve
 {
     public class OnOffValveViewModel: ValveViewModel
     {

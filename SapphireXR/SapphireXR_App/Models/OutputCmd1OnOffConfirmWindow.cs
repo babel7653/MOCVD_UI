@@ -13,7 +13,7 @@ namespace SapphireXR_App.Models
             string nextState = (onOff == "On" ? "Off" : "On");
             if (ValveOperationEx.Show("Moduel Power 상태 변경", nextState + " 상태로 변경하시겠습니까?") == Enums.ValveOperationExResult.Ok)
             {
-                PLCService.WriteOutputCmd2OnOffState(index, (nextState == "On") ? true : false);
+                PLCService.WriteOutputCmd1(index, (nextState == "On") ? true : false);
             }
         }
     }

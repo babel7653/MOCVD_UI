@@ -1,16 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.DirectoryServices;
-using System.Linq;
-using System.Reactive.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
-using System.Xml.Linq;
-using SapphireXR_App.Models;
-
-namespace SapphireXR_App.Common
+﻿namespace SapphireXR_App.Common
 {
     static class ObservableManager<T>
     {

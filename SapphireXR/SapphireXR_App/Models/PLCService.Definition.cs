@@ -71,7 +71,12 @@ namespace SapphireXR_App.Models
 
         public enum OutputCmd2Index
         {
-            InductionHeaterPower = 0, ThermalBathPower, VaccumPumpPower, LineHeaterPower,InductionHeaterControl, VaccumPumpControl = 6
+            InductionHeaterPower = 0, ThermalBathPower, VaccumPumpPower, LineHeaterPower, InductionHeaterControl, VaccumPumpControl = 6, PressureControlMode = 12
+        }
+
+        public enum OutputSetType: ushort
+        {
+            Pressure = 1, Position = 2
         }
 
         // Connect to PLC
@@ -83,19 +88,18 @@ namespace SapphireXR_App.Models
         private static BitArray? baReadValveStatePLC2 = null;
         private static float[]? aDeviceMaxValue = null;
         private static float[]? aDeviceTargetValues = null;
-        private static short[]? aDeviceCurrentValues = null;
-        private static short[]? aDeviceControlValues = null;
+        private static float[]? aDeviceCurrentValues = null;
+        private static float[]? aDeviceControlValues = null;
         private static short[]? aDeviceRampTimes = null;
         private static float[]? aMonitoring_PVs = null;
         private static short[]? aInputState = null;
-        private static BitArray? digitalOutput3 = null;
         private static BitArray? bOutputCmd1 = null;
 
         private static ObservableManager<PLCConnection>.DataIssuer ConnectedNotifier;
-        private static Dictionary<string, ObservableManager<int>.DataIssuer>? dCurrentValueIssuers;
-        private static Dictionary<string, ObservableManager<int>.DataIssuer>? dControlValueIssuers;
+        private static Dictionary<string, ObservableManager<float>.DataIssuer>? dCurrentValueIssuers;
+        private static Dictionary<string, ObservableManager<float>.DataIssuer>? dControlValueIssuers;
         private static Dictionary<string, ObservableManager<float>.DataIssuer>? dTargetValueIssuers;
-        private static Dictionary<string, ObservableManager<(int, int)>.DataIssuer>? dControlCurrentValueIssuers;
+        private static Dictionary<string, ObservableManager<(float, float)>.DataIssuer>? dControlCurrentValueIssuers;
         private static Dictionary<string, ObservableManager<float>.DataIssuer>? aMonitoringCurrentValueIssuers;
         private static ObservableManager<BitArray>.DataIssuer? baHardWiringInterlockStateIssuers;
         private static ObservableManager<BitArray>.DataIssuer? dIOStateList;
@@ -111,6 +115,8 @@ namespace SapphireXR_App.Models
         private static ObservableManager<BitArray>.DataIssuer? dOutputCmd1;
         private static ObservableManager<BitArray>.DataIssuer? dInputManAuto;
         private static ObservableManager<short>.DataIssuer? dThrottleValveControlMode;
+        private static ObservableManager<ushort>.DataIssuer? dPressureControlModeIssuer;
+        private static ObservableManager<short>.DataIssuer? dThrottleValveStatusIssuer;
 
         private static LeakTestModeSubscriber? leakTestModeSubscriber = null;
 
@@ -145,6 +151,9 @@ namespace SapphireXR_App.Models
         private static uint hOutputCmd;
         private static uint hE3508InputManAuto;
         private static uint hOutputCmd1;
+        private static uint hOutputCmd2;
+        private static uint hOutputSetType;
+        private static uint hOutputMode;
 
         private static bool RecipeRunEndNotified = false;
         private static bool LeakTestMode = true;

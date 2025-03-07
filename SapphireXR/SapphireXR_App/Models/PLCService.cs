@@ -5,6 +5,7 @@ using System.Windows;
 using System.Windows.Threading;
 using TwinCAT.Ads;
 using TwinCAT.PlcOpen;
+using static SapphireXR_App.Models.PLCService;
 
 namespace SapphireXR_App.Models
 {
@@ -53,6 +54,7 @@ namespace SapphireXR_App.Models
                 hDigitalOutput = Ads.CreateVariableHandle("GVL_IO.aDigitalOutputIO");
                 hOutputCmd = Ads.CreateVariableHandle("GVL_IO.aOutputCmd");
                 hOutputCmd1 = Ads.CreateVariableHandle("GVL_IO.aOutputCmd[1]");
+                hOutputCmd2 = Ads.CreateVariableHandle("GVL_IO.aOutputCmd[2]");
 
                 hRcp = Ads.CreateVariableHandle("RCP.aRecipe");
                 hRcpTotalStep = Ads.CreateVariableHandle("RCP.iRcpTotalStep");
@@ -66,6 +68,8 @@ namespace SapphireXR_App.Models
                 hRecipeControlRampTime = Ads.CreateVariableHandle("P50_RecipeControl.Ramp_ET");
                 hRecipeControlPauseTime = Ads.CreateVariableHandle("P50_RecipeControl.Pause_ET");
                 hE3508InputManAuto = Ads.CreateVariableHandle("P11_E3508.nInputManAutoBytes");
+                hOutputSetType = Ads.CreateVariableHandle("P12_IQ_PLUS.nOutputSetType");
+                hOutputMode = Ads.CreateVariableHandle("P12_IQ_PLUS.nOutputMode"); 
 
                 aDeviceRampTimes = new short[dIndexController.Count];
                 aDeviceTargetValues = new float[dIndexController.Count];
@@ -101,25 +105,25 @@ namespace SapphireXR_App.Models
             ReadMaxValueFromPLC();
             ReadCurrentValueFromPLC();
 
-            dCurrentValueIssuers = new Dictionary<string, ObservableManager<int>.DataIssuer>();
+            dCurrentValueIssuers = new Dictionary<string, ObservableManager<float>.DataIssuer>();
             foreach (KeyValuePair<string, int> kv in dIndexController)
             {
-                dCurrentValueIssuers.Add(kv.Key, ObservableManager<int>.Get("FlowControl." + kv.Key + ".CurrentValue"));
+                dCurrentValueIssuers.Add(kv.Key, ObservableManager<float>.Get("FlowControl." + kv.Key + ".CurrentValue"));
             }
-            dControlValueIssuers = new Dictionary<string, ObservableManager<int>.DataIssuer>();
+            dControlValueIssuers = new Dictionary<string, ObservableManager<float>.DataIssuer>();
             foreach (KeyValuePair<string, int> kv in dIndexController)
             {
-                dControlValueIssuers.Add(kv.Key, ObservableManager<int>.Get("FlowControl." + kv.Key + ".ControlValue"));
+                dControlValueIssuers.Add(kv.Key, ObservableManager<float>.Get("FlowControl." + kv.Key + ".ControlValue"));
             }
             dTargetValueIssuers = new Dictionary<string, ObservableManager<float>.DataIssuer>();
             foreach (KeyValuePair<string, int> kv in dIndexController)
             {
                 dTargetValueIssuers.Add(kv.Key, ObservableManager<float>.Get("FlowControl." + kv.Key + ".TargetValue"));
             }
-            dControlCurrentValueIssuers = new Dictionary<string, ObservableManager<(int, int)>.DataIssuer>();
+            dControlCurrentValueIssuers = new Dictionary<string, ObservableManager<(float, float)>.DataIssuer>();
             foreach (KeyValuePair<string, int> kv in dIndexController)
             {
-                dControlCurrentValueIssuers.Add(kv.Key, ObservableManager<(int, int)>.Get("FlowControl." + kv.Key + ".ControlTargetValue.CurrentPLCState"));
+                dControlCurrentValueIssuers.Add(kv.Key, ObservableManager<(float, float)>.Get("FlowControl." + kv.Key + ".ControlTargetValue.CurrentPLCState"));
             }
             aMonitoringCurrentValueIssuers = new Dictionary<string, ObservableManager<float>.DataIssuer>();
             foreach(KeyValuePair<string, int> kv in dMonitoringMeterIndex)
@@ -148,6 +152,8 @@ namespace SapphireXR_App.Models
             dOutputCmd1 = ObservableManager<BitArray>.Get("OutputCmd1");
             dInputManAuto = ObservableManager<BitArray>.Get("InputManAuto");
             dThrottleValveControlMode = ObservableManager<short>.Get("ThrottleValveControlMode");
+            dPressureControlModeIssuer = ObservableManager<ushort>.Get("PressureControlMode");
+            dThrottleValveStatusIssuer = ObservableManager<short>.Get("ThrottleValveStatus");
 
             ObservableManager<bool>.Subscribe("Leak Test Mode", leakTestModeSubscriber = new LeakTestModeSubscriber());
 
@@ -216,7 +222,7 @@ namespace SapphireXR_App.Models
             {
                 foreach (KeyValuePair<string, int> kv in dIndexController)
                 {
-                    dControlCurrentValueIssuers?[kv.Key].Issue((aDeviceCurrentValues[dIndexController[kv.Key]], (int)aDeviceControlValues[dIndexController[kv.Key]]));
+                    dControlCurrentValueIssuers?[kv.Key].Issue((aDeviceCurrentValues[dIndexController[kv.Key]],aDeviceControlValues[dIndexController[kv.Key]]));
                 }
             }
 
@@ -232,8 +238,9 @@ namespace SapphireXR_App.Models
             {
                 short value = aInputState[0];
                 baHardWiringInterlockStateIssuers?.Issue(new BitArray(BitConverter.IsLittleEndian == true? BitConverter.GetBytes(value) :BitConverter.GetBytes(value).Reverse().ToArray()));
+                dThrottleValveStatusIssuer?.Issue(aInputState[4]);
 
-                bool[] ioList = new bool[48];
+                bool[] ioList = new bool[64];
                 for(int inputState = 1; inputState < aInputState.Length; ++inputState)
                 {
                     new BitArray(BitConverter.IsLittleEndian == true ? BitConverter.GetBytes(aInputState[inputState]) : BitConverter.GetBytes(aInputState[inputState]).Reverse().ToArray()).CopyTo(ioList, (inputState - 1) * sizeof(short) * 8);
@@ -259,13 +266,13 @@ namespace SapphireXR_App.Models
 
             byte[] digitalOutput = Ads.ReadAny<byte[]>(hDigitalOutput, [4]);
             dDigitalOutput2?.Issue(new BitArray(new byte[1] { digitalOutput[1] }));
-            dDigitalOutput3?.Issue(digitalOutput3 = new BitArray(new byte[1] { digitalOutput[2] }));
+            dDigitalOutput3?.Issue(new BitArray(new byte[1] { digitalOutput[2] }));
             short[] outputCmd = Ads.ReadAny<short[]>(hOutputCmd, [3]);
             dOutputCmd1?.Issue(bOutputCmd1 = new BitArray(BitConverter.IsLittleEndian == true ? BitConverter.GetBytes(outputCmd[0]) : BitConverter.GetBytes(outputCmd[0]).Reverse().ToArray()));
             dThrottleValveControlMode?.Issue(outputCmd[1]);
             ushort inputManAuto = Ads.ReadAny<ushort>(hE3508InputManAuto);
             dInputManAuto?.Issue(new BitArray(BitConverter.IsLittleEndian == true ? BitConverter.GetBytes(inputManAuto) : BitConverter.GetBytes(inputManAuto).Reverse().ToArray()));
-
+            dPressureControlModeIssuer?.Issue(Ads.ReadAny<ushort>(hOutputSetType));
             dRecipeControlHoldTimeIssuer?.Issue(Ads.ReadAny<TIME>(hRecipeControlHoldTime).Time.Seconds);
             dRecipeControlRampTimeIssuer?.Issue(Ads.ReadAny<TIME>(hRecipeControlRampTime).Time.Seconds);
             dRecipeControlPauseTimeIssuer?.Issue(Ads.ReadAny<TIME>(hRecipeControlPauseTime).Time.Seconds);
@@ -323,11 +330,11 @@ namespace SapphireXR_App.Models
 
         private static void ReadCurrentValueFromPLC()
         {
-            aDeviceCurrentValues = Ads.ReadAny<short[]>(hDeviceCurrentValuePLC, [NumControllers]);
-            aDeviceControlValues = Ads.ReadAny<short[]>(hDeviceControlValuePLC, [NumControllers]);
+            aDeviceCurrentValues = Ads.ReadAny<float[]>(hDeviceCurrentValuePLC, [NumControllers]);
+            aDeviceControlValues = Ads.ReadAny<float[]>(hDeviceControlValuePLC, [NumControllers]);
             aDeviceTargetValues = Ads.ReadAny<float[]>(hWriteDeviceTargetValuePLC, [NumControllers]);
             aMonitoring_PVs = Ads.ReadAny<float[]>(hMonitoring_PV, [18]);
-            aInputState = Ads.ReadAny<short[]>(hInputState, [4]);
+            aInputState = Ads.ReadAny<short[]>(hInputState, [5]);
             ReadValveStateFromPLC();
         }
 
@@ -367,7 +374,6 @@ namespace SapphireXR_App.Models
 
         public static void WriteValveState(string valveID, bool onOff)
         {
-
             if (LeakTestMode == false)
             {
                 string? coupled = null;
@@ -379,7 +385,7 @@ namespace SapphireXR_App.Models
             else
             {
                 string? coupled = null;
-                if(LeftCoupled.TryGetValue(valveID, out coupled) == true)
+                if (LeftCoupled.TryGetValue(valveID, out coupled) == true)
                 {
                     if(onOff == true)
                     {
@@ -387,7 +393,7 @@ namespace SapphireXR_App.Models
                     }
                 }
                 else
-                    if(RightCoupled.TryGetValue(valveID, out coupled) == true)
+                    if (RightCoupled.TryGetValue(valveID, out coupled) == true)
                     {
                         if(onOff == false)
                         {
@@ -396,7 +402,6 @@ namespace SapphireXR_App.Models
                     }
             }
             DoWriteValveState(valveID, onOff);
-          
         }
 
         private static (BitArray, int, uint) GetBuffer(string valveID)
@@ -415,20 +420,20 @@ namespace SapphireXR_App.Models
             }
             else
                 if (ValveIDtoOutputSolValveIdx2.TryGetValue(valveID, out index) == true)
+            {
+                if (baReadValveStatePLC2 == null)
                 {
-                    if (baReadValveStatePLC2 == null)
-                    {
-                        throw new ReadValveStateException("PLC Service: baReadValveStatePLC1 accessed without initialization \r\n Call ReadValveStateFromPLC first");
-                    }
-                    else
-                    {
-                        return (baReadValveStatePLC2, index, hReadValveStatePLC2);
-                    }
+                    throw new ReadValveStateException("PLC Service: baReadValveStatePLC1 accessed without initialization \r\n Call ReadValveStateFromPLC first");
                 }
                 else
                 {
-                    throw new ReadValveStateException("PLC Service: non-exsiting valve ID entered to GetReadValveStateBuffer()");
+                    return (baReadValveStatePLC2, index, hReadValveStatePLC2);
                 }
+            }
+            else
+            {
+                throw new ReadValveStateException("PLC Service: non-exsiting valve ID entered to GetReadValveStateBuffer()");
+            }
         }
 
         public static void WriteDeviceMaxValue(List<AnalogDeviceIO>? analogDeviceIOs)
@@ -517,8 +522,8 @@ namespace SapphireXR_App.Models
         {
             return Ads.ReadAny<short>(hUserState);
         }
-
-        public static void WriteOutputCmd2OnOffState(OutputCmd2Index index, bool powerOn)
+     
+        public static void WriteOutputCmd1(OutputCmd2Index index, bool powerOn)
         {
             if(bOutputCmd1 != null)
             {
@@ -527,6 +532,21 @@ namespace SapphireXR_App.Models
                 bOutputCmd1.CopyTo(array, 0);
                 Ads.WriteAny(hOutputCmd1, (short)array[0]);
             }
+        }
+
+        public static ushort ReadPressureControlMode()
+        {
+            return Ads.ReadAny<ushort>(hOutputSetType);
+        }
+
+        public static void WriteThrottleValveMode(short value)
+        {
+            Ads.WriteAny(hOutputCmd2, value);
+        }
+
+        public static ushort ReadThrottleValveMode()
+        {
+            return Ads.ReadAny<ushort>(hOutputMode);
         }
     }
 }

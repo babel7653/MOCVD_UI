@@ -4,6 +4,7 @@
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:SapphireXR_App.Views"
+      xmlns:i="clr-namespace:Microsoft.Xaml.Behaviors;assembly=Microsoft.Xaml.Behaviors"
       mc:Ignorable="d" 
       xmlns:control="clr-namespace:SapphireXR_App.Controls"
       xmlns:oxy="http://oxyplot.org/wpf"
@@ -800,6 +801,10 @@
                     <Setter Property="VerticalAlignment" Value="Center"/>
                     <Setter Property="TextAlignment" Value="Right"/>
                 </Style>
+                <Style TargetType="{x:Type ComboBox}">
+                    <Setter Property="Width" Value="90"/>
+                    <Setter Property="Height" Value="20"/>
+                </Style>
             </Grid.Resources>
             <Grid.RowDefinitions>
                 <RowDefinition Height="100"/>
@@ -840,18 +845,18 @@
                         <TextBlock Grid.Column="1" Grid.Row="0" Text="Control Val." Margin="0,6,0,0"/>
                         <TextBlock Grid.Column="2" Grid.Row="0" Text="Current Val." Margin="0,6,0,0" />
                         <TextBlock Grid.Column="3" Grid.Row="0" Text="Power Rate" Margin="0,6,0,0"/>
-                        <TextBox x:Name="tbTargetTemp"  Grid.Column="0" Grid.Row="1"  Text="{Binding TargetTemp}"/>
-                        <TextBox x:Name="tbControlTemp"  Grid.Column="1" Grid.Row="1" Text="{Binding ControlTemp}"/>
-                        <TextBox x:Name="tbCurrentTemp"  Grid.Column="2" Grid.Row="1" Text="{Binding CurrentTemp}"/>
-                        <TextBox x:Name="tbPowerRateTemp" Grid.Column="3" Grid.Row="1" Text="{Binding PowerRateTemp}"/>
+                        <TextBox x:Name="tbTargetTemp"  Grid.Column="0" Grid.Row="1"  Text="{Binding TargetTemp}" IsReadOnly="True"/>
+                        <TextBox x:Name="tbControlTemp"  Grid.Column="1" Grid.Row="1" Text="{Binding ControlTemp}" IsReadOnly="True"/>
+                        <TextBox x:Name="tbCurrentTemp"  Grid.Column="2" Grid.Row="1" Text="{Binding CurrentTemp}" IsReadOnly="True"/>
+                        <TextBox x:Name="tbPowerRateTemp" Grid.Column="3" Grid.Row="1" Text="{Binding PowerRateTemp}" IsReadOnly="True"/>
                     </Grid>
                     <StackPanel Orientation="Horizontal" Height="30">
-                        <TextBlock Width="210"  Height="20" TextAlignment="Right" Text="Heater Control Mode"
-                                Margin="0,2,6,0"/>
-                        <Button Height="20" Width="80" FontSize="11" Content="{Binding InputManualAuto}" />
+                        <Label Width="140" VerticalContentAlignment="Bottom" Content="Heater Control Mode"/>
+                        <ComboBox ItemsSource="{Binding InputManualAuto, Mode=OneWay}" DisplayMemberPath="Name"
+                                  SelectedItem="{}"/>
                     </StackPanel>
-                    <Label Content="Induction Heater Control" VerticalContentAlignment="Bottom"/>
-                    <StackPanel Orientation="Horizontal" Height="30" Margin="10,0,0,0">
+                    <StackPanel Orientation="Horizontal" Height="30">
+                        <Label Width="140" Content="Induction Power Supply" VerticalContentAlignment="Bottom"/>
                         <Button x:Name="btHeaterOn" Content="{Binding InductionHeaterOn}" Command="{Binding InductionHeaterToggleCommand}"/>
                         <Button x:Name="btHeaterReset" Content="{Binding InductionHeaterReset}"/>
                     </StackPanel>
@@ -879,26 +884,32 @@
                         <TextBlock Grid.Column="1" Grid.Row="0" Text="Control Val." Margin="0,6,0,0"/>
                         <TextBlock Grid.Column="2" Grid.Row="0" Text="Current Val." Margin="0,6,0,0"/>
                         <TextBlock Grid.Column="3" Grid.Row="0" Text="Position" Margin="0,6,0,0"/>
-                        <TextBox x:Name="tbTargetPress"  Grid.Column="0" Grid.Row="1"  Text="{Binding TargetPress}"/>
-                        <TextBox x:Name="tbControlPress"  Grid.Column="1" Grid.Row="1" Text="{Binding ControlPress}"/>
-                        <TextBox x:Name="tbCurrentPress"  Grid.Column="2" Grid.Row="1" Text="{Binding CurrentPress}"/>
-                        <TextBox x:Name="tbPosition" Grid.Column="3" Grid.Row="1" Text="{Binding ValvePosition}"/>
+                        <TextBox x:Name="tbTargetPress"  Grid.Column="0" Grid.Row="1"  Text="{Binding TargetPress}" IsReadOnly="True"/>
+                        <TextBox x:Name="tbControlPress"  Grid.Column="1" Grid.Row="1" Text="{Binding ControlPress}" IsReadOnly="True"/>
+                        <TextBox x:Name="tbCurrentPress"  Grid.Column="2" Grid.Row="1" Text="{Binding CurrentPress}" IsReadOnly="True"/>
+                        <TextBox x:Name="tbPosition" Grid.Column="3" Grid.Row="1" Text="{Binding ValvePosition}" IsReadOnly="True"/>
                     </Grid>
                     <StackPanel Orientation="Horizontal" Height="30">
-                        <Label Width="150" VerticalContentAlignment="Bottom" Content="Pressure Control Mode" />
-                        <Button Height="20" FontSize="11" Content="{Binding PressureControlMode}" />
+                        <Label Width="140" VerticalContentAlignment="Bottom" Content="Pressure Control Mode" />
+                        <Button Content="{Binding PressureControlMode}" Command="{Binding TogglePressureControlModeCommand}"/>
                     </StackPanel>
                     <StackPanel Orientation="Horizontal" Height="30">
-                        <Label  Width="150" VerticalContentAlignment="Bottom" Content="Throttle Valve Mode" />
-                        <Button x:Name="btThrottleRun" Content="{Binding ThrottleValveControlMode}"/>
+                        <Label  Width="140" VerticalContentAlignment="Bottom" Content="Throttle Valve Mode" />
+                        <ComboBox ItemsSource="{Binding ThrottleValveControlModes, Mode=OneTime}" SelectedItem="{Binding CurrentThrottleValveControlMode, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                            <i:Interaction.Triggers>
+                                <i:EventTrigger EventName="SelectionChanged">
+                                    <i:InvokeCommandAction Command="{Binding OnThrottleValveModeChangedCommand}" PassEventArgsToCommand="True"/>
+                                </i:EventTrigger>
+                            </i:Interaction.Triggers>
+                        </ComboBox>
                     </StackPanel>
 
                     <StackPanel Orientation="Horizontal" Height="30">
-                        <Label Width="150" VerticalContentAlignment="Bottom" Content="Throttle Valve Status" />
-                        <Button x:Name="btTrottleStatus" Content=""/>
+                        <Label Width="140" VerticalContentAlignment="Bottom" Content="Throttle Valve Status" />
+                        <TextBox x:Name="btTrottleStatus" IsReadOnly="True" Text="{Binding ThrottleValveStatus}" Width="121" HorizontalContentAlignment="Left"/>
                     </StackPanel>
-                    <Label Content="Vacuum Pump Control" VerticalContentAlignment="Bottom"/>
-                    <StackPanel Orientation="Horizontal" Height="30" Margin="10,0,0,0">
+                    <StackPanel Orientation="Horizontal" Height="30">
+                        <Label Width="140" Content="Vacuum Pump" VerticalContentAlignment="Bottom"/>
                         <Button x:Name="btPumpOn" Content="{Binding VaccumPumpOn}" Command="{Binding VacuumPumpToggleCommand}"/>
                         <Button x:Name="btPumpReset" Content="{Binding VaccumPumpReset}"/>
                     </StackPanel>
@@ -925,12 +936,15 @@
                         <TextBlock Grid.Column="0" Grid.Row="0" Text="Target Val." Margin="0,6,0,0"/>
                         <TextBlock Grid.Column="1" Grid.Row="0" Text="Control Val." Margin="0,6,0,0"/>
                         <TextBlock Grid.Column="2" Grid.Row="0" Text="Current Val." Margin="0,6,0,0"/>
-                        <TextBox x:Name="tbTargetRotation"  Grid.Column="0" Grid.Row="1"  Text="{Binding TargetRotation}"/>
-                        <TextBox x:Name="tbControlRotation"  Grid.Column="1" Grid.Row="1" Text="{Binding ControlRotation}"/>
-                        <TextBox x:Name="tbCurrentRotation"  Grid.Column="2" Grid.Row="1" Text="{Binding CurrentRotation}"/>
+                        <TextBox x:Name="tbTargetRotation"  Grid.Column="0" Grid.Row="1"  Text="{Binding TargetRotation}" IsReadOnly="True"/>
+                        <TextBox x:Name="tbControlRotation"  Grid.Column="1" Grid.Row="1" Text="{Binding ControlRotation}" IsReadOnly="True"/>
+                        <TextBox x:Name="tbCurrentRotation"  Grid.Column="2" Grid.Row="1" Text="{Binding CurrentRotation}" IsReadOnly="True"/>
                     </Grid>
-                        <Label Content="Motor Control" VerticalContentAlignment="Bottom"/>
-                        <Button x:Name="btMotorReset" Content="{Binding RotationReset}" HorizontalAlignment="Left" Margin="10,0,0,0"/>
+                    <StackPanel Orientation="Horizontal" Height="30">
+                        <Label Width="140" Content="Motor Control" VerticalContentAlignment="Bottom"/>
+                        <Button x:Name="btMotorReset" Content="{Binding RotationReset}" HorizontalAlignment="Left"/>
+                    </StackPanel>
+
                 </StackPanel>
             </Grid>
             <!-- Event Log -->

@@ -6,6 +6,8 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using SapphireXR_App.Common;
 using SapphireXR_App.Models;
 using System.Collections;
+using System.Numerics;
+using System.Windows.Controls;
 
 namespace SapphireXR_App.ViewModels
 {
@@ -96,40 +98,9 @@ namespace SapphireXR_App.ViewModels
             private bool? prevRotationAlarmReset;
         }
 
-        private class OutputCmd1Subscriber : IObserver<BitArray>
+        private class ThrottleValveStatusSubscriber : IObserver<short>
         {
-            internal OutputCmd1Subscriber(HomeViewModel vm)
-            {
-                homeViewModel = vm;
-            }
-
-            void IObserver<BitArray>.OnCompleted()
-            {
-                throw new NotImplementedException();
-            }
-
-            void IObserver<BitArray>.OnError(Exception error)
-            {
-                throw new NotImplementedException();
-            }
-
-            void IObserver<BitArray>.OnNext(BitArray value)
-            {
-                Util.SetIfChanged(value[12], ref prevPressureControlMode, (bool value) => { homeViewModel.PressureControlMode = (value == true ? "Position" : "Pressure"); });
-                Util.SetIfChanged(value[(int)PLCService.OutputCmd2Index.InductionHeaterControl], ref prevInpudctionHeaterOn, (bool value) => { homeViewModel.InductionHeaterOn = (value == true ? "On" : "Off"); });
-                Util.SetIfChanged(value[(int)PLCService.OutputCmd2Index.VaccumPumpControl], ref prevVaccumPumpOn, (bool value) => { homeViewModel.VaccumPumpOn = (value == true ? "On" : "Off"); });
-
-            }
-
-            private HomeViewModel homeViewModel;
-            private bool? prevPressureControlMode = null;
-            private bool? prevInpudctionHeaterOn = null;
-            private bool? prevVaccumPumpOn = null;
-        }
-
-        private class ThrottleValveControlModeSubscriber : IObserver<short>
-        {
-            internal ThrottleValveControlModeSubscriber(HomeViewModel vm)
+            internal ThrottleValveStatusSubscriber(HomeViewModel vm)
             {
                 homeViewModel = vm;
             }
@@ -148,27 +119,9 @@ namespace SapphireXR_App.ViewModels
             {
                 if(prevThrottleValveControlMode == null || prevThrottleValveControlMode != value)
                 {
-                    switch(value)
+                    if (value < ThrottleValveStatusToString.Length)
                     {
-                        case 0:
-                            homeViewModel.ThrottleValveControlMode = "Run";
-                            break;
-
-                        case 1:
-                            homeViewModel.ThrottleValveControlMode = "Close";
-                            break;
-
-                        case 2:
-                            homeViewModel.ThrottleValveControlMode = "Open";
-                            break;
-
-                        case 3:
-                            homeViewModel.ThrottleValveControlMode = "Hold";
-                            break;
-
-                        case 4:
-                            homeViewModel.ThrottleValveControlMode = "Reset";
-                            break;
+                        homeViewModel.ThrottleValveStatus = ThrottleValveStatusToString[value];
                     }
                     prevThrottleValveControlMode = value;
                 }
@@ -269,9 +222,17 @@ namespace SapphireXR_App.ViewModels
             }
             ObservableManager<BitArray>.Subscribe("DigitalOutput2", digitalOutput2Subscriber = new DigitalOutput2Subscriber(this));
             ObservableManager<BitArray>.Subscribe("DigitalOutput3", digitalOutput3Subscriber = new DigitalOutput3Subscriber(this));
-            ObservableManager<BitArray>.Subscribe("OutputCmd1", outputCmd1Subscriber = new OutputCmd1Subscriber(this));
             ObservableManager<BitArray>.Subscribe("InputManAuto", inputManAutoSubscriber = new InputManAutoSubscriber(this));
-            ObservableManager<short>.Subscribe("ThrottleValveControlMode", throttleValveControlModeSubscriber = new ThrottleValveControlModeSubscriber(this));
+            ObservableManager<short>.Subscribe("ThrottleValveStatus", throttleValveStatusSubscriber = new ThrottleValveStatusSubscriber(this));
+            onPressureControlModeUpdated(PLCService.ReadPressureControlMode());
+
+            ThrottleValveControlModes = ["Control", "Open", "Close", "Hold", "Reset"];
+            ushort throttleValveMode = PLCService.ReadThrottleValveMode();
+            if(throttleValveMode < ThrottleValveModeCmdToString.Length)
+            {
+                CurrentThrottleValveControlMode = ThrottleValveModeCmdToString[throttleValveMode];
+                prevThrottleValveControlMode = CurrentThrottleValveControlMode;
+            }
         }
 
         [RelayCommand]
@@ -281,9 +242,77 @@ namespace SapphireXR_App.ViewModels
         }
 
         [RelayCommand]
-        private void  InductionHeaterToggle()
+        private void InductionHeaterToggle()
         {
             OutputCmd1OnOffConfirmWindow.Show(InductionHeaterOn, PLCService.OutputCmd2Index.InductionHeaterControl);
+        }
+
+        [RelayCommand]
+        private void TogglePressureControlMode()
+        {
+            if(PressureControlMode == PressureControlModePressure)
+            {
+                PLCService.WriteOutputCmd1(PLCService.OutputCmd2Index.PressureControlMode, true);
+                SynchronizeExpected<ushort>(2, PLCService.ReadPressureControlMode, onPressureControlModeUpdated, null, 3000, 
+                    "장비의 Pressure Control Mode가 " + PressureControlModePosition + "값으로 설정되지 않았습니다. 프로그램과 장비 간에 Pressure Control Mode 상태 동기화가 되지 않았습니다.");
+
+            }
+            else
+                if(PressureControlMode == PressureControlModePosition)
+                {
+                    PLCService.WriteOutputCmd1(PLCService.OutputCmd2Index.PressureControlMode, false);
+                    SynchronizeExpected<ushort>(1, PLCService.ReadPressureControlMode, onPressureControlModeUpdated, null,  3000, 
+                        "장비의 Pressure Control Mode가 " + PressureControlModePressure + "값으로 설정되지 않았습니다. 프로그램과 장비 간에 Pressure Control Mode 상태 동기화가 되지 않았습니다.");
+            }
+        }
+
+
+        public ICommand OnThrottleValveModeChangedCommand => new RelayCommand<object?>((object? args) =>
+        {
+            SelectionChangedEventArgs? selectionChangedEventArgs = args as SelectionChangedEventArgs;
+            if (selectionChangedEventArgs != null)
+            {
+                ComboBox? comboBox = selectionChangedEventArgs.Source as ComboBox;
+                if (comboBox != null)
+                {
+                    string? selectedMode = comboBox.SelectedItem as string;
+                    if (selectedMode != null)
+                    {
+                        ushort cmdOutputMode = ThrottleValveModeStringToCmdOutputMode[selectedMode];
+                        PLCService.WriteThrottleValveMode((short)cmdOutputMode);
+                        SynchronizeExpected(cmdOutputMode, PLCService.ReadThrottleValveMode, (ushort throttleValveMode) => prevThrottleValveControlMode = CurrentThrottleValveControlMode,
+                                (ushort throttleValveMode) => CurrentThrottleValveControlMode = prevThrottleValveControlMode, 3000,
+                                "장비의 Throttle Valve Mode가 " + CurrentThrottleValveControlMode + "값으로 설정되지 않았습니다. 프로그램과 장비 간에 Pressure Control Mode 상태 동기화가 되지 않았습니다.");
+                    }
+                }
+            }
+        });
+
+
+        private static void SynchronizeExpected<T>(T expected, Func<T> checkFunc, Action<T>? onSync, Action<T>? onFailed, long timeOutMS, string messageOnTimeout) where T : INumber<T>
+        {
+            if(Util.SynchronizeExpected(expected, checkFunc, timeOutMS) == true)
+            {
+                onSync?.Invoke(expected);
+            }
+            else
+            {
+                onFailed?.Invoke(expected);
+                MessageBox.Show(messageOnTimeout);
+            }
+        }
+
+        private void onPressureControlModeUpdated(ushort mode)
+        {
+            switch(mode)
+            {
+                case 1:
+                    PressureControlMode = PressureControlModePressure;
+                    break;
+                case 2:
+                    PressureControlMode = PressureControlModePosition;
+                    break;
+            }
         }
 
         public ICommand EnableLeakTestCommand { get; set; }
@@ -347,16 +376,29 @@ namespace SapphireXR_App.ViewModels
         [ObservableProperty]
         private string _inputManualAuto = "";
         [ObservableProperty]
-        private string _throttleValveControlMode = "";
+        private List<string> _throttleValveControlModes;
+        [ObservableProperty]
+        private string? _currentThrottleValveControlMode = null;
+        [ObservableProperty]
+        private string _throttleValveStatus = "";
+
+        private string? prevThrottleValveControlMode = null;
+
+        private static readonly string PressureControlModePressure = "Pressure";
+        private static readonly string PressureControlModePosition = "Position";
+
+        private static readonly Dictionary<string, ushort> ThrottleValveModeStringToCmdOutputMode = new Dictionary<string, ushort>() { { "Control", 0 }, { "Close", 1 }, { "Open", 2 }, { "Hold", 3 }, { "Reset", 4 } };
+        private static readonly string[] ThrottleValveModeCmdToString = [ "Control", "Close", "Open", "Hold", "Reset"];
+        private static readonly string[] ThrottleValveStatusToString = ["Pressure Control", "Position Control", "Valve Open", "Not Initialized", "Valve Closed", "Valve Fault", "Valve Initializing", "", "Valve Hold"];
+
 
         public BottomDashBoardViewModel DashBoardViewModel { get; set; }
 
         private FlowControllerValueSubscriber[] flowControllerValueSubscribers;
-        private OutputCmd1Subscriber outputCmd1Subscriber;
         private DigitalOutput2Subscriber digitalOutput2Subscriber;
         private DigitalOutput3Subscriber digitalOutput3Subscriber;
         private InputManAutoSubscriber inputManAutoSubscriber;
-        private ThrottleValveControlModeSubscriber throttleValveControlModeSubscriber;
+        private ThrottleValveStatusSubscriber throttleValveStatusSubscriber;
         private ObservableManager<bool>.DataIssuer leakTestModePublisher;
     }
 }

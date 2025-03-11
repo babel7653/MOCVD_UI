@@ -1,11 +1,11 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4026.8">
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4026.11">
   <POU Name="P11_E3508" Id="{a7e3d6a1-82f0-4607-8ac9-093cb5f931f5}" SpecialFunc="None">
     <Declaration><![CDATA[PROGRAM P11_E3508
 VAR_INPUT
 	wControlValue			: WORD;
 	wPowerRateSetValue		: WORD;	
-	bOutputManAuto 			: BOOL; // 0:Auto, 1:Manual Operation
+	bOutputManAuto 			: BOOL; // Command 0:Auto, 1:Manual Mode
 	
 	bHeaterOn				: BOOL := FALSE; //to PSTEK
 	bHeaterReset			: BOOL; //to PSTEK
@@ -13,8 +13,8 @@ END_VAR
 
 VAR_OUTPUT
 	bAlarmState_E3508 		: BOOL; //Alarm or Sensor Break Signal
-	bManAuto_E3508 			: BOOL; // 0:Manual, 1:Auto
-	
+	bManAuto_E3508 			: BOOL; //State, 0:Manual, 1:Auto
+
 	isHeaterReady			: BOOL; //Close : Ready
 	isHeaterRun				: BOOL; //Close : Running, Open : Stop
 	isHeaterFault			: BOOL; //Close : Falut, Open : Normal
@@ -68,7 +68,7 @@ wE3508_I 				:= USINT_TO_WORD_Bit(aInputIntegral[1], aInputIntegral[2]);
 wE3508_D 				:= USINT_TO_WORD_Bit(aInputDerivative[1], aInputDerivative[2]);
 
 bAlarmState_E3508 		:= nInputAlarmBytes.7;
-bManAuto_E3508 			:= nInputManAutoBytes.7;
+bManAuto_E3508 			:= nInputManAutoBytes.7; //State
 
 GVL_IO.aMonitoring_PV[10] := WORD_TO_REAL(wE3508_PowerRate)*0.1; //divided to 10
 
@@ -78,16 +78,18 @@ isHeaterRun		 		:= GVL_IO.aDigitalInputIO[2].3;
 isHeaterFault 			:= GVL_IO.aDigitalInputIO[2].4;
 
 (* Write to E3508 Device Value *)
-wOutputSVBytes 			:= WORD_TO_USINT_Bit(wControlValue);
-aOutputSVBytes[1] 		:= wOutputSVBytes.Lower;
-aOutputSVBytes[2] 		:= wOutputSVBytes.Upper;
+// Operation Mode
+nOutputManAutoBytes.0 	:= bOutputManAuto; //Command
 
-(* PowerRate Operation *)
-nOutputManAutoBytes.0 	:= bOutputManAuto;
-
-wOutputPowerSVBytes 	:= WORD_TO_USINT_Bit(wPowerRateSetValue*10); //multiple to 10
-aOutputPowerBytes[1] 	:= wOutputPowerSVBytes.Lower;
-aOutputPowerBytes[2] 	:= wOutputPowerSVBytes.Upper;
+IF bManAuto_E3508 THEN // Read form E3508 Mode, 0:Man 1:Auto
+	wOutputPowerSVBytes 	:= WORD_TO_USINT_Bit(wControlValue*10); //multiple to 10, Power Reate Set Value
+	aOutputPowerBytes[1] 	:= wOutputPowerSVBytes.Lower;
+	aOutputPowerBytes[2] 	:= wOutputPowerSVBytes.Upper;
+ELSE
+	wOutputSVBytes 			:= WORD_TO_USINT_Bit(wControlValue); // Temperature Set Value
+	aOutputSVBytes[1] 		:= wOutputSVBytes.Lower;
+	aOutputSVBytes[2] 		:= wOutputSVBytes.Upper;
+END_IF
 
 (* Write to Induction Heater Value *)
 GVL_IO.aDigitalOutputIO[2].0 := bHeaterOn;
@@ -107,11 +109,18 @@ GVL_IO.aDigitalOutputIO[2].1 := bHeaterReset;]]></ST>
       <LineId Id="296" Count="0" />
       <LineId Id="309" Count="1" />
       <LineId Id="254" Count="0" />
-      <LineId Id="269" Count="3" />
-      <LineId Id="311" Count="0" />
-      <LineId Id="273" Count="4" />
-      <LineId Id="257" Count="0" />
-      <LineId Id="290" Count="0" />
+      <LineId Id="269" Count="0" />
+      <LineId Id="537" Count="0" />
+      <LineId Id="536" Count="0" />
+      <LineId Id="538" Count="0" />
+      <LineId Id="533" Count="0" />
+      <LineId Id="539" Count="1" />
+      <LineId Id="534" Count="0" />
+      <LineId Id="541" Count="0" />
+      <LineId Id="543" Count="1" />
+      <LineId Id="542" Count="0" />
+      <LineId Id="535" Count="0" />
+      <LineId Id="545" Count="0" />
       <LineId Id="289" Count="0" />
       <LineId Id="292" Count="0" />
       <LineId Id="382" Count="0" />

@@ -1,11 +1,4 @@
-﻿using CommunityToolkit.Mvvm.ComponentModel;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
-using SapphireXR_App.Models;
-using System.IO;
-
-
-namespace SapphireXR_App.Common
+﻿namespace SapphireXR_App.Common
 {
     internal static class GlobalSetting
     {
@@ -13,6 +6,7 @@ namespace SapphireXR_App.Common
         {
 
         }
+
         public static readonly int DefaultLogIntervalInRecipeRunInMS = 1000;
 
         private static int _logIntervalInRecipeRunInMS = DefaultLogIntervalInRecipeRunInMS;

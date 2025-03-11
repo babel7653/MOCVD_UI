@@ -50,7 +50,9 @@ namespace SapphireXR_App.Models
 
                 hMonitoring_PV = Ads.CreateVariableHandle("GVL_IO.aMonitoring_PV");
                 hInputState = Ads.CreateVariableHandle("GVL_IO.aInputState");
+                hInputState4 = Ads.CreateVariableHandle("GVL_IO.aInputState[4]");
                 hDigitalOutput = Ads.CreateVariableHandle("GVL_IO.aDigitalOutputIO");
+                hDigitalOutput2 = Ads.CreateVariableHandle("GVL_IO.aDigitalOutputIO[2]");
                 hOutputCmd = Ads.CreateVariableHandle("GVL_IO.aOutputCmd");
                 hOutputCmd1 = Ads.CreateVariableHandle("GVL_IO.aOutputCmd[1]");
                 hOutputCmd2 = Ads.CreateVariableHandle("GVL_IO.aOutputCmd[2]");
@@ -538,6 +540,7 @@ namespace SapphireXR_App.Models
             short outputCmd1 = Ads.ReadAny<short>(hOutputCmd1);
             return new BitArray(BitConverter.IsLittleEndian == true ? BitConverter.GetBytes(outputCmd1) : BitConverter.GetBytes(outputCmd1).Reverse().ToArray());
             
+
         }
 
         public static ushort ReadPressureControlMode()
@@ -559,6 +562,17 @@ namespace SapphireXR_App.Models
         {
             ushort inputManAuto = Ads.ReadAny<ushort>(hE3508InputManAuto);
             return new BitArray(BitConverter.IsLittleEndian == true ? BitConverter.GetBytes(inputManAuto) : BitConverter.GetBytes(inputManAuto).Reverse().ToArray())[7];
+        }
+
+        public static bool ReadDigitalOutputIO2(int bitIndex)
+        {
+            return new BitArray(new byte[1] { Ads.ReadAny<byte>(hDigitalOutput2) })[bitIndex];
+        }
+
+        public static bool ReadInputState4(int bitIndex)
+        {
+            short inputState = Ads.ReadAny<short>(hInputState4);
+            return new BitArray(BitConverter.IsLittleEndian == true ? BitConverter.GetBytes(inputState) : BitConverter.GetBytes(inputState).Reverse().ToArray())[bitIndex];
         }
     }
 }

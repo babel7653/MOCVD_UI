@@ -71,7 +71,7 @@ namespace SapphireXR_App.Models
 
         public enum OutputCmd1Index
         {
-            InductionHeaterPower = 0, ThermalBathPower, VaccumPumpPower, LineHeaterPower, InductionHeaterControl, VaccumPumpControl = 6, VaccumPumpReset = 7, TempControllerManAuto = 11, PressureControlMode = 12
+            InductionHeaterPower = 0, ThermalBathPower, VaccumPumpPower, LineHeaterPower, InductionHeaterControl, InductionHeaterReset, VaccumPumpControl, VaccumPumpReset, TempControllerManAuto = 11, PressureControlMode = 12
         }
 
         public enum OutputSetType: ushort
@@ -140,6 +140,7 @@ namespace SapphireXR_App.Models
         private static uint hRcpStepN;
         private static uint hMonitoring_PV;
         private static uint hInputState;
+        private static uint hInputState4;
         private static uint hState_RcpOperation;
         private static uint hTemperaturePV;
         private static uint hOperationMode;
@@ -148,6 +149,7 @@ namespace SapphireXR_App.Models
         private static uint hRecipeControlRampTime;
         private static uint hRecipeControlPauseTime;
         private static uint hDigitalOutput;
+        private static uint hDigitalOutput2;
         private static uint hOutputCmd;
         private static uint hE3508InputManAuto;
         private static uint hOutputCmd1;

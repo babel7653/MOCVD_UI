@@ -8,7 +8,6 @@ using System.ComponentModel;
 using System.Globalization;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Threading;
 
 namespace SapphireXR_App.ViewModels
 {
@@ -225,9 +224,14 @@ namespace SapphireXR_App.ViewModels
         public RecipeRunViewModel()
         {
             DashBoardViewModel = new RecipeRunBottomDashBoardViewModel();
+
             logIntervalInRecipeRunListener = new LogIntervalInRecipeRunListener(this, GlobalSetting.LogIntervalInRecipeRunInMS);
             ObservableManager<int>.Subscribe("GlobalSetting.LogIntervalInRecipeRun", logIntervalInRecipeRunListener);
             ObservableManager<short>.Subscribe("RecipeRun.CurrentActiveRecipe", this);
+            ObservableManager<bool>.Subscribe("RecipeEnded", recipeEndedSubscriber = new RecipeEndedSubscriber(this));
+            recipeRunStatePublisher = ObservableManager<RecipeUserState>.Get("RecipeRun.State");
+            ObservableManager<(string, IList<Recipe>)>.Subscribe("RecipeEdit.LoadToRecipeRun", loadFromRecipeEditSubscriber = new LoadFromRecipeEditSubscriber(this));
+            recipeEventIssuer = ObservableManager<HomeViewModel.EventLog>.Get("EventLog");
 
             PropertyChanging += (object? sender, PropertyChangingEventArgs e) =>
             {
@@ -297,6 +301,10 @@ namespace SapphireXR_App.ViewModels
 
                             case RecipeUserState.Run:
                                 CurrentRecipe.startLog();
+                                if(Start == RecipeCommand.Run)
+                                {
+                                    recipeEventIssuer.Issue(new HomeViewModel.EventLog() { Date = Util.ToEventLogFormat(DateTime.Now), Message = "레시피가 시작되었습니다", Type = "Recipe Run" });
+                                }
                                 StartOrPause = false;
                                 break;
 
@@ -308,11 +316,13 @@ namespace SapphireXR_App.ViewModels
 
                             case RecipeUserState.Stopped:
                                 CurrentRecipe.stopLog();
+                                recipeEventIssuer.Issue(new HomeViewModel.EventLog() { Date = Util.ToEventLogFormat(DateTime.Now), Message = "레시피가 중단되었습니다", Type = "Recipe Run" });
                                 toRecipeLoadedState();
                                 break;
 
                             case RecipeUserState.Ended:
                                 CurrentRecipe.stopLog();
+                                recipeEventIssuer.Issue(new HomeViewModel.EventLog() { Date = Util.ToEventLogFormat(DateTime.Now), Message = "레시피가 종료되었습니다", Type = "Recipe Run" });
                                 MessageBox.Show("Recipe가 종료되었습니다. 종료시간: " + DateTime.Now.ToString("HH:mm"));
                                 toRecipeLoadedState();
                                 break;
@@ -327,10 +337,6 @@ namespace SapphireXR_App.ViewModels
                         break;
                 }
             };
-
-            ObservableManager<bool>.Subscribe("RecipeEnded", recipeEndedSubscriber = new RecipeEndedSubscriber(this));
-            recipeRunStatePublisher = ObservableManager<RecipeUserState>.Get("RecipeRun.State");
-            ObservableManager<(string, IList<Recipe>)>.Subscribe("RecipeEdit.LoadToRecipeRun", loadFromRecipeEditSubscriber = new LoadFromRecipeEditSubscriber(this));
         }
 
         void IObserver<short>.OnCompleted()
@@ -427,6 +433,8 @@ namespace SapphireXR_App.ViewModels
         private RecipeCommand Start = RecipeCommand.Run;
         private ObservableManager<RecipeUserState>.DataIssuer recipeRunStatePublisher;
         private LoadFromRecipeEditSubscriber loadFromRecipeEditSubscriber;
+
+        private ObservableManager<HomeViewModel.EventLog>.DataIssuer recipeEventIssuer;
 
         [ObservableProperty]
         private RecipeUserState _currentRecipeUserState = RecipeUserState.Uninitialized;

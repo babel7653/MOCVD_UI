@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
+using SapphireXR_App.Common;
 using SapphireXR_App.Models;
 using SapphireXR_App.ViewModels;
 using SapphireXR_App.Views;
@@ -67,5 +68,8 @@ namespace SapphireXR_App
 
             return services.BuildServiceProvider();
         }
+
+
+        public static readonly DateTime AppStartTime = DateTime.Now;
     }
 }

@@ -76,7 +76,7 @@
                             </TextBox.InputBindings>
                         </TextBox>
                         <Button x:Name="PlotLogFileClose_1" Content="Remove" VerticalAlignment="Center"
-									Command="{Binding PlotLogFileRemove1Command}">
+									Command="{Binding LoadLogCommand}">
                         </Button>
                     </StackPanel>
                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">

@@ -953,15 +953,22 @@
                         <Label Foreground="DeepSkyBlue" FontSize="14" HorizontalContentAlignment="Center" Margin="100,0,0,0">
                             <Bold>Event Log</Bold>
                         </Label>
-                        <Button Height="20" Width="80" Content="Clear"/>
+                        <Button Height="20" Width="80" Content="Clear" Command="{Binding ClearEventLogsCommand}"/>
                     </StackPanel>
                     <Line X1="5" Y1="0" X2="295" Y2="0" Stroke="DeepSkyBlue" StrokeThickness="2" Margin="2,2,2,8"/>
-                    <DataGrid x:Name="dgEventLog">
-                        <DataGrid.Columns>
-                            <DataGridTextColumn Header="Type" Binding="{Binding Type}" Width="70"/>
-                            <DataGridTextColumn Header="Message" Binding="{Binding Message}" Width="160"/>
-                            <DataGridTextColumn Header="Date/Time" Binding="{Binding Date}" Width="70"/>
-                        </DataGrid.Columns>
+                    <DataGrid x:Name="dgEventLog" ItemsSource="{Binding EventLogs}">
+                        <DataGrid.ColumnHeaderStyle>
+                            <Style TargetType="DataGridColumnHeader">
+                                <Setter Property="HorizontalContentAlignment" Value="Center" />
+                            </Style>
+                        </DataGrid.ColumnHeaderStyle>
+                        <DataGrid.Resources>
+                            <Style TargetType="DataGridCell">
+                                <Style.Setters>
+                                    <Setter Property="TextBlock.TextAlignment" Value="Center" />
+                                </Style.Setters>
+                            </Style>
+                        </DataGrid.Resources>
                     </DataGrid>
                 </StackPanel>
             </Grid>

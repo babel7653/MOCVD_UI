@@ -171,6 +171,11 @@ namespace SapphireXR_App.Common
             }
         }
 
+        public static string ToEventLogFormat(DateTime dateTime)
+        {
+            return dateTime.ToString("yyyy.MM.dd HH:mm:ss");
+        }
+
         public static void ConstraintEmptyToZeroOnDataGridCellCommitForRecipeRunEdit(object sender, DataGridCellEditEndingEventArgs e)
         {
             ConstraintEmptyToZeroOnDataGridCellCommit(sender, e, ["Ramp", "Hold", "M01", "M02", "M03", "M04", "M05", "M06", "M07", "M08", "M09", "M10", "M11", "M12", "M13", "M14", "M15", "M16",

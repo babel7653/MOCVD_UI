@@ -8,100 +8,14 @@ using SapphireXR_App.Models;
 using System.Collections;
 using System.Numerics;
 using System.Windows.Controls;
-using System;
 using System.ComponentModel;
+using System.Collections.ObjectModel;
+using System.Collections.Specialized;
 
 namespace SapphireXR_App.ViewModels
 {
     public partial class HomeViewModel : ObservableObject
     {
-        private abstract class FlowControllerValueSubscriber;
-        private class FlowControllerValueSubscriber<T> : FlowControllerValueSubscriber, IObserver<T>
-        {
-            internal FlowControllerValueSubscriber(Action<T> onNextAct, string topicNameStr)
-            {
-                onNext = onNextAct;
-                topicName = topicNameStr;
-            }
-
-            void IObserver<T>.OnCompleted()
-            {
-                throw new NotImplementedException();
-            }
-
-            void IObserver<T>.OnError(Exception error)
-            {
-                throw new NotImplementedException();
-            }
-
-            void IObserver<T>.OnNext(T value)
-            {
-                onNext(value);
-            }
-
-            public string topicName;
-            private readonly Action<T> onNext;
-        }
-
-        private class DigitalOutput3Subscriber : IObserver<BitArray>
-        {
-            internal DigitalOutput3Subscriber(HomeViewModel vm)
-            {
-                homeViewMode = vm;
-            }
-
-            void IObserver<BitArray>.OnCompleted()
-            {
-                throw new NotImplementedException();
-            }
-
-            void IObserver<BitArray>.OnError(Exception error)
-            {
-                throw new NotImplementedException();
-            }
-
-            void IObserver<BitArray>.OnNext(BitArray value)
-            {
-                Util.SetIfChanged(value[(int)PLCService.DigitalOutput3Index.RotationAlaramReset], ref prevRotationAlarmReset, (bool value) => { homeViewMode.RotationReset = (value == true ? "Reset" : "No Reset"); });
-            }
-
-            private HomeViewModel homeViewMode;
-            private bool? prevRotationAlarmReset;
-        }
-
-        private class ThrottleValveStatusSubscriber : IObserver<short>
-        {
-            internal ThrottleValveStatusSubscriber(HomeViewModel vm)
-            {
-                homeViewModel = vm;
-            }
-
-            void IObserver<short>.OnCompleted()
-            {
-                throw new NotImplementedException();
-            }
-
-            void IObserver<short>.OnError(Exception error)
-            {
-                throw new NotImplementedException();
-            }
-
-            void IObserver<short>.OnNext(short value)
-            {
-                if(prevThrottleValveControlMode == null || prevThrottleValveControlMode != value)
-                {
-                    if (value < ThrottleValveStatusToString.Length)
-                    {
-                        homeViewModel.ThrottleValveStatus = ThrottleValveStatusToString[value];
-                    }
-                    prevThrottleValveControlMode = value;
-                }
-            }
-
-            private HomeViewModel homeViewModel;
-            private short? prevThrottleValveControlMode = null;
-        }
-
         public HomeViewModel()
         {
             DashBoardViewModel = new HomeBottomDashBoardViewModel();
@@ -180,6 +94,7 @@ namespace SapphireXR_App.ViewModels
             BitArray outputCmd1 = PLCService.ReadOutputCmd1();
             InductionHeaterOn = (outputCmd1[(int)PLCService.OutputCmd1Index.InductionHeaterControl] == true) ? "On" : "Off";
             VaccumPumpOn = (outputCmd1[(int)PLCService.OutputCmd1Index.VaccumPumpControl] == true) ? "On" : "Off";
+            InputManualAuto = PLCService.ReadInputManAuto(7) == false ? "Auto" : "Manual";
 
             PropertyChanged += (object? sender, PropertyChangedEventArgs args) =>
             {
@@ -189,7 +104,9 @@ namespace SapphireXR_App.ViewModels
                 }
             };
 
-            InputManualAuto = PLCService.ReadInputManAuto(7) == false ? "Auto" : "Manual";
+            EventLogs.CollectionChanged += (object? sender, NotifyCollectionChangedEventArgs args) => ClearEventLogsCommand.NotifyCanExecuteChanged();
+            EventLogs.Add(new() { Date = Util.ToEventLogFormat(App.AppStartTime), Message = "SapphireXR 시작", Type = "Application" });
+            ObservableManager<EventLog>.Subscribe("EventLog", eventLogSubscriber = new EventLogSubscriber(this));
         }
 
 
@@ -240,7 +157,24 @@ namespace SapphireXR_App.ViewModels
         [RelayCommand]
         private void InductionHeaterReset()
         {
+            if (ValveOperationEx.Show("Vaccum Pump Reset", "Reset 하시겠습니까?") == Enums.ValveOperationExResult.Ok)
+            {
+                PLCService.WriteOutputCmd1(PLCService.OutputCmd1Index.InductionHeaterReset, true);
+                int timeout = 10000;
+                //SynchronizeExpected(0, () => PLCService.ReadDigitalOutputIO2(1) == true ? 1 : 0, null, null, timeout, "Induction Heater Reset 명령이 실패하였거나 본 프로그램의 timout 대기 시간 " +
+                //    timeout + "(MS)을 초과하셨습니다");
+            }
+        }
 
+        [RelayCommand(CanExecute = "CanClearEventLogsExecute")]
+        private void ClearEventLogs()
+        {
+            EventLogs.Clear();
+        }
+
+        private bool CanClearEventLogsExecute()
+        {
+            return 0 < EventLogs.Count;
         }
 
         [RelayCommand]
@@ -378,6 +312,9 @@ namespace SapphireXR_App.ViewModels
         [ObservableProperty]
         private string _throttleValveStatus = "";
 
+        [ObservableProperty]
+        ObservableCollection<EventLog> _eventLogs = new ObservableCollection<EventLog>();
+
         private string? prevThrottleValveControlMode = null;
 
         private static readonly string PressureControlModePressure = "Pressure";
@@ -393,6 +330,7 @@ namespace SapphireXR_App.ViewModels
         private DigitalOutput3Subscriber digitalOutput3Subscriber;
         private ThrottleValveStatusSubscriber throttleValveStatusSubscriber;
         private ObservableManager<bool>.DataIssuer leakTestModePublisher;
+        private EventLogSubscriber eventLogSubscriber;
     }
 }
 

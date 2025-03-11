@@ -67,7 +67,7 @@ wE3508_P 				:= USINT_TO_WORD_Bit(aInputProportional[1], aInputProportional[2]);
 wE3508_I 				:= USINT_TO_WORD_Bit(aInputIntegral[1], aInputIntegral[2]);
 wE3508_D 				:= USINT_TO_WORD_Bit(aInputDerivative[1], aInputDerivative[2]);
 
-bAlarmState_E3508 		:= nInputAlarmBytes.7;
+//bAlarmState_E3508 		:= nInputAlarmBytes.7;
 bManAuto_E3508 			:= nInputManAutoBytes.7; //State
 
 GVL_IO.aMonitoring_PV[10] := WORD_TO_REAL(wE3508_PowerRate)*0.1; //divided to 10
@@ -81,7 +81,7 @@ isHeaterFault 			:= GVL_IO.aDigitalInputIO[2].4;
 // Operation Mode
 nOutputManAutoBytes.0 	:= bOutputManAuto; //Command
 
-IF bManAuto_E3508 THEN // Read form E3508 Mode, 0:Man 1:Auto
+IF nInputManAutoBytes.7 THEN // Read form E3508 Mode, 0:Man 1:Auto
 	wOutputPowerSVBytes 	:= WORD_TO_USINT_Bit(wControlValue*10); //multiple to 10, Power Reate Set Value
 	aOutputPowerBytes[1] 	:= wOutputPowerSVBytes.Lower;
 	aOutputPowerBytes[2] 	:= wOutputPowerSVBytes.Upper;

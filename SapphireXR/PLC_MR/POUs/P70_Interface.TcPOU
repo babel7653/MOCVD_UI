@@ -66,7 +66,7 @@ GVL_IO.aInputState[4].4		:= GVL_IO.aDigitalOutputIO[1].4; // WHITE - Maint
 GVL_IO.aInputState[4].5		:= GVL_IO.aDigitalOutputIO[1].5; // BUZZER - Alarm
 GVL_IO.aInputState[4].6		:= GVL_IO.aDigitalOutputIO[4].0; // DOR Vacuum State
 GVL_IO.aInputState[4].7		:= P11_E3508.nInputAlarmBytes.7; // Temp Conroller Alarm State
-GVL_IO.aInputState[4].8		:= P11_E3508.bManAuto_E3508; // Temp Controller Mode State
+GVL_IO.aInputState[4].8		:= P11_E3508.nInputManAutoBytes.7; // Temp Controller Mode State
 
 P90_Interlock.bInductionHeaterMC := GVL_IO.aOutputCmd[1].0;
 P90_Interlock.bThermalBathMC := GVL_IO.aOutputCmd[1].1;

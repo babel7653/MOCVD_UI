@@ -852,13 +852,12 @@
                     </Grid>
                     <StackPanel Orientation="Horizontal" Height="30">
                         <Label Width="140" VerticalContentAlignment="Bottom" Content="Heater Control Mode"/>
-                        <ComboBox ItemsSource="{Binding InputManualAuto, Mode=OneWay}" DisplayMemberPath="Name"
-                                  SelectedItem="{}"/>
+                        <Button Content="{Binding InputManualAuto, Mode=OneWay}" Command="{Binding ToggleHeaterControlModeCommand}"/>
                     </StackPanel>
                     <StackPanel Orientation="Horizontal" Height="30">
                         <Label Width="140" Content="Induction Power Supply" VerticalContentAlignment="Bottom"/>
                         <Button x:Name="btHeaterOn" Content="{Binding InductionHeaterOn}" Command="{Binding InductionHeaterToggleCommand}"/>
-                        <Button x:Name="btHeaterReset" Content="{Binding InductionHeaterReset}"/>
+                        <Button x:Name="btHeaterReset" Content="Reset" Command="{Binding InductionHeaterResetCommand}"/>
                     </StackPanel>
                 </StackPanel>
             </Grid>
@@ -906,7 +905,7 @@
 
                     <StackPanel Orientation="Horizontal" Height="30">
                         <Label Width="140" VerticalContentAlignment="Bottom" Content="Throttle Valve Status" />
-                        <TextBox x:Name="btTrottleStatus" IsReadOnly="True" Text="{Binding ThrottleValveStatus}" Width="121" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Style="{StaticResource InfoTextBoxStyle}" />
+                        <TextBox x:Name="btTrottleStatus" IsReadOnly="True" Text="{Binding ThrottleValveStatus}" Width="121" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Style="{StaticResource InfoTextBoxStyle}" Height="19" />
                     </StackPanel>
                     <StackPanel Orientation="Horizontal" Height="30">
                         <Label Width="140" Content="Vacuum Pump" VerticalContentAlignment="Bottom"/>

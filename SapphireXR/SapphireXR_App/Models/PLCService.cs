@@ -554,5 +554,11 @@ namespace SapphireXR_App.Models
         {
             return Ads.ReadAny<ushort>(hOutputMode);
         }
+
+        public static bool ReadInputManAuto(uint index)
+        {
+            ushort inputManAuto = Ads.ReadAny<ushort>(hE3508InputManAuto);
+            return new BitArray(BitConverter.IsLittleEndian == true ? BitConverter.GetBytes(inputManAuto) : BitConverter.GetBytes(inputManAuto).Reverse().ToArray())[7];
+        }
     }
 }

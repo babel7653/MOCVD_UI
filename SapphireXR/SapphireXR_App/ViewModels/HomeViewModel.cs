@@ -102,33 +102,6 @@ namespace SapphireXR_App.ViewModels
             private short? prevThrottleValveControlMode = null;
         }
 
-        private class InputManAutoSubscriber: IObserver<BitArray>
-        {
-            internal InputManAutoSubscriber(HomeViewModel vm)
-            {
-                homeViewModel = vm;
-            }
-
-            void IObserver<BitArray>.OnCompleted()
-            {
-                throw new NotImplementedException();
-            }
-
-            void IObserver<BitArray>.OnError(Exception error)
-            {
-                throw new NotImplementedException();
-            }
-
-            void IObserver<BitArray>.OnNext(BitArray value)
-            {
-                Util.SetIfChanged(value[7], ref prevManAuto, (bool value) => { homeViewModel.InputManualAuto = (value == true ? "Auto" : "Manual"); });
-
-            }
-
-            private HomeViewModel homeViewModel;
-            private bool? prevManAuto = null;
-        }
-
         public HomeViewModel()
         {
             DashBoardViewModel = new HomeBottomDashBoardViewModel();
@@ -193,7 +166,6 @@ namespace SapphireXR_App.ViewModels
             }
        
             ObservableManager<BitArray>.Subscribe("DigitalOutput3", digitalOutput3Subscriber = new DigitalOutput3Subscriber(this));
-            ObservableManager<BitArray>.Subscribe("InputManAuto", inputManAutoSubscriber = new InputManAutoSubscriber(this));
             ObservableManager<short>.Subscribe("ThrottleValveStatus", throttleValveStatusSubscriber = new ThrottleValveStatusSubscriber(this));
             onPressureControlModeUpdated(PLCService.ReadPressureControlMode());
 
@@ -216,6 +188,8 @@ namespace SapphireXR_App.ViewModels
                     VacuumPumpResetCommand.NotifyCanExecuteChanged();
                 }
             };
+
+            InputManualAuto = PLCService.ReadInputManAuto(7) == false ? "Auto" : "Manual";
         }
 
 
@@ -243,12 +217,30 @@ namespace SapphireXR_App.ViewModels
         }
 
         [RelayCommand]
+        private void ToggleHeaterControlMode()
+        {
+            string nextState = InputManualAuto == "Auto" ? "Manual" : "Auto";
+            if (OutputCmd1ToggleConfirmService.Toggle(PLCService.OutputCmd1Index.TempControllerManAuto, "Induction Power Supply Manual/Auto",nextState + " 상태로 바꾸시겠습니까?", InputManualAuto, 
+                "Manual", "Auto") == true)
+            {
+                SynchronizeExpected(InputManualAuto == "Auto" ? 1 : 0, () => (PLCService.ReadInputManAuto(7) == true ? 1 : 0), (int manualAuto) => InputManualAuto = (manualAuto == 0 ? "Auto" : "Manual"),
+                    null, 3000, "장비의 Input Heater Control Mode가 " + nextState + "로 설정되지 않았습니다. 프로그램과 장비 간에 Heater Control Mode 상태 동기화가 되지 않았습니다.");
+            }
+        }
+
+        [RelayCommand]
         private void InductionHeaterToggle()
         {
             if(OutputCmd1ToggleConfirmService.OnOff(InductionHeaterOn, PLCService.OutputCmd1Index.InductionHeaterControl, "Induction Power Supply On/Off") == true)
             {
                 InductionHeaterOn = (InductionHeaterOn == "On" ? "Off" : "On");
             }
+        }
+
+        [RelayCommand]
+        private void InductionHeaterReset()
+        {
+
         }
 
         [RelayCommand]
@@ -399,7 +391,6 @@ namespace SapphireXR_App.ViewModels
 
         private FlowControllerValueSubscriber[] flowControllerValueSubscribers;
         private DigitalOutput3Subscriber digitalOutput3Subscriber;
-        private InputManAutoSubscriber inputManAutoSubscriber;
         private ThrottleValveStatusSubscriber throttleValveStatusSubscriber;
         private ObservableManager<bool>.DataIssuer leakTestModePublisher;
     }

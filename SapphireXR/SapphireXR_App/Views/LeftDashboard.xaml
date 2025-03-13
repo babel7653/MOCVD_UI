@@ -20,9 +20,9 @@
             <RowDefinition Height="20"/>
             <RowDefinition Height="110"/>
             <RowDefinition Height="40"/>
-            <RowDefinition Height="260"/>
-            <RowDefinition Height="140"/>
-            <RowDefinition Height="270"/>
+            <RowDefinition Height="240"/>
+            <RowDefinition Height="180"/>
+            <RowDefinition Height="230"/>
             <RowDefinition Height="90"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
@@ -193,7 +193,7 @@
                 <StackPanel.Resources>
                     <Style TargetType="{x:Type TextBlock}">
                         <Setter Property="Foreground" Value="{StaticResource PrimaryFontColor}"/>
-                        <Setter Property="Height" Value="20"/>
+                        <Setter Property="Height" Value="18"/>
                     </Style>
                     <Style TargetType="{x:Type Rectangle}">
                         <Setter Property="Width" Value="10"/>
@@ -206,7 +206,23 @@
                 <Line X1="5" Y1="0" X2="295" Y2="0" Stroke="DeepSkyBlue" StrokeThickness="2" Margin="2,2,2,8"/>
                 <StackPanel Orientation="Horizontal">
                     <Rectangle Fill="Lime"/>
-                    <TextBlock Text="Reacipe Start Available"/>
+                    <TextBlock Text="Gas Pressure N2"/>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal">
+                    <Rectangle Fill="Lime"/>
+                    <TextBlock Text="Gas Pressure H2"/>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal">
+                    <Rectangle Fill="Lime"/>
+                    <TextBlock Text="Gas Pressure NH3"/>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal">
+                    <Rectangle Fill="Lime"/>
+                    <TextBlock Text="Gas Pressure SiH4"/>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal">
+                    <Rectangle Fill="Lime"/>
+                    <TextBlock Text="Recipe Start Available"/>
                 </StackPanel>
                 <StackPanel Orientation="Horizontal">
                     <Rectangle Fill="Lime"/>
@@ -214,15 +230,11 @@
                 </StackPanel>
                 <StackPanel Orientation="Horizontal">
                     <Rectangle Fill="Lime"/>
-                    <TextBlock Text="Induction Heater can be Turned On"/>
+                    <TextBlock Text="Heater can be Turn On"/>
                 </StackPanel>
                 <StackPanel Orientation="Horizontal">
                     <Rectangle Fill="Lime"/>
-                    <TextBlock Text="Vacuum Pump can be Turned On"/>
-                </StackPanel>
-                <StackPanel Orientation="Horizontal">
-                    <Rectangle Fill="Lime"/>
-                    <TextBlock Text="Process Gas Available"/>
+                    <TextBlock Text="Pump can be Turn On"/>
                 </StackPanel>
 
             </StackPanel>
@@ -234,7 +246,7 @@
                 <StackPanel.Resources>
                     <Style TargetType="{x:Type TextBlock}">
                         <Setter Property="Foreground" Value="{StaticResource PrimaryFontColor}"/>
-                        <Setter Property="Height" Value="20"/>
+                        <Setter Property="Height" Value="18"/>
                     </Style>
                     <Style TargetType="{x:Type Rectangle}">
                         <Setter Property="Width" Value="10"/>

@@ -160,7 +160,7 @@ namespace SapphireXR_App.ViewModels
             if (ValveOperationEx.Show("Vaccum Pump Reset", "Reset 하시겠습니까?") == Enums.ValveOperationExResult.Ok)
             {
                 PLCService.WriteOutputCmd1(PLCService.OutputCmd1Index.InductionHeaterReset, true);
-                int timeout = 10000;
+                //int timeout = 10000;
                 //SynchronizeExpected(0, () => PLCService.ReadDigitalOutputIO2(1) == true ? 1 : 0, null, null, timeout, "Induction Heater Reset 명령이 실패하였거나 본 프로그램의 timout 대기 시간 " +
                 //    timeout + "(MS)을 초과하셨습니다");
             }

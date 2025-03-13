@@ -5,6 +5,7 @@ using System.Windows.Resources;
 using System.Windows.Controls;
 using System.Diagnostics;
 using System.Numerics;
+using OxyPlot.Axes;
 
 namespace SapphireXR_App.Common
 {

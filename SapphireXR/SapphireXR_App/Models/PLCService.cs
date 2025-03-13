@@ -56,6 +56,7 @@ namespace SapphireXR_App.Models
                 hOutputCmd = Ads.CreateVariableHandle("GVL_IO.aOutputCmd");
                 hOutputCmd1 = Ads.CreateVariableHandle("GVL_IO.aOutputCmd[1]");
                 hOutputCmd2 = Ads.CreateVariableHandle("GVL_IO.aOutputCmd[2]");
+                hInterlock1 = Ads.CreateVariableHandle("GVL_IO.aInterlock[1]");
 
                 hRcp = Ads.CreateVariableHandle("RCP.aRecipe");
                 hRcpTotalStep = Ads.CreateVariableHandle("RCP.iRcpTotalStep");
@@ -155,6 +156,7 @@ namespace SapphireXR_App.Models
             dThrottleValveControlMode = ObservableManager<short>.Get("ThrottleValveControlMode");
             dPressureControlModeIssuer = ObservableManager<ushort>.Get("PressureControlMode");
             dThrottleValveStatusIssuer = ObservableManager<short>.Get("ThrottleValveStatus");
+            dLogicalInterlockStateIssuer = ObservableManager<BitArray>.Get("LogicalInterlockState");
 
             ObservableManager<bool>.Subscribe("Leak Test Mode", leakTestModeSubscriber = new LeakTestModeSubscriber());
 
@@ -277,6 +279,8 @@ namespace SapphireXR_App.Models
             dRecipeControlHoldTimeIssuer?.Issue(Ads.ReadAny<TIME>(hRecipeControlHoldTime).Time.Seconds);
             dRecipeControlRampTimeIssuer?.Issue(Ads.ReadAny<TIME>(hRecipeControlRampTime).Time.Seconds);
             dRecipeControlPauseTimeIssuer?.Issue(Ads.ReadAny<TIME>(hRecipeControlPauseTime).Time.Seconds);
+            short iterlock1 = Ads.ReadAny<short>(hInterlock1);
+            dLogicalInterlockStateIssuer?.Issue(new BitArray(BitConverter.IsLittleEndian == true ? BitConverter.GetBytes(iterlock1) : BitConverter.GetBytes(iterlock1).Reverse().ToArray()));
 
             string exceptionStr = string.Empty;
             if(aDeviceControlValues == null)

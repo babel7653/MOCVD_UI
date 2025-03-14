@@ -564,7 +564,7 @@ namespace SapphireXR_App.Models
         public static bool ReadInputManAuto(uint index)
         {
             ushort inputManAuto = Ads.ReadAny<ushort>(hE3508InputManAuto);
-            return new BitArray(BitConverter.IsLittleEndian == true ? BitConverter.GetBytes(inputManAuto) : BitConverter.GetBytes(inputManAuto).Reverse().ToArray())[7];
+            return new BitArray(BitConverter.IsLittleEndian == true ? BitConverter.GetBytes(inputManAuto) : BitConverter.GetBytes(inputManAuto).Reverse().ToArray())[0];
         }
 
         public static bool ReadDigitalOutputIO2(int bitIndex)

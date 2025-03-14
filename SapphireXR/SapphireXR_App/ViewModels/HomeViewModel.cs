@@ -11,6 +11,7 @@ using System.Windows.Controls;
 using System.ComponentModel;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
+using System.Globalization;
 
 namespace SapphireXR_App.ViewModels
 {
@@ -59,9 +60,12 @@ namespace SapphireXR_App.ViewModels
                 new FlowControllerValueSubscriber<int>((int value) => { ControlTemp = (int)value; }, "FlowControl.Temperature.ControlValue"),
                 new FlowControllerValueSubscriber<int>((int value) => { CurrentTemp = (int)value; }, "FlowControl.Temperature.CurrentValue"),
                 new FlowControllerValueSubscriber<float>((float value) => { PowerRateTemp = (int)value; }, "MonitoringPresentValue.HeaterPowerRate.CurrentValue"),
-                new FlowControllerValueSubscriber<float>((float value) => { TargetPress = (int)value; }, "FlowControl.Pressure.TargetValue"),
-                new FlowControllerValueSubscriber<int>((int value) => { ControlPress = (int)value; }, "FlowControl.Pressure.ControlValue"),
-                new FlowControllerValueSubscriber<int>((int value) => { CurrentPress = (int)value; }, "FlowControl.Pressure.CurrentValue"),
+                new FlowControllerValueSubscriber<float>((float value) => { TargetPress =  value.ToString("N", new NumberFormatInfo() { 
+                    NumberDecimalDigits = Util.NumberDecimalDigits(value, GlobalSetting.MaxNumberDigit) }); }, "FlowControl.Pressure.TargetValue"),
+                new FlowControllerValueSubscriber<float>((float value) => { ControlPress =  value.ToString("N", new NumberFormatInfo() { 
+                    NumberDecimalDigits = Util.NumberDecimalDigits(value, GlobalSetting.MaxNumberDigit) }); }, "FlowControl.Pressure.ControlValue"),
+                new FlowControllerValueSubscriber<float>((float value) => { CurrentPress =  value.ToString("N", new NumberFormatInfo() { 
+                    NumberDecimalDigits = Util.NumberDecimalDigits(value, GlobalSetting.MaxNumberDigit) }); }, "FlowControl.Pressure.CurrentValue"),
                 new FlowControllerValueSubscriber<float>((float value) => { ValvePosition = (int)value; }, "MonitoringPresentValue.ValvePosition.CurrentValue"),
                 new FlowControllerValueSubscriber<float>((float value) => { UltimatePressure = (int)value; }, "MonitoringPresentValue.UltimatePressure.CurrentValue"),
                 new FlowControllerValueSubscriber<float>((float value) => { TargetRotation = (int)value; }, "FlowControl.Rotation.TargetValue"),
@@ -277,11 +281,11 @@ namespace SapphireXR_App.ViewModels
         [ObservableProperty]
         private int _powerRateTemp;
         [ObservableProperty]
-        private int _targetPress;
+        private string _targetPress;
         [ObservableProperty]
-        private int _controlPress;
+        private string _controlPress;
         [ObservableProperty]
-        private int _currentPress;
+        private string _currentPress;
         [ObservableProperty]
         private int _valvePosition;
         [ObservableProperty]

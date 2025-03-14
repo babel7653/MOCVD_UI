@@ -8,6 +8,7 @@
         }
 
         public static readonly int DefaultLogIntervalInRecipeRunInMS = 1000;
+        public static readonly int MaxNumberDigit = 4;
 
         private static int _logIntervalInRecipeRunInMS = DefaultLogIntervalInRecipeRunInMS;
         public static int LogIntervalInRecipeRunInMS
@@ -21,6 +22,5 @@
         }
 
         private static ObservableManager<int>.DataIssuer logIntervalInRecipeRunIssuer = ObservableManager<int>.Get("GlobalSetting.LogIntervalInRecipeRun");
-
     }
 }

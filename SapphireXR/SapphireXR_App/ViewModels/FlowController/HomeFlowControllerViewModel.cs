@@ -29,39 +29,18 @@ namespace SapphireXR_App.ViewModels.FlowController
 
             void IObserver<(float, float)>.OnNext((float, float) values)
             {
-                Func<float, int> numberDecimalDigits = (float value) =>
-                {
-                    int intValue = (int)value;
-                    if (0 <= intValue && intValue < 10)
-                    {
-                        return MaxNumberDigit - 1;
-                    }
-                    else if (10 <= intValue && intValue < 100)
-                    {
-                        return MaxNumberDigit - 2;
-                    }
-                    else if (100 <= intValue && intValue < 1000)
-                    {
-                        return MaxNumberDigit - 3;
-                    }
-                    else
-                    {
-                        return 0;
-                    }
-                };
-                string controlValue = values.Item1.ToString("N", new NumberFormatInfo() { NumberDecimalDigits = numberDecimalDigits(values.Item1) });
+                string controlValue = values.Item1.ToString("N", new NumberFormatInfo() { NumberDecimalDigits = Util.NumberDecimalDigits(values.Item1, GlobalSetting.MaxNumberDigit) });
                 if(controlValue != flowControllerViewModel.ControlValue)
                 {
                     flowControllerViewModel.ControlValue = controlValue;
                 }
-                string targetValue = values.Item2.ToString("N", new NumberFormatInfo() { NumberDecimalDigits = numberDecimalDigits(values.Item2) });
+                string targetValue = values.Item2.ToString("N", new NumberFormatInfo() { NumberDecimalDigits = Util.NumberDecimalDigits(values.Item2, GlobalSetting.MaxNumberDigit) });
                 if (targetValue != flowControllerViewModel.TargetValue)
                 {
                     flowControllerViewModel.TargetValue = targetValue;
                 }
             }
-
-            private static readonly int MaxNumberDigit = 4;
+            
             private HomeFlowControllerViewModel flowControllerViewModel;
         }
 

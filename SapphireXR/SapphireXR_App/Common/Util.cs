@@ -177,6 +177,27 @@ namespace SapphireXR_App.Common
             return dateTime.ToString("yyyy.MM.dd HH:mm:ss");
         }
 
+        public static int NumberDecimalDigits (float value, int maxNumberDigit)
+        {
+            int intValue = (int)value;
+            if (0 <= intValue && intValue < 10)
+            {
+                return maxNumberDigit - 1;
+            }
+            else if (10 <= intValue && intValue < 100)
+            {
+                return maxNumberDigit - 2;
+            }
+            else if (100 <= intValue && intValue < 1000)
+            {
+                return maxNumberDigit - 3;
+            }
+            else
+            {
+                return 0;
+            }
+        }
+
         public static void ConstraintEmptyToZeroOnDataGridCellCommitForRecipeRunEdit(object sender, DataGridCellEditEndingEventArgs e)
         {
             ConstraintEmptyToZeroOnDataGridCellCommit(sender, e, ["Ramp", "Hold", "M01", "M02", "M03", "M04", "M05", "M06", "M07", "M08", "M09", "M10", "M11", "M12", "M13", "M14", "M15", "M16",

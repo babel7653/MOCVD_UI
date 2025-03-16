@@ -3,6 +3,7 @@ using CommunityToolkit.Mvvm.Input;
 using System.Windows.Input;
 using SapphireXR_App.Common;
 using SapphireXR_App.Models;
+using System.Globalization;
 
 namespace SapphireXR_App.ViewModels
 {
@@ -22,7 +23,7 @@ namespace SapphireXR_App.ViewModels
 
         protected virtual void updatePresentValue(float value)
         {
-            PresentValue = ((int)value).ToString();
+            PresentValue = value.ToString("N", new NumberFormatInfo() { NumberDecimalDigits = Util.NumberDecimalDigits(value, GlobalSetting.MaxNumberDigit) });
         }
 
         void IObserver<float>.OnCompleted()

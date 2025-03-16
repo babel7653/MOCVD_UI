@@ -43,8 +43,8 @@ namespace SapphireXR_App.ViewModels
                                         break;
 
                                     default:
-                                        OnColor = Brushes.White;
-                                        OffColor = Brushes.Lime;
+                                        OnColor = Brushes.Lime;
+                                        OffColor = Brushes.White;
                                         popUpMessage = CreateDefaultPopupMessage(ValveID!);
                                         break;
                                 }

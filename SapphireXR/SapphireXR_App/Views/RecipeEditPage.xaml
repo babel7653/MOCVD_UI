@@ -385,13 +385,13 @@
                     <control:RecipeEditFlowController x:Name="MFC19" Canvas.Left="184" Canvas.Top="113" ControllerID="MFC19" Type="MFC" />
 
                     <!--EPC Contol Box!-->
-                    <control:RecipeEditFlowController x:Name="EPC01" Canvas.Left="192" Canvas.Top="312" ControllerID="EPC01" Type="EPC" />
-                    <control:RecipeEditFlowController x:Name="EPC02" Canvas.Left="342" Canvas.Top="312" ControllerID="EPC02" Type="EPC" />
-                    <control:RecipeEditFlowController x:Name="EPC03" Canvas.Left="492" Canvas.Top="312" ControllerID="EPC03" Type="EPC" />
-                    <control:RecipeEditFlowController x:Name="EPC04" Canvas.Left="642" Canvas.Top="312" ControllerID="EPC04" Type="EPC" />
-                    <control:RecipeEditFlowController x:Name="EPC05" Canvas.Left="850" Canvas.Top="400" ControllerID="EPC05" Type="EPC" />
-                    <control:RecipeEditFlowController x:Name="EPC06" Canvas.Left="1000" Canvas.Top="312" ControllerID="EPC06" Type="EPC" />
-                    <control:RecipeEditFlowController x:Name="EPC07" Canvas.Left="721" Canvas.Top="73" ControllerID="EPC07" Type="EPC" />
+                    <control:RecipeEditFlowController x:Name="EPC01" Canvas.Left="721" Canvas.Top="73" ControllerID="EPC01" Type="EPC" />
+                    <control:RecipeEditFlowController x:Name="EPC02" Canvas.Left="192" Canvas.Top="312" ControllerID="EPC02" Type="EPC" />
+                    <control:RecipeEditFlowController x:Name="EPC03" Canvas.Left="342" Canvas.Top="312" ControllerID="EPC03" Type="EPC" />
+                    <control:RecipeEditFlowController x:Name="EPC04" Canvas.Left="492" Canvas.Top="312" ControllerID="EPC04" Type="EPC" />
+                    <control:RecipeEditFlowController x:Name="EPC05" Canvas.Left="642" Canvas.Top="312" ControllerID="EPC05" Type="EPC" />
+                    <control:RecipeEditFlowController x:Name="EPC06" Canvas.Left="850" Canvas.Top="400" ControllerID="EPC06" Type="EPC" />
+                    <control:RecipeEditFlowController x:Name="EPC07" Canvas.Left="1000" Canvas.Top="312" ControllerID="EPC07" Type="EPC" />
                     <!--#endregion-->
 
                     <!-- #Region 6. Text -->
@@ -451,19 +451,19 @@
                                 Width="40" HorizontalContentAlignment="Center" />
                     <Label Canvas.Left="179" Canvas.Top="123" Foreground="DimGray" Content="M19"
                                 Width="40" HorizontalContentAlignment="Center" />
-                    <Label Canvas.Left="184" Canvas.Top="322" Foreground="DimGray" Content="E01"
+                    <Label Canvas.Left="713" Canvas.Top="83" Foreground="DimGray" Content="E01"
+                            Width="40" HorizontalContentAlignment="Center" />
+                    <Label Canvas.Left="184" Canvas.Top="322" Foreground="DimGray" Content="E02"
                                 Width="40" HorizontalContentAlignment="Center" />
-                    <Label Canvas.Left="334" Canvas.Top="322" Foreground="DimGray" Content="E02"
+                    <Label Canvas.Left="334" Canvas.Top="322" Foreground="DimGray" Content="E03"
                                 Width="40" HorizontalContentAlignment="Center" />
-                    <Label Canvas.Left="484" Canvas.Top="322" Foreground="DimGray" Content="E03"
+                    <Label Canvas.Left="484" Canvas.Top="322" Foreground="DimGray" Content="E04"
                                 Width="40" HorizontalContentAlignment="Center" />
-                    <Label Canvas.Left="634" Canvas.Top="322" Foreground="DimGray" Content="E04"
+                    <Label Canvas.Left="634" Canvas.Top="322" Foreground="DimGray" Content="E05"
                                 Width="40" HorizontalContentAlignment="Center" />
-                    <Label Canvas.Left="842" Canvas.Top="410" Foreground="DimGray" Content="E05"
+                    <Label Canvas.Left="842" Canvas.Top="410" Foreground="DimGray" Content="E06"
                                 Width="40" HorizontalContentAlignment="Center" />
-                    <Label Canvas.Left="992" Canvas.Top="322" Foreground="DimGray" Content="E06"
-                                Width="40" HorizontalContentAlignment="Center" />
-                    <Label Canvas.Left="713" Canvas.Top="83" Foreground="DimGray" Content="E07"
+                    <Label Canvas.Left="992" Canvas.Top="322" Foreground="DimGray" Content="E07"
                                 Width="40" HorizontalContentAlignment="Center" />
                     <!--Valve Label !-->
                     <Label Canvas.Left="50" Canvas.Top="116" Foreground="{StaticResource PrimaryFontColor}" Content="V01"

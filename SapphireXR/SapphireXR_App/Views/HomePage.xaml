@@ -531,13 +531,13 @@
                 <control:HomeFlowController x:Name="MFC19" Canvas.Left="126" Canvas.Top="246" ControllerID="MFC19" Type="MFC" />
 
                 <!--EPC Contol Box!-->
-                <control:HomeFlowController x:Name="EPC01" Canvas.Left="242" Canvas.Top="531" ControllerID="EPC01" Type="EPC"/>
-                <control:HomeFlowController x:Name="EPC02" Canvas.Left="382" Canvas.Top="531" ControllerID="EPC02" Type="EPC"/>
-                <control:HomeFlowController x:Name="EPC03" Canvas.Left="522" Canvas.Top="531" ControllerID="EPC03" Type="EPC"/>
-                <control:HomeFlowController x:Name="EPC04" Canvas.Left="662" Canvas.Top="531" ControllerID="EPC04" Type="EPC" />
-                <control:HomeFlowController x:Name="EPC05" Canvas.Left="860" Canvas.Top="633" ControllerID="EPC05" Type="EPC"/>
-                <control:HomeFlowController x:Name="EPC06" Canvas.Left="1000" Canvas.Top="531" ControllerID="EPC06" Type="EPC" />
-                <control:HomeFlowController x:Name="EPC07" Canvas.Left="642" Canvas.Top="191" ControllerID="EPC07" Type="EPC"/>
+                <control:HomeFlowController x:Name="EPC01" Canvas.Left="642" Canvas.Top="191" ControllerID="EPC01" Type="EPC"/>
+                <control:HomeFlowController x:Name="EPC02" Canvas.Left="242" Canvas.Top="531" ControllerID="EPC02" Type="EPC"/>
+                <control:HomeFlowController x:Name="EPC03" Canvas.Left="382" Canvas.Top="531" ControllerID="EPC03" Type="EPC"/>
+                <control:HomeFlowController x:Name="EPC04" Canvas.Left="522" Canvas.Top="531" ControllerID="EPC04" Type="EPC"/>
+                <control:HomeFlowController x:Name="EPC05" Canvas.Left="662" Canvas.Top="531" ControllerID="EPC05" Type="EPC" />
+                <control:HomeFlowController x:Name="EPC06" Canvas.Left="860" Canvas.Top="633" ControllerID="EPC06" Type="EPC"/>
+                <control:HomeFlowController x:Name="EPC07" Canvas.Left="1000" Canvas.Top="531" ControllerID="EPC07" Type="EPC" />
                 <!--#endregion-->
 
                 <!-- #Region 7. Text ) -->
@@ -731,20 +731,20 @@
                     <Label Canvas.Left="121" Canvas.Top="256" Foreground="DimGray" Content="M19"
                 Width="40" HorizontalContentAlignment="Center" />
 
-                    <Label Canvas.Left="234" Canvas.Top="541" Foreground="DimGray" Content="E01"
-                                 Width="40" HorizontalContentAlignment="Center" />
-                    <Label Canvas.Left="374" Canvas.Top="541" Foreground="DimGray" Content="E02"
-                                 Width="40" HorizontalContentAlignment="Center" />
-                    <Label Canvas.Left="514" Canvas.Top="541" Foreground="DimGray" Content="E03"
-                                 Width="40" HorizontalContentAlignment="Center" />
-                    <Label Canvas.Left="654" Canvas.Top="541" Foreground="DimGray" Content="E04"
-                                 Width="40" HorizontalContentAlignment="Center" />
-                    <Label Canvas.Left="852" Canvas.Top="643" Foreground="DimGray" Content="E05"
-                                 Width="40" HorizontalContentAlignment="Center" />
-                    <Label Canvas.Left="992" Canvas.Top="541" Foreground="DimGray" Content="E06"
-                                 Width="40" HorizontalContentAlignment="Center" />
-                    <Label Canvas.Left="634" Canvas.Top="201" Foreground="DimGray" Content="E07"
+                    <Label Canvas.Left="634" Canvas.Top="201" Foreground="DimGray" Content="E01"
                                 Width="40" HorizontalContentAlignment="Center" />
+                    <Label Canvas.Left="234" Canvas.Top="541" Foreground="DimGray" Content="E02"
+                                 Width="40" HorizontalContentAlignment="Center" />
+                    <Label Canvas.Left="374" Canvas.Top="541" Foreground="DimGray" Content="E03"
+                                 Width="40" HorizontalContentAlignment="Center" />
+                    <Label Canvas.Left="514" Canvas.Top="541" Foreground="DimGray" Content="E04"
+                                 Width="40" HorizontalContentAlignment="Center" />
+                    <Label Canvas.Left="654" Canvas.Top="541" Foreground="DimGray" Content="E05"
+                                 Width="40" HorizontalContentAlignment="Center" />
+                    <Label Canvas.Left="852" Canvas.Top="643" Foreground="DimGray" Content="E06"
+                                 Width="40" HorizontalContentAlignment="Center" />
+                    <Label Canvas.Left="992" Canvas.Top="541" Foreground="DimGray" Content="E07"
+                                 Width="40" HorizontalContentAlignment="Center" />
                 </Canvas>
                 <!--#endregion-->
 

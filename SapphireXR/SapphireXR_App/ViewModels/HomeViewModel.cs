@@ -282,29 +282,29 @@ namespace SapphireXR_App.ViewModels
         private Visibility _valveLabelVisibility;
 
         [ObservableProperty]
-        private string _targetTemp;
+        private string _targetTemp = "";
         [ObservableProperty]
-        private string _controlTemp;
+        private string _controlTemp = "";
         [ObservableProperty]
-        private string _currentTemp;
+        private string _currentTemp = "";
         [ObservableProperty]
-        private string _powerRateTemp;
+        private string _powerRateTemp = "";
         [ObservableProperty]
-        private string _targetPress;
+        private string _targetPress = "";
         [ObservableProperty]
-        private string _controlPress;
+        private string _controlPress = "";
         [ObservableProperty]
-        private string _currentPress;
+        private string _currentPress = "";
         [ObservableProperty]
-        private string _valvePosition;
+        private string _valvePosition = "";
         [ObservableProperty]
-        private string _targetRotation;
+        private string _targetRotation = "";
         [ObservableProperty]
-        private string _controlRotation;
+        private string _controlRotation = "";
         [ObservableProperty]
-        private string _currentRotation;
+        private string _currentRotation = "";
         [ObservableProperty]
-        private string _ultimatePressure;
+        private string _ultimatePressure = "";
 
         [ObservableProperty]
         private string _pressureControlMode = "";

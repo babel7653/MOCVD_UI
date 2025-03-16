@@ -161,7 +161,7 @@
 		</System>
 		<Plc>
 			<Project GUID="{8B546B3A-EC4D-41CC-9C57-49402FFC4072}" Name="PLC_MR" PrjFilePath="PLC_MR\PLC_MR.plcproj" TmcFilePath="PLC_MR\PLC_MR.tmc" ReloadTmc="true" AmsPort="851" FileArchiveSettings="#x000e" SymbolicMapping="true">
-				<Instance Id="#x08502000" TcSmClass="TComPlcObjDef" KeepUnrestoredLinks="2" TmcHash="{3A1D8C63-EEEC-15A1-CC96-0A48C5244F0C}" TmcPath="PLC_MR\PLC_MR.tmc">
+				<Instance Id="#x08502000" TcSmClass="TComPlcObjDef" KeepUnrestoredLinks="2" TmcHash="{F4F712C5-3B9B-D714-6336-2DD9DF2B0217}" TmcPath="PLC_MR\PLC_MR.tmc">
 					<Name>PLC_MR Instance</Name>
 					<CLSID ClassFactory="TcPlc30">{08500001-0000-0000-F000-000000000064}</CLSID>
 					<Vars VarGrpType="2" ContextId="1" AreaNo="17">
@@ -475,7 +475,7 @@
 				</Box>
 				<EtherCAT/>
 			</Device>
-			<Device Id="2" Disabled="true" DevType="88" AmsPort="28674" AmsNetId="10.10.10.10.4.1" RemoteName="Device 2 (EL6752)">
+			<Device Id="2" Disabled="true" DevType="88" AmsPort="28674" AmsNetId="10.10.10.10.3.1" RemoteName="Device 2 (EL6752)">
 				<Name>Device 2 (EL6752)</Name>
 				<AddressInfo>
 					<Ecat>
@@ -5174,7 +5174,7 @@ Catalog Number:  ]]></Comment>
 				</Box>
 				<DeviceNet>
 					<Fcxxxx>
-						<DevSettings NetId="0a0a0a0a0401" EquiCycleTime="20000"/>
+						<DevSettings NetId="0a0a0a0a0301" EquiCycleTime="20000"/>
 						<EquiParameter RelationShiftCycle="0"/>
 					</Fcxxxx>
 					<BusParameter MacId="63" Baudrate="1" VendorID="108" DeviceType="12" ProductCode="6752" MajorRevision="1" MinorRevision="1" SerialNumber="305419896" IOCycleTime="100"/>
@@ -5199,14 +5199,6 @@ Catalog Number:  ]]></Comment>
 				<Image Id="4" AddrType="5" ImageType="2">
 					<Name>Image</Name>
 				</Image>
-				<Box Id="10" BoxType="6000">
-					<Name>Box 7 (Retain Handler)</Name>
-					<ImageId>276</ImageId>
-					<Vars VarGrpType="8">
-						<Name>Retains</Name>
-					</Vars>
-					<Retain AreaSize="1024" DataSize="480" ContextCnt="4"/>
-				</Box>
 				<DpRam/>
 			</Device>
 		</Io>
@@ -5510,6 +5502,8 @@ Catalog Number:  ]]></Comment>
 				<Link VarA="PlcTask_Standard Inputs^P12_IQ_PLUS.aInputValvePosionPV[1]" VarB="Connection (Poll)^Inputs^Input 155_8"/>
 				<Link VarA="PlcTask_Standard Inputs^P12_IQ_PLUS.aInputValvePosionPV[2]" VarB="Connection (Poll)^Inputs^Input 155_9"/>
 				<Link VarA="PlcTask_Standard Inputs^P12_IQ_PLUS.nInputStatus" VarB="Connection (Poll)^Inputs^Input 155_1"/>
+				<Link VarA="PlcTask_Standard Outputs^P12_IQ_PLUS.aOutputSVBytes[1]" VarB="Connection (Poll)^Outputs^Output 154[1]"/>
+				<Link VarA="PlcTask_Standard Outputs^P12_IQ_PLUS.aOutputSVBytes[2]" VarB="Connection (Poll)^Outputs^Output 154[2]"/>
 				<Link VarA="PlcTask_Standard Outputs^P12_IQ_PLUS.nOutputMode" VarB="Connection (Poll)^Outputs^Output 154[0]"/>
 				<Link VarA="PlcTask_Standard Outputs^P12_IQ_PLUS.nOutputSetType" VarB="Connection (Poll)^Outputs^Output 154[3]"/>
 			</OwnerB>

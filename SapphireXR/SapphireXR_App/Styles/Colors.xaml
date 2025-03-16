@@ -10,10 +10,10 @@
     <SolidColorBrush x:Key="DashboardBackground" Color="#475569"/>
 
     <SolidColorBrush x:Key="RecipeRunPageBackground" Color="#003366"/>
-    <SolidColorBrush x:Key="RecipeEditPageBackground" Color="#004C39"/>
+    <SolidColorBrush x:Key="RecipeEditPageBackground" Color="#410909"/>
     
     
-    <SolidColorBrush x:Key="SourceMonitorColor1" Color="#ff7f50"/>
+    <SolidColorBrush x:Key="SourceMonitorColor1" Color="#239B56"/>
     <SolidColorBrush x:Key="SourceMonitorColor2" Color="#F7D5CD"/>
 
     <SolidColorBrush x:Key="ReactorMonitorColor1" Color="#A02B93"/>
@@ -37,8 +37,8 @@
     <SolidColorBrush x:Key="LeakTestLineColor" Color="#66ffff"/>
     <SolidColorBrush x:Key="HydrogenLineColor" Color="#ff0033"/>
     <SolidColorBrush x:Key="NitrogenLineColor" Color="#33ff00"/>
-    <SolidColorBrush x:Key="HydrideLineColor" Color="#ffcc33"/>
-    <SolidColorBrush x:Key="ProcessLineColor" Color="#cc6600"/>
+    <SolidColorBrush x:Key="HydrideLineColor" Color="Yellow"/>
+    <SolidColorBrush x:Key="ProcessLineColor" Color="#009eff"/>
     <SolidColorBrush x:Key="ExhaustLineColor" Color="#ccffff"/>
 
     <!-- Button Colors -->

@@ -205,35 +205,35 @@
                 <Bold>Logical Interlock</Bold></TextBlock>
                 <Line X1="5" Y1="0" X2="295" Y2="0" Stroke="DeepSkyBlue" StrokeThickness="2" Margin="2,2,2,8"/>
                 <StackPanel Orientation="Horizontal">
-                    <Rectangle Fill="Lime"/>
+                    <Rectangle Fill="{Binding GasPressureN2StateColor}"/>
                     <TextBlock Text="Gas Pressure N2"/>
                 </StackPanel>
                 <StackPanel Orientation="Horizontal">
-                    <Rectangle Fill="Lime"/>
+                    <Rectangle Fill="{Binding GasPressureH2StateColor}"/>
                     <TextBlock Text="Gas Pressure H2"/>
                 </StackPanel>
                 <StackPanel Orientation="Horizontal">
-                    <Rectangle Fill="Lime"/>
+                    <Rectangle Fill="{Binding GasPressureNH3StateColor}"/>
                     <TextBlock Text="Gas Pressure NH3"/>
                 </StackPanel>
                 <StackPanel Orientation="Horizontal">
-                    <Rectangle Fill="Lime"/>
+                    <Rectangle Fill="{Binding GasPressureSiH4StateColor}"/>
                     <TextBlock Text="Gas Pressure SiH4"/>
                 </StackPanel>
                 <StackPanel Orientation="Horizontal">
-                    <Rectangle Fill="Lime"/>
+                    <Rectangle Fill="{Binding RecipeStartStateColor}"/>
                     <TextBlock Text="Recipe Start Available"/>
                 </StackPanel>
                 <StackPanel Orientation="Horizontal">
-                    <Rectangle Fill="Lime"/>
+                    <Rectangle Fill="{Binding ReactorOpenStateColor}"/>
                     <TextBlock Text="Reactor Open Available"/>
                 </StackPanel>
                 <StackPanel Orientation="Horizontal">
-                    <Rectangle Fill="Lime"/>
+                    <Rectangle Fill="{Binding HeaterTurnOnStateColor }"/>
                     <TextBlock Text="Heater can be Turn On"/>
                 </StackPanel>
                 <StackPanel Orientation="Horizontal">
-                    <Rectangle Fill="Lime"/>
+                    <Rectangle Fill="{Binding PumpTurnOnStateColor}"/>
                     <TextBlock Text="Pump can be Turn On"/>
                 </StackPanel>
 

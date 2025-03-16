@@ -30,8 +30,7 @@ namespace SapphireXR_App.Models
 
         public static void Connect()
         {
-            Ads.Connect(AmsNetId.Local, 851);
-            //Ads.Connect(new AmsAddress("5.62.179.198.1.1:851"));
+            Ads.Connect(new AmsAddress("5.62.179.198.1.1:851"));
             if (Ads.IsConnected == true)
             {
                 AddressPLC = $"PLC Address : {Ads.Address}";
@@ -56,6 +55,7 @@ namespace SapphireXR_App.Models
                 hOutputCmd = Ads.CreateVariableHandle("GVL_IO.aOutputCmd");
                 hOutputCmd1 = Ads.CreateVariableHandle("GVL_IO.aOutputCmd[1]");
                 hOutputCmd2 = Ads.CreateVariableHandle("GVL_IO.aOutputCmd[2]");
+                hInterlock1 = Ads.CreateVariableHandle("GVL_IO.aInterlock[1]");
 
                 hRcp = Ads.CreateVariableHandle("RCP.aRecipe");
                 hRcpTotalStep = Ads.CreateVariableHandle("RCP.iRcpTotalStep");
@@ -155,6 +155,7 @@ namespace SapphireXR_App.Models
             dThrottleValveControlMode = ObservableManager<short>.Get("ThrottleValveControlMode");
             dPressureControlModeIssuer = ObservableManager<ushort>.Get("PressureControlMode");
             dThrottleValveStatusIssuer = ObservableManager<short>.Get("ThrottleValveStatus");
+            dLogicalInterlockStateIssuer = ObservableManager<BitArray>.Get("LogicalInterlockState");
 
             ObservableManager<bool>.Subscribe("Leak Test Mode", leakTestModeSubscriber = new LeakTestModeSubscriber());
 
@@ -277,6 +278,8 @@ namespace SapphireXR_App.Models
             dRecipeControlHoldTimeIssuer?.Issue(Ads.ReadAny<TIME>(hRecipeControlHoldTime).Time.Seconds);
             dRecipeControlRampTimeIssuer?.Issue(Ads.ReadAny<TIME>(hRecipeControlRampTime).Time.Seconds);
             dRecipeControlPauseTimeIssuer?.Issue(Ads.ReadAny<TIME>(hRecipeControlPauseTime).Time.Seconds);
+            short iterlock1 = Ads.ReadAny<short>(hInterlock1);
+            dLogicalInterlockStateIssuer?.Issue(new BitArray(BitConverter.IsLittleEndian == true ? BitConverter.GetBytes(iterlock1) : BitConverter.GetBytes(iterlock1).Reverse().ToArray()));
 
             string exceptionStr = string.Empty;
             if(aDeviceControlValues == null)
@@ -561,7 +564,7 @@ namespace SapphireXR_App.Models
         public static bool ReadInputManAuto(uint index)
         {
             ushort inputManAuto = Ads.ReadAny<ushort>(hE3508InputManAuto);
-            return new BitArray(BitConverter.IsLittleEndian == true ? BitConverter.GetBytes(inputManAuto) : BitConverter.GetBytes(inputManAuto).Reverse().ToArray())[7];
+            return new BitArray(BitConverter.IsLittleEndian == true ? BitConverter.GetBytes(inputManAuto) : BitConverter.GetBytes(inputManAuto).Reverse().ToArray())[0];
         }
 
         public static bool ReadDigitalOutputIO2(int bitIndex)

@@ -117,12 +117,12 @@ namespace SapphireXR_App.Models
         private static ObservableManager<short>.DataIssuer? dThrottleValveControlMode;
         private static ObservableManager<ushort>.DataIssuer? dPressureControlModeIssuer;
         private static ObservableManager<short>.DataIssuer? dThrottleValveStatusIssuer;
+        private static ObservableManager<BitArray>.DataIssuer? dLogicalInterlockStateIssuer;
 
         private static LeakTestModeSubscriber? leakTestModeSubscriber = null;
 
         //Create an instance of the TcAdsClient()
         public static AdsClient Ads { get; set; }
-        private static AmsNetId amsNetId = new("10.10.10.10.1.1");
         private static DispatcherTimer? timer;
         private static DispatcherTimer? currentActiveRecipeListener;
 
@@ -156,6 +156,7 @@ namespace SapphireXR_App.Models
         private static uint hOutputCmd2;
         private static uint hOutputSetType;
         private static uint hOutputMode;
+        private static uint hInterlock1;
 
         private static bool RecipeRunEndNotified = false;
         private static bool LeakTestMode = true;

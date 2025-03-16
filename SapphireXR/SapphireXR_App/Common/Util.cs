@@ -5,6 +5,7 @@ using System.Windows.Resources;
 using System.Windows.Controls;
 using System.Diagnostics;
 using System.Numerics;
+using OxyPlot.Axes;
 
 namespace SapphireXR_App.Common
 {
@@ -174,6 +175,27 @@ namespace SapphireXR_App.Common
         public static string ToEventLogFormat(DateTime dateTime)
         {
             return dateTime.ToString("yyyy.MM.dd HH:mm:ss");
+        }
+
+        public static int NumberDecimalDigits (float value, int maxNumberDigit)
+        {
+            int intValue = (int)value;
+            if (0 <= intValue && intValue < 10)
+            {
+                return maxNumberDigit - 1;
+            }
+            else if (10 <= intValue && intValue < 100)
+            {
+                return maxNumberDigit - 2;
+            }
+            else if (100 <= intValue && intValue < 1000)
+            {
+                return maxNumberDigit - 3;
+            }
+            else
+            {
+                return 0;
+            }
         }
 
         public static void ConstraintEmptyToZeroOnDataGridCellCommitForRecipeRunEdit(object sender, DataGridCellEditEndingEventArgs e)

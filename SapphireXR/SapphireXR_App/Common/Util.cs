@@ -74,14 +74,14 @@ namespace SapphireXR_App.Common
             e.Handled = !CheckValid(curStr, newStr, caretPosition, maxValue);
         }
 
-        public static string? GetResourceAbsoluteFilePath(string subPath)
+        public static string GetResourceAbsoluteFilePath(string subPath)
         {
-            Uri uri = new Uri("/Resources/" + subPath.TrimStart('/'), UriKind.Relative);
-            StreamResourceInfo info = System.Windows.Application.GetContentStream(uri);
-            string? filePath = (info.Stream as FileStream)?.Name;
-            info.Stream.Close();
+            return GetAbsoluteFilePathFromAppRelativePath("/Resources/" + subPath);
+        }
 
-            return filePath;
+        public static string GetAbsoluteFilePathFromAppRelativePath(string subPath)
+        {
+            return AppDomain.CurrentDomain.BaseDirectory + "/" + subPath.TrimStart('/');
         }
 
         public static void SetIfChanged(bool newValue, ref bool? prevValue, Action<bool> onChanged)

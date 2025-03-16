@@ -1,4 +1,6 @@
-﻿namespace SapphireXR_App.Common
+﻿using System.Security.RightsManagement;
+
+namespace SapphireXR_App.Common
 {
     internal static class GlobalSetting
     {
@@ -22,5 +24,6 @@
         }
 
         private static ObservableManager<int>.DataIssuer logIntervalInRecipeRunIssuer = ObservableManager<int>.Get("GlobalSetting.LogIntervalInRecipeRun");
+        public static string LogFileDirectory = "";
     }
 }

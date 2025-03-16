@@ -81,7 +81,9 @@ namespace SapphireXR_App.ViewModels
             
         }
 
-        public string fname = AppDomain.CurrentDomain.BaseDirectory + "..\\..\\..\\..\\Data\\Configuration\\" + @"DeviceIO.json";
+        public static readonly string DevceIOSettingFilePath = Util.GetResourceAbsoluteFilePath("/Configurations/DeviceIO.json");
+        public static readonly string AppSettingFilePath = Util.GetResourceAbsoluteFilePath("/Configurations/AppSetting.json");
+
         public Dictionary<string, AnalogDeviceIO>? dAnalogDeviceIO = [];
         public Dictionary<string, SwitchDI>? dSwitchDI = [];
         public Dictionary<string, GasDO>? dGasDO = [];
@@ -140,7 +142,7 @@ namespace SapphireXR_App.ViewModels
                 }
             };
             //Json파일 읽기 및 Pars
-            var fdevice = File.ReadAllText(fname);
+            var fdevice = File.ReadAllText(DevceIOSettingFilePath);
 
             JToken? jDeviceInit = JToken.Parse(fdevice);
             JToken? jAnalogDeviceIO = jDeviceInit["AnalogDeviceIO"];
@@ -196,11 +198,32 @@ namespace SapphireXR_App.ViewModels
                 new JProperty("LogIntervalInRecipeRun", jLogIntervalInRecipeRun)
                 );
 
-            if (File.Exists(fname)) File.Delete(fname);
-            File.WriteAllText(fname, jDeviceIO.ToString());
+            if (File.Exists(DevceIOSettingFilePath)) File.Delete(DevceIOSettingFilePath);
+            File.WriteAllText(DevceIOSettingFilePath, jDeviceIO.ToString());
 
             PLCService.WriteDeviceMaxValue(lAnalogDeviceIO);
             PLCService.ReadMaxValueFromPLC();
+        }
+
+        private void appSettingLoad()
+        {
+            JToken? appSettingRootToken = JToken.Parse(File.ReadAllText(AppSettingFilePath));
+            if(appSettingRootToken != null)
+            {
+                JToken? logPathToken = appSettingRootToken["LogPath"];
+                if (logPathToken != null)
+                {
+                    string? logFilePath = JsonConvert.DeserializeObject<string>(logPathToken.ToString());
+                    if (logFilePath != null)
+                    {
+                        GlobalSetting.LogFileDirectory = logFilePath;
+                    }
+                }
+                else
+                {
+                    
+                }
+            }
         }
 
         private void updateIOState(BitArray ioStateList)

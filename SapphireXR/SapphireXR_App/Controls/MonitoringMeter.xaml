@@ -15,7 +15,7 @@
     </i:Interaction.Triggers>
     <Grid Height="20" Width="70">
         <Border  BorderBrush="LightGray" BorderThickness="0,0,1,1">
-            <Label  x:Name="meterValue"  Height="20" Width="70" Padding="0, 0, 3, 0" FontSize="12" HorizontalContentAlignment="Right" VerticalContentAlignment="Stretch"
+            <Label  x:Name="meterValue"  Height="20" Width="70" Padding="0, 0, 3, 0" FontSize="16" HorizontalContentAlignment="Right" VerticalContentAlignment="Stretch"
              Foreground="Lime"  Content="{Binding  PresentValue}"/>
         </Border>
     </Grid>

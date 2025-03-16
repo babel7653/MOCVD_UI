@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.15">
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4026.11">
   <POU Name="P70_Interface" Id="{9275347a-a4b2-46b6-b185-3a8be1c80031}" SpecialFunc="None">
     <Declaration><![CDATA[PROGRAM P70_Interface
 VAR

@@ -414,57 +414,57 @@
                                 Width="33" HorizontalContentAlignment="Center" />
 
                     <!--MFC/EPC Label !-->
-                    <Label Canvas.Left="101" Canvas.Top="202" Foreground="DimGray" Content="M01"
+                    <Label Canvas.Left="101" Canvas.Top="222" Foreground="DimGray" Content="M01"
                                 Width="40" HorizontalContentAlignment="Center" />
-                    <Label Canvas.Left="101" Canvas.Top="138" Foreground="DimGray" Content="M02"
+                    <Label Canvas.Left="101" Canvas.Top="106" Foreground="DimGray" Content="M02"
                                 Width="40" HorizontalContentAlignment="Center" />
-                    <Label Canvas.Left="393" Canvas.Top="83" Foreground="DimGray" Content="M03"
+                    <Label Canvas.Left="464" Canvas.Top="66" Foreground="DimGray" Content="M03"
                                 Width="40" HorizontalContentAlignment="Center" />
-                    <Label Canvas.Left="303" Canvas.Top="83" Foreground="DimGray" Content="M04"
+                    <Label Canvas.Left="272" Canvas.Top="66" Foreground="DimGray" Content="M04"
                                 Width="40" HorizontalContentAlignment="Center" />
-                    <Label Canvas.Left="617" Canvas.Top="33" Foreground="DimGray" Content="M05"
+                    <Label Canvas.Left="688" Canvas.Top="16" Foreground="DimGray" Content="M05"
                                 Width="40" HorizontalContentAlignment="Center" />
-                    <Label Canvas.Left="527" Canvas.Top="33" Foreground="DimGray" Content="M06"
+                    <Label Canvas.Left="496" Canvas.Top="16" Foreground="DimGray" Content="M06"
                                 Width="40" HorizontalContentAlignment="Center" />
-                    <Label Canvas.Left="617" Canvas.Top="83" Foreground="DimGray" Content="M07"
+                    <Label Canvas.Left="586" Canvas.Top="66" Foreground="DimGray" Content="M07"
                                 Width="40" HorizontalContentAlignment="Center" />
-                    <Label Canvas.Left="129" Canvas.Top="366" Foreground="DimGray" Content="M08"
+                    <Label Canvas.Left="98" Canvas.Top="349" Foreground="DimGray" Content="M08"
                                 Width="40" HorizontalContentAlignment="Center" />
-                    <Label Canvas.Left="279" Canvas.Top="366" Foreground="DimGray" Content="M09"
+                    <Label Canvas.Left="248" Canvas.Top="349" Foreground="DimGray" Content="M09"
                                 Width="40" HorizontalContentAlignment="Center" />
-                    <Label Canvas.Left="429" Canvas.Top="366" Foreground="DimGray" Content="M10"
+                    <Label Canvas.Left="398" Canvas.Top="349" Foreground="DimGray" Content="M10"
                                 Width="40" HorizontalContentAlignment="Center" />
-                    <Label Canvas.Left="579" Canvas.Top="366" Foreground="DimGray" Content="M11"
+                    <Label Canvas.Left="548" Canvas.Top="349" Foreground="DimGray" Content="M11"
                                 Width="40" HorizontalContentAlignment="Center" />
-                    <Label Canvas.Left="729" Canvas.Top="366" Foreground="DimGray" Content="M12"
+                    <Label Canvas.Left="698" Canvas.Top="349" Foreground="DimGray" Content="M12"
                                 Width="40" HorizontalContentAlignment="Center" />
-                    <Label Canvas.Left="787" Canvas.Top="322" Foreground="DimGray" Content="M13"
+                    <Label Canvas.Left="858" Canvas.Top="305" Foreground="DimGray" Content="M13"
                                 Width="40" HorizontalContentAlignment="Center" />
-                    <Label Canvas.Left="845" Canvas.Top="366" Foreground="DimGray" Content="M14"
+                    <Label Canvas.Left="814" Canvas.Top="349" Foreground="DimGray" Content="M14"
                                 Width="40" HorizontalContentAlignment="Center" />
-                    <Label Canvas.Left="937" Canvas.Top="366" Foreground="DimGray" Content="M15"
+                    <Label Canvas.Left="937" Canvas.Top="334" Foreground="DimGray" Content="M15"
                                 Width="40" HorizontalContentAlignment="Center" />
-                    <Label Canvas.Left="1100" Canvas.Top="180" Foreground="DimGray" Content="M16"
+                    <Label Canvas.Left="1171" Canvas.Top="182" Foreground="DimGray" Content="M16"
                                 Width="40" HorizontalContentAlignment="Center" />
-                    <Label Canvas.Left="1100" Canvas.Top="224" Foreground="DimGray" Content="M17"
+                    <Label Canvas.Left="1171" Canvas.Top="226" Foreground="DimGray" Content="M17"
                                 Width="40" HorizontalContentAlignment="Center" />
-                    <Label Canvas.Left="179" Canvas.Top="217" Foreground="DimGray" Content="M18"
+                    <Label Canvas.Left="250" Canvas.Top="200" Foreground="DimGray" Content="M18"
                                 Width="40" HorizontalContentAlignment="Center" />
-                    <Label Canvas.Left="179" Canvas.Top="123" Foreground="DimGray" Content="M19"
+                    <Label Canvas.Left="250" Canvas.Top="106" Foreground="DimGray" Content="M19"
                                 Width="40" HorizontalContentAlignment="Center" />
-                    <Label Canvas.Left="713" Canvas.Top="83" Foreground="DimGray" Content="E01"
+                    <Label Canvas.Left="784" Canvas.Top="66" Foreground="DimGray" Content="E01"
                                 Width="40" HorizontalContentAlignment="Center" />
-                    <Label Canvas.Left="184" Canvas.Top="322" Foreground="DimGray" Content="E02"
+                    <Label Canvas.Left="254" Canvas.Top="305" Foreground="DimGray" Content="E02"
                                 Width="40" HorizontalContentAlignment="Center" />
-                    <Label Canvas.Left="334" Canvas.Top="322" Foreground="DimGray" Content="E03"
+                    <Label Canvas.Left="404" Canvas.Top="305" Foreground="DimGray" Content="E03"
                                  Width="40" HorizontalContentAlignment="Center" />
-                    <Label Canvas.Left="484" Canvas.Top="322" Foreground="DimGray" Content="E04"
+                    <Label Canvas.Left="554" Canvas.Top="305" Foreground="DimGray" Content="E04"
                                  Width="40" HorizontalContentAlignment="Center" />
-                    <Label Canvas.Left="634" Canvas.Top="322" Foreground="DimGray" Content="E05"
+                    <Label Canvas.Left="704" Canvas.Top="305" Foreground="DimGray" Content="E05"
                                  Width="40" HorizontalContentAlignment="Center" />
-                    <Label Canvas.Left="842" Canvas.Top="410" Foreground="DimGray" Content="E06"
+                    <Label Canvas.Left="912" Canvas.Top="393" Foreground="DimGray" Content="E06"
                                  Width="40" HorizontalContentAlignment="Center" />
-                    <Label Canvas.Left="992" Canvas.Top="322" Foreground="DimGray" Content="E07"
+                    <Label Canvas.Left="1062" Canvas.Top="305" Foreground="DimGray" Content="E07"
                                  Width="40" HorizontalContentAlignment="Center" />
                     <!--Valve Label !-->
                     <Label Canvas.Left="50" Canvas.Top="116" Foreground="{StaticResource PrimaryFontColor}" Content="V01"

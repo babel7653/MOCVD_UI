@@ -8,9 +8,6 @@ namespace SapphireXR_App.ViewModels
 {
     public partial class PresentValueMonitorViewModel: ObservableObject, IObserver<float>
     {
-        [ObservableProperty]
-        private string _presentValue = "";
-
         public ICommand OnLoadedCommand => new RelayCommand<object?>((object? args) =>
         {
             if (args != null)
@@ -22,6 +19,11 @@ namespace SapphireXR_App.ViewModels
                 }
             }
         });
+
+        protected virtual void updatePresentValue(float value)
+        {
+            PresentValue = ((int)value).ToString();
+        }
 
         void IObserver<float>.OnCompleted()
         {
@@ -35,7 +37,15 @@ namespace SapphireXR_App.ViewModels
 
         void IObserver<float>.OnNext(float value)
         {
-            PresentValue = ((int)value).ToString();
+            if (prevPresentValue == null || prevPresentValue != value)
+            {
+                updatePresentValue(value);
+                prevPresentValue = value;
+            }
         }
+
+        [ObservableProperty]
+        private string _presentValue = "";
+        private float? prevPresentValue = null;
     }
 }

@@ -193,7 +193,7 @@ namespace SapphireXR_App.Models
 
         public static readonly Dictionary<string, int> dMonitoringMeterIndex = new Dictionary<string, int>
         {
-            { "UltimatePressure", 0 },  { "ExtPressure", 1},  { "DorPressure", 2}, { "H2", 3}, { "N2", 4}, { "NH3", 5},
+            { "UltimatePressure", 0 },  { "ExtPressure", 1},  { "DorPressure", 2}, { "N2", 3}, { "H2", 4}, { "NH3", 5},
             { "SiH4", 6}, { "ShowerHeadTemp", 7}, { "InductionCoilTemp", 8}, { "HeaterPowerRate", 9 }, { "ValvePosition", 10 }, { "TEB", 11},
              { "TMAl", 12},  { "TMIn", 13},  { "TMGa", 14},  { "DTMGa", 15},  { "Cp2Mg", 16}
         };

@@ -95,7 +95,7 @@ namespace SapphireXR_App.ViewModels
                     using (StreamReader streamReader = new StreamReader(BatchFIlePath))
                     {
                         string batchJsonString = streamReader.ReadToEnd();
-                        Batches = JsonConvert.DeserializeObject<ObservableCollection<Batch>>(batchJsonString) ?? Batches;
+                        Batches = JsonConvert.DeserializeObject<ObservableCollection<Batch>>(batchJsonString) ?? new ObservableCollection<Batch>();
                     }
                 }
                 catch (Exception ex)

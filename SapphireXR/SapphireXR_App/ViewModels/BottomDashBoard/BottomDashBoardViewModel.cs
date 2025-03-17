@@ -35,6 +35,8 @@ namespace SapphireXR_App.ViewModels
                     Position = AxisPosition.Left,
                     IsPanEnabled = true,
                     IsZoomEnabled = true,
+                    Minimum = 0,
+                    Maximum = PLCService.ReadMaxValue(title)
                 });
 
                 Legend legend = new Legend();

@@ -658,11 +658,12 @@
                     <StackPanel DataContext="{Binding CurrentRecipe}">
                         <StackPanel Orientation="Horizontal">
                             <TextBlock Width="80" Height="20" Foreground="Lime">Loaded File</TextBlock>
-                            <TextBox x:Name="tbRecipeLoadedFile" Width="415" Height="18" Margin="1" Text="{Binding RecipeFilePath, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"/>
+                            <TextBox x:Name="tbRecipeLoadedFile" Width="415" Height="18" Margin="1" Text="{Binding RecipeFilePath, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" IsReadOnly="True" Style="{StaticResource InfoTextBoxStyle}"/>
                         </StackPanel>
                         <StackPanel Orientation="Horizontal">
                             <TextBlock Width="80" Height="20" Foreground="Lime">Log File</TextBlock>
-                            <TextBox x:Name="tbRecipeLogFile" Width="415" Height="18" Margin="1"  Text="{Binding LogFilePath, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"/>
+                            <TextBox x:Name="tbRecipeLogFile" Width="415" Height="18" Margin="1"  Text="{Binding LogFilePath, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" IsReadOnly="True" 
+                                     Style="{StaticResource InfoTextBoxStyle}" ToolTip="로그 파일 저장 위치를 바꾸려면 클릭하세요."/>
                         </StackPanel>
                     </StackPanel>
                 </Grid>

@@ -2,6 +2,7 @@
 using SapphireXR_App.Common;
 using SapphireXR_App.Models;
 using System.Collections;
+using System.Windows.Media.Imaging;
 
 namespace SapphireXR_App.ViewModels
 {
@@ -114,6 +115,10 @@ namespace SapphireXR_App.ViewModels
             void IObserver<EventLog>.OnNext(EventLog value)
             {
                 homeViewModel.EventLogs.Add(value);
+                if(value.Type == "Recipe End")
+                {
+                    homeViewModel.loadBatchOnRecipeEnd();
+                }
             }
 
             private HomeViewModel homeViewModel;

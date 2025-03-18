@@ -104,7 +104,7 @@ namespace SapphireXR_App.ViewModels
                     recipeContext = recipeContextObj;
 
                     logTimer = new DispatcherTimer();
-                    logTimer.Interval = new TimeSpan(TimeSpan.TicksPerMillisecond * GlobalSetting.LogIntervalInRecipeRunInMS);
+                    logTimer.Interval = new TimeSpan(TimeSpan.TicksPerMillisecond * AppSetting.LogIntervalInRecipeRunInMS);
                     logTimer.Tick += log;
                 }
 

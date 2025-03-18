@@ -30,16 +30,16 @@ namespace SapphireXR_App.ViewModels.FlowController
 
             void IObserver<(float, float)>.OnNext((float, float) values)
             {
-                if (values.Item1 / maxValue < GlobalSetting.UnderFlowControlFallbackRate)
+                if (values.Item1 / maxValue < AppSetting.UnderFlowControlFallbackRate)
                 {
                     values.Item1 = 0.0f;
                 }
-                string controlValue = values.Item1.ToString("N", new NumberFormatInfo() { NumberDecimalDigits = Util.NumberDecimalDigits(values.Item1, GlobalSetting.MaxNumberDigit) });
+                string controlValue = values.Item1.ToString("N", new NumberFormatInfo() { NumberDecimalDigits = Util.NumberDecimalDigits(values.Item1, AppSetting.MaxNumberDigit) });
                 if(controlValue != flowControllerViewModel.ControlValue)
                 {
                     flowControllerViewModel.ControlValue = controlValue;
                 }
-                string targetValue = values.Item2.ToString("N", new NumberFormatInfo() { NumberDecimalDigits = Util.NumberDecimalDigits(values.Item2, GlobalSetting.MaxNumberDigit) });
+                string targetValue = values.Item2.ToString("N", new NumberFormatInfo() { NumberDecimalDigits = Util.NumberDecimalDigits(values.Item2, AppSetting.MaxNumberDigit) });
                 if (targetValue != flowControllerViewModel.TargetValue)
                 {
                     flowControllerViewModel.TargetValue = targetValue;

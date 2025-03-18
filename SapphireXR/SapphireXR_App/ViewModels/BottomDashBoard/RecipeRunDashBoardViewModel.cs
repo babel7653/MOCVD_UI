@@ -1,16 +1,8 @@
 ﻿using OxyPlot.Axes;
 using OxyPlot.Series;
 using OxyPlot;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using static SapphireXR_App.ViewModels.BottomDashBoardViewModel;
 using SapphireXR_App.Common;
 using SapphireXR_App.Models;
-using System.Windows.Media;
-using System.Reactive;
 
 namespace SapphireXR_App.ViewModels.BottomDashBoard
 {

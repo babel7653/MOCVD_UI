@@ -5,10 +5,12 @@ namespace SapphireXR_App.Models
 {
     internal class ManualBatchEx
     {
-        internal static void Show()
+        internal static (ManualBatchViewModel.Batch?, ManualBatchViewModel.Batch?) Show()
         {
-            ManualBatchView manualBatchView = new ManualBatchView(new ManualBatchViewModel());
+            ManualBatchViewModel manualBatchViewModel = new ManualBatchViewModel();
+            ManualBatchView manualBatchView = new ManualBatchView(manualBatchViewModel);
             manualBatchView.ShowDialog();
+            return (manualBatchViewModel.BatchOnAlarmState, manualBatchViewModel.BatchOnRecipeEnd);
         }
     }
 }

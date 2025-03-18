@@ -1,20 +1,11 @@
-﻿using System.Collections.Specialized;
-using CommunityToolkit.Mvvm.ComponentModel;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
 using OxyPlot;
 using OxyPlot.Axes;
 using OxyPlot.Series;
-using Caliburn.Micro;
 using CommunityToolkit.Mvvm.Input;
-using CsvHelper.Configuration;
-using CsvHelper;
-using SapphireXR_App.Bases;
 using SapphireXR_App.Models;
-using System.Globalization;
-using System.IO;
 using System.Windows.Input;
-using System.Windows.Threading;
 using SapphireXR_App.Common;
-using System.Windows;
 using OxyPlot.Legends;
 
 namespace SapphireXR_App.ViewModels

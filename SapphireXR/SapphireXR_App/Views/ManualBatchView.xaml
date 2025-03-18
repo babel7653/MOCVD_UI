@@ -49,8 +49,11 @@
                 <Button x:Name="UserSqtateBatch" Grid.Column="3" Content="Batch" Width="70" Margin="5" Command="{Binding LoadToPLCCommand}" />
                 <Button x:Name="UserStateSave" Grid.Column="4" Content="Save" Width="70" Margin="5" Command="{Binding SaveCommand}" />
             </Grid>
-            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
-               
+            <StackPanel Orientation="Horizontal">
+                <TextBlock Text="Alarm State"/>
+                <ComboBox ItemsSource="{Binding Batches}" SelectedItem="{Binding BatchOnAlarmState}" DisplayMemberPath="Name"/>
+                <TextBlock Text="Recipe End"/>
+                <ComboBox ItemsSource="{Binding Batches}" SelectedItem="{Binding BatchOnRecipeEnd}" DisplayMemberPath="Name"/>
             </StackPanel>
             <StackPanel Orientation="Horizontal">
                 <Label Content="Name" />
@@ -66,11 +69,6 @@
                 </Grid.RowDefinitions>
                 <StackPanel Grid.Row="0">
                     <DataGrid x:Name="dgUserSettingA" AutoGenerateColumns="False" Margin="5,0,5,0" Height="320" VerticalScrollBarVisibility="Auto" ItemsSource="{Binding CurrentBatch.AnalogIOUserStates}" CanUserAddRows="False" CellEditEnding="dgUserSettingA_CellEditEnding">
-                        <i:Interaction.Triggers>
-                            <i:EventTrigger EventName="CellEditEnding" >
-                                <i:InvokeCommandAction Command="{Binding CellEditEndingCommand}" PassEventArgsToCommand="True"/>
-                            </i:EventTrigger>
-                        </i:Interaction.Triggers>
                         <DataGrid.Resources>
                             <Style TargetType="{x:Type DataGridColumnHeader}">
                                 <Setter Property="HorizontalAlignment" Value="Center"/>

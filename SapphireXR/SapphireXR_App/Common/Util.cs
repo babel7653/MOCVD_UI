@@ -6,6 +6,9 @@ using System.Windows.Controls;
 using System.Diagnostics;
 using System.Numerics;
 using OxyPlot.Axes;
+using SapphireXR_App.ViewModels;
+using SapphireXR_App.Models;
+using static SapphireXR_App.ViewModels.ManualBatchViewModel;
 
 namespace SapphireXR_App.Common
 {
@@ -76,12 +79,12 @@ namespace SapphireXR_App.Common
 
         public static string GetResourceAbsoluteFilePath(string subPath)
         {
-            return GetAbsoluteFilePathFromAppRelativePath("/Resources/" + subPath);
+            return GetAbsoluteFilePathFromAppRelativePath("\\Resources\\" + subPath);
         }
 
         public static string GetAbsoluteFilePathFromAppRelativePath(string subPath)
         {
-            return AppDomain.CurrentDomain.BaseDirectory + "/" + subPath.TrimStart('/');
+            return AppDomain.CurrentDomain.BaseDirectory + subPath.TrimStart('\\');
         }
 
         public static void SetIfChanged(bool newValue, ref bool? prevValue, Action<bool> onChanged)
@@ -195,6 +198,19 @@ namespace SapphireXR_App.Common
             else
             {
                 return 0;
+            }
+        }
+
+        public static void LoadBatchToPLC(ManualBatchViewModel.Batch batch)
+        {
+            foreach (AnalogIOUserState analogDeviceIO in batch.AnalogIOUserStates)
+            {
+                PLCService.WriteTargetValue(analogDeviceIO.FullIDName, analogDeviceIO.Value);
+                PLCService.WriteRampTime(analogDeviceIO.FullIDName, (short)batch.RampingTime!);
+            }
+            foreach (DigitalIOUserState digitalIOUserState in batch.DigitalIOUserStates)
+            {
+                PLCService.WriteValveState(digitalIOUserState.ID, digitalIOUserState.On);
             }
         }
 

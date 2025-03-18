@@ -3,12 +3,12 @@ using System.Collections.Specialized;
 using System.ComponentModel;
 using System.IO;
 using System.Windows;
-using System.Windows.Controls;
 using System.Windows.Input;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Newtonsoft.Json;
 using SapphireXR_App.Common;
+using SapphireXR_App.Controls;
 using SapphireXR_App.Models;
 
 namespace SapphireXR_App.ViewModels
@@ -57,7 +57,7 @@ namespace SapphireXR_App.ViewModels
         }
 
         public ManualBatchViewModel()
-        {
+        {;
             NotifyCollectionChangedEventHandler batchCollectionChanged = (object? sender, NotifyCollectionChangedEventArgs e) => {
                 MinusCommand.NotifyCanExecuteChanged();
             };
@@ -107,6 +107,8 @@ namespace SapphireXR_App.ViewModels
             {
                 MessageBox.Show(BatchFIlePath + "의 경로를 찾을 수 없습니다. 빈 Batch를 로드하며 저장 기능이 비활성화 됩니다.");
             }
+
+            
         }
 
         bool batchesEmpty()
@@ -123,15 +125,7 @@ namespace SapphireXR_App.ViewModels
         {
             if (CurrentBatch != null)
             {
-                foreach (AnalogIOUserState analogDeviceIO in CurrentBatch.AnalogIOUserStates)
-                {
-                    PLCService.WriteTargetValue(analogDeviceIO.FullIDName, analogDeviceIO.Value);
-                    PLCService.WriteRampTime(analogDeviceIO.FullIDName, (short)CurrentBatch.RampingTime!);
-                }
-                foreach(DigitalIOUserState digitalIOUserState in CurrentBatch.DigitalIOUserStates)
-                {
-                    PLCService.WriteValveState(digitalIOUserState.ID, digitalIOUserState.On);
-                }
+                Util.LoadBatchToPLC(CurrentBatch);
             }
         }
 
@@ -194,16 +188,6 @@ namespace SapphireXR_App.ViewModels
             }
         }
 
-        [RelayCommand]
-        private void CellEditEnding(object? args)
-        {
-            DataGridCellEditEndingEventArgs? editEndingEventArgs = args as DataGridCellEditEndingEventArgs;
-            if(editEndingEventArgs != null)
-            {
-               
-            }
-        }
-
         [ObservableProperty]
         private ObservableCollection<Batch> _batches = new ObservableCollection<Batch>();
 
@@ -218,6 +202,10 @@ namespace SapphireXR_App.ViewModels
         [ObservableProperty]
         private string? _batchFIlePath = null;
 
-        
+        [ObservableProperty]
+        private Batch? _batchOnAlarmState;
+
+        [ObservableProperty]
+        private Batch? _batchOnRecipeEnd;
     }
 }

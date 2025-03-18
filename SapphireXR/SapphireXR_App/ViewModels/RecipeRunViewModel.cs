@@ -225,8 +225,8 @@ namespace SapphireXR_App.ViewModels
         {
             DashBoardViewModel = new RecipeRunBottomDashBoardViewModel();
 
-            logIntervalInRecipeRunListener = new LogIntervalInRecipeRunListener(this, GlobalSetting.LogIntervalInRecipeRunInMS);
-            ObservableManager<int>.Subscribe("GlobalSetting.LogIntervalInRecipeRun", logIntervalInRecipeRunListener);
+            logIntervalInRecipeRunListener = new LogIntervalInRecipeRunListener(this, AppSetting.LogIntervalInRecipeRunInMS);
+            ObservableManager<int>.Subscribe("AppSetting.LogIntervalInRecipeRun", logIntervalInRecipeRunListener);
             ObservableManager<short>.Subscribe("RecipeRun.CurrentActiveRecipe", this);
             ObservableManager<bool>.Subscribe("RecipeEnded", recipeEndedSubscriber = new RecipeEndedSubscriber(this));
             recipeRunStatePublisher = ObservableManager<RecipeUserState>.Get("RecipeRun.State");
@@ -316,13 +316,13 @@ namespace SapphireXR_App.ViewModels
 
                             case RecipeUserState.Stopped:
                                 CurrentRecipe.stopLog();
-                                recipeEventIssuer.Issue(new HomeViewModel.EventLog() { Date = Util.ToEventLogFormat(DateTime.Now), Message = "레시피가 중단되었습니다", Type = "Recipe Run" });
+                                recipeEventIssuer.Issue(new HomeViewModel.EventLog() { Date = Util.ToEventLogFormat(DateTime.Now), Message = "레시피가 중단되었습니다", Type = "Recipe Stop" });
                                 toRecipeLoadedState();
                                 break;
 
                             case RecipeUserState.Ended:
                                 CurrentRecipe.stopLog();
-                                recipeEventIssuer.Issue(new HomeViewModel.EventLog() { Date = Util.ToEventLogFormat(DateTime.Now), Message = "레시피가 종료되었습니다", Type = "Recipe Run" });
+                                recipeEventIssuer.Issue(new HomeViewModel.EventLog() { Date = Util.ToEventLogFormat(DateTime.Now), Message = "레시피가 종료되었습니다", Type = "Recipe End" });
                                 MessageBox.Show("Recipe가 종료되었습니다. 종료시간: " + DateTime.Now.ToString("HH:mm"));
                                 toRecipeLoadedState();
                                 break;

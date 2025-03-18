@@ -82,7 +82,6 @@ namespace SapphireXR_App.ViewModels
         }
 
         public static readonly string DevceIOSettingFilePath = Util.GetResourceAbsoluteFilePath("/Configurations/DeviceIO.json");
-        public static readonly string AppSettingFilePath = Util.GetResourceAbsoluteFilePath("/Configurations/AppSetting.json");
 
         public Dictionary<string, AnalogDeviceIO>? dAnalogDeviceIO = [];
         public Dictionary<string, SwitchDI>? dSwitchDI = [];
@@ -136,7 +135,7 @@ namespace SapphireXR_App.ViewModels
                     case nameof(LogIntervalInRecipeRun):
                         if (LogIntervalInRecipeRun != null)
                         {
-                            GlobalSetting.LogIntervalInRecipeRunInMS = int.Parse(LogIntervalInRecipeRun);
+                            AppSetting.LogIntervalInRecipeRunInMS = int.Parse(LogIntervalInRecipeRun);
                         }
                         break;
                 }
@@ -164,7 +163,7 @@ namespace SapphireXR_App.ViewModels
             userstate = JsonConvert.DeserializeObject<UserState>(jUserState.ToString());
             if (jLogIntervalInRecipeRun != null)
             {
-                LogIntervalInRecipeRun = JsonConvert.DeserializeObject<string>(jLogIntervalInRecipeRun.ToString()) ?? GlobalSetting.DefaultLogIntervalInRecipeRunInMS.ToString();
+                LogIntervalInRecipeRun = JsonConvert.DeserializeObject<string>(jLogIntervalInRecipeRun.ToString()) ?? AppSetting.DefaultLogIntervalInRecipeRunInMS.ToString();
             }
 
             lAnalogDeviceIO = dAnalogDeviceIO.Values.ToList();
@@ -184,7 +183,7 @@ namespace SapphireXR_App.ViewModels
             JToken jInterLockD = JsonConvert.SerializeObject(dInterLockD);
             JToken jInterLockA = JsonConvert.SerializeObject(dInterLockA);
             JToken jUserState = JsonConvert.SerializeObject(userstate);
-            JToken? jLogIntervalInRecipeRun = (LogIntervalInRecipeRun != null ? JsonConvert.SerializeObject(int.Parse(LogIntervalInRecipeRun)) : JsonConvert.SerializeObject(GlobalSetting.DefaultLogIntervalInRecipeRunInMS));
+            JToken? jLogIntervalInRecipeRun = (LogIntervalInRecipeRun != null ? JsonConvert.SerializeObject(int.Parse(LogIntervalInRecipeRun)) : JsonConvert.SerializeObject(AppSetting.DefaultLogIntervalInRecipeRunInMS));
            
 
             JObject jDeviceIO = new(
@@ -203,27 +202,6 @@ namespace SapphireXR_App.ViewModels
 
             PLCService.WriteDeviceMaxValue(lAnalogDeviceIO);
             PLCService.ReadMaxValueFromPLC();
-        }
-
-        private void appSettingLoad()
-        {
-            JToken? appSettingRootToken = JToken.Parse(File.ReadAllText(AppSettingFilePath));
-            if(appSettingRootToken != null)
-            {
-                JToken? logPathToken = appSettingRootToken["LogPath"];
-                if (logPathToken != null)
-                {
-                    string? logFilePath = JsonConvert.DeserializeObject<string>(logPathToken.ToString());
-                    if (logFilePath != null)
-                    {
-                        GlobalSetting.LogFileDirectory = logFilePath;
-                    }
-                }
-                else
-                {
-                    
-                }
-            }
         }
 
         private void updateIOState(BitArray ioStateList)

@@ -57,29 +57,29 @@ namespace SapphireXR_App.ViewModels
             });
 
             flowControllerValueSubscribers = [new FlowControllerValueSubscriber<float>((float value) => { TargetTemp = value.ToString("N", new NumberFormatInfo() {
-                    NumberDecimalDigits = Util.NumberDecimalDigits(value, GlobalSetting.MaxNumberDigit) }); }, "FlowControl.Temperature.TargetValue"),
+                    NumberDecimalDigits = Util.NumberDecimalDigits(value, AppSetting.MaxNumberDigit) }); }, "FlowControl.Temperature.TargetValue"),
                 new FlowControllerValueSubscriber<float>((float value) => { ControlTemp = value.ToString("N", new NumberFormatInfo() {
-                    NumberDecimalDigits = Util.NumberDecimalDigits(value, GlobalSetting.MaxNumberDigit) }); }, "FlowControl.Temperature.ControlValue"),
+                    NumberDecimalDigits = Util.NumberDecimalDigits(value, AppSetting.MaxNumberDigit) }); }, "FlowControl.Temperature.ControlValue"),
                 new FlowControllerValueSubscriber<float>((float value) => { CurrentTemp = value.ToString("N", new NumberFormatInfo() {
-                    NumberDecimalDigits = Util.NumberDecimalDigits(value, GlobalSetting.MaxNumberDigit) }); }, "FlowControl.Temperature.CurrentValue"),
+                    NumberDecimalDigits = Util.NumberDecimalDigits(value, AppSetting.MaxNumberDigit) }); }, "FlowControl.Temperature.CurrentValue"),
                 new FlowControllerValueSubscriber<float>((float value) => { PowerRateTemp = value.ToString("N", new NumberFormatInfo() {
-                    NumberDecimalDigits = Util.NumberDecimalDigits(value, GlobalSetting.MaxNumberDigit) }); }, "MonitoringPresentValue.HeaterPowerRate.CurrentValue"),
+                    NumberDecimalDigits = Util.NumberDecimalDigits(value, AppSetting.MaxNumberDigit) }); }, "MonitoringPresentValue.HeaterPowerRate.CurrentValue"),
                 new FlowControllerValueSubscriber<float>((float value) => { TargetPress =  value.ToString("N", new NumberFormatInfo() { 
-                    NumberDecimalDigits = Util.NumberDecimalDigits(value, GlobalSetting.MaxNumberDigit) }); }, "FlowControl.Pressure.TargetValue"),
+                    NumberDecimalDigits = Util.NumberDecimalDigits(value, AppSetting.MaxNumberDigit) }); }, "FlowControl.Pressure.TargetValue"),
                 new FlowControllerValueSubscriber<float>((float value) => { ControlPress =  value.ToString("N", new NumberFormatInfo() { 
-                    NumberDecimalDigits = Util.NumberDecimalDigits(value, GlobalSetting.MaxNumberDigit) }); }, "FlowControl.Pressure.ControlValue"),
+                    NumberDecimalDigits = Util.NumberDecimalDigits(value, AppSetting.MaxNumberDigit) }); }, "FlowControl.Pressure.ControlValue"),
                 new FlowControllerValueSubscriber<float>((float value) => { CurrentPress =  value.ToString("N", new NumberFormatInfo() { 
-                    NumberDecimalDigits = Util.NumberDecimalDigits(value, GlobalSetting.MaxNumberDigit) }); }, "FlowControl.Pressure.CurrentValue"),
+                    NumberDecimalDigits = Util.NumberDecimalDigits(value, AppSetting.MaxNumberDigit) }); }, "FlowControl.Pressure.CurrentValue"),
                 new FlowControllerValueSubscriber<float>((float value) => { ValvePosition = value.ToString("N", new NumberFormatInfo() {
-                    NumberDecimalDigits = Util.NumberDecimalDigits(value, GlobalSetting.MaxNumberDigit) }); }, "MonitoringPresentValue.ValvePosition.CurrentValue"),
+                    NumberDecimalDigits = Util.NumberDecimalDigits(value, AppSetting.MaxNumberDigit) }); }, "MonitoringPresentValue.ValvePosition.CurrentValue"),
                 new FlowControllerValueSubscriber<float>((float value) => { UltimatePressure = value.ToString("N", new NumberFormatInfo() {
-                    NumberDecimalDigits = Util.NumberDecimalDigits(value, GlobalSetting.MaxNumberDigit) }); }, "MonitoringPresentValue.UltimatePressure.CurrentValue"),
+                    NumberDecimalDigits = Util.NumberDecimalDigits(value, AppSetting.MaxNumberDigit) }); }, "MonitoringPresentValue.UltimatePressure.CurrentValue"),
                 new FlowControllerValueSubscriber<float>((float value) => { TargetRotation = value.ToString("N", new NumberFormatInfo() {
-                    NumberDecimalDigits = Util.NumberDecimalDigits(value, GlobalSetting.MaxNumberDigit) }); }, "FlowControl.Rotation.TargetValue"),
+                    NumberDecimalDigits = Util.NumberDecimalDigits(value, AppSetting.MaxNumberDigit) }); }, "FlowControl.Rotation.TargetValue"),
                 new FlowControllerValueSubscriber<float>((float value) => { ControlRotation = value.ToString("N", new NumberFormatInfo() {
-                    NumberDecimalDigits = Util.NumberDecimalDigits(value, GlobalSetting.MaxNumberDigit) }); }, "FlowControl.Rotation.ControlValue"),
+                    NumberDecimalDigits = Util.NumberDecimalDigits(value, AppSetting.MaxNumberDigit) }); }, "FlowControl.Rotation.ControlValue"),
                 new FlowControllerValueSubscriber<float>((float value) => { CurrentRotation = value.ToString("N", new NumberFormatInfo() {
-                    NumberDecimalDigits = Util.NumberDecimalDigits(value, GlobalSetting.MaxNumberDigit) }); }, "FlowControl.Rotation.CurrentValue")];
+                    NumberDecimalDigits = Util.NumberDecimalDigits(value, AppSetting.MaxNumberDigit) }); }, "FlowControl.Rotation.CurrentValue")];
             foreach(FlowControllerValueSubscriber subscriber in flowControllerValueSubscribers)
             {
                 if(subscriber is FlowControllerValueSubscriber<int>)
@@ -260,9 +260,36 @@ namespace SapphireXR_App.ViewModels
             }
         }
 
+        private void loadBatchOnRecipeEnd()
+        {
+            if(batchOnRecipeEnd != null)
+            {
+                Util.LoadBatchToPLC(batchOnRecipeEnd);
+            }
+        }
+
+        private void loadBatchOnAlaramState()
+        {
+            if(batchOnAlarmState != null)
+            {
+                Util.LoadBatchToPLC(batchOnAlarmState);
+            }
+        }
+
         public ICommand EnableLeakTestCommand { get; set; }
         public ICommand ShowValveLabelCommand { get; set; }
-        public ICommand ManualBatchCommand => new RelayCommand(() => { ManualBatchEx.Show(); });
+        public ICommand ManualBatchCommand => new RelayCommand(() => { 
+            (batchOnAlarmState, batchOnRecipeEnd) = ManualBatchEx.Show();
+            if (batchOnAlarmState != null)
+            {
+                AppSetting.BatchOnAlarmState = batchOnAlarmState.Name;
+            }
+            if(batchOnRecipeEnd != null)
+            {
+                AppSetting.BatchOnRecipeEnd = batchOnRecipeEnd.Name;
+            }
+
+        });
 
         [ObservableProperty]
         private string _leakTestModeStr = disableLeakTestModeStr;
@@ -332,6 +359,9 @@ namespace SapphireXR_App.ViewModels
 
         private static readonly string PressureControlModePressure = "Pressure";
         private static readonly string PressureControlModePosition = "Position";
+
+        private ManualBatchViewModel.Batch? batchOnAlarmState;
+        private ManualBatchViewModel.Batch? batchOnRecipeEnd;
 
         private static readonly Dictionary<string, ushort> ThrottleValveModeStringToCmdOutputMode = new Dictionary<string, ushort>() { { "Control", 0 }, { "Close", 1 }, { "Open", 2 }, { "Hold", 3 }, { "Reset", 4 } };
         private static readonly string[] ThrottleValveModeCmdToString = [ "Control", "Close", "Open", "Hold", "Reset"];

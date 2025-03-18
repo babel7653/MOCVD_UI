@@ -88,7 +88,12 @@ namespace SapphireXR_App.ViewModels
 
         private void onRecipeInactive(CancelEventArgs args)
         {
-            if (MessageBox.Show("프로그램을 종료하시겠습니까?", "종료 확인", MessageBoxButton.OKCancel) == MessageBoxResult.Cancel)
+            if (MessageBox.Show("프로그램을 종료하시겠습니까?", "종료 확인", MessageBoxButton.OKCancel) == MessageBoxResult.OK)
+            {
+                AppSetting.Save();
+                
+            }
+            else
             {
                 args.Cancel = true;
             }

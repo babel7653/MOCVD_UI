@@ -16,6 +16,7 @@ namespace SapphireXR_App.ViewModels.FlowController
             public ControlTargetValueSubscriber(HomeFlowControllerViewModel viewModel)
             {
                 flowControllerViewModel = viewModel;
+                maxValue = PLCService.ReadMaxValue(viewModel.ControllerID);
             }
             void IObserver<(float, float)>.OnCompleted()
             {
@@ -29,6 +30,10 @@ namespace SapphireXR_App.ViewModels.FlowController
 
             void IObserver<(float, float)>.OnNext((float, float) values)
             {
+                if (values.Item1 / maxValue < GlobalSetting.UnderFlowControlFallbackRate)
+                {
+                    values.Item1 = 0.0f;
+                }
                 string controlValue = values.Item1.ToString("N", new NumberFormatInfo() { NumberDecimalDigits = Util.NumberDecimalDigits(values.Item1, GlobalSetting.MaxNumberDigit) });
                 if(controlValue != flowControllerViewModel.ControlValue)
                 {
@@ -42,6 +47,7 @@ namespace SapphireXR_App.ViewModels.FlowController
             }
             
             private HomeFlowControllerViewModel flowControllerViewModel;
+            private float maxValue;
         }
 
         public HomeFlowControllerViewModel()

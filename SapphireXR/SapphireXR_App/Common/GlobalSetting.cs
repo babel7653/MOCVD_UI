@@ -25,5 +25,6 @@ namespace SapphireXR_App.Common
 
         private static ObservableManager<int>.DataIssuer logIntervalInRecipeRunIssuer = ObservableManager<int>.Get("GlobalSetting.LogIntervalInRecipeRun");
         public static string LogFileDirectory = "";
+        public static readonly float UnderFlowControlFallbackRate = 1.0f / 100.0f;
     }
 }

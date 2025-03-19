@@ -8,7 +8,6 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Newtonsoft.Json;
 using SapphireXR_App.Common;
-using SapphireXR_App.Controls;
 using SapphireXR_App.Models;
 
 namespace SapphireXR_App.ViewModels
@@ -185,6 +184,22 @@ namespace SapphireXR_App.ViewModels
             {
                 Batches.Remove(CurrentBatch);
                 CurrentBatch = null;
+            }
+        }
+
+        public void loadBatchOnRecipeEnd()
+        {
+            if (BatchOnRecipeEnd != null)
+            {
+                Util.LoadBatchToPLC(BatchOnRecipeEnd);
+            }
+        }
+
+        private void loadBatchOnAlaramState()
+        {
+            if (BatchOnAlarmState != null)
+            {
+                Util.LoadBatchToPLC(BatchOnAlarmState);
             }
         }
 

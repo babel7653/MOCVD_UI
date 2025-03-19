@@ -53,6 +53,19 @@ namespace SapphireXR_App.Models
             DoWriteValveState(valveID, onOff);
         }
 
+        public static void WriteValveState(BitArray firstValveParts, BitArray secondValveParts)
+        {
+            var doWrite = (uint variableHandle, BitArray valveParts) =>
+            {
+                uint[] buffer = new uint[1];
+                valveParts.CopyTo(buffer, 0);
+                Ads.WriteAny(variableHandle, buffer);
+            };
+
+            doWrite(hReadValveStatePLC1, firstValveParts);
+            doWrite(hReadValveStatePLC2, secondValveParts);
+        }
+
         public static void WriteDeviceMaxValue(List<AnalogDeviceIO>? analogDeviceIOs)
         {
             // Device Max. Value Write
@@ -96,10 +109,27 @@ namespace SapphireXR_App.Models
             Ads.WriteAny(hWriteDeviceTargetValuePLC, aDeviceTargetValues!, [aDeviceTargetValues!.Length]);
         }
 
+        public static void WriteTargetValue(float[] targetValues)
+        {
+            if(targetValues.Length == NumControllers)
+            {
+                Ads.WriteAny(hWriteDeviceTargetValuePLC, targetValues, [targetValues.Length]);
+            }
+            
+        }
+
         public static void WriteRampTime(string flowControllerID, short currentValue)
         {
             aDeviceRampTimes![dIndexController[flowControllerID]] = currentValue;
             Ads.WriteAny(hWriteDeviceRampTimePLC, aDeviceRampTimes!, [aDeviceRampTimes!.Length]);
+        }
+
+        public static void WriteRampTime(short[] rampTimes)
+        {
+            if (rampTimes.Length == NumControllers)
+            {
+                Ads.WriteAny(hWriteDeviceRampTimePLC, rampTimes, [rampTimes.Length]);
+            }
         }
 
         public static void WriteRecipe(PlcRecipe[] recipe)

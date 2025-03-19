@@ -1,7 +1,6 @@
 ﻿using Newtonsoft.Json.Linq;
 using Newtonsoft.Json;
 using System.IO;
-using System.Data.SqlTypes;
 using System.Windows;
 
 namespace SapphireXR_App.Common

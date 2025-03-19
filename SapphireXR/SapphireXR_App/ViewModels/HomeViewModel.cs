@@ -260,35 +260,15 @@ namespace SapphireXR_App.ViewModels
             }
         }
 
-        private void loadBatchOnRecipeEnd()
+        public void loadBatchOnRecipeEnd()
         {
-            if(batchOnRecipeEnd != null)
-            {
-                Util.LoadBatchToPLC(batchOnRecipeEnd);
-            }
-        }
-
-        private void loadBatchOnAlaramState()
-        {
-            if(batchOnAlarmState != null)
-            {
-                Util.LoadBatchToPLC(batchOnAlarmState);
-            }
+            manualBatchViewModel.loadBatchOnRecipeEnd();
         }
 
         public ICommand EnableLeakTestCommand { get; set; }
         public ICommand ShowValveLabelCommand { get; set; }
-        public ICommand ManualBatchCommand => new RelayCommand(() => { 
-            (batchOnAlarmState, batchOnRecipeEnd) = ManualBatchEx.Show();
-            if (batchOnAlarmState != null)
-            {
-                AppSetting.BatchOnAlarmState = batchOnAlarmState.Name;
-            }
-            if(batchOnRecipeEnd != null)
-            {
-                AppSetting.BatchOnRecipeEnd = batchOnRecipeEnd.Name;
-            }
-
+        public ICommand ManualBatchCommand => new RelayCommand(() => {
+            ManualBatchEx.Show(manualBatchViewModel);
         });
 
         [ObservableProperty]
@@ -353,15 +333,14 @@ namespace SapphireXR_App.ViewModels
         private string _throttleValveStatus = "";
 
         [ObservableProperty]
-        ObservableCollection<EventLog> _eventLogs = new ObservableCollection<EventLog>();
+        private ObservableCollection<EventLog> _eventLogs = new ObservableCollection<EventLog>();
 
         private string? prevThrottleValveControlMode = null;
 
+        private ManualBatchViewModel manualBatchViewModel = new ManualBatchViewModel();
+
         private static readonly string PressureControlModePressure = "Pressure";
         private static readonly string PressureControlModePosition = "Position";
-
-        private ManualBatchViewModel.Batch? batchOnAlarmState;
-        private ManualBatchViewModel.Batch? batchOnRecipeEnd;
 
         private static readonly Dictionary<string, ushort> ThrottleValveModeStringToCmdOutputMode = new Dictionary<string, ushort>() { { "Control", 0 }, { "Close", 1 }, { "Open", 2 }, { "Hold", 3 }, { "Reset", 4 } };
         private static readonly string[] ThrottleValveModeCmdToString = [ "Control", "Close", "Open", "Hold", "Reset"];

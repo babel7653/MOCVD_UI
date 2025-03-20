@@ -9,7 +9,6 @@ using System.ComponentModel;
 using System.Globalization;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Input;
 
 namespace SapphireXR_App.ViewModels
 {
@@ -18,87 +17,123 @@ namespace SapphireXR_App.ViewModels
         public enum RecipeCommand : short { Initiate = 0, Run = 10, Pause = 20, Restart = 30, Stop = 40 };
         public enum RecipeUserState : short  { Uninitialized = -1, Initiated = 0, Run = 10, Pause = 20, Stopped = 40, Ended = 50 };
 
-        public class LogIntervalInRecipeRunListener : IObserver<int>
+        public RecipeRunViewModel()
         {
-            public LogIntervalInRecipeRunListener(RecipeRunViewModel viewModel, int currentLogIntervalInRecipeRun) 
-            {
-                recipeRunViewModel = viewModel;
-                currentValue = currentLogIntervalInRecipeRun;
-            } 
+            DashBoardViewModel = new RecipeRunBottomDashBoardViewModel();
 
-            void IObserver<int>.OnCompleted()
-            {
-                throw new NotImplementedException();
-            }
+            logIntervalInRecipeRunListener = new LogIntervalInRecipeRunListener(this, AppSetting.LogIntervalInRecipeRunInMS);
+            ObservableManager<int>.Subscribe("AppSetting.LogIntervalInRecipeRun", logIntervalInRecipeRunListener);
+            ObservableManager<short>.Subscribe("RecipeRun.CurrentActiveRecipe", this);
+            ObservableManager<bool>.Subscribe("RecipeEnded", recipeEndedSubscriber = new RecipeEndedSubscriber(this));
+            recipeRunStatePublisher = ObservableManager<RecipeUserState>.Get("RecipeRun.State");
+            ObservableManager<(string, IList<Recipe>)>.Subscribe("RecipeEdit.LoadToRecipeRun", loadFromRecipeEditSubscriber = new LoadFromRecipeEditSubscriber(this));
+            recipeEventIssuer = ObservableManager<HomeViewModel.EventLog>.Get("EventLog");
 
-            void IObserver<int>.OnError(Exception error)
+            PropertyChanging += (object? sender, PropertyChangingEventArgs e) =>
             {
-                throw new NotImplementedException();
-            }
-
-            void IObserver<int>.OnNext(int value)
-            {
-                if (currentValue != value)
+                switch (e.PropertyName)
                 {
-                    recipeRunViewModel.resetLogTimer(value);
-                    currentValue = value;
+                    case nameof(CurrentRecipe):
+                        CurrentRecipe.dispose();
+                        break;
                 }
-            }
-            RecipeRunViewModel recipeRunViewModel;
-            int currentValue;
-        }
-
-        private class LoadFromRecipeEditSubscriber : IObserver<(string, IList<Recipe>)>
-        {
-            internal LoadFromRecipeEditSubscriber(RecipeRunViewModel vm)
+            };
+            PropertyChanged += (object? sender, PropertyChangedEventArgs e) =>
             {
-                recipeRunViewModel = vm;
-            }
-
-            void IObserver<(string, IList<Recipe>)>.OnCompleted()
-            {
-                throw new NotImplementedException();
-            }
-
-            void IObserver<(string, IList<Recipe>)>.OnError(Exception error)
-            {
-                throw new NotImplementedException();
-            }
-
-            void IObserver<(string, IList<Recipe>)>.OnNext((string, IList<Recipe>) value)
-            {
-               if(0 < value.Item2.Count)
+                var toRecipeLoadedState = () =>
                 {
-                    recipeRunViewModel.CurrentRecipe = new RecipeContext(value.Item1 != "" ? value.Item1 : "recipe_" + DateTime.Now.ToString("yyyyMMddHHmm") + ".csv", value.Item2);
+                    StartOrPause = true;
+                    CurrentRecipe.toLoadedFromFileState();
+                    SyncPLCState(RecipeCommand.Initiate);
+                };
+                switch (e.PropertyName)
+                {
+                    case nameof(StartOrPause):
+                        switch (StartOrPause)
+                        {
+                            case false:
+                                StartText = "Pause";
+                                startOrStopCommand = pauseCommand;
+                                break;
+
+                            case true:
+                                StartText = "Start";
+                                startOrStopCommand = startCommand;
+                                break;
+
+                            case null:
+                                StartText = "";
+                                startOrStopCommand = null;
+                                break;
+                        }
+                        break;
+
+                    case nameof(CurrentRecipe):
+                        if (CurrentRecipe != EmptyRecipeContext)
+                        {
+                            SyncPLCState(RecipeCommand.Initiate);
+                            RecipeService.PLCLoad(CurrentRecipe.Recipes);
+                        }
+                        else
+                        {
+                            CurrentRecipeUserState = RecipeUserState.Uninitialized;
+                        }
+                        break;
+
+                    case nameof(CurrentRecipeUserState):
+                        switch (CurrentRecipeUserState)
+                        {
+                            case RecipeUserState.Uninitialized:
+                                StartOrPause = null;
+                                DashBoardViewModel.resetFlowChart(CurrentRecipe.Recipes);
+                                break;
+
+                            case RecipeUserState.Initiated:
+                                DashBoardViewModel.resetFlowChart(CurrentRecipe.Recipes);
+                                StartOrPause = true;
+                                Start = RecipeCommand.Run;
+                                currentRecipeNo = -1;
+                                break;
+
+                            case RecipeUserState.Run:
+                                CurrentRecipe.startLog();
+                                if (Start == RecipeCommand.Run)
+                                {
+                                    recipeEventIssuer.Issue(new HomeViewModel.EventLog() { Date = Util.ToEventLogFormat(DateTime.Now), Message = "레시피가 시작되었습니다", Type = "Recipe Run" });
+                                }
+                                StartOrPause = false;
+                                break;
+
+                            case RecipeUserState.Pause:
+                                StartOrPause = true;
+                                Start = RecipeCommand.Restart;
+                                CurrentRecipe.pauseLog();
+                                break;
+
+                            case RecipeUserState.Stopped:
+                                CurrentRecipe.stopLog();
+                                recipeEventIssuer.Issue(new HomeViewModel.EventLog() { Date = Util.ToEventLogFormat(DateTime.Now), Message = "레시피가 중단되었습니다", Type = "Recipe Stop" });
+                                toRecipeLoadedState();
+                                break;
+
+                            case RecipeUserState.Ended:
+                                CurrentRecipe.stopLog();
+                                recipeEventIssuer.Issue(new HomeViewModel.EventLog() { Date = Util.ToEventLogFormat(DateTime.Now), Message = "레시피가 종료되었습니다", Type = "Recipe End" });
+                                MessageBox.Show("Recipe가 종료되었습니다. 종료시간: " + DateTime.Now.ToString("HH:mm"));
+                                toRecipeLoadedState();
+                                break;
+                        }
+                        RecipeOpenCommand.NotifyCanExecuteChanged();
+                        RecipeStartCommand.NotifyCanExecuteChanged();
+                        RecipeSkipCommand.NotifyCanExecuteChanged();
+                        RecipeRefreshCommand.NotifyCanExecuteChanged();
+                        RecipeStopCommand.NotifyCanExecuteChanged();
+                        RecipeCleanCommand.NotifyCanExecuteChanged();
+                        ChangeLogDirectoryCommand.NotifyCanExecuteChanged();
+                        recipeRunStatePublisher?.Issue(CurrentRecipeUserState);
+                        break;
                 }
-            }
-
-            private RecipeRunViewModel recipeRunViewModel;
-        }
-
-        internal class RecipeEndedSubscriber : IObserver<bool>
-        {
-            internal RecipeEndedSubscriber(RecipeRunViewModel vm)
-            {
-                recipeRunViewModel = vm;
-            }
-
-            void IObserver<bool>.OnCompleted()
-            {
-                throw new NotImplementedException();
-            }
-
-            void IObserver<bool>.OnError(Exception error)
-            {
-                throw new NotImplementedException();
-            }
-
-            void IObserver<bool>.OnNext(bool value)
-            {
-                recipeRunViewModel.CurrentRecipeUserState = RecipeUserState.Ended;
-            }
-
-            private RecipeRunViewModel recipeRunViewModel;
+            };
         }
 
         bool canRecipeOpenExecute()
@@ -222,126 +257,6 @@ namespace SapphireXR_App.ViewModels
             SyncPLCState(RecipeCommand.Initiate, false);
             CurrentRecipe = EmptyRecipeContext;
         }
-
-        public RecipeRunViewModel()
-        {
-            DashBoardViewModel = new RecipeRunBottomDashBoardViewModel();
-
-            logIntervalInRecipeRunListener = new LogIntervalInRecipeRunListener(this, AppSetting.LogIntervalInRecipeRunInMS);
-            ObservableManager<int>.Subscribe("AppSetting.LogIntervalInRecipeRun", logIntervalInRecipeRunListener);
-            ObservableManager<short>.Subscribe("RecipeRun.CurrentActiveRecipe", this);
-            ObservableManager<bool>.Subscribe("RecipeEnded", recipeEndedSubscriber = new RecipeEndedSubscriber(this));
-            recipeRunStatePublisher = ObservableManager<RecipeUserState>.Get("RecipeRun.State");
-            ObservableManager<(string, IList<Recipe>)>.Subscribe("RecipeEdit.LoadToRecipeRun", loadFromRecipeEditSubscriber = new LoadFromRecipeEditSubscriber(this));
-            recipeEventIssuer = ObservableManager<HomeViewModel.EventLog>.Get("EventLog");
-
-            PropertyChanging += (object? sender, PropertyChangingEventArgs e) =>
-            {
-                switch (e.PropertyName)
-                {
-                    case nameof(CurrentRecipe):
-                        CurrentRecipe.dispose();
-                        break;
-                }
-            };
-            PropertyChanged += (object? sender, PropertyChangedEventArgs e) =>
-            {
-                var toRecipeLoadedState = () =>
-                {
-                    StartOrPause = true;
-                    CurrentRecipe.toLoadedFromFileState();
-                    SyncPLCState(RecipeCommand.Initiate);
-                };
-                switch (e.PropertyName)
-                {
-                    case nameof(StartOrPause):
-                        switch(StartOrPause)
-                        {
-                            case false:
-                                StartText = "Pause";
-                                startOrStopCommand = pauseCommand;
-                                break;
-
-                            case true:
-                                StartText = "Start";
-                                startOrStopCommand = startCommand;
-                                break;
-
-                            case null:
-                                StartText = "";
-                                startOrStopCommand = null; 
-                                break;
-                        }
-                        break;
-
-                    case nameof(CurrentRecipe):
-                        if (CurrentRecipe != EmptyRecipeContext)
-                        {
-                            SyncPLCState(RecipeCommand.Initiate);
-                            RecipeService.PLCLoad(CurrentRecipe.Recipes);
-                        }
-                        else
-                        {
-                            CurrentRecipeUserState = RecipeUserState.Uninitialized;
-                        }
-                        break;
-
-                    case nameof(CurrentRecipeUserState):
-                        switch(CurrentRecipeUserState)
-                        {
-                            case RecipeUserState.Uninitialized:
-                                StartOrPause = null;
-                                DashBoardViewModel.resetFlowChart(CurrentRecipe.Recipes);
-                                break;
-
-                            case RecipeUserState.Initiated:
-                                DashBoardViewModel.resetFlowChart(CurrentRecipe.Recipes);
-                                StartOrPause = true;
-                                Start = RecipeCommand.Run;
-                                currentRecipeNo = -1;
-                                break;
-
-                            case RecipeUserState.Run:
-                                CurrentRecipe.startLog();
-                                if(Start == RecipeCommand.Run)
-                                {
-                                    recipeEventIssuer.Issue(new HomeViewModel.EventLog() { Date = Util.ToEventLogFormat(DateTime.Now), Message = "레시피가 시작되었습니다", Type = "Recipe Run" });
-                                }
-                                StartOrPause = false;
-                                break;
-
-                            case RecipeUserState.Pause:
-                                StartOrPause = true;
-                                Start = RecipeCommand.Restart;
-                                CurrentRecipe.pauseLog();
-                                break;
-
-                            case RecipeUserState.Stopped:
-                                CurrentRecipe.stopLog();
-                                recipeEventIssuer.Issue(new HomeViewModel.EventLog() { Date = Util.ToEventLogFormat(DateTime.Now), Message = "레시피가 중단되었습니다", Type = "Recipe Stop" });
-                                toRecipeLoadedState();
-                                break;
-
-                            case RecipeUserState.Ended:
-                                CurrentRecipe.stopLog();
-                                recipeEventIssuer.Issue(new HomeViewModel.EventLog() { Date = Util.ToEventLogFormat(DateTime.Now), Message = "레시피가 종료되었습니다", Type = "Recipe End" });
-                                MessageBox.Show("Recipe가 종료되었습니다. 종료시간: " + DateTime.Now.ToString("HH:mm"));
-                                toRecipeLoadedState();
-                                break;
-                        }
-                        RecipeOpenCommand.NotifyCanExecuteChanged();
-                        RecipeStartCommand.NotifyCanExecuteChanged();
-                        RecipeSkipCommand.NotifyCanExecuteChanged();
-                        RecipeRefreshCommand.NotifyCanExecuteChanged();
-                        RecipeStopCommand.NotifyCanExecuteChanged();
-                        RecipeCleanCommand.NotifyCanExecuteChanged();
-                        ChangeLogDirectoryCommand.NotifyCanExecuteChanged();
-                        recipeRunStatePublisher?.Issue(CurrentRecipeUserState);
-                        break;
-                }
-            };
-        }
-
         void IObserver<short>.OnCompleted()
         {
             throw new NotImplementedException();

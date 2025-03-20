@@ -1,16 +1,11 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
-using CommunityToolkit.Mvvm.Input;
-using CsvHelper;
-using Microsoft.Win32;
 using SapphireXR_App.Common;
 using SapphireXR_App.Models;
 using System.ComponentModel;
 using System.Globalization;
 using System.IO;
 using System.Windows;
-using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Threading;
 
 namespace SapphireXR_App.ViewModels
 {
@@ -18,166 +13,6 @@ namespace SapphireXR_App.ViewModels
     {
         public partial class RecipeContext : ObservableObject, IDisposable
         {
-         
-            private class TemperatureControlValueSubscriber : IObserver<int>
-            {
-                internal TemperatureControlValueSubscriber(RecipeContext rc)
-                {
-                    recipeContext = rc;
-                }
-
-                void IObserver<int>.OnCompleted()
-                {
-                    throw new NotImplementedException();
-                }
-
-                void IObserver<int>.OnError(Exception error)
-                {
-                    throw new NotImplementedException();
-                }
-
-                void IObserver<int>.OnNext(int value)
-                {
-                    if(prevValue == null || prevValue != value)
-                    {
-                        recipeContext.CurrentWaitTemp = value;
-                        prevValue = value;
-                    }
-                }
-
-                private RecipeContext recipeContext;
-                private int? prevValue;
-            }
-
-            private class RecipeTimeSubscriber : IObserver<int>
-            {
-                internal RecipeTimeSubscriber(Action<int> onNextAc)
-                {
-                    onNext = onNextAc;
-                }
-
-                void IObserver<int>.OnCompleted()
-                {
-                    throw new NotImplementedException();
-                }
-
-                void IObserver<int>.OnError(Exception error)
-                {
-                    throw new NotImplementedException();
-                }
-
-                void IObserver<int>.OnNext(int value)
-                {
-                    if(prevValue == null || prevValue != value)
-                    {
-                        onNext(value);
-                        prevValue = value;
-                    }
-                }
-
-                private int? prevValue = null;
-                private readonly Action<int> onNext;
-            }
-
-            public class Logger: IDisposable
-            {
-                internal Logger(RecipeContext recipeContextObj)
-                {
-                    try
-                    {
-                        fileStream = new FileStream(recipeContextObj.LogFilePath, FileMode.Create);
-                        streamWriter = new StreamWriter(fileStream);
-                        csvWriter = new CsvWriter(streamWriter, Config);
-
-                        csvWriter.WriteHeader<RecipeLog>();
-                        csvWriter.NextRecord();
-                    }
-                    catch (Exception)
-                    {
-                        csvWriter?.Dispose();
-                        streamWriter?.Close();
-                        fileStream?.Close();
-
-                        throw;
-                    }
-
-                    recipeContext = recipeContextObj;
-
-                    logTimer = new DispatcherTimer();
-                    logTimer.Interval = new TimeSpan(TimeSpan.TicksPerMillisecond * AppSetting.LogIntervalInRecipeRunInMS);
-                    logTimer.Tick += log;
-                }
-
-                private void log(object? sender, EventArgs args)
-                {
-                    if (recipeContext != null && recipeContext.currentRecipe != null)
-                    {
-                        csvWriter!.WriteRecord(new RecipeLog(recipeContext.currentRecipe));
-                        csvWriter!.NextRecord();
-                    }
-                }
-
-                public void pause()
-                {
-                    logTimer?.Stop();
-                }
-
-                public void start()
-                {
-                    logTimer?.Start();
-                }
-
-                protected virtual void Dispose(bool disposing)
-                {
-                    if (!disposedValue)
-                    {
-                        if (disposing)
-                        {
-                          
-                        }
-
-                        if (logTimer != null)
-                        {
-                            logTimer.Stop();
-                            logTimer.Tick -= log;
-                        }
-                        try
-                        {
-                            csvWriter!.Flush();
-                            csvWriter!.Dispose();
-                            streamWriter!.Close();
-                            fileStream!.Close();
-                        }
-                        catch (Exception)
-                        {
-                        }
-                   
-                        disposedValue = true;
-                    }
-                }
-
-                public void Dispose()
-                {
-                    // 이 코드를 변경하지 마세요. 'Dispose(bool disposing)' 메서드에 정리 코드를 입력합니다.
-                    Dispose(disposing: true);
-                    GC.SuppressFinalize(this);
-                }
-
-                public void dispose()
-                {
-                    Dispose(true);
-                }
-
-                private DispatcherTimer? logTimer = null;
-                private FileStream? fileStream = null;
-                private StreamWriter? streamWriter = null;
-                private CsvWriter? csvWriter = null;
-                private RecipeContext? recipeContext = null;
-
-                private bool disposedValue = false;
-            }
-
-
             public RecipeContext() { }
             public RecipeContext(string recipeFilePath, IList<Recipe> recipes)
             {
@@ -414,6 +249,39 @@ namespace SapphireXR_App.ViewModels
                 TotalWaitTemp = null;
             }
 
+            protected virtual void Dispose(bool disposing)
+            {
+                if (!disposedValue)
+                {
+                    if (disposing)
+                    {
+                    }
+
+                    // TODO: 비관리형 리소스(비관리형 개체)를 해제하고 종료자를 재정의합니다.
+                    // TODO: 큰 필드를 null로 설정합니다.
+                    disposeSubscribe();
+                    disposeResource();
+                    disposedValue = true;
+                }
+            }
+
+            void IDisposable.Dispose()
+            {
+                // 이 코드를 변경하지 마세요. 'Dispose(bool disposing)' 메서드에 정리 코드를 입력합니다.
+                Dispose(disposing: true);
+                GC.SuppressFinalize(this);
+            }
+
+            public void dispose()
+            {
+                Dispose(disposing: true);
+            }
+
+            public void disposeResource()
+            {
+                FileLogger?.dispose();
+            }
+
             private readonly bool initialized = false;
             private HashSet<int> modifiedRecipeIndice = new HashSet<int>();
 
@@ -492,39 +360,6 @@ namespace SapphireXR_App.ViewModels
                 Delimiter = ",",
                 HasHeaderRecord = true
             };
-
-            protected virtual void Dispose(bool disposing)
-            {
-                if (!disposedValue)
-                {
-                    if (disposing)
-                    { 
-                    }
-
-                    // TODO: 비관리형 리소스(비관리형 개체)를 해제하고 종료자를 재정의합니다.
-                    // TODO: 큰 필드를 null로 설정합니다.
-                    disposeSubscribe();
-                    disposeResource();
-                    disposedValue = true;
-                }
-            }
-
-            void IDisposable.Dispose()
-            {
-                // 이 코드를 변경하지 마세요. 'Dispose(bool disposing)' 메서드에 정리 코드를 입력합니다.
-                Dispose(disposing: true);
-                GC.SuppressFinalize(this);
-            }
-
-            public void dispose()
-            {
-                Dispose(disposing: true);
-            }
-
-            public void disposeResource()
-            {
-                FileLogger?.dispose();
-            }
         }
     }
 }

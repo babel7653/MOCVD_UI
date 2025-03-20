@@ -1,5 +1,6 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using Microsoft.Win32;
 using SapphireXR_App.Bases;
 using SapphireXR_App.Common;
 using SapphireXR_App.Models;
@@ -8,6 +9,7 @@ using System.ComponentModel;
 using System.Globalization;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Input;
 
 namespace SapphireXR_App.ViewModels
 {
@@ -333,6 +335,7 @@ namespace SapphireXR_App.ViewModels
                         RecipeRefreshCommand.NotifyCanExecuteChanged();
                         RecipeStopCommand.NotifyCanExecuteChanged();
                         RecipeCleanCommand.NotifyCanExecuteChanged();
+                        ChangeLogDirectoryCommand.NotifyCanExecuteChanged();
                         recipeRunStatePublisher?.Issue(CurrentRecipeUserState);
                         break;
                 }
@@ -407,6 +410,19 @@ namespace SapphireXR_App.ViewModels
 
         [ObservableProperty]
         private RecipeContext _currentRecipe = EmptyRecipeContext;
+
+        public RelayCommand ChangeLogDirectoryCommand => new RelayCommand(() =>
+        {
+            OpenFolderDialog openFolderDialog = new OpenFolderDialog();
+            openFolderDialog.InitialDirectory = AppDomain.CurrentDomain.BaseDirectory;
+            openFolderDialog.Multiselect = false;
+
+
+            if (openFolderDialog.ShowDialog() == true)
+            {
+                AppSetting.LogFileDirectory = openFolderDialog.FolderName;
+            }
+        }, () => CurrentRecipeUserState == RecipeUserState.Uninitialized);
 
         [ObservableProperty]
         private string _startText = "";

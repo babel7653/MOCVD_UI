@@ -9,6 +9,7 @@ using OxyPlot.Axes;
 using SapphireXR_App.ViewModels;
 using SapphireXR_App.Models;
 using static SapphireXR_App.ViewModels.ManualBatchViewModel;
+using System.Globalization;
 
 namespace SapphireXR_App.Common
 {
@@ -180,25 +181,29 @@ namespace SapphireXR_App.Common
             return dateTime.ToString("yyyy.MM.dd HH:mm:ss");
         }
 
-        public static int NumberDecimalDigits (float value, int maxNumberDigit)
+        public static string FloatingPointStrWithMaxDigit(float value, int maxNumberDigit)
         {
-            int intValue = (int)value;
-            if (0 <= intValue && intValue < 10)
+            var numberDecimalDigits = (float value, int maxNumberDigit) =>
             {
-                return maxNumberDigit - 1;
-            }
-            else if (10 <= intValue && intValue < 100)
-            {
-                return maxNumberDigit - 2;
-            }
-            else if (100 <= intValue && intValue < 1000)
-            {
-                return maxNumberDigit - 3;
-            }
-            else
-            {
-                return 0;
-            }
+                int intValue = (int)value;
+                if (0 <= intValue && intValue < 10)
+                {
+                    return maxNumberDigit - 1;
+                }
+                else if (10 <= intValue && intValue < 100)
+                {
+                    return maxNumberDigit - 2;
+                }
+                else if (100 <= intValue && intValue < 1000)
+                {
+                    return maxNumberDigit - 3;
+                }
+                else
+                {
+                    return 0;
+                }
+            };
+            return value.ToString("N", new NumberFormatInfo() { NumberDecimalDigits = numberDecimalDigits(value, AppSetting.FloatingPointMaxNumberDigit) });
         }
 
         public static void LoadBatchToPLC(ManualBatchViewModel.Batch batch)

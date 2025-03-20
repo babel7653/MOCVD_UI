@@ -1,16 +1,16 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
 using CsvHelper;
+using Microsoft.Win32;
 using SapphireXR_App.Common;
 using SapphireXR_App.Models;
-using System;
 using System.ComponentModel;
 using System.Globalization;
 using System.IO;
-using System.Printing;
 using System.Windows;
+using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Threading;
-using static SapphireXR_App.ViewModels.RecipeRunViewModel;
 
 namespace SapphireXR_App.ViewModels
 {
@@ -280,7 +280,24 @@ namespace SapphireXR_App.ViewModels
 
                 if (FileLogger == null)
                 {
-                    LogFilePath = RecipeFilePath.Replace(".csv", DateTime.Now.ToString("_yyyy_MM_dd_HH_mm_ss") + "_log.csv");
+                    string fileName = Path.GetFileName(RecipeFilePath);
+                    int fileNameEnd = fileName.LastIndexOf('.');
+                    if(fileNameEnd == -1)
+                    {
+                        fileNameEnd = fileName.Length;
+                    }
+                    if(Path.Exists(AppSetting.LogFileDirectory) == false)
+                    {
+                        try
+                        {
+                            Directory.CreateDirectory(AppSetting.LogFileDirectory);
+                        }
+                        catch(Exception exception)
+                        {
+                            MessageBox.Show("로그 디렉토리을 생성하는데 실패했습니다. 로그 기능은 작동하지 않은 채로 동작합니다. 원인은 다음과 같습니다: " + exception.Message);
+                        }
+                }
+                    LogFilePath = AppSetting.LogFileDirectory + "\\" + fileName.Substring(0, fileNameEnd) + "_" + DateTime.Now.ToString("_yyyy_MM_dd_HH_mm_ss") + fileName.Substring(fileNameEnd);
                     try
                     {
                         FileLogger = new Logger(this);

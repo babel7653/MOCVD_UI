@@ -6,6 +6,7 @@
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:SapphireXR_App.Views"
       xmlns:control="clr-namespace:SapphireXR_App.Controls"
+      xmlns:i="clr-namespace:Microsoft.Xaml.Behaviors;assembly=Microsoft.Xaml.Behaviors"
       xmlns:oxy="http://oxyplot.org/wpf"
       mc:Ignorable="d"
       d:DesignHeight="1020" d:DesignWidth="1620"
@@ -655,15 +656,21 @@
                     <Button x:Name="btnRecipeClean" Content="Clean" Style="{StaticResource RecipeOperationStyle}" Command="{Binding RecipeCleanCommand}"/>
                 </StackPanel>
                 <Grid Grid.Column="2">
-                    <StackPanel DataContext="{Binding CurrentRecipe}">
+                    <StackPanel>
                         <StackPanel Orientation="Horizontal">
                             <TextBlock Width="80" Height="20" Foreground="Lime">Loaded File</TextBlock>
-                            <TextBox x:Name="tbRecipeLoadedFile" Width="415" Height="18" Margin="1" Text="{Binding RecipeFilePath, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" IsReadOnly="True" Style="{StaticResource InfoTextBoxStyle}"/>
+                            <TextBox x:Name="tbRecipeLoadedFile" Width="415" Height="18" Margin="1" Text="{Binding CurrentRecipe.RecipeFilePath, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" IsReadOnly="True" Style="{StaticResource InfoTextBoxStyle}"/>
                         </StackPanel>
                         <StackPanel Orientation="Horizontal">
                             <TextBlock Width="80" Height="20" Foreground="Lime">Log File</TextBlock>
-                            <TextBox x:Name="tbRecipeLogFile" Width="415" Height="18" Margin="1"  Text="{Binding LogFilePath, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" IsReadOnly="True" 
-                                     Style="{StaticResource InfoTextBoxStyle}" ToolTip="로그 파일 저장 위치를 바꾸려면 클릭하세요."/>
+                            <TextBox x:Name="tbRecipeLogFile" Width="415" Height="18" Margin="1"  Text="{Binding CurrentRecipe.LogFilePath, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" IsReadOnly="True" 
+                                     Style="{StaticResource InfoTextBoxStyle}" ToolTip="로그 파일 저장 위치를 바꾸려면 클릭하세요. 단, 현재 Recipe가 비어 있는 상태에서만 가능합니다. (Clean 버튼 클릭)">
+                                <i:Interaction.Triggers>
+                                    <i:EventTrigger EventName="PreviewMouseLeftButtonUp">
+                                        <i:InvokeCommandAction Command="{Binding ChangeLogDirectoryCommand}" />
+                                    </i:EventTrigger>
+                                </i:Interaction.Triggers>
+                            </TextBox>
                         </StackPanel>
                     </StackPanel>
                 </Grid>

@@ -5,7 +5,6 @@ using SapphireXR_App.Common;
 using SapphireXR_App.Models;
 using static SapphireXR_App.ViewModels.FlowControlViewModel;
 using CommunityToolkit.Mvvm.ComponentModel;
-using System.Globalization;
 
 namespace SapphireXR_App.ViewModels.FlowController
 {
@@ -34,12 +33,12 @@ namespace SapphireXR_App.ViewModels.FlowController
                 {
                     values.Item1 = 0.0f;
                 }
-                string controlValue = values.Item1.ToString("N", new NumberFormatInfo() { NumberDecimalDigits = Util.NumberDecimalDigits(values.Item1, AppSetting.MaxNumberDigit) });
-                if(controlValue != flowControllerViewModel.ControlValue)
+                string controlValue = Util.FloatingPointStrWithMaxDigit(values.Item1, AppSetting.FloatingPointMaxNumberDigit);
+                if (controlValue != flowControllerViewModel.ControlValue)
                 {
                     flowControllerViewModel.ControlValue = controlValue;
                 }
-                string targetValue = values.Item2.ToString("N", new NumberFormatInfo() { NumberDecimalDigits = Util.NumberDecimalDigits(values.Item2, AppSetting.MaxNumberDigit) });
+                string targetValue = Util.FloatingPointStrWithMaxDigit(values.Item2, AppSetting.FloatingPointMaxNumberDigit);
                 if (targetValue != flowControllerViewModel.TargetValue)
                 {
                     flowControllerViewModel.TargetValue = targetValue;

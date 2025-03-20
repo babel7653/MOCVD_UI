@@ -161,10 +161,6 @@ namespace SapphireXR_App.ViewModels
             dInterLockD = JsonConvert.DeserializeObject<Dictionary<string, bool>>(jInterLockD.ToString());
             dInterLockA = JsonConvert.DeserializeObject<Dictionary<string, InterLockA>>(jInterLockA.ToString());
             userstate = JsonConvert.DeserializeObject<UserState>(jUserState.ToString());
-            if (jLogIntervalInRecipeRun != null)
-            {
-                LogIntervalInRecipeRun = JsonConvert.DeserializeObject<string>(jLogIntervalInRecipeRun.ToString()) ?? AppSetting.DefaultLogIntervalInRecipeRunInMS.ToString();
-            }
 
             lAnalogDeviceIO = dAnalogDeviceIO.Values.ToList();
             lSwitchDI = dSwitchDI.Values.ToList();
@@ -183,7 +179,6 @@ namespace SapphireXR_App.ViewModels
             JToken jInterLockD = JsonConvert.SerializeObject(dInterLockD);
             JToken jInterLockA = JsonConvert.SerializeObject(dInterLockA);
             JToken jUserState = JsonConvert.SerializeObject(userstate);
-            JToken? jLogIntervalInRecipeRun = (LogIntervalInRecipeRun != null ? JsonConvert.SerializeObject(int.Parse(LogIntervalInRecipeRun)) : JsonConvert.SerializeObject(AppSetting.DefaultLogIntervalInRecipeRunInMS));
            
 
             JObject jDeviceIO = new(
@@ -193,8 +188,7 @@ namespace SapphireXR_App.ViewModels
                 new JProperty("PreSet", jPreSet),
                 new JProperty("InterLockD", jInterLockD),
                 new JProperty("InterLockA", jInterLockA),
-                new JProperty("UserState", jUserState),
-                new JProperty("LogIntervalInRecipeRun", jLogIntervalInRecipeRun)
+                new JProperty("UserState", jUserState)
                 );
 
             if (File.Exists(DevceIOSettingFilePath)) File.Delete(DevceIOSettingFilePath);

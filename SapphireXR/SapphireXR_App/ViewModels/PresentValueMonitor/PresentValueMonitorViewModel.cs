@@ -23,7 +23,7 @@ namespace SapphireXR_App.ViewModels
 
         protected virtual void updatePresentValue(float value)
         {
-            PresentValue = value.ToString("N", new NumberFormatInfo() { NumberDecimalDigits = Util.NumberDecimalDigits(value, AppSetting.MaxNumberDigit) });
+            PresentValue = Util.FloatingPointStrWithMaxDigit(value, AppSetting.FloatingPointMaxNumberDigit);
         }
 
         void IObserver<float>.OnCompleted()

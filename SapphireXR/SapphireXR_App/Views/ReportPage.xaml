@@ -39,68 +39,22 @@
                 </StackPanel.Resources>
                 <StackPanel Height="30">
                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                        <Button x:Name="PlotChart" Content="Plot" >
-                        </Button>
-                        <Button x:Name="PlotSave" Content="Save" >
-                        </Button>
+                        <Button x:Name="PlotChart" Content="Select Tag"/>
+                        <Button x:Name="PlotSave" Content="Save"/>
                     </StackPanel>
                 </StackPanel>
                 <StackPanel>
-                    <TextBlock FontSize="14" Margin="10,20,0,0" Foreground="Black" Text="Recipe File"/>
+                    <TextBlock FontSize="14" Margin="10,20,0,0" Foreground="Black" Text="Log File 1"/>
                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" >
-                        <TextBox x:Name="PlotRecipeFileOpen_1" Width="200" Height="25" VerticalAlignment="Bottom">
-                            <TextBox.InputBindings>
-                                <MouseBinding	Command="{Binding PlotRecipeFileOpenCommand}" MouseAction="LeftDoubleClick"/>
-                            </TextBox.InputBindings>
-                        </TextBox>
-                        <Button x:Name="PlotRecipeFileClose_1" Content="Remove" VerticalAlignment="Center"
-									Command="{Binding PlotRecipeFileRemoveCommand}">
-                        </Button>
+                        <TextBox x:Name="PlotRecipeFileOpen_1" Width="200" Height="25" VerticalAlignment="Bottom" Text="{Binding Path=LogFilePath1, UpdateSourceTrigger=PropertyChanged}"/>
+                        <Button x:Name="PlotRecipeFileClose_1" Content="Open" VerticalAlignment="Center" Command="{Binding OpenLogFile1Command}"/>
                     </StackPanel>
+                   
+                    <TextBlock FontSize="14" Margin="10,20,0,0" Foreground="Black" Text="Log File 2"/>
                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                        <TextBox x:Name="PlotRecipeFileOpen_2" Width="200" Height="25" VerticalAlignment="Bottom">
-                            <TextBox.InputBindings>
-                                <MouseBinding	Command="{Binding PlotRecipeFileOpenCommand}" MouseAction="LeftDoubleClick"/>
-                            </TextBox.InputBindings>
-                        </TextBox>
-                        <Button x:Name="PlotRecipeFileClose_2" Content="Remove" VerticalAlignment="Center"
-									Command="{Binding PlotRecipeFileRemoveCommand}">
-                        </Button>
+                        <TextBox x:Name="PlotLogFileOpen_2" Width="200" Height="25" VerticalAlignment="Bottom" Text="{Binding Path=LogFilePath2, UpdateSourceTrigger=PropertyChanged}"/>
+                        <Button x:Name="PlotLogFileClose_2" Content="Open" VerticalAlignment="Center" Command="{Binding OpenLogFile2Command}"/>
                     </StackPanel>
-                    <TextBlock FontSize="14" Margin="10,20,0,0" Foreground="Black" Text="Log File"/>
-                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                        <TextBox x:Name="PlotLogFileOpen_1" Width="200" Height="25" VerticalAlignment="Bottom"
-									 Text="{Binding Path=logFilepath1, UpdateSourceTrigger=PropertyChanged}">
-                            <TextBox.InputBindings>
-                                <MouseBinding	Command="{Binding PlotLogFileOpen1Command}" MouseAction="LeftDoubleClick"/>
-                            </TextBox.InputBindings>
-                        </TextBox>
-                        <Button x:Name="PlotLogFileClose_1" Content="Remove" VerticalAlignment="Center"
-									Command="{Binding LoadLogCommand}">
-                        </Button>
-                    </StackPanel>
-                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                        <TextBox x:Name="PlotLogFileOpen_2" Width="200" Height="25" VerticalAlignment="Bottom"
-									 Text="{Binding Path=logFilepath2,  UpdateSourceTrigger=PropertyChanged}">
-                            <TextBox.InputBindings>
-                                <MouseBinding	Command="{Binding PlotLogFileOpen2Command}" MouseAction="LeftDoubleClick"/>
-                            </TextBox.InputBindings>
-                        </TextBox>
-                        <Button x:Name="PlotLogFileClose_2" Content="Remove" VerticalAlignment="Center"
-									Command="{Binding PlotLogFileRemove2Command}">
-                        </Button>
-                    </StackPanel>
-                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                        <Button Content="Data1" x:Name="btnPlotData1" VerticalContentAlignment="Center" Width="50"
-									Command="{Binding btnPlotData1Command}"/>
-                        <Button Content="Data2" x:Name="btnPlotData2" VerticalContentAlignment="Center" Width="50"
-									Command="{Binding btnPlotData2Command}"/>
-                        <Button Content="Data3" x:Name="btnPlotData3" VerticalContentAlignment="Center" Width="50"
-									Command="{Binding btnPlotData3Command}"/>
-                        <Button Content="Data4" x:Name="btnPlotData4" VerticalContentAlignment="Center" Width="50"
-									Command="{Binding btnPlotData4Command}"/>
-                    </StackPanel>
-
                 </StackPanel>
             </StackPanel>
             <Grid Grid.Row="1">
@@ -120,33 +74,7 @@
                                 </Style.Resources>
                             </Style>
                         </StackPanel.Resources>
-                        <Button x:Name="btnPlotDevice" Content="Plot Device" Width="70" Margin="5"
-									Command="{Binding btnPlotDeviceCommand}"/>
-                        <TextBlock FontSize="14" Margin="10" Foreground="Black" Text="Time"/>
-                        <TextBox x:Name="PlotTime" Width="70" Height="25" />
                     </StackPanel>
-
-                    <DataGrid x:Name="PlotSelectedDevice" AutoGenerateColumns="False" Padding="5"
-									CanUserAddRows="False" AlternationCount="2" AlternatingRowBackground="LightGray" 
-									ItemsSource="{Binding ReportCompareData}">
-                        <DataGrid.Resources>
-                            <Style TargetType="{x:Type DataGridColumnHeader}">
-                                <Setter Property="HorizontalAlignment" Value="Center"/>
-                                <Setter Property="Background" Value="Transparent"/>
-                            </Style>
-                            <Style TargetType="{x:Type DataGrid}">
-                                <Setter Property="BorderBrush" Value="Black"/>
-                                <Setter Property="BorderThickness" Value="1"/>
-                            </Style>
-                        </DataGrid.Resources>
-                        <DataGrid.Columns>
-                            <DataGridTextColumn Width="*" Header="TimeStamp" Binding="{Binding TimeStamp, StringFormat=\{0:hh:mm:ss\}}"/>
-                            <DataGridTextColumn Width="*" Header="Data1" Binding="{Binding Data1, StringFormat=\{0:0.0000\}}"/>
-                            <DataGridTextColumn Width="*" Header="Data2" Binding="{Binding Data2, StringFormat=\{0:0.0000\}}"/>
-                            <DataGridTextColumn Width="*" Header="Data3" Binding="{Binding Data3, StringFormat=\{0:0.0000\}}"/>
-                            <DataGridTextColumn Width="*" Header="Data4" Binding="{Binding Data4, StringFormat=\{0:0.0000\}}"/>
-                        </DataGrid.Columns>
-                    </DataGrid>
                 </StackPanel>
             </Grid>
         </Grid>

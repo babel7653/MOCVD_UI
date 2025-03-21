@@ -29,8 +29,16 @@ namespace SapphireXR_App.Models
 
         public static void Connect()
         {
-            Ads.Connect(AmsNetId.Local, 851);
-            //Ads.Connect(new AmsAddress("5.62.179.198.1.1:851"));
+            if(AppSetting.PLCAddress != "Local")
+            {
+                Ads.Connect(new AmsAddress(AppSetting.PLCAddress + ":" + AppSetting.PLCPort));
+            }
+            else
+            {
+                Ads.Connect(AmsNetId.Local, AppSetting.PLCPort);
+            }
+                
+            
             if (Ads.IsConnected == true)
             {
                 AddressPLC = $"PLC Address : {Ads.Address}";

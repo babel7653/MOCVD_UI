@@ -56,30 +56,30 @@ namespace SapphireXR_App.ViewModels
                 }
             });
 
-            flowControllerValueSubscribers = [new FlowControllerValueSubscriber<float>((float value) => { TargetTemp = value.ToString("N", new NumberFormatInfo() {
-                    NumberDecimalDigits = Util.NumberDecimalDigits(value, AppSetting.MaxNumberDigit) }); }, "FlowControl.Temperature.TargetValue"),
-                new FlowControllerValueSubscriber<float>((float value) => { ControlTemp = value.ToString("N", new NumberFormatInfo() {
-                    NumberDecimalDigits = Util.NumberDecimalDigits(value, AppSetting.MaxNumberDigit) }); }, "FlowControl.Temperature.ControlValue"),
-                new FlowControllerValueSubscriber<float>((float value) => { CurrentTemp = value.ToString("N", new NumberFormatInfo() {
-                    NumberDecimalDigits = Util.NumberDecimalDigits(value, AppSetting.MaxNumberDigit) }); }, "FlowControl.Temperature.CurrentValue"),
-                new FlowControllerValueSubscriber<float>((float value) => { PowerRateTemp = value.ToString("N", new NumberFormatInfo() {
-                    NumberDecimalDigits = Util.NumberDecimalDigits(value, AppSetting.MaxNumberDigit) }); }, "MonitoringPresentValue.HeaterPowerRate.CurrentValue"),
-                new FlowControllerValueSubscriber<float>((float value) => { TargetPress =  value.ToString("N", new NumberFormatInfo() { 
-                    NumberDecimalDigits = Util.NumberDecimalDigits(value, AppSetting.MaxNumberDigit) }); }, "FlowControl.Pressure.TargetValue"),
-                new FlowControllerValueSubscriber<float>((float value) => { ControlPress =  value.ToString("N", new NumberFormatInfo() { 
-                    NumberDecimalDigits = Util.NumberDecimalDigits(value, AppSetting.MaxNumberDigit) }); }, "FlowControl.Pressure.ControlValue"),
-                new FlowControllerValueSubscriber<float>((float value) => { CurrentPress =  value.ToString("N", new NumberFormatInfo() { 
-                    NumberDecimalDigits = Util.NumberDecimalDigits(value, AppSetting.MaxNumberDigit) }); }, "FlowControl.Pressure.CurrentValue"),
-                new FlowControllerValueSubscriber<float>((float value) => { ValvePosition = value.ToString("N", new NumberFormatInfo() {
-                    NumberDecimalDigits = Util.NumberDecimalDigits(value, AppSetting.MaxNumberDigit) }); }, "MonitoringPresentValue.ValvePosition.CurrentValue"),
-                new FlowControllerValueSubscriber<float>((float value) => { UltimatePressure = value.ToString("N", new NumberFormatInfo() {
-                    NumberDecimalDigits = Util.NumberDecimalDigits(value, AppSetting.MaxNumberDigit) }); }, "MonitoringPresentValue.UltimatePressure.CurrentValue"),
-                new FlowControllerValueSubscriber<float>((float value) => { TargetRotation = value.ToString("N", new NumberFormatInfo() {
-                    NumberDecimalDigits = Util.NumberDecimalDigits(value, AppSetting.MaxNumberDigit) }); }, "FlowControl.Rotation.TargetValue"),
-                new FlowControllerValueSubscriber<float>((float value) => { ControlRotation = value.ToString("N", new NumberFormatInfo() {
-                    NumberDecimalDigits = Util.NumberDecimalDigits(value, AppSetting.MaxNumberDigit) }); }, "FlowControl.Rotation.ControlValue"),
-                new FlowControllerValueSubscriber<float>((float value) => { CurrentRotation = value.ToString("N", new NumberFormatInfo() {
-                    NumberDecimalDigits = Util.NumberDecimalDigits(value, AppSetting.MaxNumberDigit) }); }, "FlowControl.Rotation.CurrentValue")];
+            flowControllerValueSubscribers = [new FlowControllerValueSubscriber<float>((float value) => { TargetTemp = Util.FloatingPointStrWithMaxDigit(value, AppSetting.FloatingPointMaxNumberDigit); }, 
+                "FlowControl.Temperature.TargetValue"),
+                new FlowControllerValueSubscriber<float>((float value) => { ControlTemp = Util.FloatingPointStrWithMaxDigit(value, AppSetting.FloatingPointMaxNumberDigit); }, 
+                "FlowControl.Temperature.ControlValue"),
+                new FlowControllerValueSubscriber<float>((float value) => { CurrentTemp = Util.FloatingPointStrWithMaxDigit(value, AppSetting.FloatingPointMaxNumberDigit); }, 
+                "FlowControl.Temperature.CurrentValue"),
+                new FlowControllerValueSubscriber<float>((float value) => { PowerRateTemp = Util.FloatingPointStrWithMaxDigit(value, AppSetting.FloatingPointMaxNumberDigit); }, 
+                "MonitoringPresentValue.HeaterPowerRate.CurrentValue"),
+                new FlowControllerValueSubscriber<float>((float value) => { TargetPress =  Util.FloatingPointStrWithMaxDigit(value, AppSetting.FloatingPointMaxNumberDigit); }, 
+                "FlowControl.Pressure.TargetValue"),
+                new FlowControllerValueSubscriber<float>((float value) => { ControlPress =  Util.FloatingPointStrWithMaxDigit(value, AppSetting.FloatingPointMaxNumberDigit); }, 
+                "FlowControl.Pressure.ControlValue"),
+                new FlowControllerValueSubscriber<float>((float value) => { CurrentPress =  Util.FloatingPointStrWithMaxDigit(value, AppSetting.FloatingPointMaxNumberDigit); }, 
+                "FlowControl.Pressure.CurrentValue"),
+                new FlowControllerValueSubscriber<float>((float value) => { ValvePosition = Util.FloatingPointStrWithMaxDigit(value, AppSetting.FloatingPointMaxNumberDigit); }, 
+                "MonitoringPresentValue.ValvePosition.CurrentValue"),
+                new FlowControllerValueSubscriber<float>((float value) => { UltimatePressure =Util.FloatingPointStrWithMaxDigit(value, AppSetting.FloatingPointMaxNumberDigit); }, 
+                "MonitoringPresentValue.UltimatePressure.CurrentValue"),
+                new FlowControllerValueSubscriber<float>((float value) => { TargetRotation = Util.FloatingPointStrWithMaxDigit(value, AppSetting.FloatingPointMaxNumberDigit); }, 
+                "FlowControl.Rotation.TargetValue"),
+                new FlowControllerValueSubscriber<float>((float value) => { ControlRotation =Util.FloatingPointStrWithMaxDigit(value, AppSetting.FloatingPointMaxNumberDigit); }, 
+                "FlowControl.Rotation.ControlValue"),
+                new FlowControllerValueSubscriber<float>((float value) => { CurrentRotation = Util.FloatingPointStrWithMaxDigit(value, AppSetting.FloatingPointMaxNumberDigit); }, 
+                "FlowControl.Rotation.CurrentValue")];
             foreach(FlowControllerValueSubscriber subscriber in flowControllerValueSubscribers)
             {
                 if(subscriber is FlowControllerValueSubscriber<int>)

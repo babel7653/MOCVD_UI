@@ -32,49 +32,50 @@ namespace SapphireXR_App.ViewModels
 
         public PopupExResult PopupExResult { get; internal set; } = PopupExResult.Close;
 
-        internal class ControlValueSubscriber : IObserver<int>
+        internal class ControlValueSubscriber : IObserver<float>
         {
             public ControlValueSubscriber(FlowControlViewModel viewModel)
             {
                 flowControlViewModel = viewModel;
             }
-            void IObserver<int>.OnCompleted()
+            void IObserver<float>.OnCompleted()
             {
                 throw new NotImplementedException();
             }
 
-            void IObserver<int>.OnError(Exception error)
+            void IObserver<float>.OnError(Exception error)
             {
                 throw new NotImplementedException();
             }
 
-            void IObserver<int>.OnNext(int value)
+            void IObserver<float>.OnNext(float value)
             {
-                flowControlViewModel.ControlValue = value.ToString();
+               
+                flowControlViewModel.ControlValue = Util.FloatingPointStrWithMaxDigit(value, AppSetting.FloatingPointMaxNumberDigit);
             }
 
             private FlowControlViewModel flowControlViewModel;
         }
 
-        internal class CurrentValueSubscriber : IObserver<int>
+        internal class CurrentValueSubscriber : IObserver<float>
         {
             public CurrentValueSubscriber(FlowControlViewModel viewModel)
             {
                 flowControlViewModel = viewModel;
             }
-            void IObserver<int>.OnCompleted()
+            void IObserver<float>.OnCompleted()
             {
                 throw new NotImplementedException();
             }
 
-            void IObserver<int>.OnError(Exception error)
+            void IObserver<float>.OnError(Exception error)
             {
                 throw new NotImplementedException();
             }
 
-            void IObserver<int>.OnNext(int value)
+            void IObserver<float>.OnNext(float value)
             {
-                flowControlViewModel.CurrentValue = value.ToString();
+                flowControlViewModel.CurrentValue = Util.FloatingPointStrWithMaxDigit(value, AppSetting.FloatingPointMaxNumberDigit);
             }
 
             private FlowControlViewModel flowControlViewModel;
@@ -135,16 +136,16 @@ namespace SapphireXR_App.ViewModels
             {
                 if(e.PropertyName == "CurrentValue" || e.PropertyName == "ControlValue")
                 {
-                    if (Util.IsTextNumeric(CurrentValue) && Util.IsTextNumeric(ControlValue))
+                    if (CurrentValue != string.Empty && ControlValue != string.Empty && 0 != MaxValue)
                     {
-                        Deviation = ((int)(((float)(Math.Abs(int.Parse(CurrentValue) - int.Parse(ControlValue))) / ((float)MaxValue)) * 100.0)).ToString();
+                        Deviation = Util.FloatingPointStrWithMaxDigit((((float)(Math.Abs(float.Parse(CurrentValue) - float.Parse(ControlValue))) / ((float)MaxValue)) * 100.0f), AppSetting.FloatingPointMaxNumberDigit);
                     }
                 }
             };
             controlValueSubscriber = new ControlValueSubscriber(this);
             currentValueSubscriber = new CurrentValueSubscriber(this);
-            currentValueSubscriberDisposable = ObservableManager<int>.Subscribe("FlowControl." + fcID + ".CurrentValue", currentValueSubscriber);
-            controlValueSubscriberDisposable = ObservableManager<int>.Subscribe("FlowControl." + fcID + ".ControlValue", controlValueSubscriber);
+            currentValueSubscriberDisposable = ObservableManager<float>.Subscribe("FlowControl." + fcID + ".CurrentValue", currentValueSubscriber);
+            controlValueSubscriberDisposable = ObservableManager<float>.Subscribe("FlowControl." + fcID + ".ControlValue", controlValueSubscriber);
         }
 
         public struct ControlValues
@@ -158,7 +159,6 @@ namespace SapphireXR_App.ViewModels
         public delegate void CanceledEventHandler(PopupExResult result);
         public event CanceledEventHandler? Canceled;
 
-        private static readonly SolidColorBrush OnWrongTextFormat = new SolidColorBrush(Colors.Red);
         private static readonly SolidColorBrush OnNormal = new SolidColorBrush(Colors.Red);
 
         private ControlValueSubscriber controlValueSubscriber;

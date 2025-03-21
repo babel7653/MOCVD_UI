@@ -79,12 +79,7 @@
             </Grid>
         </Grid>
         <Grid Grid.Column="1" Background="LightSkyBlue">
-            <oxy:PlotView Model="{Binding ReportComparePlot}">
-                <!--<b:Interaction.Triggers>
-				<b:EventTrigger EventName="MouseLeftButtonDown">
-					<b:InvokeCommandAction Command="{Binding ResetAxisCommand}"/>
-				</b:EventTrigger>
-			</b:Interaction.Triggers>-->
+            <oxy:PlotView>
             </oxy:PlotView>
         </Grid>
     </Grid>

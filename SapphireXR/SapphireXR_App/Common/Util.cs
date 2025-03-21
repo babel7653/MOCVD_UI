@@ -1,15 +1,14 @@
 ﻿using System.Windows.Media;
 using System.Windows;
-using System.IO;
-using System.Windows.Resources;
 using System.Windows.Controls;
 using System.Diagnostics;
 using System.Numerics;
-using OxyPlot.Axes;
-using SapphireXR_App.ViewModels;
 using SapphireXR_App.Models;
 using static SapphireXR_App.ViewModels.ManualBatchViewModel;
 using System.Collections;
+using System.Globalization;
+using Newtonsoft.Json.Linq;
+using Newtonsoft.Json;
 
 namespace SapphireXR_App.Common
 {
@@ -206,7 +205,7 @@ namespace SapphireXR_App.Common
             return value.ToString("N", new NumberFormatInfo() { NumberDecimalDigits = numberDecimalDigits(value, AppSetting.FloatingPointMaxNumberDigit) });
         }
 
-        public static void LoadBatchToPLC(ManualBatchViewModel.Batch batch)
+        public static void LoadBatchToPLC(Batch batch)
         {
             PLCService.WriteTargetValue(batch.AnalogIOUserStates.Select((AnalogIOUserState analogIOUserState) => (float)analogIOUserState.Value).ToArray());
             PLCService.WriteRampTime(Enumerable.Repeat((short)batch.RampingTime, batch.AnalogIOUserStates.Count).ToArray());
@@ -227,7 +226,20 @@ namespace SapphireXR_App.Common
                 }
             }
             PLCService.WriteValveState(firstValveStates, secondValveStates);
-            
+        }
+
+        public static object? GetSettingValue(JToken rootToken, string key)
+        {
+            if (rootToken != null)
+            {
+                JToken? token = rootToken[key];
+                if (token != null)
+                {
+                    return JsonConvert.DeserializeObject(token.ToString());
+                }
+            }
+
+            return null;
         }
 
         public static void ConstraintEmptyToZeroOnDataGridCellCommitForRecipeRunEdit(object sender, DataGridCellEditEndingEventArgs e)

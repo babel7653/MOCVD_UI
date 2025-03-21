@@ -16,11 +16,6 @@
             </Style.Resources>
         </Style>
     </Window.Resources>
-    <i:Interaction.Triggers>
-        <i:EventTrigger EventName="Closed">
-            <i:InvokeCommandAction Command="{Binding CloseCommand}" />
-        </i:EventTrigger>
-    </i:Interaction.Triggers>
     <Grid>
         <StackPanel>
             <StackPanel.Resources>

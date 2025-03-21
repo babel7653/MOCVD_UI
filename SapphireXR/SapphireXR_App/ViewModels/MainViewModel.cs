@@ -1,5 +1,4 @@
-﻿using Caliburn.Micro;
-using CommunityToolkit.Mvvm.ComponentModel;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
 using OxyPlot;
@@ -90,8 +89,8 @@ namespace SapphireXR_App.ViewModels
         {
             if (MessageBox.Show("프로그램을 종료하시겠습니까?", "종료 확인", MessageBoxButton.OKCancel) == MessageBoxResult.OK)
             {
+                closingPublisher.Issue(true);
                 AppSetting.Save();
-                
             }
             else
             {
@@ -145,6 +144,6 @@ namespace SapphireXR_App.ViewModels
         private Action<CancelEventArgs> onClosing;
 
         private ObservableManager<int>.DataIssuer selectedTabPublisher = ObservableManager<int>.Get("MainView.SelectedTabIndex");
-
+        private ObservableManager<bool>.DataIssuer closingPublisher = ObservableManager<bool>.Get("App.Closing");
     }
 }

@@ -55,7 +55,7 @@ namespace SapphireXR_App.Models
   public class InterLockA
   {
     public bool IsEnable { get; set; }
-    public string Treshold { get; set; }
+    public required string Treshold { get; set; }
   }
   public class UserState
   {

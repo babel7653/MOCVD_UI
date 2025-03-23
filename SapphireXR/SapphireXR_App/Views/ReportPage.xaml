@@ -39,21 +39,21 @@
                 </StackPanel.Resources>
                 <StackPanel Height="30">
                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                        <Button x:Name="PlotChart" Content="Select Tag"/>
+                        <Button x:Name="PlotChart" Content="Select Tag" Command="{Binding ShowSeriesSelectionViewCommand}"/>
                         <Button x:Name="PlotSave" Content="Save"/>
                     </StackPanel>
                 </StackPanel>
                 <StackPanel>
-                    <TextBlock FontSize="14" Margin="10,20,0,0" Foreground="Black" Text="Log File 1"/>
+                    <TextBlock FontSize="14" Margin="10,20,0,0" Foreground="Black" Text="Log1 File"/>
                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" >
-                        <TextBox x:Name="PlotRecipeFileOpen_1" Width="200" Height="25" VerticalAlignment="Bottom" Text="{Binding Path=LogFilePath1, UpdateSourceTrigger=PropertyChanged}"/>
-                        <Button x:Name="PlotRecipeFileClose_1" Content="Open" VerticalAlignment="Center" Command="{Binding OpenLogFile1Command}"/>
+                        <TextBox x:Name="PlotLog1FileOpen" Width="200" Height="25" VerticalAlignment="Bottom" Text="{Binding Path=Log1FilePath, UpdateSourceTrigger=PropertyChanged}"/>
+                        <Button x:Name="PlotLog1FileClose" Content="Open" VerticalAlignment="Center" Command="{Binding OpenLog1FileCommand}"/>
                     </StackPanel>
                    
-                    <TextBlock FontSize="14" Margin="10,20,0,0" Foreground="Black" Text="Log File 2"/>
+                    <TextBlock FontSize="14" Margin="10,20,0,0" Foreground="Black" Text="Log2 File"/>
                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                        <TextBox x:Name="PlotLogFileOpen_2" Width="200" Height="25" VerticalAlignment="Bottom" Text="{Binding Path=LogFilePath2, UpdateSourceTrigger=PropertyChanged}"/>
-                        <Button x:Name="PlotLogFileClose_2" Content="Open" VerticalAlignment="Center" Command="{Binding OpenLogFile2Command}"/>
+                        <TextBox x:Name="PlotLog2FileOpen" Width="200" Height="25" VerticalAlignment="Bottom" Text="{Binding Path=Log2FilePath, UpdateSourceTrigger=PropertyChanged}"/>
+                        <Button x:Name="PlotLog2FileClose" Content="Open" VerticalAlignment="Center" Command="{Binding OpenLog2FileCommand}"/>
                     </StackPanel>
                 </StackPanel>
             </StackPanel>
@@ -79,7 +79,7 @@
             </Grid>
         </Grid>
         <Grid Grid.Column="1" Background="LightSkyBlue">
-            <oxy:PlotView>
+            <oxy:PlotView Model="{Binding FlowControlLivePlot}">
             </oxy:PlotView>
         </Grid>
     </Grid>

@@ -123,11 +123,6 @@ namespace SapphireXR_App.ViewModels
                 {
                     if (!disposedValue)
                     {
-                        if (disposing)
-                        {
-
-                        }
-
                         if (logTimer != null)
                         {
                             logTimer.Stop();

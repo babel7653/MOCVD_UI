@@ -6,26 +6,26 @@
         xmlns:local="clr-namespace:SapphireXR_App.Views"
         xmlns:i="clr-namespace:Microsoft.Xaml.Behaviors;assembly=Microsoft.Xaml.Behaviors"
         mc:Ignorable="d"
-        Title="Series Selection" Height="450" Width="400">
+        Title="Series Selection" Height="560" Width="400">
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition/>
-            <ColumnDefinition Width="20"/>
+            <ColumnDefinition Width="30"/>
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
-        <ListBox ItemsSource="{Binding Names, UpdateSourceTrigger=PropertyChanged, Mode=OneTime}" Grid.Column="0" SelectionMode="Extended">
+        <ListBox ItemsSource="{Binding Names, UpdateSourceTrigger=PropertyChanged, Mode=OneTime}" Grid.Row="0" Grid.Column="0" SelectionMode="Extended">
             <i:Interaction.Triggers>
                 <i:EventTrigger EventName="SelectionChanged">
                     <i:InvokeCommandAction Command="{Binding LeftSelectionChangedCommand}" PassEventArgsToCommand="True"/>
                 </i:EventTrigger>
             </i:Interaction.Triggers>
         </ListBox>
-        <StackPanel VerticalAlignment="Center" Grid.Column="1">
-            <Button Content="&gt;&gt;" Height="10" FontSize="5" Padding="0 0 0 0" Command="{Binding AddToSelectedCommand}"/>
+        <StackPanel VerticalAlignment="Center" Grid.Row="0" Grid.Column="1">
+            <Button Content="&gt;&gt;" Height="13" FontSize="5" Padding="0 0 0 0" Command="{Binding AddToSelectedCommand}"/>
             <Separator Opacity="0" Height="2"/>
-            <Button Content="&lt;&lt;" Height="10" FontSize="5" Padding="0 0 0 0" Command="{Binding RemoveFromSelectedCommand}"/>
+            <Button Content="&lt;&lt;" Height="13" FontSize="5" Padding="0 0 0 0" Command="{Binding RemoveFromSelectedCommand}"/>
         </StackPanel>
-        <ListBox ItemsSource="{Binding Selected, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}" Grid.Column="2" SelectionMode="Extended">\
+        <ListBox ItemsSource="{Binding SelectedNames, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}" Grid.Row="0" Grid.Column="2" SelectionMode="Extended">
             <i:Interaction.Triggers>
                 <i:EventTrigger EventName="SelectionChanged">
                     <i:InvokeCommandAction Command="{Binding RightSelectionChangedCommand}" PassEventArgsToCommand="True"/>

@@ -142,30 +142,45 @@ namespace SapphireXR_App.ViewModels
             };
             //Json파일 읽기 및 Pars
             var fdevice = File.ReadAllText(DevceIOSettingFilePath);
-
             JToken? jDeviceInit = JToken.Parse(fdevice);
             JToken? jAnalogDeviceIO = jDeviceInit["AnalogDeviceIO"];
+            if(jAnalogDeviceIO != null)
+            {
+                dAnalogDeviceIO = JsonConvert.DeserializeObject<Dictionary<string, AnalogDeviceIO>>(jAnalogDeviceIO.ToString());
+                lAnalogDeviceIO = dAnalogDeviceIO?.Values.ToList();
+            }
             JToken? jSwitchDI = jDeviceInit["SwitchDI"];
+            if(jSwitchDI != null)
+            {
+                dSwitchDI = JsonConvert.DeserializeObject<Dictionary<string, SwitchDI>>(jSwitchDI.ToString());
+                lSwitchDI = dSwitchDI?.Values.ToList();
+            }
             JToken? jGasDO = jDeviceInit["GasDO"];
+            if(jGasDO != null)
+            {
+                dGasDO = JsonConvert.DeserializeObject<Dictionary<string, GasDO>>(jGasDO.ToString());
+                lGasDO = dGasDO?.Values.ToList();
+            }
             JToken? jPreSet = jDeviceInit["PreSet"];
+            if(jPreSet != null)
+            {
+                dPreSet = JsonConvert.DeserializeObject<Dictionary<string, string>>(jPreSet.ToString());
+            }
             JToken? jInterLockD = jDeviceInit["InterLockD"];
+            if(jInterLockD != null)
+            {
+                dInterLockD = JsonConvert.DeserializeObject<Dictionary<string, bool>>(jInterLockD.ToString());
+            }
             JToken? jInterLockA = jDeviceInit["InterLockA"];
+            if(jInterLockA != null)
+            {
+                dInterLockA = JsonConvert.DeserializeObject<Dictionary<string, InterLockA>>(jInterLockA.ToString());
+            }
             JToken? jUserState = jDeviceInit["UserState"];
-            JToken? jWithoutConnection = jDeviceInit["WithoutConnection"];
-            JToken? jLogIntervalInRecipeRun = jDeviceInit["LogIntervalInRecipeRun"];
-
-            dAnalogDeviceIO = JsonConvert.DeserializeObject<Dictionary<string, AnalogDeviceIO>>(jAnalogDeviceIO.ToString());
-            dSwitchDI = JsonConvert.DeserializeObject<Dictionary<string, SwitchDI>>(jSwitchDI.ToString());
-            dGasDO = JsonConvert.DeserializeObject<Dictionary<string, GasDO>>(jGasDO.ToString());
-            dPreSet = JsonConvert.DeserializeObject<Dictionary<string, string>>(jPreSet.ToString());
-            dInterLockD = JsonConvert.DeserializeObject<Dictionary<string, bool>>(jInterLockD.ToString());
-            dInterLockA = JsonConvert.DeserializeObject<Dictionary<string, InterLockA>>(jInterLockA.ToString());
-            userstate = JsonConvert.DeserializeObject<UserState>(jUserState.ToString());
-
-            lAnalogDeviceIO = dAnalogDeviceIO.Values.ToList();
-            lSwitchDI = dSwitchDI.Values.ToList();
-            lGasDO = dGasDO.Values.ToList();
-
+            if(jUserState != null)
+            {
+                userstate = JsonConvert.DeserializeObject<UserState>(jUserState.ToString());
+            }
             PLCService.WriteDeviceMaxValue(lAnalogDeviceIO);
             PLCService.ReadMaxValueFromPLC();
         }

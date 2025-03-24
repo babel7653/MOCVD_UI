@@ -2,6 +2,7 @@
 {
     public class RecipeLog
     {
+        public RecipeLog() { }
         public RecipeLog(Recipe recipe)
         {
             Step = recipe.Name;

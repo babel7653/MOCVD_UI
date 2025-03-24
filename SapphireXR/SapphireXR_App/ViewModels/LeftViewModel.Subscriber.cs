@@ -1,16 +1,9 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Collections;
 using System.Numerics;
-using System.Runtime.CompilerServices;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Media;
 using CommunityToolkit.Mvvm.ComponentModel;
 using SapphireXR_App.Common;
 using SapphireXR_App.Models;
-using static SapphireXR_App.ViewModels.RecipeEditViewModel.TabDataGridViewModel;
 
 namespace SapphireXR_App.ViewModels
 {

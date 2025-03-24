@@ -1,17 +1,7 @@
-﻿using OxyPlot;
-using SapphireXR_App.Bases;
+﻿using SapphireXR_App.Bases;
 using SapphireXR_App.Common;
-using SapphireXR_App.Controls;
 using SapphireXR_App.Models;
-using System;
-using System.Collections.Generic;
 using System.ComponentModel;
-using System.Linq;
-using System.Reflection.Emit;
-using System.Security.RightsManagement;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Navigation;
 
 namespace SapphireXR_App.ViewModels
 {

@@ -11,10 +11,13 @@ namespace SapphireXR_App.ViewModels
     {
         public ReportSeriesSelectionViewModel()
         {
+            List<string> names = new List<string>();
             foreach((string name, var colors) in LogReportSeries.LogSeriesColor)
             {
-                Names.Add(name);
+                names.Add(name);
             }
+            names.Sort();
+            Names = new ObservableCollection<string>(names);
         }
 
         private bool canAddToSelectedExecuted()
@@ -26,12 +29,21 @@ namespace SapphireXR_App.ViewModels
         {
             if (selectedFromLeftList != null)
             {
+                IList<string> copy = new List<string>();
                 foreach (object selected in selectedFromLeftList)
                 {
                     string? name = selected as string;
+                    if (name != null)
+                    {
+                        copy.Add(name);
+                    }
+                }
+                foreach (string name in copy)
+                {
                     if (name != null && SelectedNames.Contains(name) == false)
                     {
                         SelectedNames.Add(name);
+                        Names.Remove(name);
                     }
                 }
             }
@@ -58,7 +70,11 @@ namespace SapphireXR_App.ViewModels
                 foreach (string selected in copy)
                 {
                     SelectedNames.Remove(selected);
+                    Names.Add(selected);
                 }
+                List<string> names = Names.ToList();
+                names.Sort();
+                Names = new ObservableCollection<string>(names);
             }
         }
 
@@ -88,10 +104,13 @@ namespace SapphireXR_App.ViewModels
             RemoveFromSelectedCommand.NotifyCanExecuteChanged();
         });
 
-        public IList<string> Names { get; } = new List<string>();
+       
         public IList? selectedFromLeftList = null;
         public IList? selectedFromRightList = null;
 
+        [ObservableProperty]
+        public ObservableCollection<string> _names;
+       
         public ObservableCollection<string> SelectedNames { get; } = new ObservableCollection<string>();
     }
 }

@@ -148,6 +148,13 @@ namespace SapphireXR_App.ViewModels
                             IsVisible = true
                         };
                         logSeries[seriesTitle] = seriesForDevice;
+                        if(reportSeriesSelectionViewModel != null)
+                        {
+                            if(reportSeriesSelectionViewModel.SelectedNames.FirstOrDefault(selectName => name == selectName) != default)
+                            {
+                                plotModel.Series.Add(seriesForDevice);
+                            }
+                        }    
                     }
                     ((LineSeries)seriesForDevice).Points.Clear();
                     foreach (RecipeLog recipeLog in recipeLogs)
@@ -164,6 +171,7 @@ namespace SapphireXR_App.ViewModels
                     }
                 }
                 zoomToFit(mode, plotModel, logSeries);
+                plotModel.InvalidatePlot(true);
             };
 
             doUpdateLogSeries(dataValuePlotModel.plotModel, dataValuePlotModel.logSeries, Mode.DataValue);
@@ -279,7 +287,6 @@ namespace SapphireXR_App.ViewModels
                 plotModel.Axes[0].Zoom(-0.1, 100.1);
             }
             plotModel.Axes[1].Zoom(0.0, logSeries.Max(keyValuePair => 0 < ((LineSeries)keyValuePair.Value).Points.Count ? ((LineSeries)keyValuePair.Value).Points.Max((dataPoint => dataPoint.X)) : 0));
-            plotModel.InvalidatePlot(true);
         }
 
         [RelayCommand]
@@ -288,10 +295,12 @@ namespace SapphireXR_App.ViewModels
             if (FlowControlLivePlot == dataValuePlotModel.plotModel)
             {
                 zoomToFit(CurrentMode, dataValuePlotModel.plotModel, dataValuePlotModel.logSeries);
+                dataValuePlotModel.plotModel.InvalidatePlot(true);
             }
             else
             {
                 zoomToFit(CurrentMode, percentagePlotModel.plotModel, percentagePlotModel.logSeries);
+                percentagePlotModel.plotModel.InvalidatePlot(true);
             }
         }
 

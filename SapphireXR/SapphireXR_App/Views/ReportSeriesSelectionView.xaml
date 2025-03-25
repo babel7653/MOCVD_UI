@@ -13,7 +13,7 @@
             <ColumnDefinition Width="30"/>
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
-        <ListBox ItemsSource="{Binding Names, UpdateSourceTrigger=PropertyChanged, Mode=OneTime}" Grid.Row="0" Grid.Column="0" SelectionMode="Extended">
+        <ListBox ItemsSource="{Binding Names, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}" Grid.Row="0" Grid.Column="0" SelectionMode="Extended">
             <i:Interaction.Triggers>
                 <i:EventTrigger EventName="SelectionChanged">
                     <i:InvokeCommandAction Command="{Binding LeftSelectionChangedCommand}" PassEventArgsToCommand="True"/>

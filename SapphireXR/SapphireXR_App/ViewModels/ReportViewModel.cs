@@ -7,25 +7,25 @@ using OxyPlot.Axes;
 using OxyPlot.Legends;
 using OxyPlot.Series;
 using SapphireXR_App.Models;
-using System.Collections.Specialized;
 using System.Globalization;
 using System.IO;
 using System.Windows;
-using System.Collections;
 using System.ComponentModel;
+using SapphireXR_App.Common;
+using OxyPlot.Annotations;
 
 namespace SapphireXR_App.ViewModels
 {
-    public partial class ReportViewModel : ObservableObject
+    public partial class ReportViewModel : ObservableObject, IObserver<(ReportSeriesSelectionViewModel.SelectionToShowChanged, IList<string>)>
     {
-        public enum LogNumber { One, Two };
+        public enum LogNumber { One = 0, Two };
         public enum Mode { DataValue, Percentage };
 
         private struct PlotModelByType
         {
             public PlotModelByType() { }
 
-            internal readonly Dictionary<string, Series> logSeries = new Dictionary<string, Series>();
+            internal readonly Dictionary<string, LineSeries> logSeries = new Dictionary<string, LineSeries>();
             internal readonly PlotModel plotModel = new PlotModel();
         };
 
@@ -122,24 +122,24 @@ namespace SapphireXR_App.ViewModels
                         break;
                 }
             };
+            ObservableManager<(ReportSeriesSelectionViewModel.SelectionToShowChanged, IList<string>)>.Subscribe("ReportSeriesSelection.ToShowChanged", this);
         }
 
         public void updateLogSeries(LogNumber logNumber, IList<RecipeLog> recipeLogs)
         {
-            string prefix = logNumber == LogNumber.One ? titlePrefixes[0] : titlePrefixes[1];
-            var doUpdateLogSeries = (PlotModel plotModel, Dictionary<string, Series> logSeries, Mode mode) =>
+            string prefix = titlePrefixes[(int)logNumber];
+            var doUpdateLogSeries = (PlotModelByType plotModelByType, Mode mode) =>
             {
                 DateTime? firstTime = null;
                 foreach (string name in LogReportSeries.LogSeriesColor.Keys)
                 {
                     string seriesTitle = prefix + name;
-                    Series? seriesForDevice = null;
-                    if (logSeries.TryGetValue(seriesTitle, out seriesForDevice) == false)
+                    LineSeries? seriesForDevice = null;
+                    if (plotModelByType.logSeries.TryGetValue(seriesTitle, out seriesForDevice) == false)
                     {
                         seriesForDevice = new LineSeries()
                         {
                             Title = seriesTitle,
-                            Color = logNumber == LogNumber.One ? LogReportSeries.LogSeriesColor[name].Item1 : LogReportSeries.LogSeriesColor[name].Item2,
                             MarkerStroke = OxyColors.Black,
                             StrokeThickness = 1,
                             MarkerType = MarkerType.None,
@@ -147,16 +147,16 @@ namespace SapphireXR_App.ViewModels
                             LegendKey = FlowControlLivePlot.Legends[0].Key,
                             IsVisible = true
                         };
-                        logSeries[seriesTitle] = seriesForDevice;
+                        plotModelByType.logSeries[seriesTitle] = seriesForDevice;
                         if(reportSeriesSelectionViewModel != null)
                         {
                             if(reportSeriesSelectionViewModel.SelectedNames.FirstOrDefault(selectName => name == selectName) != default)
                             {
-                                plotModel.Series.Add(seriesForDevice);
+                                plotModelByType.plotModel.Series.Add(seriesForDevice);
                             }
                         }    
                     }
-                    ((LineSeries)seriesForDevice).Points.Clear();
+                    seriesForDevice!.Points.Clear();
                     foreach (RecipeLog recipeLog in recipeLogs)
                     {
                         if (firstTime == null)
@@ -166,16 +166,16 @@ namespace SapphireXR_App.ViewModels
                         float? value = mode == Mode.DataValue ? LogReportSeries.GetFlowValue(recipeLog, name) : LogReportSeries.GetFlowPercentageValue(recipeLog, name);
                         if (value != null)
                         {
-                            ((LineSeries)seriesForDevice).Points.Add(new DataPoint(TimeSpanAxis.ToDouble(recipeLog.LogTime - firstTime), (double)value));
+                            seriesForDevice.Points.Add(new DataPoint(TimeSpanAxis.ToDouble(recipeLog.LogTime - firstTime), (double)value));
                         }
                     }
                 }
-                zoomToFit(mode, plotModel, logSeries);
-                plotModel.InvalidatePlot(true);
+                zoomToFit(mode, plotModelByType);
+                plotModelByType.plotModel.InvalidatePlot(true);
             };
 
-            doUpdateLogSeries(dataValuePlotModel.plotModel, dataValuePlotModel.logSeries, Mode.DataValue);
-            doUpdateLogSeries(percentagePlotModel.plotModel, percentagePlotModel.logSeries, Mode.Percentage);
+            doUpdateLogSeries(dataValuePlotModel, Mode.DataValue);
+            doUpdateLogSeries(percentagePlotModel, Mode.Percentage);
         }
 
         private string updateChart(LogNumber logNumber)
@@ -209,56 +209,6 @@ namespace SapphireXR_App.ViewModels
             if(reportSeriesSelectionViewModel == null)
             {
                 reportSeriesSelectionViewModel = new ReportSeriesSelectionViewModel();
-                reportSeriesSelectionViewModel.SelectedNames.CollectionChanged += (object? sender, NotifyCollectionChangedEventArgs args) =>
-                {
-                    var setVisibleForGivenList = (IList givenList, bool visible) =>
-                    {
-                        var doSetVisibleForGivenList = (PlotModel plotModel, Dictionary<string, Series> logSeries) =>
-                        {
-                            foreach (object item in givenList)
-                            {
-                                string? name = item as string;
-                                if (name != null)
-                                {
-                                    for (int log = 0; log < 2; ++log)
-                                    {
-                                        Series? series = null;
-                                        if (logSeries.TryGetValue(titlePrefixes[log] + name, out series) == true)
-                                        {
-                                            if (visible == true && plotModel.Series.Contains(series) == false)
-                                            {
-                                                plotModel.Series.Add(series);
-                                            }
-                                            else
-                                            {
-                                                plotModel.Series.Remove(series);
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                            plotModel.InvalidatePlot(true);
-                        };
-                        doSetVisibleForGivenList(dataValuePlotModel.plotModel, dataValuePlotModel.logSeries);
-                        doSetVisibleForGivenList(percentagePlotModel.plotModel, percentagePlotModel.logSeries);
-                    };
-                    switch(args.Action)
-                    {
-                        case NotifyCollectionChangedAction.Add:
-                            if (args.NewItems != null)
-                            {
-                                setVisibleForGivenList(args.NewItems, true);
-                            }
-                            break;
-
-                        case NotifyCollectionChangedAction.Remove:
-                            if(args.OldItems != null)
-                            {
-                                setVisibleForGivenList(args.OldItems, false);
-                            }
-                            break;
-                    }
-                };
             }
             ReportSeriesSelectionEx.Show(reportSeriesSelectionViewModel);
         }
@@ -269,24 +219,36 @@ namespace SapphireXR_App.ViewModels
             SaveFileDialog saveFileDialog = new() { Filter = "svg 파일(*.svg)|*.svg", InitialDirectory = AppDomain.CurrentDomain.BaseDirectory };
             if(saveFileDialog.ShowDialog() == true)
             {
-                using(FileStream fileStream = File.Create(saveFileDialog.FileName))
+                try
                 {
-                    new SvgExporter { Width = FlowControlLivePlot.Width, Height = FlowControlLivePlot.Height }.Export(FlowControlLivePlot, fileStream);
+                    using (FileStream fileStream = File.Create(saveFileDialog.FileName))
+                    {
+                        new SvgExporter { Width = FlowControlLivePlot.Width, Height = FlowControlLivePlot.Height }.Export(FlowControlLivePlot, fileStream);
+                    }
+                }
+                catch(Exception exception)
+                {
+                    MessageBox.Show("SVG 파일로 내보내는데 실패햇습니다. 원인은 다음과 같습니다: " + exception.Message);
                 }
             }
         }
 
-        private void zoomToFit(Mode mode, PlotModel plotModel, Dictionary<string, Series> logSeries)
+        private void zoomToFit(Mode mode, PlotModelByType plotModelByType)
         {
+            if (plotModelByType.logSeries.Count <= 0)
+            {
+                return;
+            }
             if (mode == Mode.DataValue)
             {
-                plotModel.Axes[0].Zoom(-10.0, logSeries.Max((keyValuePair => ((LineSeries)keyValuePair.Value).Points.Max((dataPoint => dataPoint.Y)))) + 10.0);
+                
+                plotModelByType.plotModel.Axes[0].Zoom(-10.0, plotModelByType.logSeries.Max((keyValuePair => 0 < (keyValuePair.Value).Points.Count ? (keyValuePair.Value).Points.Max((dataPoint => dataPoint.Y)) : 0)) + 10.0);
             }
             else
             {
-                plotModel.Axes[0].Zoom(-0.1, 100.1);
+                plotModelByType.plotModel.Axes[0].Zoom(-0.1, 100.1);
             }
-            plotModel.Axes[1].Zoom(0.0, logSeries.Max(keyValuePair => 0 < ((LineSeries)keyValuePair.Value).Points.Count ? ((LineSeries)keyValuePair.Value).Points.Max((dataPoint => dataPoint.X)) : 0));
+            plotModelByType.plotModel.Axes[1].Zoom(0.0, plotModelByType.logSeries.Max(keyValuePair => 0 < (keyValuePair.Value).Points.Count ? (keyValuePair.Value).Points.Max((dataPoint => dataPoint.X)) : 0));
         }
 
         [RelayCommand]
@@ -294,14 +256,57 @@ namespace SapphireXR_App.ViewModels
         {
             if (FlowControlLivePlot == dataValuePlotModel.plotModel)
             {
-                zoomToFit(CurrentMode, dataValuePlotModel.plotModel, dataValuePlotModel.logSeries);
+                zoomToFit(CurrentMode, dataValuePlotModel);
                 dataValuePlotModel.plotModel.InvalidatePlot(true);
             }
             else
             {
-                zoomToFit(CurrentMode, percentagePlotModel.plotModel, percentagePlotModel.logSeries);
+                zoomToFit(CurrentMode, percentagePlotModel);
                 percentagePlotModel.plotModel.InvalidatePlot(true);
             }
+        }
+
+        private void setVisibleForGivenList(IList<string> givenList, bool visible)
+        {
+            var doSetVisibleForGivenList = (PlotModelByType plotModelByType) =>
+            {
+                foreach (string name in givenList)
+                {
+                    for (int log = 0; log < 2; ++log)
+                    {
+                        LineSeries? series = null;
+                        if (plotModelByType.logSeries.TryGetValue(titlePrefixes[log] + name, out series) == true)
+                        {
+                            if (visible == true && plotModelByType.plotModel.Series.Contains(series) == false)
+                            {
+                                plotModelByType.plotModel.Series.Add(series);
+                            }
+                            else
+                            {
+                                plotModelByType.plotModel.Series.Remove(series);
+                            }
+                        }
+                    }
+                }
+                plotModelByType.plotModel.InvalidatePlot(true);
+            };
+            doSetVisibleForGivenList(dataValuePlotModel);
+            doSetVisibleForGivenList(percentagePlotModel);
+        }
+
+        void IObserver<(ReportSeriesSelectionViewModel.SelectionToShowChanged, IList<string>)>.OnCompleted()
+        {
+            throw new NotImplementedException();
+        }
+
+        void IObserver<(ReportSeriesSelectionViewModel.SelectionToShowChanged, IList<string>)>.OnError(Exception error)
+        {
+            throw new NotImplementedException();
+        }
+
+        void IObserver<(ReportSeriesSelectionViewModel.SelectionToShowChanged, IList<string>)>.OnNext((ReportSeriesSelectionViewModel.SelectionToShowChanged, IList<string>) value)
+        {
+            setVisibleForGivenList(value.Item2, value.Item1 == ReportSeriesSelectionViewModel.SelectionToShowChanged.Added ? true : false);
         }
 
         private static readonly CsvHelper.Configuration.CsvConfiguration Config = new CsvHelper.Configuration.CsvConfiguration(CultureInfo.InvariantCulture)

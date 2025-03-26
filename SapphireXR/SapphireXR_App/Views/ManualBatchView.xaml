@@ -34,7 +34,7 @@
                     <ColumnDefinition Width="90" />
                 </Grid.ColumnDefinitions>
                 <ComboBox Grid.Column="0" ItemsSource="{Binding Batches, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" DisplayMemberPath="Name" 
-                          SelectedItem="{Binding CurrentBatch, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                          SelectedItem="{Binding CurrentBatch, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Margin="5,5,5,5"/>
                 <Button Grid.Column="1" Width="20" Background="Transparent" BorderBrush="Transparent" Command="{Binding AddCommand}">
                     <Image Source="/Resources/Images/plus-icon-13071.png" />
                 </Button>
@@ -44,16 +44,16 @@
                 <Button x:Name="UserSqtateBatch" Grid.Column="3" Content="Batch" Width="70" Margin="5" Command="{Binding LoadToPLCCommand}" />
                 <Button x:Name="UserStateSave" Grid.Column="4" Content="Save" Width="70" Margin="5" Command="{Binding SaveCommand}" />
             </Grid>
-            <StackPanel Orientation="Horizontal">
-                <TextBlock Text="Alarm State"/>
-                <ComboBox ItemsSource="{Binding Batches}" SelectedItem="{Binding BatchOnAlarmState}" DisplayMemberPath="Name"/>
-                <TextBlock Text="Recipe End"/>
-                <ComboBox ItemsSource="{Binding Batches}" SelectedItem="{Binding BatchOnRecipeEnd}" DisplayMemberPath="Name"/>
+            <StackPanel Orientation="Horizontal" Margin="5,0,0,5">
+                <TextBlock Text="Alarm State" VerticalAlignment="Center" />
+                <ComboBox ItemsSource="{Binding Batches}" SelectedItem="{Binding BatchOnAlarmState}" Margin="5,0,0,0" DisplayMemberPath="Name" Width="100" VerticalAlignment="Center"/>
+                <TextBlock Text="Recipe End" VerticalAlignment="Center" Margin="10,0,0,0" />
+                <ComboBox ItemsSource="{Binding Batches}" SelectedItem="{Binding BatchOnRecipeEnd}" Margin="5,0,0,0"  DisplayMemberPath="Name" Width="100" VerticalAlignment="Center"/>
             </StackPanel>
-            <StackPanel Orientation="Horizontal">
+            <StackPanel Orientation="Horizontal" Margin="0,0,0,5">
                 <Label Content="Name" />
                 <TextBox Width="100" Text="{Binding CurrentBatch.Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" IsEnabled="{Binding NameEnabled}"/>
-                <Label Content="Ramping Time(s)" />
+                <Label Content="Ramping Time(s)" Margin="5,0,0,0"/>
                 <local:NumberBox Width="100" Text="{Binding CurrentBatch.RampingTime, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" IsEnabled="{Binding RampingTimeEnabled}" LostFocus="NumberBox_LostFocus"/>
             </StackPanel>
             <Grid Height="Auto">

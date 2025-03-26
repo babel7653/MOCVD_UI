@@ -4,15 +4,18 @@ using SapphireXR_App.Models;
 using CommunityToolkit.Mvvm.Input;
 using System.Windows.Controls;
 using System.Collections;
+using SapphireXR_App.Common;
 
 namespace SapphireXR_App.ViewModels
 {
     internal partial class ReportSeriesSelectionViewModel: ObservableObject
     {
+        public enum SelectionToShowChanged { Added, Removed };
+
         public ReportSeriesSelectionViewModel()
         {
             List<string> names = new List<string>();
-            foreach((string name, var colors) in LogReportSeries.LogSeriesColor)
+            foreach(string name in LogReportSeries.LogSeriesColor.Keys)
             {
                 names.Add(name);
             }
@@ -33,19 +36,20 @@ namespace SapphireXR_App.ViewModels
                 foreach (object selected in selectedFromLeftList)
                 {
                     string? name = selected as string;
-                    if (name != null)
+                    if (name != null && name != string.Empty)
                     {
                         copy.Add(name);
                     }
                 }
                 foreach (string name in copy)
                 {
-                    if (name != null && SelectedNames.Contains(name) == false)
+                    if (SelectedNames.Contains(name) == false)
                     {
                         SelectedNames.Add(name);
-                        Names.Remove(name);
                     }
+                    Names.Remove(name);
                 }
+                selectionChangedPublisher.Issue((SelectionToShowChanged.Added, copy));
             }
         }
 
@@ -62,7 +66,7 @@ namespace SapphireXR_App.ViewModels
                 foreach(object selected in selectedFromRightList)
                 {
                     string? name = selected as string;
-                    if (name != null)
+                    if (name != null && name != string.Empty)
                     {
                         copy.Add(name);
                     }
@@ -70,11 +74,15 @@ namespace SapphireXR_App.ViewModels
                 foreach (string selected in copy)
                 {
                     SelectedNames.Remove(selected);
-                    Names.Add(selected);
+                    if (Names.Contains(selected) == false)
+                    {
+                        Names.Add(selected);
+                    }
                 }
                 List<string> names = Names.ToList();
                 names.Sort();
                 Names = new ObservableCollection<string>(names);
+                selectionChangedPublisher.Issue((SelectionToShowChanged.Removed, copy));
             }
         }
 
@@ -112,5 +120,6 @@ namespace SapphireXR_App.ViewModels
         public ObservableCollection<string> _names;
        
         public ObservableCollection<string> SelectedNames { get; } = new ObservableCollection<string>();
+        private ObservableManager<(SelectionToShowChanged, IList<string>)>.DataIssuer selectionChangedPublisher =  ObservableManager<(SelectionToShowChanged, IList<string>)>.Get("ReportSeriesSelection.ToShowChanged");
     }
 }

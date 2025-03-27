@@ -72,7 +72,7 @@ namespace SapphireXR_App.ViewModels.BottomDashBoard
             public static readonly int MaxSecondsToLiveShow = 30;
         }
 
-        public HomeBottomDashBoardViewModel(): base("CurrentPLCState")
+        public HomeBottomDashBoardViewModel(): base("CurrentPLCState.Home")
         {
             seriesUpdaterSetting();
         }

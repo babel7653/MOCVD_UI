@@ -49,8 +49,9 @@
             <Button x:Name="PlotChart" Content="Select Tag" Margin="40,0,5,0" Command="{Binding ShowSeriesSelectionViewCommand}"/>
             <Button x:Name="PlotZoomToFit" Content="Zoom To Fit" Width="90" Command="{Binding ZoomToFitCommand}"/>
             <Button x:Name="PlotExport" Content="Export" Command="{Binding ExportCommand}"/>
-            <TextBlock Text="Mode" Margin="40,0,0,0"/>
-            <ComboBox ItemsSource="{Binding ChartMode, Mode=OneTime}" SelectedItem="{Binding CurrentMode, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Height="25" Width="100" Margin="10,0,0,0"/>
+            <CheckBox Margin="30,0,0,0"  VerticalAlignment="Center" IsChecked="{Binding ShowStageLine, Mode=OneWayToSource, UpdateSourceTrigger=PropertyChanged}">Stage Line</CheckBox>
+            <TextBlock Text="Mode" Margin="30,0,0,0" VerticalAlignment="Center"/>
+            <ComboBox ItemsSource="{Binding ChartMode, Mode=OneTime}" SelectedItem="{Binding CurrentMode, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Height="25" Width="100" Margin="10,0,0,0" VerticalAlignment="Center"/>
         </StackPanel>
         <oxy:PlotView Model="{Binding FlowControlLivePlot}" Grid.Row="1" ZoomVerticalCursor="" ZoomRectangleCursor="" ZoomHorizontalCursor="" PanCursor="">
         </oxy:PlotView>

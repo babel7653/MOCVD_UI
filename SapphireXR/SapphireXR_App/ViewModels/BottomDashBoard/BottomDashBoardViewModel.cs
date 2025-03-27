@@ -97,11 +97,6 @@ namespace SapphireXR_App.ViewModels
             private BottomDashBoardViewModel bottomViewModel;
         }
 
-        [ObservableProperty]
-        public PlotModel? flowControlLivePlot;
-        protected readonly ControlTargetValueSeriesUpdater[] plotModels = new ControlTargetValueSeriesUpdater[PLCService.NumControllers];
-        private ControlTargetValueSeriesUpdater? currentSelectedFlowControllerListener;
-
 #pragma warning disable CS8618 // null을 허용하지 않는 필드는 생성자를 종료할 때 null이 아닌 값을 포함해야 합니다. 'required' 한정자를 추가하거나 nullable로 선언하는 것이 좋습니다.
         public BottomDashBoardViewModel(string flowControlSelectedPostFixStr)
 #pragma warning restore CS8618 // null을 허용하지 않는 필드는 생성자를 종료할 때 null이 아닌 값을 포함해야 합니다. 'required' 한정자를 추가하거나 nullable로 선언하는 것이 좋습니다.
@@ -115,7 +110,6 @@ namespace SapphireXR_App.ViewModels
             ControlValueOption = HideControlValueStr;
             TargetValueOption = HideTargetValueStr;
             currentSelectedFlowControllerListener = null;
-            FlowControlLivePlot = null;
         }
 
         public ICommand ShowControlValue => new RelayCommand(() =>
@@ -151,12 +145,16 @@ namespace SapphireXR_App.ViewModels
             }
         });
 
-        private readonly IObserver<string> flowContorllerSelectionChanged;
-
         [ObservableProperty]
         public string controlValueOption;
         [ObservableProperty]
         public string targetValueOption;
+        [ObservableProperty]
+        public PlotModel? flowControlLivePlot;
+
+        protected readonly ControlTargetValueSeriesUpdater[] plotModels = new ControlTargetValueSeriesUpdater[PLCService.NumControllers];
+        private readonly IObserver<string> flowContorllerSelectionChanged;
+        private ControlTargetValueSeriesUpdater? currentSelectedFlowControllerListener;
 
         private static readonly string ShowControlValueStr = "Show Control Value";
         private static readonly string HideControlValueStr = "Hide Control Value";

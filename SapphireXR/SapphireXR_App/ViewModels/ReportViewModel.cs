@@ -26,6 +26,7 @@ namespace SapphireXR_App.ViewModels
             public PlotModelByType() { }
 
             internal readonly Dictionary<string, LineSeries> logSeries = new Dictionary<string, LineSeries>();
+            internal readonly List<Annotation> annotations = new List<Annotation>();
             internal readonly PlotModel plotModel = new PlotModel();
         };
 
@@ -64,6 +65,7 @@ namespace SapphireXR_App.ViewModels
 
         public ReportViewModel() 
         {
+            //dataValuePlotModel.plotModel.Annotations.Add(new LineAnnotation() { Type = LineAnnotationType.Vertical, X = 10, Text="Test", Color= OxyColor.FromArgb(83, 0, 0, 255), TextColor =OxyColor.FromArgb(83, 0, 0, 255), StrokeThickness=3, FontSize=25, TextOrientation=AnnotationTextOrientation.Horizontal, TextLinePosition=0.012});
             dataValuePlotModel.plotModel.Axes.Add(new LinearAxis
             {
                 Title = "Data Value",
@@ -75,11 +77,10 @@ namespace SapphireXR_App.ViewModels
             {
                 Title = "Time Stamp",
                 Position = AxisPosition.Bottom,
-                IntervalLength = 60,
                 IsPanEnabled = true,
                 IsZoomEnabled = true,
-                MajorGridlineStyle = LineStyle.Solid,
-                MinorGridlineStyle = LineStyle.Solid,
+                MajorGridlineStyle = LineStyle.None,
+                MinorGridlineStyle = LineStyle.None,
             });
             dataValuePlotModel.plotModel.Legends.Add(new Legend() { Key= "CurrentTargetValue" });
 
@@ -120,6 +121,26 @@ namespace SapphireXR_App.ViewModels
                                 break;
                         }
                         break;
+
+                    case nameof(ShowStageLine):
+                        var showStageLine = (PlotModelByType plotModelByType) =>
+                        {
+                            if (ShowStageLine == true)
+                            {
+                                foreach (Annotation annotation in plotModelByType.annotations)
+                                {
+                                    plotModelByType.plotModel.Annotations.Add(annotation);
+                                }
+                            }
+                            else
+                            {
+                                plotModelByType.plotModel.Annotations.Clear();
+                            }
+                            plotModelByType.plotModel.InvalidatePlot(true);
+                        };
+                        showStageLine(dataValuePlotModel);
+                        showStageLine(percentagePlotModel);
+                        break;
                 }
             };
             ObservableManager<(ReportSeriesSelectionViewModel.SelectionToShowChanged, IList<string>)>.Subscribe("ReportSeriesSelection.ToShowChanged", this);
@@ -140,6 +161,7 @@ namespace SapphireXR_App.ViewModels
                         seriesForDevice = new LineSeries()
                         {
                             Title = seriesTitle,
+                            Tag = name,
                             MarkerStroke = OxyColors.Black,
                             StrokeThickness = 1,
                             MarkerType = MarkerType.None,
@@ -157,16 +179,39 @@ namespace SapphireXR_App.ViewModels
                         }    
                     }
                     seriesForDevice!.Points.Clear();
-                    foreach (RecipeLog recipeLog in recipeLogs)
+                    plotModelByType.plotModel.Annotations.Clear();
+                    plotModelByType.annotations.Clear();
+                    for (int recipeLog = 0; recipeLog < recipeLogs.Count; ++recipeLog)
                     {
                         if (firstTime == null)
                         {
-                            firstTime = recipeLog.LogTime;
+                            firstTime = recipeLogs[recipeLog].LogTime;
                         }
-                        float? value = mode == Mode.DataValue ? LogReportSeries.GetFlowValue(recipeLog, name) : LogReportSeries.GetFlowPercentageValue(recipeLog, name);
+                        float? value = mode == Mode.DataValue ? LogReportSeries.GetFlowValue(recipeLogs[recipeLog], name) : LogReportSeries.GetFlowPercentageValue(recipeLogs[recipeLog], name);
                         if (value != null)
                         {
-                            seriesForDevice.Points.Add(new DataPoint(TimeSpanAxis.ToDouble(recipeLog.LogTime - firstTime), (double)value));
+                            double x = TimeSpanAxis.ToDouble(recipeLogs[recipeLog].LogTime - firstTime);
+                            seriesForDevice.Points.Add(new DataPoint(x, (double)value));
+                            if (recipeLog == recipeLogs.Count - 1 || recipeLogs[recipeLog].Step != recipeLogs[recipeLog + 1].Step)
+                            {
+                                OxyColor color = logNumber == LogNumber.One ? OxyColor.FromArgb(83, 255, 0, 0) : OxyColor.FromArgb(83, 0, 0, 255);
+                                Annotation stageLine = new LineAnnotation()
+                                {
+                                    Type = LineAnnotationType.Vertical,
+                                    X = x,
+                                    Text = prefix + " " + recipeLogs[recipeLog].Step,
+                                    Color = color,
+                                    TextColor = color,
+                                    StrokeThickness = 3,
+                                    FontSize = 20,
+                                    TextLinePosition = 0.5
+                                };
+                                plotModelByType.annotations.Add(stageLine);
+                                if(ShowStageLine == true)
+                                {
+                                    plotModelByType.plotModel.Annotations.Add(stageLine);
+                                }
+                            }
                         }
                     }
                 }
@@ -235,20 +280,34 @@ namespace SapphireXR_App.ViewModels
 
         private void zoomToFit(Mode mode, PlotModelByType plotModelByType)
         {
-            if (plotModelByType.logSeries.Count <= 0)
-            {
-                return;
-            }
             if (mode == Mode.DataValue)
             {
-                
-                plotModelByType.plotModel.Axes[0].Zoom(-10.0, plotModelByType.logSeries.Max((keyValuePair => 0 < (keyValuePair.Value).Points.Count ? (keyValuePair.Value).Points.Max((dataPoint => dataPoint.Y)) : 0)) + 10.0);
+                if (0 < plotModelByType.plotModel.Series.Count)
+                {
+                    plotModelByType.plotModel.Axes[0].Zoom(-10.0 + (double)plotModelByType.plotModel.Series.Min(series => 0 < ((LineSeries)series).Points.Count ? ((LineSeries)series).Points.Min(dataPoint => dataPoint.Y) : 0), 
+                    (double)plotModelByType.plotModel.Series.Max(series =>
+                    {
+                        float? maxValue = LogReportSeries.GetMaxValue((string)series.Tag);
+                        return maxValue != null ? maxValue.Value : 0;
+                    }) + 10.0);
+                }
+                else
+                {
+                    plotModelByType.plotModel.Axes[0].Zoom(-10.0, 100.0);
+                }
             }
             else
             {
                 plotModelByType.plotModel.Axes[0].Zoom(-0.1, 100.1);
             }
-            plotModelByType.plotModel.Axes[1].Zoom(0.0, plotModelByType.logSeries.Max(keyValuePair => 0 < (keyValuePair.Value).Points.Count ? (keyValuePair.Value).Points.Max((dataPoint => dataPoint.X)) : 0));
+            if (0 < plotModelByType.plotModel.Series.Count)
+            {
+                plotModelByType.plotModel.Axes[1].Zoom(0.0, plotModelByType.plotModel.Series.Max(series => ((LineSeries)series).Points.Max(dataPoint => dataPoint.X)));
+            }
+            else
+            {
+                plotModelByType.plotModel.Axes[1].Zoom(0.0, 60.0);
+            }
         }
 
         [RelayCommand]
@@ -268,7 +327,7 @@ namespace SapphireXR_App.ViewModels
 
         private void setVisibleForGivenList(IList<string> givenList, bool visible)
         {
-            var doSetVisibleForGivenList = (PlotModelByType plotModelByType) =>
+            var doSetVisibleForGivenList = (PlotModelByType plotModelByType, Mode mode) =>
             {
                 foreach (string name in givenList)
                 {
@@ -288,10 +347,11 @@ namespace SapphireXR_App.ViewModels
                         }
                     }
                 }
+                zoomToFit(mode, plotModelByType);
                 plotModelByType.plotModel.InvalidatePlot(true);
             };
-            doSetVisibleForGivenList(dataValuePlotModel);
-            doSetVisibleForGivenList(percentagePlotModel);
+            doSetVisibleForGivenList(dataValuePlotModel, Mode.DataValue);
+            doSetVisibleForGivenList(percentagePlotModel, Mode.Percentage);
         }
 
         void IObserver<(ReportSeriesSelectionViewModel.SelectionToShowChanged, IList<string>)>.OnCompleted()
@@ -317,12 +377,12 @@ namespace SapphireXR_App.ViewModels
 
         [ObservableProperty]
         private string _log1FilePath = "";
-
         [ObservableProperty]
         private string _log2FilePath = "";
+        [ObservableProperty]
+        private bool _showStageLine = false;
 
         private readonly string[] titlePrefixes = ["Log 1 ", "Log 2 "];
-
 
         private readonly PlotModelByType dataValuePlotModel = new PlotModelByType();
         private readonly PlotModelByType percentagePlotModel = new PlotModelByType();

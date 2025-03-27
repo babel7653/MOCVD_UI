@@ -81,7 +81,7 @@ namespace SapphireXR_App.ViewModels
 
             void IObserver<bool>.OnNext(bool value)
             {
-                recipeRunViewModel.CurrentRecipeUserState = RecipeUserState.Ended;
+                recipeRunViewModel.switchState(RecipeUserState.Ended);
             }
 
             private RecipeRunViewModel recipeRunViewModel;

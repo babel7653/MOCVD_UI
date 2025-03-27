@@ -72,7 +72,7 @@ namespace SapphireXR_App.ViewModels.FlowController
         {
             base.onLoaded(type, controllerID);
             ObservableManager<(float, float)>.Subscribe("FlowControl." + ControllerID + ".ControlTargetValue.CurrentPLCState", controlTargetValueSubscriber = new ControlTargetValueSubscriber(this));
-            selectedThis = ObservableManager<string>.Get("FlowControl.Selected.CurrentPLCState");
+            selectedThis = ObservableManager<string>.Get("FlowControl.Selected.CurrentPLCState.Home");
         }
 
         protected override void onClicked(object[]? args)

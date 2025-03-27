@@ -1,8 +1,6 @@
 ﻿using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
 using SapphireXR_App.Common;
-using SapphireXR_App.Models;
 using SapphireXR_App.ViewModels;
 
 namespace SapphireXR_App.Views

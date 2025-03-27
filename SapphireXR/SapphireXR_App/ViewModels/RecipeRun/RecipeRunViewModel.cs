@@ -40,12 +40,6 @@ namespace SapphireXR_App.ViewModels
             };
             PropertyChanged += (object? sender, PropertyChangedEventArgs e) =>
             {
-                var toRecipeLoadedState = () =>
-                {
-                    StartOrPause = true;
-                    CurrentRecipe.toLoadedFromFileState();
-                    SyncPLCState(RecipeCommand.Initiate);
-                };
                 switch (e.PropertyName)
                 {
                     case nameof(StartOrPause):
@@ -76,61 +70,12 @@ namespace SapphireXR_App.ViewModels
                         }
                         else
                         {
-                            CurrentRecipeUserState = RecipeUserState.Uninitialized;
+                            switchState(RecipeUserState.Uninitialized);
                         }
                         break;
 
                     case nameof(CurrentRecipeUserState):
-                        switch (CurrentRecipeUserState)
-                        {
-                            case RecipeUserState.Uninitialized:
-                                StartOrPause = null;
-                                DashBoardViewModel.resetFlowChart(CurrentRecipe.Recipes);
-                                break;
-
-                            case RecipeUserState.Initiated:
-                                DashBoardViewModel.resetFlowChart(CurrentRecipe.Recipes);
-                                StartOrPause = true;
-                                Start = RecipeCommand.Run;
-                                currentRecipeNo = -1;
-                                break;
-
-                            case RecipeUserState.Run:
-                                CurrentRecipe.startLog();
-                                if (Start == RecipeCommand.Run)
-                                {
-                                    recipeEventIssuer.Issue(new HomeViewModel.EventLog() { Date = Util.ToEventLogFormat(DateTime.Now), Message = "레시피가 시작되었습니다", Type = "Recipe Run" });
-                                }
-                                StartOrPause = false;
-                                break;
-
-                            case RecipeUserState.Pause:
-                                StartOrPause = true;
-                                Start = RecipeCommand.Restart;
-                                CurrentRecipe.pauseLog();
-                                break;
-
-                            case RecipeUserState.Stopped:
-                                CurrentRecipe.stopLog();
-                                recipeEventIssuer.Issue(new HomeViewModel.EventLog() { Date = Util.ToEventLogFormat(DateTime.Now), Message = "레시피가 중단되었습니다", Type = "Recipe Stop" });
-                                toRecipeLoadedState();
-                                break;
-
-                            case RecipeUserState.Ended:
-                                CurrentRecipe.stopLog();
-                                recipeEventIssuer.Issue(new HomeViewModel.EventLog() { Date = Util.ToEventLogFormat(DateTime.Now), Message = "레시피가 종료되었습니다", Type = "Recipe End" });
-                                MessageBox.Show("Recipe가 종료되었습니다. 종료시간: " + DateTime.Now.ToString("HH:mm"));
-                                toRecipeLoadedState();
-                                break;
-                        }
-                        RecipeOpenCommand.NotifyCanExecuteChanged();
-                        RecipeStartCommand.NotifyCanExecuteChanged();
-                        RecipeSkipCommand.NotifyCanExecuteChanged();
-                        RecipeRefreshCommand.NotifyCanExecuteChanged();
-                        RecipeStopCommand.NotifyCanExecuteChanged();
-                        RecipeCleanCommand.NotifyCanExecuteChanged();
-                        ChangeLogDirectoryCommand.NotifyCanExecuteChanged();
-                        recipeRunStatePublisher?.Issue(CurrentRecipeUserState);
+                 
                         break;
                 }
             };
@@ -163,6 +108,68 @@ namespace SapphireXR_App.ViewModels
                 MessageBox.Show("Recipe를 로드하는데 실패하였습니다. 원인은 다음과 같습니다.\r\n" + exception.Message);
             }
           
+        }
+
+        public void switchState(RecipeUserState state)
+        {
+            var toRecipeLoadedState = () =>
+            {
+                StartOrPause = true;
+                CurrentRecipe.toLoadedFromFileState();
+                SyncPLCState(RecipeCommand.Initiate);
+            };
+
+            CurrentRecipeUserState = state;
+            switch (CurrentRecipeUserState)
+            {
+                case RecipeUserState.Uninitialized:
+                    StartOrPause = null;
+                    DashBoardViewModel.resetFlowChart(CurrentRecipe.Recipes);
+                    break;
+
+                case RecipeUserState.Initiated:
+                    DashBoardViewModel.resetFlowChart(CurrentRecipe.Recipes);
+                    StartOrPause = true;
+                    Start = RecipeCommand.Run;
+                    currentRecipeNo = -1;
+                    break;
+
+                case RecipeUserState.Run:
+                    CurrentRecipe.startLog();
+                    if (Start == RecipeCommand.Run)
+                    {
+                        recipeEventIssuer.Issue(new HomeViewModel.EventLog() { Date = Util.ToEventLogFormat(DateTime.Now), Message = "레시피가 시작되었습니다", Type = "Recipe Run" });
+                    }
+                    StartOrPause = false;
+                    break;
+
+                case RecipeUserState.Pause:
+                    StartOrPause = true;
+                    Start = RecipeCommand.Restart;
+                    CurrentRecipe.pauseLog();
+                    break;
+
+                case RecipeUserState.Stopped:
+                    CurrentRecipe.stopLog();
+                    recipeEventIssuer.Issue(new HomeViewModel.EventLog() { Date = Util.ToEventLogFormat(DateTime.Now), Message = "레시피가 중단되었습니다", Type = "Recipe Stop" });
+                    toRecipeLoadedState();
+                    break;
+
+                case RecipeUserState.Ended:
+                    CurrentRecipe.stopLog();
+                    recipeEventIssuer.Issue(new HomeViewModel.EventLog() { Date = Util.ToEventLogFormat(DateTime.Now), Message = "레시피가 종료되었습니다", Type = "Recipe End" });
+                    MessageBox.Show("Recipe가 종료되었습니다. 종료시간: " + DateTime.Now.ToString("HH:mm"));
+                    toRecipeLoadedState();
+                    break;
+            }
+            RecipeOpenCommand.NotifyCanExecuteChanged();
+            RecipeStartCommand.NotifyCanExecuteChanged();
+            RecipeSkipCommand.NotifyCanExecuteChanged();
+            RecipeRefreshCommand.NotifyCanExecuteChanged();
+            RecipeStopCommand.NotifyCanExecuteChanged();
+            RecipeCleanCommand.NotifyCanExecuteChanged();
+            ChangeLogDirectoryCommand.NotifyCanExecuteChanged();
+            recipeRunStatePublisher?.Issue(CurrentRecipeUserState);
         }
 
         private void startCommand()
@@ -307,7 +314,7 @@ namespace SapphireXR_App.ViewModels
                 while((RecipeUserState)PLCService.ReadUserState() != stateToWait);
                 if (updateState == true)
                 {
-                    CurrentRecipeUserState = stateToWait;
+                    switchState(stateToWait);
                 }
             }
             catch(Exception)

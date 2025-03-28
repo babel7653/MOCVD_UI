@@ -65,7 +65,6 @@ namespace SapphireXR_App.ViewModels
 
         public ReportViewModel() 
         {
-            //dataValuePlotModel.plotModel.Annotations.Add(new LineAnnotation() { Type = LineAnnotationType.Vertical, X = 10, Text="Test", Color= OxyColor.FromArgb(83, 0, 0, 255), TextColor =OxyColor.FromArgb(83, 0, 0, 255), StrokeThickness=3, FontSize=25, TextOrientation=AnnotationTextOrientation.Horizontal, TextLinePosition=0.012});
             dataValuePlotModel.plotModel.Axes.Add(new LinearAxis
             {
                 Title = "Data Value",
@@ -179,8 +178,19 @@ namespace SapphireXR_App.ViewModels
                         }    
                     }
                     seriesForDevice!.Points.Clear();
-                    plotModelByType.plotModel.Annotations.Clear();
-                    plotModelByType.annotations.Clear();
+                    IList<Annotation> toRemove = new List<Annotation>();
+                    foreach(Annotation annotation in plotModelByType.plotModel.Annotations)
+                    {
+                        if((string)annotation.Tag == prefix)
+                        {
+                            toRemove.Add(annotation);
+                        }
+                    }
+                    foreach(Annotation annotation in toRemove)
+                    {
+                        plotModelByType.plotModel.Annotations.Remove(annotation);
+                    }
+                    plotModelByType.annotations.RemoveAll(annotation => (string)annotation.Tag == prefix);
                     for (int recipeLog = 0; recipeLog < recipeLogs.Count; ++recipeLog)
                     {
                         if (firstTime == null)
@@ -198,13 +208,15 @@ namespace SapphireXR_App.ViewModels
                                 Annotation stageLine = new LineAnnotation()
                                 {
                                     Type = LineAnnotationType.Vertical,
+                                    LineStyle = LineStyle.Solid,
                                     X = x,
                                     Text = prefix + " " + recipeLogs[recipeLog].Step,
                                     Color = color,
                                     TextColor = color,
                                     StrokeThickness = 3,
-                                    FontSize = 20,
-                                    TextLinePosition = 0.5
+                                    FontSize = 15,
+                                    TextLinePosition = 0.5,
+                                    Tag = prefix
                                 };
                                 plotModelByType.annotations.Add(stageLine);
                                 if(ShowStageLine == true)

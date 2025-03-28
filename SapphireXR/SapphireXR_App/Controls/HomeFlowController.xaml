@@ -23,5 +23,5 @@
             </i:InvokeCommandAction>
         </i:EventTrigger>
     </i:Interaction.Triggers>
-    <Button Height="34" Width="70" Style="{StaticResource FlowControllerStyle}" Click="FlowController_Click" />
+    <Button Height="34" Width="70" Style="{StaticResource FlowControllerStyle}" Command="{Binding OnClickedCommand}" MouseDoubleClick="FlowController_Click"/>
 </UserControl>

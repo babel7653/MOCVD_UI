@@ -2,6 +2,7 @@
 using Newtonsoft.Json;
 using System.IO;
 using System.Windows;
+using System;
 
 namespace SapphireXR_App.Common
 {
@@ -9,14 +10,22 @@ namespace SapphireXR_App.Common
     {
         static AppSetting()
         {
-            JToken? appSettingRootToken = JToken.Parse(File.ReadAllText(AppSettingFilePath));
+            try
+            {
+                JToken? appSettingRootToken = JToken.Parse(File.ReadAllText(AppSettingFilePath));
 
-            LogFileDirectory = (string?)Util.GetSettingValue(appSettingRootToken, "LogFileDirectory") ?? LogFileDirectory;
-            UnderFlowControlFallbackRatePercentage = (int?)(Int64?)Util.GetSettingValue(appSettingRootToken, "UnderFlowControlFallbackRatePercentage") ?? UnderFlowControlFallbackRatePercentage;
-            UnderFlowControlFallbackRate = UnderFlowControlFallbackRatePercentage / 100.0f;
-            FloatingPointMaxNumberDigit = (int?)(Int64?)Util.GetSettingValue(appSettingRootToken, "FloatingPointMaxNumberDigit") ?? FloatingPointMaxNumberDigit;
-            PLCAddress = (string?)Util.GetSettingValue(appSettingRootToken, "PLCAddress") ?? PLCAddress;
-            PLCPort = (int?)(Int64?)Util.GetSettingValue(appSettingRootToken, "PLCPort") ?? PLCPort;
+                LogFileDirectory = (string?)Util.GetSettingValue(appSettingRootToken, "LogFileDirectory") ?? LogFileDirectory;
+                UnderFlowControlFallbackRatePercentage = (int?)(Int64?)Util.GetSettingValue(appSettingRootToken, "UnderFlowControlFallbackRatePercentage") ?? UnderFlowControlFallbackRatePercentage;
+                UnderFlowControlFallbackRate = UnderFlowControlFallbackRatePercentage / 100.0f;
+                FloatingPointMaxNumberDigit = (int?)(Int64?)Util.GetSettingValue(appSettingRootToken, "FloatingPointMaxNumberDigit") ?? FloatingPointMaxNumberDigit;
+                PLCAddress = (string?)Util.GetSettingValue(appSettingRootToken, "PLCAddress") ?? PLCAddress;
+                PLCPort = (int?)(Int64?)Util.GetSettingValue(appSettingRootToken, "PLCPort") ?? PLCPort;
+                ConfigMode = (bool?)Util.GetSettingValue(appSettingRootToken, "ConfigMode") ?? ConfigMode;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("애플리케이션 설정 파일 (" + AppSettingFilePath + ")을 읽어오는데 문제가 생겼습니다. App setting 값은 디폴트 값으로 읽어옵니다. 원인은 다음과 같습니다: " + ex.Message);
+            }
         }
 
         public static void Save()
@@ -53,5 +62,6 @@ namespace SapphireXR_App.Common
         public static readonly float UnderFlowControlFallbackRate;
         public static string PLCAddress = "Local";
         public static int PLCPort = 851;
+        public static bool ConfigMode = false;
     }
 }

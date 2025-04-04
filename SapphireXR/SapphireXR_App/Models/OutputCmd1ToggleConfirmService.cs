@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace SapphireXR_App.Models
+﻿namespace SapphireXR_App.Models
 {
     internal static class OutputCmd1ToggleConfirmService
     {

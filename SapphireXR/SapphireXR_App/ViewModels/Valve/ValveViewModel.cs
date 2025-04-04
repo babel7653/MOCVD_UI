@@ -146,14 +146,14 @@ namespace SapphireXR_App.ViewModels
             ResetValveStateSubscriber resetValveStateSubscriber;
         }
 
-        static internal ValveStateUpdater? CreateValveStateUpdater(SapphireXR_App.Controls.Valve.UpdateTarget target, ValveViewModel viewModel)
+        static internal ValveStateUpdater? CreateValveStateUpdater(Controls.Valve.UpdateTarget target, ValveViewModel viewModel)
         {
             switch (target)
             {
-                case SapphireXR_App.Controls.Valve.UpdateTarget.CurrentPLCState:
+                case Controls.Valve.UpdateTarget.CurrentPLCState:
                     return new ValveStateUpdaterFromCurrentPLCState(viewModel);
 
-                case SapphireXR_App.Controls.Valve.UpdateTarget.CurrentRecipeStep:
+                case Controls.Valve.UpdateTarget.CurrentRecipeStep:
                     return new ValveStateUpdaterFromCurrentRecipeStep(viewModel);
 
                 default:
@@ -168,15 +168,15 @@ namespace SapphireXR_App.ViewModels
                 if (args != null)
                 {
                     object[] argArray = (object[])args;
-                    if (argArray[0] is string && argArray[1] is SapphireXR_App.Controls.Valve.UpdateTarget)
+                    if (argArray[0] is string && argArray[1] is Controls.Valve.UpdateTarget)
                     {
-                        Init((string)argArray[0], (SapphireXR_App.Controls.Valve.UpdateTarget)argArray[1]);
+                        Init((string)argArray[0], (Controls.Valve.UpdateTarget)argArray[1]);
                     }
                 }
             });
         }
 
-        protected virtual void Init(string valveID, SapphireXR_App.Controls.Valve.UpdateTarget target)
+        protected virtual void Init(string valveID, Controls.Valve.UpdateTarget target)
         {
             ValveID = valveID;
         }

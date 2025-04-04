@@ -1,8 +1,12 @@
-﻿using SapphireXR_App.Common;
+﻿using Newtonsoft.Json.Linq;
+using SapphireXR_App.Common;
 using SapphireXR_App.Enums;
 using System.Collections;
 using System.Windows.Threading;
 using TwinCAT.Ads;
+using System.IO;
+using Newtonsoft.Json;
+using System.Windows;
 
 namespace SapphireXR_App.Models
 {
@@ -35,6 +39,32 @@ namespace SapphireXR_App.Models
                         DoWriteValveState(valveID, false);
                         DoWriteValveState(coupled, false);
                     }
+                }
+            }
+        }
+
+        private class AppCloseSubscriber : IObserver<bool>
+        {
+            void IObserver<bool>.OnCompleted()
+            {
+                throw new NotImplementedException();
+            }
+
+            void IObserver<bool>.OnError(Exception error)
+            {
+                throw new NotImplementedException();
+            }
+
+            void IObserver<bool>.OnNext(bool value)
+            {
+                string maxValuesFilePath = Util.GetResourceAbsoluteFilePath("\\Configurations\\MaxValue.json");
+                try
+                {
+                    File.WriteAllText(maxValuesFilePath, new JObject(new JProperty("MaxValues", JsonConvert.SerializeObject(aDeviceMaxValue))).ToString());
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Max Value 로그 파일 (" + maxValuesFilePath + ")에 현재 MaxValue값들을 저장하는데 문제가 생겼습니다. 원인은 다음과 같습니다: " + ex.ToString());
                 }
             }
         }
@@ -120,6 +150,7 @@ namespace SapphireXR_App.Models
         private static ObservableManager<BitArray>.DataIssuer? dLogicalInterlockStateIssuer;
 
         private static LeakTestModeSubscriber? leakTestModeSubscriber = null;
+        private static AppCloseSubscriber? appCloseSubscriber = null;
 
         //Create an instance of the TcAdsClient()
         public static AdsClient Ads { get; set; }

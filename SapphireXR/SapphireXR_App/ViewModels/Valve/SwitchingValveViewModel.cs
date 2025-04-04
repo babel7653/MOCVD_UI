@@ -1,10 +1,4 @@
-﻿using CommunityToolkit.Mvvm.Input;
-using System.Windows.Input;
-using SapphireXR_App.Models;
-using SapphireXR_App.Enums;
-using System.Windows;
-using SapphireXR_App.Controls;
-using SapphireXR_App.ViewModels.Valve;
+﻿using SapphireXR_App.ViewModels.Valve;
 
 
 namespace SapphireXR_App.ViewModels

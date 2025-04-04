@@ -1,7 +1,6 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
-using OxyPlot;
 using SapphireXR_App.Bases;
 using SapphireXR_App.Common;
 using SapphireXR_App.Models;
@@ -24,44 +23,47 @@ namespace SapphireXR_App.ViewModels
             NavigationSource = "Views/RecipeRunPage.xaml";
             //네비게이션 메시지 수신 등록
             WeakReferenceMessenger.Default.Register<NavigationMessage>(this, OnNavigationMessage);
-            PLCService.WriteOperationMode(false);
-            PropertyChanged += (object? sender, PropertyChangedEventArgs args) =>
+            if (AppSetting.ConfigMode == false)
             {
-                switch(args.PropertyName)
+                PLCService.WriteOperationMode(false);
+
+                PropertyChanged += (object? sender, PropertyChangedEventArgs args) =>
                 {
-                    case nameof(SelectedTab):
-                        switch(SelectedTab)
-                        {
-                            case 0:
-                                PLCService.WriteOperationMode(false);
-                                break;
+                    switch (args.PropertyName)
+                    {
+                        case nameof(SelectedTab):
+                            switch (SelectedTab)
+                            {
+                                case 0:
+                                    PLCService.WriteOperationMode(false);
+                                    break;
 
-                            case 1:
-                                PLCService.WriteOperationMode(true);
-                                break;
-                        }
-                        selectedTabPublisher.Issue(SelectedTab);
-                        break;
+                                case 1:
+                                    PLCService.WriteOperationMode(true);
+                                    break;
+                            }
+                            selectedTabPublisher.Issue(SelectedTab);
+                            break;
 
-                    case nameof(RecipeRunInactive):
-                        if(RecipeRunInactive == true)
-                        {
-                            onClosing = onRecipeInactive;
-                        }
-                        else
-                        {
-                            onClosing = onRecipeActive;
-                        }
-                        break;
+                        case nameof(RecipeRunInactive):
+                            if (RecipeRunInactive == true)
+                            {
+                                onClosing = onRecipeInactive;
+                            }
+                            else
+                            {
+                                onClosing = onRecipeActive;
+                            }
+                            break;
 
-                }
-            };
-            ObservableManager<RecipeRunViewModel.RecipeUserState>.Subscribe("RecipeRun.State", this);
-            ObservableManager<int>.Subscribe("SwitchTab", this);
+                    }
+                };
+
+                ObservableManager<RecipeRunViewModel.RecipeUserState>.Subscribe("RecipeRun.State", this);
+                ObservableManager<int>.Subscribe("SwitchTab", this);
+            }
             onClosing = onRecipeInactive;
         }
-
-        public PlotModel PlotModel { get; set; } = default;
 
         private void OnNavigationMessage(object recipient, NavigationMessage message)
         {

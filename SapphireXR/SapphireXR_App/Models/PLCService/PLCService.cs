@@ -15,7 +15,10 @@ namespace SapphireXR_App.Models
             Ads = new AdsClient();
             try
             {
-                Connect();
+                if (AppSetting.ConfigMode == false)
+                {
+                    Connect();
+                }
             }
             catch (Exception)
             {

@@ -2,7 +2,7 @@
 {
     public class OnOffValveViewModel: ValveViewModel
     {
-        protected override void Init(string valveID, SapphireXR_App.Controls.Valve.UpdateTarget target)
+        protected override void Init(string valveID, Controls.Valve.UpdateTarget target)
         {
             base.Init(valveID, target); 
             if (valveID != null)

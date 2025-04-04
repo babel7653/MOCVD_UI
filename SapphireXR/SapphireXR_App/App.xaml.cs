@@ -21,8 +21,16 @@ namespace SapphireXR_App
             // 단, 이것도 서비스에 등록이 되어야 함
             try
             {
-                PLCService.ReadInitialStateValueFromPLC(); // 초기 로드시 PLC Valve상태 읽음
-                var mainView = App.Current.Services.GetService<MainWindow>();
+                PLCService.ReadInitialStateValueFromPLC();
+                Window? mainView;
+                if (AppSetting.ConfigMode == false)
+                {
+                    mainView = Current.Services.GetService<MainWindow>();
+                }
+                else
+                {
+                    mainView = Current.Services.GetService<MainWindow_Config>();
+                }
                 if (mainView != null)
                 {
                     Application.Current.MainWindow.WindowState = WindowState.Maximized;
@@ -32,7 +40,6 @@ namespace SapphireXR_App
                 {
                     throw new Exception("cannot create MainView from App.Current.Services.GetService<MainWindow>()");
                 }
-
             }
             catch (Exception ex)
             {
@@ -56,6 +63,7 @@ namespace SapphireXR_App
            의존성이 추가된 MainView를 만듬
            */
             services.AddTransient<MainWindow>();
+            services.AddTransient<MainWindow_Config>();
             services.AddTransient(typeof(HomePage));
 
             services.AddTransient(typeof(MainViewModel));

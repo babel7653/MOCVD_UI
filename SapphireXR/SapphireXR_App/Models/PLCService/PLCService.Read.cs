@@ -23,11 +23,11 @@ namespace SapphireXR_App.Models
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message);
+                MessageBox.Show("PLC로부터 Valve값을 읽어오는데 실패했습니다. 원인은 다음과 같습니다: " + ex.Message);
             }
         }
 
-        public static void ReadInitialStateValueFromPLC()
+        private static void ReadInitialStateValueFromPLC()
         {
             if (AppSetting.ConfigMode == false)
             {
@@ -134,11 +134,18 @@ namespace SapphireXR_App.Models
 
         private static void ReadCurrentValueFromPLC()
         {
-            aDeviceCurrentValues = Ads.ReadAny<float[]>(hDeviceCurrentValuePLC, [NumControllers]);
-            aDeviceControlValues = Ads.ReadAny<float[]>(hDeviceControlValuePLC, [NumControllers]);
-            aDeviceTargetValues = Ads.ReadAny<float[]>(hWriteDeviceTargetValuePLC, [NumControllers]);
-            aMonitoring_PVs = Ads.ReadAny<float[]>(hMonitoring_PV, [18]);
-            aInputState = Ads.ReadAny<short[]>(hInputState, [5]);
+            try
+            {
+                aDeviceCurrentValues = Ads.ReadAny<float[]>(hDeviceCurrentValuePLC, [NumControllers]);
+                aDeviceControlValues = Ads.ReadAny<float[]>(hDeviceControlValuePLC, [NumControllers]);
+                aDeviceTargetValues = Ads.ReadAny<float[]>(hWriteDeviceTargetValuePLC, [NumControllers]);
+                aMonitoring_PVs = Ads.ReadAny<float[]>(hMonitoring_PV, [18]);
+                aInputState = Ads.ReadAny<short[]>(hInputState, [5]);
+            }
+            catch(Exception exception)
+            {
+                
+            }
             ReadValveStateFromPLC();
         }
 

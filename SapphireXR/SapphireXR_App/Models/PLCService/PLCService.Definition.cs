@@ -1,6 +1,5 @@
 ﻿using Newtonsoft.Json.Linq;
 using SapphireXR_App.Common;
-using SapphireXR_App.Enums;
 using System.Collections;
 using System.Windows.Threading;
 using TwinCAT.Ads;
@@ -125,7 +124,6 @@ namespace SapphireXR_App.Models
         private static short[]? aInputState = null;
         private static BitArray? bOutputCmd1 = null;
 
-        private static ObservableManager<PLCConnection>.DataIssuer ConnectedNotifier;
         private static Dictionary<string, ObservableManager<float>.DataIssuer>? dCurrentValueIssuers;
         private static Dictionary<string, ObservableManager<float>.DataIssuer>? dControlValueIssuers;
         private static Dictionary<string, ObservableManager<float>.DataIssuer>? dTargetValueIssuers;

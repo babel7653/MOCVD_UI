@@ -1,7 +1,6 @@
 ﻿using SapphireXR_App.Common;
 using SapphireXR_App.Enums;
 using System.Collections;
-using System.Windows;
 using TwinCAT.Ads;
 using TwinCAT.PlcOpen;
 
@@ -11,86 +10,82 @@ namespace SapphireXR_App.Models
     {
         static PLCService()
         {
-            ConnectedNotifier = ObservableManager<PLCConnection>.Get("PLCService.Connected");
             Ads = new AdsClient();
-            try
-            {
-                if (AppSetting.ConfigMode == false)
-                {
-                    Connect();
-                }
-            }
-            catch (Exception)
-            {
-                MessageBox.Show("TwinCAT이 연결되지 않았습니다.");
-                AddressPLC = "PLC Address : ";
-                ModePLC = "System Mode : Not Connected";
-
-                throw;
-            }
         }
 
         public static void Connect()
         {
-            if(AppSetting.PLCAddress != "Local")
+            try
             {
-                Ads.Connect(new AmsAddress(AppSetting.PLCAddress + ":" + AppSetting.PLCPort));
+                if (AppSetting.PLCAddress != "Local")
+                {
+                    Ads.Connect(new AmsAddress(AppSetting.PLCAddress + ":" + AppSetting.PLCPort));
+                }
+                else
+                {
+                    Ads.Connect(AmsNetId.Local, AppSetting.PLCPort);
+                }
+
+                if (Ads.IsConnected == true)
+                {
+                    AddressPLC = $"PLC Address : {Ads.Address}";
+                    ModePLC = "System Mode : Ready";
+
+                    //Read Set Value from PLC 
+                    hDeviceControlValuePLC = Ads.CreateVariableHandle("GVL_IO.aController_CV");
+                    //Read Present Value from Device of PLC
+                    hDeviceCurrentValuePLC = Ads.CreateVariableHandle("GVL_IO.aController_PV");
+                    //Read and Write Max Value of PLC 
+                    hDeviceMaxValuePLC = Ads.CreateVariableHandle("GVL_IO.aMaxValueController");
+
+                    hReadValveStatePLC1 = Ads.CreateVariableHandle("GVL_IO.aOutputSolValve[1]");
+                    hReadValveStatePLC2 = Ads.CreateVariableHandle("GVL_IO.aOutputSolValve[2]");
+                    hWriteDeviceTargetValuePLC = Ads.CreateVariableHandle("GVL_IO.aController_TV");
+                    hWriteDeviceRampTimePLC = Ads.CreateVariableHandle("GVL_IO.aController_RampTime");
+
+                    hMonitoring_PV = Ads.CreateVariableHandle("GVL_IO.aMonitoring_PV");
+                    hInputState = Ads.CreateVariableHandle("GVL_IO.aInputState");
+                    hInputState4 = Ads.CreateVariableHandle("GVL_IO.aInputState[4]");
+                    hDigitalOutput = Ads.CreateVariableHandle("GVL_IO.aDigitalOutputIO");
+                    hDigitalOutput2 = Ads.CreateVariableHandle("GVL_IO.aDigitalOutputIO[2]");
+                    hOutputCmd = Ads.CreateVariableHandle("GVL_IO.aOutputCmd");
+                    hOutputCmd1 = Ads.CreateVariableHandle("GVL_IO.aOutputCmd[1]");
+                    hOutputCmd2 = Ads.CreateVariableHandle("GVL_IO.aOutputCmd[2]");
+                    hInterlock1 = Ads.CreateVariableHandle("GVL_IO.aInterlock[1]");
+
+                    hRcp = Ads.CreateVariableHandle("RCP.aRecipe");
+                    hRcpTotalStep = Ads.CreateVariableHandle("RCP.iRcpTotalStep");
+                    hCmd_RcpOperation = Ads.CreateVariableHandle("RCP.cmd_RcpOperation");
+                    hState_RcpOperation = Ads.CreateVariableHandle("RCP.state_RcpOperation");
+                    hRcpStepN = Ads.CreateVariableHandle("P50_RecipeControl.nRcpIndex");
+                    hTemperaturePV = Ads.CreateVariableHandle("P13_LineHeater.rTemperaturePV");
+                    hOperationMode = Ads.CreateVariableHandle("MAIN.bOperationMode");
+                    hUserState = Ads.CreateVariableHandle("RCP.userState");
+                    hRecipeControlHoldTime = Ads.CreateVariableHandle("P50_RecipeControl.Hold_ET");
+                    hRecipeControlRampTime = Ads.CreateVariableHandle("P50_RecipeControl.Ramp_ET");
+                    hRecipeControlPauseTime = Ads.CreateVariableHandle("P50_RecipeControl.Pause_ET");
+                    hE3508InputManAuto = Ads.CreateVariableHandle("P11_E3508.nInputManAutoBytes");
+                    hOutputSetType = Ads.CreateVariableHandle("P12_IQ_PLUS.nOutputSetType");
+                    hOutputMode = Ads.CreateVariableHandle("P12_IQ_PLUS.nOutputMode");
+
+                    aDeviceRampTimes = new short[dIndexController.Count];
+                    aDeviceTargetValues = new float[dIndexController.Count];
+
+                    ReadInitialStateValueFromPLC();
+
+                    ObservableManager<PLCConnection>.Get("PLCService.Connected").Issue(PLCConnection.Connecrted);
+                }
+                else
+                {
+                    AddressPLC = "PLC Address : ";
+                    ModePLC = "System Mode : Not Connected";
+
+                    throw new Exception(string.Empty);
+                }
             }
-            else
+            catch (Exception e)
             {
-                Ads.Connect(AmsNetId.Local, AppSetting.PLCPort);
-            }
-                
-            
-            if (Ads.IsConnected == true)
-            {
-                AddressPLC = $"PLC Address : {Ads.Address}";
-                ModePLC = "System Mode : Ready";
-                //Read Set Value from PLC 
-                hDeviceControlValuePLC = Ads.CreateVariableHandle("GVL_IO.aController_CV");
-                //Read Present Value from Device of PLC
-                hDeviceCurrentValuePLC = Ads.CreateVariableHandle("GVL_IO.aController_PV");
-                //Read and Write Max Value of PLC 
-                hDeviceMaxValuePLC = Ads.CreateVariableHandle("GVL_IO.aMaxValueController");
-
-                hReadValveStatePLC1 = Ads.CreateVariableHandle("GVL_IO.aOutputSolValve[1]");
-                hReadValveStatePLC2 = Ads.CreateVariableHandle("GVL_IO.aOutputSolValve[2]");
-                hWriteDeviceTargetValuePLC = Ads.CreateVariableHandle("GVL_IO.aController_TV");
-                hWriteDeviceRampTimePLC = Ads.CreateVariableHandle("GVL_IO.aController_RampTime");
-
-                hMonitoring_PV = Ads.CreateVariableHandle("GVL_IO.aMonitoring_PV");
-                hInputState = Ads.CreateVariableHandle("GVL_IO.aInputState");
-                hInputState4 = Ads.CreateVariableHandle("GVL_IO.aInputState[4]");
-                hDigitalOutput = Ads.CreateVariableHandle("GVL_IO.aDigitalOutputIO");
-                hDigitalOutput2 = Ads.CreateVariableHandle("GVL_IO.aDigitalOutputIO[2]");
-                hOutputCmd = Ads.CreateVariableHandle("GVL_IO.aOutputCmd");
-                hOutputCmd1 = Ads.CreateVariableHandle("GVL_IO.aOutputCmd[1]");
-                hOutputCmd2 = Ads.CreateVariableHandle("GVL_IO.aOutputCmd[2]");
-                hInterlock1 = Ads.CreateVariableHandle("GVL_IO.aInterlock[1]");
-
-                hRcp = Ads.CreateVariableHandle("RCP.aRecipe");
-                hRcpTotalStep = Ads.CreateVariableHandle("RCP.iRcpTotalStep");
-                hCmd_RcpOperation = Ads.CreateVariableHandle("RCP.cmd_RcpOperation");
-                hState_RcpOperation = Ads.CreateVariableHandle("RCP.state_RcpOperation");
-                hRcpStepN =Ads.CreateVariableHandle("P50_RecipeControl.nRcpIndex");
-                hTemperaturePV = Ads.CreateVariableHandle("P13_LineHeater.rTemperaturePV");
-                hOperationMode = Ads.CreateVariableHandle("MAIN.bOperationMode");
-                hUserState = Ads.CreateVariableHandle("RCP.userState");
-                hRecipeControlHoldTime = Ads.CreateVariableHandle("P50_RecipeControl.Hold_ET");
-                hRecipeControlRampTime = Ads.CreateVariableHandle("P50_RecipeControl.Ramp_ET");
-                hRecipeControlPauseTime = Ads.CreateVariableHandle("P50_RecipeControl.Pause_ET");
-                hE3508InputManAuto = Ads.CreateVariableHandle("P11_E3508.nInputManAutoBytes");
-                hOutputSetType = Ads.CreateVariableHandle("P12_IQ_PLUS.nOutputSetType");
-                hOutputMode = Ads.CreateVariableHandle("P12_IQ_PLUS.nOutputMode"); 
-
-                aDeviceRampTimes = new short[dIndexController.Count];
-                aDeviceTargetValues = new float[dIndexController.Count];
-
-                ConnectedNotifier.Issue(PLCConnection.Connecrted);
-            }
-            else
-            {
-                throw new TwinCAT.ClientNotConnectedException(null);
+                throw new Exception("PLC로의 연결이 실패했습니다. 물리적 연결이나 서비스가 실행 중인지 확인해 보십시요." + (e.Message != string.Empty ? "문제의 원인은 다음과 같습니다: " + e.Message : e.Message));
             }
         }
 

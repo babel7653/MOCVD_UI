@@ -21,7 +21,10 @@ namespace SapphireXR_App
             // 단, 이것도 서비스에 등록이 되어야 함
             try
             {
-                PLCService.ReadInitialStateValueFromPLC();
+                if(AppSetting.ConfigMode == false)
+                {
+                    PLCService.Connect();
+                }
                 Window? mainView;
                 if (AppSetting.ConfigMode == false)
                 {
@@ -43,7 +46,7 @@ namespace SapphireXR_App
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.ToString());
+                MessageBox.Show(ex.Message);
                 Shutdown();
             }
         }

@@ -2,7 +2,6 @@
 using Newtonsoft.Json;
 using System.IO;
 using System.Windows;
-using System;
 
 namespace SapphireXR_App.Common
 {

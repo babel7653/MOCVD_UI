@@ -10,8 +10,7 @@
         mc:Ignorable="d"
         Background="Transparent"
         x:Name="mainWindow"
-        Title="Sapphire XR" Height="1080" Width="1920"
-        >
+        Title="Sapphire XR" Height="1080" Width="1920">
     <i:Interaction.Triggers>
         <i:EventTrigger EventName="Closing">
             <i:InvokeCommandAction Command="{Binding OnClosingCommand}" PassEventArgsToCommand="True"/>

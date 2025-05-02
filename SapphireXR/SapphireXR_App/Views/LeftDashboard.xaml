@@ -15,60 +15,93 @@
         </Style>
     </Page.Resources>
 
-    <Grid Background="{StaticResource DashboardBackground}">
+    <Grid Background="{StaticResource Gray_100}" Margin="12,0,12,0">
         <Grid.RowDefinitions>
-            <RowDefinition Height="20"/>
-            <RowDefinition Height="110"/>
-            <RowDefinition Height="40"/>
-            <RowDefinition Height="240"/>
-            <RowDefinition Height="180"/>
-            <RowDefinition Height="230"/>
-            <RowDefinition Height="90"/>
-            <RowDefinition Height="*"/>
+            <RowDefinition Height="12"/>
+            <RowDefinition Height="118"/>
+            <RowDefinition Height="0"/>
+            <RowDefinition Height="34"/>
+            <RowDefinition Height="250"/>
+            <RowDefinition Height="176"/>
+            <RowDefinition Height="258"/>
+            <RowDefinition Height="99"/>
+            <RowDefinition/>
         </Grid.RowDefinitions>
-        <Grid Grid.Row="0" Background="Black"/>
         <!-- Machine Information -->
-        <Grid Grid.Row="1">
-            <StackPanel Orientation="Vertical">
+        <Grid Margin="0,0,0,8" Grid.Row="1">
+            <StackPanel Margin="0,0,138,71" Height="34">
                 <StackPanel.Resources>
                     <Style TargetType="{x:Type TextBlock}">
                         <Setter Property="Foreground" Value="{StaticResource PrimaryFontColor}"/>
-                        <Setter Property="FontSize" Value="14"/>
-                        <Setter Property="Width" Value="200"/>
-                        <Setter Property="Margin" Value="20,2,0,2"/>
                         <Setter Property="HorizontalAlignment" Value="Left"/>
                         <Setter Property="VerticalAlignment" Value="Center"/>
                     </Style>
                 </StackPanel.Resources>
-                <TextBlock Text="Machine Name : Marvel 180R"/>
-                <TextBlock Text="Application : GaN"/>
-                <TextBlock Text="System ID : 2024 SKKU2"/>
-                <TextBlock Text="{Binding PLCConnectionStatus}"/>
-                <TextBlock Text="{Binding PLCAddressText}"/>
+                <TextBlock FontFamily="Segoe UI" Margin="0,0,0,0" FontSize="10" Foreground="{DynamicResource Gray_900}"><Run Text="Machine Nam"/><Run Language="ko-kr" Text="e"/></TextBlock>
+                <TextBlock FontFamily="Segoe UI" Margin="0,0,0,0" FontSize="12" Foreground="{DynamicResource Gray_950}" FontWeight="Bold"><Run Text="Machine Nam"/><Run Language="ko-kr" Text="e"/></TextBlock>
+            </StackPanel>
+            <StackPanel Margin="138,0,0,83" Height="34">
+                <StackPanel.Resources>
+                    <Style TargetType="{x:Type TextBlock}">
+                        <Setter Property="HorizontalAlignment" Value="Left"/>
+                        <Setter Property="VerticalAlignment" Value="Center"/>
+                    </Style>
+                </StackPanel.Resources>
+                <TextBlock FontFamily="Segoe UI" Margin="0,0,0,0" FontSize="10" Foreground="{DynamicResource Gray_900}"><Run Language="ko-kr" Text="Application"/></TextBlock>
+                <TextBlock FontFamily="Segoe UI" Margin="0,0,0,0" FontSize="12" Foreground="{DynamicResource Gray_950}" FontWeight="Bold" RenderTransformOrigin="0.563,1.979"><Run Language="ko-kr" Text="GaN"/></TextBlock>
+            </StackPanel>
+            <StackPanel Margin="0,35,138,48" Height="34">
+                <StackPanel.Resources>
+                    <Style TargetType="{x:Type TextBlock}">
+                        <Setter Property="HorizontalAlignment" Value="Left"/>
+                        <Setter Property="VerticalAlignment" Value="Center"/>
+                    </Style>
+                </StackPanel.Resources>
+                <TextBlock FontFamily="Segoe UI" Margin="0,0,0,0" FontSize="10" Foreground="{DynamicResource Gray_900}"><Run Language="ko-kr" Text="System ID"/></TextBlock>
+                <TextBlock FontFamily="Segoe UI" Margin="0,0,0,0" FontSize="12" Foreground="{DynamicResource Gray_950}" FontWeight="Bold"><Run Language="ko-kr" Text="2024 SKKU2"/></TextBlock>
+            </StackPanel>
+            <StackPanel Margin="138,35,0,48" Height="34">
+                <StackPanel.Resources>
+                    <Style TargetType="{x:Type TextBlock}">
+                        <Setter Property="HorizontalAlignment" Value="Left"/>
+                        <Setter Property="VerticalAlignment" Value="Center"/>
+                    </Style>
+                </StackPanel.Resources>
+                <TextBlock FontFamily="Segoe UI" Margin="0,0,0,0" FontSize="10" Foreground="{DynamicResource Gray_900}"><Run Text="PLC "/><Run Language="ko-kr" Text="C"/><Run Text="onnection"/></TextBlock>
+                <TextBlock Text="{Binding PLCConnectionStatus}" FontFamily="Segoe UI" Margin="0,0,0,0" FontSize="12" Foreground="{DynamicResource Sapphire_Blue}" FontWeight="Bold"><Run Text="Machine Nam"/><Run Language="ko-kr" Text="e"/></TextBlock>
+            </StackPanel>
+            <StackPanel Margin="0,70,138,13" Height="34">
+                <StackPanel.Resources>
+                    <Style TargetType="{x:Type TextBlock}">
+                        <Setter Property="HorizontalAlignment" Value="Left"/>
+                        <Setter Property="VerticalAlignment" Value="Center"/>
+                    </Style>
+                </StackPanel.Resources>
+                <TextBlock FontFamily="Segoe UI" Margin="0,0,0,0" FontSize="10" Foreground="{DynamicResource Gray_900}"><Run Language="ko-kr" Text="PLC Address"/></TextBlock>
+                <TextBlock Text="{Binding PLCAddressText}" FontFamily="Segoe UI" Margin="0,0,0,0" FontSize="12" Foreground="{DynamicResource Gray_950}" FontWeight="Bold"><Run Text="Machine Nam"/><Run Language="ko-kr" Text="e"/></TextBlock>
             </StackPanel>
         </Grid>
         <!-- Signal Tower -->
-        <Grid Grid.Row="2">
+        <Grid Grid.Row="3" Margin="0,0,0,2">
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
                 <StackPanel.Resources>
                     <Style TargetType="{x:Type Rectangle}">
-                        <Setter Property="Width" Value="48"/>
-                        <Setter Property="Height" Value="26"/>
+                        <Setter Property="Width" Value="40"/>
+                        <Setter Property="Height" Value="10"/>
                         <Setter Property="Stroke" Value="LightSlateGray"/>
-
                     </Style>
                 </StackPanel.Resources>
-                <Rectangle x:Name="SignalTowerRed" Fill="{Binding SignalTowerRed, UpdateSourceTrigger=PropertyChanged}"/>
-                <Rectangle x:Name="SignalTowerYellow" Fill="{Binding SignalTowerYellow, UpdateSourceTrigger=PropertyChanged}"/>
-                <Rectangle x:Name="SignalTowerGreen" Fill="{Binding SignalTowerGreen, UpdateSourceTrigger=PropertyChanged}"/>
-                <Rectangle x:Name="SignalTowerBlue" Fill="{Binding SignalTowerBlue, UpdateSourceTrigger=PropertyChanged}"/>
-                <Rectangle x:Name="SignalTowerWhite" Fill="{Binding SignalTowerWhite, UpdateSourceTrigger=PropertyChanged}"/>
-                <Rectangle x:Name="SignalTowerBuzzer" />
+                <Rectangle x:Name="SignalTowerRed" Fill="{Binding SignalTowerRed, UpdateSourceTrigger=PropertyChanged}" Width="40" Height="10" RadiusX="4" RadiusY="4" Margin="4,0,0,0"/>
+                <Rectangle x:Name="SignalTowerYellow" Fill="{Binding SignalTowerYellow, UpdateSourceTrigger=PropertyChanged}" Width="40" Height="10" RadiusX="4" RadiusY="4" Margin="4,0,0,0"/>
+                <Rectangle x:Name="SignalTowerGreen" Fill="{Binding SignalTowerGreen, UpdateSourceTrigger=PropertyChanged}" Width="40" Height="10" RadiusX="4" RadiusY="4" Margin="4,0,0,0"/>
+                <Rectangle x:Name="SignalTowerBlue" Fill="{Binding SignalTowerBlue, UpdateSourceTrigger=PropertyChanged}" Width="40" Height="10" RadiusX="4" RadiusY="4" Margin="4,0,0,0"/>
+                <Rectangle x:Name="SignalTowerWhite" Fill="{Binding SignalTowerWhite, UpdateSourceTrigger=PropertyChanged}" Width="40" Height="10" RadiusX="4" RadiusY="4" Margin="4,0,0,0"/>
+                <Rectangle x:Name="SignalTowerBuzzer" Width="44" Height="10" RadiusX="4" RadiusY="4" Margin="4,0,0,0" />
             </StackPanel>
         </Grid>
         <!-- Source Valve Current Status -->
-        <Grid Grid.Row="3">
-            <StackPanel Orientation="Vertical">
+        <Grid Grid.Row="4" VerticalAlignment="Center" Height="228">
+            <StackPanel Orientation="Vertical" Height="229" VerticalAlignment="Top">
                 <StackPanel.Resources>
                     <Style TargetType="{x:Type TextBlock}">
                         <Setter Property="Foreground" Value="{StaticResource PrimaryFontColor}"/>
@@ -90,12 +123,12 @@
                         <Setter Property="Margin" Value="2"/>
                     </Style>
                 </StackPanel.Resources>
-                <TextBlock Foreground="DeepSkyBlue" FontSize="14" HorizontalAlignment="Center">
-                <Bold>Source Status</Bold></TextBlock>
-                <Line X1="5" Y1="0" X2="295" Y2="0" Stroke="DeepSkyBlue" StrokeThickness="2"/>
+                <Line X1="5" Y1="0" X2="295" Y2="0" Stroke="{DynamicResource Gray_300}" StrokeThickness="2" HorizontalAlignment="Center" Width="300"/>
+                <TextBlock Foreground="{DynamicResource Gray_950}" FontSize="12" FontFamily="Segoe UI" FontWeight="Bold" HorizontalAlignment="Left" Margin="28,6,0,0" VerticalAlignment="Center"><Bold><Run Text="Source Status"/></Bold></TextBlock>
                 <Grid VerticalAlignment="Top">
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="100"/>
+                        <ColumnDefinition Width="68
+                                          "/>
                         <ColumnDefinition/>
                         <ColumnDefinition/>
                         <ColumnDefinition/>
@@ -112,21 +145,21 @@
                         <RowDefinition/>
                         <RowDefinition/>
                     </Grid.RowDefinitions>
-                    <TextBlock Grid.Row="0" Grid.Column="1" Text="Carrier" HorizontalAlignment="Center" Margin="0,6,0,0"/>
-                    <TextBlock Grid.Row="0" Grid.Column="2" Text="Source" HorizontalAlignment="Center" Margin="0,6,0,0"/>
-                    <TextBlock Grid.Row="0" Grid.Column="3" Text="Manifold" HorizontalAlignment="Center" Margin="0,6,0,0" />
-                    <TextBlock Grid.Row="1" Grid.Column="0"  Text="NH3 #1" />
-                    <TextBlock Grid.Row="2" Grid.Column="0" Text="NH3 #2" />
-                    <TextBlock Grid.Row="3" Grid.Column="0" Text="SiH4" />
-                    <TextBlock Grid.Row="4" Grid.Column="0"  Text="TEB" />
-                    <TextBlock Grid.Row="5" Grid.Column="0" Text="TMAl" />
-                    <TextBlock Grid.Row="6" Grid.Column="0"  Text="TMIn" />
-                    <TextBlock Grid.Row="7" Grid.Column="0" Text="TMGa" />
-                    <TextBlock Grid.Row="8" Grid.Column="0" Text="DTMGa" />
-                    <TextBlock Grid.Row="9" Grid.Column="0"  Text="Cp2Mg" />
+                    <TextBlock Grid.Row="0" Grid.Column="1" Text="Carrier" HorizontalAlignment="Center" Margin="0,6,0,0" Foreground="{DynamicResource Gray_900}" FontSize="10"/>
+                    <TextBlock Grid.Row="0" Grid.Column="2" Text="Source" HorizontalAlignment="Center" Margin="0,6,0,0" Foreground="{DynamicResource Gray_900}" FontSize="10"/>
+                    <TextBlock Grid.Row="0" Grid.Column="3" Text="Manifold" HorizontalAlignment="Center" Margin="0,6,0,0" Foreground="{DynamicResource Gray_900}" FontSize="10" />
+                    <TextBlock Grid.Row="1" Grid.Column="0"  Text="NH3 #1" Margin="-1,6,8,0" FontFamily="Segoe UI" Foreground="{DynamicResource Gray_900}" FontSize="10" />
+                    <TextBlock Grid.Row="2" Grid.Column="0" Text="NH3 #2" Margin="-1,6,5,0" FontFamily="Segoe UI" Foreground="{DynamicResource Gray_900}" FontSize="10" />
+                    <TextBlock Grid.Row="3" Grid.Column="0" Text="SiH4" Margin="-1,6,5,0" FontFamily="Segoe UI" Foreground="{DynamicResource Gray_900}" FontSize="10" />
+                    <TextBlock Grid.Row="4" Grid.Column="0"  Text="TEB" Margin="-1,6,5,0" FontFamily="Segoe UI" Foreground="{DynamicResource Gray_900}" FontSize="10" />
+                    <TextBlock Grid.Row="5" Grid.Column="0" Text="TMAl" Margin="-1,6,5,0" FontFamily="Segoe UI" Foreground="{DynamicResource Gray_900}" FontSize="10" />
+                    <TextBlock Grid.Row="6" Grid.Column="0"  Text="TMIn" Margin="-1,6,5,0" FontFamily="Segoe UI" Foreground="{DynamicResource Gray_900}" FontSize="10" />
+                    <TextBlock Grid.Row="7" Grid.Column="0" Text="TMGa" Margin="-1,6,5,0" FontFamily="Segoe UI" Foreground="{DynamicResource Gray_900}" FontSize="10" />
+                    <TextBlock Grid.Row="8" Grid.Column="0" Text="DTMGa" Margin="-1,6,5,0" FontFamily="Segoe UI" Foreground="{DynamicResource Gray_900}" FontSize="10" />
+                    <TextBlock Grid.Row="9" Grid.Column="0"  Text="Cp2Mg" Margin="-1,6,5,0" FontFamily="Segoe UI" Foreground="{DynamicResource Gray_900}" FontSize="10" />
 
                     <Button Grid.Row="1" Grid.Column="1" Content="{Binding CurrentSourceStatusViewModel.NH3_1Carrier}" 
-                            Background="{Binding CurrentSourceStatusViewModel.NH3_1CarrierColor}" />
+                            Background="{Binding CurrentSourceStatusViewModel.NH3_1CarrierColor}"/>
                     <Button Grid.Row="1" Grid.Column="2" Content="{Binding CurrentSourceStatusViewModel.NH3_1Source}" 
                             Background="{Binding CurrentSourceStatusViewModel.NH3_1SourceColor}" />
                     <Button Grid.Row="1" Grid.Column="3" Content="{Binding CurrentSourceStatusViewModel.NH3_1Vent}"
@@ -183,64 +216,11 @@
 
                     <Button Grid.Row="9" Grid.Column="1" Content="{Binding CurrentSourceStatusViewModel.Cp2MgCarrier}" Background="{Binding CurrentSourceStatusViewModel.Cp2MgCarrierColor}" />
                     <Button Grid.Row="9" Grid.Column="2" Content="{Binding CurrentSourceStatusViewModel.Cp2MgSource}" Background="{Binding CurrentSourceStatusViewModel.Cp2MgSourceColor}" />
-                    <Button Grid.Row="9" Grid.Column="3" Content="{Binding CurrentSourceStatusViewModel.Cp2MgVent}" Background="{Binding CurrentSourceStatusViewModel.Cp2MgVentColor}" /> 
+                    <Button Grid.Row="9" Grid.Column="3" Content="{Binding CurrentSourceStatusViewModel.Cp2MgVent}" Background="{Binding CurrentSourceStatusViewModel.Cp2MgVentColor}" />
                 </Grid>
             </StackPanel>
         </Grid>
         <!-- Logical Interlock -->
-        <Grid Grid.Row="4">
-            <StackPanel Orientation="Vertical">
-                <StackPanel.Resources>
-                    <Style TargetType="{x:Type TextBlock}">
-                        <Setter Property="Foreground" Value="{StaticResource PrimaryFontColor}"/>
-                        <Setter Property="Height" Value="18"/>
-                    </Style>
-                    <Style TargetType="{x:Type Rectangle}">
-                        <Setter Property="Width" Value="10"/>
-                        <Setter Property="Height" Value="10"/>
-                        <Setter Property="Margin" Value="20,0,10,4"/>
-                    </Style>
-                </StackPanel.Resources>
-                <TextBlock Foreground="DeepSkyBlue" FontSize="14"  HorizontalAlignment="Center" >
-                <Bold>Logical Interlock</Bold></TextBlock>
-                <Line X1="5" Y1="0" X2="295" Y2="0" Stroke="DeepSkyBlue" StrokeThickness="2" Margin="2,2,2,8"/>
-                <StackPanel Orientation="Horizontal">
-                    <Rectangle Fill="{Binding GasPressureN2StateColor}"/>
-                    <TextBlock Text="Gas Pressure N2"/>
-                </StackPanel>
-                <StackPanel Orientation="Horizontal">
-                    <Rectangle Fill="{Binding GasPressureH2StateColor}"/>
-                    <TextBlock Text="Gas Pressure H2"/>
-                </StackPanel>
-                <StackPanel Orientation="Horizontal">
-                    <Rectangle Fill="{Binding GasPressureNH3StateColor}"/>
-                    <TextBlock Text="Gas Pressure NH3"/>
-                </StackPanel>
-                <StackPanel Orientation="Horizontal">
-                    <Rectangle Fill="{Binding GasPressureSiH4StateColor}"/>
-                    <TextBlock Text="Gas Pressure SiH4"/>
-                </StackPanel>
-                <StackPanel Orientation="Horizontal">
-                    <Rectangle Fill="{Binding RecipeStartStateColor}"/>
-                    <TextBlock Text="Recipe Start Available"/>
-                </StackPanel>
-                <StackPanel Orientation="Horizontal">
-                    <Rectangle Fill="{Binding ReactorOpenStateColor}"/>
-                    <TextBlock Text="Reactor Open Available"/>
-                </StackPanel>
-                <StackPanel Orientation="Horizontal">
-                    <Rectangle Fill="{Binding HeaterTurnOnStateColor }"/>
-                    <TextBlock Text="Heater can be Turn On"/>
-                </StackPanel>
-                <StackPanel Orientation="Horizontal">
-                    <Rectangle Fill="{Binding PumpTurnOnStateColor}"/>
-                    <TextBlock Text="Pump can be Turn On"/>
-                </StackPanel>
-
-            </StackPanel>
-
-        </Grid>
-        <!-- Hardwire Interlock -->
         <Grid Grid.Row="5">
             <StackPanel Orientation="Vertical">
                 <StackPanel.Resources>
@@ -254,57 +234,111 @@
                         <Setter Property="Margin" Value="20,0,10,4"/>
                     </Style>
                 </StackPanel.Resources>
-                <TextBlock Foreground="DeepSkyBlue" FontSize="14"  HorizontalAlignment="Center"  TextAlignment="Center">
-                <Bold>Hardwire Interlock</Bold></TextBlock>
-                <Line X1="5" Y1="0" X2="295" Y2="0" Stroke="DeepSkyBlue" StrokeThickness="2" Margin="2,2,2,8"/>
+                <TextBlock Foreground="{DynamicResource Gray_950}" FontSize="12" FontFamily="Segoe UI" FontWeight="Bold" HorizontalAlignment="Left" Margin="28,6,0,0" VerticalAlignment="Center"><Bold><Run Text="Logical Interlock"/></Bold></TextBlock>
+                <StackPanel Orientation="Horizontal" Margin="0,8,0,0">
+                    <TextBlock Text="Gas Pressure N2" FontFamily="Segoe UI" Foreground="{DynamicResource Gray_900}" FontSize="10" Margin="20,0,0,0"/>
+                    <Line  Stroke="{DynamicResource Gray_300}" StrokeThickness="2" VerticalAlignment="Center" Opacity="0.995" Width="100" Fill="Black"/>
+                    <Rectangle Fill="{Binding GasPressureN2StateColor}" RadiusX="99" RadiusY="99"/>
+                </StackPanel>
                 <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="Gas Pressure H2" FontFamily="Segoe UI" Foreground="{DynamicResource Gray_900}" FontSize="10" Margin="20,0,0,0"/>
+                    <Rectangle Fill="{Binding GasPressureH2StateColor}"/>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="Gas Pressure NH3" FontFamily="Segoe UI" Foreground="{DynamicResource Gray_900}" FontSize="10" Margin="20,0,0,0"/>
+                    <Rectangle Fill="{Binding GasPressureNH3StateColor}"/>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="Gas Pressure SiH4" FontFamily="Segoe UI" Foreground="{DynamicResource Gray_900}" FontSize="10" Margin="20,0,0,0"/>
+                    <Rectangle Fill="{Binding GasPressureSiH4StateColor}"/>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="Recipe Start Available" FontFamily="Segoe UI" Foreground="{DynamicResource Gray_900}" FontSize="10" Margin="20,0,0,0"/>
+                    <Rectangle Fill="{Binding RecipeStartStateColor}"/>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="Reactor Open Available" FontFamily="Segoe UI" Foreground="{DynamicResource Gray_900}" FontSize="10" Margin="20,0,0,0"/>
+                    <Rectangle Fill="{Binding ReactorOpenStateColor}"/>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="Heater can be Turn On" FontFamily="Segoe UI" Foreground="{DynamicResource Gray_900}" FontSize="10" Margin="20,0,0,0"/>
+                    <Rectangle Fill="{Binding HeaterTurnOnStateColor}"/>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="Pump can be Turn On" FontFamily="Segoe UI" Foreground="{DynamicResource Gray_900}" FontSize="10" Margin="20,0,0,0"/>
+                    <Rectangle Fill="{Binding PumpTurnOnStateColor}"/>
+                </StackPanel>
+
+            </StackPanel>
+
+        </Grid>
+        <!-- Hardwire Interlock -->
+        <Grid Grid.Row="6">
+            <StackPanel Orientation="Vertical" HorizontalAlignment="Center" Margin="0,0,0,10">
+                <StackPanel.Resources>
+                    <Style TargetType="{x:Type TextBlock}">
+                        <Setter Property="Foreground" Value="{StaticResource PrimaryFontColor}"/>
+                        <Setter Property="Height" Value="18"/>
+                    </Style>
+                    <Style TargetType="{x:Type Rectangle}">
+                        <Setter Property="Width" Value="10"/>
+                        <Setter Property="Height" Value="10"/>
+                        <Setter Property="Margin" Value="20,0,10,4"/>
+                    </Style>
+                </StackPanel.Resources>
+                <Line X1="5" Y1="0" X2="295" Y2="0" Stroke="{DynamicResource Gray_300}" StrokeThickness="2" Margin="2,2,2,8"/>
+                <TextBlock Foreground="{DynamicResource Gray_950}" FontSize="12" FontFamily="Segoe UI" FontWeight="Bold" HorizontalAlignment="Left" Margin="28,6,0,0" VerticalAlignment="Center"><Bold><Run Text="Hardwire Interlock"/></Bold></TextBlock>
+                <StackPanel Orientation="Horizontal" Margin="0,8,0,0">
+                    <TextBlock Text="Maintenance Key" FontFamily="Segoe UI" Foreground="{DynamicResource Gray_900}" FontSize="10" Margin="20,0,0,0"/>
                     <Rectangle Fill="{Binding MaintenanceKeyLampColor}" />
-                    <TextBlock Text="Maintenance Key"/>
                 </StackPanel>
                 <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="Induction Heater" FontFamily="Segoe UI" Foreground="{DynamicResource Gray_900}" FontSize="10" Margin="20,0,0,0"/>
                     <Rectangle Fill="{Binding InductionHeaterLampColor}" />
-                    <TextBlock Text="Induction Heater"/>
                 </StackPanel>
                 <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="Vacuum Pump" FontFamily="Segoe UI" Foreground="{DynamicResource Gray_900}" FontSize="10" Margin="20,0,0,0"/>
                     <Rectangle Fill="{Binding VacuumPumpLampColor}" />
-                    <TextBlock Text="Vacuum Pump"/>
                 </StackPanel>
                 <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="Susceptor Motor" FontFamily="Segoe UI" Foreground="{DynamicResource Gray_900}" FontSize="10" Margin="20,0,0,0"/>
                     <Rectangle Fill="{Binding SusceptorMotorLampColor}" />
-                    <TextBlock Text="Susceptor Motor"/>
                 </StackPanel>
                 <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="Cooling Water" FontFamily="Segoe UI" Foreground="{DynamicResource Gray_900}" FontSize="10" Margin="20,0,0,0"/>
                     <Rectangle Fill="{Binding CoolingWaterLampColor}" />
-                    <TextBlock Text="Cooling Water"/>
                 </StackPanel>
                 <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="Clean Dry Air" FontFamily="Segoe UI" Foreground="{DynamicResource Gray_900}" FontSize="10" Margin="20,0,0,0"/>
                     <Rectangle Fill="{Binding CleanDryAirLampColor}" />
-                    <TextBlock Text="Clean Dry Air"/>
                 </StackPanel>
                 <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="Door - Reactor Cabinet" FontFamily="Segoe UI" Foreground="{DynamicResource Gray_900}" FontSize="10" Margin="20,0,0,0"/>
                     <Rectangle Fill="{Binding DoorReactorCabinetLampColor}" />
-                    <TextBlock Text="Door - Reactor Cabinet"/>
                 </StackPanel>
                 <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="Door - Gas Delivery Cabinet" FontFamily="Segoe UI" Foreground="{DynamicResource Gray_900}" FontSize="10" Margin="20,0,0,0"/>
                     <Rectangle Fill="{Binding DoorGasDeliveryCabinetLampColor}" />
-                    <TextBlock Text="Door - Gas Delivery Cabinet"/>
                 </StackPanel>
                 <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="Door - Power Distribute Cabinet" FontFamily="Segoe UI" Foreground="{DynamicResource Gray_900}" FontSize="10" Margin="20,0,0,0"/>
                     <Rectangle Fill="{Binding DoorPowerDistributeCabinetLampColor}" />
-                    <TextBlock Text="Door - Power Distribute Cabinet"/>
                 </StackPanel>
                 <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="Double O-Ring Vacuum" FontFamily="Segoe UI" Foreground="{DynamicResource Gray_900}" FontSize="10" Margin="20,0,0,0"/>
                     <Rectangle Fill="{Binding DorVacuumStateLampColor}"/>
-                    <TextBlock Text="Double O-Ring Vacuum"/>
                 </StackPanel>
                 <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="Susceptor Temp. Controller Alarm" FontFamily="Segoe UI" Foreground="{DynamicResource Gray_900}" FontSize="10" Margin="20,0,0,0"/>
                     <Rectangle Fill="{Binding TempControllerAlarmLampColor}"/>
-                    <TextBlock Text="Susceptor Temp. Controller Alarm"/>
                 </StackPanel>
             </StackPanel>
         </Grid>
         <!-- Line Heater Current Value -->
-        <Grid Grid.Row="6">
+        <Grid Grid.Row="6" Margin="0,246,0,13" Grid.RowSpan="2">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
             <StackPanel Orientation="Vertical">
                 <StackPanel.Resources>
                     <Style TargetType="{x:Type TextBlock}">
@@ -349,31 +383,31 @@
                     <TextBox x:Name="tbLineHeater8" Text="{Binding LineHeater8, UpdateSourceTrigger=PropertyChanged}"/>
                 </StackPanel>
             </StackPanel>
-        </Grid>        
+        </Grid>
         <!-- Colling Water Current Value -->
-        <Grid Grid.Row="7">
+        <Grid Grid.Row="8">
             <StackPanel Orientation="Vertical">
-            <StackPanel.Resources>
-                <Style TargetType="{x:Type TextBlock}">
-                    <Setter Property="Foreground" Value="{StaticResource PrimaryFontColor}"/>
+                <StackPanel.Resources>
+                    <Style TargetType="{x:Type TextBlock}">
+                        <Setter Property="Foreground" Value="{StaticResource PrimaryFontColor}"/>
                         <Setter Property="FontSize" Value="11"/>
                         <Setter Property="TextAlignment" Value="Center"/>
                         <Setter Property="Margin" Value="0,6,0,0"/>
-                                        </Style>
-                <Style TargetType="{x:Type TextBox}">
-                    <Setter Property="Width" Value="64"/>
-                    <Setter Property="Height" Value="22"/>
-                    <Setter Property="Background" Value="LightGray"/>
-                    <Setter Property="Foreground" Value="DarkBlue"/>
-                    <Setter Property="FontSize" Value="11"/>                    
-                    <Setter Property="TextAlignment" Value="Right"/>
+                    </Style>
+                    <Style TargetType="{x:Type TextBox}">
+                        <Setter Property="Width" Value="64"/>
+                        <Setter Property="Height" Value="22"/>
+                        <Setter Property="Background" Value="LightGray"/>
+                        <Setter Property="Foreground" Value="DarkBlue"/>
+                        <Setter Property="FontSize" Value="11"/>
+                        <Setter Property="TextAlignment" Value="Right"/>
                         <Setter Property="Margin" Value="4"/>
                     </Style>
-            </StackPanel.Resources>
-            <TextBlock Foreground="DeepSkyBlue" FontSize="14" Width="280" TextAlignment="Center">
+                </StackPanel.Resources>
+                <TextBlock Foreground="DeepSkyBlue" FontSize="14" Width="280" TextAlignment="Center">
             <Bold>Cooling Water</Bold>
-            </TextBlock>
-            <Line X1="5" Y1="0" X2="295" Y2="0" Stroke="DeepSkyBlue" StrokeThickness="2"/>
+                </TextBlock>
+                <Line X1="5" Y1="0" X2="295" Y2="0" Stroke="DeepSkyBlue" StrokeThickness="2"/>
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition/>
@@ -391,5 +425,7 @@
                 </Grid>
             </StackPanel>
         </Grid>
+        <Image Margin="0,16,252,210" Grid.Row="4" Source="/icon=control knobs.png" Stretch="Fill"/>
+        <Image Margin="0,6,252,146" Grid.Row="5" Source="/icon=lock_01.png" Stretch="Fill"/>
     </Grid>
 </Page>

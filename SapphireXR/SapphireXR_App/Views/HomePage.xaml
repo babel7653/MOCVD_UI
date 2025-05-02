@@ -33,7 +33,7 @@
                 <RowDefinition/>
                 <RowDefinition Height="240"/>
             </Grid.RowDefinitions>
-            <Canvas Grid.Row="0" Background="{StaticResource HomePageBackground}">
+            <Canvas Grid.Row="0" Background="{DynamicResource Gray_300}">
                 <Canvas.ContextMenu>
                     <ContextMenu>
                         <MenuItem Header="{Binding LeakTestModeStr}" Command="{Binding EnableLeakTestCommand}" CommandParameter="{Binding Header,  RelativeSource={RelativeSource Mode=Self}}" />

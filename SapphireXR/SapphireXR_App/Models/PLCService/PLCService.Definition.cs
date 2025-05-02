@@ -190,6 +190,9 @@ namespace SapphireXR_App.Models
         private static bool RecipeRunEndNotified = false;
         private static bool LeakTestMode = true;
 
+        private static bool ShowMessageOnReadCurrentValueFromPLCException = true;
+        private static bool ShowMessageOnReadValveStateFromPLC = true;
+
         public static readonly Dictionary<string, int> ValveIDtoOutputSolValveIdx1 = new Dictionary<string, int>
         {
             { "V01", 0 }, { "V02", 1 }, { "V03", 2 }, { "V04", 3 }, { "V05", 4 },

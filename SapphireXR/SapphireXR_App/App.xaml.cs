@@ -41,12 +41,12 @@ namespace SapphireXR_App
                 }
                 else
                 {
-                    throw new Exception("cannot create MainView from App.Current.Services.GetService<MainWindow>()");
+                    throw new Exception("App.Current.Services.GetService<MainWindow>()로부터 MainView을 생성하는데 실패했습니다.");
                 }
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message);
+                MessageBox.Show("애플리케이션 실행에 문제가 발생하여 종료합니다. " + ex.Message);
                 Shutdown();
             }
         }

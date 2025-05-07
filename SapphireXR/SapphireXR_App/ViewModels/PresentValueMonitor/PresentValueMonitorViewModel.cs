@@ -3,7 +3,6 @@ using CommunityToolkit.Mvvm.Input;
 using System.Windows.Input;
 using SapphireXR_App.Common;
 using SapphireXR_App.Models;
-using System.Globalization;
 
 namespace SapphireXR_App.ViewModels
 {

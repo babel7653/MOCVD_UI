@@ -11,7 +11,7 @@ using System.Windows.Controls;
 using System.ComponentModel;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
-using System.Globalization;
+using System;
 
 namespace SapphireXR_App.ViewModels
 {
@@ -104,10 +104,28 @@ namespace SapphireXR_App.ViewModels
                 prevThrottleValveControlMode = CurrentThrottleValveControlMode;
             }
 
-            BitArray outputCmd1 = PLCService.ReadOutputCmd1();
-            InductionHeaterOn = (outputCmd1[(int)PLCService.OutputCmd1Index.InductionHeaterControl] == true) ? "On" : "Off";
-            VaccumPumpOn = (outputCmd1[(int)PLCService.OutputCmd1Index.VaccumPumpControl] == true) ? "On" : "Off";
-            InputManualAuto = PLCService.ReadInputManAuto(7) == false ? "Auto" : "Manual";
+            try
+            {
+                BitArray outputCmd1 = PLCService.ReadOutputCmd1();
+                InductionHeaterOn = (outputCmd1[(int)PLCService.OutputCmd1Index.InductionHeaterControl] == true) ? "On" : "Off";
+                VaccumPumpOn = (outputCmd1[(int)PLCService.OutputCmd1Index.VaccumPumpControl] == true) ? "On" : "Off";
+            }
+            catch (Exception)
+            {
+                MessageBox.Show("PLC로부터 Home의 Induction Heater와 VaccumPump On/Off 상태를 읽어오는데 실패하였습니다. 기본 Unknown으로 표시합니다.");
+                InductionHeaterOn = "Unknown";
+                VaccumPumpOn = "Unknown";
+            }
+            try
+            {
+                InputManualAuto = PLCService.ReadInputManAuto(7) == false ? "Auto" : "Manual";
+            }
+            catch (Exception)
+            {
+                MessageBox.Show("PLC로부터 Home의 Heater Control Mode 상태를 읽어오는데 실패하였습니다. 기본 Unknown으로 표시합니다.");
+                InputManualAuto = "Unknown";
+            }
+            
 
             PropertyChanged += (object? sender, PropertyChangedEventArgs args) =>
             {
@@ -126,9 +144,20 @@ namespace SapphireXR_App.ViewModels
         [RelayCommand]
         private void VacuumPumpToggle()
         {
-            if(OutputCmd1ToggleConfirmService.OnOff(VaccumPumpOn, PLCService.OutputCmd1Index.VaccumPumpControl, "Vaccum Pump On/Off") == true)
+            try
             {
-                VaccumPumpOn = (VaccumPumpOn == "On" ? "Off" : "On");
+                if (OutputCmd1ToggleConfirmService.OnOff(VaccumPumpOn, PLCService.OutputCmd1Index.VaccumPumpControl, "Vaccum Pump On/Off") == true)
+                {
+                    VaccumPumpOn = (VaccumPumpOn == "On" ? "Off" : "On");
+                }
+            }
+            catch (Exception exception) 
+            {
+                if (showMsgOnVacuumPumpToggleEx == true)
+                {
+                    showMsgOnVacuumPumpToggleEx = MessageBox.Show("PLC로 Vaccum Pump On/Off값을 쓰는데 실패했습니다. 이 메시지를 다시 표시하지 않으려면 Yes를 클릭하세요. 원인은 다음과 같습니다: " 
+                            + exception.Message, "", MessageBoxButton.YesNo, MessageBoxImage.Error) == MessageBoxResult.Yes ? false: true;
+                }
             }
         }
 
@@ -140,42 +169,86 @@ namespace SapphireXR_App.ViewModels
         [RelayCommand(CanExecute = "CanVacuumPumpResetExecute")]
         private void VacuumPumpReset()
         {
-            if (ValveOperationEx.Show("Vaccum Pump Reset", "Reset 하시겠습니까?") == Enums.ValveOperationExResult.Ok)
+            try
             {
-                PLCService.WriteOutputCmd1(PLCService.OutputCmd1Index.VaccumPumpReset, true);
+                if (ValveOperationEx.Show("Vaccum Pump Reset", "Reset 하시겠습니까?") == Enums.ValveOperationExResult.Ok)
+                {
+                    PLCService.WriteOutputCmd1(PLCService.OutputCmd1Index.VaccumPumpReset, true);
+                }
+            }
+            catch (Exception exception)
+            {
+                if (showMsgOnVacuumPumpResetEx == true)
+                {
+                    showMsgOnVacuumPumpResetEx = MessageBox.Show("PLC로 Vaccum Reset 값을 쓰는데 실패했습니다. 이 메시지를 다시 표시하지 않으려면 Yes를 클릭하세요. 원인은 다음과 같습니다: "
+                            + exception.Message, "", MessageBoxButton.YesNo, MessageBoxImage.Error) == MessageBoxResult.Yes ? false : true;
+                }
             }
         }
 
         [RelayCommand]
         private void ToggleHeaterControlMode()
         {
-            string nextState = InputManualAuto == "Auto" ? "Manual" : "Auto";
-            if (OutputCmd1ToggleConfirmService.Toggle(PLCService.OutputCmd1Index.TempControllerManAuto, "Induction Power Supply Manual/Auto",nextState + " 상태로 바꾸시겠습니까?", InputManualAuto, 
-                "Manual", "Auto") == true)
+            try
             {
-                SynchronizeExpected(InputManualAuto == "Auto" ? 1 : 0, () => (PLCService.ReadInputManAuto(7) == true ? 1 : 0), (int manualAuto) => InputManualAuto = (manualAuto == 0 ? "Auto" : "Manual"),
-                    null, 3000, "장비의 Input Heater Control Mode가 " + nextState + "로 설정되지 않았습니다. 프로그램과 장비 간에 Heater Control Mode 상태 동기화가 되지 않았습니다.");
+                string nextState = InputManualAuto == "Auto" ? "Manual" : "Auto";
+                if (OutputCmd1ToggleConfirmService.Toggle(PLCService.OutputCmd1Index.TempControllerManAuto, "Induction Power Supply Manual/Auto", nextState + " 상태로 바꾸시겠습니까?", InputManualAuto,
+                    "Manual", "Auto") == true)
+                {
+                    SynchronizeExpected(InputManualAuto == "Auto" ? 1 : 0, () => (PLCService.ReadInputManAuto(7) == true ? 1 : 0), (int manualAuto) => InputManualAuto = (manualAuto == 0 ? "Auto" : "Manual"),
+                        null, 3000, "장비의 Input Heater Control Mode가 " + nextState + "로 설정되지 않았습니다. 프로그램과 장비 간에 Heater Control Mode 상태 동기화가 되지 않았습니다.");
+                }
+            }
+            catch(Exception exception)
+            {
+                if (showMsgOnToggleHeaterControlModeEx == true)
+                {
+                    showMsgOnToggleHeaterControlModeEx = MessageBox.Show("PLC로 Heater Control Mode 값을 쓰는데 실패했습니다. 이 메시지를 다시 표시하지 않으려면 Yes를 클릭하세요. 원인은 다음과 같습니다: "
+                                + exception.Message, "", MessageBoxButton.YesNo, MessageBoxImage.Error) == MessageBoxResult.Yes ? false : true;
+                }
             }
         }
 
         [RelayCommand]
         private void InductionHeaterToggle()
         {
-            if(OutputCmd1ToggleConfirmService.OnOff(InductionHeaterOn, PLCService.OutputCmd1Index.InductionHeaterControl, "Induction Power Supply On/Off") == true)
+            try
             {
-                InductionHeaterOn = (InductionHeaterOn == "On" ? "Off" : "On");
+                if (OutputCmd1ToggleConfirmService.OnOff(InductionHeaterOn, PLCService.OutputCmd1Index.InductionHeaterControl, "Induction Power Supply On/Off") == true)
+                {
+                    InductionHeaterOn = (InductionHeaterOn == "On" ? "Off" : "On");
+                }
+            }
+            catch(Exception exception)
+            {
+                if(showMsgOnInductionHeaterToggleEx == true)
+                {
+                    showMsgOnInductionHeaterToggleEx = MessageBox.Show("PLC로 Heater Toggle 값을 쓰는데 실패했습니다. 이 메시지를 다시 표시하지 않으려면 Yes를 클릭하세요. 원인은 다음과 같습니다: "
+                                + exception.Message, "", MessageBoxButton.YesNo, MessageBoxImage.Error) == MessageBoxResult.Yes ? false : true;
+                }
             }
         }
 
         [RelayCommand]
         private void InductionHeaterReset()
         {
-            if (ValveOperationEx.Show("Vaccum Pump Reset", "Reset 하시겠습니까?") == Enums.ValveOperationExResult.Ok)
+            try
             {
-                PLCService.WriteOutputCmd1(PLCService.OutputCmd1Index.InductionHeaterReset, true);
-                //int timeout = 10000;
-                //SynchronizeExpected(0, () => PLCService.ReadDigitalOutputIO2(1) == true ? 1 : 0, null, null, timeout, "Induction Heater Reset 명령이 실패하였거나 본 프로그램의 timout 대기 시간 " +
-                //    timeout + "(MS)을 초과하셨습니다");
+                if (ValveOperationEx.Show("Vaccum Pump Reset", "Reset 하시겠습니까?") == Enums.ValveOperationExResult.Ok)
+                {
+                    PLCService.WriteOutputCmd1(PLCService.OutputCmd1Index.InductionHeaterReset, true);
+                    //int timeout = 10000;
+                    //SynchronizeExpected(0, () => PLCService.ReadDigitalOutputIO2(1) == true ? 1 : 0, null, null, timeout, "Induction Heater Reset 명령이 실패하였거나 본 프로그램의 timout 대기 시간 " +
+                    //    timeout + "(MS)을 초과하셨습니다");
+                }
+            }
+            catch(Exception exception)
+            {
+                if(showMsgOnInductionHeaterResetEx == true)
+                {
+                    showMsgOnInductionHeaterResetEx = MessageBox.Show("PLC로 Heater Reset 값을 쓰는데 실패했습니다. 이 메시지를 다시 표시하지 않으려면 Yes를 클릭하세요. 원인은 다음과 같습니다: "
+                                + exception.Message, "", MessageBoxButton.YesNo, MessageBoxImage.Error) == MessageBoxResult.Yes ? false : true;
+                }
             }
         }
 
@@ -193,21 +266,32 @@ namespace SapphireXR_App.ViewModels
         [RelayCommand]
         private void TogglePressureControlMode()
         {
-            if (ValveOperationEx.Show("Pressure Control Mode 변경", (PressureControlMode == PressureControlModePressure ? PressureControlModePosition : PressureControlModePressure) + "로 변경하시겠습니까?") == Enums.ValveOperationExResult.Ok)
+            try
             {
-                if (PressureControlMode == PressureControlModePressure)
+                if (ValveOperationEx.Show("Pressure Control Mode 변경", (PressureControlMode == PressureControlModePressure ? PressureControlModePosition : PressureControlModePressure) + "로 변경하시겠습니까?") == Enums.ValveOperationExResult.Ok)
                 {
-                    PLCService.WriteOutputCmd1(PLCService.OutputCmd1Index.PressureControlMode, true);
-                    SynchronizeExpected<ushort>(2, PLCService.ReadPressureControlMode, onPressureControlModeUpdated, null, 3000,
-                        "장비의 Pressure Control Mode가 " + PressureControlModePosition + "값으로 설정되지 않았습니다. 프로그램과 장비 간에 Pressure Control Mode 상태 동기화가 되지 않았습니다.");
+                    if (PressureControlMode == PressureControlModePressure)
+                    {
+                        PLCService.WriteOutputCmd1(PLCService.OutputCmd1Index.PressureControlMode, true);
+                        SynchronizeExpected<ushort>(2, PLCService.ReadPressureControlMode, onPressureControlModeUpdated, null, 3000,
+                            "장비의 Pressure Control Mode가 " + PressureControlModePosition + "값으로 설정되지 않았습니다. 프로그램과 장비 간에 Pressure Control Mode 상태 동기화가 되지 않았습니다.");
 
+                    }
+                    else
+                        if (PressureControlMode == PressureControlModePosition)
+                    {
+                        PLCService.WriteOutputCmd1(PLCService.OutputCmd1Index.PressureControlMode, false);
+                        SynchronizeExpected<ushort>(1, PLCService.ReadPressureControlMode, onPressureControlModeUpdated, null, 3000,
+                            "장비의 Pressure Control Mode가 " + PressureControlModePressure + "값으로 설정되지 않았습니다. 프로그램과 장비 간에 Pressure Control Mode 상태 동기화가 되지 않았습니다.");
+                    }
                 }
-                else
-                    if (PressureControlMode == PressureControlModePosition)
+            }
+            catch(Exception exception)
+            {
+                if(showMsgOnTogglePressureControlModeEx == true)
                 {
-                    PLCService.WriteOutputCmd1(PLCService.OutputCmd1Index.PressureControlMode, false);
-                    SynchronizeExpected<ushort>(1, PLCService.ReadPressureControlMode, onPressureControlModeUpdated, null, 3000,
-                        "장비의 Pressure Control Mode가 " + PressureControlModePressure + "값으로 설정되지 않았습니다. 프로그램과 장비 간에 Pressure Control Mode 상태 동기화가 되지 않았습니다.");
+                    showMsgOnTogglePressureControlModeEx = MessageBox.Show("PLC로 Pressure Control Mode 값을 쓰는데 실패했습니다. 이 메시지를 다시 표시하지 않으려면 Yes를 클릭하세요. 원인은 다음과 같습니다: "
+                                + exception.Message, "", MessageBoxButton.YesNo, MessageBoxImage.Error) == MessageBoxResult.Yes ? false : true;
                 }
             }
         }
@@ -223,11 +307,22 @@ namespace SapphireXR_App.ViewModels
                     string? selectedMode = comboBox.SelectedItem as string;
                     if (selectedMode != null)
                     {
-                        ushort cmdOutputMode = ThrottleValveModeStringToCmdOutputMode[selectedMode];
-                        PLCService.WriteThrottleValveMode((short)cmdOutputMode);
-                        SynchronizeExpected(cmdOutputMode, PLCService.ReadThrottleValveMode, (ushort throttleValveMode) => prevThrottleValveControlMode = CurrentThrottleValveControlMode,
-                                (ushort throttleValveMode) => CurrentThrottleValveControlMode = prevThrottleValveControlMode, 3000,
-                                "장비의 Throttle Valve Mode가 " + CurrentThrottleValveControlMode + "값으로 설정되지 않았습니다. 프로그램과 장비 간에 Pressure Control Mode 상태 동기화가 되지 않았습니다.");
+                        try
+                        {
+                            ushort cmdOutputMode = ThrottleValveModeStringToCmdOutputMode[selectedMode];
+                            PLCService.WriteThrottleValveMode((short)cmdOutputMode);
+                            SynchronizeExpected(cmdOutputMode, PLCService.ReadThrottleValveMode, (ushort throttleValveMode) => prevThrottleValveControlMode = CurrentThrottleValveControlMode,
+                                    (ushort throttleValveMode) => CurrentThrottleValveControlMode = prevThrottleValveControlMode, 3000,
+                                    "장비의 Throttle Valve Mode가 " + CurrentThrottleValveControlMode + "값으로 설정되지 않았습니다. 프로그램과 장비 간에 Pressure Control Mode 상태 동기화가 되지 않았습니다.");
+                        }
+                        catch(Exception exception)
+                        {
+                            if(showMsgOnThrottleValveModeChangedCommandEx == true)
+                            {
+                                showMsgOnThrottleValveModeChangedCommandEx = MessageBox.Show("PLC로 Throttle Valve Mode 값을 쓰는데 실패했습니다. 이 메시지를 다시 표시하지 않으려면 Yes를 클릭하세요. 원인은 다음과 같습니다: "
+                                    + exception.Message, "", MessageBoxButton.YesNo, MessageBoxImage.Error) == MessageBoxResult.Yes ? false : true;
+                            }
+                        }
                     }
                 }
             }
@@ -262,7 +357,18 @@ namespace SapphireXR_App.ViewModels
 
         public void loadBatchOnRecipeEnd()
         {
-            manualBatchViewModel.loadBatchOnRecipeEnd();
+            try
+            {
+                manualBatchViewModel.loadBatchOnRecipeEnd();
+            }
+            catch (Exception exception)
+            {
+                if (showMsgOnLoadBatchOnRecipeEnd == true)
+                {
+                    showMsgOnLoadBatchOnRecipeEnd = MessageBox.Show("PLC로 Recipe Batch를 로드하는데 실패했습니다. 이 메시지를 다시 표시하지 않으려면 Yes를 클릭하세요. 원인은 다음과 같습니다: "
+                            + exception.Message, "", MessageBoxButton.YesNo, MessageBoxImage.Error) == MessageBoxResult.Yes ? false : true;
+                }
+            }
         }
 
         public ICommand EnableLeakTestCommand { get; set; }
@@ -353,6 +459,15 @@ namespace SapphireXR_App.ViewModels
         private ThrottleValveStatusSubscriber throttleValveStatusSubscriber;
         private ObservableManager<bool>.DataIssuer leakTestModePublisher;
         private EventLogSubscriber eventLogSubscriber;
+
+        private bool showMsgOnVacuumPumpToggleEx = true;
+        private bool showMsgOnVacuumPumpResetEx = true;
+        private bool showMsgOnToggleHeaterControlModeEx = true;
+        private bool showMsgOnInductionHeaterToggleEx = true;
+        private bool showMsgOnInductionHeaterResetEx = true;
+        private bool showMsgOnTogglePressureControlModeEx = true;
+        private bool showMsgOnThrottleValveModeChangedCommandEx = true;
+        private bool showMsgOnLoadBatchOnRecipeEnd = true;
     }
 }
 

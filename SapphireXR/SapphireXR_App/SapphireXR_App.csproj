@@ -12,6 +12,41 @@
     <None Remove="Resources\Configurations\AppSetting.json" />
     <None Remove="Resources\Configurations\DeviceIO.json" />
     <None Remove="Resources\Configurations\MaxValue.json" />
+    <None Remove="Resources\icons\icon=analog.png" />
+    <None Remove="Resources\icons\icon=app.png" />
+    <None Remove="Resources\icons\icon=control knobs.png" />
+    <None Remove="Resources\icons\icon=controller.png" />
+    <None Remove="Resources\icons\icon=cool.png" />
+    <None Remove="Resources\icons\icon=digital.png" />
+    <None Remove="Resources\icons\icon=etc.png" />
+    <None Remove="Resources\icons\icon=event.png" />
+    <None Remove="Resources\icons\icon=flow_controller.png" />
+    <None Remove="Resources\icons\icon=gear.png" />
+    <None Remove="Resources\icons\icon=gem stone.png" />
+    <None Remove="Resources\icons\icon=graph.png" />
+    <None Remove="Resources\icons\icon=heater.png" />
+    <None Remove="Resources\icons\icon=icon28.png" />
+    <None Remove="Resources\icons\icon=live_plot.png" />
+    <None Remove="Resources\icons\icon=lock_01.png" />
+    <None Remove="Resources\icons\icon=lock_02.png" />
+    <None Remove="Resources\icons\icon=new.png" />
+    <None Remove="Resources\icons\icon=nut and bolt.png" />
+    <None Remove="Resources\icons\icon=open.png" />
+    <None Remove="Resources\icons\icon=pause.png" />
+    <None Remove="Resources\icons\icon=play.png" />
+    <None Remove="Resources\icons\icon=PLC.png" />
+    <None Remove="Resources\icons\icon=pressure.png" />
+    <None Remove="Resources\icons\icon=recipe_information.png" />
+    <None Remove="Resources\icons\icon=refresh.png" />
+    <None Remove="Resources\icons\icon=rotation.png" />
+    <None Remove="Resources\icons\icon=save.png" />
+    <None Remove="Resources\icons\icon=save_as.png" />
+    <None Remove="Resources\icons\icon=stop.png" />
+    <None Remove="Resources\icons\icon=temp.png" />
+    <None Remove="Resources\icons\icon=trash.png" />
+    <None Remove="Resources\icons\icon=user status.png" />
+    <None Remove="Resources\icons\icon=valve.png" />
+    <None Remove="Resources\icons\icon=_user.png" />
     <None Remove="Resources\plus-icon-13071.png" />
     <None Remove="Resources\subtract-icon-png-28153.png" />
   </ItemGroup>
@@ -37,11 +72,116 @@
     <Content Include="Resources\Configurations\MaxValue.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Resource Include="Resources\icons\icon=analog.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\icons\icon=app.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\icons\icon=control knobs.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\icons\icon=controller.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\icons\icon=cool.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\icons\icon=digital.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\icons\icon=etc.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\icons\icon=event.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\icons\icon=flow_controller.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\icons\icon=gear.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\icons\icon=gem stone.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\icons\icon=graph.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\icons\icon=heater.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\icons\icon=icon28.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\icons\icon=live_plot.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\icons\icon=lock_01.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\icons\icon=lock_02.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\icons\icon=new.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\icons\icon=nut and bolt.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\icons\icon=open.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\icons\icon=pause.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\icons\icon=play.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\icons\icon=PLC.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\icons\icon=pressure.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\icons\icon=recipe_information.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\icons\icon=refresh.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\icons\icon=rotation.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\icons\icon=save.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\icons\icon=save_as.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\icons\icon=stop.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\icons\icon=temp.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\icons\icon=trash.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\icons\icon=user status.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\icons\icon=valve.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\icons\icon=_user.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
     <Resource Include="Resources\Images\plus-icon-13071.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
     <Resource Include="Resources\Images\subtract-icon-png-28153.png">
-      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
     <Content Include="Resources\Configurations\IOBatch.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>

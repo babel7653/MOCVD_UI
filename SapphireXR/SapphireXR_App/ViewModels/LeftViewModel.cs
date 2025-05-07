@@ -361,9 +361,9 @@ namespace SapphireXR_App.ViewModels
         private int _lineHeater8;
 
         [ObservableProperty]
-        private string _pLCAddressText = "PLC Address : " + AmsNetId.Local.ToString();
+        private string _pLCAddressText = AmsNetId.Local.ToString();
         [ObservableProperty]
-        private string _pLCConnectionStatus = "PLC Connection: Connected";
+        private string _pLCConnectionStatus = "Connected";
 
         [ObservableProperty]
         private SourceStatusViewModel _currentSourceStatusViewModel;

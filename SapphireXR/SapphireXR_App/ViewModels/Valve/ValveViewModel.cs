@@ -48,10 +48,19 @@ namespace SapphireXR_App.ViewModels
                 {
                     case ValveOperationExResult.Ok:
                         bool isOpen = !(viewModel.IsOpen);
-                        viewModel.IsOpen = isOpen;
                         if (viewModel.ValveID != null)
                         {
-                            PLCService.WriteValveState(viewModel.ValveID, isOpen);
+                            try
+                            {
+                                PLCService.WriteValveState(viewModel.ValveID, isOpen);
+                            }
+                            catch (Exception exception)
+                            {
+                                MessageBox.Show("PLC로 " + viewModel.ValveID + "값을 쓰는데 실패했습니다. 원인은 다음과 같습니다: " + exception.Message);
+                                return;
+                            }
+
+                            viewModel.IsOpen = isOpen;
                             MessageBox.Show(confirmMessage);
                         }
                         break;

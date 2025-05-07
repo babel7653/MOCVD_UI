@@ -1,6 +1,7 @@
 ﻿using SapphireXR_App.Common;
 using SapphireXR_App.Enums;
 using System.Collections;
+using System.Windows;
 using TwinCAT.Ads;
 using TwinCAT.PlcOpen;
 
@@ -28,9 +29,6 @@ namespace SapphireXR_App.Models
 
                 if (Ads.IsConnected == true)
                 {
-                    AddressPLC = $"PLC Address : {Ads.Address}";
-                    ModePLC = "System Mode : Ready";
-
                     //Read Set Value from PLC 
                     hDeviceControlValuePLC = Ads.CreateVariableHandle("GVL_IO.aController_CV");
                     //Read Present Value from Device of PLC
@@ -77,9 +75,6 @@ namespace SapphireXR_App.Models
                 }
                 else
                 {
-                    AddressPLC = "PLC Address : ";
-                    ModePLC = "System Mode : Not Connected";
-
                     throw new Exception(string.Empty);
                 }
             }
@@ -91,137 +86,148 @@ namespace SapphireXR_App.Models
 
         private static void OnTick(object? sender, EventArgs e)
         {
-            ReadCurrentValueFromPLC();
-            if (aDeviceControlValues != null)
+            try
             {
-                foreach (KeyValuePair<string, int> kv in dIndexController)
+                ReadCurrentValueFromPLC();
+                if (aDeviceControlValues != null)
                 {
-                    dControlValueIssuers?[kv.Key].Issue(aDeviceControlValues[dIndexController[kv.Key]]);
+                    foreach (KeyValuePair<string, int> kv in dIndexController)
+                    {
+                        dControlValueIssuers?[kv.Key].Issue(aDeviceControlValues[dIndexController[kv.Key]]);
+                    }
                 }
-            }
-            if (aDeviceCurrentValues != null)
-            {
-                foreach (KeyValuePair<string, int> kv in dIndexController)
+                if (aDeviceCurrentValues != null)
                 {
-                    dCurrentValueIssuers?[kv.Key].Issue(aDeviceCurrentValues[dIndexController[kv.Key]]);
+                    foreach (KeyValuePair<string, int> kv in dIndexController)
+                    {
+                        dCurrentValueIssuers?[kv.Key].Issue(aDeviceCurrentValues[dIndexController[kv.Key]]);
+                    }
                 }
-            }
-            if(aDeviceTargetValues != null)
-            {
-                foreach (KeyValuePair<string, int> kv in dIndexController)
+                if (aDeviceTargetValues != null)
                 {
-                    dTargetValueIssuers?[kv.Key].Issue(aDeviceTargetValues[dIndexController[kv.Key]]);
+                    foreach (KeyValuePair<string, int> kv in dIndexController)
+                    {
+                        dTargetValueIssuers?[kv.Key].Issue(aDeviceTargetValues[dIndexController[kv.Key]]);
+                    }
                 }
-            }
-            if(aDeviceControlValues != null && aDeviceCurrentValues != null)
-            {
-                foreach (KeyValuePair<string, int> kv in dIndexController)
+                if (aDeviceControlValues != null && aDeviceCurrentValues != null)
                 {
-                    dControlCurrentValueIssuers?[kv.Key].Issue((aDeviceCurrentValues[dIndexController[kv.Key]],aDeviceControlValues[dIndexController[kv.Key]]));
+                    foreach (KeyValuePair<string, int> kv in dIndexController)
+                    {
+                        dControlCurrentValueIssuers?[kv.Key].Issue((aDeviceCurrentValues[dIndexController[kv.Key]], aDeviceControlValues[dIndexController[kv.Key]]));
+                    }
                 }
-            }
 
-            if(aMonitoring_PVs != null)
-            {
-                foreach(KeyValuePair<string, int> kv in dMonitoringMeterIndex)
+                if (aMonitoring_PVs != null)
                 {
-                    aMonitoringCurrentValueIssuers?[kv.Key].Issue(aMonitoring_PVs[kv.Value]);
+                    foreach (KeyValuePair<string, int> kv in dMonitoringMeterIndex)
+                    {
+                        aMonitoringCurrentValueIssuers?[kv.Key].Issue(aMonitoring_PVs[kv.Value]);
+                    }
                 }
-            }
 
-            if(aInputState != null)
-            {
-                short value = aInputState[0];
-                baHardWiringInterlockStateIssuers?.Issue(new BitArray(BitConverter.IsLittleEndian == true? BitConverter.GetBytes(value) :BitConverter.GetBytes(value).Reverse().ToArray()));
-                dThrottleValveStatusIssuer?.Issue(aInputState[4]);
-
-                bool[] ioList = new bool[64];
-                for(int inputState = 1; inputState < aInputState.Length; ++inputState)
+                if (aInputState != null)
                 {
-                    new BitArray(BitConverter.IsLittleEndian == true ? BitConverter.GetBytes(aInputState[inputState]) : BitConverter.GetBytes(aInputState[inputState]).Reverse().ToArray()).CopyTo(ioList, (inputState - 1) * sizeof(short) * 8);
-                }
-                dIOStateList?.Issue(new BitArray(ioList));
-            }
+                    short value = aInputState[0];
+                    baHardWiringInterlockStateIssuers?.Issue(new BitArray(BitConverter.IsLittleEndian == true ? BitConverter.GetBytes(value) : BitConverter.GetBytes(value).Reverse().ToArray()));
+                    dThrottleValveStatusIssuer?.Issue(aInputState[4]);
 
-            if(baReadValveStatePLC1 != null)
-            {
-                foreach((string valveID, int index) in ValveIDtoOutputSolValveIdx1)
-                {
-                    dValveStateIssuers?[valveID].Issue(baReadValveStatePLC1[index]);
+                    bool[] ioList = new bool[64];
+                    for (int inputState = 1; inputState < aInputState.Length; ++inputState)
+                    {
+                        new BitArray(BitConverter.IsLittleEndian == true ? BitConverter.GetBytes(aInputState[inputState]) : BitConverter.GetBytes(aInputState[inputState]).Reverse().ToArray()).CopyTo(ioList, (inputState - 1) * sizeof(short) * 8);
+                    }
+                    dIOStateList?.Issue(new BitArray(ioList));
                 }
-            }
-            if (baReadValveStatePLC2 != null)
-            {
-                foreach ((string valveID, int index) in ValveIDtoOutputSolValveIdx2)
-                {
-                    dValveStateIssuers?[valveID].Issue(baReadValveStatePLC2[index]);
-                }
-            }
-            dLineHeaterTemperatureIssuers?.Issue(Ads.ReadAny<float[]>(hTemperaturePV, [(int)LineHeaterTemperature]));
 
-            byte[] digitalOutput = Ads.ReadAny<byte[]>(hDigitalOutput, [4]);
-            dDigitalOutput2?.Issue(new BitArray(new byte[1] { digitalOutput[1] }));
-            dDigitalOutput3?.Issue(new BitArray(new byte[1] { digitalOutput[2] }));
-            short[] outputCmd = Ads.ReadAny<short[]>(hOutputCmd, [3]);
-            dOutputCmd1?.Issue(bOutputCmd1 = new BitArray(BitConverter.IsLittleEndian == true ? BitConverter.GetBytes(outputCmd[0]) : BitConverter.GetBytes(outputCmd[0]).Reverse().ToArray()));
-            dThrottleValveControlMode?.Issue(outputCmd[1]);
-            ushort inputManAuto = Ads.ReadAny<ushort>(hE3508InputManAuto);
-            dInputManAuto?.Issue(new BitArray(BitConverter.IsLittleEndian == true ? BitConverter.GetBytes(inputManAuto) : BitConverter.GetBytes(inputManAuto).Reverse().ToArray()));
-            dPressureControlModeIssuer?.Issue(Ads.ReadAny<ushort>(hOutputSetType));
-            dRecipeControlHoldTimeIssuer?.Issue(Ads.ReadAny<TIME>(hRecipeControlHoldTime).Time.Seconds);
-            dRecipeControlRampTimeIssuer?.Issue(Ads.ReadAny<TIME>(hRecipeControlRampTime).Time.Seconds);
-            dRecipeControlPauseTimeIssuer?.Issue(Ads.ReadAny<TIME>(hRecipeControlPauseTime).Time.Seconds);
-            short iterlock1 = Ads.ReadAny<short>(hInterlock1);
-            dLogicalInterlockStateIssuer?.Issue(new BitArray(BitConverter.IsLittleEndian == true ? BitConverter.GetBytes(iterlock1) : BitConverter.GetBytes(iterlock1).Reverse().ToArray()));
-
-            string exceptionStr = string.Empty;
-            if(aDeviceControlValues == null)
-            {
-                exceptionStr += "aDeviceControlValues is null in OnTick PLCService";
-            }
-            if(aDeviceCurrentValues == null)
-            {
-                if(exceptionStr != string.Empty)
+                if (baReadValveStatePLC1 != null)
                 {
-                    exceptionStr += "\r\n";
+                    foreach ((string valveID, int index) in ValveIDtoOutputSolValveIdx1)
+                    {
+                        dValveStateIssuers?[valveID].Issue(baReadValveStatePLC1[index]);
+                    }
                 }
-                exceptionStr += "aDeviceCurrentValues is null in OnTick PLCService";
-            }
-            if(aDeviceTargetValues == null)
-            {
+                if (baReadValveStatePLC2 != null)
+                {
+                    foreach ((string valveID, int index) in ValveIDtoOutputSolValveIdx2)
+                    {
+                        dValveStateIssuers?[valveID].Issue(baReadValveStatePLC2[index]);
+                    }
+                }
+                dLineHeaterTemperatureIssuers?.Issue(Ads.ReadAny<float[]>(hTemperaturePV, [(int)LineHeaterTemperature]));
+
+                byte[] digitalOutput = Ads.ReadAny<byte[]>(hDigitalOutput, [4]);
+                dDigitalOutput2?.Issue(new BitArray(new byte[1] { digitalOutput[1] }));
+                dDigitalOutput3?.Issue(new BitArray(new byte[1] { digitalOutput[2] }));
+                short[] outputCmd = Ads.ReadAny<short[]>(hOutputCmd, [3]);
+                dOutputCmd1?.Issue(bOutputCmd1 = new BitArray(BitConverter.IsLittleEndian == true ? BitConverter.GetBytes(outputCmd[0]) : BitConverter.GetBytes(outputCmd[0]).Reverse().ToArray()));
+                dThrottleValveControlMode?.Issue(outputCmd[1]);
+                ushort inputManAuto = Ads.ReadAny<ushort>(hE3508InputManAuto);
+                dInputManAuto?.Issue(new BitArray(BitConverter.IsLittleEndian == true ? BitConverter.GetBytes(inputManAuto) : BitConverter.GetBytes(inputManAuto).Reverse().ToArray()));
+                dPressureControlModeIssuer?.Issue(Ads.ReadAny<ushort>(hOutputSetType));
+                dRecipeControlHoldTimeIssuer?.Issue(Ads.ReadAny<TIME>(hRecipeControlHoldTime).Time.Seconds);
+                dRecipeControlRampTimeIssuer?.Issue(Ads.ReadAny<TIME>(hRecipeControlRampTime).Time.Seconds);
+                dRecipeControlPauseTimeIssuer?.Issue(Ads.ReadAny<TIME>(hRecipeControlPauseTime).Time.Seconds);
+                short iterlock1 = Ads.ReadAny<short>(hInterlock1);
+                dLogicalInterlockStateIssuer?.Issue(new BitArray(BitConverter.IsLittleEndian == true ? BitConverter.GetBytes(iterlock1) : BitConverter.GetBytes(iterlock1).Reverse().ToArray()));
+
+                string exceptionStr = string.Empty;
+                if (aDeviceControlValues == null)
+                {
+                    exceptionStr += "aDeviceControlValues is null in OnTick PLCService";
+                }
+                if (aDeviceCurrentValues == null)
+                {
+                    if (exceptionStr != string.Empty)
+                    {
+                        exceptionStr += "\r\n";
+                    }
+                    exceptionStr += "aDeviceCurrentValues is null in OnTick PLCService";
+                }
+                if (aDeviceTargetValues == null)
+                {
+                    if (exceptionStr != string.Empty)
+                    {
+                        exceptionStr += "\r\n";
+                    }
+                    exceptionStr += "aDeviceTargetValues is null in OnTick PLCService";
+                }
+                if (aMonitoring_PVs == null)
+                {
+                    if (exceptionStr != string.Empty)
+                    {
+                        exceptionStr += "\r\n";
+                    }
+                    exceptionStr += "aMonitoring_PVs is null in OnTick PLCService";
+                }
+                if (baReadValveStatePLC1 == null)
+                {
+                    if (exceptionStr != string.Empty)
+                    {
+                        exceptionStr += "\r\n";
+                    }
+                    exceptionStr += "baReadValveStatePLC1 is null in OnTick PLCService";
+                }
+                if (baReadValveStatePLC2 == null)
+                {
+                    if (exceptionStr != string.Empty)
+                    {
+                        exceptionStr += "\r\n";
+                    }
+                    exceptionStr += "baReadValveStatePLC2 is null in OnTick PLCService";
+                }
                 if (exceptionStr != string.Empty)
                 {
-                    exceptionStr += "\r\n";
+                    throw new Exception(exceptionStr);
                 }
-                exceptionStr += "aDeviceTargetValues is null in OnTick PLCService";
             }
-            if(aMonitoring_PVs == null)
+            catch (Exception exception)
             {
-                if (exceptionStr != string.Empty)
+                if(ShowMessageOnOnTick == true)
                 {
-                    exceptionStr += "\r\n";
+                    ShowMessageOnOnTick = MessageBox.Show("PLC로부터 상태 (Analog Device Control/Valve 상태)를 읽어오는데 실패했습니다. 이 메시지를 다시 표시하지 않으려면 Yes를 클릭하세요. 원인은 다음과 같습니다: " + exception.Message, "",
+                        MessageBoxButton.YesNo, MessageBoxImage.Error) == MessageBoxResult.Yes ? false : true;
                 }
-                exceptionStr += "aMonitoring_PVs is null in OnTick PLCService";
-            }
-            if(baReadValveStatePLC1 == null)
-            {
-                if (exceptionStr != string.Empty)
-                {
-                    exceptionStr += "\r\n";
-                }
-                exceptionStr += "baReadValveStatePLC1 is null in OnTick PLCService";
-            }
-            if (baReadValveStatePLC2 == null)
-            {
-                if (exceptionStr != string.Empty)
-                {
-                    exceptionStr += "\r\n";
-                }
-                exceptionStr += "baReadValveStatePLC2 is null in OnTick PLCService";
-            }
-            if (exceptionStr != string.Empty)
-            {
-                throw new Exception(exceptionStr);
             }
         }
 

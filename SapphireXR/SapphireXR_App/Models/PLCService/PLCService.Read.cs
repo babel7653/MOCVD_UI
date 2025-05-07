@@ -12,23 +12,11 @@ namespace SapphireXR_App.Models
     {
         private static void ReadValveStateFromPLC()
         {
-            // Solenoid Valve State Read(Update)
-            try
-            {
-                uint aReadValveStatePLC1 = (uint)Ads.ReadAny(hReadValveStatePLC1, typeof(uint)); // Convert to Array
-                uint aReadValveStatePLC2 = (uint)Ads.ReadAny(hReadValveStatePLC2, typeof(uint)); // Convert to Array
+            uint aReadValveStatePLC1 = (uint)Ads.ReadAny(hReadValveStatePLC1, typeof(uint)); // Convert to Array
+            uint aReadValveStatePLC2 = (uint)Ads.ReadAny(hReadValveStatePLC2, typeof(uint)); // Convert to Array
 
-                baReadValveStatePLC1 = new BitArray([(int)aReadValveStatePLC1]);
-                baReadValveStatePLC2 = new BitArray([(int)aReadValveStatePLC2]);
-            }
-            catch (Exception exception)
-            {
-                if (ShowMessageOnReadValveStateFromPLC == true)
-                {
-                    ShowMessageOnReadValveStateFromPLC = MessageBox.Show("PLC로부터 Valve값을 읽어오는데 실패했습니다. 이 메시지를 다시 표시하지 않으려면 Yes를 클릭하세요. 원인은 다음과 같습니다: " + exception.Message, "",
-                            MessageBoxButton.YesNo, MessageBoxImage.Error) == MessageBoxResult.Yes ? false : true;
-                }
-            }
+            baReadValveStatePLC1 = new BitArray([(int)aReadValveStatePLC1]);
+            baReadValveStatePLC2 = new BitArray([(int)aReadValveStatePLC2]);
         }
 
         private static void ReadInitialStateValueFromPLC()
@@ -138,23 +126,11 @@ namespace SapphireXR_App.Models
 
         private static void ReadCurrentValueFromPLC()
         {
-           
-            try
-            {
-                aDeviceCurrentValues = Ads.ReadAny<float[]>(hDeviceCurrentValuePLC, [NumControllers]);
-                aDeviceControlValues = Ads.ReadAny<float[]>(hDeviceControlValuePLC, [NumControllers]);
-                aDeviceTargetValues = Ads.ReadAny<float[]>(hWriteDeviceTargetValuePLC, [NumControllers]);
-                aMonitoring_PVs = Ads.ReadAny<float[]>(hMonitoring_PV, [18]);
-                aInputState = Ads.ReadAny<short[]>(hInputState, [5]);
-            }
-            catch(Exception exception)
-            {
-                if (ShowMessageOnReadCurrentValueFromPLCException == true)
-                {
-                    ShowMessageOnReadCurrentValueFromPLCException = MessageBox.Show("PLC로부터 Analog Device Control을 읽어오는데 실패했습니다. 이 메시지를 다시 표시하지 않으려면 Yes를 클릭하세요. 원인은 다음과 같습니다: " + exception.Message, "",
-                        MessageBoxButton.YesNo, MessageBoxImage.Error) == MessageBoxResult.Yes ? false : true;
-                }
-            }
+            aDeviceCurrentValues = Ads.ReadAny<float[]>(hDeviceCurrentValuePLC, [NumControllers]);
+            aDeviceControlValues = Ads.ReadAny<float[]>(hDeviceControlValuePLC, [NumControllers]);
+            aDeviceTargetValues = Ads.ReadAny<float[]>(hWriteDeviceTargetValuePLC, [NumControllers]);
+            aMonitoring_PVs = Ads.ReadAny<float[]>(hMonitoring_PV, [18]);
+            aInputState = Ads.ReadAny<short[]>(hInputState, [5]);
             ReadValveStateFromPLC();
         }
 
@@ -168,12 +144,6 @@ namespace SapphireXR_App.Models
             {
                 return float.NaN;
             }
-        }
-
-        public static bool ReadValveState(string valveID)
-        {
-            (BitArray buffer, int index, uint variableHandle) = GetBuffer(valveID);
-            return buffer[index];
         }
 
         public static short ReadRCPOperationState()
@@ -236,8 +206,7 @@ namespace SapphireXR_App.Models
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Max Value 로그 파일 (" + maxValuesFilePath + ")로부터 현재 MaxValue값들을 저장하는데 문제가 생겼습니다. 애플리케이션이 종료됩니다. 원인은 다음과 같습니다: " + ex.ToString());
-                throw;
+                throw new Exception("Max Value 로그 파일 (" + maxValuesFilePath + ")로부터 현재 MaxValue값들을 저장하는데 문제가 생겼습니다. 애플리케이션이 종료됩니다. 원인은 다음과 같습니다: " + ex.ToString());
             }
         }
     }

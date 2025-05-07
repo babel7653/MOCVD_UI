@@ -10,5 +10,10 @@ namespace SapphireXR_App.Views
             InitializeComponent();
             DataContext = App.Current.Services.GetService(typeof(LeftViewModel));
         }
+
+        private void tbShowerHeadTemp_TextChanged(object sender, TextChangedEventArgs e)
+        {
+
+        }
     }
 }

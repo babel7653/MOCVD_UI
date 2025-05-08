@@ -7,6 +7,7 @@ using SapphireXR_App.Models;
 using System.Windows.Input;
 using SapphireXR_App.Common;
 using OxyPlot.Legends;
+using CsvHelper.Configuration.Attributes;
 
 namespace SapphireXR_App.ViewModels
 {
@@ -18,6 +19,10 @@ namespace SapphireXR_App.ViewModels
             {
                 plotModel.Title = title;
                 plotModel.TitleFontSize = plotModel.TitleFontSize / 2;
+                plotModel.TextColor = OxyColors.White;
+                plotModel.PlotAreaBorderColor = OxyColors.White;
+                plotModel.SubtitleColor = OxyColors.White;
+                plotModel.TitleColor = OxyColors.White;
                 plotModel.Axes.Add(initializeXAxis());
 
                 plotModel.Axes.Add(new LinearAxis
@@ -27,6 +32,12 @@ namespace SapphireXR_App.ViewModels
                     IsPanEnabled = true,
                     IsZoomEnabled = true,
                     Minimum = 0,
+                    AxislineColor = OxyColors.White,
+                    MajorGridlineColor = OxyColors.White,
+                    MinorGridlineColor = OxyColors.White,
+                    TicklineColor = OxyColors.White,
+                    ExtraGridlineColor = OxyColors.White,
+                    MinorTicklineColor = OxyColors.White,
                     Maximum = PLCService.ReadMaxValue(title)
                 });
 

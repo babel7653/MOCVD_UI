@@ -751,18 +751,10 @@
             </Canvas>
 
             <Grid DataContext="{Binding DashBoardViewModel}" Grid.Row="1" Background="#3e4a4b">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition />
-                    <ColumnDefinition/>
-                </Grid.ColumnDefinitions>
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="20"/>
                     <RowDefinition/>
                 </Grid.RowDefinitions>
-                <StackPanel Grid.Column="0" Grid.Row="0" Orientation="Horizontal">
-                    <Button Content="LivePlot"/>
-                </StackPanel>
-                <oxy:PlotView Grid.Row="1" Grid.ColumnSpan="2" x:Name="FlowControlLive" Model="{Binding FlowControlLivePlot}">
+                <oxy:PlotView Grid.Row="1" x:Name="FlowControlLive" Model="{Binding FlowControlLivePlot}" Background="{StaticResource Gray_100}" Padding="{StaticResource p_3}">
                     <oxy:PlotView.ContextMenu>
                         <ContextMenu >
                             <MenuItem Header="{Binding ControlValueOption}" Command="{Binding ShowControlValue}"/>

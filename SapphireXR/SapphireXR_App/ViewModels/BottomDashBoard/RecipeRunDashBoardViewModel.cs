@@ -21,6 +21,12 @@ namespace SapphireXR_App.ViewModels.BottomDashBoard
                 {
                     Title = "Time Span (Second)",
                     Position = AxisPosition.Bottom,
+                    AxislineColor = OxyColors.White,
+                    MajorGridlineColor = OxyColors.White,
+                    MinorGridlineColor = OxyColors.White,
+                    TicklineColor = OxyColors.White,
+                    ExtraGridlineColor = OxyColors.White,
+                    MinorTicklineColor = OxyColors.White,
                     IntervalLength = 60
                 };
             }

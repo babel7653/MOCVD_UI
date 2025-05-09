@@ -545,8 +545,8 @@
                 </Grid>
             </StackPanel>
         </Grid>
-        <Image Margin="0,16,252,210" Grid.Row="4" Source="/icon=control_knobs.png" Stretch="Fill" Width="24"/>
-        <Image Margin="12,4,264,148" Grid.Row="5" Source="/icon=lock_01.png" Stretch="Fill" Width="24"/>
+        <Image Margin="0,16,252,210" Grid.Row="4" Source="/Resources/icons/icon=control_knobs.png"  Stretch="Fill" Width="24"/>
+        <Image Margin="12,4,264,148" Grid.Row="5" Source="/Resources/icons/icon=lock_01.png" Stretch="Fill" Width="24"/>
         <Image Margin="12,10,264,224" Grid.Row="6" Source="/Resources/icons/icon=lock_02.png" Stretch="Fill" Width="24" Height="24"/>
         <Image Margin="12,251,264,82" Grid.Row="6" Source="/Resources/icons/icon=temp.png" Stretch="Fill" Width="24" Height="24" Grid.RowSpan="2"/>
         <Line X1="5" Y1="0" X2="295" Y2="0" Stroke="{DynamicResource Gray_300}" StrokeThickness="2" Margin="0,0,0,175" Grid.Row="5"/>

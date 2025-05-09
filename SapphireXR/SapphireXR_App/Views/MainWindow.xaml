@@ -27,16 +27,22 @@
                 <TabControl.Resources>
                     <Style TargetType="TabItem">
                         <Setter Property="Foreground" Value="White"/>
+                        <Setter Property="FontSize" Value="14"/>
                         <Setter Property="Margin" Value="-3,0,3,-1" />
+                        <Setter Property="Width" Value="200" />
+                        <Setter Property="Height" Value="36" />
                         <Setter Property="Template">
                             <Setter.Value>
                                 <ControlTemplate TargetType="TabItem">
-                                        <Border  CornerRadius="8,8,0,0" Name="Panel">
+                                        <Border  Name="Panel">
                                             <ContentPresenter x:Name="ContentSite"
                                             VerticalAlignment="Center"
                                             HorizontalAlignment="Center"
                                             ContentSource="Header"
                                             Margin="10,2"/>
+                                        <Border.CornerRadius>
+                                            <CornerRadius TopLeft="{StaticResource r_2}" TopRight="{StaticResource r_2}"/>
+                                        </Border.CornerRadius>
                                         </Border>
                                     <ControlTemplate.Triggers>
                                         <Trigger Property="IsSelected" Value="True">
@@ -50,24 +56,63 @@
                             </Setter.Value>
                         </Setter>
                     </Style>
+                    <Style TargetType="Rectangle">
+                        <Setter Property="RadiusX" Value="{StaticResource r_1}"/>
+                        <Setter Property="RadiusY" Value="{StaticResource r_1}"/>
+                        <Setter Property="StrokeThickness" Value="1"/>
+                        <Setter Property="Width" Value="20"/>
+                        <Setter Property="Height" Value="20" />
+                        <Setter Property="Stroke" Value="{StaticResource Gray_950}"/>
+                        <Setter Property="Margin" Value="0, 0, 6, 0" />
+                    </Style>
                 </TabControl.Resources>
-                <TabItem Header="System Control" Width="200"  IsEnabled="{Binding RecipeRunInactive}" FontFamily="Segoe UI" FontSize="14">
+                <TabItem IsEnabled="{Binding RecipeRunInactive}" FontFamily="Segoe UI" FontSize="14">
+                    <TabItem.Header>
+                        <StackPanel Orientation="Horizontal">
+                            <Rectangle/>
+                            <TextBlock VerticalAlignment="Center">System Control</TextBlock>
+                        </StackPanel>
+                    </TabItem.Header>
                     <Frame Source="/Views/HomePage.xaml" NavigationUIVisibility="Hidden" BorderThickness="0"/>
                 </TabItem>
 
-                <TabItem Header="Recipe Control" Width="200">
+                <TabItem>
+                    <TabItem.Header>
+                        <StackPanel Orientation="Horizontal">
+                            <Rectangle Fill="#003366" />
+                            <TextBlock VerticalAlignment="Center">Recipe Control</TextBlock>
+                        </StackPanel>
+                    </TabItem.Header>
                     <Frame Source="/Views/RecipeRunPage.xaml" NavigationUIVisibility="Hidden"/>
                 </TabItem>
 
-                <TabItem Header="Recipe Editor" Width="200" IsEnabled="{Binding RecipeRunInactive}">
+                <TabItem IsEnabled="{Binding RecipeRunInactive}">
+                    <TabItem.Header>
+                        <StackPanel Orientation="Horizontal">
+                            <Rectangle Fill="#15182B" />
+                            <TextBlock VerticalAlignment="Center">Recipe Editor</TextBlock>
+                        </StackPanel>
+                    </TabItem.Header>
                     <Frame Source="/Views/RecipeEditPage.xaml" NavigationUIVisibility="Hidden"/>
                 </TabItem>
 
-                <TabItem Header="Report" Width="200">
+                <TabItem>
+                    <TabItem.Header>
+                        <StackPanel Orientation="Horizontal">
+                            <Image Source="/Resources/icons/icon=chart_decreasing.png" Width="20" Height="20" Margin="0, 0, 5, 0"></Image>
+                            <TextBlock VerticalAlignment="Center">Report</TextBlock>
+                        </StackPanel>
+                    </TabItem.Header>
                     <Frame Source="/Views/ReportPage.xaml" NavigationUIVisibility="Hidden"/>
                 </TabItem>
 
-                <TabItem Header="Setting" Width="200">
+                <TabItem>
+                    <TabItem.Header>
+                        <StackPanel Orientation="Horizontal">
+                            <Image Source="/Resources/icons/icon=gear.png" Width="20" Height="20" Margin="0, 0, 5, 0"></Image>
+                            <TextBlock VerticalAlignment="Center">Setting</TextBlock>
+                        </StackPanel>
+                    </TabItem.Header>
                     <Frame Source="/Views/SettingPage.xaml" NavigationUIVisibility="Hidden"/>
                 </TabItem>
             </TabControl>

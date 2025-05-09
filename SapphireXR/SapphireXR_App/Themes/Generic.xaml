@@ -117,9 +117,9 @@
     <Thickness x:Key="p_10">40</Thickness>
     <Thickness x:Key="p_12">48</Thickness>
 
-    <System:Int32 x:Key="r_1">4</System:Int32>
-    <System:Int32 x:Key="r_2">8</System:Int32>
-    <System:Int32 x:Key="r_3">12</System:Int32>
-    <System:Int32 x:Key="r_4">16</System:Int32>
-    <System:Int32 x:Key="r_5">20</System:Int32>
+    <System:Double x:Key="r_1">4</System:Double>
+    <System:Double x:Key="r_2">8</System:Double>
+    <System:Double x:Key="r_3">12</System:Double>
+    <System:Double x:Key="r_4">16</System:Double>
+    <System:Double x:Key="r_5">20</System:Double>
 </ResourceDictionary>

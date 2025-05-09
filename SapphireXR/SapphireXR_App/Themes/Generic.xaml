@@ -103,19 +103,33 @@
     </Setter>
   </Style>
 
-    <Thickness x:Key="p_1">4</Thickness>
-    <Thickness x:Key="p_1_5">6</Thickness>
-    <Thickness x:Key="p_2">8</Thickness>
-    <Thickness x:Key="p_2_5">10</Thickness>
-    <Thickness x:Key="p_3">12</Thickness>
-    <Thickness x:Key="p_4">16</Thickness>
-    <Thickness x:Key="p_5">20</Thickness>
-    <Thickness x:Key="p_6">24</Thickness>
-    <Thickness x:Key="p_7">28</Thickness>
-    <Thickness x:Key="p_8">32</Thickness>
-    <Thickness x:Key="p_9">36</Thickness>
-    <Thickness x:Key="p_10">40</Thickness>
-    <Thickness x:Key="p_12">48</Thickness>
+    <System:Double x:Key="p_1">4</System:Double>
+    <System:Double x:Key="p_1_5">6</System:Double>
+    <System:Double x:Key="p_2">8</System:Double>
+    <System:Double x:Key="p_2_5">10</System:Double>
+    <System:Double x:Key="p_3">12</System:Double>
+    <System:Double x:Key="p_4">16</System:Double>
+    <System:Double x:Key="p_5">20</System:Double>
+    <System:Double x:Key="p_6">24</System:Double>
+    <System:Double x:Key="p_7">28</System:Double>
+    <System:Double x:Key="p_8">32</System:Double>
+    <System:Double x:Key="p_9">36</System:Double>
+    <System:Double x:Key="p_10">40</System:Double>
+    <System:Double x:Key="p_12">48</System:Double>
+
+    <Thickness x:Key="p_1_sqrt">4</Thickness>
+    <Thickness x:Key="p_1_5_sqrt">6</Thickness>
+    <Thickness x:Key="p_2_sqrt">8</Thickness>
+    <Thickness x:Key="p_2_5_sqrt">10</Thickness>
+    <Thickness x:Key="p_3_sqrt">12</Thickness>
+    <Thickness x:Key="p_4_sqrt">16</Thickness>
+    <Thickness x:Key="p_5_sqrt">20</Thickness>
+    <Thickness x:Key="p_6_sqrt">24</Thickness>
+    <Thickness x:Key="p_7_sqrt">28</Thickness>
+    <Thickness x:Key="p_8_sqrt">32</Thickness>
+    <Thickness x:Key="p_9_sqrt">36</Thickness>
+    <Thickness x:Key="p_10_sqrt">40</Thickness>
+    <Thickness x:Key="p_12_sqrt">48</Thickness>
 
     <System:Double x:Key="r_1">4</System:Double>
     <System:Double x:Key="r_2">8</System:Double>

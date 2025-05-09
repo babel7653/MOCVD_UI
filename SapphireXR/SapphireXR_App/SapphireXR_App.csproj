@@ -43,7 +43,6 @@
     <None Remove="Resources\icons\icon=stop.png" />
     <None Remove="Resources\icons\icon=temp.png" />
     <None Remove="Resources\icons\icon=trash.png" />
-    <None Remove="Resources\icons\icon=user status.png" />
     <None Remove="Resources\icons\icon=valve.png" />
     <None Remove="Resources\icons\icon=_user.png" />
     <None Remove="Resources\plus-icon-13071.png" />
@@ -170,7 +169,7 @@
     <Resource Include="Resources\icons\icon=trash.png">
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </Resource>
-    <Resource Include="Resources\icons\icon=user status.png">
+    <Resource Include="Resources\icons\icon=user_status.png">
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </Resource>
     <Resource Include="Resources\icons\icon=valve.png">

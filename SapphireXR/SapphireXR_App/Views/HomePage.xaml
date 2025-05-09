@@ -750,220 +750,265 @@
 
             </Canvas>
 
-            <Grid DataContext="{Binding DashBoardViewModel}" Grid.Row="1" Background="#3e4a4b">
+            <Grid DataContext="{Binding DashBoardViewModel}" Grid.Row="1" Background="{StaticResource Gray_100}">
                 <Grid.RowDefinitions>
                     <RowDefinition/>
                 </Grid.RowDefinitions>
-                <oxy:PlotView Grid.Row="1" x:Name="FlowControlLive" Model="{Binding FlowControlLivePlot}" Background="{StaticResource Gray_100}" Padding="{StaticResource p_3}">
-                    <oxy:PlotView.ContextMenu>
-                        <ContextMenu >
-                            <MenuItem Header="{Binding ControlValueOption}" Command="{Binding ShowControlValue}"/>
-                            <MenuItem Header="{Binding TargetValueOption}" Command="{Binding ShowTargetValue}"/>
-                        </ContextMenu>
-                    </oxy:PlotView.ContextMenu>
-                </oxy:PlotView>
+                <Border BorderThickness="1" BorderBrush="{StaticResource Gray_300}" Margin="{StaticResource p_3_sqrt}">
+                    <oxy:PlotView Grid.Row="1" x:Name="FlowControlLive" Model="{Binding FlowControlLivePlot}" Background="{StaticResource Gray_100}" 
+                                  BorderThickness="1" BorderBrush="{StaticResource Gray_300}">
+                        <oxy:PlotView.ContextMenu>
+                            <ContextMenu >
+                                <MenuItem Header="{Binding ControlValueOption}" Command="{Binding ShowControlValue}"/>
+                                <MenuItem Header="{Binding TargetValueOption}" Command="{Binding ShowTargetValue}"/>
+                            </ContextMenu>
+                        </oxy:PlotView.ContextMenu>
+                    </oxy:PlotView>
+                </Border>
             </Grid>
         </Grid>
-        <Grid Grid.Column="1" Background="{StaticResource DashboardBackground}">
-            <Grid.Resources>
-                <Style TargetType="{x:Type Label}">
-                    <Setter Property="Foreground" Value="{StaticResource PrimaryFontColor}"/>
-                    <Setter Property="FontSize" Value="11"/>
-                    <Setter Property="Height" Value="30"/>
-                    <Setter Property="VerticalAlignment" Value="Bottom"/>
-                </Style>
-                <Style TargetType="{x:Type Button}">
-                    <Setter Property="Width" Value="70"/>
-                    <Setter Property="Height" Value="20"/>
-                    <Setter Property="Margin" Value="4"/>
-                    <Setter Property="FontSize" Value="11"/>
-                </Style>
-                <Style TargetType="{x:Type TextBlock}">
-                    <Setter Property="Foreground" Value="{StaticResource PrimaryFontColor}"/>
-                    <Setter Property="FontSize" Value="11"/>
-                    <Setter Property="HorizontalAlignment" Value="Center"/>
-                </Style>
-                <Style TargetType="{x:Type TextBox}">
-                    <Setter Property="Width" Value="64"/>
-                    <Setter Property="Height" Value="22"/>
-                    <Setter Property="Background" Value="LightGray"/>
-                    <Setter Property="Foreground" Value="DarkBlue"/>
-                    <Setter Property="FontSize" Value="11"/>
-                    <Setter Property="HorizontalAlignment" Value="Center"/>
-                    <Setter Property="VerticalAlignment" Value="Center"/>
-                    <Setter Property="TextAlignment" Value="Right"/>
-                </Style>
-                <Style TargetType="{x:Type ComboBox}">
-                    <Setter Property="Width" Value="90"/>
-                    <Setter Property="Height" Value="20"/>
-                </Style>
-            </Grid.Resources>
-            <Grid.RowDefinitions>
-                <RowDefinition Height="100"/>
-                <RowDefinition Height="180"/>
-                <RowDefinition Height="240"/>
-                <RowDefinition Height="180"/>
-                <RowDefinition/>
-            </Grid.RowDefinitions>
-            <!-- User Status-->
-            <Grid Grid.Row="0">
-                <StackPanel Orientation="Vertical">
-                    <Label Foreground="DeepSkyBlue" FontSize="14" HorizontalContentAlignment="Center">
-                        <Bold>User Status </Bold>
-                    </Label>
-                    <Line X1="5" Y1="0" X2="295" Y2="0" Stroke="DeepSkyBlue" StrokeThickness="2" Margin="2,2,2,8"/>
-                    <Button Content="User State" Width="240" Height="24" Margin="4" Command="{Binding ManualBatchCommand}"/>
-                </StackPanel>
-            </Grid>
-            <!-- Susceptor Temperature Control Current Status -->
-            <Grid Grid.Row="1">
-                <StackPanel Orientation="Vertical">
-                    <Label Foreground="DeepSkyBlue" FontSize="14" HorizontalContentAlignment="Center">
-                        <Bold>Heater Controller</Bold>
-                    </Label>
-                    <Line X1="5" Y1="0" X2="295" Y2="0" Stroke="DeepSkyBlue" StrokeThickness="2"/>
-                    <Grid>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition/>
-                            <ColumnDefinition/>
-                            <ColumnDefinition/>
-                            <ColumnDefinition/>
-                        </Grid.ColumnDefinitions>
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="22"/>
-                            <RowDefinition/>
-                        </Grid.RowDefinitions>
-                        <TextBlock Grid.Column="0" Grid.Row="0" Text="Target Val." Margin="0,6,0,0"/>
-                        <TextBlock Grid.Column="1" Grid.Row="0" Text="Control Val." Margin="0,6,0,0"/>
-                        <TextBlock Grid.Column="2" Grid.Row="0" Text="Current Val." Margin="0,6,0,0" />
-                        <TextBlock Grid.Column="3" Grid.Row="0" Text="Power Rate" Margin="0,6,0,0"/>
-                        <TextBox x:Name="tbTargetTemp"  Grid.Column="0" Grid.Row="1"  Text="{Binding TargetTemp}" IsReadOnly="True"/>
-                        <TextBox x:Name="tbControlTemp"  Grid.Column="1" Grid.Row="1" Text="{Binding ControlTemp}" IsReadOnly="True"/>
-                        <TextBox x:Name="tbCurrentTemp"  Grid.Column="2" Grid.Row="1" Text="{Binding CurrentTemp}" IsReadOnly="True"/>
-                        <TextBox x:Name="tbPowerRateTemp" Grid.Column="3" Grid.Row="1" Text="{Binding PowerRateTemp}" IsReadOnly="True"/>
-                    </Grid>
-                    <StackPanel Orientation="Horizontal" Height="30">
-                        <Label Width="140" VerticalContentAlignment="Bottom" Content="Heater Control Mode"/>
-                        <Button Content="{Binding InputManualAuto, Mode=OneWay}" Command="{Binding ToggleHeaterControlModeCommand}"/>
-                    </StackPanel>
-                    <StackPanel Orientation="Horizontal" Height="30">
-                        <Label Width="140" Content="Induction Power Supply" VerticalContentAlignment="Bottom"/>
-                        <Button x:Name="btHeaterOn" Content="{Binding InductionHeaterOn}" Command="{Binding InductionHeaterToggleCommand}"/>
-                        <Button x:Name="btHeaterReset" Content="Reset" Command="{Binding InductionHeaterResetCommand}"/>
-                    </StackPanel>
-                </StackPanel>
-            </Grid>
-            <!-- Reactor Pressure Control Current Status -->
-            <Grid Grid.Row="2">
-                <StackPanel Orientation="Vertical">
-                    <Label Foreground="DeepSkyBlue" FontSize="14" HorizontalContentAlignment="Center">
-                        <Bold>Pressure Controller</Bold>
-                    </Label>
-                    <Line X1="5" Y1="0" X2="295" Y2="0" Stroke="DeepSkyBlue" StrokeThickness="2"/>
-                    <Grid>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition/>
-                            <ColumnDefinition/>
-                            <ColumnDefinition/>
-                            <ColumnDefinition/>
-                        </Grid.ColumnDefinitions>
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="22"/>
-                            <RowDefinition/>
-                        </Grid.RowDefinitions>
-                        <TextBlock Grid.Column="0" Grid.Row="0" Text="Target Val." Margin="0,6,0,0"/>
-                        <TextBlock Grid.Column="1" Grid.Row="0" Text="Control Val." Margin="0,6,0,0"/>
-                        <TextBlock Grid.Column="2" Grid.Row="0" Text="Current Val." Margin="0,6,0,0"/>
-                        <TextBlock Grid.Column="3" Grid.Row="0" Text="Position" Margin="0,6,0,0"/>
-                        <TextBox x:Name="tbTargetPress"  Grid.Column="0" Grid.Row="1"  Text="{Binding TargetPress}" IsReadOnly="True"/>
-                        <TextBox x:Name="tbControlPress"  Grid.Column="1" Grid.Row="1" Text="{Binding ControlPress}" IsReadOnly="True"/>
-                        <TextBox x:Name="tbCurrentPress"  Grid.Column="2" Grid.Row="1" Text="{Binding CurrentPress}" IsReadOnly="True"/>
-                        <TextBox x:Name="tbPosition" Grid.Column="3" Grid.Row="1" Text="{Binding ValvePosition}" IsReadOnly="True"/>
-                    </Grid>
-                    <StackPanel Orientation="Horizontal" Height="30">
-                        <Label Width="140" VerticalContentAlignment="Bottom" Content="Pressure Control Mode" />
-                        <Button Content="{Binding PressureControlMode}" Command="{Binding TogglePressureControlModeCommand}"/>
-                    </StackPanel>
-                    <StackPanel Orientation="Horizontal" Height="30">
-                        <Label  Width="140" VerticalContentAlignment="Bottom" Content="Throttle Valve Mode" />
-                        <ComboBox ItemsSource="{Binding ThrottleValveControlModes, Mode=OneTime}" SelectedItem="{Binding CurrentThrottleValveControlMode, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
-                            <i:Interaction.Triggers>
-                                <i:EventTrigger EventName="SelectionChanged">
-                                    <i:InvokeCommandAction Command="{Binding OnThrottleValveModeChangedCommand}" PassEventArgsToCommand="True"/>
-                                </i:EventTrigger>
-                            </i:Interaction.Triggers>
-                        </ComboBox>
-                    </StackPanel>
+        <Grid Grid.Column="1" Background="{StaticResource Gray_100}" Width="300">
+            <Border BorderThickness="1" BorderBrush="{StaticResource Gray_300}" Padding="{StaticResource p_3_sqrt}">
+                <Grid>
+                    <Grid.Resources>
+                        <Style TargetType="{x:Type Label}">
+                            <Setter Property="Foreground" Value="{StaticResource PrimaryFontColor}"/>
+                            <Setter Property="FontSize" Value="11"/>
+                            <Setter Property="Height" Value="30"/>
+                            <Setter Property="VerticalAlignment" Value="Bottom"/>
+                        </Style>
+                        <Style TargetType="{x:Type Button}">
+                            <Setter Property="Height" Value="20"/>
+                            <Setter Property="Margin" Value="4"/>
+                            <Setter Property="FontSize" Value="11"/>
+                        </Style>
+                        <Style TargetType="{x:Type TextBlock}">
+                            <Setter Property="Foreground" Value="{StaticResource PrimaryFontColor}"/>
+                            <Setter Property="FontSize" Value="11"/>
+                            <Setter Property="HorizontalAlignment" Value="Center"/>
+                        </Style>
+                        <Style TargetType="{x:Type TextBox}">
+                            <Setter Property="Width" Value="64"/>
+                            <Setter Property="Height" Value="22"/>
+                            <Setter Property="Background" Value="LightGray"/>
+                            <Setter Property="Foreground" Value="DarkBlue"/>
+                            <Setter Property="FontSize" Value="11"/>
+                            <Setter Property="HorizontalAlignment" Value="Center"/>
+                            <Setter Property="VerticalAlignment" Value="Center"/>
+                            <Setter Property="TextAlignment" Value="Right"/>
+                        </Style>
+                        <Style TargetType="{x:Type ComboBox}">
+                            <Setter Property="Width" Value="90"/>
+                            <Setter Property="Height" Value="20"/>
+                        </Style>
+                    </Grid.Resources>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="100"/>
+                        <RowDefinition Height="180"/>
+                        <RowDefinition Height="240"/>
+                        <RowDefinition Height="180"/>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
 
-                    <StackPanel Orientation="Horizontal" Height="30">
-                        <Label Width="140" VerticalContentAlignment="Bottom" Content="Throttle Valve Status" />
-                        <TextBox x:Name="btTrottleStatus" IsReadOnly="True" Text="{Binding ThrottleValveStatus}" Width="121" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Style="{StaticResource InfoTextBoxStyle}" Height="19" />
-                    </StackPanel>
-                    <StackPanel Orientation="Horizontal" Height="30">
-                        <Label Width="140" Content="Vacuum Pump" VerticalContentAlignment="Bottom"/>
-                        <Button x:Name="btPumpOn" Content="{Binding VaccumPumpOn}" Command="{Binding VacuumPumpToggleCommand}"/>
-                        <Button x:Name="btPumpReset" Content="Reset" Command="{Binding VacuumPumpResetCommand}"/>
-                    </StackPanel>
-                </StackPanel>
-            </Grid>
-            <!-- Susceptor Rotation Current Status -->
-            <Grid Grid.Row="3">
-                <StackPanel Orientation="Vertical">
-                    <Label Foreground="DeepSkyBlue" FontSize="14" HorizontalContentAlignment="Center">
-                        <Bold>Rotation Controller</Bold>
-                    </Label>
-                    <Line X1="5" Y1="0" X2="295" Y2="0" Stroke="DeepSkyBlue" StrokeThickness="2"/>
-                    <Grid>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition/>
-                            <ColumnDefinition/>
-                            <ColumnDefinition/>
-                            <ColumnDefinition/>
-                        </Grid.ColumnDefinitions>
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="22"/>
-                            <RowDefinition/>
-                        </Grid.RowDefinitions>
-                        <TextBlock Grid.Column="0" Grid.Row="0" Text="Target Val." Margin="0,6,0,0"/>
-                        <TextBlock Grid.Column="1" Grid.Row="0" Text="Control Val." Margin="0,6,0,0"/>
-                        <TextBlock Grid.Column="2" Grid.Row="0" Text="Current Val." Margin="0,6,0,0"/>
-                        <TextBox x:Name="tbTargetRotation"  Grid.Column="0" Grid.Row="1"  Text="{Binding TargetRotation}" IsReadOnly="True"/>
-                        <TextBox x:Name="tbControlRotation"  Grid.Column="1" Grid.Row="1" Text="{Binding ControlRotation}" IsReadOnly="True"/>
-                        <TextBox x:Name="tbCurrentRotation"  Grid.Column="2" Grid.Row="1" Text="{Binding CurrentRotation}" IsReadOnly="True"/>
+                    <!-- User Status-->
+                    <Grid Grid.Row="0" Height="110">
+                        <Border>
+                            <Border.BorderThickness>
+                                <Thickness Left="{StaticResource p_2}" Right="{StaticResource p_2}" Bottom="{StaticResource p_4}"/>
+                            </Border.BorderThickness>
+                            <StackPanel Orientation="Vertical">
+                                <StackPanel Orientation="Horizontal">
+                                    <StackPanel.Margin>
+                                        <Thickness Left="{StaticResource p_1}"></Thickness>
+                                    </StackPanel.Margin>
+                                    <Image Source="/Resources/icons/icon=user_status.png" Width="24" Height="24"/>
+                                    <Label Foreground="{StaticResource Gray_950}" FontSize="12" HorizontalContentAlignment="Center" FontFamily="Segoe UI">
+                                        <Bold>User Status</Bold>
+                                    </Label>
+                                </StackPanel>
+                                <StackPanel Orientation="Vertical">
+                                    <StackPanel.Margin>
+                                        <Thickness Left="{StaticResource p_5}"/>
+                                    </StackPanel.Margin>
+                                    <TextBlock TextWrapping="WrapWithOverflow" Foreground="{StaticResource Gray_950}" HorizontalAlignment="Stretch" FontFamily="Segoe UI">
+                                        Check the current equipment settings and adjust the values of each device.
+                                    </TextBlock>
+                                    <Button Content="User State" Height="26" Command="{Binding ManualBatchCommand}" HorizontalAlignment="Stretch" FontFamily="Segoe UI" FontSize="10" Foreground="{StaticResource Gray_900}" Background="{StaticResource Gray_300}" BorderThickness="0" >
+                                        <Button.Margin>
+                                            <Thickness Left="0" Right="0" Top="{StaticResource p_1}" Bottom="0"/>
+                                        </Button.Margin>
+                                        <Button.Style>
+                                            <Style TargetType="Button">
+                                                <Setter Property="Template">
+                                                    <Setter.Value>
+                                                        <ControlTemplate TargetType="Button">
+                                                            <Border Background="{TemplateBinding Background}" BorderThickness="0">
+                                                                <Border.CornerRadius>
+                                                                    <CornerRadius TopLeft="{StaticResource p_1}" TopRight="{StaticResource p_1}" BottomLeft="{StaticResource p_1}" BottomRight="{StaticResource p_1}"/>
+                                                                </Border.CornerRadius>
+                                                                <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                                            </Border>
+                                                        </ControlTemplate>
+                                                    </Setter.Value>
+                                                </Setter>
+                                            </Style>
+                                        </Button.Style>
+                                    </Button>
+                                </StackPanel>
+                            </StackPanel>
+                        </Border>
                     </Grid>
-                    <StackPanel Orientation="Horizontal" Height="30">
-                        <Label Width="140" Content="Motor Control" VerticalContentAlignment="Bottom"/>
-                        <Button x:Name="btMotorReset" Content="{Binding RotationReset}" HorizontalAlignment="Left"/>
-                    </StackPanel>
+                    <!-- Susceptor Temperature Control Current Status -->
+                    <Grid Grid.Row="1">
+                        <StackPanel Orientation="Vertical">
+                            <Label Foreground="DeepSkyBlue" FontSize="14" HorizontalContentAlignment="Center">
+                                <Bold>Heater Controller</Bold>
+                            </Label>
+                            <Line X1="5" Y1="0" X2="295" Y2="0" Stroke="DeepSkyBlue" StrokeThickness="2"/>
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition/>
+                                    <ColumnDefinition/>
+                                    <ColumnDefinition/>
+                                    <ColumnDefinition/>
+                                </Grid.ColumnDefinitions>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="22"/>
+                                    <RowDefinition/>
+                                </Grid.RowDefinitions>
+                                <TextBlock Grid.Column="0" Grid.Row="0" Text="Target Val." Margin="0,6,0,0"/>
+                                <TextBlock Grid.Column="1" Grid.Row="0" Text="Control Val." Margin="0,6,0,0"/>
+                                <TextBlock Grid.Column="2" Grid.Row="0" Text="Current Val." Margin="0,6,0,0" />
+                                <TextBlock Grid.Column="3" Grid.Row="0" Text="Power Rate" Margin="0,6,0,0"/>
+                                <TextBox x:Name="tbTargetTemp"  Grid.Column="0" Grid.Row="1"  Text="{Binding TargetTemp}" IsReadOnly="True"/>
+                                <TextBox x:Name="tbControlTemp"  Grid.Column="1" Grid.Row="1" Text="{Binding ControlTemp}" IsReadOnly="True"/>
+                                <TextBox x:Name="tbCurrentTemp"  Grid.Column="2" Grid.Row="1" Text="{Binding CurrentTemp}" IsReadOnly="True"/>
+                                <TextBox x:Name="tbPowerRateTemp" Grid.Column="3" Grid.Row="1" Text="{Binding PowerRateTemp}" IsReadOnly="True"/>
+                            </Grid>
+                            <StackPanel Orientation="Horizontal" Height="30">
+                                <Label Width="140" VerticalContentAlignment="Bottom" Content="Heater Control Mode"/>
+                                <Button Content="{Binding InputManualAuto, Mode=OneWay}" Command="{Binding ToggleHeaterControlModeCommand}"/>
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal" Height="30">
+                                <Label Width="140" Content="Induction Power Supply" VerticalContentAlignment="Bottom"/>
+                                <Button x:Name="btHeaterOn" Content="{Binding InductionHeaterOn}" Command="{Binding InductionHeaterToggleCommand}"/>
+                                <Button x:Name="btHeaterReset" Content="Reset" Command="{Binding InductionHeaterResetCommand}"/>
+                            </StackPanel>
+                        </StackPanel>
+                    </Grid>
+                    <!-- Reactor Pressure Control Current Status -->
+                    <Grid Grid.Row="2">
+                        <StackPanel Orientation="Vertical">
+                            <Label Foreground="DeepSkyBlue" FontSize="14" HorizontalContentAlignment="Center">
+                                <Bold>Pressure Controller</Bold>
+                            </Label>
+                            <Line X1="5" Y1="0" X2="295" Y2="0" Stroke="DeepSkyBlue" StrokeThickness="2"/>
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition/>
+                                    <ColumnDefinition/>
+                                    <ColumnDefinition/>
+                                    <ColumnDefinition/>
+                                </Grid.ColumnDefinitions>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="22"/>
+                                    <RowDefinition/>
+                                </Grid.RowDefinitions>
+                                <TextBlock Grid.Column="0" Grid.Row="0" Text="Target Val." Margin="0,6,0,0"/>
+                                <TextBlock Grid.Column="1" Grid.Row="0" Text="Control Val." Margin="0,6,0,0"/>
+                                <TextBlock Grid.Column="2" Grid.Row="0" Text="Current Val." Margin="0,6,0,0"/>
+                                <TextBlock Grid.Column="3" Grid.Row="0" Text="Position" Margin="0,6,0,0"/>
+                                <TextBox x:Name="tbTargetPress"  Grid.Column="0" Grid.Row="1"  Text="{Binding TargetPress}" IsReadOnly="True"/>
+                                <TextBox x:Name="tbControlPress"  Grid.Column="1" Grid.Row="1" Text="{Binding ControlPress}" IsReadOnly="True"/>
+                                <TextBox x:Name="tbCurrentPress"  Grid.Column="2" Grid.Row="1" Text="{Binding CurrentPress}" IsReadOnly="True"/>
+                                <TextBox x:Name="tbPosition" Grid.Column="3" Grid.Row="1" Text="{Binding ValvePosition}" IsReadOnly="True"/>
+                            </Grid>
+                            <StackPanel Orientation="Horizontal" Height="30">
+                                <Label Width="140" VerticalContentAlignment="Bottom" Content="Pressure Control Mode" />
+                                <Button Content="{Binding PressureControlMode}" Command="{Binding TogglePressureControlModeCommand}"/>
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal" Height="30">
+                                <Label  Width="140" VerticalContentAlignment="Bottom" Content="Throttle Valve Mode" />
+                                <ComboBox ItemsSource="{Binding ThrottleValveControlModes, Mode=OneTime}" SelectedItem="{Binding CurrentThrottleValveControlMode, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                                    <i:Interaction.Triggers>
+                                        <i:EventTrigger EventName="SelectionChanged">
+                                            <i:InvokeCommandAction Command="{Binding OnThrottleValveModeChangedCommand}" PassEventArgsToCommand="True"/>
+                                        </i:EventTrigger>
+                                    </i:Interaction.Triggers>
+                                </ComboBox>
+                            </StackPanel>
 
-                </StackPanel>
-            </Grid>
-            <!-- Event Log -->
-            <Grid Grid.Row="4" >
-                <StackPanel Orientation="Vertical">
-                    <StackPanel Orientation="Horizontal">
-                        <Label Foreground="DeepSkyBlue" FontSize="14" HorizontalContentAlignment="Center" Margin="100,0,0,0">
-                            <Bold>Event Log</Bold>
-                        </Label>
-                        <Button Height="20" Width="80" Content="Clear" Command="{Binding ClearEventLogsCommand}"/>
-                    </StackPanel>
-                    <Line X1="5" Y1="0" X2="295" Y2="0" Stroke="DeepSkyBlue" StrokeThickness="2" Margin="2,2,2,8"/>
-                    <DataGrid x:Name="dgEventLog" ItemsSource="{Binding EventLogs}">
-                        <DataGrid.ColumnHeaderStyle>
-                            <Style TargetType="DataGridColumnHeader">
-                                <Setter Property="HorizontalContentAlignment" Value="Center" />
-                            </Style>
-                        </DataGrid.ColumnHeaderStyle>
-                        <DataGrid.Resources>
-                            <Style TargetType="DataGridCell">
-                                <Style.Setters>
-                                    <Setter Property="TextBlock.TextAlignment" Value="Center" />
-                                </Style.Setters>
-                            </Style>
-                        </DataGrid.Resources>
-                    </DataGrid>
-                </StackPanel>
-            </Grid>
+                            <StackPanel Orientation="Horizontal" Height="30">
+                                <Label Width="140" VerticalContentAlignment="Bottom" Content="Throttle Valve Status" />
+                                <TextBox x:Name="btTrottleStatus" IsReadOnly="True" Text="{Binding ThrottleValveStatus}" Width="121" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Style="{StaticResource InfoTextBoxStyle}" Height="19" />
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal" Height="30">
+                                <Label Width="140" Content="Vacuum Pump" VerticalContentAlignment="Bottom"/>
+                                <Button x:Name="btPumpOn" Content="{Binding VaccumPumpOn}" Command="{Binding VacuumPumpToggleCommand}"/>
+                                <Button x:Name="btPumpReset" Content="Reset" Command="{Binding VacuumPumpResetCommand}"/>
+                            </StackPanel>
+                        </StackPanel>
+                    </Grid>
+                    <!-- Susceptor Rotation Current Status -->
+                    <Grid Grid.Row="3">
+                        <StackPanel Orientation="Vertical">
+                            <Label Foreground="DeepSkyBlue" FontSize="14" HorizontalContentAlignment="Center">
+                                <Bold>Rotation Controller</Bold>
+                            </Label>
+                            <Line X1="5" Y1="0" X2="295" Y2="0" Stroke="DeepSkyBlue" StrokeThickness="2"/>
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition/>
+                                    <ColumnDefinition/>
+                                    <ColumnDefinition/>
+                                    <ColumnDefinition/>
+                                </Grid.ColumnDefinitions>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="22"/>
+                                    <RowDefinition/>
+                                </Grid.RowDefinitions>
+                                <TextBlock Grid.Column="0" Grid.Row="0" Text="Target Val." Margin="0,6,0,0"/>
+                                <TextBlock Grid.Column="1" Grid.Row="0" Text="Control Val." Margin="0,6,0,0"/>
+                                <TextBlock Grid.Column="2" Grid.Row="0" Text="Current Val." Margin="0,6,0,0"/>
+                                <TextBox x:Name="tbTargetRotation"  Grid.Column="0" Grid.Row="1"  Text="{Binding TargetRotation}" IsReadOnly="True"/>
+                                <TextBox x:Name="tbControlRotation"  Grid.Column="1" Grid.Row="1" Text="{Binding ControlRotation}" IsReadOnly="True"/>
+                                <TextBox x:Name="tbCurrentRotation"  Grid.Column="2" Grid.Row="1" Text="{Binding CurrentRotation}" IsReadOnly="True"/>
+                            </Grid>
+                            <StackPanel Orientation="Horizontal" Height="30">
+                                <Label Width="140" Content="Motor Control" VerticalContentAlignment="Bottom"/>
+                                <Button x:Name="btMotorReset" Content="{Binding RotationReset}" HorizontalAlignment="Left"/>
+                            </StackPanel>
+
+                        </StackPanel>
+                    </Grid>
+                    <!-- Event Log -->
+                    <Grid Grid.Row="4" >
+                        <StackPanel Orientation="Vertical">
+                            <StackPanel Orientation="Horizontal">
+                                <Label Foreground="DeepSkyBlue" FontSize="14" HorizontalContentAlignment="Center" Margin="100,0,0,0">
+                                    <Bold>Event Log</Bold>
+                                </Label>
+                                <Button Height="20" Width="80" Content="Clear" Command="{Binding ClearEventLogsCommand}"/>
+                            </StackPanel>
+                            <Line X1="5" Y1="0" X2="295" Y2="0" Stroke="DeepSkyBlue" StrokeThickness="2" Margin="2,2,2,8"/>
+                            <DataGrid x:Name="dgEventLog" ItemsSource="{Binding EventLogs}">
+                                <DataGrid.ColumnHeaderStyle>
+                                    <Style TargetType="DataGridColumnHeader">
+                                        <Setter Property="HorizontalContentAlignment" Value="Center" />
+                                    </Style>
+                                </DataGrid.ColumnHeaderStyle>
+                                <DataGrid.Resources>
+                                    <Style TargetType="DataGridCell">
+                                        <Style.Setters>
+                                            <Setter Property="TextBlock.TextAlignment" Value="Center" />
+                                        </Style.Setters>
+                                    </Style>
+                                </DataGrid.Resources>
+                            </DataGrid>
+                        </StackPanel>
+                    </Grid>
+                </Grid>
+            </Border>
         </Grid>
     </Grid>
 </Page>

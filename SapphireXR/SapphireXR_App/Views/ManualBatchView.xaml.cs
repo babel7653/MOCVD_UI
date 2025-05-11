@@ -45,5 +45,10 @@ namespace SapphireXR_App.Views
                 textBox.Text = "0";
             }
         }
+
+        private void dgUserSettingD_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+
+        }
     }
 }

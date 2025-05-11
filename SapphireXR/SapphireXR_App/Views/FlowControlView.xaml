@@ -36,16 +36,16 @@
         </ResourceDictionary>
     </Window.Resources>
 
-    <Border CornerRadius="5" Background="White">
+    <Border CornerRadius="5" Background="{DynamicResource Gray_100}">
         <Grid Background="Transparent">
             <Grid.RowDefinitions>
                 <RowDefinition Height="40"/>
                 <RowDefinition/>
             </Grid.RowDefinitions>
             <!-- 머리말 -->
-            <Border CornerRadius="5 5 0 0" Background="RoyalBlue">
+            <Border CornerRadius="5 5 0 0" Background="{DynamicResource Gray_100}">
                 <Label Grid.Row="0"             
-               Content="{Binding Title}" />
+               Content="{Binding Title}" FontFamily="Segoe UI" FontWeight="Bold" FontSize="12" Foreground="{DynamicResource Gray_950}" />
             </Border>
             <!-- 내용 -->
             <Grid Grid.Row="1" Margin="10">
@@ -54,8 +54,8 @@
                     <RowDefinition />
                     <RowDefinition Height="40"/>
                 </Grid.RowDefinitions>
-                <TextBlock Grid.Row="0" Height="40"  Text="{Binding Message}" Margin="5 5"/>
-                <Grid Grid.Row="1">
+                <TextBlock Grid.Row="0" Height="40"  Text="{Binding Message}" Margin="5 5" Foreground="{DynamicResource Gray_950}" FontFamily="Segoe UI" FontSize="14" HorizontalAlignment="Left"/>
+                <Grid Grid.Row="1" Margin="0,0,0,20">
                     <Grid.RowDefinitions>
                         <RowDefinition/>
                         <RowDefinition/>
@@ -67,32 +67,32 @@
                         <ColumnDefinition/>
                         <ColumnDefinition/>
                     </Grid.ColumnDefinitions>
-                    <Label Grid.Row="0" Grid.Column="0">Target Value</Label>
+                    <Label Grid.Row="0" Grid.Column="0" HorizontalAlignment="Right"  FontFamily="Segoe UI" Foreground="{DynamicResource Gray_900}" FontSize="10" >Target Value</Label>
                     <local:NumberBoxWithMax Grid.Row="0" Grid.Column="1" x:Name="txtInput" Margin="5" Text="{Binding TargetValue}" MaxValue="{Binding MaxValue}"/>
 
-                    <Label Grid.Row="1" Grid.Column="0">Ramp Time(s)</Label>
+                    <Label Grid.Row="1" Grid.Column="0" HorizontalAlignment="Right" FontFamily="Segoe UI" Foreground="{DynamicResource Gray_900}" FontSize="10" >Ramp Time(s)</Label>
                     <local:NumberBox Grid.Row="1" Grid.Column="1" x:Name="txtInput1" Margin="5" Text="{Binding RampTime}"/>
 
-                    <Label Grid.Row="2" Grid.Column="0">Deviation</Label>
-                    <Border Grid.Row="2" Grid.Column="1" Background="LightGray" Margin="5" CornerRadius="2">
+                    <Label Grid.Row="2" Grid.Column="0" HorizontalAlignment="Right" FontFamily="Segoe UI" Foreground="{DynamicResource Gray_900}" FontSize="10" >Deviation</Label>
+                    <Border Grid.Row="2" Grid.Column="1" Background="LightGray" Margin="5" CornerRadius="4">
                         <Label  x:Name="txtFlowDeviaion" Content="{Binding Deviation}"/>
                     </Border>
 
-                    <Label Grid.Row="0" Grid.Column="2">Current Value</Label>
-                    <Border Grid.Row="0" Grid.Column="3" Background="LightGray" Margin="5" CornerRadius="2">
+                    <Label Grid.Row="0" Grid.Column="2" HorizontalAlignment="Right" FontFamily="Segoe UI" Foreground="{DynamicResource Gray_900}" FontSize="10" >Current Value</Label>
+                    <Border Grid.Row="0" Grid.Column="3" Background="LightGray" Margin="5" CornerRadius="4">
                         <Label  x:Name="txtFlowCurrentValue" Content="{Binding CurrentValue}"/>
                     </Border>
-                    
-                    <Label Grid.Row="1" Grid.Column="2">Control Value</Label>
-                    <Border Grid.Row="1" Grid.Column="3" Background="LightGray" Margin="5" CornerRadius="2">
+
+                    <Label Grid.Row="1" Grid.Column="2" HorizontalAlignment="Right" FontFamily="Segoe UI" Foreground="{DynamicResource Gray_900}" FontSize="10" >Control Value</Label>
+                    <Border Grid.Row="1" Grid.Column="3" Background="LightGray" Margin="5" CornerRadius="4">
                         <Label  x:Name="txtFlowControlValue" Content="{Binding ControlValue}"/>
                     </Border>
 
-                    <Label Grid.Row="2" Grid.Column="2">Max. Value</Label>
-                    <Border Grid.Row="2" Grid.Column="3" Background="LightGray" Margin="5" CornerRadius="2">
+                    <Label Grid.Row="2" Grid.Column="2" HorizontalAlignment="Right" FontFamily="Segoe UI" Foreground="{DynamicResource Gray_900}" FontSize="10" >Max. Value</Label>
+                    <Border Grid.Row="2" Grid.Column="3" Background="LightGray" Margin="5" CornerRadius="4">
                         <Label  x:Name="txtFlowMaxValue" Content="{Binding MaxValue}"/>
                     </Border>
-                    
+
                 </Grid>
                 <Grid Grid.Row="2">
                     <Grid.ColumnDefinitions>
@@ -101,21 +101,21 @@
                     </Grid.ColumnDefinitions>
                     <Button Grid.Row="2" Grid.Column="0"
                         Content="확인"
-                        FontSize="15"
+                        FontSize="12"
                         Margin="5"
                         IsDefault="True"
                         IsEnabled="{Binding IsConfirmButtonEnabled, ElementName=FlowControlDialog}"
                         Style="{StaticResource MetroBlueButtonStyle}"
                         Command="{Binding ConfirmCommand}"
-                        CommandParameter="{Binding ElementName=FlowControlDialog}"/>
+                        CommandParameter="{Binding ElementName=FlowControlDialog}" Background="{DynamicResource Sapphire_Blue}" FontFamily="Segoe UI" Foreground="{DynamicResource Gray_50}"/>
                     <Button Grid.Row="2" Grid.Column="1" 
                         Content="닫기"
-                        FontSize="15"
+                        FontSize="12"
                         Margin="5" 
                         IsCancel="True" 
                         Style="{StaticResource MetroOrangeButtonStyle}"
                         Command="{Binding CloseCommand}"
-                        CommandParameter="{Binding ElementName=FlowControlDialog}"/>
+                        CommandParameter="{Binding ElementName=FlowControlDialog}" Background="{DynamicResource Gray_300}" FontFamily="Segoe UI" Foreground="{DynamicResource Gray_900}"/>
                 </Grid>
             </Grid>
         </Grid>

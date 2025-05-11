@@ -17,7 +17,11 @@
         </Style>
     </Window.Resources>
     <Grid>
-        <StackPanel>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+            <ColumnDefinition Width="79*"/>
+        </Grid.ColumnDefinitions>
+        <StackPanel Grid.ColumnSpan="2" Background="{DynamicResource Gray_100}">
             <StackPanel.Resources>
                 <Style x:Key="gridColumnTextBox" TargetType="TextBox">
                     <Style.Setters>
@@ -28,32 +32,32 @@
             <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="25" />
-                    <ColumnDefinition Width="25" />
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="Auto" />
                     <ColumnDefinition Width="90"/>
                     <ColumnDefinition Width="90" />
                 </Grid.ColumnDefinitions>
                 <ComboBox Grid.Column="0" ItemsSource="{Binding Batches, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" DisplayMemberPath="Name" 
-                          SelectedItem="{Binding CurrentBatch, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Margin="5,5,5,5"/>
-                <Button Grid.Column="1" Width="20" Background="Transparent" BorderBrush="Transparent" Command="{Binding AddCommand}">
+                          SelectedItem="{Binding CurrentBatch, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Margin="4,4,4,4" FontFamily="Segoe UI" Foreground="{DynamicResource Gray_900}" Background="{DynamicResource Gray_300}" BorderThickness="0,0,0,0"/>
+                <Button Grid.Column="1" Width="28" Background="{DynamicResource Gray_300}" BorderBrush="Transparent" Command="{Binding AddCommand}" Height="29.96" Margin="4,0,4,0">
                     <Image Source="/Resources/Images/plus-icon-13071.png" />
                 </Button>
-                <Button Grid.Column="2" Width="20" Background="Transparent" BorderBrush="Transparent" Command="{Binding MinusCommand}">
+                <Button Grid.Column="2" Width="28" Background="{DynamicResource Gray_300}" BorderBrush="Transparent" Command="{Binding MinusCommand}" Height="29.96" Margin="4,0,4,0">
                     <Image Source="/Resources/Images/subtract-icon-png-28153.png" />
                 </Button>
-                <Button x:Name="UserSqtateBatch" Grid.Column="3" Content="Batch" Width="70" Margin="5" Command="{Binding LoadToPLCCommand}" />
-                <Button x:Name="UserStateSave" Grid.Column="4" Content="Save" Width="70" Margin="5" Command="{Binding SaveCommand}" />
+                <Button x:Name="UserSqtateBatch" Grid.Column="3" Content="Batch" Width="70" Margin="4,4,5,4" Command="{Binding LoadToPLCCommand}" Background="{DynamicResource Gray_300}" BorderThickness="0,0,0,0" Foreground="{DynamicResource Gray_900}" FontFamily="Segoe UI" />
+                <Button x:Name="UserStateSave" Grid.Column="4" Content="Save" Width="70" Command="{Binding SaveCommand}" BorderThickness="0,0,0,0" Foreground="{DynamicResource Gray_50}" FontFamily="Segoe UI" Background="{DynamicResource Sapphire_Blue}" Margin="4,4,4,4" />
             </Grid>
-            <StackPanel Orientation="Horizontal" Margin="5,0,0,5">
-                <TextBlock Text="Alarm State" VerticalAlignment="Center" />
+            <StackPanel Orientation="Horizontal" Margin="5,0,0,5" VerticalAlignment="Bottom">
+                <TextBlock Text="Alarm State" VerticalAlignment="Center" FontFamily="Segoe UI" FontSize="10" Foreground="{DynamicResource Gray_900}" />
                 <ComboBox ItemsSource="{Binding Batches}" SelectedItem="{Binding BatchOnAlarmState}" Margin="5,0,0,0" DisplayMemberPath="Name" Width="100" VerticalAlignment="Center"/>
-                <TextBlock Text="Recipe End" VerticalAlignment="Center" Margin="10,0,0,0" />
+                <TextBlock Text="Recipe End" VerticalAlignment="Center" Margin="10,0,0,0" Foreground="{DynamicResource Gray_900}" FontFamily="Segoe UI" FontSize="10" />
                 <ComboBox ItemsSource="{Binding Batches}" SelectedItem="{Binding BatchOnRecipeEnd}" Margin="5,0,0,0"  DisplayMemberPath="Name" Width="100" VerticalAlignment="Center"/>
             </StackPanel>
             <StackPanel Orientation="Horizontal" Margin="0,0,0,5">
-                <Label Content="Name" />
+                <Label Content="Name" Foreground="{DynamicResource Gray_900}" FontFamily="Segoe UI" FontSize="10" />
                 <TextBox Width="100" Text="{Binding CurrentBatch.Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" IsEnabled="{Binding NameEnabled}"/>
-                <Label Content="Ramping Time(s)" Margin="5,0,0,0"/>
+                <Label Content="Ramping Time(s)" Margin="5,0,0,0" Foreground="{DynamicResource Gray_900}" FontFamily="Segoe UI" FontSize="10"/>
                 <local:NumberBox Width="100" Text="{Binding CurrentBatch.RampingTime, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" IsEnabled="{Binding RampingTimeEnabled}" LostFocus="NumberBox_LostFocus"/>
             </StackPanel>
             <Grid Height="Auto">
@@ -63,19 +67,19 @@
                     <RowDefinition Height="50*"/>
                 </Grid.RowDefinitions>
                 <StackPanel Grid.Row="0">
-                    <DataGrid x:Name="dgUserSettingA" AutoGenerateColumns="False" Margin="5,0,5,0" Height="320" VerticalScrollBarVisibility="Auto" ItemsSource="{Binding CurrentBatch.AnalogIOUserStates}" CanUserAddRows="False" CellEditEnding="dgUserSettingA_CellEditEnding">
+                    <DataGrid x:Name="dgUserSettingA" AutoGenerateColumns="False" Margin="5,0,5,0" Height="320" VerticalScrollBarVisibility="Auto" ItemsSource="{Binding CurrentBatch.AnalogIOUserStates}" CanUserAddRows="False" CellEditEnding="dgUserSettingA_CellEditEnding" Background="{DynamicResource Gray_50}">
                         <DataGrid.Resources>
                             <Style TargetType="{x:Type DataGridColumnHeader}">
                                 <Setter Property="HorizontalAlignment" Value="Center"/>
                                 <Setter Property="Background" Value="Transparent"/>
                             </Style>
                             <Style TargetType="{x:Type DataGrid}">
-                                <Setter Property="BorderBrush" Value="Black"/>
+                                <Setter Property="BorderBrush" Value="{DynamicResource Gray_300}"/>
                                 <Setter Property="BorderThickness" Value="1"/>
                             </Style>
                         </DataGrid.Resources>
                         <DataGrid.Columns>
-                            <DataGridTextColumn Header="Device Id" CanUserSort="False" CanUserResize="False" Width="60" Binding="{Binding Path=ID, Mode=OneWay,UpdateSourceTrigger=PropertyChanged}" IsReadOnly="True"/>
+                            <DataGridTextColumn Header="Device Id" CanUserSort="False" CanUserResize="False" Width="60" Binding="{Binding Path=ID, Mode=OneWay,UpdateSourceTrigger=PropertyChanged}" IsReadOnly="True" />
                             <DataGridTextColumn Header="Device Name" CanUserSort="False" CanUserResize="False" Width="*" Binding="{Binding Path=Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
                             <DataGridTextColumn Header="Value" CanUserSort="False" CanUserResize="False" Width="100" Binding="{Binding Path=Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" EditingElementStyle="{StaticResource gridColumnTextBox}" />
                             <DataGridTextColumn Header="Max Value" CanUserSort="False" CanUserResize="False" Width="100" Binding="{Binding Path=MaxValue, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" IsReadOnly="True"/>
@@ -86,14 +90,14 @@
                 </StackPanel>
                 <StackPanel Grid.Row="2">
                     <DataGrid x:Name="dgUserSettingD" AutoGenerateColumns="False" Margin="5,0,5,0" Height="320"
-                       VerticalScrollBarVisibility="Auto" ItemsSource="{Binding CurrentBatch.DigitalIOUserStates}" CanUserAddRows="False">
+                       VerticalScrollBarVisibility="Auto" ItemsSource="{Binding CurrentBatch.DigitalIOUserStates}" CanUserAddRows="False"  Background="{DynamicResource Gray_50}">
                         <DataGrid.Resources>
                             <Style TargetType="{x:Type DataGridColumnHeader}">
                                 <Setter Property="HorizontalAlignment" Value="Center"/>
                                 <Setter Property="Background" Value="Transparent"/>
                             </Style>
                             <Style TargetType="{x:Type DataGrid}">
-                                <Setter Property="BorderBrush" Value="Black"/>
+                                <Setter Property="BorderBrush" Value="{DynamicResource Gray_300}"/>
                                 <Setter Property="BorderThickness" Value="1"/>
                             </Style>
                         </DataGrid.Resources>

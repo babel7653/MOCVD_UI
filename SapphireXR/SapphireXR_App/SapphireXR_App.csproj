@@ -50,6 +50,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="AnimatedImage.Wpf" Version="2.0.0" />
     <PackageReference Include="Beckhoff.TwinCAT.Ads" Version="6.1.294" />
     <PackageReference Include="Caliburn.Micro.Core" Version="4.0.230" />
     <PackageReference Include="CommunityToolkit.Mvvm" Version="8.3.2" />
@@ -180,6 +181,9 @@
     </Resource>
     <Resource Include="Resources\Images\plus-icon-13071.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\Images\Rotating_earth_large.gif">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </Resource>
     <Resource Include="Resources\Images\subtract-icon-png-28153.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>

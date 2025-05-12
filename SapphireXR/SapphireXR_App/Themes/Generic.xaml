@@ -136,4 +136,52 @@
     <System:Double x:Key="r_3">12</System:Double>
     <System:Double x:Key="r_4">16</System:Double>
     <System:Double x:Key="r_5">20</System:Double>
+
+    <Style x:Key="DefaultTextBox" TargetType="TextBox">
+        <Setter Property="FontFamily" Value="Segoe UI" />
+        <Setter Property="FontSize" Value="10" />
+        <Setter Property="Foreground" Value="{StaticResource Gray_950}" />
+        <Setter Property="TextAlignment" Value="Center"/>
+        <Setter Property="VerticalContentAlignment" Value="Center"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="TextBox">
+                    <Border Background="{StaticResource Gray_50}"
+                        BorderBrush="{StaticResource Gray_300}"
+                        BorderThickness="1">
+                        <Border.CornerRadius>
+                            <CornerRadius TopLeft="{StaticResource r_1}" TopRight="{StaticResource r_1}" BottomLeft="{StaticResource r_1}" BottomRight="{StaticResource r_1}" />
+                        </Border.CornerRadius>
+                        <ScrollViewer x:Name="PART_ContentHost" Margin="0" />
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsEnabled" Value="false">
+                            <Setter Property="Foreground" Value="{StaticResource Gray_950}" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style TargetType="Button" x:Key="DefaultButton">
+        <Setter Property="Background" Value="{StaticResource Gray_300}" />
+        <Setter Property="Foreground" Value="{StaticResource Gray_900}" />
+        <Setter Property="HorizontalAlignment" Value="Stretch" />
+        <Setter Property="BorderThickness" Value="0" />
+        <Setter Property="FontFamily" Value="Segoe UI" />
+        <Setter Property="FontSize" Value="10" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <Border Background="{TemplateBinding Background}" BorderThickness="0">
+                        <Border.CornerRadius>
+                            <CornerRadius TopLeft="{StaticResource p_1}" TopRight="{StaticResource p_1}" BottomLeft="{StaticResource p_1}" BottomRight="{StaticResource p_1}"/>
+                        </Border.CornerRadius>
+                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
 </ResourceDictionary>

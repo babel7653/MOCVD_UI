@@ -184,4 +184,12 @@
             </Setter.Value>
         </Setter>
     </Style>
+
+    <Style TargetType="Label" x:Key="labelOverTextBox">
+        <Setter Property="Padding">
+            <Setter.Value>
+                <Thickness Bottom="{StaticResource p_1}" />
+            </Setter.Value>
+        </Setter>
+    </Style>
 </ResourceDictionary>

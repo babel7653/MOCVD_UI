@@ -846,11 +846,11 @@
                                                 <ColumnDefinition Width="116"/>
                                             </Grid.ColumnDefinitions>
                                             <StackPanel Grid.Row="0" Grid.Column="0" Orientation="Vertical">
-                                                <Label HorizontalAlignment="Center" Content="Target Val." Foreground="{StaticResource Gray_900}" FontSize="10" FontFamily="Segoe UI" />
+                                                <Label HorizontalAlignment="Center" Content="Target Val." Foreground="{StaticResource Gray_900}" FontSize="10" FontFamily="Segoe UI" Style="{StaticResource labelOverTextBox}"/>
                                                 <TextBox x:Name="tbTargetTemp"  Grid.Column="0" Grid.Row="1"  Text="{Binding TargetTemp}" IsReadOnly="True" HorizontalAlignment="Stretch" Height="18" Style="{StaticResource DefaultTextBox}"/>
                                             </StackPanel>
                                             <StackPanel Grid.Row="0" Grid.Column="2" Orientation="Vertical">
-                                                <Label HorizontalAlignment="Center" Content="Control Val." Foreground="{StaticResource Gray_900}" FontSize="10" FontFamily="Segoe UI" />
+                                                <Label HorizontalAlignment="Center" Content="Control Val." Foreground="{StaticResource Gray_900}" FontSize="10" FontFamily="Segoe UI" Style="{StaticResource labelOverTextBox}"/>
                                                 <TextBox x:Name="tbControlTemp"  Grid.Column="2" Grid.Row="1" Text="{Binding ControlTemp}" IsReadOnly="True" HorizontalAlignment="Stretch" Height="18" Style="{StaticResource DefaultTextBox}"/>
                                             </StackPanel>
                                         </Grid>
@@ -869,11 +869,11 @@
                                                 <ColumnDefinition Width="116"/>
                                             </Grid.ColumnDefinitions>
                                             <StackPanel Grid.Row="0" Grid.Column="0" Orientation="Vertical">
-                                                <Label HorizontalAlignment="Center" Content="Current Val." Foreground="{StaticResource Gray_900}" FontSize="10" FontFamily="Segoe UI" />
+                                                <Label HorizontalAlignment="Center" Content="Current Val." Foreground="{StaticResource Gray_900}" FontSize="10" FontFamily="Segoe UI" Style="{StaticResource labelOverTextBox}" />
                                                 <TextBox x:Name="tbCurrentTemp"  Text="{Binding CurrentTemp}" IsReadOnly="True" HorizontalAlignment="Stretch" Height="18" Style="{StaticResource DefaultTextBox}"/>
                                             </StackPanel>
                                             <StackPanel Grid.Row="0" Grid.Column="2" Orientation="Vertical">
-                                                <Label HorizontalAlignment="Center" Content="Power Rate" Foreground="{StaticResource Gray_900}" FontSize="10" FontFamily="Segoe UI" />
+                                                <Label HorizontalAlignment="Center" Content="Power Rate" Foreground="{StaticResource Gray_900}" FontSize="10" FontFamily="Segoe UI" Style="{StaticResource labelOverTextBox}" />
                                                 <TextBox x:Name="tbPowerRateTemp" Text="{Binding PowerRateTemp}" IsReadOnly="True" HorizontalAlignment="Stretch" Height="18" Style="{StaticResource DefaultTextBox}"/>
                                             </StackPanel>
                                         </Grid>

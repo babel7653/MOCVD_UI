@@ -772,7 +772,7 @@
                 <Grid>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="110"/>
-                        <RowDefinition Height="232"/>
+                        <RowDefinition Height="250"/>
                         <RowDefinition Height="240"/>
                         <RowDefinition Height="180"/>
                         <RowDefinition/>
@@ -797,6 +797,9 @@
                                             <Thickness Left="{StaticResource p_5}"/>
                                         </StackPanel.Margin>
                                         <TextBlock TextWrapping="WrapWithOverflow" Foreground="{StaticResource Gray_950}" HorizontalAlignment="Stretch" FontFamily="Segoe UI">
+                                            <TextBlock.Margin>
+                                                <Thickness Bottom="{StaticResource p_1}" />
+                                            </TextBlock.Margin>
                                             Check the current equipment settings and adjust the values of each device.
                                         </TextBlock>
                                         <Button Content="User State" Height="26" Command="{Binding ManualBatchCommand}" Style="{StaticResource DefaultButton}">
@@ -859,6 +862,9 @@
                                         <Border.BorderThickness>
                                             <Thickness Left="{StaticResource p_5}" />
                                         </Border.BorderThickness>
+                                        <Border.Margin>
+                                            <Thickness Top="{StaticResource p_1}" Bottom="{StaticResource p_1}" />
+                                        </Border.Margin>
                                         <Grid>
                                             <Grid.RowDefinitions>
                                                 <RowDefinition />
@@ -878,7 +884,51 @@
                                             </StackPanel>
                                         </Grid>
                                     </Border>
-
+                                    <Border>
+                                        <Border.BorderThickness>
+                                            <Thickness Left="{StaticResource p_5}" />
+                                        </Border.BorderThickness>
+                                        <Border.Margin>
+                                            <Thickness Top="{StaticResource p_1}" Bottom="{StaticResource p_1}" />
+                                        </Border.Margin>
+                                        <StackPanel Orientation="Vertical">
+                                            <Label Content="Heater Control Model" FontFamily="Segoe UI" Foreground="{StaticResource Gray_900}" FontSize="10">
+                                                <Label.Padding>
+                                                    <Thickness Top="0" Left="0" Right="0" Bottom="{StaticResource p_2}" />
+                                                </Label.Padding>
+                                            </Label>
+                                            <Button Content="{Binding InputManualAuto, Mode=OneWay}" Command="{Binding ToggleHeaterControlModeCommand}" Style="{StaticResource DefaultButton}" Height="26"/>
+                                        </StackPanel>
+                                    </Border>
+                                    <Border>
+                                        <Border.BorderThickness>
+                                            <Thickness Left="{StaticResource p_5}" />
+                                        </Border.BorderThickness>
+                                        <Border.Margin>
+                                            <Thickness Top="{StaticResource p_1}" Bottom="{StaticResource p_4}" />
+                                        </Border.Margin>
+                                        <StackPanel Orientation="Vertical">
+                                            <Label Content="Induction Power Supply" FontFamily="Segoe UI" Foreground="{StaticResource Gray_900}" FontSize="10">
+                                                <Label.Padding>
+                                                    <Thickness Top="0" Left="0" Right="0" Bottom="{StaticResource p_2}" />
+                                                </Label.Padding>
+                                            </Label>
+                                            <Grid>
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="60"/>
+                                                    <ColumnDefinition Width="12"/>
+                                                    <ColumnDefinition />
+                                                </Grid.ColumnDefinitions>
+                                                <ToggleButton Grid.Column="0" x:Name="btHeaterOn" Content="{Binding InductionHeaterOn}" Command="{Binding InductionHeaterToggleCommand}" Height="26"  />
+                                                <Button Grid.Column="2" x:Name="btHeaterReset" Command="{Binding InductionHeaterResetCommand}" Height="26" Style="{StaticResource DefaultButton}">
+                                                    <StackPanel Orientation="Horizontal">
+                                                        <Image Source="/Resources/icons/icon_line_reset.png" Width="10" Height="10"/>
+                                                        <Label FontFamily="Segoe UI" FontSize="10" Content="Reset" Foreground="{StaticResource Gray_900}" />
+                                                    </StackPanel>
+                                                </Button>
+                                            </Grid>
+                                        </StackPanel>
+                                    </Border>
                                 </StackPanel>
                                     
                             </StackPanel>
@@ -911,7 +961,7 @@
                             </Grid>
                             <StackPanel Orientation="Horizontal" Height="30">
                                 <Label Width="140" VerticalContentAlignment="Bottom" Content="Heater Control Mode"/>
-                                <Button Content="{Binding InputManualAuto, Mode=OneWay}" Command="{Binding ToggleHeaterControlModeCommand}"/>
+                               
                             </StackPanel>
                             <StackPanel Orientation="Horizontal" Height="30">
                                 <Label Width="140" Content="Induction Power Supply" VerticalContentAlignment="Bottom"/>

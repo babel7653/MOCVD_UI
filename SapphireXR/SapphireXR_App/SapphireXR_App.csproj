@@ -45,6 +45,7 @@
     <None Remove="Resources\icons\icon=trash.png" />
     <None Remove="Resources\icons\icon=valve.png" />
     <None Remove="Resources\icons\icon=_user.png" />
+    <None Remove="Resources\icons\icon_line_reset.png" />
     <None Remove="Resources\plus-icon-13071.png" />
     <None Remove="Resources\subtract-icon-png-28153.png" />
   </ItemGroup>
@@ -177,6 +178,9 @@
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </Resource>
     <Resource Include="Resources\icons\icon=_user.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\icons\icon_line_reset.png">
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </Resource>
     <Resource Include="Resources\Images\plus-icon-13071.png">

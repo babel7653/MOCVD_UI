@@ -919,7 +919,7 @@
                                                     <ColumnDefinition Width="12"/>
                                                     <ColumnDefinition />
                                                 </Grid.ColumnDefinitions>
-                                                <ToggleButton Grid.Column="0" x:Name="btHeaterOn" Content="{Binding InductionHeaterOn}" Command="{Binding InductionHeaterToggleCommand}" Height="26"  />
+                                                <ToggleButton Style="{StaticResource ToggleSwitch}" Grid.Column="0" x:Name="btHeaterOn" Content="{Binding InductionHeaterOn}" Command="{Binding InductionHeaterToggleCommand}" Height="26"  />
                                                 <Button Grid.Column="2" x:Name="btHeaterReset" Command="{Binding InductionHeaterResetCommand}" Height="26" Style="{StaticResource DefaultButton}">
                                                     <StackPanel Orientation="Horizontal">
                                                         <Image Source="/Resources/icons/icon_line_reset.png" Width="10" Height="10"/>

@@ -1,5 +1,4 @@
-﻿using System.Windows.Controls;
-using SapphireXR_App.ViewModels;
+﻿using SapphireXR_App.ViewModels;
 
 namespace SapphireXR_App.Controls
 {

@@ -81,7 +81,7 @@
                         <Viewbox Grid.Column="0">
                             <Grid Height="26" Width="60">
                                 <Rectangle x:Name="BackPanel" RadiusX="12" RadiusY="12"  Fill="{StaticResource Gray_300}" Stroke="{StaticResource Gray_700}" StrokeThickness="1"/>
-                                <Ellipse VerticalAlignment="Center" x:Name="Ellipse" Fill="{StaticResource Gray_700}" Stretch="Uniform" Margin="2 1 2 1"  Height="23" Width="23" HorizontalAlignment="Left">
+                                <Ellipse VerticalAlignment="Center" x:Name="Ellipse" Fill="{StaticResource Gray_700}" Stretch="Uniform" Margin="4 1 2 1"  Height="18" Width="18" HorizontalAlignment="Left">
                                 </Ellipse>
                             </Grid>
                         </Viewbox>
@@ -92,7 +92,7 @@
                     <ControlTemplate.Resources>
                         <Storyboard x:Key="right">
                             <ThicknessAnimation Storyboard.TargetName="Ellipse" 
-                                Storyboard.TargetProperty="Margin" Duration="0:0:0.2" To="35 1 2 1">
+                                Storyboard.TargetProperty="Margin" Duration="0:0:0.2" To="37 1 2 1">
                                 <ThicknessAnimation.EasingFunction>
                                     <CircleEase EasingMode="EaseOut"/>
                                 </ThicknessAnimation.EasingFunction>
@@ -100,7 +100,7 @@
                         </Storyboard>
                         <Storyboard x:Key="left">
                             <ThicknessAnimation Storyboard.TargetName="Ellipse" 
-                                Storyboard.TargetProperty="Margin" Duration="0:0:0.2" To="2 1 2 1">
+                                Storyboard.TargetProperty="Margin" Duration="0:0:0.2" To="4 1 2 1">
                                 <ThicknessAnimation.EasingFunction>
                                     <CircleEase EasingMode="EaseOut"/>
                                 </ThicknessAnimation.EasingFunction>

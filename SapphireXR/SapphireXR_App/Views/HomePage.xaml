@@ -1231,7 +1231,7 @@
                         </Grid.Margin>
                         <StackPanel>
                             <StackPanel.Margin>
-                                <Thickness Bottom="{StaticResource p_4}" Left="{StaticResource p_2}" Right="{StaticResource p_2}"/>
+                                <Thickness Bottom="0" Left="{StaticResource p_2}" Right="{StaticResource p_2}"/>
                             </StackPanel.Margin>
                             <DockPanel>
                                 <DockPanel.Margin>

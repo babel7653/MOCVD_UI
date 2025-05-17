@@ -14,6 +14,7 @@
     <None Remove="Resources\Configurations\MaxValue.json" />
     <None Remove="Resources\icons\icon=analog.png" />
     <None Remove="Resources\icons\icon=app.png" />
+    <None Remove="Resources\icons\icon=chevron.png" />
     <None Remove="Resources\icons\icon=controller.png" />
     <None Remove="Resources\icons\icon=cool.png" />
     <None Remove="Resources\icons\icon=digital.png" />
@@ -79,6 +80,9 @@
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </Resource>
     <Resource Include="Resources\icons\icon=chart_decreasing.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\icons\icon=chevron.png">
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </Resource>
     <Resource Include="Resources\icons\icon=control_knobs.png">

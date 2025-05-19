@@ -771,21 +771,21 @@
             <Border BorderThickness="1" BorderBrush="{StaticResource Gray_300}" Padding="{StaticResource p_3_sqrt}">
                 <Grid>
                     <Grid.RowDefinitions>
-                        <RowDefinition Height="110"/>
-                        <RowDefinition Height="250"/>
-                        <RowDefinition Height="352"/>
-                        <RowDefinition Height="145"/>
+                        <RowDefinition Height="107"/>
+                        <RowDefinition Height="238"/>
+                        <RowDefinition Height="348"/>
+                        <RowDefinition Height="138"/>
                         <RowDefinition/>
                     </Grid.RowDefinitions>
 
                     <!-- User Status-->
-                    <Grid Grid.Row="0" Height="110">
+                    <Grid Grid.Row="0">
                         <Border BorderThickness="0 0 0 1" BorderBrush="{StaticResource Gray_300}">
                             <Border>
                                 <Border.BorderThickness>
-                                    <Thickness Left="{StaticResource p_2}" Right="{StaticResource p_2}" Bottom="{StaticResource p_4}"/>
+                                    <Thickness Left="{StaticResource p_2}" Right="{StaticResource p_2}" Bottom="{StaticResource p_2}"/>
                                 </Border.BorderThickness>
-                                <StackPanel Orientation="Vertical">
+                                <StackPanel Orientation="Vertical" Margin="0, 0, 0, 0">
                                     <StackPanel Orientation="Horizontal">
                                         <Image Source="/Resources/icons/icon=user_status.png" Width="24" Height="24"/>
                                         <Label Foreground="{StaticResource Gray_950}" FontSize="12" HorizontalContentAlignment="Center" FontFamily="Segoe UI">
@@ -794,7 +794,7 @@
                                     </StackPanel>
                                     <StackPanel Orientation="Vertical">
                                         <StackPanel.Margin>
-                                            <Thickness Left="{StaticResource p_5}"/>
+                                            <Thickness Left="{StaticResource p_5}" Bottom="0"/>
                                         </StackPanel.Margin>
                                         <TextBlock TextWrapping="WrapWithOverflow" Foreground="{StaticResource Gray_950}" HorizontalAlignment="Stretch" FontFamily="Segoe UI">
                                             <TextBlock.Margin>
@@ -820,7 +820,7 @@
                         <Border BorderThickness="0 0 0 1" BorderBrush="{StaticResource Gray_300}">
                             <StackPanel>
                                 <StackPanel.Margin>
-                                    <Thickness Bottom="{StaticResource p_4}" Left="{StaticResource p_2}" Right="{StaticResource p_2}"/>
+                                    <Thickness Bottom="{StaticResource p_2}" Left="{StaticResource p_2}" Right="{StaticResource p_2}"/>
                                 </StackPanel.Margin>
                                 <StackPanel Orientation="Horizontal">
                                     <StackPanel.Margin>
@@ -941,7 +941,7 @@
                         <Border BorderThickness="0 0 0 1" BorderBrush="{StaticResource Gray_300}">
                             <StackPanel>
                                 <StackPanel.Margin>
-                                    <Thickness Bottom="{StaticResource p_4}" Left="{StaticResource p_2}" Right="{StaticResource p_2}"/>
+                                    <Thickness Bottom="{StaticResource p_2}" Left="{StaticResource p_2}" Right="{StaticResource p_2}"/>
                                 </StackPanel.Margin>
                                 <StackPanel Orientation="Horizontal">
                                     <StackPanel.Margin>
@@ -1130,7 +1130,7 @@
                         <Border BorderThickness="0 0 0 1" BorderBrush="{StaticResource Gray_300}">
                             <StackPanel>
                                 <StackPanel.Margin>
-                                    <Thickness Bottom="{StaticResource p_4}" Left="{StaticResource p_2}" Right="{StaticResource p_2}"/>
+                                    <Thickness Bottom="{StaticResource p_2}" Left="{StaticResource p_2}" Right="{StaticResource p_2}"/>
                                 </StackPanel.Margin>
                                 <StackPanel Orientation="Horizontal">
                                     <StackPanel.Margin>
@@ -1243,19 +1243,12 @@
                                 </Label>
                                 <Button Width="134" HorizontalAlignment="Right" Style="{StaticResource DefaultButton}" Content="Clear" Command="{Binding ClearEventLogsCommand}"/>
                             </DockPanel>
-                            <DataGrid x:Name="dgEventLog" ItemsSource="{Binding EventLogs}">
-                                <DataGrid.ColumnHeaderStyle>
-                                    <Style TargetType="DataGridColumnHeader">
-                                        <Setter Property="HorizontalContentAlignment" Value="Center" />
-                                    </Style>
-                                </DataGrid.ColumnHeaderStyle>
-                                <DataGrid.Resources>
-                                    <Style TargetType="DataGridCell">
-                                        <Style.Setters>
-                                            <Setter Property="TextBlock.TextAlignment" Value="Center" />
-                                        </Style.Setters>
-                                    </Style>
-                                </DataGrid.Resources>
+                            <DataGrid x:Name="dgEventLog" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto" AutoGenerateColumns="False" ItemsSource="{Binding EventLogs}" Style="{StaticResource EventLog}">
+                                <DataGrid.Columns>
+                                    <DataGridTextColumn Header="Type" Binding="{Binding Type, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}" />
+                                    <DataGridTextColumn Header="Date" Binding="{Binding Date, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}" />
+                                    <DataGridTextColumn Header="Message" Binding="{Binding Message, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}" Width="*"/>
+                                </DataGrid.Columns>
                             </DataGrid>
                         </StackPanel>
                       

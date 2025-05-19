@@ -2,7 +2,6 @@
 using SapphireXR_App.Common;
 using SapphireXR_App.Models;
 using System.Collections;
-using System.Windows.Media.Imaging;
 
 namespace SapphireXR_App.ViewModels
 {

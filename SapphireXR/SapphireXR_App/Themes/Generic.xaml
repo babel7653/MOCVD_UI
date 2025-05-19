@@ -338,4 +338,47 @@
             </Setter.Value>
         </Setter>
     </Style>
+
+    <Style TargetType="DataGrid" x:Key="EventLog">
+        <Setter Property="HorizontalGridLinesBrush" Value="{StaticResource Gray_300}" />
+        <Setter Property="VerticalGridLinesBrush" Value="{StaticResource Gray_50}" />
+        <Setter Property="BorderBrush" Value="{StaticResource Gray_300}" />
+        <Setter Property="BorderThickness" Value="1" />
+        <Setter Property="Background" Value="{StaticResource Gray_50}" />
+        <Setter Property="FontFamily" Value="Segoe UI" />
+        <Setter Property="FontSize" Value="10" />
+        <Setter Property="Foreground" Value="{StaticResource Gray_900}" />
+        <Setter Property="ColumnHeaderStyle">
+            <Setter.Value>
+                <Style TargetType="DataGridColumnHeader">
+                    <Setter Property="HorizontalContentAlignment" Value="Center" />
+                    <Setter Property="Background" Value="{StaticResource Gray_50}" />
+                </Style>
+            </Setter.Value>
+        </Setter>
+        <Setter Property="CellStyle">
+            <Setter.Value>
+                <Style TargetType="DataGridCell">
+                    <Setter Property="BorderBrush" Value="{StaticResource Gray_50}" />
+                    <Setter Property="Background" Value="{StaticResource Gray_50}" />
+                    <Setter Property="TextBlock.TextAlignment" Value="Center" />
+                </Style>
+            </Setter.Value>
+        </Setter>
+        <Setter Property="RowHeaderStyle">
+            <Setter.Value>
+                <Style TargetType="DataGridRowHeader">
+                    <Setter Property="Background" Value="{StaticResource Gray_50}" />
+                    <Setter Property="BorderBrush" Value="{StaticResource Gray_50}" />
+                </Style>
+            </Setter.Value>
+        </Setter>
+        <Setter Property="RowStyle">
+            <Setter.Value>
+                <Style TargetType="DataGridRow">
+                    <Setter Property="Height" Value="26"/>
+                </Style>
+            </Setter.Value>
+        </Setter>
+    </Style>
 </ResourceDictionary>

@@ -9,6 +9,7 @@ using SapphireXR_App.Models;
 using SapphireXR_App.ViewModels;
 using SapphireXR_App.Views;
 using SapphireXR_App.ViewModels.FlowController;
+using System.Reactive;
 
 namespace SapphireXR_App.Controls
 {
@@ -17,10 +18,40 @@ namespace SapphireXR_App.Controls
     /// </summary>
     public partial class HomeFlowController : UserControl
     {
+        private class AppClosingSubscriber : IObserver<bool>
+        {
+            public AppClosingSubscriber(HomeFlowController view)
+            {
+                homeFlowController = view;
+            }
+
+            void IObserver<bool>.OnCompleted()
+            {
+                throw new NotImplementedException();
+            }
+
+            void IObserver<bool>.OnError(Exception error)
+            {
+                throw new NotImplementedException();
+            }
+
+            void IObserver<bool>.OnNext(bool value)
+            {
+                if(homeFlowController.flowControlView != null)
+                {
+                    homeFlowController.flowControlView.Close();
+                }
+            }
+
+            private HomeFlowController homeFlowController;
+        }
+
         public HomeFlowController()
         {
             InitializeComponent();
             DataContext = new HomeFlowControllerViewModel();
+            ObservableManager<bool>.Subscribe("App.Closing", onAppClosingSubscriber = new AppClosingSubscriber(this));
+
         }
 
         public string? Type { get; set; }
@@ -66,6 +97,7 @@ namespace SapphireXR_App.Controls
         private FlowControlView? flowControlView = null;
         private ICommand? OnFlowControllerConfirmed { get; set; }
         private ICommand? OnFlowControllerCanceled { get; set; }
+        private AppClosingSubscriber onAppClosingSubscriber;
     }
 
     public class OnLoadedCommandParamConverver : IMultiValueConverter

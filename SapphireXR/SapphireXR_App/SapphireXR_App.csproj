@@ -26,6 +26,7 @@
     <None Remove="Resources\icons\icon=graph.png" />
     <None Remove="Resources\icons\icon=heater.png" />
     <None Remove="Resources\icons\icon=icon28.png" />
+    <None Remove="Resources\icons\icon=line_pressure.png" />
     <None Remove="Resources\icons\icon=live_plot.png" />
     <None Remove="Resources\icons\icon=lock_01.png" />
     <None Remove="Resources\icons\icon=lock_02.png" />
@@ -119,6 +120,9 @@
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </Resource>
     <Resource Include="Resources\icons\icon=icon28.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\icons\icon=line_pressure.png">
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </Resource>
     <Resource Include="Resources\icons\icon=live_plot.png">

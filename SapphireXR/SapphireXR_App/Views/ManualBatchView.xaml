@@ -46,7 +46,7 @@
                     <Image Source="/Resources/Images/subtract-icon-png-28153.png" />
                 </Button>
                 <Button x:Name="UserSqtateBatch" Grid.Column="3" Content="Batch" Width="70" Margin="4,4,5,4" Command="{Binding LoadToPLCCommand}" Background="{DynamicResource Gray_300}" BorderThickness="0,0,0,0" Foreground="{DynamicResource Gray_900}" FontFamily="Segoe UI" />
-                <Button x:Name="UserStateSave" Grid.Column="4" Content="Save" Width="70" Command="{Binding SaveCommand}" BorderThickness="0,0,0,0" Foreground="{DynamicResource Gray_50}" FontFamily="Segoe UI" Background="{DynamicResource Sapphire_Blue}" Margin="4,4,4,4" />
+                <Button x:Name="UserStateSave" Grid.Column="4" Content="Save" Width="70" Command="{Binding SaveCommand}" Style="{StaticResource PrimaryButton}" Margin="4,4,4,4" />
             </Grid>
             <StackPanel Orientation="Horizontal" Margin="5,0,0,5" VerticalAlignment="Bottom">
                 <TextBlock Text="Alarm State" VerticalAlignment="Center" FontFamily="Segoe UI" FontSize="10" Foreground="{DynamicResource Gray_900}" />

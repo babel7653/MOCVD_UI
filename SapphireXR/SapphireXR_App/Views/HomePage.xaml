@@ -1018,7 +1018,12 @@
                                                     <Thickness Top="0" Left="0" Right="0" Bottom="{StaticResource p_2}" />
                                                 </Label.Padding>
                                             </Label>
-                                            <Button Content="{Binding PressureControlMode, Mode=OneWay}" Command="{Binding TogglePressureControlModeCommand}" Style="{StaticResource DefaultButton}" Height="26"/>
+                                            <Button Command="{Binding TogglePressureControlModeCommand}" Style="{StaticResource DefaultButton}" Height="26">
+                                                <StackPanel Orientation="Horizontal">
+                                                    <Image Source="/Resources/icons/icon=line_pressure.png" Width="10" Height="10"/>
+                                                    <Label FontFamily="Segoe UI" FontSize="10" Content="{Binding PressureControlMode}" Foreground="{StaticResource Gray_900}" />
+                                                </StackPanel>
+                                            </Button>
                                             <Label Content="Throttle Valve Mode" FontFamily="Segoe UI" Foreground="{StaticResource Gray_900}" FontSize="10">
                                                 <Label.Padding>
                                                     <Thickness Top="{StaticResource p_2}" Left="0" Right="0" Bottom="{StaticResource p_2}" />
@@ -1243,11 +1248,14 @@
                                 </Label>
                                 <Button Width="134" HorizontalAlignment="Right" Style="{StaticResource DefaultButton}" Content="Clear" Command="{Binding ClearEventLogsCommand}"/>
                             </DockPanel>
-                            <DataGrid x:Name="dgEventLog" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto" AutoGenerateColumns="False" ItemsSource="{Binding EventLogs}" Style="{StaticResource EventLog}">
+                            <DataGrid x:Name="dgEventLog" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto" AutoGenerateColumns="False" ItemsSource="{Binding EventLogs}" Style="{StaticResource EventLog}" Height="125">
+                                <DataGrid.Resources>
+                                    <Style TargetType="ScrollBar" BasedOn="{StaticResource DefaultScrollbar}" />
+                                </DataGrid.Resources>
                                 <DataGrid.Columns>
-                                    <DataGridTextColumn Header="Type" Binding="{Binding Type, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}" />
-                                    <DataGridTextColumn Header="Date" Binding="{Binding Date, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}" />
-                                    <DataGridTextColumn Header="Message" Binding="{Binding Message, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}" Width="*"/>
+                                    <DataGridTextColumn Header="Type" Binding="{Binding Type, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"  ElementStyle="{StaticResource EventLogElement}"/>
+                                    <DataGridTextColumn Header="Date" Binding="{Binding Date, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"  ElementStyle="{StaticResource EventLogElement}"/>
+                                    <DataGridTextColumn Header="Message" Binding="{Binding Message, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}" ElementStyle="{StaticResource EventLogElement}" />
                                 </DataGrid.Columns>
                             </DataGrid>
                         </StackPanel>

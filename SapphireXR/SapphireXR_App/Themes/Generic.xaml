@@ -146,7 +146,7 @@
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="TextBox">
-                    <Border Background="{StaticResource Gray_400}" BorderBrush="{StaticResource Gray_300}" BorderThickness="1.5" x:Name="innerBorder">
+                    <Border Background="{StaticResource Gray_400}" BorderBrush="{StaticResource Gray_300}" BorderThickness="1.2" x:Name="innerBorder">
                         <Border.CornerRadius>
                             <CornerRadius TopLeft="{StaticResource r_1}" TopRight="{StaticResource r_1}" BottomLeft="{StaticResource r_1}" BottomRight="{StaticResource r_1}" />
                         </Border.CornerRadius>
@@ -390,7 +390,6 @@
             </Setter.Value>
         </Setter>
     </Style>
-
     <Style TargetType="DataGrid" x:Key="EventLog">
         <Setter Property="HorizontalGridLinesBrush" Value="{StaticResource Gray_300}" />
         <Setter Property="VerticalGridLinesBrush" Value="{StaticResource Gray_50}" />
@@ -569,6 +568,53 @@
                         </Trigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    <Style TargetType="DataGrid" x:Key="RecipeList">
+        <Style.Resources>
+            <Style TargetType="ScrollBar" BasedOn="{StaticResource DefaultScrollbar}" />
+        </Style.Resources>
+        <Setter Property="HorizontalGridLinesBrush" Value="{StaticResource Gray_300}" />
+        <Setter Property="VerticalGridLinesBrush" Value="{StaticResource Gray_300}" />
+        <Setter Property="BorderBrush" Value="{StaticResource Gray_300}" />
+        <Setter Property="BorderThickness" Value="1" />
+        <Setter Property="Background" Value="{StaticResource Gray_50}" />
+        <Setter Property="FontFamily" Value="Segoe UI" />
+        <Setter Property="FontSize" Value="12" />
+        <Setter Property="Foreground" Value="{StaticResource Gray_900}" />
+        <Setter Property="ColumnHeaderStyle">
+            <Setter.Value>
+                <Style TargetType="DataGridColumnHeader">
+                    <Setter Property="HorizontalContentAlignment" Value="Center" />
+                    <Setter Property="Height" Value="26"/>
+                    <Setter Property="Background" Value="{StaticResource Gray_100}" />
+                </Style>
+            </Setter.Value>
+        </Setter>
+        <Setter Property="CellStyle">
+            <Setter.Value>
+                <Style TargetType="DataGridCell">
+                    <Setter Property="BorderThickness" Value="0" />
+                    <Setter Property="Background" Value="{StaticResource Gray_50}" />
+                    <Setter Property="TextBlock.TextAlignment" Value="Center" />
+                    <Setter Property="VerticalContentAlignment" Value="Center" />
+                </Style>
+            </Setter.Value>
+        </Setter>
+        <Setter Property="RowHeaderStyle">
+            <Setter.Value>
+                <Style TargetType="DataGridRowHeader">
+                    <Setter Property="Background" Value="{StaticResource Gray_50}" />
+                </Style>
+            </Setter.Value>
+        </Setter>
+        <Setter Property="RowStyle">
+            <Setter.Value>
+                <Style TargetType="DataGridRow">
+                    <Setter Property="Height" Value="26"/>
+                    <Setter Property="Background" Value="{StaticResource Gray_50}" />
+                </Style>
             </Setter.Value>
         </Setter>
     </Style>

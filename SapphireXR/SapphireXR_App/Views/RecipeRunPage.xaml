@@ -28,14 +28,10 @@
                 </Style>
             </Style.Resources>
         </Style>
-        <Style TargetType="{x:Type DataGrid}">
+        <Style TargetType="{x:Type DataGrid}" BasedOn="{StaticResource RecipeList}">
             <Setter Property="AutoGenerateColumns" Value="False"/>
-            <Setter Property="Padding" Value="5"/>
             <Setter Property="CanUserSortColumns" Value="False"/>
             <Setter Property="CanUserAddRows" Value="False"/>
-        </Style>
-        <Style TargetType="{x:Type DataGridColumnHeader}">
-            <Setter Property="HorizontalContentAlignment" Value="Center"/>
         </Style>
         <Style TargetType="{x:Type TabItem}">
             <Setter Property="HeaderTemplate">
@@ -726,7 +722,10 @@
                     </Style>
                 </Grid.Resources>
                 <!-- 수직형 탭 설정-->
-                <TabControl TabStripPlacement="Left">
+                <TabControl TabStripPlacement="Left" Background="{StaticResource Gray_100}">
+                    <TabControl.Padding>
+                        <Thickness Left="{StaticResource p_5}" Right="{StaticResource p_5}" Top="{StaticResource p_2}" Bottom="{StaticResource p_2}" />
+                    </TabControl.Padding>
                     <TabControl.Resources>
                         <Style x:Key="gridColumnTextBoxMaxNumber" TargetType="TextBox">
                             <Style.Setters>
@@ -739,9 +738,10 @@
                             </Style.Setters>
                         </Style>
                     </TabControl.Resources>
-                    <TabItem Header="Reactor">
+                    <TabItem Header="Reactor" Background="{StaticResource Gray_100}">
                         <TabItem.Content>
-                            <DataGrid  HorizontalScrollBarVisibility="Visible" AutoGenerateColumns="False" ItemsSource="{Binding CurrentRecipe.Recipes}" CellEditEnding="DataGrid_CellEditEnding">
+                            <DataGrid Style="{StaticResource RecipeList}" HorizontalScrollBarVisibility="Auto" AutoGenerateColumns="False" ItemsSource="{Binding CurrentRecipe.Recipes}" CellEditEnding="DataGrid_CellEditEnding">
+                                
                                 <b:Interaction.Triggers>
                                     <b:EventTrigger EventName="Loaded">
                                         <b:InvokeCommandAction Command="{Binding ReactorDataGridLoadedCommand}" PassEventArgsToCommand="True"/>
@@ -751,24 +751,25 @@
                                     </b:EventTrigger>
                                 </b:Interaction.Triggers>
                                 <DataGrid.Columns>
-                                    <DataGridTextColumn Header="No" Width="30" Binding="{Binding No}" IsReadOnly="True"/>
-                                    <DataGridTextColumn Header="Name" Width="200" Binding="{Binding Name}" />
-                                    <DataGridTextColumn Header="Ramp" Width="100" Binding="{Binding RTime, UpdateSourceTrigger=PropertyChanged}" EditingElementStyle="{StaticResource gridColumnTextBoxOnlyNumber}" />
-                                    <DataGridTextColumn Header="Hold" Width="100" Binding="{Binding HTime, UpdateSourceTrigger=PropertyChanged}" EditingElementStyle="{StaticResource gridColumnTextBoxOnlyNumber}" />
-                                    <DataGridTextColumn Header="Loop" Width="100" Binding="{Binding Loop, UpdateSourceTrigger=PropertyChanged}" EditingElementStyle="{StaticResource gridColumnTextBoxOnlyNumber}" />
-                                    <DataGridTextColumn Header="Jump" Width="100" Binding="{Binding Jump, UpdateSourceTrigger=PropertyChanged}" EditingElementStyle="{StaticResource gridColumnTextBoxOnlyNumber}" />
-                                    <DataGridTextColumn Header="Susceptor Temp." Width="100" Binding="{Binding STemp, UpdateSourceTrigger=PropertyChanged}" EditingElementStyle="{StaticResource gridColumnTextBoxOnlyNumber}" />
-                                    <DataGridTextColumn Header="Reactor Press." Width="100" Binding="{Binding RPress, UpdateSourceTrigger=PropertyChanged}" EditingElementStyle="{StaticResource gridColumnTextBoxOnlyNumber}" />
-                                    <DataGridTextColumn Header="Sus. Rotation" Width="100" Binding="{Binding SRotation, UpdateSourceTrigger=PropertyChanged}" EditingElementStyle="{StaticResource gridColumnTextBoxOnlyNumber}" />
-                                    <DataGridTextColumn Header="Compare Temp." Width="100" Binding="{Binding cTemp, UpdateSourceTrigger=PropertyChanged}"  EditingElementStyle="{StaticResource gridColumnTextBoxOnlyNumber}" />
+                                    <DataGridTextColumn Header="No" MinWidth="30" Binding="{Binding No}" IsReadOnly="True" ElementStyle="{StaticResource EventLogElement}" />
+                                    <DataGridTextColumn Header="Name" MinWidth="200" Binding="{Binding Name}" ElementStyle="{StaticResource EventLogElement}" />
+                                    <DataGridTextColumn Header="Ramp" MinWidth="100" Binding="{Binding RTime, UpdateSourceTrigger=PropertyChanged}" EditingElementStyle="{StaticResource gridColumnTextBoxOnlyNumber}" ElementStyle="{StaticResource EventLogElement}" />
+                                    <DataGridTextColumn Header="Hold" MinWidth="100" Binding="{Binding HTime, UpdateSourceTrigger=PropertyChanged}" EditingElementStyle="{StaticResource gridColumnTextBoxOnlyNumber}" ElementStyle="{StaticResource EventLogElement}" />
+                                    <DataGridTextColumn Header="Loop" MinWidth="100" Binding="{Binding Loop, UpdateSourceTrigger=PropertyChanged}" EditingElementStyle="{StaticResource gridColumnTextBoxOnlyNumber}" ElementStyle="{StaticResource EventLogElement}" />
+                                    <DataGridTextColumn Header="Jump" MinWidth="100" Binding="{Binding Jump, UpdateSourceTrigger=PropertyChanged}" EditingElementStyle="{StaticResource gridColumnTextBoxOnlyNumber}" ElementStyle="{StaticResource EventLogElement}" />
+                                    <DataGridTextColumn Header="Susceptor Temp." MinWidth="100" Binding="{Binding STemp, UpdateSourceTrigger=PropertyChanged}" EditingElementStyle="{StaticResource gridColumnTextBoxOnlyNumber}" ElementStyle="{StaticResource EventLogElement}" />
+                                    <DataGridTextColumn Header="Reactor Press." MinWidth="100" Binding="{Binding RPress, UpdateSourceTrigger=PropertyChanged}" EditingElementStyle="{StaticResource gridColumnTextBoxOnlyNumber}" ElementStyle="{StaticResource EventLogElement}" />
+                                    <DataGridTextColumn Header="Sus. Rotation" MinWidth="100" Binding="{Binding SRotation, UpdateSourceTrigger=PropertyChanged}" EditingElementStyle="{StaticResource gridColumnTextBoxOnlyNumber}" ElementStyle="{StaticResource EventLogElement}" />
+                                    <DataGridTextColumn Header="Compare Temp." MinWidth="100" Binding="{Binding cTemp, UpdateSourceTrigger=PropertyChanged}"  EditingElementStyle="{StaticResource gridColumnTextBoxOnlyNumber}" ElementStyle="{StaticResource EventLogElement}" />
                                 </DataGrid.Columns>
                             </DataGrid>
+                           
                         </TabItem.Content>
                     </TabItem>
 
                     <TabItem Header="Flow">
                         <TabItem.Content>
-                            <DataGrid HorizontalScrollBarVisibility="Visible" AutoGenerateColumns="False" ItemsSource="{Binding CurrentRecipe.Recipes}" CellEditEnding="DataGrid_CellEditEnding">
+                            <DataGrid Style="{StaticResource RecipeList}" HorizontalScrollBarVisibility="Auto" AutoGenerateColumns="False" ItemsSource="{Binding CurrentRecipe.Recipes}" CellEditEnding="DataGrid_CellEditEnding">
                                 <b:Interaction.Triggers>
                                     <b:EventTrigger EventName="Loaded">
                                         <b:InvokeCommandAction Command="{Binding FlowDataGridLoadedCommand}" PassEventArgsToCommand="True"/>
@@ -805,7 +806,7 @@
 
                     <TabItem Header="Valve">
                         <TabItem.Content>
-                            <DataGrid HorizontalScrollBarVisibility="Visible" AutoGenerateColumns="False" ItemsSource="{Binding CurrentRecipe.Recipes}">
+                            <DataGrid  Style="{StaticResource RecipeList}" HorizontalScrollBarVisibility="Auto" AutoGenerateColumns="False" ItemsSource="{Binding CurrentRecipe.Recipes}">
                                 <b:Interaction.Triggers>
                                     <b:EventTrigger EventName="Loaded">
                                         <b:InvokeCommandAction Command="{Binding ValveDataGridLoadedCommand}" PassEventArgsToCommand="True"/>

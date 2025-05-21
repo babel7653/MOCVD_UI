@@ -1255,7 +1255,7 @@
                                 <DataGrid.Columns>
                                     <DataGridTextColumn Header="Type" Binding="{Binding Type, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"  ElementStyle="{StaticResource EventLogElement}"/>
                                     <DataGridTextColumn Header="Date" Binding="{Binding Date, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"  ElementStyle="{StaticResource EventLogElement}"/>
-                                    <DataGridTextColumn Header="Message" Binding="{Binding Message, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}" ElementStyle="{StaticResource EventLogElement}" />
+                                    <DataGridTextColumn Header="Message" Binding="{Binding Message, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}" ElementStyle="{StaticResource EventLogElement}" MinWidth="97"/>
                                 </DataGrid.Columns>
                             </DataGrid>
                         </StackPanel>

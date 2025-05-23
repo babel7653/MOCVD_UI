@@ -768,7 +768,10 @@
             </Grid>
         </Grid>
         <Grid Grid.Column="1" Background="{StaticResource Gray_100}" Width="300">
-            <Border BorderThickness="1" BorderBrush="{StaticResource Gray_300}" Padding="{StaticResource p_3_sqrt}">
+            <Border BorderBrush="{StaticResource Gray_300}" Padding="{StaticResource p_3_sqrt}">
+                <Border.BorderThickness>
+                    <Thickness Left="1" />
+                </Border.BorderThickness>
                 <Grid>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="107"/>

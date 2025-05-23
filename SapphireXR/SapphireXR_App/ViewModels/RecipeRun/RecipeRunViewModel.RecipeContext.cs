@@ -63,13 +63,13 @@ namespace SapphireXR_App.ViewModels
                         {
                             if (currentRecipe != null)
                             {
-                                currentRecipe.Background = Brushes.White;
-                                currentRecipe.Foreground = Brushes.Black;
+                                currentRecipe.Background = Recipe.DefaultBackground;
+                                currentRecipe.Foreground = Recipe.DefaultForeground;
                             }
                             currentRecipe = next;
                             currentRecipeIndex = index;
-                            currentRecipe.Background = Brushes.LightGoldenrodYellow;
-                            currentRecipe.Foreground = Brushes.Red;
+                            currentRecipe.Background = HighlitedRecipeListBackground;
+                            currentRecipe.Foreground = HighlitedRecipeListForeground;
                             currentRecipe.IsEnabled = false;
 
                             temperatureControlValueSubscriber ??= new TemperatureControlValueSubscriber(this);
@@ -305,6 +305,9 @@ namespace SapphireXR_App.ViewModels
                 get { return _logFilePath; }
                 set { SetProperty(ref _logFilePath, value); }
             }
+
+            private static readonly Brush HighlitedRecipeListBackground = App.Current.FindResource("HighlitedRecipeListBackground") as Brush ?? new SolidColorBrush(Color.FromRgb(0x1C, 0x1C, 0x1C));
+            private static readonly Brush HighlitedRecipeListForeground = App.Current.FindResource("HighlitedRecipeListForeground") as Brush ?? Brushes.LightGoldenrodYellow;
 
             [ObservableProperty]
             private int? _currentRecipeTime = null;

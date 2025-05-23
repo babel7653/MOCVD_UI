@@ -10,7 +10,8 @@
       xmlns:oxy="http://oxyplot.org/wpf"
       mc:Ignorable="d"
       d:DesignHeight="1020" d:DesignWidth="1620"
-      Title="RecipeRunPage">
+      Title="RecipeRunPage"
+      Background="{StaticResource Gray_100}">
     <Page.Resources>
         <Style x:Key="BaseStyle" TargetType="{x:Type Control}">
             <Setter Property="FontSize" Value="11"/>
@@ -33,32 +34,16 @@
             <Setter Property="CanUserSortColumns" Value="False"/>
             <Setter Property="CanUserAddRows" Value="False"/>
         </Style>
-        <Style TargetType="{x:Type TabItem}">
-            <Setter Property="HeaderTemplate">
-                <Setter.Value>
-                    <DataTemplate>
-                        <ContentPresenter Content="{TemplateBinding Content}">
-                            <ContentPresenter.LayoutTransform>
-                                <RotateTransform Angle="270"/>
-                            </ContentPresenter.LayoutTransform>
-                        </ContentPresenter>
-                    </DataTemplate>
-                </Setter.Value>
-            </Setter>
-            <Setter Property="Width" Value="20"/>
-            <Setter Property="Height" Value="80"/>
-            <Setter Property="Padding" Value="3"/>
-        </Style>
     </Page.Resources>
-
     <Grid Grid.Column="0" Background="Transparent">
         <Frame x:Name="frRecipeRun"/>
         <Grid>
             <Grid.RowDefinitions>
                 <RowDefinition Height="490"/>
-                <RowDefinition Height="40"/>
+                <RowDefinition Height="64"/>
+                <RowDefinition Height="273"/>
+                <RowDefinition Height="40" />
                 <RowDefinition Height="*"/>
-                <RowDefinition Height="240"/>
             </Grid.RowDefinitions>
             <Grid Grid.Row="0">
                 <Grid.ColumnDefinitions>
@@ -637,39 +622,76 @@
             
 
             <!-- #Region 7. 레시피 커맨드 버턴 -->
-            <Grid Grid.Row="1" >
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="500"/>
-                    <ColumnDefinition/>
-                    <ColumnDefinition Width="500"/>
-                </Grid.ColumnDefinitions>
-                <StackPanel Grid.Column="0" Orientation="Horizontal">
-                    <Button x:Name="btnRecipeOpen" Content="Open" Style="{StaticResource RecipeOperationStyle}" Command="{Binding RecipeOpenCommand}"/>
-                    <Button x:Name="btnRecipeStart" Content="{Binding StartText}"  Style="{StaticResource RecipeOperationStyle}" Command="{Binding RecipeStartCommand}"/>
-                    <Button x:Name="btnRecipeSkip"  Content="Skip"  Style="{StaticResource RecipeOperationStyle}" Command="{Binding RecipeSkipCommand}"/>
-                    <Button x:Name="btnRecipeStop" Content="Stop"  Style="{StaticResource RecipeOperationStyle}" Command="{Binding RecipeStopCommand}"/>
-                    <Button x:Name="btnRecipeRefresh" Content="Refresh" Style="{StaticResource RecipeOperationStyle}" Command="{Binding RecipeRefreshCommand}"/>
-                    <Button x:Name="btnRecipeClean" Content="Clean" Style="{StaticResource RecipeOperationStyle}" Command="{Binding RecipeCleanCommand}"/>
-                </StackPanel>
-                <Grid Grid.Column="2">
-                    <StackPanel>
-                        <StackPanel Orientation="Horizontal">
-                            <TextBlock Width="80" Height="20" Foreground="Lime">Loaded File</TextBlock>
-                            <TextBox x:Name="tbRecipeLoadedFile" Width="415" Height="18" Margin="1" Text="{Binding CurrentRecipe.RecipeFilePath, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" IsReadOnly="True" Style="{StaticResource InfoTextBoxStyle}"/>
+            <Grid Grid.Row="1">
+                <Border BorderBrush="{StaticResource Gray_300}">
+                    <Border.BorderThickness>
+                        <Thickness Top="1" Bottom="1" />
+                    </Border.BorderThickness>
+                    <Border.Padding>
+                        <Thickness Left="{StaticResource p_5}" Right="{StaticResource p_5}" Top="{StaticResource p_3}" Bottom="{StaticResource p_3}"/>
+                    </Border.Padding>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="500"/>
+                            <ColumnDefinition/>
+                        </Grid.ColumnDefinitions>
+                        <StackPanel Grid.Column="0" Orientation="Horizontal">
+                            <Button x:Name="btnRecipeOpen" Command="{Binding RecipeOpenCommand}" Width="40" Height="40" Style="{StaticResource ImageButton}">
+                                <Image Source="/Resources/icons/icon=open.png">
+                                    <Image.Margin>
+                                        <Thickness Left="{StaticResource p_2}" Right="{StaticResource p_2}" Top="{StaticResource p_2}" Bottom="{StaticResource p_2}" />
+                                    </Image.Margin>
+                                </Image>
+                            </Button>
+                            <Button x:Name="btnRecipeStart" Width="40" Height="40" Style="{StaticResource ImageButton}" Command="{Binding RecipeStartCommand}">
+                                <Image Source="{Binding StartPauseIconPath}">
+                                    <Image.Margin>
+                                        <Thickness Left="{StaticResource p_2}" Right="{StaticResource p_2}" Top="{StaticResource p_2}" Bottom="{StaticResource p_2}" />
+                                    </Image.Margin>
+                                </Image>
+                            </Button>
+                            <Button x:Name="btnRecipeSkip" Content="Skip" Command="{Binding RecipeSkipCommand}"  Width="40" Height="40" Style="{StaticResource ImageButton}" >
+                               
+                            </Button>
+                            <Button x:Name="btnRecipeStop" Command="{Binding RecipeStopCommand}" Width="40" Height="40" Style="{StaticResource ImageButton}" >
+                                <Image Source="/Resources/icons/icon=pause.png">
+                                    <Image.Margin>
+                                        <Thickness Left="{StaticResource p_2}" Right="{StaticResource p_2}" Top="{StaticResource p_2}" Bottom="{StaticResource p_2}" />
+                                    </Image.Margin>
+                                </Image>
+                            </Button>
+                            <Button x:Name="btnRecipeRefresh" Command="{Binding RecipeRefreshCommand}" Width="40" Height="40" Style="{StaticResource ImageButton}" >
+                                <Image Source="/Resources/icons/icon=refresh.png">
+                                    <Image.Margin>
+                                        <Thickness Left="{StaticResource p_2}" Right="{StaticResource p_2}" Top="{StaticResource p_2}" Bottom="{StaticResource p_2}" />
+                                    </Image.Margin>
+                                </Image>
+                            </Button>
+                            <Button x:Name="btnRecipeClean" Command="{Binding RecipeCleanCommand}" Width="40" Height="40" Style="{StaticResource ImageButton}">
+                                <Image Source="/Resources/icons/icon=trash.png">
+                                    <Image.Margin>
+                                        <Thickness Left="{StaticResource p_2}" Right="{StaticResource p_2}" Top="{StaticResource p_2}" Bottom="{StaticResource p_2}" />
+                                    </Image.Margin>
+                                </Image>
+                            </Button>
                         </StackPanel>
-                        <StackPanel Orientation="Horizontal">
-                            <TextBlock Width="80" Height="20" Foreground="Lime">Log File</TextBlock>
-                            <TextBox x:Name="tbRecipeLogFile" Width="415" Height="18" Margin="1"  Text="{Binding CurrentRecipe.LogFilePath, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" IsReadOnly="True" 
-                                     Style="{StaticResource InfoTextBoxStyle}" ToolTip="로그 파일 저장 위치를 바꾸려면 클릭하세요. 단, 현재 Recipe가 비어 있는 상태에서만 가능합니다. (Clean 버튼 클릭)">
-                                <i:Interaction.Triggers>
-                                    <i:EventTrigger EventName="PreviewMouseLeftButtonUp">
-                                        <i:InvokeCommandAction Command="{Binding ChangeLogDirectoryCommand}" />
-                                    </i:EventTrigger>
-                                </i:Interaction.Triggers>
-                            </TextBox>
-                        </StackPanel>
-                    </StackPanel>
-                </Grid>
+                        <Grid Grid.Column="1">
+                            <StackPanel HorizontalAlignment="Right" Orientation="Horizontal">
+                                <TextBlock Width="91" Style="{StaticResource infoTextBlock}">Loaded File</TextBlock>
+                                <TextBox x:Name="tbRecipeLoadedFile" Width="430" Text="{Binding CurrentRecipe.RecipeFilePath, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" IsReadOnly="True" Style="{StaticResource InfoTextBox}"/>
+                                <TextBlock Width="71" Style="{StaticResource infoTextBlock}">Log File</TextBlock>
+                                <TextBox x:Name="tbRecipeLogFile" Style="{StaticResource InfoTextBox}" Width="430" Text="{Binding CurrentRecipe.LogFilePath, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" IsReadOnly="True" 
+                                    ToolTip="로그 파일 저장 위치를 바꾸려면 클릭하세요. 단, 현재 Recipe가 비어 있는 상태에서만 가능합니다. (Clean 버튼 클릭)">
+                                    <i:Interaction.Triggers>
+                                        <i:EventTrigger EventName="PreviewMouseLeftButtonUp">
+                                            <i:InvokeCommandAction Command="{Binding ChangeLogDirectoryCommand}" />
+                                        </i:EventTrigger>
+                                    </i:Interaction.Triggers>
+                                </TextBox>
+                            </StackPanel>
+                        </Grid>
+                    </Grid>
+                </Border>
             </Grid>
             <!--#endregion-->
 
@@ -698,13 +720,7 @@
                             </Setter.Value>
                         </Setter>
                     </Style>
-                    <Style TargetType="DataGridRow">
-                        <Style.Setters>
-                            <Setter Property="Background" Value="{Binding Background, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" />
-                            <Setter Property="IsEnabled" Value="{Binding IsEnabled, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" />
-                        </Style.Setters>
-                    </Style>
-                    <Style TargetType="DataGrid">
+                    <Style TargetType="DataGrid" BasedOn="{StaticResource RecipeList}">
                         <Style.Setters>
                             <Setter Property="SelectionMode" Value="Single" />
                             <Setter Property="CellStyle">
@@ -718,14 +734,22 @@
                                     </Style>
                                 </Setter.Value>
                             </Setter>
+                            <Setter Property="RowStyle">
+                                <Setter.Value>
+                                    <Style TargetType="DataGridRow">
+                                        <Style.Setters>
+                                            <Setter Property="Height" Value="26" />
+                                            <Setter Property="Background" Value="{Binding Background, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" />
+                                            <Setter Property="IsEnabled" Value="{Binding IsEnabled, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" />
+                                        </Style.Setters>
+                                    </Style>
+                                </Setter.Value>
+                            </Setter>
                         </Style.Setters>
                     </Style>
                 </Grid.Resources>
                 <!-- 수직형 탭 설정-->
-                <TabControl TabStripPlacement="Left" Background="{StaticResource Gray_100}">
-                    <TabControl.Padding>
-                        <Thickness Left="{StaticResource p_5}" Right="{StaticResource p_5}" Top="{StaticResource p_2}" Bottom="{StaticResource p_2}" />
-                    </TabControl.Padding>
+                <TabControl TabStripPlacement="Left" Style="{StaticResource DefaultVerticalTabControl}">
                     <TabControl.Resources>
                         <Style x:Key="gridColumnTextBoxMaxNumber" TargetType="TextBox">
                             <Style.Setters>
@@ -737,11 +761,11 @@
                                 <EventSetter Event="TextChanged"  Handler="TextBox_TextChangedOnlyNumber" />
                             </Style.Setters>
                         </Style>
+                        <Style TargetType="{x:Type TabItem}" BasedOn="{StaticResource DefaultVerticalTabItem}" />
                     </TabControl.Resources>
                     <TabItem Header="Reactor" Background="{StaticResource Gray_100}">
                         <TabItem.Content>
-                            <DataGrid Style="{StaticResource RecipeList}" HorizontalScrollBarVisibility="Auto" AutoGenerateColumns="False" ItemsSource="{Binding CurrentRecipe.Recipes}" CellEditEnding="DataGrid_CellEditEnding">
-                                
+                            <DataGrid HorizontalScrollBarVisibility="Auto" AutoGenerateColumns="False" ItemsSource="{Binding CurrentRecipe.Recipes}" CellEditEnding="DataGrid_CellEditEnding">
                                 <b:Interaction.Triggers>
                                     <b:EventTrigger EventName="Loaded">
                                         <b:InvokeCommandAction Command="{Binding ReactorDataGridLoadedCommand}" PassEventArgsToCommand="True"/>
@@ -763,13 +787,12 @@
                                     <DataGridTextColumn Header="Compare Temp." MinWidth="100" Binding="{Binding cTemp, UpdateSourceTrigger=PropertyChanged}"  EditingElementStyle="{StaticResource gridColumnTextBoxOnlyNumber}" ElementStyle="{StaticResource EventLogElement}" />
                                 </DataGrid.Columns>
                             </DataGrid>
-                           
                         </TabItem.Content>
                     </TabItem>
 
                     <TabItem Header="Flow">
                         <TabItem.Content>
-                            <DataGrid Style="{StaticResource RecipeList}" HorizontalScrollBarVisibility="Auto" AutoGenerateColumns="False" ItemsSource="{Binding CurrentRecipe.Recipes}" CellEditEnding="DataGrid_CellEditEnding">
+                            <DataGrid HorizontalScrollBarVisibility="Auto" AutoGenerateColumns="False" ItemsSource="{Binding CurrentRecipe.Recipes}" CellEditEnding="DataGrid_CellEditEnding">
                                 <b:Interaction.Triggers>
                                     <b:EventTrigger EventName="Loaded">
                                         <b:InvokeCommandAction Command="{Binding FlowDataGridLoadedCommand}" PassEventArgsToCommand="True"/>
@@ -778,27 +801,27 @@
                                 <DataGrid.Columns>
                                     <DataGridTextColumn Header="No" Width="30" Binding="{Binding No}"  IsReadOnly="True" />
                                     <DataGridTextColumn Header="Name" Width="200" Binding="{Binding Name}" />
-                                    <DataGridTextColumn Header="Ramp" Width="100" Binding="{Binding RTime, UpdateSourceTrigger=PropertyChanged}" EditingElementStyle="{StaticResource gridColumnTextBoxOnlyNumber}"/>
-                                    <DataGridTextColumn Header="Hold" Width="100" Binding="{Binding HTime, UpdateSourceTrigger=PropertyChanged}" EditingElementStyle="{StaticResource gridColumnTextBoxOnlyNumber}"/>
-                                    <DataGridTextColumn Header="M01" Width="70" Binding="{Binding M01, UpdateSourceTrigger=PropertyChanged}" EditingElementStyle="{StaticResource gridColumnTextBoxMaxNumber}" />
-                                    <DataGridTextColumn Header="M02" Width="70" Binding="{Binding M02, UpdateSourceTrigger=PropertyChanged}" EditingElementStyle="{StaticResource gridColumnTextBoxMaxNumber}" />
-                                    <DataGridTextColumn Header="M03" Width="70" Binding="{Binding M03, UpdateSourceTrigger=PropertyChanged}" EditingElementStyle="{StaticResource gridColumnTextBoxMaxNumber}" />
-                                    <DataGridTextColumn Header="M04" Width="70" Binding="{Binding M04, UpdateSourceTrigger=PropertyChanged}" EditingElementStyle="{StaticResource gridColumnTextBoxMaxNumber}" />
-                                    <DataGridTextColumn Header="M05" Width="70" Binding="{Binding M05, UpdateSourceTrigger=PropertyChanged}" EditingElementStyle="{StaticResource gridColumnTextBoxMaxNumber}" />
-                                    <DataGridTextColumn Header="M06" Width="70" Binding="{Binding M06, UpdateSourceTrigger=PropertyChanged}" EditingElementStyle="{StaticResource gridColumnTextBoxMaxNumber}" />
-                                    <DataGridTextColumn Header="M07" Width="70" Binding="{Binding M07, UpdateSourceTrigger=PropertyChanged}" EditingElementStyle="{StaticResource gridColumnTextBoxMaxNumber}" />
-                                    <DataGridTextColumn Header="M08" Width="70" Binding="{Binding M08, UpdateSourceTrigger=PropertyChanged}" EditingElementStyle="{StaticResource gridColumnTextBoxMaxNumber}" />
-                                    <DataGridTextColumn Header="M09" Width="70" Binding="{Binding M09, UpdateSourceTrigger=PropertyChanged}" EditingElementStyle="{StaticResource gridColumnTextBoxMaxNumber}" />
-                                    <DataGridTextColumn Header="M10" Width="70" Binding="{Binding M10, UpdateSourceTrigger=PropertyChanged}" EditingElementStyle="{StaticResource gridColumnTextBoxMaxNumber}" />
-                                    <DataGridTextColumn Header="M11" Width="70" Binding="{Binding M11, UpdateSourceTrigger=PropertyChanged}" EditingElementStyle="{StaticResource gridColumnTextBoxMaxNumber}" />
-                                    <DataGridTextColumn Header="M12" Width="70" Binding="{Binding M12, UpdateSourceTrigger=PropertyChanged}" EditingElementStyle="{StaticResource gridColumnTextBoxMaxNumber}" />
-                                    <DataGridTextColumn Header="M13" Width="70" Binding="{Binding M13, UpdateSourceTrigger=PropertyChanged}" EditingElementStyle="{StaticResource gridColumnTextBoxMaxNumber}" />
-                                    <DataGridTextColumn Header="M14" Width="70" Binding="{Binding M14, UpdateSourceTrigger=PropertyChanged}" EditingElementStyle="{StaticResource gridColumnTextBoxMaxNumber}" />
-                                    <DataGridTextColumn Header="M15" Width="70" Binding="{Binding M15, UpdateSourceTrigger=PropertyChanged}" EditingElementStyle="{StaticResource gridColumnTextBoxMaxNumber}" />
-                                    <DataGridTextColumn Header="M16" Width="70" Binding="{Binding M16, UpdateSourceTrigger=PropertyChanged}" EditingElementStyle="{StaticResource gridColumnTextBoxMaxNumber}" />
-                                    <DataGridTextColumn Header="M17" Width="70" Binding="{Binding M17, UpdateSourceTrigger=PropertyChanged}" EditingElementStyle="{StaticResource gridColumnTextBoxMaxNumber}" />
-                                    <DataGridTextColumn Header="M18" Width="70" Binding="{Binding M18, UpdateSourceTrigger=PropertyChanged}" EditingElementStyle="{StaticResource gridColumnTextBoxMaxNumber}" />
-                                    <DataGridTextColumn Header="M19" Width="70" Binding="{Binding M19, UpdateSourceTrigger=PropertyChanged}" EditingElementStyle="{StaticResource gridColumnTextBoxMaxNumber}" />
+                                    <DataGridTextColumn Header="Ramp" Width="100" Binding="{Binding RTime, UpdateSourceTrigger=PropertyChanged}" EditingElementStyle="{StaticResource gridColumnTextBoxOnlyNumber}" ElementStyle="{StaticResource EventLogElement}" />
+                                    <DataGridTextColumn Header="Hold" Width="100" Binding="{Binding HTime, UpdateSourceTrigger=PropertyChanged}" EditingElementStyle="{StaticResource gridColumnTextBoxOnlyNumber}" ElementStyle="{StaticResource EventLogElement}" />
+                                    <DataGridTextColumn Header="M01" Width="70" Binding="{Binding M01, UpdateSourceTrigger=PropertyChanged}" EditingElementStyle="{StaticResource gridColumnTextBoxMaxNumber}" ElementStyle="{StaticResource EventLogElement}" />
+                                    <DataGridTextColumn Header="M02" Width="70" Binding="{Binding M02, UpdateSourceTrigger=PropertyChanged}" EditingElementStyle="{StaticResource gridColumnTextBoxMaxNumber}" ElementStyle="{StaticResource EventLogElement}" />
+                                    <DataGridTextColumn Header="M03" Width="70" Binding="{Binding M03, UpdateSourceTrigger=PropertyChanged}" EditingElementStyle="{StaticResource gridColumnTextBoxMaxNumber}" ElementStyle="{StaticResource EventLogElement}" />
+                                    <DataGridTextColumn Header="M04" Width="70" Binding="{Binding M04, UpdateSourceTrigger=PropertyChanged}" EditingElementStyle="{StaticResource gridColumnTextBoxMaxNumber}"  ElementStyle="{StaticResource EventLogElement}" />
+                                    <DataGridTextColumn Header="M05" Width="70" Binding="{Binding M05, UpdateSourceTrigger=PropertyChanged}" EditingElementStyle="{StaticResource gridColumnTextBoxMaxNumber}" ElementStyle="{StaticResource EventLogElement}" />
+                                    <DataGridTextColumn Header="M06" Width="70" Binding="{Binding M06, UpdateSourceTrigger=PropertyChanged}" EditingElementStyle="{StaticResource gridColumnTextBoxMaxNumber}" ElementStyle="{StaticResource EventLogElement}" />
+                                    <DataGridTextColumn Header="M07" Width="70" Binding="{Binding M07, UpdateSourceTrigger=PropertyChanged}" EditingElementStyle="{StaticResource gridColumnTextBoxMaxNumber}" ElementStyle="{StaticResource EventLogElement}" />
+                                    <DataGridTextColumn Header="M08" Width="70" Binding="{Binding M08, UpdateSourceTrigger=PropertyChanged}" EditingElementStyle="{StaticResource gridColumnTextBoxMaxNumber}" ElementStyle="{StaticResource EventLogElement}" />
+                                    <DataGridTextColumn Header="M09" Width="70" Binding="{Binding M09, UpdateSourceTrigger=PropertyChanged}" EditingElementStyle="{StaticResource gridColumnTextBoxMaxNumber}" ElementStyle="{StaticResource EventLogElement}" />
+                                    <DataGridTextColumn Header="M10" Width="70" Binding="{Binding M10, UpdateSourceTrigger=PropertyChanged}" EditingElementStyle="{StaticResource gridColumnTextBoxMaxNumber}" ElementStyle="{StaticResource EventLogElement}" />
+                                    <DataGridTextColumn Header="M11" Width="70" Binding="{Binding M11, UpdateSourceTrigger=PropertyChanged}" EditingElementStyle="{StaticResource gridColumnTextBoxMaxNumber}" ElementStyle="{StaticResource EventLogElement}" />
+                                    <DataGridTextColumn Header="M12" Width="70" Binding="{Binding M12, UpdateSourceTrigger=PropertyChanged}" EditingElementStyle="{StaticResource gridColumnTextBoxMaxNumber}" ElementStyle="{StaticResource EventLogElement}" />
+                                    <DataGridTextColumn Header="M13" Width="70" Binding="{Binding M13, UpdateSourceTrigger=PropertyChanged}" EditingElementStyle="{StaticResource gridColumnTextBoxMaxNumber}" ElementStyle="{StaticResource EventLogElement}" />
+                                    <DataGridTextColumn Header="M14" Width="70" Binding="{Binding M14, UpdateSourceTrigger=PropertyChanged}" EditingElementStyle="{StaticResource gridColumnTextBoxMaxNumber}" ElementStyle="{StaticResource EventLogElement}" />
+                                    <DataGridTextColumn Header="M15" Width="70" Binding="{Binding M15, UpdateSourceTrigger=PropertyChanged}" EditingElementStyle="{StaticResource gridColumnTextBoxMaxNumber}" ElementStyle="{StaticResource EventLogElement}" />
+                                    <DataGridTextColumn Header="M16" Width="70" Binding="{Binding M16, UpdateSourceTrigger=PropertyChanged}" EditingElementStyle="{StaticResource gridColumnTextBoxMaxNumber}" ElementStyle="{StaticResource EventLogElement}" />
+                                    <DataGridTextColumn Header="M17" Width="70" Binding="{Binding M17, UpdateSourceTrigger=PropertyChanged}" EditingElementStyle="{StaticResource gridColumnTextBoxMaxNumber}" ElementStyle="{StaticResource EventLogElement}" />
+                                    <DataGridTextColumn Header="M18" Width="70" Binding="{Binding M18, UpdateSourceTrigger=PropertyChanged}" EditingElementStyle="{StaticResource gridColumnTextBoxMaxNumber}" ElementStyle="{StaticResource EventLogElement}" />
+                                    <DataGridTextColumn Header="M19" Width="70" Binding="{Binding M19, UpdateSourceTrigger=PropertyChanged}" EditingElementStyle="{StaticResource gridColumnTextBoxMaxNumber}" ElementStyle="{StaticResource EventLogElement}" />
                                 </DataGrid.Columns>
                             </DataGrid>
                         </TabItem.Content>
@@ -806,7 +829,7 @@
 
                     <TabItem Header="Valve">
                         <TabItem.Content>
-                            <DataGrid  Style="{StaticResource RecipeList}" HorizontalScrollBarVisibility="Auto" AutoGenerateColumns="False" ItemsSource="{Binding CurrentRecipe.Recipes}">
+                            <DataGrid  HorizontalScrollBarVisibility="Auto" AutoGenerateColumns="False" ItemsSource="{Binding CurrentRecipe.Recipes}">
                                 <b:Interaction.Triggers>
                                     <b:EventTrigger EventName="Loaded">
                                         <b:InvokeCommandAction Command="{Binding ValveDataGridLoadedCommand}" PassEventArgsToCommand="True"/>
@@ -845,21 +868,28 @@
                     </TabItem>
                 </TabControl>
             </Grid>
-            <!--#endregion-->
+            <Grid Grid.Row="3">
+                <Border BorderBrush="{StaticResource Gray_300}">
+                    <Border.BorderThickness>
+                        <Thickness Top="1" Bottom="1" />
+                    </Border.BorderThickness>
+                    <Border.Padding>
+                        <Thickness Left="{StaticResource p_5}" Right="{StaticResource p_5}" Top="{StaticResource p_2}" Bottom="{StaticResource p_2}" />
+                    </Border.Padding>
+                    <StackPanel Orientation="Horizontal">
+                        <Image Source="/Resources/icons/icon=live_plot.png" />
+                        <Label FontFamily="Segoe UI" FontSize="14" Foreground="{StaticResource Gray_950}">
+                            <Label.Padding>
+                                <Thickness Left="{StaticResource p_1}" Top="0" />
+                            </Label.Padding>
+                            Live Plot
+                        </Label>
+                    </StackPanel>
+                </Border>
+            </Grid>
 
-            <Grid Grid.Row="3" Background="#3e4a4b" DataContext="{Binding DashBoardViewModel}">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition />
-                    <ColumnDefinition/>
-                </Grid.ColumnDefinitions>
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="20"/>
-                    <RowDefinition/>
-                </Grid.RowDefinitions>
-                <StackPanel Grid.Column="0" Grid.Row="0" Orientation="Horizontal">
-                    <Button Content="LivePlot"/>
-                </StackPanel>
-                <oxy:PlotView Grid.Row="1" Grid.ColumnSpan="2" x:Name="FlowControlLive" Model="{Binding FlowControlLivePlot}">
+            <Grid Grid.Row="4" Background="#3e4a4b" DataContext="{Binding DashBoardViewModel}">
+                <oxy:PlotView Grid.Row="1" x:Name="FlowControlLive" Model="{Binding FlowControlLivePlot}"  Background="{StaticResource Gray_50}" BorderBrush="{StaticResource Gray_300}">
                     <oxy:PlotView.ContextMenu>
                         <ContextMenu >
                             <MenuItem Header="{Binding ControlValueOption}" Command="{Binding ShowControlValue}"/>

@@ -205,7 +205,10 @@ namespace SapphireXR_App.Models
         [ObservableProperty]
         private bool _v32; //_vent
 
-        Brush _background = Brushes.White;
+        public static readonly Brush DefaultBackground = Application.Current.FindResource("DefaultRecipeListBackground") as Brush ?? new SolidColorBrush(Color.FromRgb(0x16, 0x16, 0x16));
+        public static readonly Brush DefaultForeground = Application.Current.FindResource("DefaultRecipeListForeground") as Brush ?? new SolidColorBrush(Color.FromRgb(0xC2, 0xC2, 0xC2));
+
+        Brush _background = DefaultBackground;
         [Ignore]
         public Brush Background
         {
@@ -221,7 +224,7 @@ namespace SapphireXR_App.Models
             set { SetProperty(ref _isEnabled, value); }
         }
 
-        Brush _foreGround = Brushes.Black;
+        Brush _foreGround = DefaultForeground;
         [Ignore]
         public Brush Foreground
         {

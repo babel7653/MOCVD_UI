@@ -47,16 +47,19 @@ namespace SapphireXR_App.ViewModels
                         {
                             case false:
                                 StartText = "Pause";
+                                StartPauseIconPath = PauseIconPath;
                                 startOrStopCommand = pauseCommand;
                                 break;
 
                             case true:
                                 StartText = "Start";
+                                StartPauseIconPath = StartIconPath;
                                 startOrStopCommand = startCommand;
                                 break;
 
                             case null:
                                 StartText = "";
+                                StartPauseIconPath = StartIconPath;
                                 startOrStopCommand = null;
                                 break;
                         }
@@ -359,6 +362,11 @@ namespace SapphireXR_App.ViewModels
         };
 
         public RecipeRunBottomDashBoardViewModel DashBoardViewModel { get; set; }
+
+        private static readonly string StartIconPath = "/Resources/icons/icon=play.png";
+        private static readonly string PauseIconPath = "/Resources/icons/icon=stop.png";
+        [ObservableProperty]
+        private string _startPauseIconPath = StartIconPath;
 
         private DataGrid? reactorDataGrid;
         private DataGrid? flowDataGrid;

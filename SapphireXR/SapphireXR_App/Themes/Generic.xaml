@@ -169,8 +169,6 @@
             </Setter.Value>
         </Setter>
     </Style>
-
-    
     <Style TargetType="Button" x:Key="DefaultButton">
         <Setter Property="Cursor" Value="Hand" />
         <Setter Property="Background" Value="{StaticResource Gray_300}" />
@@ -204,7 +202,6 @@
             </Setter.Value>
         </Setter>
     </Style>
-
     <Style TargetType="Button" x:Key="PrimaryButton">
         <Setter Property="Cursor" Value="Hand" />
         <Setter Property="Background" Value="{StaticResource Sapphire_Blue}" />
@@ -238,7 +235,6 @@
             </Setter.Value>
         </Setter>
     </Style>
-
     <Style TargetType="Label" x:Key="labelOverTextBox">
         <Setter Property="Padding">
             <Setter.Value>
@@ -246,8 +242,6 @@
             </Setter.Value>
         </Setter>
     </Style>
-
-
     <Style x:Key="ComboBoxToggleButton" TargetType="ToggleButton">
         <Setter Property="Template">
             <Setter.Value>
@@ -272,7 +266,6 @@
     <ControlTemplate x:Key="ComboBoxTextBox" TargetType="TextBox">
         <Border x:Name="PART_ContentHost" Focusable="True" />
     </ControlTemplate>
-
     <Style x:Key="theComboBox" TargetType="{x:Type ComboBox}">
         <Setter Property="Foreground" Value="{StaticResource Gray_900}" />
         <Setter Property="Background" Value="{StaticResource Gray_300}" />
@@ -695,6 +688,34 @@
                             <Setter Property="Foreground" Value="{StaticResource Gray_950}" />
                             <Setter Property="Background" Value="{StaticResource Gray_50}" />
                             <Setter TargetName="innerBorder" Property="Background" Value="{StaticResource Gray_50}" />
+                            <Setter TargetName="innerBorder" Property="BorderBrush" Value="{StaticResource Gray_300}" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    <Style TargetType="TextBox" x:Key="ButtonLikeTextBox">
+        <Setter Property="FontSize" Value="12" />
+        <Setter Property="FontFamily" Value="Segoe UI" />
+        <Setter Property="Foreground" Value="{StaticResource Gray_950}" />
+        <Setter Property="Background" Value="{StaticResource Gray_400}" />
+        <Setter Property="VerticalContentAlignment" Value="Center" />
+        <Setter Property="HorizontalContentAlignment" Value="Center" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="TextBox">
+                    <Border Background="{StaticResource Gray_400}" BorderBrush="{StaticResource Gray_300}" BorderThickness="1.2" x:Name="innerBorder">
+                        <Border.CornerRadius>
+                            <CornerRadius TopLeft="{StaticResource r_1}" TopRight="{StaticResource r_1}" BottomLeft="{StaticResource r_1}" BottomRight="{StaticResource r_1}" />
+                        </Border.CornerRadius>
+                        <ScrollViewer x:Name="PART_ContentHost" Margin="0" />
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsEnabled" Value="false">
+                            <Setter Property="Foreground" Value="{StaticResource Gray_950}" />
+                            <Setter Property="Background" Value="{StaticResource Gray_400}" />
+                            <Setter TargetName="innerBorder" Property="Background" Value="{StaticResource Gray_400}" />
                             <Setter TargetName="innerBorder" Property="BorderBrush" Value="{StaticResource Gray_300}" />
                         </Trigger>
                     </ControlTemplate.Triggers>

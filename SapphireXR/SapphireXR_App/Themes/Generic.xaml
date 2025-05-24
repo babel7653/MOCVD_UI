@@ -392,6 +392,16 @@
             </Setter.Value>
         </Setter>
     </Style>
+    <Style TargetType="DataGridColumnHeader"  x:Key="EventLogColumnHeader">
+        <Setter Property="HorizontalContentAlignment" Value="Center" />
+        <Setter Property="Background" Value="{StaticResource Gray_50}" />
+        <Setter Property="BorderBrush" Value="{StaticResource Gray_300}" />
+        <Setter Property="BorderThickness">
+            <Setter.Value>
+                <Thickness Bottom="1" />
+            </Setter.Value>
+        </Setter>
+    </Style>
     <Style TargetType="DataGrid" x:Key="EventLog">
         <Setter Property="HorizontalGridLinesBrush" Value="{StaticResource Gray_300}" />
         <Setter Property="VerticalGridLinesBrush" Value="{StaticResource Gray_50}" />
@@ -403,10 +413,7 @@
         <Setter Property="Foreground" Value="{StaticResource Gray_900}" />
         <Setter Property="ColumnHeaderStyle">
             <Setter.Value>
-                <Style TargetType="DataGridColumnHeader">
-                    <Setter Property="HorizontalContentAlignment" Value="Center" />
-                    <Setter Property="Background" Value="{StaticResource Gray_50}" />
-                </Style>
+                <Style TargetType="DataGridColumnHeader" BasedOn="{StaticResource EventLogColumnHeader}" />
             </Setter.Value>
         </Setter>
         <Setter Property="CellStyle">
@@ -673,6 +680,7 @@
         <Setter Property="Foreground" Value="{StaticResource Gray_950}" />
         <Setter Property="Background" Value="{StaticResource Gray_50}" />
         <Setter Property="VerticalContentAlignment" Value="Center" />
+        <Setter Property="HorizontalContentAlignment" Value="Center" />
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="TextBox">
@@ -726,8 +734,8 @@
         <Setter Property="Width" Value="20"/>
         <Setter Property="Height" Value="80"/>
         <Setter Property="Padding" Value="3"/>
-        <Setter Property="Foreground" Value="White"/>
-        <Setter Property="FontSize" Value="10"/>
+        <Setter Property="Foreground" Value="{StaticResource Gray_950}"/>
+        <Setter Property="FontSize" Value="12"/>
         <Setter Property="FontFamily" Value="Segoe UI" />
         <Setter Property="Template">
             <Setter.Value>

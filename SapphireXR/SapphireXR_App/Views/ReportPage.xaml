@@ -9,7 +9,7 @@
 	  xmlns:b="http://schemas.microsoft.com/xaml/behaviors"
 	  xmlns:vm="clr-namespace:SapphireXR_App.ViewModels"
 	  xmlns:control="clr-namespace:SapphireXR_App.Controls"
-      d:DesignHeight="1020" d:DesignWidth="1620"
+      d:DesignHeight="1032" d:DesignWidth="1620"
       Title="ReportPage" Background="{StaticResource Gray_300}">
     <Grid>
         <Grid.Margin>

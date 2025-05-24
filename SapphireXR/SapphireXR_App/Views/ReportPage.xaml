@@ -9,51 +9,81 @@
 	  xmlns:b="http://schemas.microsoft.com/xaml/behaviors"
 	  xmlns:vm="clr-namespace:SapphireXR_App.ViewModels"
 	  xmlns:control="clr-namespace:SapphireXR_App.Controls"
-      d:DesignHeight="810" d:DesignWidth="1320"
-      Title="ReportPage">
+      d:DesignHeight="1020" d:DesignWidth="1620"
+      Title="ReportPage" Background="{StaticResource Gray_300}">
     <Grid>
+        <Grid.Margin>
+            <Thickness Left="{StaticResource p_5}" Right="{StaticResource p_5}" Top="{StaticResource p_5}" Bottom="{StaticResource p_5}"/>
+        </Grid.Margin>
         <Grid.RowDefinitions>
-            <RowDefinition Height="40"/>
+            <RowDefinition Height="64"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
-        <StackPanel Grid.Row="0" Background="LightGray" Orientation="Horizontal">
-            <StackPanel.Resources>
-                <Style TargetType="{x:Type Button}">
-                    <Setter Property="Background" Value="#FF0078D7"/>
-                    <Setter Property="Foreground" Value="White"/>
-                    <Setter Property="Width" Value="70"/>
-                    <Setter Property="Margin" Value="0,0,5,0"/>
-                    <Setter Property="VerticalAlignment" Value="Center"/>
-                    <Style.Resources>
-                        <Style TargetType="{x:Type Border}">
-                            <Setter Property="CornerRadius" Value="6"/>
-                        </Style>
-                    </Style.Resources>
-                </Style>
-                <Style TargetType="{x:Type TextBox}">
-                    <Setter Property="VerticalAlignment" Value="Center"/>
-                    <Setter Property="Margin" Value="10,0,10,0" />
-                    <Setter Property="Width" Value="200"/>
-                    <Setter Property="Height" Value="25"/>
-                </Style>
-                <Style TargetType="{x:Type TextBlock}">
-                    <Setter Property="VerticalAlignment" Value="Center"/>
-                </Style>
-            </StackPanel.Resources>
-            <TextBlock FontSize="14" Margin="10,0,0,0" VerticalAlignment="Center" Foreground="Black" Text="Log1 File"/>
-            <TextBox x:Name="PlotLog1FileOpen" Text="{Binding Path=Log1FilePath, UpdateSourceTrigger=PropertyChanged}"/>
-            <Button x:Name="PlotLog1FileClose" Content="Open" Command="{Binding OpenLog1FileCommand}" Margin="0,0,20,0"/>
-            <TextBlock FontSize="14" Foreground="Black" Text="Log2 File"/>
-            <TextBox x:Name="PlotLog2FileOpen" Width="200" Height="25" Text="{Binding Path=Log2FilePath, UpdateSourceTrigger=PropertyChanged}"/>
-            <Button x:Name="PlotLog2FileClose" Content="Open" Command="{Binding OpenLog2FileCommand}"/>
-            <Button x:Name="PlotChart" Content="Select Tag" Margin="40,0,5,0" Command="{Binding ShowSeriesSelectionViewCommand}"/>
-            <Button x:Name="PlotZoomToFit" Content="Zoom To Fit" Width="90" Command="{Binding ZoomToFitCommand}"/>
-            <Button x:Name="PlotExport" Content="Export" Command="{Binding ExportCommand}"/>
-            <CheckBox Margin="30,0,0,0"  VerticalAlignment="Center" IsChecked="{Binding ShowStageLine, Mode=OneWayToSource, UpdateSourceTrigger=PropertyChanged}">Stage Line</CheckBox>
-            <TextBlock Text="Mode" Margin="30,0,0,0" VerticalAlignment="Center"/>
-            <ComboBox ItemsSource="{Binding ChartMode, Mode=OneTime}" SelectedItem="{Binding CurrentMode, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Height="25" Width="100" Margin="10,0,0,0" VerticalAlignment="Center"/>
-        </StackPanel>
-        <oxy:PlotView Model="{Binding FlowControlLivePlot}" Grid.Row="1" ZoomVerticalCursor="" ZoomRectangleCursor="" ZoomHorizontalCursor="" PanCursor="">
+        <Grid Grid.Row="0">
+            <Grid.RowDefinitions>
+                <RowDefinition />
+            </Grid.RowDefinitions>
+            <Grid.Margin>
+                <Thickness Bottom="{StaticResource p_3}" />
+            </Grid.Margin>
+            <Rectangle  Grid.Row="0" Grid.ColumnSpan="2" RadiusX="{StaticResource r_2}"  RadiusY="{StaticResource r_2}" Fill="{StaticResource Gray_50}" />
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition />
+                    <ColumnDefinition />
+                </Grid.ColumnDefinitions>
+                <Grid.Margin>
+                    <Thickness Left="{StaticResource p_5}" Right="{StaticResource p_5}" Top="{StaticResource p_3}" Bottom="{StaticResource p_3}" />
+                </Grid.Margin>
+                <StackPanel Grid.Row="0" Grid.Column="0" Background="Transparent" Orientation="Horizontal">
+                    <TextBlock Text="Log1 File" Style="{StaticResource infoTextBlockLeft}" Width="58" />
+                    <TextBox x:Name="PlotLog1FileOpen" Text="{Binding Path=Log1FilePath, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource InfoTextBox}" Width="164">
+                        <TextBox.Margin>
+                            <Thickness Right="{StaticResource p_2}" />
+                        </TextBox.Margin>
+                    </TextBox>
+                    <Button x:Name="PlotLog1FileClose" Content="Open" Command="{Binding OpenLog1FileCommand}" Style="{StaticResource PrimaryButton}" Width="66">
+                        <Button.Margin>
+                            <Thickness Right="{StaticResource p_4}" />
+                        </Button.Margin>
+                    </Button>
+                    <TextBlock Text="Log2 File" Style="{StaticResource infoTextBlockLeft}" Width="58" />
+                    <TextBox x:Name="PlotLog2FileOpen" Width="164" Text="{Binding Path=Log2FilePath, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource InfoTextBox}">
+                        <TextBox.Margin>
+                            <Thickness Right="{StaticResource p_2}" />
+                        </TextBox.Margin>
+                    </TextBox>
+                    <Button x:Name="PlotLog2FileClose" Content="Open" Command="{Binding OpenLog2FileCommand}" Style="{StaticResource PrimaryButton}" Width="66"/>
+            </StackPanel>
+            <StackPanel Grid.Row="0" Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Right">
+                    <CheckBox VerticalAlignment="Center" IsChecked="{Binding ShowStageLine, Mode=OneWayToSource, UpdateSourceTrigger=PropertyChanged}" FontSize="12" FontFamily="Segoe UI" Foreground="{StaticResource Gray_900}" Style="{StaticResource DefaultCheckBox}">
+                        <CheckBox.Margin>
+                            <Thickness Right="{StaticResource p_4}" />
+                        </CheckBox.Margin>
+                        Stage Line
+                    </CheckBox>
+                    <Button x:Name="PlotChart" Content="Select Tag" Command="{Binding ShowSeriesSelectionViewCommand}" Width="96" Style="{StaticResource DefaultButton}">
+                        <Button.Margin>
+                            <Thickness Right="{StaticResource p_2}" />
+                        </Button.Margin>
+                    </Button>
+                    <Button x:Name="PlotZoomToFit" Content="Zoom To Fit" Command="{Binding ZoomToFitCommand}" Width="106" Style="{StaticResource DefaultButton}">
+                        <Button.Margin>
+                            <Thickness Right="{StaticResource p_2}" />
+                        </Button.Margin>
+                    </Button>
+                    <Button x:Name="PlotExport" Content="Export" Command="{Binding ExportCommand}" Style="{StaticResource DefaultButton}" Width="76">
+                        <Button.Margin>
+                            <Thickness Right="{StaticResource p_3}" />
+                        </Button.Margin>
+                    </Button>
+                    <TextBlock Text="Mode" VerticalAlignment="Center" Width="46" Style="{StaticResource infoTextBlockLeft}"/>
+                <ComboBox ItemsSource="{Binding ChartMode, Mode=OneTime}" SelectedItem="{Binding CurrentMode, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Width="160" VerticalAlignment="Stretch" Style="{StaticResource theComboBox}"/>
+            </StackPanel>
+            </Grid>
+        </Grid>
+        <Rectangle Grid.Row="1" Fill="{StaticResource Gray_50}" RadiusX="{StaticResource r_2}" RadiusY="{StaticResource r_2}" />
+        <oxy:PlotView Model="{Binding FlowControlLivePlot}" Background="Transparent" Grid.Row="1" ZoomVerticalCursor="" ZoomRectangleCursor="" ZoomHorizontalCursor="" PanCursor="">
         </oxy:PlotView>
     </Grid>
 </Page>

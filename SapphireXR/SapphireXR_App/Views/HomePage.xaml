@@ -925,8 +925,8 @@
                                                 <ToggleButton Style="{StaticResource ToggleSwitch}" Grid.Column="0" x:Name="btHeaterOn" Content="{Binding InductionHeaterOn}" Command="{Binding InductionHeaterToggleCommand}" Height="26"  />
                                                 <Button Grid.Column="2" x:Name="btHeaterReset" Command="{Binding InductionHeaterResetCommand}" Height="26" Style="{StaticResource DefaultButton}">
                                                     <StackPanel Orientation="Horizontal">
-                                                        <Image Source="/Resources/icons/icon_line_reset.png" Width="10" Height="10"/>
-                                                        <Label FontFamily="Segoe UI" FontSize="10" Content="Reset" Foreground="{StaticResource Gray_900}" />
+                                                        <Image Source="/Resources/icons/icon_line_reset.png" Width="12" Height="12"/>
+                                                        <Label FontFamily="Segoe UI" FontSize="12" Content="Reset" Foreground="{StaticResource Gray_900}" />
                                                     </StackPanel>
                                                 </Button>
                                             </Grid>
@@ -1069,8 +1069,8 @@
                                                 <ToggleButton Style="{StaticResource ToggleSwitch}" Grid.Column="0" x:Name="btPumpOn" Content="{Binding VaccumPumpOn}" Command="{Binding VacuumPumpToggleCommand}" Height="26"  />
                                                 <Button Grid.Column="2" x:Name="btPumpReset" Command="{Binding VacuumPumpResetCommand}" Height="26" Style="{StaticResource DefaultButton}">
                                                     <StackPanel Orientation="Horizontal">
-                                                        <Image Source="/Resources/icons/icon_line_reset.png" Width="10" Height="10"/>
-                                                        <Label FontFamily="Segoe UI" FontSize="10" Content="Reset" Foreground="{StaticResource Gray_900}" />
+                                                        <Image Source="/Resources/icons/icon_line_reset.png" Width="12" Height="12"/>
+                                                        <Label FontFamily="Segoe UI" FontSize="12" Content="Reset" Foreground="{StaticResource Gray_900}" />
                                                     </StackPanel>
                                                 </Button>
                                             </Grid>

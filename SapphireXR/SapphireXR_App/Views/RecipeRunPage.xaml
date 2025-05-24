@@ -889,7 +889,7 @@
             </Grid>
 
             <Grid Grid.Row="4" Background="#3e4a4b" DataContext="{Binding DashBoardViewModel}">
-                <oxy:PlotView Grid.Row="1" x:Name="FlowControlLive" Model="{Binding FlowControlLivePlot}"  Background="{StaticResource Gray_50}" BorderBrush="{StaticResource Gray_300}">
+                <oxy:PlotView Grid.Row="1" x:Name="FlowControlLive" Model="{Binding FlowControlLivePlot}" Background="{StaticResource Gray_50}" BorderBrush="{StaticResource Gray_300}">
                     <oxy:PlotView.ContextMenu>
                         <ContextMenu >
                             <MenuItem Header="{Binding ControlValueOption}" Command="{Binding ShowControlValue}"/>

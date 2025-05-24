@@ -178,7 +178,7 @@
         <Setter Property="HorizontalAlignment" Value="Stretch" />
         <Setter Property="BorderThickness" Value="0" />
         <Setter Property="FontFamily" Value="Segoe UI" />
-        <Setter Property="FontSize" Value="10" />
+        <Setter Property="FontSize" Value="12" />
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="Button">
@@ -212,7 +212,7 @@
         <Setter Property="HorizontalAlignment" Value="Stretch" />
         <Setter Property="BorderThickness" Value="0" />
         <Setter Property="FontFamily" Value="Segoe UI" />
-        <Setter Property="FontSize" Value="10" />
+        <Setter Property="FontSize" Value="12" />
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="Button">
@@ -672,9 +672,33 @@
         <Setter Property="FontFamily" Value="Segoe UI" />
         <Setter Property="Foreground" Value="{StaticResource Gray_950}" />
         <Setter Property="Background" Value="{StaticResource Gray_50}" />
-        <Setter Property="BorderThickness" Value="1" />
-        <Setter Property="BorderBrush" Value="{StaticResource Gray_300}" />
         <Setter Property="VerticalContentAlignment" Value="Center" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="TextBox">
+                    <Border Background="{StaticResource Gray_50}" BorderBrush="{StaticResource Gray_300}" BorderThickness="1.2" x:Name="innerBorder">
+                        <Border.CornerRadius>
+                            <CornerRadius TopLeft="{StaticResource r_1}" TopRight="{StaticResource r_1}" BottomLeft="{StaticResource r_1}" BottomRight="{StaticResource r_1}" />
+                        </Border.CornerRadius>
+                        <ScrollViewer x:Name="PART_ContentHost" Margin="0" />
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsEnabled" Value="false">
+                            <Setter Property="Foreground" Value="{StaticResource Gray_950}" />
+                            <Setter Property="Background" Value="{StaticResource Gray_50}" />
+                            <Setter TargetName="innerBorder" Property="Background" Value="{StaticResource Gray_50}" />
+                            <Setter TargetName="innerBorder" Property="BorderBrush" Value="{StaticResource Gray_300}" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    <Style TargetType="TextBlock" x:Key="infoTextBlockLeft">
+        <Setter Property="VerticalAlignment" Value="Center" />
+        <Setter Property="FontSize" Value="12" />
+        <Setter Property="FontFamily" Value="Segoe UI" />
+        <Setter Property="Foreground" Value="{StaticResource Gray_900}" />
     </Style>
     <Style TargetType="TextBlock" x:Key="infoTextBlock">
         <Setter Property="VerticalAlignment" Value="Center" />
@@ -735,6 +759,51 @@
         <Setter Property="Padding">
             <Setter.Value>
                 <Thickness Left="{StaticResource p_5}" Right="{StaticResource p_5}" Top="{StaticResource p_2}" Bottom="{StaticResource p_2}" />
+            </Setter.Value>
+        </Setter>
+    </Style>
+    <Style x:Key="DefaultCheckBox" TargetType="{x:Type CheckBox}">
+        <Setter Property="Background" Value="Transparent" />
+        <Setter Property="BorderBrush" Value="{StaticResource Gray_950}"/>
+        <Setter Property="BorderThickness" Value="1"/>
+        <Setter Property="Foreground" Value="{StaticResource Gray_900}" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type CheckBox}">
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Stretch" >
+                        <Border BorderBrush="{TemplateBinding BorderBrush}" Background="{TemplateBinding Background}" BorderThickness="{TemplateBinding BorderThickness}" Width="15" Height="15">
+                            <Border.CornerRadius>
+                                <CornerRadius TopLeft="{StaticResource p_1}" TopRight="{StaticResource p_1}" BottomLeft="{StaticResource p_1}" BottomRight="{StaticResource p_1}"/>
+                            </Border.CornerRadius>
+                            <Grid>
+                                <Path Stretch="Uniform" Width="15" Height="10" Fill="{StaticResource Gray_300}" Name="eliCheck" Data="F1 M 9.97498,1.22334L 4.6983,9.09834L 4.52164,9.09834L 0,5.19331L 1.27664,3.52165L 4.255,6.08833L 8.33331,1.52588e-005L 9.97498,1.22334 Z " Visibility="Collapsed"/>
+                            </Grid>
+                        </Border>
+                        <TextBlock Margin="5,0,0,0" VerticalAlignment="Center" Foreground="{TemplateBinding Foreground}" Text="{TemplateBinding Content}"></TextBlock>
+                    </StackPanel>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter Property="Background" Value="{StaticResource Sapphire_Blue}" />
+                            <Setter Property="BorderThickness" Value="0" />
+                        </Trigger>
+                        <Trigger Property="IsPressed" Value="True">
+                            <Setter Property="Background" Value="{StaticResource Sapphire_Blue}" />
+                            <Setter Property="BorderThickness" Value="0" />
+                        </Trigger>
+                        <Trigger Property="IsEnabled" Value="False">
+                            <Setter Property="Background" Value="LightGray" />
+                            <Setter Property="Foreground" Value="Gray" />
+                            <Setter Property="BorderThickness" Value="1"/>
+                            <Setter Property="BorderBrush" Value="Gray"/>
+                            <Setter TargetName="eliCheck" Property="Opacity" Value="0.5" />
+                        </Trigger>
+                        <Trigger Property="IsChecked" Value="True">
+                            <Setter TargetName="eliCheck" Property="Visibility" Value="Visible"></Setter>
+                            <Setter Property="BorderThickness" Value="0" />
+                            <Setter Property="Background" Value="{StaticResource Sapphire_Blue}" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
             </Setter.Value>
         </Setter>
     </Style>

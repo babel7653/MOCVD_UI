@@ -11,10 +11,5 @@ namespace SapphireXR_App.Views
             InitializeComponent();
             DataContext = App.Current.Services.GetService(typeof(HomeViewModel));
         }
-
-        private void Button_Click(object sender, System.Windows.RoutedEventArgs e)
-        {
-
-        }
     }
 }

@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:SapphireXR_App.Views"
         xmlns:i="clr-namespace:Microsoft.Xaml.Behaviors;assembly=Microsoft.Xaml.Behaviors"
         mc:Ignorable="d"
-        Title="ManualBatchView" Height="955" Width="417" Background="{StaticResource Gray_100}">
+        Title="ManualBatchView" d:DesignWidth="400" d:DesignHeight="930" Height="955" Width="417" Background="{StaticResource Gray_100}">
     <StackPanel Grid.ColumnSpan="2" Background="{DynamicResource Gray_100}" Margin="{StaticResource p_5_sqrt}">
         <StackPanel.Resources>
             <Style x:Key="gridColumnTextBox" TargetType="TextBox">

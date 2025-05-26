@@ -30,12 +30,14 @@
     <None Remove="Resources\icons\icon=live_plot.png" />
     <None Remove="Resources\icons\icon=lock_01.png" />
     <None Remove="Resources\icons\icon=lock_02.png" />
+    <None Remove="Resources\icons\icon=minus.png" />
     <None Remove="Resources\icons\icon=new.png" />
     <None Remove="Resources\icons\icon=nut and bolt.png" />
     <None Remove="Resources\icons\icon=open.png" />
     <None Remove="Resources\icons\icon=pause.png" />
     <None Remove="Resources\icons\icon=play.png" />
     <None Remove="Resources\icons\icon=PLC.png" />
+    <None Remove="Resources\icons\icon=plus.png" />
     <None Remove="Resources\icons\icon=pressure.png" />
     <None Remove="Resources\icons\icon=recipe_information.png" />
     <None Remove="Resources\icons\icon=refresh.png" />
@@ -134,6 +136,9 @@
     <Resource Include="Resources\icons\icon=lock_02.png">
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </Resource>
+    <Resource Include="Resources\icons\icon=minus.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
     <Resource Include="Resources\icons\icon=new.png">
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </Resource>
@@ -150,6 +155,9 @@
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </Resource>
     <Resource Include="Resources\icons\icon=PLC.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\icons\icon=plus.png">
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </Resource>
     <Resource Include="Resources\icons\icon=pressure.png">
@@ -190,12 +198,6 @@
     </Resource>
     <Resource Include="Resources\icons\icon_line_reset.png">
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
-    </Resource>
-    <Resource Include="Resources\Images\plus-icon-13071.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Resource>
-    <Resource Include="Resources\Images\subtract-icon-png-28153.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
     <Content Include="Resources\Configurations\IOBatch.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>

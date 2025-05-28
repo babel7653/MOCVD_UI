@@ -224,12 +224,12 @@ namespace SapphireXR_App.Models
             set { SetProperty(ref _isEnabled, value); }
         }
 
-        Brush _foreGround = DefaultForeground;
+        Brush _foreground = DefaultForeground;
         [Ignore]
         public Brush Foreground
         {
-            get { return _foreGround;  }
-            set { SetProperty(ref _foreGround, value);  }
+            get { return _foreground;  }
+            set { SetProperty(ref _foreground, value);  }
         }
     }
 

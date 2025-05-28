@@ -646,6 +646,37 @@
                         <MenuItem Header="Add Step"  Command="{Binding AddStepCommand}"/>
                     </ContextMenu>
                     <Style TargetType="DataGrid" BasedOn="{StaticResource RecipeList}">
+                        <Setter Property="AutoGenerateColumns" Value="False" />
+                        <Setter Property="HorizontalScrollBarVisibility" Value="Auto" />
+                        <Setter Property="VerticalScrollBarVisibility" Value="Auto" />
+                        <Setter Property="CellStyle">
+                            <Setter.Value>
+                                <Style TargetType="DataGridCell">
+                                    <Setter Property="Foreground" Value="{Binding Foreground, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                    <Setter Property="BorderThickness" Value="0" />
+                                    <Setter Property="Background" Value="{StaticResource Gray_50}" />
+                                    <Setter Property="TextBlock.TextAlignment" Value="Center" />
+                                    <Style.Triggers>
+                                        <Trigger Property="IsSelected" Value="True">
+                                            <Setter Property="Background" Value="Green"/>
+                                        </Trigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Setter.Value>
+                        </Setter>
+                        <Setter Property="RowStyle">
+                            <Setter.Value>
+                                <Style TargetType="DataGridRow">
+                                    <Setter Property="Height" Value="26"/>
+                                    <Setter Property="Background" Value="{StaticResource Gray_50}" />
+                                    <Style.Triggers>
+                                        <Trigger Property="IsSelected" Value="True">
+                                            <Setter Property="Background" Value="Green"/>
+                                        </Trigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Setter.Value>
+                        </Setter>
                         <Style.Triggers>
                             <DataTrigger Binding="{Binding CurrentState}" Value="NoneSelected">
                                 <Setter  Property="ContextMenu" Value="{StaticResource ContextMenuOnNothingSelected}"/>
@@ -657,11 +688,6 @@
                                 <Setter Property="ContextMenu" Value="{StaticResource ContextMenuOnSelectedWIthCopied}"/>
                             </DataTrigger>
                         </Style.Triggers>
-                    </Style>
-                    <Style TargetType="DataGridRow">
-                        <Style.Setters>
-                            <Setter Property="Background" Value="{Binding Background, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-                        </Style.Setters>
                     </Style>
                     <Style x:Key="VavleOnOffCheckBox" TargetType="{x:Type CheckBox}">
                         <Setter Property="Template">
@@ -707,8 +733,10 @@
                     </TabControl.Resources>
                     <TabItem Header="Reactor Data">
                         <TabItem.Content>
-                            <DataGrid x:Name="reactorDataGrid" AutoGenerateColumns="False"  HorizontalScrollBarVisibility="Auto"  DataContext="{Binding ReactorDataGridContext}" 
-                                      ItemsSource="{Binding RecipeViewModel.Recipes}" CellEditEnding="flowDataGrid_CellEditEnding">
+                            <DataGrid x:Name="reactorDataGrid" DataContext="{Binding ReactorDataGridContext}" ItemsSource="{Binding RecipeViewModel.Recipes}" CellEditEnding="flowDataGrid_CellEditEnding">
+                                    <DataGrid.Resources>
+                                        <Style TargetType="ScrollBar" BasedOn="{StaticResource DefaultScrollbar}" />
+                                    </DataGrid.Resources>
                                 <DataGrid.InputBindings>
                                     <KeyBinding Key="C" Modifiers="Ctrl" Command="{Binding CopyCommand}" />
                                     <KeyBinding Key="V" Modifiers="Ctrl" Command="{Binding PasteCommand}" />
@@ -739,9 +767,11 @@
 
                     <TabItem Header="FlowData">
                         <TabItem.Content>
-                            <DataGrid x:Name="flowDataGrid" AutoGenerateColumns="False"  HorizontalScrollBarVisibility="Visible" DataContext="{Binding FlowDataGridContext}" 
-                                      ItemsSource="{Binding RecipeViewModel.Recipes}" CellEditEnding="flowDataGrid_CellEditEnding">
-                                <DataGrid.InputBindings>
+                            <DataGrid x:Name="flowDataGrid" DataContext="{Binding FlowDataGridContext}" ItemsSource="{Binding RecipeViewModel.Recipes}" CellEditEnding="flowDataGrid_CellEditEnding">
+                                    <DataGrid.Resources>
+                                        <Style TargetType="ScrollBar" BasedOn="{StaticResource DefaultScrollbar}" />
+                                    </DataGrid.Resources>
+                                    <DataGrid.InputBindings>
                                     <KeyBinding Key="C" Modifiers="Ctrl" Command="{Binding CopyCommand}" />
                                     <KeyBinding Key="V" Modifiers="Ctrl" Command="{Binding PasteCommand}" />
                                 </DataGrid.InputBindings>
@@ -780,8 +810,11 @@
                     </TabItem>
                     <TabItem Header="ValveData">
                         <TabItem.Content>
-                            <DataGrid  x:Name="valveDataGrid" AutoGenerateColumns="False" HorizontalScrollBarVisibility="Visible" DataContext="{Binding ValveDataGridContext}" ItemsSource="{Binding RecipeViewModel.Recipes}">
-                                <DataGrid.InputBindings>
+                            <DataGrid  x:Name="valveDataGrid" DataContext="{Binding ValveDataGridContext}" ItemsSource="{Binding RecipeViewModel.Recipes}">
+                                    <DataGrid.Resources>
+                                        <Style TargetType="ScrollBar" BasedOn="{StaticResource DefaultScrollbar}" />
+                                    </DataGrid.Resources>
+                                    <DataGrid.InputBindings>
                                     <KeyBinding Key="C" Modifiers="Ctrl" Command="{Binding CopyCommand}" />
                                     <KeyBinding Key="V" Modifiers="Ctrl" Command="{Binding PasteCommand}" />
                                 </DataGrid.InputBindings>

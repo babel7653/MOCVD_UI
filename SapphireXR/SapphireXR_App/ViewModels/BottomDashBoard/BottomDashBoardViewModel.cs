@@ -7,7 +7,6 @@ using SapphireXR_App.Models;
 using System.Windows.Input;
 using SapphireXR_App.Common;
 using OxyPlot.Legends;
-using CsvHelper.Configuration.Attributes;
 
 namespace SapphireXR_App.ViewModels
 {

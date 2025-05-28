@@ -11,7 +11,6 @@ using System.Windows.Controls;
 using System.ComponentModel;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
-using System;
 
 namespace SapphireXR_App.ViewModels
 {

@@ -722,7 +722,6 @@
                     </Style>
                     <Style TargetType="DataGrid" BasedOn="{StaticResource RecipeList}">
                         <Style.Setters>
-                            <Setter Property="SelectionMode" Value="Single" />
                             <Setter Property="CellStyle">
                                 <Setter.Value>
                                     <Style TargetType="{x:Type DataGridCell}">
@@ -765,7 +764,7 @@
                     </TabControl.Resources>
                     <TabItem Header="Reactor" Background="{StaticResource Gray_100}">
                         <TabItem.Content>
-                            <DataGrid HorizontalScrollBarVisibility="Auto" AutoGenerateColumns="False" ItemsSource="{Binding CurrentRecipe.Recipes}" CellEditEnding="DataGrid_CellEditEnding">
+                            <DataGrid ItemsSource="{Binding CurrentRecipe.Recipes}" CellEditEnding="DataGrid_CellEditEnding">
                                 <b:Interaction.Triggers>
                                     <b:EventTrigger EventName="Loaded">
                                         <b:InvokeCommandAction Command="{Binding ReactorDataGridLoadedCommand}" PassEventArgsToCommand="True"/>
@@ -792,7 +791,7 @@
 
                     <TabItem Header="Flow">
                         <TabItem.Content>
-                            <DataGrid HorizontalScrollBarVisibility="Auto" AutoGenerateColumns="False" ItemsSource="{Binding CurrentRecipe.Recipes}" CellEditEnding="DataGrid_CellEditEnding">
+                            <DataGrid HorizontalScrollBarVisibility="Auto" ItemsSource="{Binding CurrentRecipe.Recipes}" CellEditEnding="DataGrid_CellEditEnding">
                                 <b:Interaction.Triggers>
                                     <b:EventTrigger EventName="Loaded">
                                         <b:InvokeCommandAction Command="{Binding FlowDataGridLoadedCommand}" PassEventArgsToCommand="True"/>

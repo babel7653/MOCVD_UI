@@ -11,7 +11,6 @@ using System.ComponentModel;
 using System.Globalization;
 using System.IO;
 using System.Windows;
-using System.Windows.Media;
 
 namespace SapphireXR_App.ViewModels
 {
@@ -151,7 +150,7 @@ namespace SapphireXR_App.ViewModels
         {
             foreach (var recipe in newlyAddedForMarking)
             {
-                recipe.Background = Brushes.White;
+                recipe.Foreground = Recipe.DefaultForeground;
             }
             newlyAddedForMarking.Clear();
         }

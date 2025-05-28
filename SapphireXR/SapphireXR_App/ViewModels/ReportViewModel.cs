@@ -65,12 +65,22 @@ namespace SapphireXR_App.ViewModels
 
         public ReportViewModel() 
         {
+            dataValuePlotModel.plotModel.TextColor = OxyColors.White;
+            dataValuePlotModel.plotModel.PlotAreaBorderColor = OxyColors.White;
+            dataValuePlotModel. plotModel.SubtitleColor = OxyColors.White;
+            dataValuePlotModel.plotModel.TitleColor = OxyColors.White;
             dataValuePlotModel.plotModel.Axes.Add(new LinearAxis
             {
                 Title = "Data Value",
                 Position = AxisPosition.Left,
                 IsPanEnabled = true,
-                IsZoomEnabled = true
+                IsZoomEnabled = true,
+                AxislineColor = OxyColors.White,
+                MajorGridlineColor = OxyColors.White,
+                MinorGridlineColor = OxyColors.White,
+                TicklineColor = OxyColors.White,
+                ExtraGridlineColor = OxyColors.White,
+                MinorTicklineColor = OxyColors.White
             });
             dataValuePlotModel.plotModel.Axes.Add(new TimeSpanAxis
             {
@@ -80,6 +90,12 @@ namespace SapphireXR_App.ViewModels
                 IsZoomEnabled = true,
                 MajorGridlineStyle = LineStyle.None,
                 MinorGridlineStyle = LineStyle.None,
+                AxislineColor = OxyColors.White,
+                MajorGridlineColor = OxyColors.White,
+                MinorGridlineColor = OxyColors.White,
+                TicklineColor = OxyColors.White,
+                ExtraGridlineColor = OxyColors.White,
+                MinorTicklineColor = OxyColors.White
             });
             dataValuePlotModel.plotModel.Legends.Add(new Legend() { Key= "CurrentTargetValue" });
 
@@ -89,7 +105,13 @@ namespace SapphireXR_App.ViewModels
                 Position = AxisPosition.Left,
                 IntervalLength=10,
                 IsPanEnabled = true,
-                IsZoomEnabled = true
+                IsZoomEnabled = true,
+                AxislineColor = OxyColors.White,
+                MajorGridlineColor = OxyColors.White,
+                MinorGridlineColor = OxyColors.White,
+                TicklineColor = OxyColors.White,
+                ExtraGridlineColor = OxyColors.White,
+                MinorTicklineColor = OxyColors.White
             });
             percentagePlotModel.plotModel.Axes.Add(new TimeSpanAxis
             {
@@ -100,6 +122,12 @@ namespace SapphireXR_App.ViewModels
                 IsZoomEnabled = true,
                 MajorGridlineStyle = LineStyle.Solid,
                 MinorGridlineStyle = LineStyle.Solid,
+                AxislineColor = OxyColors.White,
+                MajorGridlineColor = OxyColors.White,
+                MinorGridlineColor = OxyColors.White,
+                TicklineColor = OxyColors.White,
+                ExtraGridlineColor = OxyColors.White,
+                MinorTicklineColor = OxyColors.White
             });
             percentagePlotModel.plotModel.Legends.Add(new Legend() { Key = "CurrentTargetValue" });
             FlowControlLivePlot = dataValuePlotModel.plotModel;
@@ -204,7 +232,7 @@ namespace SapphireXR_App.ViewModels
                             seriesForDevice.Points.Add(new DataPoint(x, (double)value));
                             if (recipeLog == recipeLogs.Count - 1 || recipeLogs[recipeLog].Step != recipeLogs[recipeLog + 1].Step)
                             {
-                                OxyColor color = logNumber == LogNumber.One ? OxyColor.FromArgb(83, 255, 0, 0) : OxyColor.FromArgb(83, 0, 0, 255);
+                                OxyColor color = logNumber == LogNumber.One ? OxyColor.FromArgb(83, 255, 128, 128) : OxyColor.FromArgb(83, 128, 128, 255);
                                 Annotation stageLine = new LineAnnotation()
                                 {
                                     Type = LineAnnotationType.Vertical,

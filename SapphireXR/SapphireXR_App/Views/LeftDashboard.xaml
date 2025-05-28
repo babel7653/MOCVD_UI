@@ -127,9 +127,13 @@
                 <TextBlock Foreground="{DynamicResource Gray_950}" FontSize="12" FontFamily="Segoe UI" FontWeight="Bold" HorizontalAlignment="Left" Margin="28,6,0,0" VerticalAlignment="Center"><Bold><Run Text="Source Status"/></Bold></TextBlock>
 
                 <Grid VerticalAlignment="Top">
+                    <Grid.Resources>
+                        <Style TargetType="Border" x:Key="SourceStatusIndicator">
+                            <Setter Property="BorderThickness" Value="0" />
+                        </Style>
+                    </Grid.Resources>
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="68
-                                          "/>
+                        <ColumnDefinition Width="68"/>
                         <ColumnDefinition/>
                         <ColumnDefinition/>
                         <ColumnDefinition/>
@@ -159,41 +163,41 @@
                     <TextBlock Grid.Row="8" Grid.Column="0" Text="DTMGa" Margin="-1,6,5,0" FontFamily="Segoe UI" Foreground="{DynamicResource Gray_900}" FontSize="10" />
                     <TextBlock Grid.Row="9" Grid.Column="0"  Text="Cp2Mg" Margin="-1,6,5,0" FontFamily="Segoe UI" Foreground="{DynamicResource Gray_900}" FontSize="10" />
 
-                    <Button Grid.Row="1" Grid.Column="1" Content="{Binding CurrentSourceStatusViewModel.NH3_1Carrier}" Background="{DynamicResource Gray_300}" BorderThickness="0,0,0,0"/>
-                    <Button Grid.Row="1" Grid.Column="2" Content="{Binding CurrentSourceStatusViewModel.NH3_1Source}" Background="{DynamicResource Gray_300}" BorderThickness="0,0,0,0" />
-                    <Button Grid.Row="1" Grid.Column="3" Content="{Binding CurrentSourceStatusViewModel.NH3_1Vent}" Background="{DynamicResource Gray_300}" BorderThickness="0,0,0,0" />
+                    <Button Grid.Row="1" Grid.Column="1" Content="{Binding CurrentSourceStatusViewModel.NH3_1Carrier}" Background="{Binding NH3_1CarrierColor}" BorderThickness="0,0,0,0"/>
+                    <Button Grid.Row="1" Grid.Column="2" Content="{Binding CurrentSourceStatusViewModel.NH3_1Source}" Background="{Binding NH3_1SourceColor}" BorderThickness="0,0,0,0" />
+                    <Button Grid.Row="1" Grid.Column="3" Content="{Binding CurrentSourceStatusViewModel.NH3_1Vent}" Background="{Binding NH3_1VentColor}" BorderThickness="0,0,0,0" />
 
-                    <Button Grid.Row="2" Grid.Column="1" Content="{Binding CurrentSourceStatusViewModel.NH3_2Carrier}" Background="{DynamicResource Gray_300}" BorderThickness="0,0,0,0"/>
-                    <Button Grid.Row="2" Grid.Column="2" Content="{Binding CurrentSourceStatusViewModel.NH3_2Source}" Background="{DynamicResource Gray_300}" BorderThickness="0,0,0,0" />
-                    <Button Grid.Row="2" Grid.Column="3" Content="{Binding CurrentSourceStatusViewModel.NH3_2Vent}" Background="{DynamicResource Gray_300}" BorderThickness="0,0,0,0" />
+                    <Button Grid.Row="2" Grid.Column="1" Content="{Binding CurrentSourceStatusViewModel.NH3_2Carrier}" Background="{Binding NH3_2CarrierColor}" BorderThickness="0,0,0,0"/>
+                    <Button Grid.Row="2" Grid.Column="2" Content="{Binding CurrentSourceStatusViewModel.NH3_2Source}" Background="{Binding NH3_2SourceColor}" BorderThickness="0,0,0,0" />
+                    <Button Grid.Row="2" Grid.Column="3" Content="{Binding CurrentSourceStatusViewModel.NH3_2Vent}" Background="{Binding NH3_2VentColor}" BorderThickness="0,0,0,0" />
 
-                    <Button Grid.Row="3" Grid.Column="1" Content="{Binding CurrentSourceStatusViewModel.SiH4Carrier}" Background="{DynamicResource Gray_300}" BorderThickness="0,0,0,0" />
-                    <Button Grid.Row="3" Grid.Column="2" Content="{Binding CurrentSourceStatusViewModel.SiH4Source}" Background="{DynamicResource Gray_300}" BorderThickness="0,0,0,0" />
-                    <Button Grid.Row="3" Grid.Column="3" Content="{Binding CurrentSourceStatusViewModel.SiH4Vent}" Background="{DynamicResource Gray_300}" BorderThickness="0,0,0,0" />
+                    <Button Grid.Row="3" Grid.Column="1" Content="{Binding CurrentSourceStatusViewModel.SiH4Carrier}" Background="{Binding SiH4CarrierColor}" BorderThickness="0,0,0,0" />
+                    <Button Grid.Row="3" Grid.Column="2" Content="{Binding CurrentSourceStatusViewModel.SiH4Source}" Background="{Binding SiH4SourceColor}" BorderThickness="0,0,0,0" />
+                    <Button Grid.Row="3" Grid.Column="3" Content="{Binding CurrentSourceStatusViewModel.SiH4Vent}" Background="{Binding SiH4VentColor}" BorderThickness="0,0,0,0" />
 
-                    <Button Grid.Row="4" Grid.Column="1" Content="{Binding CurrentSourceStatusViewModel.TEBCarrier}" Background="{DynamicResource Gray_300}" BorderThickness="0,0,0,0" />
-                    <Button Grid.Row="4" Grid.Column="2" Content="{Binding CurrentSourceStatusViewModel.TEBSource}" Background="{DynamicResource Gray_300}" BorderThickness="0,0,0,0"/>
-                    <Button Grid.Row="4" Grid.Column="3" Content="{Binding CurrentSourceStatusViewModel.TEBVent}" Background="{DynamicResource Gray_300}" BorderThickness="0,0,0,0" />
+                    <Button Grid.Row="4" Grid.Column="1" Content="{Binding CurrentSourceStatusViewModel.TEBCarrier}" Background="{Binding TEBCarrierColor}" BorderThickness="0,0,0,0" />
+                    <Button Grid.Row="4" Grid.Column="2" Content="{Binding CurrentSourceStatusViewModel.TEBSource}" Background="{Binding TEBSourceColor}" BorderThickness="0,0,0,0"/>
+                    <Button Grid.Row="4" Grid.Column="3" Content="{Binding CurrentSourceStatusViewModel.TEBVent}" Background="{Binding TEBVentColor}" BorderThickness="0,0,0,0" />
 
-                    <Button Grid.Row="5" Grid.Column="1" Content="{Binding CurrentSourceStatusViewModel.TMAlCarrier}" Background="{DynamicResource Gray_300}" BorderThickness="0,0,0,0" />
-                    <Button Grid.Row="5" Grid.Column="2" Content="{Binding CurrentSourceStatusViewModel.TMAlSource}" Background="{DynamicResource Gray_300}" BorderThickness="0,0,0,0" />
-                    <Button Grid.Row="5" Grid.Column="3" Content="{Binding CurrentSourceStatusViewModel.TMAlVent}" Background="{DynamicResource Gray_300}" BorderThickness="0,0,0,0" />
+                    <Button Grid.Row="5" Grid.Column="1" Content="{Binding CurrentSourceStatusViewModel.TMAlCarrier}" Background="{Binding TMAlCarrierColor}" BorderThickness="0,0,0,0" />
+                    <Button Grid.Row="5" Grid.Column="2" Content="{Binding CurrentSourceStatusViewModel.TMAlSource}" Background="{Binding TMAlSourceColor}" BorderThickness="0,0,0,0" />
+                    <Button Grid.Row="5" Grid.Column="3" Content="{Binding CurrentSourceStatusViewModel.TMAlVent}" Background="{Binding TMAlVentColor}" BorderThickness="0,0,0,0" />
 
-                    <Button Grid.Row="6" Grid.Column="1" Content="{Binding CurrentSourceStatusViewModel.TMInCarrier}" Background="{DynamicResource Gray_300}" BorderThickness="0,0,0,0" />
-                    <Button Grid.Row="6" Grid.Column="2" Content="{Binding CurrentSourceStatusViewModel.TMInSource}" Background="{DynamicResource Gray_300}" BorderThickness="0,0,0,0" />
-                    <Button Grid.Row="6" Grid.Column="3" Content="{Binding CurrentSourceStatusViewModel.TMInVent}" Background="{DynamicResource Gray_300}" BorderThickness="0,0,0,0" />
+                    <Button Grid.Row="6" Grid.Column="1" Content="{Binding CurrentSourceStatusViewModel.TMInCarrier}" Background="{Binding TMInCarrierColor}" BorderThickness="0,0,0,0" />
+                    <Button Grid.Row="6" Grid.Column="2" Content="{Binding CurrentSourceStatusViewModel.TMInSource}" Background="{Binding TMInSourceColor}" BorderThickness="0,0,0,0" />
+                    <Button Grid.Row="6" Grid.Column="3" Content="{Binding CurrentSourceStatusViewModel.TMInVent}" Background="{Binding TMInVentColor}" BorderThickness="0,0,0,0" />
 
-                    <Button Grid.Row="7" Grid.Column="1" Content="{Binding CurrentSourceStatusViewModel.TMGaCarrier}" Background="{DynamicResource Gray_300}" BorderThickness="0,0,0,0" />
-                    <Button Grid.Row="7" Grid.Column="2" Content="{Binding CurrentSourceStatusViewModel.TMGaSource}" Background="{DynamicResource Gray_300}" BorderThickness="0,0,0,0" />
-                    <Button Grid.Row="7" Grid.Column="3" Content="{Binding CurrentSourceStatusViewModel.TMGaVent}" Background="{DynamicResource Gray_300}" BorderThickness="0,0,0,0" />
+                    <Button Grid.Row="7" Grid.Column="1" Content="{Binding CurrentSourceStatusViewModel.TMGaCarrier}" Background="{Binding TMGaCarrierColor}" BorderThickness="0,0,0,0" />
+                    <Button Grid.Row="7" Grid.Column="2" Content="{Binding CurrentSourceStatusViewModel.TMGaSource}" Background="{Binding TMGaSourceColor}" BorderThickness="0,0,0,0" />
+                    <Button Grid.Row="7" Grid.Column="3" Content="{Binding CurrentSourceStatusViewModel.TMGaVent}" Background="{Binding TMGaVentColor}" BorderThickness="0,0,0,0" />
 
-                    <Button Grid.Row="8" Grid.Column="1" Content="{Binding CurrentSourceStatusViewModel.DTMGaCarrier}" Background="{DynamicResource Gray_300}" BorderThickness="0,0,0,0" />
-                    <Button Grid.Row="8" Grid.Column="2" Content="{Binding CurrentSourceStatusViewModel.DTMGaSource}" Background="{DynamicResource Gray_300}" BorderThickness="0,0,0,0" />
-                    <Button Grid.Row="8" Grid.Column="3" Content="{Binding CurrentSourceStatusViewModel.DTMGaVent}" Background="{DynamicResource Gray_300}" BorderThickness="0,0,0,0" />
+                    <Button Grid.Row="8" Grid.Column="1" Content="{Binding CurrentSourceStatusViewModel.DTMGaCarrier}" Background="{Binding DTMGaCarrierColor}" BorderThickness="0,0,0,0" />
+                    <Button Grid.Row="8" Grid.Column="2" Content="{Binding CurrentSourceStatusViewModel.DTMGaSource}" Background="{Binding DTMGaSourceColor}" BorderThickness="0,0,0,0" />
+                    <Button Grid.Row="8" Grid.Column="3" Content="{Binding CurrentSourceStatusViewModel.DTMGaVent}" Background="{Binding DTMGaVentColor}" BorderThickness="0,0,0,0" />
 
-                    <Button Grid.Row="9" Grid.Column="1" Content="{Binding CurrentSourceStatusViewModel.Cp2MgCarrier}" Background="{DynamicResource Gray_300}" BorderThickness="0,0,0,0" />
-                    <Button Grid.Row="9" Grid.Column="2" Content="{Binding CurrentSourceStatusViewModel.Cp2MgSource}" Background="{DynamicResource Gray_300}" BorderThickness="0,0,0,0" />
-                    <Button Grid.Row="9" Grid.Column="3" Content="{Binding CurrentSourceStatusViewModel.Cp2MgVent}" Background="{DynamicResource Gray_300}" BorderThickness="0,0,0,0" />
+                    <Button Grid.Row="9" Grid.Column="1" Content="{Binding CurrentSourceStatusViewModel.Cp2MgCarrier}" Background="{Binding Cp2MgCarrierColor}" BorderThickness="0,0,0,0" />
+                    <Button Grid.Row="9" Grid.Column="2" Content="{Binding CurrentSourceStatusViewModel.Cp2MgSource}" Background="{Binding Cp2MgSourceColor}" BorderThickness="0,0,0,0" />
+                    <Button Grid.Row="9" Grid.Column="3" Content="{Binding CurrentSourceStatusViewModel.Cp2MgVent}" Background="{Binding Cp2MgVentColor}" BorderThickness="0,0,0,0" />
                 </Grid>
             </StackPanel>
         </Grid>

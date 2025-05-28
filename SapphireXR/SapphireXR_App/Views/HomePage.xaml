@@ -31,7 +31,7 @@
         <Grid Grid.Column="0">
             <Grid.RowDefinitions>
                 <RowDefinition/>
-                <RowDefinition Height="240"/>
+                <RowDefinition Height="250"/>
             </Grid.RowDefinitions>
             <Canvas Grid.Row="0" Background="{DynamicResource Gray_300}">
                 <Canvas.ContextMenu>
@@ -918,8 +918,8 @@
                                             </Label>
                                             <Grid>
                                                 <Grid.ColumnDefinitions>
-                                                    <ColumnDefinition Width="60"/>
-                                                    <ColumnDefinition Width="12"/>
+                                                    <ColumnDefinition Width="48"/>
+                                                    <ColumnDefinition Width="8"/>
                                                     <ColumnDefinition />
                                                 </Grid.ColumnDefinitions>
                                                 <ToggleButton Style="{StaticResource ToggleSwitch}" Grid.Column="0" x:Name="btHeaterOn" Content="{Binding InductionHeaterOn}" Command="{Binding InductionHeaterToggleCommand}" VerticalAlignment="Center" HorizontalAlignment="Center">
@@ -1066,8 +1066,8 @@
                                             </Label>
                                             <Grid>
                                                 <Grid.ColumnDefinitions>
-                                                    <ColumnDefinition Width="60"/>
-                                                    <ColumnDefinition Width="12"/>
+                                                    <ColumnDefinition Width="48"/>
+                                                    <ColumnDefinition Width="8"/>
                                                     <ColumnDefinition />
                                                 </Grid.ColumnDefinitions>
                                                 <ToggleButton Style="{StaticResource ToggleSwitch}" Grid.Column="0" x:Name="btPumpOn" Content="{Binding VaccumPumpOn}" Command="{Binding VacuumPumpToggleCommand}" VerticalAlignment="Center" HorizontalAlignment="Center">

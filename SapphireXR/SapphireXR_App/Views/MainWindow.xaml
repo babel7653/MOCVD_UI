@@ -29,8 +29,8 @@
                         <Setter Property="Foreground" Value="White"/>
                         <Setter Property="FontSize" Value="14"/>
                         <Setter Property="Margin" Value="-3,0,3,-1" />
-                        <Setter Property="Width" Value="200" />
-                        <Setter Property="Height" Value="36" />
+                        <Setter Property="Width" Value="150" />
+                        <Setter Property="Height" Value="30" />
                         <Setter Property="Template">
                             <Setter.Value>
                                 <ControlTemplate TargetType="TabItem">
@@ -41,7 +41,7 @@
                                             ContentSource="Header"
                                             Margin="10,2"/>
                                         <Border.CornerRadius>
-                                            <CornerRadius TopLeft="{StaticResource r_2}" TopRight="{StaticResource r_2}"/>
+                                            <CornerRadius TopLeft="{StaticResource r_1}" TopRight="{StaticResource r_1}"/>
                                         </Border.CornerRadius>
                                         </Border>
                                     <ControlTemplate.Triggers>
@@ -57,11 +57,11 @@
                         </Setter>
                     </Style>
                     <Style TargetType="Rectangle">
-                        <Setter Property="RadiusX" Value="{StaticResource r_1}"/>
-                        <Setter Property="RadiusY" Value="{StaticResource r_1}"/>
+                        <Setter Property="RadiusX" Value="3"/>
+                        <Setter Property="RadiusY" Value="3"/>
                         <Setter Property="StrokeThickness" Value="1"/>
-                        <Setter Property="Width" Value="20"/>
-                        <Setter Property="Height" Value="20" />
+                        <Setter Property="Width" Value="14"/>
+                        <Setter Property="Height" Value="14" />
                         <Setter Property="Stroke" Value="{StaticResource Gray_950}"/>
                         <Setter Property="Margin" Value="0, 0, 6, 0" />
                     </Style>
@@ -99,7 +99,7 @@
                 <TabItem>
                     <TabItem.Header>
                         <StackPanel Orientation="Horizontal">
-                            <Image Source="/Resources/icons/icon=chart_decreasing.png" Width="20" Height="20" Margin="0, 0, 5, 0"></Image>
+                            <Image Source="/Resources/icons/icon=chart_decreasing.png" Width="14" Height="14" Margin="0, 0, 5, 0"></Image>
                             <TextBlock VerticalAlignment="Center">Report</TextBlock>
                         </StackPanel>
                     </TabItem.Header>
@@ -109,7 +109,7 @@
                 <TabItem>
                     <TabItem.Header>
                         <StackPanel Orientation="Horizontal">
-                            <Image Source="/Resources/icons/icon=gear.png" Width="20" Height="20" Margin="0, 0, 5, 0"></Image>
+                            <Image Source="/Resources/icons/icon=gear.png" Width="14" Height="14" Margin="0, 0, 5, 0"></Image>
                             <TextBlock VerticalAlignment="Center">Setting</TextBlock>
                         </StackPanel>
                     </TabItem.Header>

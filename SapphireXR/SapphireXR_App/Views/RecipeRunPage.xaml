@@ -40,7 +40,7 @@
         <Grid>
             <Grid.RowDefinitions>
                 <RowDefinition Height="490"/>
-                <RowDefinition Height="64"/>
+                <RowDefinition Height="56"/>
                 <RowDefinition Height="273"/>
                 <RowDefinition Height="40" />
                 <RowDefinition Height="*"/>
@@ -628,7 +628,7 @@
                         <Thickness Top="1" Bottom="1" />
                     </Border.BorderThickness>
                     <Border.Padding>
-                        <Thickness Left="{StaticResource p_5}" Right="{StaticResource p_5}" Top="{StaticResource p_3}" Bottom="{StaticResource p_3}"/>
+                        <Thickness Left="{StaticResource p_5}" Right="{StaticResource p_5}" Top="{StaticResource p_2}" Bottom="{StaticResource p_2}"/>
                     </Border.Padding>
                     <Grid>
                         <Grid.ColumnDefinitions>
@@ -636,43 +636,33 @@
                             <ColumnDefinition/>
                         </Grid.ColumnDefinitions>
                         <StackPanel Grid.Column="0" Orientation="Horizontal">
-                            <Button x:Name="btnRecipeOpen" Command="{Binding RecipeOpenCommand}" Width="40" Height="40" Style="{StaticResource ImageButton}">
-                                <Image Source="/Resources/icons/icon=open.png">
-                                    <Image.Margin>
-                                        <Thickness Left="{StaticResource p_2}" Right="{StaticResource p_2}" Top="{StaticResource p_2}" Bottom="{StaticResource p_2}" />
-                                    </Image.Margin>
-                                </Image>
+                            <StackPanel.Resources>
+                                <Style x:Key="ImageMargin" TargetType="Image">
+                                    <Setter Property="Margin">
+                                        <Setter.Value>
+                                            <Thickness Left="{StaticResource p_1}" Right="{StaticResource p_1}" Top="{StaticResource p_1}" Bottom="{StaticResource p_1}" />
+                                        </Setter.Value>
+                                    </Setter>
+                                </Style>
+                            </StackPanel.Resources>
+                            <Button x:Name="btnRecipeOpen" Command="{Binding RecipeOpenCommand}" Width="40" Height="40" Style="{StaticResource ImageButton}" ToolTip="open recipe">
+                                <Image Source="/Resources/icons/icon=open.png" Style="{StaticResource ImageMargin}"/>
                             </Button>
-                            <Button x:Name="btnRecipeStart" Width="40" Height="40" Style="{StaticResource ImageButton}" Command="{Binding RecipeStartCommand}">
-                                <Image Source="{Binding StartPauseIconPath}">
-                                    <Image.Margin>
-                                        <Thickness Left="{StaticResource p_2}" Right="{StaticResource p_2}" Top="{StaticResource p_2}" Bottom="{StaticResource p_2}" />
-                                    </Image.Margin>
-                                </Image>
+                            <Button x:Name="btnRecipeStart" Width="40" Height="40" Style="{StaticResource ImageButton}" Command="{Binding RecipeStartCommand}"  ToolTip="start recipe">
+                                <Image Source="{Binding StartPauseIconPath}" Style="{StaticResource ImageMargin}" />
+
                             </Button>
-                            <Button x:Name="btnRecipeSkip" Content="Skip" Command="{Binding RecipeSkipCommand}"  Width="40" Height="40" Style="{StaticResource ImageButton}" >
+                            <Button x:Name="btnRecipeSkip" Content="Skip" Command="{Binding RecipeSkipCommand}"  Width="40" Height="40" Style="{StaticResource ImageButton}" ToolTip="skip recipe">
                                
                             </Button>
-                            <Button x:Name="btnRecipeStop" Command="{Binding RecipeStopCommand}" Width="40" Height="40" Style="{StaticResource ImageButton}" >
-                                <Image Source="/Resources/icons/icon=pause.png">
-                                    <Image.Margin>
-                                        <Thickness Left="{StaticResource p_2}" Right="{StaticResource p_2}" Top="{StaticResource p_2}" Bottom="{StaticResource p_2}" />
-                                    </Image.Margin>
-                                </Image>
+                            <Button x:Name="btnRecipeStop" Command="{Binding RecipeStopCommand}" Width="40" Height="40" Style="{StaticResource ImageButton}" ToolTip="stop recipe" >
+                                <Image Source="/Resources/icons/icon=pause.png" Style="{StaticResource ImageMargin}" />
                             </Button>
-                            <Button x:Name="btnRecipeRefresh" Command="{Binding RecipeRefreshCommand}" Width="40" Height="40" Style="{StaticResource ImageButton}" >
-                                <Image Source="/Resources/icons/icon=refresh.png">
-                                    <Image.Margin>
-                                        <Thickness Left="{StaticResource p_2}" Right="{StaticResource p_2}" Top="{StaticResource p_2}" Bottom="{StaticResource p_2}" />
-                                    </Image.Margin>
-                                </Image>
+                            <Button x:Name="btnRecipeRefresh" Command="{Binding RecipeRefreshCommand}" Width="40" Height="40" Style="{StaticResource ImageButton}" ToolTip="refresh recipe">
+                                <Image Source="/Resources/icons/icon=refresh.png" Style="{StaticResource ImageMargin}"/>
                             </Button>
-                            <Button x:Name="btnRecipeClean" Command="{Binding RecipeCleanCommand}" Width="40" Height="40" Style="{StaticResource ImageButton}">
-                                <Image Source="/Resources/icons/icon=trash.png">
-                                    <Image.Margin>
-                                        <Thickness Left="{StaticResource p_2}" Right="{StaticResource p_2}" Top="{StaticResource p_2}" Bottom="{StaticResource p_2}" />
-                                    </Image.Margin>
-                                </Image>
+                            <Button x:Name="btnRecipeClean" Command="{Binding RecipeCleanCommand}" Width="40" Height="40" Style="{StaticResource ImageButton}" ToolTip="clean recipe">
+                                <Image Source="/Resources/icons/icon=trash.png" Style="{StaticResource ImageMargin}" />
                             </Button>
                         </StackPanel>
                         <Grid Grid.Column="1">
@@ -722,6 +712,9 @@
                     </Style>
                     <Style TargetType="DataGrid" BasedOn="{StaticResource RecipeList}">
                         <Style.Setters>
+                            <Setter Property="AutoGenerateColumns" Value="False" />
+                            <Setter Property="HorizontalScrollBarVisibility" Value="Auto" />
+                            <Setter Property="VerticalScrollBarVisibility" Value="Auto" />
                             <Setter Property="CellStyle">
                                 <Setter.Value>
                                     <Style TargetType="{x:Type DataGridCell}">
@@ -765,6 +758,9 @@
                     <TabItem Header="Reactor" Background="{StaticResource Gray_100}">
                         <TabItem.Content>
                             <DataGrid ItemsSource="{Binding CurrentRecipe.Recipes}" CellEditEnding="DataGrid_CellEditEnding">
+                                <DataGrid.Resources>
+                                    <Style TargetType="ScrollBar" BasedOn="{StaticResource DefaultScrollbar}" />
+                                </DataGrid.Resources>
                                 <b:Interaction.Triggers>
                                     <b:EventTrigger EventName="Loaded">
                                         <b:InvokeCommandAction Command="{Binding ReactorDataGridLoadedCommand}" PassEventArgsToCommand="True"/>
@@ -791,12 +787,15 @@
 
                     <TabItem Header="Flow">
                         <TabItem.Content>
-                            <DataGrid HorizontalScrollBarVisibility="Auto" ItemsSource="{Binding CurrentRecipe.Recipes}" CellEditEnding="DataGrid_CellEditEnding">
+                            <DataGrid ItemsSource="{Binding CurrentRecipe.Recipes}" CellEditEnding="DataGrid_CellEditEnding">
                                 <b:Interaction.Triggers>
                                     <b:EventTrigger EventName="Loaded">
                                         <b:InvokeCommandAction Command="{Binding FlowDataGridLoadedCommand}" PassEventArgsToCommand="True"/>
                                     </b:EventTrigger>
                                 </b:Interaction.Triggers>
+                                <DataGrid.Resources>
+                                    <Style TargetType="ScrollBar" BasedOn="{StaticResource DefaultScrollbar}" />
+                                </DataGrid.Resources>
                                 <DataGrid.Columns>
                                     <DataGridTextColumn Header="No" Width="30" Binding="{Binding No}"  IsReadOnly="True" />
                                     <DataGridTextColumn Header="Name" Width="200" Binding="{Binding Name}" />
@@ -828,12 +827,15 @@
 
                     <TabItem Header="Valve">
                         <TabItem.Content>
-                            <DataGrid  HorizontalScrollBarVisibility="Auto" AutoGenerateColumns="False" ItemsSource="{Binding CurrentRecipe.Recipes}">
+                            <DataGrid  ItemsSource="{Binding CurrentRecipe.Recipes}">
                                 <b:Interaction.Triggers>
                                     <b:EventTrigger EventName="Loaded">
                                         <b:InvokeCommandAction Command="{Binding ValveDataGridLoadedCommand}" PassEventArgsToCommand="True"/>
                                     </b:EventTrigger>
                                 </b:Interaction.Triggers>
+                                <DataGrid.Resources>
+                                    <Style TargetType="ScrollBar" BasedOn="{StaticResource DefaultScrollbar}" />
+                                </DataGrid.Resources>
                                 <DataGrid.Columns>
                                     <DataGridTextColumn Header="No" Width="30" Binding="{Binding No}"  IsReadOnly="True" />
                                     <DataGridTextColumn Header="Name" Width="200" Binding="{Binding Name}" />

@@ -34,7 +34,7 @@
         <Grid>
             <Grid.RowDefinitions>
                 <RowDefinition Height="490"/>
-                <RowDefinition Height="64"/>
+                <RowDefinition Height="56"/>
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
             <Grid Grid.Row="0">
@@ -591,27 +591,36 @@
             <Grid Grid.Row="1">
                 <Grid>
                     <Grid.Margin>
-                        <Thickness Left="{StaticResource p_5}" Right="{StaticResource p_5}" Top="{StaticResource p_3}" Bottom="{StaticResource p_3}" />
+                        <Thickness Left="{StaticResource p_5}" Right="{StaticResource p_5}" Top="{StaticResource p_2}" Bottom="{StaticResource p_2}" />
                     </Grid.Margin>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition/>
                     <ColumnDefinition/>
                 </Grid.ColumnDefinitions>
                 <StackPanel Grid.Column="0" Orientation="Horizontal">
-                    <Button x:Name="btnRecipeNew" Style="{StaticResource MenuImageButton}" Command="{Binding RecipeNewCommand}">
-                        <Image Source="/Resources/icons/icon=new.png" />
+                        <StackPanel.Resources>
+                            <Style x:Key="ImageMargin" TargetType="Image">
+                                <Setter Property="Margin">
+                                    <Setter.Value>
+                                        <Thickness Left="{StaticResource p_1}" Right="{StaticResource p_1}" Top="{StaticResource p_1}" Bottom="{StaticResource p_1}" />
+                                    </Setter.Value>
+                                </Setter>
+                            </Style>
+                        </StackPanel.Resources>
+                    <Button x:Name="btnRecipeNew" Style="{StaticResource MenuImageButton}" Command="{Binding RecipeNewCommand}" ToolTip="load new empty recipe">
+                        <Image Source="/Resources/icons/icon=new.png" Style="{StaticResource ImageMargin}" />
                     </Button>
-                    <Button x:Name="btnRecipeOpen" Style="{StaticResource MenuImageButton}" Command="{Binding RecipeOpenCommand}">
-                        <Image Source="/Resources/icons/icon=open.png" />
+                    <Button x:Name="btnRecipeOpen" Style="{StaticResource MenuImageButton}" Command="{Binding RecipeOpenCommand}" ToolTip="open recipe">
+                            <Image Source="/Resources/icons/icon=open.png" Style="{StaticResource ImageMargin}" />
                     </Button>
-                    <Button x:Name="btnRecipePLCLoad" Style="{StaticResource MenuImageButton}" Command="{Binding RecipePLCLoadCommand, Mode=TwoWay}">
-                            <Image Source="/Resources/icons/icon=PLC.png" />
+                    <Button x:Name="btnRecipePLCLoad" Style="{StaticResource MenuImageButton}" Command="{Binding RecipePLCLoadCommand, Mode=TwoWay}" ToolTip="load recipe to PLC">
+                            <Image Source="/Resources/icons/icon=PLC.png" Style="{StaticResource ImageMargin}" />
                         </Button>
-                        <Button x:Name="btnRecipeSave" Style="{StaticResource MenuImageButton}" Command="{Binding RecipeSaveCommand, Mode=TwoWay}">
-                            <Image Source="/Resources/icons/icon=save.png" />
+                        <Button x:Name="btnRecipeSave" Style="{StaticResource MenuImageButton}" Command="{Binding RecipeSaveCommand, Mode=TwoWay}" ToolTip="save recipe">
+                            <Image Source="/Resources/icons/icon=save.png" Style="{StaticResource ImageMargin}" />
                         </Button>
-                        <Button x:Name="btnRecipeSaveAs" Style="{StaticResource MenuImageButton}" Command="{Binding RecipeSaveAsCommand, Mode=TwoWay}">
-                            <Image Source="/Resources/icons/icon=save_as.png" />
+                        <Button x:Name="btnRecipeSaveAs" Style="{StaticResource MenuImageButton}" Command="{Binding RecipeSaveAsCommand, Mode=TwoWay}" ToolTip="save recipe as a file name">
+                            <Image Source="/Resources/icons/icon=save_as.png" Style="{StaticResource ImageMargin}" />
                         </Button>
                 </StackPanel>
                 <StackPanel Grid.Column="2" Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Right">

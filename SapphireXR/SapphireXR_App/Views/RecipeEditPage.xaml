@@ -510,79 +510,80 @@
                     <!--#endregion-->
                     </Canvas>
                 </Border>
-                <Grid Grid.Column="1" Background="{StaticResource DashboardBackground}">
+                <Grid Grid.Column="1" Background="{StaticResource Gray_100}">
+                    <Grid.Resources>
+                        <Style x:Key="InfoTextLabelRight" TargetType="Label" BasedOn="{StaticResource infoLabelLeft}">
+                            <Setter Property="HorizontalAlignment" Value="Right" />
+                        </Style>
+                        <Style x:Key="RecipeEditInfroTextBox" TargetType="TextBox" BasedOn="{StaticResource InfoTextBox}">
+                            <Setter Property="Width" Value="82" />
+                            <Setter Property="Height" Value="24" />
+                        </Style>
+                    </Grid.Resources>
                     <Grid.RowDefinitions>
-                        <RowDefinition Height="180"/>
+                        <RowDefinition Height="Auto"/>
                         <RowDefinition/>
                     </Grid.RowDefinitions>
                     <!-- Recipe Information -->
-                    <Grid Grid.Row="0">
+                    <Grid Grid.Row="0" Margin="{StaticResource p_3_sqrt}">
+                        <Border BorderBrush="{StaticResource Gray_300}" BorderThickness="0 0 0 1">
                         <StackPanel Orientation="Vertical">
-                            <StackPanel.Resources>
-                                
-                            </StackPanel.Resources>
-                            <TextBlock Foreground="DeepSkyBlue" FontSize="14"  HorizontalAlignment="Center" Margin="0,10,0,0" >
-                                <Bold>Recipe Information</Bold></TextBlock>
-                            <Line X1="5" Y1="0" X2="295" Y2="0" Stroke="DeepSkyBlue" StrokeThickness="2" Margin="2,2,2,8"/>
+                            <StackPanel.Margin>
+                                <Thickness Left="{StaticResource p_2}" Right="{StaticResource p_2}" Bottom="{StaticResource p_4}" />
+                            </StackPanel.Margin>
                             <Grid>
-                                <Grid.Resources>
-                                    <Style TargetType="{x:Type Label}">
-                                        <Setter Property="Foreground" Value="{StaticResource PrimaryFontColor}"/>
-                                        <Setter Property="FontSize" Value="11"/>
-                                        <Setter Property="HorizontalAlignment" Value="Right"/>
-                                    </Style>
-                                    <Style TargetType="{x:Type TextBox}">
-                                        <Setter Property="Width" Value="64"/>
-                                        <Setter Property="Height" Value="16"/>
-                                        <Setter Property="Background" Value="LightGray"/>
-                                        <Setter Property="Foreground" Value="DarkBlue"/>
-                                        <Setter Property="FontSize" Value="11"/>
-                                        <Setter Property="TextAlignment" Value="Right"/>
-                                        <Setter Property="Margin" Value="4"/>
-                                    </Style>
-                                </Grid.Resources>
                                 <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="150"/>
-                                    <ColumnDefinition Width="80"/>
-                                    <ColumnDefinition/>
+                                    <ColumnDefinition Width="Auto" />
+                                    <ColumnDefinition Width="4" />
+                                    <ColumnDefinition Width="*" />
+                                </Grid.ColumnDefinitions>
+                                <Image Grid.Column="0" Width="24" Height="24" Source="/Resources/icons/icon=recipe_information.png"/>
+                                <Label Grid.Column="2" Content="Recipe Information" VerticalAlignment="Center" VerticalContentAlignment="Center" Margin="0 0 0 2" Style="{StaticResource SectionTitle}" />
+                            </Grid>
+                                <Grid>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="8"/>
+                                    </Grid.RowDefinitions>
+                                </Grid>
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="4"/>
+                                        <ColumnDefinition Width="Auto"/>
+                                        <ColumnDefinition Width="2"/>
+                                        <ColumnDefinition  Width="Auto"/>
                                 </Grid.ColumnDefinitions>
                                 <Grid.RowDefinitions>
                                     <RowDefinition/>
+                                    <RowDefinition Height="4" />
                                     <RowDefinition/>
-                                    <RowDefinition/>
-                                    <RowDefinition/>
-                                    <RowDefinition/>
-                                </Grid.RowDefinitions>
+                                        <RowDefinition Height="4" />
+                                        <RowDefinition/>
+                                        <RowDefinition Height="4" />
+                                        <RowDefinition/>
+                                        <RowDefinition Height="4" />
+                                        <RowDefinition/>
+                                    </Grid.RowDefinitions>
                                 
-                                <Label Grid.Row="0" Grid.Column="0" Content="Total Recipe Time"/>
-                                <Label Grid.Row="1" Grid.Column="0" Content="Number of Step"/>
-                                <Label Grid.Row="2" Grid.Column="0" Content="Ramping Rate Temp."/>
-                                <Label Grid.Row="3" Grid.Column="0" Content="Ramping Rate Pressure"/>
-                                <Label Grid.Row="4" Grid.Column="0" Content="Total Flow Rate"/>
+                                <Label Grid.Row="0" Grid.Column="0" Content="Total Recipe Time" Style="{StaticResource InfoTextLabelRight}" />
+                                    <Label Grid.Row="2" Grid.Column="0" Content="Number of Step" Style="{StaticResource InfoTextLabelRight}" />
+                                    <Label Grid.Row="4" Grid.Column="0" Content="Ramping Rate Temp." Style="{StaticResource InfoTextLabelRight}" />
+                                    <Label Grid.Row="6" Grid.Column="0" Content="Ramping Rate Pressure" Style="{StaticResource InfoTextLabelRight}"/>
+                                    <Label Grid.Row="8" Grid.Column="0" Content="Total Flow Rate" Style="{StaticResource InfoTextLabelRight}" />
 
-                                <TextBox x:Name="tbTotalRecipeTime" Grid.Row="0" Grid.Column="1" Text="{Binding CurrentRecipeInformationViewModel.TotalRecipeTime}"/>
-                                <TextBox x:Name="tbTotalStepNumber" Grid.Row="1" Grid.Column="1" Text="{Binding CurrentRecipeInformationViewModel.TotalStepNumber}"/>
-                                <TextBox x:Name="tbRampingRateTemp" Grid.Row="2" Grid.Column="1" Text="{Binding CurrentRecipeInformationViewModel.RampingRateTemp}"/>
-                                <TextBox x:Name="tbRampingRatePress" Grid.Row="3" Grid.Column="1" Text="{Binding CurrentRecipeInformationViewModel.RampingRatePress}"/>
-                                <TextBox x:Name="tbTotalFlowRate" Grid.Row="4" Grid.Column="1" Text="{Binding CurrentRecipeInformationViewModel.TotalFlowRate}"/>
+                                    <TextBox x:Name="tbTotalRecipeTime" Grid.Row="0" Grid.Column="2" Text="{Binding CurrentRecipeInformationViewModel.TotalRecipeTime}" Style="{StaticResource RecipeEditInfroTextBox}" />
+                                    <TextBox x:Name="tbTotalStepNumber" Grid.Row="2" Grid.Column="2" Text="{Binding CurrentRecipeInformationViewModel.TotalStepNumber}" Style="{StaticResource RecipeEditInfroTextBox}" />
+                                    <TextBox x:Name="tbRampingRateTemp" Grid.Row="4" Grid.Column="2" Text="{Binding CurrentRecipeInformationViewModel.RampingRateTemp}" Style="{StaticResource RecipeEditInfroTextBox}" />
+                                    <TextBox x:Name="tbRampingRatePress" Grid.Row="6" Grid.Column="2" Text="{Binding CurrentRecipeInformationViewModel.RampingRatePress}" Style="{StaticResource RecipeEditInfroTextBox}" />
+                                    <TextBox x:Name="tbTotalFlowRate" Grid.Row="8" Grid.Column="2" Text="{Binding CurrentRecipeInformationViewModel.TotalFlowRate}" Style="{StaticResource RecipeEditInfroTextBox}" />
 
-                                <Label Grid.Row="0" Grid.Column="2" HorizontalAlignment="Left" Content="sec." />
-                                <Label Grid.Row="2" Grid.Column="2" HorizontalAlignment="Left"  Content="°C/sec." />
-                                <Label Grid.Row="3" Grid.Column="2" HorizontalAlignment="Left"  Content="Torr/sec." />
-                                <Label Grid.Row="4" Grid.Column="2" HorizontalAlignment="Left"  Content="sccm" />
+                                    <Label Grid.Row="0" Grid.Column="4" HorizontalAlignment="Left" Content="sec." Style="{StaticResource InfoTextLabelRight}" />
+                                    <Label Grid.Row="2" Grid.Column="4" HorizontalAlignment="Left"  Content="°C/sec." Style="{StaticResource InfoTextLabelRight}" />
+                                    <Label Grid.Row="4" Grid.Column="4" HorizontalAlignment="Left"  Content="Torr/sec." Style="{StaticResource InfoTextLabelRight}" />
+                                    <Label Grid.Row="6" Grid.Column="4" HorizontalAlignment="Left"  Content="sccm" Style="{StaticResource InfoTextLabelRight}" />
                             </Grid>
                         </StackPanel>
-                    </Grid>
-                    <!-- Device Information -->
-                    <Grid Grid.Row="1">
-                        <StackPanel Orientation="Vertical">
-                            <StackPanel.Resources>
-
-                            </StackPanel.Resources>
-                            <TextBlock Foreground="DeepSkyBlue" FontSize="14"  HorizontalAlignment="Center" >
-                                <Bold>Device Information</Bold></TextBlock>
-                            <Line X1="5" Y1="0" X2="295" Y2="0" Stroke="DeepSkyBlue" StrokeThickness="2" Margin="2,2,2,8"/>
-                        </StackPanel>
+                        </Border>
                     </Grid>
                 </Grid>
             </Grid>

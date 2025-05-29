@@ -129,7 +129,19 @@
                 <Grid VerticalAlignment="Top">
                     <Grid.Resources>
                         <Style TargetType="Border" x:Key="SourceStatusIndicator">
+                            <Setter Property="Background" Value="{StaticResource Gray_300}" />
+                            <Setter Property="Margin" Value="2" />
                             <Setter Property="BorderThickness" Value="0" />
+                            <Setter Property="Padding" Value="0" />
+                            <Setter Property="CornerRadius">
+                                <Setter.Value>
+                                    <CornerRadius TopLeft="{StaticResource r_1}" TopRight="{StaticResource r_1}" BottomLeft="{StaticResource r_1}" BottomRight="{StaticResource r_1}" />
+                                </Setter.Value>
+                            </Setter>
+                        </Style>
+                        <Style TargetType="TextBlock" x:Key="SourceStatusIndicatorText" BasedOn="{StaticResource infoTextBlockLeft}">
+                            <Setter Property="HorizontalAlignment" Value="Center" />
+                            <Setter Property="Padding" Value="0 0 0 3" />
                         </Style>
                     </Grid.Resources>
                     <Grid.ColumnDefinitions>
@@ -153,7 +165,7 @@
                     <TextBlock Grid.Row="0" Grid.Column="1" Text="Carrier" HorizontalAlignment="Center" Margin="0,6,0,0" Foreground="{DynamicResource Gray_900}" FontSize="10"/>
                     <TextBlock Grid.Row="0" Grid.Column="2" Text="Source" HorizontalAlignment="Center" Margin="0,6,0,0" Foreground="{DynamicResource Gray_900}" FontSize="10"/>
                     <TextBlock Grid.Row="0" Grid.Column="3" Text="Manifold" HorizontalAlignment="Center" Margin="0,6,0,0" Foreground="{DynamicResource Gray_900}" FontSize="10" />
-                    <TextBlock Grid.Row="1" Grid.Column="0"  Text="NH3 #1" Margin="-1,6,8,0" FontFamily="Segoe UI" Foreground="{DynamicResource Gray_900}" FontSize="10" />
+                    <TextBlock Grid.Row="1" Grid.Column="0"  Text="NH3 #1" Margin="-1,6,5,0" FontFamily="Segoe UI" Foreground="{DynamicResource Gray_900}" FontSize="10" />
                     <TextBlock Grid.Row="2" Grid.Column="0" Text="NH3 #2" Margin="-1,6,5,0" FontFamily="Segoe UI" Foreground="{DynamicResource Gray_900}" FontSize="10" />
                     <TextBlock Grid.Row="3" Grid.Column="0" Text="SiH4" Margin="-1,6,5,0" FontFamily="Segoe UI" Foreground="{DynamicResource Gray_900}" FontSize="10" />
                     <TextBlock Grid.Row="4" Grid.Column="0"  Text="TEB" Margin="-1,6,5,0" FontFamily="Segoe UI" Foreground="{DynamicResource Gray_900}" FontSize="10" />
@@ -162,42 +174,88 @@
                     <TextBlock Grid.Row="7" Grid.Column="0" Text="TMGa" Margin="-1,6,5,0" FontFamily="Segoe UI" Foreground="{DynamicResource Gray_900}" FontSize="10" />
                     <TextBlock Grid.Row="8" Grid.Column="0" Text="DTMGa" Margin="-1,6,5,0" FontFamily="Segoe UI" Foreground="{DynamicResource Gray_900}" FontSize="10" />
                     <TextBlock Grid.Row="9" Grid.Column="0"  Text="Cp2Mg" Margin="-1,6,5,0" FontFamily="Segoe UI" Foreground="{DynamicResource Gray_900}" FontSize="10" />
-
-                    <Button Grid.Row="1" Grid.Column="1" Content="{Binding CurrentSourceStatusViewModel.NH3_1Carrier}" Background="{Binding NH3_1CarrierColor}" BorderThickness="0,0,0,0"/>
-                    <Button Grid.Row="1" Grid.Column="2" Content="{Binding CurrentSourceStatusViewModel.NH3_1Source}" Background="{Binding NH3_1SourceColor}" BorderThickness="0,0,0,0" />
-                    <Button Grid.Row="1" Grid.Column="3" Content="{Binding CurrentSourceStatusViewModel.NH3_1Vent}" Background="{Binding NH3_1VentColor}" BorderThickness="0,0,0,0" />
-
-                    <Button Grid.Row="2" Grid.Column="1" Content="{Binding CurrentSourceStatusViewModel.NH3_2Carrier}" Background="{Binding NH3_2CarrierColor}" BorderThickness="0,0,0,0"/>
-                    <Button Grid.Row="2" Grid.Column="2" Content="{Binding CurrentSourceStatusViewModel.NH3_2Source}" Background="{Binding NH3_2SourceColor}" BorderThickness="0,0,0,0" />
-                    <Button Grid.Row="2" Grid.Column="3" Content="{Binding CurrentSourceStatusViewModel.NH3_2Vent}" Background="{Binding NH3_2VentColor}" BorderThickness="0,0,0,0" />
-
-                    <Button Grid.Row="3" Grid.Column="1" Content="{Binding CurrentSourceStatusViewModel.SiH4Carrier}" Background="{Binding SiH4CarrierColor}" BorderThickness="0,0,0,0" />
-                    <Button Grid.Row="3" Grid.Column="2" Content="{Binding CurrentSourceStatusViewModel.SiH4Source}" Background="{Binding SiH4SourceColor}" BorderThickness="0,0,0,0" />
-                    <Button Grid.Row="3" Grid.Column="3" Content="{Binding CurrentSourceStatusViewModel.SiH4Vent}" Background="{Binding SiH4VentColor}" BorderThickness="0,0,0,0" />
-
-                    <Button Grid.Row="4" Grid.Column="1" Content="{Binding CurrentSourceStatusViewModel.TEBCarrier}" Background="{Binding TEBCarrierColor}" BorderThickness="0,0,0,0" />
-                    <Button Grid.Row="4" Grid.Column="2" Content="{Binding CurrentSourceStatusViewModel.TEBSource}" Background="{Binding TEBSourceColor}" BorderThickness="0,0,0,0"/>
-                    <Button Grid.Row="4" Grid.Column="3" Content="{Binding CurrentSourceStatusViewModel.TEBVent}" Background="{Binding TEBVentColor}" BorderThickness="0,0,0,0" />
-
-                    <Button Grid.Row="5" Grid.Column="1" Content="{Binding CurrentSourceStatusViewModel.TMAlCarrier}" Background="{Binding TMAlCarrierColor}" BorderThickness="0,0,0,0" />
-                    <Button Grid.Row="5" Grid.Column="2" Content="{Binding CurrentSourceStatusViewModel.TMAlSource}" Background="{Binding TMAlSourceColor}" BorderThickness="0,0,0,0" />
-                    <Button Grid.Row="5" Grid.Column="3" Content="{Binding CurrentSourceStatusViewModel.TMAlVent}" Background="{Binding TMAlVentColor}" BorderThickness="0,0,0,0" />
-
-                    <Button Grid.Row="6" Grid.Column="1" Content="{Binding CurrentSourceStatusViewModel.TMInCarrier}" Background="{Binding TMInCarrierColor}" BorderThickness="0,0,0,0" />
-                    <Button Grid.Row="6" Grid.Column="2" Content="{Binding CurrentSourceStatusViewModel.TMInSource}" Background="{Binding TMInSourceColor}" BorderThickness="0,0,0,0" />
-                    <Button Grid.Row="6" Grid.Column="3" Content="{Binding CurrentSourceStatusViewModel.TMInVent}" Background="{Binding TMInVentColor}" BorderThickness="0,0,0,0" />
-
-                    <Button Grid.Row="7" Grid.Column="1" Content="{Binding CurrentSourceStatusViewModel.TMGaCarrier}" Background="{Binding TMGaCarrierColor}" BorderThickness="0,0,0,0" />
-                    <Button Grid.Row="7" Grid.Column="2" Content="{Binding CurrentSourceStatusViewModel.TMGaSource}" Background="{Binding TMGaSourceColor}" BorderThickness="0,0,0,0" />
-                    <Button Grid.Row="7" Grid.Column="3" Content="{Binding CurrentSourceStatusViewModel.TMGaVent}" Background="{Binding TMGaVentColor}" BorderThickness="0,0,0,0" />
-
-                    <Button Grid.Row="8" Grid.Column="1" Content="{Binding CurrentSourceStatusViewModel.DTMGaCarrier}" Background="{Binding DTMGaCarrierColor}" BorderThickness="0,0,0,0" />
-                    <Button Grid.Row="8" Grid.Column="2" Content="{Binding CurrentSourceStatusViewModel.DTMGaSource}" Background="{Binding DTMGaSourceColor}" BorderThickness="0,0,0,0" />
-                    <Button Grid.Row="8" Grid.Column="3" Content="{Binding CurrentSourceStatusViewModel.DTMGaVent}" Background="{Binding DTMGaVentColor}" BorderThickness="0,0,0,0" />
-
-                    <Button Grid.Row="9" Grid.Column="1" Content="{Binding CurrentSourceStatusViewModel.Cp2MgCarrier}" Background="{Binding Cp2MgCarrierColor}" BorderThickness="0,0,0,0" />
-                    <Button Grid.Row="9" Grid.Column="2" Content="{Binding CurrentSourceStatusViewModel.Cp2MgSource}" Background="{Binding Cp2MgSourceColor}" BorderThickness="0,0,0,0" />
-                    <Button Grid.Row="9" Grid.Column="3" Content="{Binding CurrentSourceStatusViewModel.Cp2MgVent}" Background="{Binding Cp2MgVentColor}" BorderThickness="0,0,0,0" />
+                    <!--Background="{}" {}-->
+                    <Border Grid.Row="1" Grid.Column="1" Style="{StaticResource SourceStatusIndicator}" >
+                        <TextBlock Text="{Binding CurrentSourceStatusViewModel.NH3_1Carrier}" Foreground="{Binding CurrentSourceStatusViewModel.NH3_1CarrierColor}" Style="{StaticResource SourceStatusIndicatorText}" />
+                    </Border>
+                    <Border Grid.Row="1" Grid.Column="2" Style="{StaticResource SourceStatusIndicator}">
+                        <TextBlock Text="{Binding CurrentSourceStatusViewModel.NH3_1Source}" Foreground="{Binding CurrentSourceStatusViewModel.NH3_1SourceColor}" Style="{StaticResource SourceStatusIndicatorText}" />
+                    </Border>
+                    <Border Grid.Row="1" Grid.Column="3" Style="{StaticResource SourceStatusIndicator}">
+                        <TextBlock Text="{Binding CurrentSourceStatusViewModel.NH3_1Vent}" Foreground="{Binding CurrentSourceStatusViewModel.NH3_1VentColor}" Style="{StaticResource SourceStatusIndicatorText}" />
+                    </Border>
+                    <Border Grid.Row="2" Grid.Column="1" Style="{StaticResource SourceStatusIndicator}">
+                        <TextBlock Text="{Binding CurrentSourceStatusViewModel.NH3_2Carrier}" Foreground="{Binding CurrentSourceStatusViewModel.NH3_2CarrierColor}" Style="{StaticResource SourceStatusIndicatorText}" />
+                    </Border>
+                    <Border Grid.Row="2" Grid.Column="2" Style="{StaticResource SourceStatusIndicator}">
+                        <TextBlock Text="{Binding CurrentSourceStatusViewModel.NH3_2Source}" Foreground="{Binding CurrentSourceStatusViewModel.NH3_2SourceColor}" Style="{StaticResource SourceStatusIndicatorText}" />
+                    </Border>
+                    <Border Grid.Row="2" Grid.Column="3" Style="{StaticResource SourceStatusIndicator}">
+                        <TextBlock Text="{Binding CurrentSourceStatusViewModel.NH3_2Vent}" Foreground="{Binding CurrentSourceStatusViewModel.NH3_2VentColor}" Style="{StaticResource SourceStatusIndicatorText}" />
+                    </Border>
+                    <Border Grid.Row="3" Grid.Column="1" Style="{StaticResource SourceStatusIndicator}">
+                        <TextBlock Text="{Binding CurrentSourceStatusViewModel.SiH4Carrier}" Foreground="{Binding CurrentSourceStatusViewModel.SiH4CarrierColor}" Style="{StaticResource SourceStatusIndicatorText}" />
+                    </Border>
+                    <Border Grid.Row="3" Grid.Column="2" Style="{StaticResource SourceStatusIndicator}">
+                        <TextBlock Text="{Binding CurrentSourceStatusViewModel.SiH4Source}" Foreground="{Binding CurrentSourceStatusViewModel.SiH4SourceColor}" Style="{StaticResource SourceStatusIndicatorText}" />
+                    </Border>
+                    <Border Grid.Row="3" Grid.Column="3" Style="{StaticResource SourceStatusIndicator}">
+                        <TextBlock Text="{Binding CurrentSourceStatusViewModel.SiH4Vent}" Foreground="{Binding CurrentSourceStatusViewModel.SiH4VentColor}" Style="{StaticResource SourceStatusIndicatorText}" />
+                    </Border>
+                    <Border Grid.Row="4" Grid.Column="1" Style="{StaticResource SourceStatusIndicator}">
+                        <TextBlock Text="{Binding CurrentSourceStatusViewModel.TEBCarrier}" Foreground="{Binding CurrentSourceStatusViewModel.TEBCarrierColor}" Style="{StaticResource SourceStatusIndicatorText}" />
+                    </Border>
+                    <Border Grid.Row="4" Grid.Column="2" Style="{StaticResource SourceStatusIndicator}">
+                        <TextBlock Text="{Binding CurrentSourceStatusViewModel.TEBSource}" Foreground="{Binding CurrentSourceStatusViewModel.TEBSourceColor}" Style="{StaticResource SourceStatusIndicatorText}" />
+                    </Border>
+                    <Border Grid.Row="4" Grid.Column="3" Style="{StaticResource SourceStatusIndicator}">
+                        <TextBlock Text="{Binding CurrentSourceStatusViewModel.TEBVent}" Foreground="{Binding CurrentSourceStatusViewModel.TEBVentColor}" Style="{StaticResource SourceStatusIndicatorText}" />
+                    </Border>
+                    <Border Grid.Row="5" Grid.Column="1" Style="{StaticResource SourceStatusIndicator}">
+                        <TextBlock Text="{Binding CurrentSourceStatusViewModel.TMAlCarrier}" Foreground="{Binding CurrentSourceStatusViewModel.TMAlCarrierColor}" Style="{StaticResource SourceStatusIndicatorText}" />
+                    </Border>
+                    <Border Grid.Row="5" Grid.Column="2" Style="{StaticResource SourceStatusIndicator}">
+                        <TextBlock Text="{Binding CurrentSourceStatusViewModel.TMAlSource}" Foreground="{Binding CurrentSourceStatusViewModel.TMAlSourceColor}" Style="{StaticResource SourceStatusIndicatorText}" />
+                    </Border>
+                    <Border Grid.Row="5" Grid.Column="3" Style="{StaticResource SourceStatusIndicator}">
+                        <TextBlock Text="{Binding CurrentSourceStatusViewModel.TMAlVent}" Foreground="{Binding CurrentSourceStatusViewModel.TMAlVentColor}" Style="{StaticResource SourceStatusIndicatorText}" />
+                    </Border>
+                    <Border Grid.Row="6" Grid.Column="1" Style="{StaticResource SourceStatusIndicator}">
+                        <TextBlock Text="{Binding CurrentSourceStatusViewModel.TMInCarrier}" Foreground="{Binding CurrentSourceStatusViewModel.TMInCarrierColor}" Style="{StaticResource SourceStatusIndicatorText}" />
+                    </Border>
+                    <Border Grid.Row="6" Grid.Column="2" Style="{StaticResource SourceStatusIndicator}">
+                        <TextBlock Text="{Binding CurrentSourceStatusViewModel.TMInSource}" Foreground="{Binding CurrentSourceStatusViewModel.TMInSourceColor}" Style="{StaticResource SourceStatusIndicatorText}" />
+                    </Border>
+                    <Border Grid.Row="6" Grid.Column="3" Style="{StaticResource SourceStatusIndicator}">
+                        <TextBlock Text="{Binding CurrentSourceStatusViewModel.TMInVent}" Foreground="{Binding CurrentSourceStatusViewModel.TMInVentColor}" Style="{StaticResource SourceStatusIndicatorText}" />
+                    </Border>
+                    <Border Grid.Row="7" Grid.Column="1" Style="{StaticResource SourceStatusIndicator}">
+                        <TextBlock Text="{Binding CurrentSourceStatusViewModel.TMGaCarrier}" Foreground="{Binding CurrentSourceStatusViewModel.TMGaCarrierColor}" Style="{StaticResource SourceStatusIndicatorText}" />
+                    </Border>
+                    <Border Grid.Row="7" Grid.Column="2" Style="{StaticResource SourceStatusIndicator}">
+                        <TextBlock Text="{Binding CurrentSourceStatusViewModel.TMGaSource}" Foreground="{Binding CurrentSourceStatusViewModel.TMGaSourceColor}" Style="{StaticResource SourceStatusIndicatorText}" />
+                    </Border>
+                    <Border Grid.Row="7" Grid.Column="3" Style="{StaticResource SourceStatusIndicator}">
+                        <TextBlock Text="{Binding CurrentSourceStatusViewModel.TMGaVent}" Foreground="{Binding CurrentSourceStatusViewModel.TMGaVentColor}" Style="{StaticResource SourceStatusIndicatorText}" />
+                    </Border>
+                    <Border Grid.Row="8" Grid.Column="1" Style="{StaticResource SourceStatusIndicator}">
+                        <TextBlock Text="{Binding CurrentSourceStatusViewModel.DTMGaCarrier}" Foreground="{Binding CurrentSourceStatusViewModel.DTMGaCarrierColor}" Style="{StaticResource SourceStatusIndicatorText}" />
+                    </Border>
+                    <Border Grid.Row="8" Grid.Column="2" Style="{StaticResource SourceStatusIndicator}">
+                        <TextBlock Text="{Binding CurrentSourceStatusViewModel.DTMGaSource}" Foreground="{Binding CurrentSourceStatusViewModel.DTMGaSourceColor}" Style="{StaticResource SourceStatusIndicatorText}" />
+                    </Border>
+                    <Border Grid.Row="8" Grid.Column="3" Style="{StaticResource SourceStatusIndicator}">
+                        <TextBlock Text="{Binding CurrentSourceStatusViewModel.DTMGaVent}" Foreground="{Binding CurrentSourceStatusViewModel.DTMGaVentColor}" Style="{StaticResource SourceStatusIndicatorText}" />
+                    </Border>
+                    <Border Grid.Row="9" Grid.Column="1" Style="{StaticResource SourceStatusIndicator}">
+                        <TextBlock Text="{Binding CurrentSourceStatusViewModel.Cp2MgCarrier}" Foreground="{Binding CurrentSourceStatusViewModel.Cp2MgCarrierColor}" Style="{StaticResource SourceStatusIndicatorText}" />
+                    </Border>
+                    <Border Grid.Row="9" Grid.Column="2" Style="{StaticResource SourceStatusIndicator}">
+                        <TextBlock Text="{Binding CurrentSourceStatusViewModel.Cp2MgSource}" Foreground="{Binding CurrentSourceStatusViewModel.Cp2MgSourceColor}" Style="{StaticResource SourceStatusIndicatorText}" />
+                    </Border>
+                    <Border Grid.Row="9" Grid.Column="3" Style="{StaticResource SourceStatusIndicator}">
+                        <TextBlock Text="{Binding CurrentSourceStatusViewModel.Cp2MgVent}" Foreground="{Binding CurrentSourceStatusViewModel.Cp2MgVentColor}" Style="{StaticResource SourceStatusIndicatorText}" />
+                    </Border>
                 </Grid>
             </StackPanel>
         </Grid>

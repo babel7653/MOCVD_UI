@@ -63,18 +63,6 @@
         <Style TargetType="CheckBox" BasedOn="{StaticResource DefaultCheckBox}" x:Key="DataGridCheckBox">
             <Setter Property="HorizontalAlignment" Value="Center" />
         </Style>
-        <Style TargetType="Label" x:Key="SectionTitle">
-            <Setter Property="FontSize" Value="14" />
-            <Setter Property="FontFamily" Value="Segoe UI" />
-            <Setter Property="FontWeight" Value="Bold" />
-            <Setter Property="Foreground" Value="{StaticResource Gray_950}" />
-            <Setter Property="Padding" Value="0" />
-            <Setter Property="Margin">
-                <Setter.Value>
-                    <Thickness Bottom="{StaticResource p_2}" />
-                </Setter.Value>
-            </Setter>
-        </Style>
     </Page.Resources>
     <Grid>
         <TabControl TabStripPlacement="Left" Style="{StaticResource SettingTabControl}" Margin="{StaticResource p_5_sqrt}" Padding="0">

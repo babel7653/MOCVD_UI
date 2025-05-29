@@ -729,6 +729,12 @@
         <Setter Property="FontFamily" Value="Segoe UI" />
         <Setter Property="Foreground" Value="{StaticResource Gray_900}" />
     </Style>
+    <Style TargetType="Label" x:Key="infoLabelLeft">
+        <Setter Property="VerticalAlignment" Value="Center" />
+        <Setter Property="FontSize" Value="12" />
+        <Setter Property="FontFamily" Value="Segoe UI" />
+        <Setter Property="Foreground" Value="{StaticResource Gray_900}" />
+    </Style>
     <Style TargetType="TextBlock" x:Key="infoTextBlock">
         <Setter Property="VerticalAlignment" Value="Center" />
         <Setter Property="FontSize" Value="12" />
@@ -833,6 +839,18 @@
                         </Trigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    <Style TargetType="Label" x:Key="SectionTitle">
+        <Setter Property="FontSize" Value="14" />
+        <Setter Property="FontFamily" Value="Segoe UI" />
+        <Setter Property="FontWeight" Value="Bold" />
+        <Setter Property="Foreground" Value="{StaticResource Gray_950}" />
+        <Setter Property="Padding" Value="0" />
+        <Setter Property="Margin">
+            <Setter.Value>
+                <Thickness Bottom="{StaticResource p_2}" />
             </Setter.Value>
         </Setter>
     </Style>

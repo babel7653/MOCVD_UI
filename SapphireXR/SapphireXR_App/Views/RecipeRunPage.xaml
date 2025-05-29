@@ -514,112 +514,148 @@
                     <!--#endregion-->
 
                 </Canvas>
-                <Grid Grid.Column="1" Background="{StaticResource DashboardBackground}">
+                <Grid Grid.Column="1" Background="{StaticResource Gray_100}">
+                    <Grid.Resources>
+                        <Style x:Key="RecipeRunSectionTitle" TargetType="Label" BasedOn="{StaticResource SectionTitle}">
+                            <Setter Property="VerticalAlignment" Value="Center" />
+                            <Setter Property="VerticalContentAlignment" Value="Center" />
+                            <Setter Property="Padding" Value="0" />
+                            <Setter Property="Margin">
+                                <Setter.Value>
+                                    <Thickness Left="{StaticResource p_1}" Right="0" Top="0" Bottom="2" />
+                                </Setter.Value>
+                            </Setter>
+                        </Style>
+                    </Grid.Resources>
                     <Grid.RowDefinitions>
-                        <RowDefinition Height="290"/>
-                        <RowDefinition/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
                     </Grid.RowDefinitions>
                     <!-- Recipe Information -->
                     <Grid Grid.Row="0">
-                        <StackPanel Orientation="Vertical">
-                            <TextBlock Foreground="DeepSkyBlue" FontSize="14"  HorizontalAlignment="Center" Margin="0,8,0,0">
-                                <Bold>Recipe Information</Bold></TextBlock>
-                            <Line X1="5" Y1="0" X2="295" Y2="0" Stroke="DeepSkyBlue" StrokeThickness="2" Margin="2,2,2,8"/>
-                            <Grid>
-                                <Grid.Resources>
-                                    <Style TargetType="{x:Type Label}">
-                                        <Setter Property="Foreground" Value="{StaticResource PrimaryFontColor}"/>
-                                        <Setter Property="FontSize" Value="11"/>
-                                        <Setter Property="HorizontalAlignment" Value="Right"/>
-                                    </Style>
-                                    <Style TargetType="{x:Type TextBox}">
-                                        <Setter Property="Width" Value="64"/>
-                                        <Setter Property="Height" Value="16"/>
-                                        <Setter Property="Background" Value="LightGray"/>
-                                        <Setter Property="Foreground" Value="DarkBlue"/>
-                                        <Setter Property="FontSize" Value="11"/>
-                                        <Setter Property="TextAlignment" Value="Right"/>
-                                        <Setter Property="Margin" Value="4"/>
-                                    </Style>
-                                </Grid.Resources>
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="120"/>
-                                    <ColumnDefinition/>
-                                    <ColumnDefinition/>
-                                    <ColumnDefinition Width="20"/>
-                                </Grid.ColumnDefinitions>
-                                <Grid.RowDefinitions>
-                                    <RowDefinition/>
-                                    <RowDefinition/>
-                                    <RowDefinition/>
-                                    <RowDefinition/>
-                                    <RowDefinition/>
-                                    <RowDefinition/>
-                                    <RowDefinition/>
-                                    <RowDefinition/>
-                                    <RowDefinition/>
-                                    <RowDefinition/>
-                                </Grid.RowDefinitions>
-                                
-                                <Label Grid.Row="0" Grid.Column="1" Content="Current" HorizontalAlignment="Center"/>
-                                <Label Grid.Row="0" Grid.Column="2" Content="Total" HorizontalAlignment="Center"/>
-                                <Label Grid.Row="1" Grid.Column="0" Content="Recipe Time" />
-                                <Label Grid.Row="2" Grid.Column="0" Content="Step" />
-                                <Label Grid.Row="3" Grid.Column="0" Content="Step Name" />
-                                <Label Grid.Row="4" Grid.Column="0" Content="Ramping Time" />
-                                <Label Grid.Row="5" Grid.Column="0" Content="Holding Time" />
-                                <Label Grid.Row="6" Grid.Column="0" Content="Pause Time" />
-                                <Label Grid.Row="7" Grid.Column="0" Content="Loop Step" />
-                                <Label Grid.Row="8" Grid.Column="0" Content="Loop Number" />
-                                <Label Grid.Row="9" Grid.Column="0" Content="Wait Temp" />
+                        <Grid.Margin>
+                            <Thickness Left="{StaticResource p_3}" Right="{StaticResource p_3}" Top="{StaticResource p_3}" Bottom="{StaticResource p_2}" />
+                        </Grid.Margin>
+                        <Border BorderThickness="0 0 0 1" BorderBrush="{StaticResource Gray_300}">
+                            <StackPanel Orientation="Vertical">
+                                <StackPanel.Margin>
+                                    <Thickness Top="0" Bottom="{StaticResource p_4}" Right="{StaticResource p_2}" Left="{StaticResource p_2}" />
+                                </StackPanel.Margin>
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto" />
+                                        <ColumnDefinition Width="*" />
+                                    </Grid.ColumnDefinitions>
+                                    <Image Grid.Column="0" Width="24" Height="24" Source="/Resources/icons/icon=recipe_information.png"/>
+                                    <Label Grid.Column="1" Content="Recipe Information" Style="{StaticResource RecipeRunSectionTitle}" />
+                                </Grid>
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="Auto" />
+                                        <ColumnDefinition Width="8" />
+                                        <ColumnDefinition Width="Auto" />
+                                    </Grid.ColumnDefinitions>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto" />
+                                        <RowDefinition Height="Auto" />
+                                        <RowDefinition Height="4" />
+                                        <RowDefinition Height="Auto" />
+                                        <RowDefinition Height="4" />
+                                        <RowDefinition Height="Auto" />
+                                        <RowDefinition Height="4" />
+                                        <RowDefinition Height="Auto" />
+                                        <RowDefinition Height="4" />
+                                        <RowDefinition Height="Auto" />
+                                        <RowDefinition Height="4" />
+                                        <RowDefinition Height="Auto" />
+                                        <RowDefinition Height="4" />
+                                        <RowDefinition Height="Auto" />
+                                        <RowDefinition Height="4" />
+                                        <RowDefinition Height="Auto" />
+                                        <RowDefinition Height="4" />
+                                        <RowDefinition Height="Auto" />
+                                    </Grid.RowDefinitions>
+                                    <Grid.Resources>
+                                        <Style x:Key="InfoLabelRight" TargetType="Label" BasedOn="{StaticResource infoLabelLeft}">
+                                            <Setter Property="HorizontalAlignment" Value="Right" />
+                                            <Setter Property="Margin">
+                                                <Setter.Value>
+                                                    <Thickness Right="{StaticResource p_1}" />
+                                                </Setter.Value>
+                                            </Setter>
+                                        </Style>
+                                        <Style x:Key="RecipeRunInfoTextBox" TargetType="TextBox" BasedOn="{StaticResource InfoTextBox}">
+                                            <Setter Property="Width" Value="78" />
+                                            <Setter Property="Height" Value="24" />
+                                        </Style>
+                                        <Style x:Key="RecipeRunSpanInfoTextBox" TargetType="TextBox" BasedOn="{StaticResource InfoTextBox}">
+                                            <Setter Property="Height" Value="24" />
+                                        </Style>
+                                    </Grid.Resources>
 
-                                <TextBox x:Name="tbRecipeCurrentTime" Grid.Row="1" Grid.Column="1" Text="{Binding CurrentRecipe.CurrentRecipeTime}"/>
-                                <TextBox x:Name="tbRecipeTotalTime" Grid.Row="1" Grid.Column="2" Text="{Binding CurrentRecipe.TotalRecipeTime}"/>
-                                <TextBox x:Name="tbRecipeCurrentStep" Grid.Row="2" Grid.Column="1" Text="{Binding CurrentRecipe.CurrentStep}"/>
-                                <TextBox x:Name="tbRecipeTotalStep" Grid.Row="2" Grid.Column="2" Text="{Binding CurrentRecipe.TotalStep}"/>
-                                <TextBox x:Name="tbRecipeStepName" Grid.Row="3" Grid.Column="1" Grid.ColumnSpan="2" Width="146" Text="{Binding CurrentRecipe.StepName}"/>
-                                <TextBox x:Name="tbRecipeCurrentRamp" Grid.Row="4" Grid.Column="1" Text="{Binding CurrentRecipe.CurrentRampTime}"/>
-                                <TextBox x:Name="tbRecipeTotalRamp" Grid.Row="4" Grid.Column="2" Text="{Binding CurrentRecipe.TotalRampTime}"/>
-                                <TextBox x:Name="tbRecipeCurrentHold" Grid.Row="5" Grid.Column="1" Text="{Binding CurrentRecipe.CurrentHoldTime}"/>
-                                <TextBox x:Name="tbRecipeTotalHold" Grid.Row="5" Grid.Column="2" Text="{Binding CurrentRecipe.TotalHoldTime}"/>
-                                <TextBox x:Name="tbRecipePauseTime" Grid.Row="6" Grid.Column="1" Grid.ColumnSpan="2" Width="146" Text="{Binding CurrentRecipe.PauseTime}"/>
-                                <TextBox x:Name="tbRecipeLoopStart" Grid.Row="7" Grid.Column="1" Text="{Binding CurrentRecipe.CurrentLoopStep}"/>
-                                <TextBox x:Name="tbRecipeLoopEnd" Grid.Row="7" Grid.Column="2" Text="{Binding CurrentRecipe.TotalLoopStep}"/>
-                                <TextBox x:Name="tbRecipeCurrentLoop" Grid.Row="8" Grid.Column="1" Text="{Binding CurrentRecipe.CurrentLoopNumber}"/>
-                                <TextBox x:Name="tbRecipeTotalLoop" Grid.Row="8" Grid.Column="2" Text="{Binding CurrentRecipe.TotalLoopNumber}"/>
-                                <TextBox x:Name="tbSusceptorCurrentTemp" Grid.Row="9" Grid.Column="1" Text="{Binding CurrentRecipe.CurrentWaitTemp}"/>
-                                <TextBox x:Name="tbRecipeWaitTemp" Grid.Row="9" Grid.Column="2" Text="{Binding CurrentRecipe.TotalWaitTemp}"/>
-                            </Grid>
-                        </StackPanel>
+                                    <Label Grid.Row="0" Grid.Column="1" Content="Current" HorizontalAlignment="Center" Style="{StaticResource infoLabelLeft}" />
+                                    <Label Grid.Row="0" Grid.Column="3" Content="Total" HorizontalAlignment="Center" Style="{StaticResource infoLabelLeft}" />
+                                    <Label Grid.Row="1" Grid.Column="0" Content="Recipe Time" Style="{StaticResource InfoLabelRight}" />
+                                    <Label Grid.Row="3" Grid.Column="0" Content="Step" Style="{StaticResource InfoLabelRight}" />
+                                    <Label Grid.Row="5" Grid.Column="0" Content="Step Name" Style="{StaticResource InfoLabelRight}" />
+                                    <Label Grid.Row="7" Grid.Column="0" Content="Ramping Time" Style="{StaticResource InfoLabelRight}" />
+                                    <Label Grid.Row="9" Grid.Column="0" Content="Holding Time" Style="{StaticResource InfoLabelRight}" />
+                                    <Label Grid.Row="11" Grid.Column="0" Content="Pause Time" Style="{StaticResource InfoLabelRight}" />
+                                    <Label Grid.Row="13" Grid.Column="0" Content="Loop Step" Style="{StaticResource InfoLabelRight}" />
+                                    <Label Grid.Row="15" Grid.Column="0" Content="Loop Number" Style="{StaticResource InfoLabelRight}" />
+                                    <Label Grid.Row="17" Grid.Column="0" Content="Wait Temp" Style="{StaticResource InfoLabelRight}" />
+
+                                    <TextBox x:Name="tbRecipeCurrentTime" Grid.Row="1" Grid.Column="1" Text="{Binding CurrentRecipe.CurrentRecipeTime}" Style="{StaticResource RecipeRunInfoTextBox}" />
+                                    <TextBox x:Name="tbRecipeTotalTime" Grid.Row="1" Grid.Column="3" Text="{Binding CurrentRecipe.TotalRecipeTime}" Style="{StaticResource RecipeRunInfoTextBox}" />
+                                    <TextBox x:Name="tbRecipeCurrentStep" Grid.Row="3" Grid.Column="1" Text="{Binding CurrentRecipe.CurrentStep}" Style="{StaticResource RecipeRunInfoTextBox}" />
+                                    <TextBox x:Name="tbRecipeTotalStep" Grid.Row="3" Grid.Column="3" Text="{Binding CurrentRecipe.TotalStep}" Style="{StaticResource RecipeRunInfoTextBox}" />
+                                    <TextBox x:Name="tbRecipeStepName" Grid.Row="5" Grid.Column="1" Grid.ColumnSpan="3" Text="{Binding CurrentRecipe.StepName}" Style="{StaticResource RecipeRunSpanInfoTextBox}" />
+                                    <TextBox x:Name="tbRecipeCurrentRamp" Grid.Row="7" Grid.Column="1" Text="{Binding CurrentRecipe.CurrentRampTime}" Style="{StaticResource RecipeRunInfoTextBox}" />
+                                    <TextBox x:Name="tbRecipeTotalRamp" Grid.Row="7" Grid.Column="3" Text="{Binding CurrentRecipe.TotalRampTime}" Style="{StaticResource RecipeRunInfoTextBox}" />
+                                    <TextBox x:Name="tbRecipeCurrentHold" Grid.Row="9" Grid.Column="1" Text="{Binding CurrentRecipe.CurrentHoldTime}" Style="{StaticResource RecipeRunInfoTextBox}" />
+                                    <TextBox x:Name="tbRecipeTotalHold" Grid.Row="9" Grid.Column="3" Text="{Binding CurrentRecipe.TotalHoldTime}" Style="{StaticResource RecipeRunInfoTextBox}" />
+                                    <TextBox x:Name="tbRecipePauseTime" Grid.Row="11" Grid.Column="1" Grid.ColumnSpan="3" Text="{Binding CurrentRecipe.PauseTime}" Style="{StaticResource RecipeRunSpanInfoTextBox}" />
+                                    <TextBox x:Name="tbRecipeLoopStart" Grid.Row="13" Grid.Column="1" Text="{Binding CurrentRecipe.CurrentLoopStep}" Style="{StaticResource RecipeRunInfoTextBox}" />
+                                    <TextBox x:Name="tbRecipeLoopEnd" Grid.Row="13" Grid.Column="3" Text="{Binding CurrentRecipe.TotalLoopStep}" Style="{StaticResource RecipeRunInfoTextBox}" />
+                                    <TextBox x:Name="tbRecipeCurrentLoop" Grid.Row="15" Grid.Column="1" Text="{Binding CurrentRecipe.CurrentLoopNumber}" Style="{StaticResource RecipeRunInfoTextBox}" />
+                                    <TextBox x:Name="tbRecipeTotalLoop" Grid.Row="15" Grid.Column="3" Text="{Binding CurrentRecipe.TotalLoopNumber}" Style="{StaticResource RecipeRunInfoTextBox}" />
+                                    <TextBox x:Name="tbSusceptorCurrentTemp" Grid.Row="17" Grid.Column="1" Text="{Binding CurrentRecipe.CurrentWaitTemp}" Style="{StaticResource RecipeRunInfoTextBox}" />
+                                    <TextBox x:Name="tbRecipeWaitTemp" Grid.Row="17" Grid.Column="3" Text="{Binding CurrentRecipe.TotalWaitTemp}" Style="{StaticResource RecipeRunInfoTextBox}" />
+                                </Grid>
+                            </StackPanel>
+                        </Border>
                     </Grid>
                     <!-- Event Log -->
                     <Grid Grid.Row="1">
-                        <StackPanel Orientation="Vertical">
-                            <StackPanel.Resources>
-                                <Style TargetType="{x:Type TextBlock}">
-                                    <Setter Property="Foreground" Value="{StaticResource PrimaryFontColor}"/>
-                                    <Setter Property="Height" Value="24"/>
-                                </Style>
-                            </StackPanel.Resources>
-                            <StackPanel Orientation="Horizontal">
-                                <TextBlock Foreground="DeepSkyBlue" FontSize="14" Width="120" HorizontalAlignment="Center" Margin="100,0,0,0">
-                    <Bold>Event Log</Bold></TextBlock>
-                                <Button Height="20" Width="80" Content="Clear"/>
-                            </StackPanel>
-                            <Line X1="5" Y1="0" X2="295" Y2="0" Stroke="DeepSkyBlue" StrokeThickness="2" Margin="2,2,2,8"/>
-                            <DataGrid x:Name="dgEventLog">
+                        <Grid.Margin>
+                            <Thickness Left="{StaticResource p_3}" Right="{StaticResource p_3}" />
+                        </Grid.Margin>
+                        <StackPanel>
+                            <DockPanel>
+                                <DockPanel.Margin>
+                                    <Thickness Bottom="{StaticResource p_1}" />
+                                </DockPanel.Margin>
+                                <Image Source="/Resources/Icons/icon=event.png" Width="24" Height="24" />
+                                <Label Foreground="{StaticResource Gray_950}" Style="{StaticResource RecipeRunSectionTitle}">
+                                    <Bold>Event Log</Bold>
+                                </Label>
+                                <Button Width="134" HorizontalAlignment="Right" Style="{StaticResource DefaultButton}" Content="Clear"/>
+                            </DockPanel>
+                            <DataGrid x:Name="dgEventLog" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto" AutoGenerateColumns="False" Style="{StaticResource EventLog}" Height="100">
+                                <DataGrid.Resources>
+                                    <Style TargetType="ScrollBar" BasedOn="{StaticResource DefaultScrollbar}" />
+                                </DataGrid.Resources>
                                 <DataGrid.Columns>
-                                    <DataGridTextColumn Header="Type" Binding="{Binding Type}" Width="70"/>
-                                    <DataGridTextColumn Header="Message" Binding="{Binding Message}" Width="160"/>
-                                    <DataGridTextColumn Header="Date/Time" Binding="{Binding Date}" Width="70"/>
+                                    <DataGridTextColumn Header="Type" Binding="{Binding Type, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"  ElementStyle="{StaticResource EventLogElement}"/>
+                                    <DataGridTextColumn Header="Date" Binding="{Binding Date, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"  ElementStyle="{StaticResource EventLogElement}"/>
+                                    <DataGridTextColumn Header="Message" Binding="{Binding Message, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}" ElementStyle="{StaticResource EventLogElement}" MinWidth="97"/>
                                 </DataGrid.Columns>
-
                             </DataGrid>
                         </StackPanel>
                     </Grid>
                 </Grid>
             </Grid>
-            
 
             <!-- #Region 7. 레시피 커맨드 버턴 -->
             <Grid Grid.Row="1">
@@ -653,7 +689,7 @@
 
                             </Button>
                             <Button x:Name="btnRecipeSkip" Content="Skip" Command="{Binding RecipeSkipCommand}"  Width="40" Height="40" Style="{StaticResource ImageButton}" ToolTip="skip recipe">
-                               
+
                             </Button>
                             <Button x:Name="btnRecipeStop" Command="{Binding RecipeStopCommand}" Width="40" Height="40" Style="{StaticResource ImageButton}" ToolTip="stop recipe" >
                                 <Image Source="/Resources/icons/icon=pause.png" Style="{StaticResource ImageMargin}" />

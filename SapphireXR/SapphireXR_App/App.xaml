@@ -13,7 +13,7 @@
             <SolidColorBrush x:Key="DefaultRecipeListBackground" Color="{Binding Color, Source={StaticResource Gray_50}}" />
             <SolidColorBrush x:Key="DefaultRecipeListForeground" Color="{Binding Color, Source={StaticResource Gray_900}}" />
             <SolidColorBrush x:Key="HighlitedRecipeListBackground" Color="{Binding Color, Source={StaticResource Gray_500}}" />
-            <SolidColorBrush x:Key="HighlitedRecipeListForeground" Color="LightGoldenrodYellow" />
+            <SolidColorBrush x:Key="HighlitedRecipeListForeground" Color="IndianRed" />
         </ResourceDictionary>
     </Application.Resources>
 </Application>

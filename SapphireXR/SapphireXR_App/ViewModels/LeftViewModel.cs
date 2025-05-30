@@ -314,7 +314,6 @@ namespace SapphireXR_App.ViewModels
         [ObservableProperty]
         private Brush _tempControllerAlarmLampColor = OnLampColor;
 
-
         [ObservableProperty]
         private Brush _signalTowerRed = Brushes.Transparent;
         [ObservableProperty]

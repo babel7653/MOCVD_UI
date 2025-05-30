@@ -672,33 +672,24 @@
                             <ColumnDefinition/>
                         </Grid.ColumnDefinitions>
                         <StackPanel Grid.Column="0" Orientation="Horizontal">
-                            <StackPanel.Resources>
-                                <Style x:Key="ImageMargin" TargetType="Image">
-                                    <Setter Property="Margin">
-                                        <Setter.Value>
-                                            <Thickness Left="{StaticResource p_1}" Right="{StaticResource p_1}" Top="{StaticResource p_1}" Bottom="{StaticResource p_1}" />
-                                        </Setter.Value>
-                                    </Setter>
-                                </Style>
-                            </StackPanel.Resources>
                             <Button x:Name="btnRecipeOpen" Command="{Binding RecipeOpenCommand}" Width="40" Height="40" Style="{StaticResource ImageButton}" ToolTip="open recipe">
-                                <Image Source="/Resources/icons/icon=open.png" Style="{StaticResource ImageMargin}"/>
+                                <Image Source="/Resources/icons/icon=open.png" Style="{StaticResource MenuImage}" />
                             </Button>
                             <Button x:Name="btnRecipeStart" Width="40" Height="40" Style="{StaticResource ImageButton}" Command="{Binding RecipeStartCommand}"  ToolTip="start recipe">
-                                <Image Source="{Binding StartPauseIconPath}" Style="{StaticResource ImageMargin}" />
+                                <Image Source="{Binding StartPauseIconPath}" Style="{StaticResource MenuImage}" />
 
                             </Button>
                             <Button x:Name="btnRecipeSkip" Content="Skip" Command="{Binding RecipeSkipCommand}"  Width="40" Height="40" Style="{StaticResource ImageButton}" ToolTip="skip recipe">
 
                             </Button>
                             <Button x:Name="btnRecipeStop" Command="{Binding RecipeStopCommand}" Width="40" Height="40" Style="{StaticResource ImageButton}" ToolTip="stop recipe" >
-                                <Image Source="/Resources/icons/icon=pause.png" Style="{StaticResource ImageMargin}" />
+                                <Image Source="/Resources/icons/icon=pause.png" Style="{StaticResource MenuImage}" />
                             </Button>
                             <Button x:Name="btnRecipeRefresh" Command="{Binding RecipeRefreshCommand}" Width="40" Height="40" Style="{StaticResource ImageButton}" ToolTip="refresh recipe">
-                                <Image Source="/Resources/icons/icon=refresh.png" Style="{StaticResource ImageMargin}"/>
+                                <Image Source="/Resources/icons/icon=refresh.png" Style="{StaticResource MenuImage}"/>
                             </Button>
                             <Button x:Name="btnRecipeClean" Command="{Binding RecipeCleanCommand}" Width="40" Height="40" Style="{StaticResource ImageButton}" ToolTip="clean recipe">
-                                <Image Source="/Resources/icons/icon=trash.png" Style="{StaticResource ImageMargin}" />
+                                <Image Source="/Resources/icons/icon=trash.png" Style="{StaticResource MenuImage}" />
                             </Button>
                         </StackPanel>
                         <Grid Grid.Column="1">
@@ -754,6 +745,7 @@
                             <Setter Property="CellStyle">
                                 <Setter.Value>
                                     <Style TargetType="{x:Type DataGridCell}">
+                                        <Setter Property="TextBlock.TextAlignment" Value="Center" />
                                         <Style.Triggers>
                                             <Trigger Property="IsEnabled" Value="false">
                                                 <Setter Property="Foreground" Value="{Binding Foreground}"/>
@@ -833,8 +825,8 @@
                                     <Style TargetType="ScrollBar" BasedOn="{StaticResource DefaultScrollbar}" />
                                 </DataGrid.Resources>
                                 <DataGrid.Columns>
-                                    <DataGridTextColumn Header="No" Width="30" Binding="{Binding No}"  IsReadOnly="True" />
-                                    <DataGridTextColumn Header="Name" Width="200" Binding="{Binding Name}" />
+                                    <DataGridTextColumn Header="No" Width="30" Binding="{Binding No}" IsReadOnly="True" ElementStyle="{StaticResource EventLogElement}" />
+                                    <DataGridTextColumn Header="Name" Width="200" Binding="{Binding Name}" ElementStyle="{StaticResource EventLogElement}" />
                                     <DataGridTextColumn Header="Ramp" Width="100" Binding="{Binding RTime, UpdateSourceTrigger=PropertyChanged}" EditingElementStyle="{StaticResource gridColumnTextBoxOnlyNumber}" ElementStyle="{StaticResource EventLogElement}" />
                                     <DataGridTextColumn Header="Hold" Width="100" Binding="{Binding HTime, UpdateSourceTrigger=PropertyChanged}" EditingElementStyle="{StaticResource gridColumnTextBoxOnlyNumber}" ElementStyle="{StaticResource EventLogElement}" />
                                     <DataGridTextColumn Header="M01" Width="70" Binding="{Binding M01, UpdateSourceTrigger=PropertyChanged}" EditingElementStyle="{StaticResource gridColumnTextBoxMaxNumber}" ElementStyle="{StaticResource EventLogElement}" />
@@ -873,8 +865,8 @@
                                     <Style TargetType="ScrollBar" BasedOn="{StaticResource DefaultScrollbar}" />
                                 </DataGrid.Resources>
                                 <DataGrid.Columns>
-                                    <DataGridTextColumn Header="No" Width="30" Binding="{Binding No}"  IsReadOnly="True" />
-                                    <DataGridTextColumn Header="Name" Width="200" Binding="{Binding Name}" />
+                                    <DataGridTextColumn Header="No" Width="30" Binding="{Binding No}"  IsReadOnly="True" ElementStyle="{StaticResource EventLogElement}" />
+                                    <DataGridTextColumn Header="Name" Width="200" Binding="{Binding Name}" ElementStyle="{StaticResource EventLogElement}" />
                                     <DataGridCheckBoxColumn Header="V01" Width="50" Binding="{Binding V01, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" EditingElementStyle="{StaticResource VavleOnOffCheckBox}" ElementStyle="{StaticResource VavleOnOffCheckBox}" />
                                     <DataGridCheckBoxColumn Header="V02" Width="50" Binding="{Binding V02, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"  EditingElementStyle="{StaticResource VavleOnOffCheckBox}" ElementStyle="{StaticResource VavleOnOffCheckBox}" />
                                     <DataGridCheckBoxColumn Header="V03" Width="50" Binding="{Binding V03, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" EditingElementStyle="{StaticResource VavleOnOffCheckBox}" ElementStyle="{StaticResource VavleOnOffCheckBox}" />

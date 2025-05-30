@@ -15,6 +15,7 @@
     <None Remove="Resources\icons\icon=analog.png" />
     <None Remove="Resources\icons\icon=app.png" />
     <None Remove="Resources\icons\icon=chevron.png" />
+    <None Remove="Resources\icons\icon=close.png" />
     <None Remove="Resources\icons\icon=controller.png" />
     <None Remove="Resources\icons\icon=cool.png" />
     <None Remove="Resources\icons\icon=digital.png" />
@@ -30,6 +31,7 @@
     <None Remove="Resources\icons\icon=live_plot.png" />
     <None Remove="Resources\icons\icon=lock_01.png" />
     <None Remove="Resources\icons\icon=lock_02.png" />
+    <None Remove="Resources\icons\icon=minimize.png" />
     <None Remove="Resources\icons\icon=minus.png" />
     <None Remove="Resources\icons\icon=new.png" />
     <None Remove="Resources\icons\icon=nut and bolt.png" />
@@ -42,6 +44,7 @@
     <None Remove="Resources\icons\icon=recipe_information.png" />
     <None Remove="Resources\icons\icon=refresh.png" />
     <None Remove="Resources\icons\icon=rotation.png" />
+    <None Remove="Resources\icons\icon=sapphire.png" />
     <None Remove="Resources\icons\icon=save.png" />
     <None Remove="Resources\icons\icon=save_as.png" />
     <None Remove="Resources\icons\icon=stop.png" />
@@ -86,6 +89,9 @@
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </Resource>
     <Resource Include="Resources\icons\icon=chevron.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\icons\icon=close.png">
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </Resource>
     <Resource Include="Resources\icons\icon=control_knobs.png">
@@ -136,6 +142,9 @@
     <Resource Include="Resources\icons\icon=lock_02.png">
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </Resource>
+    <Resource Include="Resources\icons\icon=minimize.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
     <Resource Include="Resources\icons\icon=minus.png">
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </Resource>
@@ -170,6 +179,9 @@
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </Resource>
     <Resource Include="Resources\icons\icon=rotation.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\icons\icon=sapphire.png">
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </Resource>
     <Resource Include="Resources\icons\icon=save.png">

@@ -1,7 +1,6 @@
 ﻿using SapphireXR_App.Common;
 using System.Collections;
 using System.Windows.Threading;
-using System.Windows;
 using Newtonsoft.Json.Linq;
 using System.IO;
 using Newtonsoft.Json;

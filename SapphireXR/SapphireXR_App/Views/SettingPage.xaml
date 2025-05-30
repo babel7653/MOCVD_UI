@@ -38,7 +38,7 @@
                 </Setter.Value>
             </Setter>
             <Setter Property="Width" Value="30" />
-            <Setter Property="Height" Value="200" />
+            <Setter Property="Height" Value="150" />
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="TabItem">

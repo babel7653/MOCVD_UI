@@ -208,8 +208,8 @@ namespace SapphireXR_App.ViewModels
             {
                 if (currentRecipe != null)
                 {
-                    currentRecipe.Background = Brushes.White;
-                    currentRecipe.Foreground = Brushes.Black;
+                    currentRecipe.Background = Recipe.DefaultBackground;
+                    currentRecipe.Foreground = Recipe.DefaultForeground;
 
                 }
                 foreach(Recipe recipe in Recipes)

@@ -24,20 +24,22 @@ namespace SapphireXR_App.ViewModels
                 plotModel.TitleColor = OxyColors.White;
                 plotModel.Axes.Add(initializeXAxis());
 
+                double maxValue = PLCService.ReadMaxValue(title);
+                double padding = maxValue * 0.01;
                 plotModel.Axes.Add(new LinearAxis
                 {
                     Title = "Data Value",
                     Position = AxisPosition.Left,
                     IsPanEnabled = true,
                     IsZoomEnabled = true,
-                    Minimum = 0,
+                    Minimum = -padding,
                     AxislineColor = OxyColors.White,
                     MajorGridlineColor = OxyColors.White,
                     MinorGridlineColor = OxyColors.White,
                     TicklineColor = OxyColors.White,
                     ExtraGridlineColor = OxyColors.White,
                     MinorTicklineColor = OxyColors.White,
-                    Maximum = PLCService.ReadMaxValue(title)
+                    Maximum = maxValue + padding
                 });
 
                 Legend legend = new Legend();

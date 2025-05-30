@@ -6,143 +6,170 @@
         xmlns:local="clr-namespace:SapphireXR_App.Views"
         xmlns:i="clr-namespace:Microsoft.Xaml.Behaviors;assembly=Microsoft.Xaml.Behaviors"
         mc:Ignorable="d"
-        Title="ManualBatchView" d:DesignWidth="400" d:DesignHeight="930" Height="955" Width="417" Background="{StaticResource Gray_100}">
-    <StackPanel Grid.ColumnSpan="2" Background="{DynamicResource Gray_100}" Margin="{StaticResource p_5_sqrt}">
-        <StackPanel.Resources>
-            <Style x:Key="gridColumnTextBox" TargetType="TextBox">
-                <Style.Setters>
-                    <EventSetter Event="TextChanged"  Handler="TextBox_TextChanged" />
-                </Style.Setters>
-            </Style>
-            <Style x:Key="ManualBatchViewDataGrid" TargetType="DataGrid" BasedOn="{StaticResource EventLog}">
-                <Setter Property="CanUserAddRows" Value="False" />
-                <Setter Property="AutoGenerateColumns" Value="False" />
-                <Setter Property="VerticalScrollBarVisibility" Value="Auto" />
-                <Setter Property="FontSize" Value="12" />
-                <Setter Property="ColumnHeaderStyle">
-                    <Setter.Value>
-                        <Style TargetType="DataGridColumnHeader" BasedOn="{StaticResource EventLogColumnHeader}">
-                            <Setter Property="Height" Value="26" />
-                        </Style>
-                    </Setter.Value>
-                </Setter>
-            </Style>
-            <Style x:Key="ManualBatchViewComboBox" TargetType="ComboBox" BasedOn="{StaticResource theComboBox}">
-                <Setter Property="FontSize" Value="12" />
-            </Style>
-        </StackPanel.Resources>
-        <Grid>
-            <Grid.Margin>
-                <Thickness Bottom="{StaticResource p_2}" />
-            </Grid.Margin>
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="Auto" />
-                <ColumnDefinition Width="Auto" />
-                <ColumnDefinition Width="Auto"/>
-                <ColumnDefinition Width="Auto" />
-            </Grid.ColumnDefinitions>
-            <ComboBox Grid.Column="0" ItemsSource="{Binding Batches, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" DisplayMemberPath="Name" 
-                          SelectedItem="{Binding CurrentBatch, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"  Style="{StaticResource ManualBatchViewComboBox}" />
-            <Button Grid.Column="1" Width="28" Height="28" Style="{StaticResource DefaultButton}" Command="{Binding AddCommand}">
-                <Button.Margin>
-                    <Thickness Left="{StaticResource p_2}" />
-                </Button.Margin>
-                <Image Source="/Resources/icons/icon=plus.png" Width="20" Height="20" />
-            </Button>
-            <Button Grid.Column="2" Width="28" Height="28" Command="{Binding MinusCommand}" Style="{StaticResource DefaultButton}" Padding="{StaticResource p_2_sqrt}">
-                <Button.Margin>
-                    <Thickness Left="{StaticResource p_2}" />
-                </Button.Margin>
-                <Image Source="/Resources/icons/icon=minus.png"  Width="20" Height="20" />
-            </Button>
-            <Button x:Name="UserSqtateBatch" Grid.Column="3" Content="Batch" Width="71" Command="{Binding LoadToPLCCommand}" Style="{StaticResource DefaultButton}">
-                <Button.Margin>
-                    <Thickness Left="{StaticResource p_2}" />
-                </Button.Margin>
-            </Button>
-            <Button x:Name="UserStateSave" Grid.Column="4" Content="Save" Width="66" Command="{Binding SaveCommand}" Style="{StaticResource PrimaryButton}">
-                <Button.Margin>
-                    <Thickness Left="{StaticResource p_2}" />
-                </Button.Margin>
-            </Button>
-        </Grid>
+        WindowStyle="None" Background="Transparent" AllowsTransparency="True" WindowStartupLocation="CenterScreen"
+        Title="ManualBatchView" d:DesignWidth="400" d:DesignHeight="930" Height="955" Width="417" >
+    <Border Background="{StaticResource Gray_100}">
+        <Border.CornerRadius>
+            <CornerRadius TopLeft="{StaticResource r_3}" TopRight="{StaticResource r_3}" BottomLeft="{StaticResource r_3}" BottomRight="{StaticResource r_3}" />
+        </Border.CornerRadius>
+        <Border.Padding>
+            <Thickness Left="{StaticResource p_5}" Right="{StaticResource p_5}" Bottom="{StaticResource p_5}" Top="{StaticResource p_1}" />
+        </Border.Padding>
         <Grid>
             <Grid.RowDefinitions>
-                <RowDefinition Height="Auto" />
-                <RowDefinition Height="Auto" />
-                <RowDefinition Height="Auto" />
-                <RowDefinition Height="Auto" />
+                <RowDefinition Height="24"/>
+                <RowDefinition />
             </Grid.RowDefinitions>
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="Auto" />
-                <ColumnDefinition Width="*" />
-            </Grid.ColumnDefinitions>
-            <TextBlock Grid.Row="0" Grid.Column="0" Text="Alarm State" Style="{StaticResource infoTextBlockLeft}">
-                <TextBlock.Margin>
-                    <Thickness Bottom="{StaticResource p_1}" />
-                </TextBlock.Margin>
-            </TextBlock>
-            <TextBlock Grid.Row="0" Grid.Column="1" Text="Recipe End" Style="{StaticResource infoTextBlockLeft}">
-                <TextBlock.Margin>
-                    <Thickness  Bottom="{StaticResource p_1}" />
-                </TextBlock.Margin>
-            </TextBlock>
-            <ComboBox Grid.Row="1" Grid.Column="0" ItemsSource="{Binding Batches}" SelectedItem="{Binding BatchOnAlarmState}" DisplayMemberPath="Name" Width="176" Style="{StaticResource ManualBatchViewComboBox}" Height="28" HorizontalAlignment="Left">
-                <ComboBox.Margin>
-                    <Thickness Left="0" Right="{StaticResource p_2}" Bottom="{StaticResource p_2}" />
-                </ComboBox.Margin>
-            </ComboBox>
-            <ComboBox Grid.Row="1" Grid.Column="1" ItemsSource="{Binding Batches}" SelectedItem="{Binding BatchOnRecipeEnd}" DisplayMemberPath="Name" Width="176" Style="{StaticResource ManualBatchViewComboBox}">
-                <ComboBox.Margin>
-                    <Thickness  Bottom="{StaticResource p_2}" />
-                </ComboBox.Margin>
-            </ComboBox>
-            <TextBlock Grid.Row="2" Grid.Column="0" Text="Name" Style="{StaticResource infoTextBlockLeft}">
-                <TextBlock.Margin>
-                    <Thickness Bottom="{StaticResource p_1}" />
-                </TextBlock.Margin>
-            </TextBlock>
-            <TextBlock Grid.Row="2" Grid.Column="1" Text="Ramping Time(s)" Style="{StaticResource infoTextBlockLeft}">
-                <TextBlock.Margin>
-                    <Thickness  Bottom="{StaticResource p_1}" />
-                </TextBlock.Margin>
-            </TextBlock>
-            <TextBox Grid.Row="3" Grid.Column="0" Height="26" Width="176" Text="{Binding CurrentBatch.Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" IsEnabled="{Binding NameEnabled}" Style="{StaticResource InfoTextBox}" HorizontalAlignment="Left">
-                <TextBox.Margin>
-                    <Thickness Right="{StaticResource p_2}" Bottom="{StaticResource p_2}" />
-                </TextBox.Margin>
-            </TextBox>
-            <local:NumberBox Grid.Row="3" Grid.Column="1" Width="176" Height="26" Text="{Binding CurrentBatch.RampingTime, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" IsEnabled="{Binding RampingTimeEnabled}" LostFocus="NumberBox_LostFocus" Style="{StaticResource InfoTextBox}">
-                <TextBox.Margin>
-                    <Thickness Bottom="{StaticResource p_2}" />
-                </TextBox.Margin>
-            </local:NumberBox>
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="24" />
+                </Grid.ColumnDefinitions>
+                <Button Grid.Column="1" Width="24" Height="24" Style="{StaticResource CloseMenuButton}" Click="OnClose">
+                    <Image Source="/Resources/icons/icon=close.png"  />
+                </Button>
+            </Grid>
+            <StackPanel Grid.Row="1" Background="{DynamicResource Gray_100}">
+                <StackPanel.Margin>
+                    <Thickness Top="{StaticResource p_2}" />
+                </StackPanel.Margin>
+                <StackPanel.Resources>
+                    <Style x:Key="gridColumnTextBox" TargetType="TextBox">
+                        <Style.Setters>
+                            <EventSetter Event="TextChanged"  Handler="TextBox_TextChanged" />
+                        </Style.Setters>
+                    </Style>
+                    <Style x:Key="ManualBatchViewDataGrid" TargetType="DataGrid" BasedOn="{StaticResource EventLog}">
+                        <Setter Property="CanUserAddRows" Value="False" />
+                        <Setter Property="AutoGenerateColumns" Value="False" />
+                        <Setter Property="VerticalScrollBarVisibility" Value="Auto" />
+                        <Setter Property="FontSize" Value="12" />
+                        <Setter Property="ColumnHeaderStyle">
+                            <Setter.Value>
+                                <Style TargetType="DataGridColumnHeader" BasedOn="{StaticResource EventLogColumnHeader}">
+                                    <Setter Property="Height" Value="26" />
+                                </Style>
+                            </Setter.Value>
+                        </Setter>
+                    </Style>
+                    <Style x:Key="ManualBatchViewComboBox" TargetType="ComboBox" BasedOn="{StaticResource theComboBox}">
+                        <Setter Property="FontSize" Value="12" />
+                    </Style>
+                </StackPanel.Resources>
+                <Grid>
+                    <Grid.Margin>
+                        <Thickness Bottom="{StaticResource p_2}" />
+                    </Grid.Margin>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
+                    <ComboBox Grid.Column="0" ItemsSource="{Binding Batches, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" DisplayMemberPath="Name" 
+                      SelectedItem="{Binding CurrentBatch, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"  Style="{StaticResource ManualBatchViewComboBox}" />
+                    <Button Grid.Column="1" Width="28" Height="28" Style="{StaticResource DefaultButton}" Command="{Binding AddCommand}">
+                        <Button.Margin>
+                            <Thickness Left="{StaticResource p_2}" />
+                        </Button.Margin>
+                        <Image Source="/Resources/icons/icon=plus.png" Width="20" Height="20" />
+                    </Button>
+                    <Button Grid.Column="2" Width="28" Height="28" Command="{Binding MinusCommand}" Style="{StaticResource DefaultButton}" Padding="{StaticResource p_2_sqrt}">
+                        <Button.Margin>
+                            <Thickness Left="{StaticResource p_2}" />
+                        </Button.Margin>
+                        <Image Source="/Resources/icons/icon=minus.png"  Width="20" Height="20" />
+                    </Button>
+                    <Button x:Name="UserSqtateBatch" Grid.Column="3" Content="Batch" Width="71" Command="{Binding LoadToPLCCommand}" Style="{StaticResource DefaultButton}">
+                        <Button.Margin>
+                            <Thickness Left="{StaticResource p_2}" />
+                        </Button.Margin>
+                    </Button>
+                    <Button x:Name="UserStateSave" Grid.Column="4" Content="Save" Width="66" Command="{Binding SaveCommand}" Style="{StaticResource PrimaryButton}">
+                        <Button.Margin>
+                            <Thickness Left="{StaticResource p_2}" />
+                        </Button.Margin>
+                    </Button>
+                </Grid>
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Grid.Row="0" Grid.Column="0" Text="Alarm State" Style="{StaticResource infoTextBlockLeft}">
+                        <TextBlock.Margin>
+                            <Thickness Bottom="{StaticResource p_1}" />
+                        </TextBlock.Margin>
+                    </TextBlock>
+                    <TextBlock Grid.Row="0" Grid.Column="1" Text="Recipe End" Style="{StaticResource infoTextBlockLeft}">
+                        <TextBlock.Margin>
+                            <Thickness  Bottom="{StaticResource p_1}" />
+                        </TextBlock.Margin>
+                    </TextBlock>
+                    <ComboBox Grid.Row="1" Grid.Column="0" ItemsSource="{Binding Batches}" SelectedItem="{Binding BatchOnAlarmState}" DisplayMemberPath="Name" Width="176" Style="{StaticResource ManualBatchViewComboBox}" Height="28" HorizontalAlignment="Left">
+                        <ComboBox.Margin>
+                            <Thickness Left="0" Right="{StaticResource p_2}" Bottom="{StaticResource p_2}" />
+                        </ComboBox.Margin>
+                    </ComboBox>
+                    <ComboBox Grid.Row="1" Grid.Column="1" ItemsSource="{Binding Batches}" SelectedItem="{Binding BatchOnRecipeEnd}" DisplayMemberPath="Name" Width="176" Style="{StaticResource ManualBatchViewComboBox}">
+                        <ComboBox.Margin>
+                            <Thickness  Bottom="{StaticResource p_2}" />
+                        </ComboBox.Margin>
+                    </ComboBox>
+                    <TextBlock Grid.Row="2" Grid.Column="0" Text="Name" Style="{StaticResource infoTextBlockLeft}">
+                        <TextBlock.Margin>
+                            <Thickness Bottom="{StaticResource p_1}" />
+                        </TextBlock.Margin>
+                    </TextBlock>
+                    <TextBlock Grid.Row="2" Grid.Column="1" Text="Ramping Time(s)" Style="{StaticResource infoTextBlockLeft}">
+                        <TextBlock.Margin>
+                            <Thickness  Bottom="{StaticResource p_1}" />
+                        </TextBlock.Margin>
+                    </TextBlock>
+                    <TextBox Grid.Row="3" Grid.Column="0" Height="26" Width="176" Text="{Binding CurrentBatch.Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" IsEnabled="{Binding NameEnabled}" Style="{StaticResource InfoTextBox}" HorizontalAlignment="Left">
+                        <TextBox.Margin>
+                            <Thickness Right="{StaticResource p_2}" Bottom="{StaticResource p_2}" />
+                        </TextBox.Margin>
+                    </TextBox>
+                    <local:NumberBox Grid.Row="3" Grid.Column="1" Width="176" Height="26" Text="{Binding CurrentBatch.RampingTime, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" IsEnabled="{Binding RampingTimeEnabled}" LostFocus="NumberBox_LostFocus" Style="{StaticResource InfoTextBox}">
+                        <TextBox.Margin>
+                            <Thickness Bottom="{StaticResource p_2}" />
+                        </TextBox.Margin>
+                    </local:NumberBox>
+                </Grid>
+                <DataGrid x:Name="dgUserSettingA" Height="360" VerticalScrollBarVisibility="Auto" ItemsSource="{Binding CurrentBatch.AnalogIOUserStates}" CellEditEnding="dgUserSettingA_CellEditEnding" Style="{StaticResource ManualBatchViewDataGrid}">
+                    <DataGrid.Margin>
+                        <Thickness Bottom="{StaticResource p_2}" />
+                    </DataGrid.Margin>
+                    <DataGrid.Resources>
+                        <Style TargetType="ScrollBar" BasedOn="{StaticResource DefaultScrollbar}" />
+                    </DataGrid.Resources>
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="Device Id" CanUserSort="False" CanUserResize="False" Width="60" Binding="{Binding Path=ID, Mode=OneWay,UpdateSourceTrigger=PropertyChanged}" IsReadOnly="True" ElementStyle="{StaticResource EventLogElement}" />
+                        <DataGridTextColumn Header="Device Name" CanUserSort="False" CanUserResize="False" Width="*" Binding="{Binding Path=Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" ElementStyle="{StaticResource EventLogElement}" />
+                        <DataGridTextColumn Header="Value" CanUserSort="False" CanUserResize="False" Width="100" Binding="{Binding Path=Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" EditingElementStyle="{StaticResource gridColumnTextBox}" ElementStyle="{StaticResource EventLogElement}" />
+                        <DataGridTextColumn Header="Max Value" CanUserSort="False" CanUserResize="False" Width="100" Binding="{Binding Path=MaxValue, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" IsReadOnly="True" ElementStyle="{StaticResource EventLogElement}" />
+                    </DataGrid.Columns>
+                </DataGrid>
+                <DataGrid x:Name="dgUserSettingD" Height="360" ItemsSource="{Binding CurrentBatch.DigitalIOUserStates}" Style="{StaticResource ManualBatchViewDataGrid}">
+                    <DataGrid.Resources>
+                        <Style TargetType="ScrollBar" BasedOn="{StaticResource DefaultScrollbar}" />
+                    </DataGrid.Resources>
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="Device Id" CanUserSort="False" CanUserResize="False" Width="60" Binding="{Binding Path=ID, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" IsReadOnly="True"  ElementStyle="{StaticResource EventLogElement}" />
+                        <DataGridTextColumn Header="Device Name" CanUserSort="False" CanUserResize="False" Width="*" Binding="{Binding Path=Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"  ElementStyle="{StaticResource EventLogElement}" />
+                        <DataGridCheckBoxColumn Header="State" CanUserSort="False" CanUserResize="False" Width="100" Binding="{Binding Path=On, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                EditingElementStyle="{StaticResource VavleOnOffCheckBox}" ElementStyle="{StaticResource VavleOnOffCheckBox}"/>
+                    </DataGrid.Columns>
+                </DataGrid>
+            </StackPanel>
         </Grid>
-        <DataGrid x:Name="dgUserSettingA" Height="360" VerticalScrollBarVisibility="Auto" ItemsSource="{Binding CurrentBatch.AnalogIOUserStates}" CellEditEnding="dgUserSettingA_CellEditEnding" Style="{StaticResource ManualBatchViewDataGrid}">
-            <DataGrid.Margin>
-                <Thickness Bottom="{StaticResource p_2}" />
-            </DataGrid.Margin>
-            <DataGrid.Resources>
-                <Style TargetType="ScrollBar" BasedOn="{StaticResource DefaultScrollbar}" />
-            </DataGrid.Resources>
-            <DataGrid.Columns>
-                <DataGridTextColumn Header="Device Id" CanUserSort="False" CanUserResize="False" Width="60" Binding="{Binding Path=ID, Mode=OneWay,UpdateSourceTrigger=PropertyChanged}" IsReadOnly="True" ElementStyle="{StaticResource EventLogElement}" />
-                <DataGridTextColumn Header="Device Name" CanUserSort="False" CanUserResize="False" Width="*" Binding="{Binding Path=Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" ElementStyle="{StaticResource EventLogElement}" />
-                <DataGridTextColumn Header="Value" CanUserSort="False" CanUserResize="False" Width="100" Binding="{Binding Path=Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" EditingElementStyle="{StaticResource gridColumnTextBox}" ElementStyle="{StaticResource EventLogElement}" />
-                <DataGridTextColumn Header="Max Value" CanUserSort="False" CanUserResize="False" Width="100" Binding="{Binding Path=MaxValue, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" IsReadOnly="True" ElementStyle="{StaticResource EventLogElement}" />
-            </DataGrid.Columns>
-        </DataGrid>
-        <DataGrid x:Name="dgUserSettingD" Height="360" ItemsSource="{Binding CurrentBatch.DigitalIOUserStates}" Style="{StaticResource ManualBatchViewDataGrid}">
-            <DataGrid.Resources>
-                <Style TargetType="ScrollBar" BasedOn="{StaticResource DefaultScrollbar}" />
-            </DataGrid.Resources>
-            <DataGrid.Columns>
-                <DataGridTextColumn Header="Device Id" CanUserSort="False" CanUserResize="False" Width="60" Binding="{Binding Path=ID, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" IsReadOnly="True"  ElementStyle="{StaticResource EventLogElement}" />
-                <DataGridTextColumn Header="Device Name" CanUserSort="False" CanUserResize="False" Width="*" Binding="{Binding Path=Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"  ElementStyle="{StaticResource EventLogElement}" />
-                <DataGridCheckBoxColumn Header="State" CanUserSort="False" CanUserResize="False" Width="100" Binding="{Binding Path=On, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                    EditingElementStyle="{StaticResource VavleOnOffCheckBox}" ElementStyle="{StaticResource VavleOnOffCheckBox}"/>
-            </DataGrid.Columns>
-        </DataGrid>
-    </StackPanel>
+    </Border>
 </Window>

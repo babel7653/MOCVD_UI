@@ -599,29 +599,20 @@
                         <ColumnDefinition/>
                     </Grid.ColumnDefinitions>
                     <StackPanel Grid.Column="0" Orientation="Horizontal">
-                        <StackPanel.Resources>
-                            <Style x:Key="ImageMargin" TargetType="Image">
-                                <Setter Property="Margin">
-                                    <Setter.Value>
-                                        <Thickness Left="{StaticResource p_1}" Right="{StaticResource p_1}" Top="{StaticResource p_1}" Bottom="{StaticResource p_1}" />
-                                    </Setter.Value>
-                                </Setter>
-                            </Style>
-                        </StackPanel.Resources>
                         <Button x:Name="btnRecipeNew" Style="{StaticResource MenuImageButton}" Command="{Binding RecipeNewCommand}" ToolTip="load new empty recipe">
-                            <Image Source="/Resources/icons/icon=new.png" Style="{StaticResource ImageMargin}" />
+                            <Image Source="/Resources/icons/icon=new.png" Style="{StaticResource MenuImage}" />
                         </Button>
                         <Button x:Name="btnRecipeOpen" Style="{StaticResource MenuImageButton}" Command="{Binding RecipeOpenCommand}" ToolTip="open recipe">
-                            <Image Source="/Resources/icons/icon=open.png" Style="{StaticResource ImageMargin}" />
+                            <Image Source="/Resources/icons/icon=open.png" Style="{StaticResource MenuImage}" />
                         </Button>
                         <Button x:Name="btnRecipePLCLoad" Style="{StaticResource MenuImageButton}" Command="{Binding RecipePLCLoadCommand, Mode=TwoWay}" ToolTip="load recipe to PLC">
-                            <Image Source="/Resources/icons/icon=PLC.png" Style="{StaticResource ImageMargin}" />
+                            <Image Source="/Resources/icons/icon=PLC.png" Style="{StaticResource MenuImage}" />
                         </Button>
                         <Button x:Name="btnRecipeSave" Style="{StaticResource MenuImageButton}" Command="{Binding RecipeSaveCommand, Mode=TwoWay}" ToolTip="save recipe">
-                            <Image Source="/Resources/icons/icon=save.png" Style="{StaticResource ImageMargin}" />
+                            <Image Source="/Resources/icons/icon=save.png" Style="{StaticResource MenuImage}" />
                         </Button>
                         <Button x:Name="btnRecipeSaveAs" Style="{StaticResource MenuImageButton}" Command="{Binding RecipeSaveAsCommand, Mode=TwoWay}" ToolTip="save recipe as a file name">
-                            <Image Source="/Resources/icons/icon=save_as.png" Style="{StaticResource ImageMargin}" />
+                            <Image Source="/Resources/icons/icon=save_as.png" Style="{StaticResource MenuImage}" />
                         </Button>
                     </StackPanel>
                     <StackPanel Grid.Column="2" Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Right">
@@ -834,8 +825,8 @@
                                         </b:EventTrigger>
                                     </b:Interaction.Triggers>
                                     <DataGrid.Columns>
-                                        <DataGridTextColumn Header="No" Width="30" Binding="{Binding No}"  IsReadOnly="True" />
-                                        <DataGridTextColumn Header="Name" Width="200" Binding="{Binding Name}" />
+                                        <DataGridTextColumn Header="No" Width="30" Binding="{Binding No}"  IsReadOnly="True" ElementStyle="{StaticResource EventLogElement}" />
+                                        <DataGridTextColumn Header="Name" Width="200" Binding="{Binding Name}" ElementStyle="{StaticResource EventLogElement}" />
                                         <DataGridCheckBoxColumn Header="V01" Width="50" Binding="{Binding V01, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" EditingElementStyle="{StaticResource VavleOnOffCheckBox}" ElementStyle="{StaticResource VavleOnOffCheckBox}" />
                                         <DataGridCheckBoxColumn Header="V02" Width="50" Binding="{Binding V02, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" EditingElementStyle="{StaticResource VavleOnOffCheckBox}" ElementStyle="{StaticResource VavleOnOffCheckBox}" />
                                         <DataGridCheckBoxColumn Header="V03" Width="50" Binding="{Binding V03, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" EditingElementStyle="{StaticResource VavleOnOffCheckBox}" ElementStyle="{StaticResource VavleOnOffCheckBox}" />

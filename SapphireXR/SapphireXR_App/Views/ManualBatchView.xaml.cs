@@ -1,5 +1,6 @@
 ﻿using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Input;
 using SapphireXR_App.Common;
 using SapphireXR_App.ViewModels;
 
@@ -46,9 +47,9 @@ namespace SapphireXR_App.Views
             }
         }
 
-        private void dgUserSettingD_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void OnClose(object sender, RoutedEventArgs e)
         {
-
+            Close();
         }
     }
 }

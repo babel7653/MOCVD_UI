@@ -135,8 +135,8 @@ namespace SapphireXR_App.ViewModels
             };
 
             EventLogs.CollectionChanged += (object? sender, NotifyCollectionChangedEventArgs args) => ClearEventLogsCommand.NotifyCanExecuteChanged();
-            EventLogs.Add(new() { Date = Util.ToEventLogFormat(App.AppStartTime), Message = "SapphireXR 시작", Type = "Application" });
             ObservableManager<EventLog>.Subscribe("EventLog", eventLogSubscriber = new EventLogSubscriber(this));
+            ObservableManager<string>.Get("ViewModelCreated").Issue("HomeViewModel");
         }
 
 

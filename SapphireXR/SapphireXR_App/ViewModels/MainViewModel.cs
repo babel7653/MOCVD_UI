@@ -10,7 +10,7 @@ using System.Windows.Input;
 
 namespace SapphireXR_App.ViewModels
 {
-    public partial class MainViewModel : ViewModelBase, IObserver<RecipeRunViewModel.RecipeUserState>, IObserver<int>
+    public partial class MainViewModel : ViewModelBase, IObserver<RecipeRunViewModel.RecipeUserState>, IObserver<int>, IObserver<string>
     {
         [ObservableProperty]
         private string? navigationSource;
@@ -63,6 +63,7 @@ namespace SapphireXR_App.ViewModels
                 ObservableManager<int>.Subscribe("SwitchTab", this);
             }
             onClosing = onRecipeInactive;
+            ObservableManager<string>.Subscribe("ViewModelCreated", this);
         }
 
         private void OnNavigationMessage(object recipient, NavigationMessage message)
@@ -139,6 +140,28 @@ namespace SapphireXR_App.ViewModels
             }
         }
 
+        void IObserver<string>.OnCompleted()
+        {
+            throw new NotImplementedException();
+        }
+
+        void IObserver<string>.OnError(Exception error)
+        {
+            throw new NotImplementedException();
+        }
+
+        void IObserver<string>.OnNext(string value)
+        {
+            if(value == "RecipeRunViewModel" || value == "HomeViewModel")
+            {
+                ++viewmodelInterestedCreatedCount;
+                if (viewmodelInterestedCreatedCount == 2)
+                {
+                    applicationEventIssuer.Issue(new() { Date = Util.ToEventLogFormat(App.AppStartTime), Message = "SapphireXR 시작", Type = "Application" });
+                }
+            }
+        }
+
         [ObservableProperty]
         private int _selectedTab;
         [ObservableProperty]
@@ -147,5 +170,8 @@ namespace SapphireXR_App.ViewModels
 
         private ObservableManager<int>.DataIssuer selectedTabPublisher = ObservableManager<int>.Get("MainView.SelectedTabIndex");
         private ObservableManager<bool>.DataIssuer closingPublisher = ObservableManager<bool>.Get("App.Closing");
+        private ObservableManager<EventLog>.DataIssuer applicationEventIssuer = ObservableManager<EventLog>.Get("EventLog");
+
+        private uint viewmodelInterestedCreatedCount = 0;
     }
 }

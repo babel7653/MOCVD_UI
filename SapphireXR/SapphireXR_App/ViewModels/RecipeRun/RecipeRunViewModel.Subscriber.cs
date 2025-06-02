@@ -86,5 +86,30 @@ namespace SapphireXR_App.ViewModels
 
             private RecipeRunViewModel recipeRunViewModel;
         }
+
+        private class EventLogSubscriber : IObserver<EventLog>
+        {
+            internal EventLogSubscriber(RecipeRunViewModel vm)
+            {
+                recipeRunViewModel = vm;
+            }
+
+            void IObserver<EventLog>.OnCompleted()
+            {
+                throw new NotImplementedException();
+            }
+
+            void IObserver<EventLog>.OnError(Exception error)
+            {
+                throw new NotImplementedException();
+            }
+
+            void IObserver<EventLog>.OnNext(EventLog value)
+            {
+                recipeRunViewModel.EventLogs.Add(value);
+            }
+
+            private RecipeRunViewModel recipeRunViewModel;
+        }
     }
 }

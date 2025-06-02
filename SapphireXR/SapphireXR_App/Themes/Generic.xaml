@@ -274,7 +274,7 @@
         <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Auto"/>
         <Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Auto"/>
         <Setter Property="ScrollViewer.CanContentScroll" Value="true"/>
-        <Setter Property="FontSize" Value="10" />
+        <Setter Property="FontSize" Value="12" />
         <Setter Property="FontFamily" Value="Segoe UI" />
         <Setter Property="HorizontalContentAlignment" Value="Center" />
         <Setter Property="Template">
@@ -358,7 +358,7 @@
         <Setter Property="SnapsToDevicePixels" Value="true" />
         <Setter Property="HorizontalAlignment" Value="Stretch" />
         <Setter Property="VerticalAlignment" Value="Stretch" />
-        <Setter Property="FontSize" Value="13" />
+        <Setter Property="FontSize" Value="12" />
         <Setter Property="OverridesDefaultStyle" Value="true"/>
         <Setter Property="Template">
             <Setter.Value>
@@ -402,7 +402,7 @@
         <Setter Property="BorderThickness" Value="1" />
         <Setter Property="Background" Value="{StaticResource Gray_50}" />
         <Setter Property="FontFamily" Value="Segoe UI" />
-        <Setter Property="FontSize" Value="10" />
+        <Setter Property="FontSize" Value="12" />
         <Setter Property="Foreground" Value="{StaticResource Gray_900}" />
         <Setter Property="ColumnHeaderStyle">
             <Setter.Value>

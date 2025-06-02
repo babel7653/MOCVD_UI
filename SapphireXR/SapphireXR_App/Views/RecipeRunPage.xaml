@@ -640,9 +640,9 @@
                                 <Label Foreground="{StaticResource Gray_950}" Style="{StaticResource RecipeRunSectionTitle}">
                                     <Bold>Event Log</Bold>
                                 </Label>
-                                <Button Width="134" HorizontalAlignment="Right" Style="{StaticResource DefaultButton}" Content="Clear"/>
+                                <Button Width="134" HorizontalAlignment="Right" Style="{StaticResource DefaultButton}" Content="Clear" Command="{Binding ClearEventLogCommand}"/>
                             </DockPanel>
-                            <DataGrid x:Name="dgEventLog" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto" AutoGenerateColumns="False" Style="{StaticResource EventLog}" Height="100">
+                            <DataGrid x:Name="dgEventLog" ItemsSource="{Binding EventLogs}" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto" AutoGenerateColumns="False" Style="{StaticResource EventLog}" Height="100">
                                 <DataGrid.Resources>
                                     <Style TargetType="ScrollBar" BasedOn="{StaticResource DefaultScrollbar}" />
                                 </DataGrid.Resources>

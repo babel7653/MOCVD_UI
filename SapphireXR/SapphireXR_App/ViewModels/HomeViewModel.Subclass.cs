@@ -122,15 +122,5 @@ namespace SapphireXR_App.ViewModels
 
             private HomeViewModel homeViewModel;
         }
-
-        public partial class EventLog: ObservableObject
-        {
-            [ObservableProperty]
-            private string _type = "";
-            [ObservableProperty]
-            private string _message = "";
-            [ObservableProperty]
-            private string _date = "";
-        }
     }
 }

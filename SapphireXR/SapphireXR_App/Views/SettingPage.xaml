@@ -5,7 +5,7 @@
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:SapphireXR_App.Views"
       mc:Ignorable="d" 
-      d:DesignWidth="1620" d:DesignHeight="1032"
+      d:DesignWidth="1620" d:DesignHeight="1020"
       Title="SettingPage" Background="{StaticResource Gray_300}">
     <Page.Resources>
         <Style TargetType="{x:Type DataGrid}" x:Key="SettingDataGrid" BasedOn="{StaticResource EventLog}">
@@ -219,7 +219,7 @@
                                             </Button>
                                             <Button x:Name="LogFilterClear" Foreground="{StaticResource Gray_700}" Content="Clear" />
                                         </StackPanel>
-                                        <DataGrid x:Name="LogbookTable" Height="770" Style="{StaticResource SettingDataGrid}">
+                                        <DataGrid x:Name="LogbookTable" Height="788" Style="{StaticResource SettingDataGrid}">
                                             <DataGrid.Resources>
                                                 <Style TargetType="ScrollBar" BasedOn="{StaticResource DefaultScrollbar}" />
                                             </DataGrid.Resources>
@@ -422,9 +422,6 @@
                                             <Border Style="{StaticResource subSubSectionSeperator}" />
                                             <Label Style="{StaticResource SectionTitle}" Content="Misc."/>
                                             <Grid>
-                                                <Grid.Margin>
-                                                    <Thickness Bottom="{StaticResource p_2}" />
-                                                </Grid.Margin>
                                                 <Grid.ColumnDefinitions>
                                                     <ColumnDefinition Width="Auto" />
                                                     <ColumnDefinition Width="*" />
@@ -484,9 +481,7 @@
                                                 <ComboBox Name="comboAlarmStart" Grid.Column="2" Style="{StaticResource PresetStateCombobox}" SelectedIndex="{Binding Path=userstate.AlarmState}"/>
                                             </Grid>
                                             <Grid>
-                                                <Grid.Margin>
-                                                    <Thickness Bottom="{StaticResource p_2}" />
-                                                </Grid.Margin>
+                                              
                                                 <Grid.ColumnDefinitions>
                                                     <ColumnDefinition Width="Auto" />
                                                     <ColumnDefinition Width="*" />
@@ -599,7 +594,7 @@
                                     <Rectangle Style="{StaticResource subSection}"/>
                                     <StackPanel Margin="{StaticResource p_5_sqrt}">
                                         <Label Content="I/O List" Style="{StaticResource SectionTitle}" />
-                                        <DataGrid x:Name="IOList" Style="{StaticResource SettingDataGrid}" ItemsSource="{Binding IOList}" Height="900">
+                                        <DataGrid x:Name="IOList" Style="{StaticResource SettingDataGrid}" ItemsSource="{Binding IOList}" Height="872">
                                             <DataGrid.Resources>
                                                 <Style TargetType="ScrollBar" BasedOn="{StaticResource DefaultScrollbar}" />
                                             </DataGrid.Resources>

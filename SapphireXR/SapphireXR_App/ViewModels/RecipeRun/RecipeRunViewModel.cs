@@ -1,14 +1,16 @@
-﻿using CommunityToolkit.Mvvm.ComponentModel;
+﻿using System.Collections.ObjectModel;
+using System.Collections.Specialized;
+using System.ComponentModel;
+using System.Globalization;
+using System.Windows;
+using System.Windows.Controls;
+using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Microsoft.Win32;
 using SapphireXR_App.Bases;
 using SapphireXR_App.Common;
 using SapphireXR_App.Models;
 using SapphireXR_App.ViewModels.BottomDashBoard;
-using System.ComponentModel;
-using System.Globalization;
-using System.Windows;
-using System.Windows.Controls;
 
 namespace SapphireXR_App.ViewModels
 {
@@ -27,7 +29,8 @@ namespace SapphireXR_App.ViewModels
             ObservableManager<bool>.Subscribe("RecipeEnded", recipeEndedSubscriber = new RecipeEndedSubscriber(this));
             recipeRunStatePublisher = ObservableManager<RecipeUserState>.Get("RecipeRun.State");
             ObservableManager<(string, IList<Recipe>)>.Subscribe("RecipeEdit.LoadToRecipeRun", loadFromRecipeEditSubscriber = new LoadFromRecipeEditSubscriber(this));
-            recipeEventIssuer = ObservableManager<HomeViewModel.EventLog>.Get("EventLog");
+            recipeEventIssuer = ObservableManager<EventLog>.Get("EventLog");
+            ObservableManager<EventLog>.Subscribe("EventLog", eventLogSubscriber = new EventLogSubscriber(this));
 
             PropertyChanging += (object? sender, PropertyChangingEventArgs e) =>
             {
@@ -82,6 +85,9 @@ namespace SapphireXR_App.ViewModels
                         break;
                 }
             };
+
+            EventLogs.CollectionChanged += (object? sender, NotifyCollectionChangedEventArgs args) => ClearEventLogCommand.NotifyCanExecuteChanged();
+            ObservableManager<string>.Get("ViewModelCreated").Issue("RecipeRunViewModel");
         }
 
         bool canRecipeOpenExecute()
@@ -141,7 +147,7 @@ namespace SapphireXR_App.ViewModels
                     CurrentRecipe.startLog();
                     if (Start == RecipeCommand.Run)
                     {
-                        recipeEventIssuer.Issue(new HomeViewModel.EventLog() { Date = Util.ToEventLogFormat(DateTime.Now), Message = "레시피가 시작되었습니다", Type = "Recipe Run" });
+                        recipeEventIssuer.Issue(new EventLog() { Date = Util.ToEventLogFormat(DateTime.Now), Message = "레시피가 시작되었습니다", Type = "Recipe Run" });
                     }
                     StartOrPause = false;
                     break;
@@ -154,13 +160,13 @@ namespace SapphireXR_App.ViewModels
 
                 case RecipeUserState.Stopped:
                     CurrentRecipe.stopLog();
-                    recipeEventIssuer.Issue(new HomeViewModel.EventLog() { Date = Util.ToEventLogFormat(DateTime.Now), Message = "레시피가 중단되었습니다", Type = "Recipe Stop" });
+                    recipeEventIssuer.Issue(new EventLog() { Date = Util.ToEventLogFormat(DateTime.Now), Message = "레시피가 중단되었습니다", Type = "Recipe Stop" });
                     toRecipeLoadedState();
                     break;
 
                 case RecipeUserState.Ended:
                     CurrentRecipe.stopLog();
-                    recipeEventIssuer.Issue(new HomeViewModel.EventLog() { Date = Util.ToEventLogFormat(DateTime.Now), Message = "레시피가 종료되었습니다", Type = "Recipe End" });
+                    recipeEventIssuer.Issue(new EventLog() { Date = Util.ToEventLogFormat(DateTime.Now), Message = "레시피가 종료되었습니다", Type = "Recipe End" });
                     MessageBox.Show("Recipe가 종료되었습니다. 종료시간: " + DateTime.Now.ToString("HH:mm"));
                     toRecipeLoadedState();
                     break;
@@ -267,6 +273,17 @@ namespace SapphireXR_App.ViewModels
             SyncPLCState(RecipeCommand.Initiate, false);
             CurrentRecipe = EmptyRecipeContext;
         }
+
+        bool canClearEventLogExecute()
+        {
+            return 0 < EventLogs.Count;
+        }
+        [RelayCommand(CanExecute = nameof(canClearEventLogExecute))]
+        private void ClearEventLog()
+        {
+            EventLogs.Clear();
+        }
+
         void IObserver<short>.OnCompleted()
         {
             throw new NotImplementedException();
@@ -380,7 +397,11 @@ namespace SapphireXR_App.ViewModels
         private ObservableManager<RecipeUserState>.DataIssuer recipeRunStatePublisher;
         private LoadFromRecipeEditSubscriber loadFromRecipeEditSubscriber;
 
-        private ObservableManager<HomeViewModel.EventLog>.DataIssuer recipeEventIssuer;
+        private ObservableManager<EventLog>.DataIssuer recipeEventIssuer;
+        private EventLogSubscriber eventLogSubscriber;
+
+        [ObservableProperty]
+        private ObservableCollection<EventLog> _eventLogs = new ObservableCollection<EventLog>();
 
         [ObservableProperty]
         private RecipeUserState _currentRecipeUserState = RecipeUserState.Uninitialized;

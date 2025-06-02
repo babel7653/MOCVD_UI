@@ -8,26 +8,36 @@
       d:DesignHeight="1040" d:DesignWidth="300"
       Title="LeftDashboard">
     <Page.Resources>
-        <Style TargetType="{x:Type TextBlock}">
-            <Setter Property="Foreground" Value="{StaticResource PrimaryFontColor}"/>
-            <Setter Property="FontSize" Value="14"/>
-            <Setter Property="FontFamily" Value="NanumGothic"/>
+        <Style TargetType="Border" x:Key="Tab">
+            <Setter Property="BorderBrush" Value="{StaticResource Gray_300}" />
+            <Setter Property="BorderThickness">
+                <Setter.Value>
+                    <Thickness Bottom="1" />
+                </Setter.Value>
+            </Setter>
+            <Setter Property="Margin">
+                <Setter.Value>
+                    <Thickness Top="{StaticResource p_2}" />
+                </Setter.Value>
+            </Setter>
         </Style>
     </Page.Resources>
 
-    <Grid Background="{StaticResource Gray_100}" Margin="0,0,0,0">
+    <Grid Background="{StaticResource Gray_100}">
+        <Grid.Margin>
+            <Thickness Left="{StaticResource p_3}" Right="{StaticResource p_3}" />
+        </Grid.Margin>
         <Grid.RowDefinitions>
             <RowDefinition Height="51"/>
-            <RowDefinition Height="118"/>
-            <RowDefinition Height="0"/>
-            <RowDefinition Height="34"/>
-            <RowDefinition Height="250"/>
-            <RowDefinition Height="176"/>
-            <RowDefinition Height="258"/>
-            <RowDefinition Height="99"/>
-            <RowDefinition/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="30"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
-        <Border BorderBrush="{StaticResource Gray_300}" BorderThickness="0, 0, 0, 1">
+        <Border Grid.Row="0" BorderBrush="{StaticResource Gray_300}" BorderThickness="0, 0, 0, 1">
             <Grid>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="15"/>
@@ -35,7 +45,7 @@
                     <RowDefinition Height="16"/>
                 </Grid.RowDefinitions>
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="20" />
+                    <ColumnDefinition Width="8" />
                     <ColumnDefinition Width="20" />
                     <ColumnDefinition Width="8" />
                     <ColumnDefinition Width="*" />
@@ -45,590 +55,645 @@
             </Grid>
         </Border>
         <!-- Machine Information -->
-        <Grid Margin="12,0,12,8" Grid.Row="1">
-            <StackPanel Margin="0,0,138,71" Height="34">
-                <StackPanel.Resources>
-                    <Style TargetType="{x:Type TextBlock}">
-                        <Setter Property="Foreground" Value="{StaticResource PrimaryFontColor}"/>
-                        <Setter Property="HorizontalAlignment" Value="Left"/>
-                        <Setter Property="VerticalAlignment" Value="Center"/>
-                    </Style>
-                </StackPanel.Resources>
-                <TextBlock FontFamily="Segoe UI" Margin="0,0,0,0" FontSize="10" Foreground="{DynamicResource Gray_900}"><Run Text="Machine Nam"/><Run Language="ko-kr" Text="e"/></TextBlock>
-                <TextBlock FontFamily="Segoe UI" Margin="0,0,0,0" FontSize="12" Foreground="{DynamicResource Gray_950}" FontWeight="Bold"><Run Text="Machine Nam"/><Run Language="ko-kr" Text="e"/></TextBlock>
-            </StackPanel>
-            <StackPanel Margin="138,0,0,83" Height="34">
-                <StackPanel.Resources>
-                    <Style TargetType="{x:Type TextBlock}">
-                        <Setter Property="HorizontalAlignment" Value="Left"/>
-                        <Setter Property="VerticalAlignment" Value="Center"/>
-                    </Style>
-                </StackPanel.Resources>
-                <TextBlock FontFamily="Segoe UI" Margin="0,0,0,0" FontSize="10" Foreground="{DynamicResource Gray_900}"><Run Language="ko-kr" Text="Application"/></TextBlock>
-                <TextBlock FontFamily="Segoe UI" Margin="0,0,0,0" FontSize="12" Foreground="{DynamicResource Gray_950}" FontWeight="Bold" RenderTransformOrigin="0.563,1.979"><Run Language="ko-kr" Text="GaN"/></TextBlock>
-            </StackPanel>
-            <StackPanel Margin="0,35,138,48" Height="34">
-                <StackPanel.Resources>
-                    <Style TargetType="{x:Type TextBlock}">
-                        <Setter Property="HorizontalAlignment" Value="Left"/>
-                        <Setter Property="VerticalAlignment" Value="Center"/>
-                    </Style>
-                </StackPanel.Resources>
-                <TextBlock FontFamily="Segoe UI" Margin="0,0,0,0" FontSize="10" Foreground="{DynamicResource Gray_900}"><Run Language="ko-kr" Text="System ID"/></TextBlock>
-                <TextBlock FontFamily="Segoe UI" Margin="0,0,0,0" FontSize="12" Foreground="{DynamicResource Gray_950}" FontWeight="Bold"><Run Language="ko-kr" Text="2024 SKKU2"/></TextBlock>
-            </StackPanel>
-            <StackPanel Margin="138,35,0,48" Height="34">
-                <StackPanel.Resources>
-                    <Style TargetType="{x:Type TextBlock}">
-                        <Setter Property="HorizontalAlignment" Value="Left"/>
-                        <Setter Property="VerticalAlignment" Value="Center"/>
-                    </Style>
-                </StackPanel.Resources>
-                <TextBlock FontFamily="Segoe UI" Margin="0,0,0,0" FontSize="10" Foreground="{DynamicResource Gray_900}"><Run Text="PLC "/><Run Language="ko-kr" Text="C"/><Run Text="onnection"/></TextBlock>
-                <TextBlock Text="{Binding PLCConnectionStatus}" FontFamily="Segoe UI" Margin="0,0,0,0" FontSize="12" Foreground="{DynamicResource Sapphire_Blue}" FontWeight="Bold"><Run Text="Machine Nam"/><Run Language="ko-kr" Text="e"/></TextBlock>
-            </StackPanel>
-            <StackPanel Margin="0,70,138,13" Height="34">
-                <StackPanel.Resources>
-                    <Style TargetType="{x:Type TextBlock}">
-                        <Setter Property="HorizontalAlignment" Value="Left"/>
-                        <Setter Property="VerticalAlignment" Value="Center"/>
-                    </Style>
-                </StackPanel.Resources>
-                <TextBlock FontFamily="Segoe UI" Margin="0,0,0,0" FontSize="10" Foreground="{DynamicResource Gray_900}"><Run Language="ko-kr" Text="PLC Address"/></TextBlock>
-                <TextBlock Text="{Binding PLCAddressText}" FontFamily="Segoe UI" Margin="0,0,0,0" FontSize="12" Foreground="{DynamicResource Gray_950}" FontWeight="Bold"><Run Text="Machine Nam"/><Run Language="ko-kr" Text="e"/></TextBlock>
-            </StackPanel>
-        </Grid>
-        <!-- Signal Tower -->
-        <Grid Grid.Row="3" Margin="12,0,12,2">
-            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
-                <StackPanel.Resources>
-                    <Style TargetType="{x:Type Rectangle}">
-                        <Setter Property="Width" Value="40"/>
-                        <Setter Property="Height" Value="10"/>
-                        <Setter Property="Stroke" Value="LightSlateGray"/>
-                    </Style>
-                </StackPanel.Resources>
-                <Rectangle x:Name="SignalTowerRed" Fill="{Binding SignalTowerRed, UpdateSourceTrigger=PropertyChanged}" Width="40" Height="10" RadiusX="4" RadiusY="4" Margin="4,0,0,0" Stroke="{x:Null}"/>
-                <Rectangle x:Name="SignalTowerYellow" Fill="{Binding SignalTowerYellow, UpdateSourceTrigger=PropertyChanged}" Width="40" Height="10" RadiusX="4" RadiusY="4" Margin="4,0,0,0" Stroke="{x:Null}"/>
-                <Rectangle x:Name="SignalTowerGreen" Fill="{Binding SignalTowerGreen, UpdateSourceTrigger=PropertyChanged}" Width="40" Height="10" RadiusX="4" RadiusY="4" Margin="4,0,0,0" Stroke="{x:Null}"/>
-                <Rectangle x:Name="SignalTowerBlue" Fill="{Binding SignalTowerBlue, UpdateSourceTrigger=PropertyChanged}" Width="40" Height="10" RadiusX="4" RadiusY="4" Margin="4,0,0,0" Stroke="{x:Null}"/>
-                <Rectangle x:Name="SignalTowerWhite" Fill="{Binding SignalTowerWhite, UpdateSourceTrigger=PropertyChanged}" Width="40" Height="10" RadiusX="4" RadiusY="4" Margin="4,0,0,0" Stroke="{x:Null}"/>
-                <Rectangle x:Name="SignalTowerBuzzer" Width="44" Height="10" RadiusX="4" RadiusY="4" Margin="4,0,0,0" Stroke="{x:Null}" />
-            </StackPanel>
-        </Grid>
-        <!-- Source Valve Current Status -->
-        <Grid Grid.Row="4" VerticalAlignment="Center" Height="228">
-            <StackPanel Orientation="Vertical" Height="229" VerticalAlignment="Top" Margin="12,0,12,0">
-                <StackPanel.Resources>
-                    <Style TargetType="{x:Type TextBlock}">
-                        <Setter Property="Foreground" Value="{StaticResource PrimaryFontColor}"/>
-                        <Setter Property="FontSize" Value="11"/>
-                        <Setter Property="HorizontalAlignment" Value="Right"/>
-                        <Setter Property="Margin" Value="0,6,5,0"/>
-                    </Style>
-                    <Style TargetType="{x:Type TextBox}">
-                        <Setter Property="Width" Value="64"/>
-                        <Setter Property="Height" Value="22"/>
-                        <Setter Property="Background" Value="LightGray"/>
-                        <Setter Property="Foreground" Value="DarkBlue"/>
-                        <Setter Property="FontSize" Value="11"/>
-                        <Setter Property="HorizontalAlignment" Value="Center"/>
-                        <Setter Property="VerticalAlignment" Value="Center"/>
-                        <Setter Property="TextAlignment" Value="Right"/>
-                    </Style>
-                    <Style TargetType="{x:Type Button}">
-                        <Setter Property="Margin" Value="2"/>
-                    </Style>
-                </StackPanel.Resources>
-                <Line X1="5" Y1="0" X2="295" Y2="0" Stroke="{DynamicResource Gray_300}" StrokeThickness="2" HorizontalAlignment="Center" Width="300"/>
-                <TextBlock Foreground="{DynamicResource Gray_950}" FontSize="12" FontFamily="Segoe UI" FontWeight="Bold" HorizontalAlignment="Left" Margin="28,6,0,0" VerticalAlignment="Center"><Bold><Run Text="Source Status"/></Bold></TextBlock>
-
-                <Grid VerticalAlignment="Top">
-                    <Grid.Resources>
-                        <Style TargetType="Border" x:Key="SourceStatusIndicator">
-                            <Setter Property="Background" Value="{StaticResource Gray_300}" />
-                            <Setter Property="Margin" Value="2" />
-                            <Setter Property="BorderThickness" Value="0" />
-                            <Setter Property="Padding" Value="0" />
-                            <Setter Property="CornerRadius">
-                                <Setter.Value>
-                                    <CornerRadius TopLeft="{StaticResource r_1}" TopRight="{StaticResource r_1}" BottomLeft="{StaticResource r_1}" BottomRight="{StaticResource r_1}" />
-                                </Setter.Value>
-                            </Setter>
-                        </Style>
-                        <Style TargetType="TextBlock" x:Key="SourceStatusIndicatorText" BasedOn="{StaticResource infoTextBlockLeft}">
-                            <Setter Property="HorizontalAlignment" Value="Center" />
-                            <Setter Property="Padding" Value="0 0 0 3" />
-                        </Style>
-                    </Grid.Resources>
+        <Grid Margin="8,8,8,0" Grid.Row="1">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="4" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+                <Grid Grid.Row="0">
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="68"/>
-                        <ColumnDefinition/>
-                        <ColumnDefinition/>
-                        <ColumnDefinition/>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="8"/>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="8" />
+                        <ColumnDefinition Width="*"/>
                     </Grid.ColumnDefinitions>
                     <Grid.RowDefinitions>
-                        <RowDefinition/>
-                        <RowDefinition/>
-                        <RowDefinition/>
-                        <RowDefinition/>
-                        <RowDefinition/>
-                        <RowDefinition/>
-                        <RowDefinition/>
-                        <RowDefinition/>
-                        <RowDefinition/>
-                        <RowDefinition/>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
                     </Grid.RowDefinitions>
-                    <TextBlock Grid.Row="0" Grid.Column="1" Text="Carrier" HorizontalAlignment="Center" Margin="0,6,0,0" Foreground="{DynamicResource Gray_900}" FontSize="10"/>
-                    <TextBlock Grid.Row="0" Grid.Column="2" Text="Source" HorizontalAlignment="Center" Margin="0,6,0,0" Foreground="{DynamicResource Gray_900}" FontSize="10"/>
-                    <TextBlock Grid.Row="0" Grid.Column="3" Text="Manifold" HorizontalAlignment="Center" Margin="0,6,0,0" Foreground="{DynamicResource Gray_900}" FontSize="10" />
-                    <TextBlock Grid.Row="1" Grid.Column="0"  Text="NH3 #1" Margin="-1,6,5,0" FontFamily="Segoe UI" Foreground="{DynamicResource Gray_900}" FontSize="10" />
-                    <TextBlock Grid.Row="2" Grid.Column="0" Text="NH3 #2" Margin="-1,6,5,0" FontFamily="Segoe UI" Foreground="{DynamicResource Gray_900}" FontSize="10" />
-                    <TextBlock Grid.Row="3" Grid.Column="0" Text="SiH4" Margin="-1,6,5,0" FontFamily="Segoe UI" Foreground="{DynamicResource Gray_900}" FontSize="10" />
-                    <TextBlock Grid.Row="4" Grid.Column="0"  Text="TEB" Margin="-1,6,5,0" FontFamily="Segoe UI" Foreground="{DynamicResource Gray_900}" FontSize="10" />
-                    <TextBlock Grid.Row="5" Grid.Column="0" Text="TMAl" Margin="-1,6,5,0" FontFamily="Segoe UI" Foreground="{DynamicResource Gray_900}" FontSize="10" />
-                    <TextBlock Grid.Row="6" Grid.Column="0"  Text="TMIn" Margin="-1,6,5,0" FontFamily="Segoe UI" Foreground="{DynamicResource Gray_900}" FontSize="10" />
-                    <TextBlock Grid.Row="7" Grid.Column="0" Text="TMGa" Margin="-1,6,5,0" FontFamily="Segoe UI" Foreground="{DynamicResource Gray_900}" FontSize="10" />
-                    <TextBlock Grid.Row="8" Grid.Column="0" Text="DTMGa" Margin="-1,6,5,0" FontFamily="Segoe UI" Foreground="{DynamicResource Gray_900}" FontSize="10" />
-                    <TextBlock Grid.Row="9" Grid.Column="0"  Text="Cp2Mg" Margin="-1,6,5,0" FontFamily="Segoe UI" Foreground="{DynamicResource Gray_900}" FontSize="10" />
-                    <!--Background="{}" {}-->
-                    <Border Grid.Row="1" Grid.Column="1" Style="{StaticResource SourceStatusIndicator}" >
-                        <TextBlock Text="{Binding CurrentSourceStatusViewModel.NH3_1Carrier}" Foreground="{Binding CurrentSourceStatusViewModel.NH3_1CarrierColor}" Style="{StaticResource SourceStatusIndicatorText}" />
-                    </Border>
-                    <Border Grid.Row="1" Grid.Column="2" Style="{StaticResource SourceStatusIndicator}">
-                        <TextBlock Text="{Binding CurrentSourceStatusViewModel.NH3_1Source}" Foreground="{Binding CurrentSourceStatusViewModel.NH3_1SourceColor}" Style="{StaticResource SourceStatusIndicatorText}" />
-                    </Border>
-                    <Border Grid.Row="1" Grid.Column="3" Style="{StaticResource SourceStatusIndicator}">
-                        <TextBlock Text="{Binding CurrentSourceStatusViewModel.NH3_1Vent}" Foreground="{Binding CurrentSourceStatusViewModel.NH3_1VentColor}" Style="{StaticResource SourceStatusIndicatorText}" />
-                    </Border>
-                    <Border Grid.Row="2" Grid.Column="1" Style="{StaticResource SourceStatusIndicator}">
-                        <TextBlock Text="{Binding CurrentSourceStatusViewModel.NH3_2Carrier}" Foreground="{Binding CurrentSourceStatusViewModel.NH3_2CarrierColor}" Style="{StaticResource SourceStatusIndicatorText}" />
-                    </Border>
-                    <Border Grid.Row="2" Grid.Column="2" Style="{StaticResource SourceStatusIndicator}">
-                        <TextBlock Text="{Binding CurrentSourceStatusViewModel.NH3_2Source}" Foreground="{Binding CurrentSourceStatusViewModel.NH3_2SourceColor}" Style="{StaticResource SourceStatusIndicatorText}" />
-                    </Border>
-                    <Border Grid.Row="2" Grid.Column="3" Style="{StaticResource SourceStatusIndicator}">
-                        <TextBlock Text="{Binding CurrentSourceStatusViewModel.NH3_2Vent}" Foreground="{Binding CurrentSourceStatusViewModel.NH3_2VentColor}" Style="{StaticResource SourceStatusIndicatorText}" />
-                    </Border>
-                    <Border Grid.Row="3" Grid.Column="1" Style="{StaticResource SourceStatusIndicator}">
-                        <TextBlock Text="{Binding CurrentSourceStatusViewModel.SiH4Carrier}" Foreground="{Binding CurrentSourceStatusViewModel.SiH4CarrierColor}" Style="{StaticResource SourceStatusIndicatorText}" />
-                    </Border>
-                    <Border Grid.Row="3" Grid.Column="2" Style="{StaticResource SourceStatusIndicator}">
-                        <TextBlock Text="{Binding CurrentSourceStatusViewModel.SiH4Source}" Foreground="{Binding CurrentSourceStatusViewModel.SiH4SourceColor}" Style="{StaticResource SourceStatusIndicatorText}" />
-                    </Border>
-                    <Border Grid.Row="3" Grid.Column="3" Style="{StaticResource SourceStatusIndicator}">
-                        <TextBlock Text="{Binding CurrentSourceStatusViewModel.SiH4Vent}" Foreground="{Binding CurrentSourceStatusViewModel.SiH4VentColor}" Style="{StaticResource SourceStatusIndicatorText}" />
-                    </Border>
-                    <Border Grid.Row="4" Grid.Column="1" Style="{StaticResource SourceStatusIndicator}">
-                        <TextBlock Text="{Binding CurrentSourceStatusViewModel.TEBCarrier}" Foreground="{Binding CurrentSourceStatusViewModel.TEBCarrierColor}" Style="{StaticResource SourceStatusIndicatorText}" />
-                    </Border>
-                    <Border Grid.Row="4" Grid.Column="2" Style="{StaticResource SourceStatusIndicator}">
-                        <TextBlock Text="{Binding CurrentSourceStatusViewModel.TEBSource}" Foreground="{Binding CurrentSourceStatusViewModel.TEBSourceColor}" Style="{StaticResource SourceStatusIndicatorText}" />
-                    </Border>
-                    <Border Grid.Row="4" Grid.Column="3" Style="{StaticResource SourceStatusIndicator}">
-                        <TextBlock Text="{Binding CurrentSourceStatusViewModel.TEBVent}" Foreground="{Binding CurrentSourceStatusViewModel.TEBVentColor}" Style="{StaticResource SourceStatusIndicatorText}" />
-                    </Border>
-                    <Border Grid.Row="5" Grid.Column="1" Style="{StaticResource SourceStatusIndicator}">
-                        <TextBlock Text="{Binding CurrentSourceStatusViewModel.TMAlCarrier}" Foreground="{Binding CurrentSourceStatusViewModel.TMAlCarrierColor}" Style="{StaticResource SourceStatusIndicatorText}" />
-                    </Border>
-                    <Border Grid.Row="5" Grid.Column="2" Style="{StaticResource SourceStatusIndicator}">
-                        <TextBlock Text="{Binding CurrentSourceStatusViewModel.TMAlSource}" Foreground="{Binding CurrentSourceStatusViewModel.TMAlSourceColor}" Style="{StaticResource SourceStatusIndicatorText}" />
-                    </Border>
-                    <Border Grid.Row="5" Grid.Column="3" Style="{StaticResource SourceStatusIndicator}">
-                        <TextBlock Text="{Binding CurrentSourceStatusViewModel.TMAlVent}" Foreground="{Binding CurrentSourceStatusViewModel.TMAlVentColor}" Style="{StaticResource SourceStatusIndicatorText}" />
-                    </Border>
-                    <Border Grid.Row="6" Grid.Column="1" Style="{StaticResource SourceStatusIndicator}">
-                        <TextBlock Text="{Binding CurrentSourceStatusViewModel.TMInCarrier}" Foreground="{Binding CurrentSourceStatusViewModel.TMInCarrierColor}" Style="{StaticResource SourceStatusIndicatorText}" />
-                    </Border>
-                    <Border Grid.Row="6" Grid.Column="2" Style="{StaticResource SourceStatusIndicator}">
-                        <TextBlock Text="{Binding CurrentSourceStatusViewModel.TMInSource}" Foreground="{Binding CurrentSourceStatusViewModel.TMInSourceColor}" Style="{StaticResource SourceStatusIndicatorText}" />
-                    </Border>
-                    <Border Grid.Row="6" Grid.Column="3" Style="{StaticResource SourceStatusIndicator}">
-                        <TextBlock Text="{Binding CurrentSourceStatusViewModel.TMInVent}" Foreground="{Binding CurrentSourceStatusViewModel.TMInVentColor}" Style="{StaticResource SourceStatusIndicatorText}" />
-                    </Border>
-                    <Border Grid.Row="7" Grid.Column="1" Style="{StaticResource SourceStatusIndicator}">
-                        <TextBlock Text="{Binding CurrentSourceStatusViewModel.TMGaCarrier}" Foreground="{Binding CurrentSourceStatusViewModel.TMGaCarrierColor}" Style="{StaticResource SourceStatusIndicatorText}" />
-                    </Border>
-                    <Border Grid.Row="7" Grid.Column="2" Style="{StaticResource SourceStatusIndicator}">
-                        <TextBlock Text="{Binding CurrentSourceStatusViewModel.TMGaSource}" Foreground="{Binding CurrentSourceStatusViewModel.TMGaSourceColor}" Style="{StaticResource SourceStatusIndicatorText}" />
-                    </Border>
-                    <Border Grid.Row="7" Grid.Column="3" Style="{StaticResource SourceStatusIndicator}">
-                        <TextBlock Text="{Binding CurrentSourceStatusViewModel.TMGaVent}" Foreground="{Binding CurrentSourceStatusViewModel.TMGaVentColor}" Style="{StaticResource SourceStatusIndicatorText}" />
-                    </Border>
-                    <Border Grid.Row="8" Grid.Column="1" Style="{StaticResource SourceStatusIndicator}">
-                        <TextBlock Text="{Binding CurrentSourceStatusViewModel.DTMGaCarrier}" Foreground="{Binding CurrentSourceStatusViewModel.DTMGaCarrierColor}" Style="{StaticResource SourceStatusIndicatorText}" />
-                    </Border>
-                    <Border Grid.Row="8" Grid.Column="2" Style="{StaticResource SourceStatusIndicator}">
-                        <TextBlock Text="{Binding CurrentSourceStatusViewModel.DTMGaSource}" Foreground="{Binding CurrentSourceStatusViewModel.DTMGaSourceColor}" Style="{StaticResource SourceStatusIndicatorText}" />
-                    </Border>
-                    <Border Grid.Row="8" Grid.Column="3" Style="{StaticResource SourceStatusIndicator}">
-                        <TextBlock Text="{Binding CurrentSourceStatusViewModel.DTMGaVent}" Foreground="{Binding CurrentSourceStatusViewModel.DTMGaVentColor}" Style="{StaticResource SourceStatusIndicatorText}" />
-                    </Border>
-                    <Border Grid.Row="9" Grid.Column="1" Style="{StaticResource SourceStatusIndicator}">
-                        <TextBlock Text="{Binding CurrentSourceStatusViewModel.Cp2MgCarrier}" Foreground="{Binding CurrentSourceStatusViewModel.Cp2MgCarrierColor}" Style="{StaticResource SourceStatusIndicatorText}" />
-                    </Border>
-                    <Border Grid.Row="9" Grid.Column="2" Style="{StaticResource SourceStatusIndicator}">
-                        <TextBlock Text="{Binding CurrentSourceStatusViewModel.Cp2MgSource}" Foreground="{Binding CurrentSourceStatusViewModel.Cp2MgSourceColor}" Style="{StaticResource SourceStatusIndicatorText}" />
-                    </Border>
-                    <Border Grid.Row="9" Grid.Column="3" Style="{StaticResource SourceStatusIndicator}">
-                        <TextBlock Text="{Binding CurrentSourceStatusViewModel.Cp2MgVent}" Foreground="{Binding CurrentSourceStatusViewModel.Cp2MgVentColor}" Style="{StaticResource SourceStatusIndicatorText}" />
-                    </Border>
+                    <TextBlock Grid.Row="0" Grid.Column="0" FontFamily="Segoe UI" FontSize="12" Foreground="{StaticResource Gray_900}"><Run Text="Machine Nam"/><Run Language="ko-kr" Text="e"/></TextBlock>
+                    <TextBlock Grid.Row="1" Grid.Column="0" FontFamily="Segoe UI" FontSize="12" Foreground="{StaticResource Gray_950}" FontWeight="Bold"><Run Text="Machine Nam"/><Run Language="ko-kr" Text="e"/></TextBlock>
+                    <TextBlock FontFamily="Segoe UI" Grid.Row="0" Grid.Column="2" FontSize="12" Foreground="{DynamicResource Gray_900}"><Run Language="ko-kr" Text="System ID"/></TextBlock>
+                    <TextBlock FontFamily="Segoe UI" Grid.Row="1" Grid.Column="2"  FontSize="12" Foreground="{DynamicResource Gray_950}" FontWeight="Bold"><Run Language="ko-kr" Text="2024 SKKU2"/></TextBlock>
+                    <TextBlock FontFamily="Segoe UI" Grid.Row="0" Grid.Column="4" FontSize="12" Foreground="{DynamicResource Gray_900}"><Run Language="ko-kr" Text="Application"/></TextBlock>
+                    <TextBlock FontFamily="Segoe UI" Grid.Row="1" Grid.Column="4" FontSize="12" Foreground="{DynamicResource Gray_950}" FontWeight="Bold" RenderTransformOrigin="0.563,1.979"><Run Language="ko-kr" Text="GaN"/></TextBlock>
                 </Grid>
-            </StackPanel>
+                <Grid Grid.Row="2">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition />
+                        <ColumnDefinition />
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
+                    <TextBlock FontFamily="Segoe UI" FontSize="12" Grid.Row="0" Grid.Column="0" Foreground="{DynamicResource Gray_900}"><Run Language="ko-kr" Text="PLC Address"/></TextBlock>
+                    <TextBlock Text="{Binding PLCAddressText}" Grid.Row="1" Grid.Column="0" FontFamily="Segoe UI" FontSize="12" Foreground="{DynamicResource Gray_950}" FontWeight="Bold"><Run Text="Machine Nam"/><Run Language="ko-kr" Text="e"/></TextBlock>
+                    <TextBlock FontFamily="Segoe UI" Grid.Row="0" Grid.Column="1"  FontSize="12" Foreground="{DynamicResource Gray_900}"><Run Text="PLC "/><Run Language="ko-kr" Text="C"/><Run Text="onnection"/></TextBlock>
+                    <TextBlock Text="{Binding PLCConnectionStatus}" Grid.Row="1" Grid.Column="12" FontFamily="Segoe UI" FontSize="12" Foreground="{DynamicResource Sapphire_Blue}" FontWeight="Bold"><Run Text="Machine Nam"/><Run Language="ko-kr" Text="e"/></TextBlock>
+                </Grid>
+            </Grid>
+        </Grid>
+        <Border Grid.Row="2"  BorderBrush="{StaticResource Gray_300}">
+            <Border.BorderThickness>
+                <Thickness Bottom="1" />
+            </Border.BorderThickness>
+            <!-- Signal Tower -->
+            <Grid>
+                <Grid.Margin>
+                    <Thickness Left="{StaticResource p_2}" Right="{StaticResource p_2}" Bottom="{StaticResource p_3}" Top="{StaticResource p_2}" />
+                </Grid.Margin>
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
+                    <StackPanel.Resources>
+                        <Style TargetType="{x:Type Rectangle}">
+                            <Setter Property="Width" Value="40"/>
+                            <Setter Property="Height" Value="10"/>
+                            <Setter Property="Stroke" Value="LightSlateGray"/>
+                        </Style>
+                    </StackPanel.Resources>
+                    <Rectangle x:Name="SignalTowerRed" Fill="{Binding SignalTowerRed, UpdateSourceTrigger=PropertyChanged}" Width="40" Height="10" RadiusX="4" RadiusY="4" Margin="4,0,0,0" Stroke="{x:Null}"/>
+                    <Rectangle x:Name="SignalTowerYellow" Fill="{Binding SignalTowerYellow, UpdateSourceTrigger=PropertyChanged}" Width="40" Height="10" RadiusX="4" RadiusY="4" Margin="4,0,0,0" Stroke="{x:Null}"/>
+                    <Rectangle x:Name="SignalTowerGreen" Fill="{Binding SignalTowerGreen, UpdateSourceTrigger=PropertyChanged}" Width="40" Height="10" RadiusX="4" RadiusY="4" Margin="4,0,0,0" Stroke="{x:Null}"/>
+                    <Rectangle x:Name="SignalTowerBlue" Fill="{Binding SignalTowerBlue, UpdateSourceTrigger=PropertyChanged}" Width="40" Height="10" RadiusX="4" RadiusY="4" Margin="4,0,0,0" Stroke="{x:Null}"/>
+                    <Rectangle x:Name="SignalTowerWhite" Fill="{Binding SignalTowerWhite, UpdateSourceTrigger=PropertyChanged}" Width="40" Height="10" RadiusX="4" RadiusY="4" Margin="4,0,0,0" Stroke="{x:Null}"/>
+                    <Rectangle x:Name="SignalTowerBuzzer" Width="44" Height="10" RadiusX="4" RadiusY="4" Margin="4,0,0,0" Stroke="{x:Null}" />
+                </StackPanel>
+            </Grid>
+        </Border>
+        <!-- Source Valve Current Status -->
+        <Grid Grid.Row="3" VerticalAlignment="Center">
+            <Border Style="{StaticResource Tab}">
+                <StackPanel Orientation="Vertical" Height="229" VerticalAlignment="Top">
+                    <StackPanel.Margin>
+                        <Thickness Bottom="{StaticResource p_3}" Left="{StaticResource p_2}" Right="{StaticResource p_2}" />
+                    </StackPanel.Margin>
+                    <Grid Height="24">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="24"/>
+                            <ColumnDefinition Width="4" />
+                            <ColumnDefinition />
+                        </Grid.ColumnDefinitions>
+                        <Image Grid.Column="0" Source="/Resources/icons/icon=control_knobs.png"  Stretch="Fill"/>
+                        <TextBlock Grid.Column="2" Foreground="{DynamicResource Gray_950}" FontSize="14" FontFamily="Segoe UI" FontWeight="Bold" HorizontalAlignment="Left"  VerticalAlignment="Center"><Bold><Run Text="Source Status"/></Bold></TextBlock>
+                    </Grid>
+
+
+                    <Grid VerticalAlignment="Top">
+                        <Grid.Resources>
+                            <Style TargetType="Border" x:Key="SourceStatusIndicator">
+                                <Setter Property="Background" Value="{StaticResource Gray_300}" />
+                                <Setter Property="Margin" Value="2" />
+                                <Setter Property="BorderThickness" Value="0" />
+                                <Setter Property="Padding" Value="0" />
+                                <Setter Property="CornerRadius">
+                                    <Setter.Value>
+                                        <CornerRadius TopLeft="{StaticResource r_1}" TopRight="{StaticResource r_1}" BottomLeft="{StaticResource r_1}" BottomRight="{StaticResource r_1}" />
+                                    </Setter.Value>
+                                </Setter>
+                            </Style>
+                            <Style TargetType="TextBlock" x:Key="SourceStatusIndicatorText" BasedOn="{StaticResource infoTextBlockLeft}">
+                                <Setter Property="HorizontalAlignment" Value="Center" />
+                                <Setter Property="Padding" Value="0 0 0 3" />
+                            </Style>
+                        </Grid.Resources>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="68"/>
+                            <ColumnDefinition/>
+                            <ColumnDefinition/>
+                            <ColumnDefinition/>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                        </Grid.RowDefinitions>
+                        <TextBlock Grid.Row="0" Grid.Column="1" Text="Carrier" HorizontalAlignment="Center" Margin="0,6,0,0" Foreground="{DynamicResource Gray_900}" FontSize="12"/>
+                        <TextBlock Grid.Row="0" Grid.Column="2" Text="Source" HorizontalAlignment="Center" Margin="0,6,0,0" Foreground="{DynamicResource Gray_900}" FontSize="12"/>
+                        <TextBlock Grid.Row="0" Grid.Column="3" Text="Manifold" HorizontalAlignment="Center" Margin="0,6,0,0" Foreground="{DynamicResource Gray_900}" FontSize="12" />
+                        <TextBlock Grid.Row="1" Grid.Column="0"  Text="NH3 #1" HorizontalAlignment="Right" Margin="-1,6,5,0" FontFamily="Segoe UI" Foreground="{DynamicResource Gray_900}" FontSize="12" />
+                        <TextBlock Grid.Row="2" Grid.Column="0" Text="NH3 #2"  HorizontalAlignment="Right" Margin="-1,6,5,0" FontFamily="Segoe UI" Foreground="{DynamicResource Gray_900}" FontSize="12" />
+                        <TextBlock Grid.Row="3" Grid.Column="0" Text="SiH4"  HorizontalAlignment="Right" Margin="-1,6,5,0" FontFamily="Segoe UI" Foreground="{DynamicResource Gray_900}" FontSize="12" />
+                        <TextBlock Grid.Row="4" Grid.Column="0"  Text="TEB"  HorizontalAlignment="Right" Margin="-1,6,5,0" FontFamily="Segoe UI" Foreground="{DynamicResource Gray_900}" FontSize="12" />
+                        <TextBlock Grid.Row="5" Grid.Column="0" Text="TMAl"  HorizontalAlignment="Right" Margin="-1,6,5,0" FontFamily="Segoe UI" Foreground="{DynamicResource Gray_900}" FontSize="12" />
+                        <TextBlock Grid.Row="6" Grid.Column="0"  Text="TMIn"  HorizontalAlignment="Right" Margin="-1,6,5,0" FontFamily="Segoe UI" Foreground="{DynamicResource Gray_900}" FontSize="12" />
+                        <TextBlock Grid.Row="7" Grid.Column="0" Text="TMGa"  HorizontalAlignment="Right" Margin="-1,6,5,0" FontFamily="Segoe UI" Foreground="{DynamicResource Gray_900}" FontSize="12" />
+                        <TextBlock Grid.Row="8" Grid.Column="0" Text="DTMGa"  HorizontalAlignment="Right" Margin="-1,6,5,0" FontFamily="Segoe UI" Foreground="{DynamicResource Gray_900}" FontSize="12" />
+                        <TextBlock Grid.Row="9" Grid.Column="0"  Text="Cp2Mg"  HorizontalAlignment="Right" Margin="-1,6,5,0" FontFamily="Segoe UI" Foreground="{DynamicResource Gray_900}" FontSize="12" />
+                        <!--Background="{}" {}-->
+                        <Border Grid.Row="1" Grid.Column="1" Style="{StaticResource SourceStatusIndicator}" >
+                            <TextBlock Text="{Binding CurrentSourceStatusViewModel.NH3_1Carrier}" Foreground="{Binding CurrentSourceStatusViewModel.NH3_1CarrierColor}" Style="{StaticResource SourceStatusIndicatorText}" />
+                        </Border>
+                        <Border Grid.Row="1" Grid.Column="2" Style="{StaticResource SourceStatusIndicator}">
+                            <TextBlock Text="{Binding CurrentSourceStatusViewModel.NH3_1Source}" Foreground="{Binding CurrentSourceStatusViewModel.NH3_1SourceColor}" Style="{StaticResource SourceStatusIndicatorText}" />
+                        </Border>
+                        <Border Grid.Row="1" Grid.Column="3" Style="{StaticResource SourceStatusIndicator}">
+                            <TextBlock Text="{Binding CurrentSourceStatusViewModel.NH3_1Vent}" Foreground="{Binding CurrentSourceStatusViewModel.NH3_1VentColor}" Style="{StaticResource SourceStatusIndicatorText}" />
+                        </Border>
+                        <Border Grid.Row="2" Grid.Column="1" Style="{StaticResource SourceStatusIndicator}">
+                            <TextBlock Text="{Binding CurrentSourceStatusViewModel.NH3_2Carrier}" Foreground="{Binding CurrentSourceStatusViewModel.NH3_2CarrierColor}" Style="{StaticResource SourceStatusIndicatorText}" />
+                        </Border>
+                        <Border Grid.Row="2" Grid.Column="2" Style="{StaticResource SourceStatusIndicator}">
+                            <TextBlock Text="{Binding CurrentSourceStatusViewModel.NH3_2Source}" Foreground="{Binding CurrentSourceStatusViewModel.NH3_2SourceColor}" Style="{StaticResource SourceStatusIndicatorText}" />
+                        </Border>
+                        <Border Grid.Row="2" Grid.Column="3" Style="{StaticResource SourceStatusIndicator}">
+                            <TextBlock Text="{Binding CurrentSourceStatusViewModel.NH3_2Vent}" Foreground="{Binding CurrentSourceStatusViewModel.NH3_2VentColor}" Style="{StaticResource SourceStatusIndicatorText}" />
+                        </Border>
+                        <Border Grid.Row="3" Grid.Column="1" Style="{StaticResource SourceStatusIndicator}">
+                            <TextBlock Text="{Binding CurrentSourceStatusViewModel.SiH4Carrier}" Foreground="{Binding CurrentSourceStatusViewModel.SiH4CarrierColor}" Style="{StaticResource SourceStatusIndicatorText}" />
+                        </Border>
+                        <Border Grid.Row="3" Grid.Column="2" Style="{StaticResource SourceStatusIndicator}">
+                            <TextBlock Text="{Binding CurrentSourceStatusViewModel.SiH4Source}" Foreground="{Binding CurrentSourceStatusViewModel.SiH4SourceColor}" Style="{StaticResource SourceStatusIndicatorText}" />
+                        </Border>
+                        <Border Grid.Row="3" Grid.Column="3" Style="{StaticResource SourceStatusIndicator}">
+                            <TextBlock Text="{Binding CurrentSourceStatusViewModel.SiH4Vent}" Foreground="{Binding CurrentSourceStatusViewModel.SiH4VentColor}" Style="{StaticResource SourceStatusIndicatorText}" />
+                        </Border>
+                        <Border Grid.Row="4" Grid.Column="1" Style="{StaticResource SourceStatusIndicator}">
+                            <TextBlock Text="{Binding CurrentSourceStatusViewModel.TEBCarrier}" Foreground="{Binding CurrentSourceStatusViewModel.TEBCarrierColor}" Style="{StaticResource SourceStatusIndicatorText}" />
+                        </Border>
+                        <Border Grid.Row="4" Grid.Column="2" Style="{StaticResource SourceStatusIndicator}">
+                            <TextBlock Text="{Binding CurrentSourceStatusViewModel.TEBSource}" Foreground="{Binding CurrentSourceStatusViewModel.TEBSourceColor}" Style="{StaticResource SourceStatusIndicatorText}" />
+                        </Border>
+                        <Border Grid.Row="4" Grid.Column="3" Style="{StaticResource SourceStatusIndicator}">
+                            <TextBlock Text="{Binding CurrentSourceStatusViewModel.TEBVent}" Foreground="{Binding CurrentSourceStatusViewModel.TEBVentColor}" Style="{StaticResource SourceStatusIndicatorText}" />
+                        </Border>
+                        <Border Grid.Row="5" Grid.Column="1" Style="{StaticResource SourceStatusIndicator}">
+                            <TextBlock Text="{Binding CurrentSourceStatusViewModel.TMAlCarrier}" Foreground="{Binding CurrentSourceStatusViewModel.TMAlCarrierColor}" Style="{StaticResource SourceStatusIndicatorText}" />
+                        </Border>
+                        <Border Grid.Row="5" Grid.Column="2" Style="{StaticResource SourceStatusIndicator}">
+                            <TextBlock Text="{Binding CurrentSourceStatusViewModel.TMAlSource}" Foreground="{Binding CurrentSourceStatusViewModel.TMAlSourceColor}" Style="{StaticResource SourceStatusIndicatorText}" />
+                        </Border>
+                        <Border Grid.Row="5" Grid.Column="3" Style="{StaticResource SourceStatusIndicator}">
+                            <TextBlock Text="{Binding CurrentSourceStatusViewModel.TMAlVent}" Foreground="{Binding CurrentSourceStatusViewModel.TMAlVentColor}" Style="{StaticResource SourceStatusIndicatorText}" />
+                        </Border>
+                        <Border Grid.Row="6" Grid.Column="1" Style="{StaticResource SourceStatusIndicator}">
+                            <TextBlock Text="{Binding CurrentSourceStatusViewModel.TMInCarrier}" Foreground="{Binding CurrentSourceStatusViewModel.TMInCarrierColor}" Style="{StaticResource SourceStatusIndicatorText}" />
+                        </Border>
+                        <Border Grid.Row="6" Grid.Column="2" Style="{StaticResource SourceStatusIndicator}">
+                            <TextBlock Text="{Binding CurrentSourceStatusViewModel.TMInSource}" Foreground="{Binding CurrentSourceStatusViewModel.TMInSourceColor}" Style="{StaticResource SourceStatusIndicatorText}" />
+                        </Border>
+                        <Border Grid.Row="6" Grid.Column="3" Style="{StaticResource SourceStatusIndicator}">
+                            <TextBlock Text="{Binding CurrentSourceStatusViewModel.TMInVent}" Foreground="{Binding CurrentSourceStatusViewModel.TMInVentColor}" Style="{StaticResource SourceStatusIndicatorText}" />
+                        </Border>
+                        <Border Grid.Row="7" Grid.Column="1" Style="{StaticResource SourceStatusIndicator}">
+                            <TextBlock Text="{Binding CurrentSourceStatusViewModel.TMGaCarrier}" Foreground="{Binding CurrentSourceStatusViewModel.TMGaCarrierColor}" Style="{StaticResource SourceStatusIndicatorText}" />
+                        </Border>
+                        <Border Grid.Row="7" Grid.Column="2" Style="{StaticResource SourceStatusIndicator}">
+                            <TextBlock Text="{Binding CurrentSourceStatusViewModel.TMGaSource}" Foreground="{Binding CurrentSourceStatusViewModel.TMGaSourceColor}" Style="{StaticResource SourceStatusIndicatorText}" />
+                        </Border>
+                        <Border Grid.Row="7" Grid.Column="3" Style="{StaticResource SourceStatusIndicator}">
+                            <TextBlock Text="{Binding CurrentSourceStatusViewModel.TMGaVent}" Foreground="{Binding CurrentSourceStatusViewModel.TMGaVentColor}" Style="{StaticResource SourceStatusIndicatorText}" />
+                        </Border>
+                        <Border Grid.Row="8" Grid.Column="1" Style="{StaticResource SourceStatusIndicator}">
+                            <TextBlock Text="{Binding CurrentSourceStatusViewModel.DTMGaCarrier}" Foreground="{Binding CurrentSourceStatusViewModel.DTMGaCarrierColor}" Style="{StaticResource SourceStatusIndicatorText}" />
+                        </Border>
+                        <Border Grid.Row="8" Grid.Column="2" Style="{StaticResource SourceStatusIndicator}">
+                            <TextBlock Text="{Binding CurrentSourceStatusViewModel.DTMGaSource}" Foreground="{Binding CurrentSourceStatusViewModel.DTMGaSourceColor}" Style="{StaticResource SourceStatusIndicatorText}" />
+                        </Border>
+                        <Border Grid.Row="8" Grid.Column="3" Style="{StaticResource SourceStatusIndicator}">
+                            <TextBlock Text="{Binding CurrentSourceStatusViewModel.DTMGaVent}" Foreground="{Binding CurrentSourceStatusViewModel.DTMGaVentColor}" Style="{StaticResource SourceStatusIndicatorText}" />
+                        </Border>
+                        <Border Grid.Row="9" Grid.Column="1" Style="{StaticResource SourceStatusIndicator}">
+                            <TextBlock Text="{Binding CurrentSourceStatusViewModel.Cp2MgCarrier}" Foreground="{Binding CurrentSourceStatusViewModel.Cp2MgCarrierColor}" Style="{StaticResource SourceStatusIndicatorText}" />
+                        </Border>
+                        <Border Grid.Row="9" Grid.Column="2" Style="{StaticResource SourceStatusIndicator}">
+                            <TextBlock Text="{Binding CurrentSourceStatusViewModel.Cp2MgSource}" Foreground="{Binding CurrentSourceStatusViewModel.Cp2MgSourceColor}" Style="{StaticResource SourceStatusIndicatorText}" />
+                        </Border>
+                        <Border Grid.Row="9" Grid.Column="3" Style="{StaticResource SourceStatusIndicator}">
+                            <TextBlock Text="{Binding CurrentSourceStatusViewModel.Cp2MgVent}" Foreground="{Binding CurrentSourceStatusViewModel.Cp2MgVentColor}" Style="{StaticResource SourceStatusIndicatorText}" />
+                        </Border>
+                    </Grid>
+                </StackPanel>
+            </Border>
         </Grid>
         <!-- Logical Interlock -->
-        <Grid Grid.Row="5">
-            <StackPanel Orientation="Vertical" Margin="12,0,12,0">
-                <StackPanel.Resources>
-                    <Style TargetType="{x:Type TextBlock}">
-                        <Setter Property="Foreground" Value="{StaticResource PrimaryFontColor}"/>
-                        <Setter Property="Height" Value="18"/>
-                    </Style>
-                    <Style TargetType="{x:Type Rectangle}">
-                        <Setter Property="Width" Value="10"/>
-                        <Setter Property="Height" Value="10"/>
-                        <Setter Property="Margin" Value="20,0,10,4"/>
-                    </Style>
-                </StackPanel.Resources>
-                <TextBlock Foreground="{DynamicResource Gray_950}" FontSize="12" FontFamily="Segoe UI" FontWeight="Bold" HorizontalAlignment="Left" Margin="28,6,0,0" VerticalAlignment="Center"><Bold><Run Text="Logical Interlock"/></Bold></TextBlock>
-                <!-- Gas Pressure N2 -->
-                <Grid Margin="0,8,0,0" VerticalAlignment="Center">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="Auto"/>
-                        <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="Auto"/>
-                    </Grid.ColumnDefinitions>
-                    <TextBlock Grid.Column="0" Text="Gas Pressure N2" FontFamily="Segoe UI" Foreground="{DynamicResource Gray_900}" FontSize="10" Margin="20,0,0,0"/>
-                    <Line Grid.Column="1" X1="0" Y1="0" X2="1" Y2="0" Stretch="Fill" Stroke="{DynamicResource Gray_300}" StrokeThickness="1" VerticalAlignment="Center" Opacity="0.995" Margin="8,0"/>
-                    <Rectangle Grid.Column="2" Fill="{Binding GasPressureN2StateColor}" Width="10" Height="10" RadiusX="99" RadiusY="99" Margin="0"/>
-                </Grid>
+        <Grid Grid.Row="4">
+            <Border Style="{StaticResource Tab}">
+                <StackPanel Orientation="Vertical">
+                    <StackPanel.Margin>
+                        <Thickness Left="{StaticResource p_2}" Right="{StaticResource p_2}" Bottom="{StaticResource p_3}" />
+                    </StackPanel.Margin>
+                    <StackPanel.Resources>
+                        <Style TargetType="{x:Type TextBlock}">
+                            <Setter Property="Foreground" Value="{StaticResource PrimaryFontColor}"/>
+                            <Setter Property="Height" Value="18"/>
+                        </Style>
+                        <Style TargetType="{x:Type Rectangle}">
+                            <Setter Property="Width" Value="10"/>
+                            <Setter Property="Height" Value="10"/>
+                            <Setter Property="Margin" Value="20,0,10,4"/>
+                        </Style>
+                    </StackPanel.Resources>
+                    <Grid Height="24">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="4" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+                        <Image Grid.Column="0" Source="/Resources/icons/icon=lock_01.png" Stretch="Fill" Width="24"/>
+                        <TextBlock Grid.Column="2" Foreground="{DynamicResource Gray_950}" FontSize="14" FontFamily="Segoe UI" FontWeight="Bold" VerticalAlignment="Center"><Bold><Run Text="Logical Interlock"/></Bold></TextBlock>
+                    </Grid>
 
-                <!-- Gas Pressure H2 -->
-                <Grid VerticalAlignment="Center">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="Auto"/>
-                        <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="Auto"/>
-                    </Grid.ColumnDefinitions>
-                    <TextBlock Grid.Column="0" Text="Gas Pressure H2" FontFamily="Segoe UI" Foreground="{DynamicResource Gray_900}" FontSize="10" Margin="20,0,0,0"/>
-                    <Line Grid.Column="1" X1="0" Y1="0" X2="1" Y2="0" Stretch="Fill" Stroke="{DynamicResource Gray_300}" StrokeThickness="1" VerticalAlignment="Center" Opacity="0.995" Margin="8,0"/>
-                    <Rectangle Grid.Column="2" Fill="{Binding GasPressureH2StateColor}" Width="10" Height="10" RadiusX="99" RadiusY="99" Margin="0"/>
-                </Grid>
+                    <!-- Gas Pressure N2 -->
+                    <Grid Margin="0,8,0,0" VerticalAlignment="Center">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Grid.Column="0" Text="Gas Pressure N2" FontFamily="Segoe UI" Foreground="{DynamicResource Gray_900}" FontSize="12" Margin="20,0,0,0"/>
+                        <Line Grid.Column="1" X1="0" Y1="0" X2="1" Y2="0" Stretch="Fill" Stroke="{DynamicResource Gray_300}" StrokeThickness="1" VerticalAlignment="Center" Opacity="0.995" Margin="8,0"/>
+                        <Rectangle Grid.Column="2" Fill="{Binding GasPressureN2StateColor}" Width="10" Height="10" RadiusX="99" RadiusY="99" Margin="0"/>
+                    </Grid>
 
-                <!-- Gas Pressure NH3 -->
-                <Grid VerticalAlignment="Center">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="Auto"/>
-                        <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="Auto"/>
-                    </Grid.ColumnDefinitions>
-                    <TextBlock Grid.Column="0" Text="Gas Pressure NH3" FontFamily="Segoe UI" Foreground="{DynamicResource Gray_900}" FontSize="10" Margin="20,0,0,0"/>
-                    <Line Grid.Column="1" X1="0" Y1="0" X2="1" Y2="0" Stretch="Fill" Stroke="{DynamicResource Gray_300}" StrokeThickness="1" VerticalAlignment="Center" Opacity="0.995" Margin="8,0"/>
-                    <Rectangle Grid.Column="2" Fill="{Binding GasPressureNH3StateColor}" Width="10" Height="10" RadiusX="99" RadiusY="97" Margin="0"/>
-                </Grid>
+                    <!-- Gas Pressure H2 -->
+                    <Grid VerticalAlignment="Center">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Grid.Column="0" Text="Gas Pressure H2" FontFamily="Segoe UI" Foreground="{DynamicResource Gray_900}" FontSize="12" Margin="20,0,0,0"/>
+                        <Line Grid.Column="1" X1="0" Y1="0" X2="1" Y2="0" Stretch="Fill" Stroke="{DynamicResource Gray_300}" StrokeThickness="1" VerticalAlignment="Center" Opacity="0.995" Margin="8,0"/>
+                        <Rectangle Grid.Column="2" Fill="{Binding GasPressureH2StateColor}" Width="10" Height="10" RadiusX="99" RadiusY="99" Margin="0"/>
+                    </Grid>
 
-                <!-- Gas Pressure SiH4 -->
-                <Grid VerticalAlignment="Center">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="Auto"/>
-                        <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="Auto"/>
-                    </Grid.ColumnDefinitions>
-                    <TextBlock Grid.Column="0" Text="Gas Pressure SiH4" FontFamily="Segoe UI" Foreground="{DynamicResource Gray_900}" FontSize="10" Margin="20,0,0,0"/>
-                    <Line Grid.Column="1" X1="0" Y1="0" X2="1" Y2="0" Stretch="Fill" Stroke="{DynamicResource Gray_300}" StrokeThickness="1" VerticalAlignment="Center" Opacity="0.995" Margin="8,0"/>
-                    <Rectangle Grid.Column="2" Fill="{Binding GasPressureSiH4StateColor}" Width="10" Height="10" RadiusX="99" RadiusY="99" Margin="0"/>
-                </Grid>
+                    <!-- Gas Pressure NH3 -->
+                    <Grid VerticalAlignment="Center">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Grid.Column="0" Text="Gas Pressure NH3" FontFamily="Segoe UI" Foreground="{DynamicResource Gray_900}" FontSize="12" Margin="20,0,0,0"/>
+                        <Line Grid.Column="1" X1="0" Y1="0" X2="1" Y2="0" Stretch="Fill" Stroke="{DynamicResource Gray_300}" StrokeThickness="1" VerticalAlignment="Center" Opacity="0.995" Margin="8,0"/>
+                        <Rectangle Grid.Column="2" Fill="{Binding GasPressureNH3StateColor}" Width="10" Height="10" RadiusX="99" RadiusY="97" Margin="0"/>
+                    </Grid>
 
-                <!-- Recipe Start Available -->
-                <Grid VerticalAlignment="Center">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="Auto"/>
-                        <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="Auto"/>
-                    </Grid.ColumnDefinitions>
-                    <TextBlock Grid.Column="0" Text="Recipe Start Available" FontFamily="Segoe UI" Foreground="{DynamicResource Gray_900}" FontSize="10" Margin="20,0,0,0"/>
-                    <Line Grid.Column="1" X1="0" Y1="0" X2="1" Y2="0" Stretch="Fill" Stroke="{DynamicResource Gray_300}" StrokeThickness="1" VerticalAlignment="Center" Opacity="0.995" Margin="8,0"/>
-                    <Rectangle Grid.Column="2" Fill="{Binding RecipeStartStateColor}" Width="10" Height="10" RadiusX="99" RadiusY="96" Margin="0"/>
-                </Grid>
+                    <!-- Gas Pressure SiH4 -->
+                    <Grid VerticalAlignment="Center">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Grid.Column="0" Text="Gas Pressure SiH4" FontFamily="Segoe UI" Foreground="{DynamicResource Gray_900}" FontSize="12" Margin="20,0,0,0"/>
+                        <Line Grid.Column="1" X1="0" Y1="0" X2="1" Y2="0" Stretch="Fill" Stroke="{DynamicResource Gray_300}" StrokeThickness="1" VerticalAlignment="Center" Opacity="0.995" Margin="8,0"/>
+                        <Rectangle Grid.Column="2" Fill="{Binding GasPressureSiH4StateColor}" Width="10" Height="10" RadiusX="99" RadiusY="99" Margin="0"/>
+                    </Grid>
 
-                <!-- Reactor Open Available -->
-                <Grid VerticalAlignment="Center">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="Auto"/>
-                        <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="Auto"/>
-                    </Grid.ColumnDefinitions>
-                    <TextBlock Grid.Column="0" Text="Reactor Open Available" FontFamily="Segoe UI" Foreground="{DynamicResource Gray_900}" FontSize="10" Margin="20,0,0,0"/>
-                    <Line Grid.Column="1" X1="0" Y1="0" X2="1" Y2="0" Stretch="Fill" Stroke="{DynamicResource Gray_300}" StrokeThickness="1" VerticalAlignment="Center" Opacity="0.995" Margin="8,0"/>
-                    <Rectangle Grid.Column="2" Fill="{Binding ReactorOpenStateColor}" Width="10" Height="10" RadiusX="99" RadiusY="97" Margin="0"/>
-                </Grid>
+                    <!-- Recipe Start Available -->
+                    <Grid VerticalAlignment="Center">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Grid.Column="0" Text="Recipe Start Available" FontFamily="Segoe UI" Foreground="{DynamicResource Gray_900}" FontSize="12" Margin="20,0,0,0"/>
+                        <Line Grid.Column="1" X1="0" Y1="0" X2="1" Y2="0" Stretch="Fill" Stroke="{DynamicResource Gray_300}" StrokeThickness="1" VerticalAlignment="Center" Opacity="0.995" Margin="8,0"/>
+                        <Rectangle Grid.Column="2" Fill="{Binding RecipeStartStateColor}" Width="10" Height="10" RadiusX="99" RadiusY="96" Margin="0"/>
+                    </Grid>
 
-                <!-- Heater can be Turn On -->
-                <Grid VerticalAlignment="Center">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="Auto"/>
-                        <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="Auto"/>
-                    </Grid.ColumnDefinitions>
-                    <TextBlock Grid.Column="0" Text="Heater can be Turn On" FontFamily="Segoe UI" Foreground="{DynamicResource Gray_900}" FontSize="10" Margin="20,0,0,0"/>
-                    <Line Grid.Column="1" X1="0" Y1="0" X2="1" Y2="0" Stretch="Fill" Stroke="{DynamicResource Gray_300}" StrokeThickness="1" VerticalAlignment="Center" Opacity="0.995" Margin="8,0"/>
-                    <Rectangle Grid.Column="2" Fill="{Binding HeaterTurnOnStateColor}" Width="10" Height="10" RadiusX="99" RadiusY="98" Margin="0"/>
-                </Grid>
-                <Grid VerticalAlignment="Center" Margin="0">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="Auto"/>
-                        <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="Auto"/>
-                    </Grid.ColumnDefinitions>
+                    <!-- Reactor Open Available -->
+                    <Grid VerticalAlignment="Center">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Grid.Column="0" Text="Reactor Open Available" FontFamily="Segoe UI" Foreground="{DynamicResource Gray_900}" FontSize="12" Margin="20,0,0,0"/>
+                        <Line Grid.Column="1" X1="0" Y1="0" X2="1" Y2="0" Stretch="Fill" Stroke="{DynamicResource Gray_300}" StrokeThickness="1" VerticalAlignment="Center" Opacity="0.995" Margin="8,0"/>
+                        <Rectangle Grid.Column="2" Fill="{Binding ReactorOpenStateColor}" Width="10" Height="10" RadiusX="99" RadiusY="97" Margin="0"/>
+                    </Grid>
 
-                    <TextBlock Grid.Column="0" Text="Pump can be Turn On"
-               FontFamily="Segoe UI" Foreground="{DynamicResource Gray_900}"
-               FontSize="10" Margin="20,0,0,0"/>
+                    <!-- Heater can be Turn On -->
+                    <Grid VerticalAlignment="Center">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Grid.Column="0" Text="Heater can be Turn On" FontFamily="Segoe UI" Foreground="{DynamicResource Gray_900}" FontSize="12" Margin="20,0,0,0"/>
+                        <Line Grid.Column="1" X1="0" Y1="0" X2="1" Y2="0" Stretch="Fill" Stroke="{DynamicResource Gray_300}" StrokeThickness="1" VerticalAlignment="Center" Opacity="0.995" Margin="8,0"/>
+                        <Rectangle Grid.Column="2" Fill="{Binding HeaterTurnOnStateColor}" Width="10" Height="10" RadiusX="99" RadiusY="98" Margin="0"/>
+                    </Grid>
+                    <Grid VerticalAlignment="Center" Margin="0">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
 
-                    <Line Grid.Column="1" X1="0" Y1="0" X2="1" Y2="0"
+                        <TextBlock Grid.Column="0" Text="Pump can be Turn On" FontFamily="Segoe UI" Foreground="{DynamicResource Gray_900}" FontSize="12" Margin="20,0,0,0"/>
+
+                        <Line Grid.Column="1" X1="0" Y1="0" X2="1" Y2="0"
           Stretch="Fill" Stroke="{DynamicResource Gray_300}" 
           StrokeThickness="1" VerticalAlignment="Center" 
           Opacity="0.995" Margin="8,0" />
 
-                    <Rectangle Grid.Column="2" Fill="{Binding PumpTurnOnStateColor}"
+                        <Rectangle Grid.Column="2" Fill="{Binding PumpTurnOnStateColor}"
                Width="10" Height="10" RadiusX="99" RadiusY="99"
                Margin="0" HorizontalAlignment="Right"/>
-                </Grid>
-
-            </StackPanel>
-
+                    </Grid>
+                </StackPanel>
+            </Border>
         </Grid>
         <!-- Hardwire Interlock -->
-        <Grid Grid.Row="6">
-            <StackPanel Orientation="Vertical" HorizontalAlignment="Center" Margin="12,0,12,10">
-                <StackPanel.Resources>
-                    <Style TargetType="{x:Type TextBlock}">
-                        <Setter Property="Foreground" Value="{StaticResource PrimaryFontColor}"/>
-                        <Setter Property="Height" Value="18"/>
-                    </Style>
-                    <Style TargetType="{x:Type Rectangle}">
-                        <Setter Property="Width" Value="10"/>
-                        <Setter Property="Height" Value="10"/>
-                        <Setter Property="Margin" Value="20,0,10,4"/>
-                    </Style>
-                </StackPanel.Resources>
-                <Line X1="5" Y1="0" X2="295" Y2="0" Stroke="{DynamicResource Gray_300}" StrokeThickness="2" Margin="2,2,2,8"/>
-                <TextBlock Foreground="{DynamicResource Gray_950}" FontSize="12" FontFamily="Segoe UI" FontWeight="Bold" HorizontalAlignment="Left" Margin="28,6,0,0" VerticalAlignment="Center"><Bold><Run Text="Hardwire Interlock"/></Bold></TextBlock>
-                <Grid Margin="0,8,0,0" VerticalAlignment="Center">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="Auto"/>
-                        <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="Auto"/>
-                    </Grid.ColumnDefinitions>
-                    <TextBlock Grid.Column="0" Text="Maintenance Key" FontFamily="Segoe UI" Foreground="{DynamicResource Gray_900}" FontSize="10" Margin="20,0,0,0"/>
-                    <Line Grid.Column="1" X1="0" Y1="0" X2="1" Y2="0" Stretch="Fill" Stroke="{DynamicResource Gray_300}" StrokeThickness="1" VerticalAlignment="Center" Opacity="0.995" Margin="8,0"/>
-                    <Rectangle Grid.Column="2" Fill="{Binding MaintenanceKeyLampColor}" Width="10" Height="10" RadiusX="99" RadiusY="99" Margin="0"/>
-                </Grid>
+        <Grid Grid.Row="5">
+            <Border Style="{StaticResource Tab}">
+                <StackPanel Orientation="Vertical" HorizontalAlignment="Center">
+                    <StackPanel.Margin>
+                        <Thickness Left="{StaticResource p_2}" Right="{StaticResource p_2}" Bottom="{StaticResource p_3}" />
+                    </StackPanel.Margin>
+                    <StackPanel.Resources>
+                        <Style TargetType="{x:Type TextBlock}">
+                            <Setter Property="Foreground" Value="{StaticResource PrimaryFontColor}"/>
+                            <Setter Property="Height" Value="18"/>
+                        </Style>
+                        <Style TargetType="{x:Type Rectangle}">
+                            <Setter Property="Width" Value="10"/>
+                            <Setter Property="Height" Value="10"/>
+                            <Setter Property="Margin" Value="20,0,10,4"/>
+                        </Style>
+                    </StackPanel.Resources>
+                    <Grid Height="24">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="4" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+                        <Image Grid.Column="0" Source="/Resources/icons/icon=lock_02.png" Stretch="Fill" Width="24"/>
+                        <TextBlock Grid.Column="2" Foreground="{DynamicResource Gray_950}" FontSize="14" FontFamily="Segoe UI" FontWeight="Bold" HorizontalAlignment="Left" VerticalAlignment="Center"><Bold><Run Text="Hardwire Interlock"/></Bold></TextBlock>
+                    </Grid>
+                    <Grid Margin="0,8,0,0" VerticalAlignment="Center">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Grid.Column="0" Text="Maintenance Key" FontFamily="Segoe UI" Foreground="{DynamicResource Gray_900}" FontSize="12" Margin="20,0,0,0"/>
+                        <Line Grid.Column="1" X1="0" Y1="0" X2="1" Y2="0" Stretch="Fill" Stroke="{DynamicResource Gray_300}" StrokeThickness="1" VerticalAlignment="Center" Opacity="0.995" Margin="8,0"/>
+                        <Rectangle Grid.Column="2" Fill="{Binding MaintenanceKeyLampColor}" Width="10" Height="10" RadiusX="99" RadiusY="99" Margin="0"/>
+                    </Grid>
 
-                <Grid VerticalAlignment="Center">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="Auto"/>
-                        <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="Auto"/>
-                    </Grid.ColumnDefinitions>
-                    <TextBlock Grid.Column="0" Text="Induction Heater" FontFamily="Segoe UI" Foreground="{DynamicResource Gray_900}" FontSize="10" Margin="20,0,0,0"/>
-                    <Line Grid.Column="1" X1="0" Y1="0" X2="1" Y2="0" Stretch="Fill" Stroke="{DynamicResource Gray_300}" StrokeThickness="1" VerticalAlignment="Center" Opacity="0.995" Margin="8,0"/>
-                    <Rectangle Grid.Column="2" Fill="{Binding InductionHeaterLampColor}" Width="10" Height="10" RadiusX="99" RadiusY="99" Margin="0"/>
-                </Grid>
+                    <Grid VerticalAlignment="Center">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Grid.Column="0" Text="Induction Heater" FontFamily="Segoe UI" Foreground="{DynamicResource Gray_900}" FontSize="12" Margin="20,0,0,0"/>
+                        <Line Grid.Column="1" X1="0" Y1="0" X2="1" Y2="0" Stretch="Fill" Stroke="{DynamicResource Gray_300}" StrokeThickness="1" VerticalAlignment="Center" Opacity="0.995" Margin="8,0"/>
+                        <Rectangle Grid.Column="2" Fill="{Binding InductionHeaterLampColor}" Width="10" Height="10" RadiusX="99" RadiusY="99" Margin="0"/>
+                    </Grid>
 
-                <Grid VerticalAlignment="Center">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="Auto"/>
-                        <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="Auto"/>
-                    </Grid.ColumnDefinitions>
-                    <TextBlock Grid.Column="0" Text="Vacuum Pump" FontFamily="Segoe UI" Foreground="{DynamicResource Gray_900}" FontSize="10" Margin="20,0,0,0"/>
-                    <Line Grid.Column="1" X1="0" Y1="0" X2="1" Y2="0" Stretch="Fill" Stroke="{DynamicResource Gray_300}" StrokeThickness="1" VerticalAlignment="Center" Opacity="0.995" Margin="8,0"/>
-                    <Rectangle Grid.Column="2" Fill="{Binding VacuumPumpLampColor}" Width="10" Height="10" RadiusX="99" RadiusY="99" Margin="0"/>
-                </Grid>
+                    <Grid VerticalAlignment="Center">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Grid.Column="0" Text="Vacuum Pump" FontFamily="Segoe UI" Foreground="{DynamicResource Gray_900}" FontSize="12" Margin="20,0,0,0"/>
+                        <Line Grid.Column="1" X1="0" Y1="0" X2="1" Y2="0" Stretch="Fill" Stroke="{DynamicResource Gray_300}" StrokeThickness="1" VerticalAlignment="Center" Opacity="0.995" Margin="8,0"/>
+                        <Rectangle Grid.Column="2" Fill="{Binding VacuumPumpLampColor}" Width="10" Height="10" RadiusX="99" RadiusY="99" Margin="0"/>
+                    </Grid>
 
-                <Grid VerticalAlignment="Center">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="Auto"/>
-                        <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="Auto"/>
-                    </Grid.ColumnDefinitions>
-                    <TextBlock Grid.Column="0" Text="Susceptor Motor" FontFamily="Segoe UI" Foreground="{DynamicResource Gray_900}" FontSize="10" Margin="20,0,0,0"/>
-                    <Line Grid.Column="1" X1="0" Y1="0" X2="1" Y2="0" Stretch="Fill" Stroke="{DynamicResource Gray_300}" StrokeThickness="1" VerticalAlignment="Center" Opacity="0.995" Margin="8,0"/>
-                    <Rectangle Grid.Column="2" Fill="{Binding SusceptorMotorLampColor}" Width="10" Height="10" RadiusX="99" RadiusY="99" Margin="0"/>
-                </Grid>
+                    <Grid VerticalAlignment="Center">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Grid.Column="0" Text="Susceptor Motor" FontFamily="Segoe UI" Foreground="{DynamicResource Gray_900}" FontSize="12" Margin="20,0,0,0"/>
+                        <Line Grid.Column="1" X1="0" Y1="0" X2="1" Y2="0" Stretch="Fill" Stroke="{DynamicResource Gray_300}" StrokeThickness="1" VerticalAlignment="Center" Opacity="0.995" Margin="8,0"/>
+                        <Rectangle Grid.Column="2" Fill="{Binding SusceptorMotorLampColor}" Width="10" Height="10" RadiusX="99" RadiusY="99" Margin="0"/>
+                    </Grid>
 
-                <Grid VerticalAlignment="Center">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="Auto"/>
-                        <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="Auto"/>
-                    </Grid.ColumnDefinitions>
-                    <TextBlock Grid.Column="0" Text="Cooling Water" FontFamily="Segoe UI" Foreground="{DynamicResource Gray_900}" FontSize="10" Margin="20,0,0,0"/>
-                    <Line Grid.Column="1" X1="0" Y1="0" X2="1" Y2="0" Stretch="Fill" Stroke="{DynamicResource Gray_300}" StrokeThickness="1" VerticalAlignment="Center" Opacity="0.995" Margin="8,0"/>
-                    <Rectangle Grid.Column="2" Fill="{Binding CoolingWaterLampColor}" Width="10" Height="10" RadiusX="99" RadiusY="99" Margin="0"/>
-                </Grid>
+                    <Grid VerticalAlignment="Center">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Grid.Column="0" Text="Cooling Water" FontFamily="Segoe UI" Foreground="{DynamicResource Gray_900}" FontSize="12" Margin="20,0,0,0"/>
+                        <Line Grid.Column="1" X1="0" Y1="0" X2="1" Y2="0" Stretch="Fill" Stroke="{DynamicResource Gray_300}" StrokeThickness="1" VerticalAlignment="Center" Opacity="0.995" Margin="8,0"/>
+                        <Rectangle Grid.Column="2" Fill="{Binding CoolingWaterLampColor}" Width="10" Height="10" RadiusX="99" RadiusY="99" Margin="0"/>
+                    </Grid>
 
-                <Grid VerticalAlignment="Center">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="Auto"/>
-                        <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="Auto"/>
-                    </Grid.ColumnDefinitions>
-                    <TextBlock Grid.Column="0" Text="Clean Dry Air" FontFamily="Segoe UI" Foreground="{DynamicResource Gray_900}" FontSize="10" Margin="20,0,0,0"/>
-                    <Line Grid.Column="1" X1="0" Y1="0" X2="1" Y2="0" Stretch="Fill" Stroke="{DynamicResource Gray_300}" StrokeThickness="1" VerticalAlignment="Center" Opacity="0.995" Margin="8,0"/>
-                    <Rectangle Grid.Column="2" Fill="{Binding CleanDryAirLampColor}" Width="10" Height="10" RadiusX="99" RadiusY="99" Margin="0"/>
-                </Grid>
+                    <Grid VerticalAlignment="Center">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Grid.Column="0" Text="Clean Dry Air" FontFamily="Segoe UI" Foreground="{DynamicResource Gray_900}" FontSize="12" Margin="20,0,0,0"/>
+                        <Line Grid.Column="1" X1="0" Y1="0" X2="1" Y2="0" Stretch="Fill" Stroke="{DynamicResource Gray_300}" StrokeThickness="1" VerticalAlignment="Center" Opacity="0.995" Margin="8,0"/>
+                        <Rectangle Grid.Column="2" Fill="{Binding CleanDryAirLampColor}" Width="10" Height="10" RadiusX="99" RadiusY="99" Margin="0"/>
+                    </Grid>
 
-                <Grid VerticalAlignment="Center">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="Auto"/>
-                        <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="Auto"/>
-                    </Grid.ColumnDefinitions>
-                    <TextBlock Grid.Column="0" Text="Door - Reactor Cabinet" FontFamily="Segoe UI" Foreground="{DynamicResource Gray_900}" FontSize="10" Margin="20,0,0,0"/>
-                    <Line Grid.Column="1" X1="0" Y1="0" X2="1" Y2="0" Stretch="Fill" Stroke="{DynamicResource Gray_300}" StrokeThickness="1" VerticalAlignment="Center" Opacity="0.995" Margin="8,0"/>
-                    <Rectangle Grid.Column="2" Fill="{Binding DoorReactorCabinetLampColor}" Width="10" Height="10" RadiusX="99" RadiusY="99" Margin="0"/>
-                </Grid>
+                    <Grid VerticalAlignment="Center">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Grid.Column="0" Text="Door - Reactor Cabinet" FontFamily="Segoe UI" Foreground="{DynamicResource Gray_900}" FontSize="12" Margin="20,0,0,0"/>
+                        <Line Grid.Column="1" X1="0" Y1="0" X2="1" Y2="0" Stretch="Fill" Stroke="{DynamicResource Gray_300}" StrokeThickness="1" VerticalAlignment="Center" Opacity="0.995" Margin="8,0"/>
+                        <Rectangle Grid.Column="2" Fill="{Binding DoorReactorCabinetLampColor}" Width="10" Height="10" RadiusX="99" RadiusY="99" Margin="0"/>
+                    </Grid>
 
-                <Grid VerticalAlignment="Center">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="Auto"/>
-                        <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="Auto"/>
-                    </Grid.ColumnDefinitions>
-                    <TextBlock Grid.Column="0" Text="Door - Gas Delivery Cabinet" FontFamily="Segoe UI" Foreground="{DynamicResource Gray_900}" FontSize="10" Margin="20,0,0,0"/>
-                    <Line Grid.Column="1" X1="0" Y1="0" X2="1" Y2="0" Stretch="Fill" Stroke="{DynamicResource Gray_300}" StrokeThickness="1" VerticalAlignment="Center" Opacity="0.995" Margin="8,0"/>
-                    <Rectangle Grid.Column="2" Fill="{Binding DoorGasDeliveryCabinetLampColor}" Width="10" Height="10" RadiusX="99" RadiusY="99" Margin="0"/>
-                </Grid>
+                    <Grid VerticalAlignment="Center">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Grid.Column="0" Text="Door - Gas Delivery Cabinet" FontFamily="Segoe UI" Foreground="{DynamicResource Gray_900}" FontSize="12" Margin="20,0,0,0"/>
+                        <Line Grid.Column="1" X1="0" Y1="0" X2="1" Y2="0" Stretch="Fill" Stroke="{DynamicResource Gray_300}" StrokeThickness="1" VerticalAlignment="Center" Opacity="0.995" Margin="8,0"/>
+                        <Rectangle Grid.Column="2" Fill="{Binding DoorGasDeliveryCabinetLampColor}" Width="10" Height="10" RadiusX="99" RadiusY="99" Margin="0"/>
+                    </Grid>
 
-                <Grid VerticalAlignment="Center">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="Auto"/>
-                        <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="Auto"/>
-                    </Grid.ColumnDefinitions>
-                    <TextBlock Grid.Column="0" Text="Door - Power Distribute Cabinet" FontFamily="Segoe UI" Foreground="{DynamicResource Gray_900}" FontSize="10" Margin="20,0,0,0"/>
-                    <Line Grid.Column="1" X1="0" Y1="0" X2="1" Y2="0" Stretch="Fill" Stroke="{DynamicResource Gray_300}" StrokeThickness="1" VerticalAlignment="Center" Opacity="0.995" Margin="8,0"/>
-                    <Rectangle Grid.Column="2" Fill="{Binding DoorPowerDistributeCabinetLampColor}" Width="10" Height="10" RadiusX="99" RadiusY="99" Margin="0"/>
-                </Grid>
+                    <Grid VerticalAlignment="Center">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Grid.Column="0" Text="Door - Power Distribute Cabinet" FontFamily="Segoe UI" Foreground="{DynamicResource Gray_900}" FontSize="12" Margin="20,0,0,0"/>
+                        <Line Grid.Column="1" X1="0" Y1="0" X2="1" Y2="0" Stretch="Fill" Stroke="{DynamicResource Gray_300}" StrokeThickness="1" VerticalAlignment="Center" Opacity="0.995" Margin="8,0"/>
+                        <Rectangle Grid.Column="2" Fill="{Binding DoorPowerDistributeCabinetLampColor}" Width="10" Height="10" RadiusX="99" RadiusY="99" Margin="0"/>
+                    </Grid>
 
-                <Grid VerticalAlignment="Center">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="Auto"/>
-                        <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="Auto"/>
-                    </Grid.ColumnDefinitions>
-                    <TextBlock Grid.Column="0" Text="Double O-Ring Vacuum" FontFamily="Segoe UI" Foreground="{DynamicResource Gray_900}" FontSize="10" Margin="20,0,0,0"/>
-                    <Line Grid.Column="1" X1="0" Y1="0" X2="1" Y2="0" Stretch="Fill" Stroke="{DynamicResource Gray_300}" StrokeThickness="1" VerticalAlignment="Center" Opacity="0.995" Margin="8,0"/>
-                    <Rectangle Grid.Column="2" Fill="{Binding DorVacuumStateLampColor}" Width="10" Height="10" RadiusX="99" RadiusY="99" Margin="0"/>
-                </Grid>
+                    <Grid VerticalAlignment="Center">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Grid.Column="0" Text="Double O-Ring Vacuum" FontFamily="Segoe UI" Foreground="{DynamicResource Gray_900}" FontSize="12" Margin="20,0,0,0"/>
+                        <Line Grid.Column="1" X1="0" Y1="0" X2="1" Y2="0" Stretch="Fill" Stroke="{DynamicResource Gray_300}" StrokeThickness="1" VerticalAlignment="Center" Opacity="0.995" Margin="8,0"/>
+                        <Rectangle Grid.Column="2" Fill="{Binding DorVacuumStateLampColor}" Width="10" Height="10" RadiusX="99" RadiusY="99" Margin="0"/>
+                    </Grid>
 
-                <Grid VerticalAlignment="Center">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="Auto"/>
-                        <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="Auto"/>
-                    </Grid.ColumnDefinitions>
-                    <TextBlock Grid.Column="0" Text="Susceptor Temp. Controller Alarm" FontFamily="Segoe UI" Foreground="{DynamicResource Gray_900}" FontSize="10" Margin="20,0,0,0"/>
-                    <Line Grid.Column="1" X1="0" Y1="0" X2="1" Y2="0" Stretch="Fill" Stroke="{DynamicResource Gray_300}" StrokeThickness="1" VerticalAlignment="Center" Opacity="0.995" Margin="8,0"/>
-                    <Rectangle Grid.Column="2" Fill="{Binding TempControllerAlarmLampColor}" Width="10" Height="10" RadiusX="99" RadiusY="99" Margin="0"/>
-                </Grid>
-            </StackPanel>
+                    <Grid VerticalAlignment="Center">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Grid.Column="0" Text="Susceptor Temp. Controller Alarm" FontFamily="Segoe UI" Foreground="{DynamicResource Gray_900}" FontSize="12" Margin="20,0,0,0"/>
+                        <Line Grid.Column="1" X1="0" Y1="0" X2="1" Y2="0" Stretch="Fill" Stroke="{DynamicResource Gray_300}" StrokeThickness="1" VerticalAlignment="Center" Opacity="0.995" Margin="8,0"/>
+                        <Rectangle Grid.Column="2" Fill="{Binding TempControllerAlarmLampColor}" Width="10" Height="10" RadiusX="99" RadiusY="99" Margin="0"/>
+                    </Grid>
+                </StackPanel>
+            </Border>
         </Grid>
         <!-- Line Heater Current Value -->
-        <Grid Grid.Row="6" Margin="0,246,0,13" Grid.RowSpan="2">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition/>
-            </Grid.ColumnDefinitions>
-            <StackPanel Orientation="Vertical" Margin="12,0,12,0">
-                <StackPanel.Resources>
-                    <Style TargetType="{x:Type TextBlock}">
-                        <Setter Property="Foreground" Value="{StaticResource PrimaryFontColor}"/>
-                        <Setter Property="FontSize" Value="11"/>
-                        <Setter Property="TextAlignment" Value="Right"/>
-                        <Setter Property="Width" Value="16"/>
-                        <Setter Property="Height" Value="22"/>
-                        <Setter Property="Margin" Value="0,6,0,0"/>
-                    </Style>
-                    <Style TargetType="{x:Type TextBox}">
-                        <Setter Property="Width" Value="50"/>
-                        <Setter Property="Height" Value="22"/>
-                        <Setter Property="Background" Value="LightGray"/>
-                        <Setter Property="Foreground" Value="DarkBlue"/>
-                        <Setter Property="FontSize" Value="11"/>
-                        <Setter Property="TextAlignment" Value="Right"/>
-                        <Setter Property="Margin" Value="4"/>
-                    </Style>
-                </StackPanel.Resources>
-                <Line X1="5" Y1="0" X2="295" Y2="0" StrokeThickness="2" Stroke="{DynamicResource Gray_300}"/>
-                <TextBlock Foreground="{DynamicResource Gray_950}" FontSize="12" FontFamily="Segoe UI" FontWeight="Bold" HorizontalAlignment="Left" Margin="28,6,0,0" Width="NaN"><Bold><Run Text="Line Heater"/></Bold></TextBlock>
-                <StackPanel Orientation="Horizontal">
-                    <TextBlock Text="1" FontFamily="Segoe UI" Foreground="{DynamicResource Gray_900}" FontSize="10"/>
-                    <TextBox x:Name="tbLineHeater1" Text="{Binding LineHeater1, UpdateSourceTrigger=PropertyChanged}" Background="{DynamicResource Gray_50}" BorderBrush="{DynamicResource Gray_300}" Width="44"/>
-                    <TextBlock Text="2" FontFamily="Segoe UI" Foreground="{DynamicResource Gray_900}" FontSize="10"/>
-                    <TextBox x:Name="tbLineHeater2" Text="{Binding LineHeater2, UpdateSourceTrigger=PropertyChanged}" Background="{DynamicResource Gray_50}" BorderBrush="{DynamicResource Gray_300}" Width="44" />
-                    <TextBlock Text="3" FontFamily="Segoe UI" Foreground="{DynamicResource Gray_900}" FontSize="10"/>
-                    <TextBox x:Name="tbLineHeater3" Text="{Binding LineHeater3, UpdateSourceTrigger=PropertyChanged}" Background="{DynamicResource Gray_50}" BorderBrush="{DynamicResource Gray_300}" Width="44"/>
-                    <TextBlock Text="4" FontFamily="Segoe UI" Foreground="{DynamicResource Gray_900}" FontSize="10"/>
-                    <TextBox x:Name="tbLineHeater4" Text="{Binding LineHeater4, UpdateSourceTrigger=PropertyChanged}" Background="{DynamicResource Gray_50}" BorderBrush="{DynamicResource Gray_300}" Width="44"/>
-                </StackPanel>
-                <StackPanel Orientation="Horizontal">
-                    <TextBlock Text="5" FontFamily="Segoe UI" Foreground="{DynamicResource Gray_900}" FontSize="10"/>
-                    <TextBox x:Name="tbLineHeater5" Text="{Binding LineHeater5, UpdateSourceTrigger=PropertyChanged}" Background="{DynamicResource Gray_50}" BorderBrush="{DynamicResource Gray_300}" Width="44"/>
-                    <TextBlock Text="6" FontFamily="Segoe UI" Foreground="{DynamicResource Gray_900}" FontSize="10"/>
-                    <TextBox x:Name="tbLineHeater6" Text="{Binding LineHeater6, UpdateSourceTrigger=PropertyChanged}" Background="{DynamicResource Gray_50}" BorderBrush="{DynamicResource Gray_300}" Width="44"/>
-                    <TextBlock Text="7" FontFamily="Segoe UI" Foreground="{DynamicResource Gray_900}" FontSize="10"/>
-                    <TextBox x:Name="tbLineHeater7" Text="{Binding LineHeater7, UpdateSourceTrigger=PropertyChanged}" Background="{DynamicResource Gray_50}" BorderBrush="{DynamicResource Gray_300}" Width="44"/>
-                    <TextBlock Text="8" FontFamily="Segoe UI" Foreground="{DynamicResource Gray_900}" FontSize="10"/>
-                    <TextBox x:Name="tbLineHeater8" Text="{Binding LineHeater8, UpdateSourceTrigger=PropertyChanged}" Background="{DynamicResource Gray_50}" BorderBrush="{DynamicResource Gray_300}" Width="44"/>
-                </StackPanel>
+        <Grid Grid.Row="6" >
+            <Border Style="{StaticResource Tab}">
+                <StackPanel Orientation="Vertical">
+                    <StackPanel.Margin>
+                        <Thickness Left="{StaticResource p_2}" Right="{StaticResource p_2}" Bottom="{StaticResource p_3}" />
+                    </StackPanel.Margin>
+                    <Grid Height="24">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="24" />
+                        <ColumnDefinition Width="4" />
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <Image Grid.Column="0" Source="/Resources/icons/icon=temp.png" Stretch="Fill" />
+                    <TextBlock Grid.Column="2" Foreground="{DynamicResource Gray_950}" FontSize="14" FontFamily="Segoe UI" FontWeight="Bold" VerticalAlignment="Center" HorizontalAlignment="Left">Line Heater</TextBlock>
+                </Grid>
+                    <Grid>
+                        <Grid.Margin>
+                            <Thickness Left="{StaticResource p_5}" />
+                        </Grid.Margin>
+                        <Grid.Resources>
+                            <Style TargetType="{x:Type TextBlock}">
+                                <Setter Property="Foreground" Value="{StaticResource PrimaryFontColor}"/>
+                                <Setter Property="FontSize" Value="11"/>
+                                <Setter Property="TextAlignment" Value="Left"/>
+                                <Setter Property="VerticalAlignment" Value="Center" />
+                                <Setter Property="Margin" Value="0, 0, 4, 0" />
+                            </Style>
+                            <Style TargetType="{x:Type TextBox}" BasedOn="{StaticResource InfoTextBox}" x:Key="LineHeaterInfoBox">
+                                <Setter Property="Width" Value="43"/>
+                                <Setter Property="Height" Value="20"/>
+                            </Style>
+                        </Grid.Resources>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="4"/>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
+                        <StackPanel Grid.Row="0" Orientation="Horizontal">
+                            <StackPanel.Margin>
+                                <Thickness Top="{StaticResource p_2}" />
+                            </StackPanel.Margin>
+                            <TextBlock Text="1" FontFamily="Segoe UI" Foreground="{DynamicResource Gray_900}" FontSize="12"/>
+                            <TextBox x:Name="tbLineHeater1" Text="{Binding LineHeater1, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource LineHeaterInfoBox}">
+                                <TextBox.Margin>
+                                    <Thickness Right="{StaticResource p_2}" />
+                                </TextBox.Margin>
+                            </TextBox>
+                            <TextBlock Text="2" FontFamily="Segoe UI" Foreground="{DynamicResource Gray_900}" FontSize="12"/>
+                            <TextBox x:Name="tbLineHeater2" Text="{Binding LineHeater2, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource LineHeaterInfoBox}">
+                                <TextBox.Margin>
+                                    <Thickness Right="{StaticResource p_2}" />
+                                </TextBox.Margin>
+                            </TextBox>
+                            <TextBlock Text="3" FontFamily="Segoe UI" Foreground="{DynamicResource Gray_900}" FontSize="12"/>
+                            <TextBox x:Name="tbLineHeater3" Text="{Binding LineHeater3, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource LineHeaterInfoBox}">
+                                <TextBox.Margin>
+                                    <Thickness Right="{StaticResource p_2}" />
+                                </TextBox.Margin>
+                            </TextBox>
+                            <TextBlock Text="4" FontFamily="Segoe UI" Foreground="{DynamicResource Gray_900}" FontSize="12"/>
+                            <TextBox x:Name="tbLineHeater4" Text="{Binding LineHeater4, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource LineHeaterInfoBox}" />
+                        </StackPanel>
+                        <StackPanel Grid.Row="2" Orientation="Horizontal">
+                            <TextBlock Text="5" FontFamily="Segoe UI" Foreground="{DynamicResource Gray_900}" FontSize="12"/>
+                                <TextBox x:Name="tbLineHeater5" Text="{Binding LineHeater5, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource LineHeaterInfoBox}">
+                                    <TextBox.Margin>
+                                        <Thickness Right="{StaticResource p_2}" />
+                                    </TextBox.Margin>
+                                </TextBox>
+                            <TextBlock Text="6" FontFamily="Segoe UI" Foreground="{DynamicResource Gray_900}" FontSize="12"/>
+                                <TextBox x:Name="tbLineHeater6" Text="{Binding LineHeater6, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource LineHeaterInfoBox}">
+                                    <TextBox.Margin>
+                                        <Thickness Right="{StaticResource p_2}" />
+                                    </TextBox.Margin>
+                                </TextBox>
+                            <TextBlock Text="7" FontFamily="Segoe UI" Foreground="{DynamicResource Gray_900}" FontSize="12"/>
+                                <TextBox x:Name="tbLineHeater7" Text="{Binding LineHeater7, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource LineHeaterInfoBox}">
+                                    <TextBox.Margin>
+                                        <Thickness Right="{StaticResource p_2}" />
+                                    </TextBox.Margin>
+                                </TextBox>
+                            <TextBlock Text="8" FontFamily="Segoe UI" Foreground="{DynamicResource Gray_900}" FontSize="12"/>
+                            <TextBox x:Name="tbLineHeater8" Text="{Binding LineHeater8, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource LineHeaterInfoBox}" />
+                        </StackPanel>
+                    </Grid>
             </StackPanel>
+            </Border>
         </Grid>
         <!-- Colling Water Current Value -->
-        <Grid Grid.Row="8">
-            <StackPanel Orientation="Vertical" Margin="12,0,12,0">
-                <StackPanel.Resources>
-                    <Style TargetType="{x:Type TextBlock}">
-                        <Setter Property="Foreground" Value="{StaticResource PrimaryFontColor}"/>
-                        <Setter Property="FontSize" Value="11"/>
-                        <Setter Property="TextAlignment" Value="Center"/>
-                        <Setter Property="Margin" Value="0,6,0,0"/>
-                    </Style>
-                    <Style TargetType="{x:Type TextBox}">
-                        <Setter Property="Width" Value="64"/>
-                        <Setter Property="Height" Value="22"/>
-                        <Setter Property="Background" Value="LightGray"/>
-                        <Setter Property="Foreground" Value="DarkBlue"/>
-                        <Setter Property="FontSize" Value="11"/>
-                        <Setter Property="TextAlignment" Value="Right"/>
-                        <Setter Property="Margin" Value="4"/>
-                    </Style>
-                </StackPanel.Resources>
-                <Line X1="5" Y1="0" X2="295" Y2="0" Stroke="{DynamicResource Gray_300}"/>
-                <TextBlock Foreground="{DynamicResource Gray_950}" FontSize="12" FontFamily="Segoe UI" FontWeight="Bold" HorizontalAlignment="Left" Margin="28,6,0,0" Width="NaN"><Bold><Run Text="Cooling Water"/></Bold></TextBlock>
-                <Grid>
+        <Grid Grid.Row="7">
+            <StackPanel Orientation="Vertical" Margin="8,8,8,0">
+                <Grid Height="24">
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="0*"/>
-                        <ColumnDefinition Width="1*"/>
-                        <ColumnDefinition Width="1*"/>
+                        <ColumnDefinition Width="24" />
+                        <ColumnDefinition Width="4" />
+                        <ColumnDefinition Width="*"/>
                     </Grid.ColumnDefinitions>
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="22"/>
-                        <RowDefinition/>
-                    </Grid.RowDefinitions>
-                    <TextBlock Grid.Column="1" Grid.Row="0" Text="Shower Head" Margin="0,6,0,0" FontFamily="Segoe UI" Foreground="{DynamicResource Gray_900}" FontSize="10" />
-                    <TextBlock Grid.Column="2" Grid.Row="0" Text="Induction Coil" Margin="0,6,0,0" FontFamily="Segoe UI" Foreground="{DynamicResource Gray_900}" FontSize="10" />
-                    <TextBox x:Name="tbShowerHeadTemp"  Grid.Column="1" Grid.Row="1"  Text="{Binding ShowerHeadTemp}"  Background="{DynamicResource Gray_50}" BorderBrush="{DynamicResource Gray_300}" Margin="10,4,16,4"/>
-                    <TextBox x:Name="tbInductionCoilTemp"  Grid.Column="2" Grid.Row="1"  Text="{Binding InductionCoilTemp}"  Background="{DynamicResource Gray_50}" BorderBrush="{DynamicResource Gray_300}" Margin="12,4,12,4"/>
+                    <Image Grid.Column="0" Source="/Resources/icons/icon=cool.png" Stretch="Fill" />
+                    <TextBlock Grid.Column="2" Foreground="{DynamicResource Gray_950}" FontSize="14" FontFamily="Segoe UI" FontWeight="Bold" VerticalAlignment="Center" HorizontalAlignment="Left">Cooling Water</TextBlock>
+                </Grid>
+                <Grid>
+                    <Grid.Resources>
+                        <Style TargetType="{x:Type TextBlock}">
+                            <Setter Property="Foreground" Value="{StaticResource PrimaryFontColor}"/>
+                            <Setter Property="FontSize" Value="11"/>
+                            <Setter Property="TextAlignment" Value="Center"/>
+                            <Setter Property="Margin" Value="0,6,0,0"/>
+                        </Style>
+                        <Style TargetType="{x:Type TextBox}">
+                            <Setter Property="Width" Value="64"/>
+                            <Setter Property="Height" Value="22"/>
+                            <Setter Property="Background" Value="LightGray"/>
+                            <Setter Property="Foreground" Value="DarkBlue"/>
+                            <Setter Property="FontSize" Value="11"/>
+                            <Setter Property="TextAlignment" Value="Right"/>
+                            <Setter Property="Margin" Value="4"/>
+                        </Style>
+                    </Grid.Resources>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="20"/>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="8"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="22"/>
+                            <RowDefinition/>
+                        </Grid.RowDefinitions>
+                        <TextBlock Grid.Column="1" Grid.Row="0" Text="Shower Head" Margin="0,6,0,0" FontFamily="Segoe UI" Foreground="{DynamicResource Gray_900}" FontSize="10" />
+                        <TextBlock Grid.Column="3" Grid.Row="0" Text="Induction Coil" Margin="0,6,0,0" FontFamily="Segoe UI" Foreground="{DynamicResource Gray_900}" FontSize="10" />
+                        <TextBox Width="100" x:Name="tbShowerHeadTemp"  Grid.Column="1" Grid.Row="1"  Text="{Binding ShowerHeadTemp}"  Background="{DynamicResource Gray_50}" Style="{StaticResource InfoTextBox}" />
+                        <TextBox Width="100"  x:Name="tbInductionCoilTemp"  Grid.Column="3" Grid.Row="1"  Text="{Binding InductionCoilTemp}"  Background="{DynamicResource Gray_50}" Style="{StaticResource InfoTextBox}" />
+                    </Grid>
                 </Grid>
             </StackPanel>
         </Grid>
-        <Image Margin="0,16,252,210" Grid.Row="4" Source="/Resources/icons/icon=control_knobs.png"  Stretch="Fill" Width="24"/>
-        <Image Margin="12,4,264,148" Grid.Row="5" Source="/Resources/icons/icon=lock_01.png" Stretch="Fill" Width="24"/>
-        <Image Margin="12,10,264,224" Grid.Row="6" Source="/Resources/icons/icon=lock_02.png" Stretch="Fill" Width="24" Height="24"/>
-        <Image Margin="12,251,264,82" Grid.Row="6" Source="/Resources/icons/icon=temp.png" Stretch="Fill" Width="24" Height="24" Grid.RowSpan="2"/>
-        <Line X1="5" Y1="0" X2="295" Y2="0" Stroke="{DynamicResource Gray_300}" StrokeThickness="2" Margin="0,0,0,175" Grid.Row="5"/>
-        <Image Margin="12,4,264,65" Grid.Row="8" Source="/Resources/icons/icon=cool.png" Stretch="Fill" Width="24" Height="24"/>
     </Grid>
 </Page>

@@ -166,7 +166,7 @@
                         <DataGridTextColumn Header="Device Id" CanUserSort="False" CanUserResize="False" Width="60" Binding="{Binding Path=ID, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" IsReadOnly="True"  ElementStyle="{StaticResource EventLogElement}" />
                         <DataGridTextColumn Header="Device Name" CanUserSort="False" CanUserResize="False" Width="*" Binding="{Binding Path=Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"  ElementStyle="{StaticResource EventLogElement}" />
                         <DataGridCheckBoxColumn Header="State" CanUserSort="False" CanUserResize="False" Width="100" Binding="{Binding Path=On, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                EditingElementStyle="{StaticResource VavleOnOffCheckBox}" ElementStyle="{StaticResource VavleOnOffCheckBox}"/>
+                                EditingElementStyle="{StaticResource ValveOnOffCheckBox}" ElementStyle="{StaticResource ValveOnOffCheckBox}"/>
                     </DataGrid.Columns>
                 </DataGrid>
             </StackPanel>

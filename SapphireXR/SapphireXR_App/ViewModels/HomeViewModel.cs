@@ -106,14 +106,12 @@ namespace SapphireXR_App.ViewModels
             try
             {
                 BitArray outputCmd1 = PLCService.ReadOutputCmd1();
-                InductionHeaterOn = (outputCmd1[(int)PLCService.OutputCmd1Index.InductionHeaterControl] == true) ? "On" : "Off";
-                VaccumPumpOn = (outputCmd1[(int)PLCService.OutputCmd1Index.VaccumPumpControl] == true) ? "On" : "Off";
+                IsInductionHeaterOn = outputCmd1[(int)PLCService.OutputCmd1Index.InductionHeaterControl];
+                IsVaccumPumpOn = outputCmd1[(int)PLCService.OutputCmd1Index.VaccumPumpControl];
             }
             catch (Exception)
             {
                 MessageBox.Show("PLC로부터 Home의 Induction Heater와 VaccumPump On/Off 상태를 읽어오는데 실패하였습니다. 기본 Unknown으로 표시합니다.");
-                InductionHeaterOn = "Unknown";
-                VaccumPumpOn = "Unknown";
             }
             try
             {
@@ -128,9 +126,19 @@ namespace SapphireXR_App.ViewModels
 
             PropertyChanged += (object? sender, PropertyChangedEventArgs args) =>
             {
-                if(args.PropertyName == nameof(ThrottleValveStatus))
+                switch(args.PropertyName)
                 {
-                    VacuumPumpResetCommand.NotifyCanExecuteChanged();
+                    case nameof(ThrottleValveStatus):
+                        VacuumPumpResetCommand.NotifyCanExecuteChanged();
+                        break;
+
+                    case nameof(IsVaccumPumpOn):
+                        VacuumPumpToggle(IsVaccumPumpOn);
+                        break;
+
+                    case nameof(IsInductionHeaterOn):
+                        InductionHeaterToggle(IsInductionHeaterOn);
+                        break;
                 }
             };
 
@@ -141,14 +149,11 @@ namespace SapphireXR_App.ViewModels
 
 
         [RelayCommand]
-        private void VacuumPumpToggle()
+        private void VacuumPumpToggle(bool on)
         {
             try
             {
-                if (OutputCmd1ToggleConfirmService.OnOff(VaccumPumpOn, PLCService.OutputCmd1Index.VaccumPumpControl, "Vaccum Pump On/Off") == true)
-                {
-                    VaccumPumpOn = (VaccumPumpOn == "On" ? "Off" : "On");
-                }
+                PLCService.WriteOutputCmd1(PLCService.OutputCmd1Index.VaccumPumpControl, on);
             }
             catch (Exception exception) 
             {
@@ -209,14 +214,11 @@ namespace SapphireXR_App.ViewModels
         }
 
         [RelayCommand]
-        private void InductionHeaterToggle()
+        private void InductionHeaterToggle(bool on)
         {
             try
             {
-                if (OutputCmd1ToggleConfirmService.OnOff(InductionHeaterOn, PLCService.OutputCmd1Index.InductionHeaterControl, "Induction Power Supply On/Off") == true)
-                {
-                    InductionHeaterOn = (InductionHeaterOn == "On" ? "Off" : "On");
-                }
+                PLCService.WriteOutputCmd1(PLCService.OutputCmd1Index.InductionHeaterControl, on);
             }
             catch(Exception exception)
             {
@@ -421,11 +423,7 @@ namespace SapphireXR_App.ViewModels
         [ObservableProperty]
         private string _pressureControlMode = "";
         [ObservableProperty]
-        private string _vaccumPumpOn = "";
-        [ObservableProperty]
         private string _vaccumPumpReset = "";
-        [ObservableProperty]
-        private string _inductionHeaterOn = "";
         [ObservableProperty]
         private string _rotationReset = "";
         [ObservableProperty]
@@ -436,6 +434,11 @@ namespace SapphireXR_App.ViewModels
         private string? _currentThrottleValveControlMode = null;
         [ObservableProperty]
         private string _throttleValveStatus = "";
+
+        [ObservableProperty]
+        private bool _isVaccumPumpOn;
+        [ObservableProperty]
+        private bool _isInductionHeaterOn;
 
         [ObservableProperty]
         private ObservableCollection<EventLog> _eventLogs = new ObservableCollection<EventLog>();

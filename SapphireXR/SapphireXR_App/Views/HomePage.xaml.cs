@@ -1,5 +1,9 @@
-﻿using SapphireXR_App.ViewModels;
+﻿using SapphireXR_App.Enums;
+using SapphireXR_App.Models;
+using SapphireXR_App.ViewModels;
+using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Controls.Primitives;
 
 namespace SapphireXR_App.Views
 {
@@ -10,6 +14,24 @@ namespace SapphireXR_App.Views
         {
             InitializeComponent();
             DataContext = App.Current.Services.GetService(typeof(HomeViewModel));
+        }
+
+        private void ConfirmBeforeToggle(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        {
+            ToggleButton? toggleSwitch = sender as ToggleButton;
+            if (toggleSwitch != null)
+            {
+                string destState = toggleSwitch.IsChecked == true ? "On" : "Off";
+                if (ValveOperationEx.Show("", "상태로 변경하시겠습니까?") == ValveOperationExResult.Cancel)
+                {
+                    e.Handled = true;
+                }
+                else
+                {
+                    toggleSwitch.IsChecked = !toggleSwitch.IsChecked;
+                    toggleSwitch.RaiseEvent(new RoutedEventArgs(ButtonBase.ClickEvent));
+                }
+            }
         }
     }
 }

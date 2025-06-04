@@ -8,7 +8,7 @@
       mc:Ignorable="d" 
       xmlns:control="clr-namespace:SapphireXR_App.Controls"
       xmlns:oxy="http://oxyplot.org/wpf"
-      d:DesignHeight="1020" d:DesignWidth="1620"
+      d:DesignHeight="1032" d:DesignWidth="1620"
       Title="HomePage"
       x:Name="homePage">
     <Page.Resources>
@@ -766,7 +766,7 @@
         <Grid Grid.Column="1" Background="{StaticResource Gray_100}" Width="300">
             <Border BorderBrush="{StaticResource Gray_300}" Padding="{StaticResource p_3_sqrt}">
                 <Border.BorderThickness>
-                    <Thickness Left="1" />
+                    <Thickness Left="1" Top="1" />
                 </Border.BorderThickness>
                 <Grid>
                     <Grid.RowDefinitions>
@@ -782,7 +782,7 @@
                         <Border BorderThickness="0 0 0 1" BorderBrush="{StaticResource Gray_300}">
                             <Border>
                                 <Border.BorderThickness>
-                                    <Thickness Left="{StaticResource p_2}" Right="{StaticResource p_2}" Bottom="{StaticResource p_3}"/>
+                                    <Thickness Left="{StaticResource p_2}" Right="{StaticResource p_2}" Bottom="14"/>
                                 </Border.BorderThickness>
                                 <StackPanel Orientation="Vertical" Margin="0, 0, 0, 0">
                                     <StackPanel Orientation="Horizontal">
@@ -904,7 +904,7 @@
                                             <Thickness Left="{StaticResource p_5}" />
                                         </Border.BorderThickness>
                                         <Border.Margin>
-                                            <Thickness Top="{StaticResource p_1}" Bottom="{StaticResource p_3}" />
+                                            <Thickness Top="{StaticResource p_1}" Bottom="14" />
                                         </Border.Margin>
                                         <StackPanel Orientation="Vertical">
                                             <Label Content="Induction Power Supply" FontFamily="Segoe UI" Foreground="{StaticResource Gray_900}" FontSize="12">
@@ -918,7 +918,7 @@
                                                     <ColumnDefinition Width="8"/>
                                                     <ColumnDefinition />
                                                 </Grid.ColumnDefinitions>
-                                                <ToggleButton Style="{StaticResource ToggleSwitch}" Grid.Column="0" x:Name="btHeaterOn" Content="{Binding InductionHeaterOn}" Command="{Binding InductionHeaterToggleCommand}" VerticalAlignment="Center" HorizontalAlignment="Center">
+                                                <ToggleButton Style="{StaticResource ToggleSwitch}" PreviewMouseLeftButtonDown="ConfirmBeforeToggle" Grid.Column="0" x:Name="btHeaterOn" IsChecked="{Binding IsInductionHeaterOn, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" VerticalAlignment="Center" HorizontalAlignment="Center">
                                                     <ToggleButton.LayoutTransform>
                                                         <ScaleTransform ScaleX="0.9" ScaleY="0.9"/>
                                                     </ToggleButton.LayoutTransform>
@@ -1052,7 +1052,7 @@
                                             <Thickness Left="{StaticResource p_5}" />
                                         </Border.BorderThickness>
                                         <Border.Margin>
-                                            <Thickness Top="{StaticResource p_1}" Bottom="{StaticResource p_3}" />
+                                            <Thickness Top="{StaticResource p_1}" Bottom="14" />
                                         </Border.Margin>
                                         <StackPanel Orientation="Vertical">
                                             <Label Content="Vaccum Pump" FontFamily="Segoe UI" Foreground="{StaticResource Gray_900}" FontSize="12">
@@ -1066,7 +1066,7 @@
                                                     <ColumnDefinition Width="8"/>
                                                     <ColumnDefinition />
                                                 </Grid.ColumnDefinitions>
-                                                <ToggleButton Style="{StaticResource ToggleSwitch}" Grid.Column="0" x:Name="btPumpOn" Content="{Binding VaccumPumpOn}" Command="{Binding VacuumPumpToggleCommand}" VerticalAlignment="Center" HorizontalAlignment="Center">
+                                                <ToggleButton Style="{StaticResource ToggleSwitch}" PreviewMouseLeftButtonDown="ConfirmBeforeToggle" Grid.Column="0" x:Name="btPumpOn" IsChecked="{Binding IsVaccumPumpOn, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Center" HorizontalAlignment="Center">
                                                     <ToggleButton.LayoutTransform>
                                                         <ScaleTransform ScaleX="0.9" ScaleY="0.9"/>
                                                     </ToggleButton.LayoutTransform>
@@ -1142,7 +1142,7 @@
                         <Border BorderThickness="0 0 0 1" BorderBrush="{StaticResource Gray_300}">
                             <StackPanel>
                                 <StackPanel.Margin>
-                                    <Thickness Bottom="{StaticResource p_2}" Left="{StaticResource p_2}" Right="{StaticResource p_2}"/>
+                                    <Thickness Bottom="14" Left="{StaticResource p_2}" Right="{StaticResource p_2}"/>
                                 </StackPanel.Margin>
                                 <StackPanel Orientation="Horizontal">
                                     <StackPanel.Margin>

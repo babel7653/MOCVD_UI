@@ -23,7 +23,7 @@
                 <Border.Padding>
                     <Thickness Top="{StaticResource p_3}" />
                 </Border.Padding>
-                <TabControl Background="{DynamicResource Gray_300}" SelectedIndex="{Binding SelectedTab, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" BorderThickness="0">
+                <TabControl Background="{DynamicResource Gray_300}" SelectedIndex="{Binding SelectedTab, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" BorderThickness="0" Margin="0" Padding="0">
                 <TabControl.Resources>
                     <Style TargetType="TabItem">
                         <Setter Property="Foreground" Value="White"/>

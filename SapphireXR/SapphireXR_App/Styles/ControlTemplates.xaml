@@ -46,7 +46,7 @@
         </Setter>
         <Setter Property="Cursor" Value="Hand"/>
     </Style>
-    <Style x:Key="VavleOnOffCheckBox" TargetType="{x:Type CheckBox}">
+    <Style x:Key="ValveOnOffCheckBox" TargetType="{x:Type CheckBox}">
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type CheckBox}">

@@ -9,7 +9,6 @@ using SapphireXR_App.Models;
 using SapphireXR_App.ViewModels;
 using SapphireXR_App.Views;
 using SapphireXR_App.ViewModels.FlowController;
-using System.Reactive;
 
 namespace SapphireXR_App.Controls
 {

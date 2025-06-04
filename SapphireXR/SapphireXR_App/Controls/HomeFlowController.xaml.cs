@@ -50,7 +50,6 @@ namespace SapphireXR_App.Controls
             InitializeComponent();
             DataContext = new HomeFlowControllerViewModel();
             ObservableManager<bool>.Subscribe("App.Closing", onAppClosingSubscriber = new AppClosingSubscriber(this));
-
         }
 
         public string? Type { get; set; }

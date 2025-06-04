@@ -1044,7 +1044,7 @@
                                                     <Thickness Top="{StaticResource p_2}" Left="0" Right="0" Bottom="{StaticResource p_1}" />
                                                 </Label.Padding>
                                             </Label>
-                                            <Button Content="{Binding ThrottleValveStatus, Mode=OneWay}" Style="{StaticResource DefaultButton}" Height="26" IsEnabled="False"/>
+                                            <TextBox Text="{Binding ThrottleValveStatus, Mode=OneWay}" IsReadOnly="True" Style="{StaticResource DefaultTextBox}" Height="26"/>
                                         </StackPanel>
                                     </Border>
                                     <Border>
@@ -1199,7 +1199,7 @@
                                                     <Thickness Top="0" Left="0" Right="0" Bottom="{StaticResource p_1}" />
                                                 </Label.Padding>
                                             </Label>
-                                            <Button x:Name="btMotorReset" Content="{Binding RotationReset, Mode=OneWay}" Style="{StaticResource DefaultButton}" Height="26" IsEnabled="False"/>
+                                            <TextBox x:Name="btMotorReset" Text="{Binding RotationReset, Mode=OneWay}" Style="{StaticResource DefaultTextBox}" Height="26" IsReadOnly="True"/>
                                         </StackPanel>
                                     </Border>
                                   

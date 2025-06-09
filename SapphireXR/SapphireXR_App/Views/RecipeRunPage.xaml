@@ -743,6 +743,7 @@
                             <Setter Property="AutoGenerateColumns" Value="False" />
                             <Setter Property="HorizontalScrollBarVisibility" Value="Auto" />
                             <Setter Property="VerticalScrollBarVisibility" Value="Auto" />
+                            <Setter Property="SelectionMode" Value="Single" />
                             <Setter Property="CellStyle">
                                 <Setter.Value>
                                     <Style TargetType="{x:Type DataGridCell}">

@@ -64,7 +64,7 @@ namespace SapphireXR_App.ViewModels
                             if (currentRecipe != null)
                             {
                                 currentRecipe.Background = Recipe.DefaultBackground;
-                                currentRecipe.Foreground = Recipe.DefaultForeground;
+                                currentRecipe.Foreground = DisabledRecipeListForeground;
                             }
                             currentRecipe = next;
                             currentRecipeIndex = index;
@@ -308,6 +308,7 @@ namespace SapphireXR_App.ViewModels
 
             private static readonly Brush HighlitedRecipeListBackground = App.Current.FindResource("HighlitedRecipeListBackground") as Brush ?? new SolidColorBrush(Color.FromRgb(0x1C, 0x1C, 0x1C));
             private static readonly Brush HighlitedRecipeListForeground = App.Current.FindResource("HighlitedRecipeListForeground") as Brush ?? Brushes.LightGoldenrodYellow;
+            private static readonly Brush DisabledRecipeListForeground = App.Current.FindResource("DisabledRecipeListForeground") as Brush ?? new SolidColorBrush(Color.FromRgb(0x73, 0x73, 0x73));
 
             [ObservableProperty]
             private int? _currentRecipeTime = null;

@@ -305,6 +305,19 @@ namespace SapphireXR_App.ViewModels
                     scrollIntoViewCurrentRecipe(reactorDataGrid, currentRecipe);
                     scrollIntoViewCurrentRecipe(flowDataGrid, currentRecipe);
                     scrollIntoViewCurrentRecipe(valveDataGrid, currentRecipe);
+
+                    if (reactorDataGrid?.SelectedItem == currentRecipe)
+                    {
+                        deselectAllGrid(reactorDataGrid);
+                    }
+                    if (flowDataGrid?.SelectedItem == currentRecipe)
+                    {
+                        deselectAllGrid(flowDataGrid);
+                    }
+                    if (valveDataGrid?.SelectedItem == currentRecipe)
+                    {
+                        deselectAllGrid(valveDataGrid);
+                    }
                 }
             }
         }
@@ -315,6 +328,14 @@ namespace SapphireXR_App.ViewModels
             {
                 dataGrid.UpdateLayout();
                 dataGrid.ScrollIntoView(recipe);
+            });
+        }
+
+        private static void deselectAllGrid(DataGrid? dataGrid)
+        {
+            dataGrid?.Dispatcher.InvokeAsync(() =>
+            {
+                dataGrid.UnselectAll();
             });
         }
 

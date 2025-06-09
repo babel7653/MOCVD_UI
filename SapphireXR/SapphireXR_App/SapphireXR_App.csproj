@@ -47,10 +47,12 @@
     <None Remove="Resources\icons\icon=sapphire.png" />
     <None Remove="Resources\icons\icon=save.png" />
     <None Remove="Resources\icons\icon=save_as.png" />
+    <None Remove="Resources\icons\icon=skip.png" />
     <None Remove="Resources\icons\icon=stop.png" />
     <None Remove="Resources\icons\icon=temp.png" />
     <None Remove="Resources\icons\icon=trash.png" />
     <None Remove="Resources\icons\icon=valve.png" />
+    <None Remove="Resources\icons\icon=valveoperation.png" />
     <None Remove="Resources\icons\icon=_user.png" />
     <None Remove="Resources\icons\icon_line_reset.png" />
     <None Remove="Resources\plus-icon-13071.png" />
@@ -190,6 +192,9 @@
     <Resource Include="Resources\icons\icon=save_as.png">
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </Resource>
+    <Resource Include="Resources\icons\icon=skip.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
     <Resource Include="Resources\icons\icon=stop.png">
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </Resource>
@@ -203,6 +208,9 @@
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </Resource>
     <Resource Include="Resources\icons\icon=valve.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\icons\icon=valveoperation.png">
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </Resource>
     <Resource Include="Resources\icons\icon=_user.png">

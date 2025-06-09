@@ -679,10 +679,9 @@
                             </Button>
                             <Button x:Name="btnRecipeStart" Width="40" Height="40" Style="{StaticResource ImageButton}" Command="{Binding RecipeStartCommand}"  ToolTip="start recipe">
                                 <Image Source="{Binding StartPauseIconPath}" Style="{StaticResource MenuImage}" />
-
                             </Button>
-                            <Button x:Name="btnRecipeSkip" Content="Skip" Command="{Binding RecipeSkipCommand}"  Width="40" Height="40" Style="{StaticResource ImageButton}" ToolTip="skip recipe">
-
+                            <Button x:Name="btnRecipeSkip" Command="{Binding RecipeSkipCommand}"  Width="40" Height="40" Style="{StaticResource ImageButton}" ToolTip="skip recipe">
+                                <Image Source="/Resources/icons/icon=skip.png" Style="{StaticResource MenuImage}" />
                             </Button>
                             <Button x:Name="btnRecipeStop" Command="{Binding RecipeStopCommand}" Width="40" Height="40" Style="{StaticResource ImageButton}" ToolTip="stop recipe" >
                                 <Image Source="/Resources/icons/icon=pause.png" Style="{StaticResource MenuImage}" />

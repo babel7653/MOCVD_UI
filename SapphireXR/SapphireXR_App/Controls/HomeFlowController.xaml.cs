@@ -63,18 +63,10 @@ namespace SapphireXR_App.Controls
                 if (homeFlowController != null)
                 {
                     flowControlView = FlowControllerEx.Show("Flow Controller", $"{ControllerID} 유량을 변경하시겠습니까?", ControllerID, (PopupExResult result, FlowControlViewModel.ControlValues controlValues) => { 
-                        if(OnFlowControllerConfirmed == null)
-                        {
-                            OnFlowControllerConfirmed = ((HomeFlowControllerViewModel)DataContext).OnFlowControllerConfirmedCommand;
-                        }
-                        OnFlowControllerConfirmed?.Execute(new object[2] { result, controlValues }); 
+                        return ((HomeFlowControllerViewModel)DataContext).OnFlowControllerConfirmed(result, controlValues);
                     },
                     (PopupExResult result) => {
-                        if(OnFlowControllerCanceled == null)
-                        {
-                            OnFlowControllerCanceled = ((HomeFlowControllerViewModel)DataContext).OnFlowControllerCanceledCommand;
-                        }
-                        OnFlowControllerCanceled?.Execute(result); 
+                        ((HomeFlowControllerViewModel)DataContext).OnFlowControllerCanceled(result);
                     });
                     Point p = TransformToAncestor(Util.FindParent<Window>(this, "mainWindow")).Transform(new Point(0, 0));
                     flowControlView.Left = p.X;

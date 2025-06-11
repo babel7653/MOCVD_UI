@@ -49,23 +49,48 @@ namespace SapphireXR_App.ViewModels.FlowController
             private float maxValue;
         }
 
-        public HomeFlowControllerViewModel()
+        public bool OnFlowControllerConfirmed(PopupExResult result, ControlValues controlValues)
         {
-            OnFlowControllerConfirmedCommand = new RelayCommand<object?>((parameter) =>
+            string message = string.Empty;
+            if (controlValues.targetValue != null)
             {
-                object[] parameters = (object[])parameter!;
-                PopupExResult result = (PopupExResult)parameters[0];
-                ControlValues controlValues = (ControlValues)parameters[1];
+                message += "Target Value " + controlValues.targetValue;
+            }
+            if (controlValues.rampTime != null)
+            {
+                if (message != string.Empty)
+                {
+                    message += ", ";
+                }
+                message += "Ramp Time Value " + controlValues.rampTime;
+            }
+            if (message != string.Empty)
+            {
+                message += "으로 설정하시겠습니까?";
+            }
 
-                if (controlValues.targetValue != null)
+            if (message != string.Empty)
+            {
+                if (FlowControlConfirmEx.Show("변경 확인", message) == ValveOperationExResult.Ok)
                 {
-                    PLCService.WriteTargetValue(ControllerID, (int)controlValues.targetValue);
+                    if (controlValues.targetValue != null)
+                    {
+                        PLCService.WriteTargetValue(ControllerID, (int)controlValues.targetValue);
+                    }
+                    if (controlValues.rampTime != null)
+                    {
+                        PLCService.WriteRampTime(ControllerID, (short)controlValues.rampTime);
+                    }
+
+                    return true;
                 }
-                if (controlValues.rampTime != null)
-                {
-                    PLCService.WriteRampTime(ControllerID, (short)controlValues.rampTime);
-                }
-            });
+            }
+
+            return false;
+        }
+        public void OnFlowControllerCanceled(PopupExResult result)
+        {
+
         }
 
         protected override void onLoaded(string type, string controllerID)
@@ -79,9 +104,6 @@ namespace SapphireXR_App.ViewModels.FlowController
         {
             selectedThis?.Issue(ControllerID);
         }
-      
-        public ICommand OnFlowControllerConfirmedCommand;
-        public ICommand OnFlowControllerCanceledCommand = new RelayCommand<PopupExResult>((result) => { });
 
         protected ControlTargetValueSubscriber? controlTargetValueSubscriber;
         private ObservableManager<string>.DataIssuer? selectedThis;

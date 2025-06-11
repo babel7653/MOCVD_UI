@@ -81,30 +81,6 @@ namespace SapphireXR_App.ViewModels
             
         }
 
-        public static readonly string DevceIOSettingFilePath = Util.GetResourceAbsoluteFilePath("/Configurations/DeviceIO.json");
-
-        public Dictionary<string, AnalogDeviceIO>? dAnalogDeviceIO = [];
-        public Dictionary<string, SwitchDI>? dSwitchDI = [];
-        public Dictionary<string, GasDO>? dGasDO = [];
-        public Dictionary<string, string>? dPreSet { get; set; } = [];
-        public Dictionary<string, InterLockA>? dInterLockA { get; set; } = [];
-        public Dictionary<string, bool>? dInterLockD { get; set; } = [];
-        public List<AnalogDeviceIO>? lAnalogDeviceIO { get; set; } = [];
-        public List<SwitchDI>? lSwitchDI { get; set; } = [];
-        public List<GasDO>? lGasDO { get; set; } = [];
-        public UserState? userstate { get; set; } = new();
-
-        [ObservableProperty]
-        public IList<IOSetting> _iOList;
-
-        public bool WithoutConnection { get; set; }
-
-        public ICommand AlarmSettingLoadCommand => new RelayCommand(AlarmSettingLoad);
-        public ICommand AlarmSettingSaveCommand => new RelayCommand(AlarmSettingSave);
-
-        [ObservableProperty]
-        private string? _logIntervalInRecipeRun;
-
         public SettingViewModel()
         {
             AlarmSettingLoad();
@@ -287,6 +263,31 @@ namespace SapphireXR_App.ViewModels
                 
             }
         }
+
+        public static readonly string DevceIOSettingFilePath = Util.GetResourceAbsoluteFilePath("/Configurations/DeviceIO.json");
+        public static readonly string PrecursorSourceMonitorLabelSettingFilePath = Util.GetResourceAbsoluteFilePath("/Configurations/PrecursorSourceMonitorLabel.json");
+
+        public Dictionary<string, AnalogDeviceIO>? dAnalogDeviceIO = [];
+        public Dictionary<string, SwitchDI>? dSwitchDI = [];
+        public Dictionary<string, GasDO>? dGasDO = [];
+        public Dictionary<string, string>? dPreSet { get; set; } = [];
+        public Dictionary<string, InterLockA>? dInterLockA { get; set; } = [];
+        public Dictionary<string, bool>? dInterLockD { get; set; } = [];
+        public List<AnalogDeviceIO>? lAnalogDeviceIO { get; set; } = [];
+        public List<SwitchDI>? lSwitchDI { get; set; } = [];
+        public List<GasDO>? lGasDO { get; set; } = [];
+        public UserState? userstate { get; set; } = new();
+
+        [ObservableProperty]
+        public IList<IOSetting> _iOList;
+
+        public bool WithoutConnection { get; set; }
+
+        public ICommand AlarmSettingLoadCommand => new RelayCommand(AlarmSettingLoad);
+        public ICommand AlarmSettingSaveCommand => new RelayCommand(AlarmSettingSave);
+
+        [ObservableProperty]
+        private string? _logIntervalInRecipeRun;
 
         private IOStateListSubscriber iOStateListSubscriber;
 

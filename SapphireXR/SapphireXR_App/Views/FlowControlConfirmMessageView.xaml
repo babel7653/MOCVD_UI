@@ -1,4 +1,4 @@
-﻿<Window x:Class="SapphireXR_App.Views.ValveOperationView"
+﻿<Window x:Class="SapphireXR_App.Views.FlowControlConfirmMessageView"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -12,8 +12,8 @@
         MinWidth="400"
         MinHeight="158"
         WindowStartupLocation="CenterScreen"
-        x:Name="valveDialog"
-        Title="ValveOperationPopup" Height="150" Width="400">
+        x:Name="flowControlConfirmDialog"
+        Height="150" Width="400">
     <Window.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
@@ -28,21 +28,21 @@
                 <RowDefinition Height="19" />
                 <RowDefinition Height="38" />
             </Grid.RowDefinitions>
-        <Grid Grid.Row="0" Background="Transparent">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="24" />
-                <RowDefinition Height="15" />
-                <RowDefinition Height="22" />
-            </Grid.RowDefinitions>
-            <Grid Grid.Row="0">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="24"/>
+            <Grid Grid.Row="0" Background="Transparent">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="24" />
+                    <RowDefinition Height="15" />
+                    <RowDefinition Height="22" />
+                </Grid.RowDefinitions>
+                <Grid Grid.Row="0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="24"/>
                         <ColumnDefinition Width="4" />
                         <ColumnDefinition Width="*"/>
-                </Grid.ColumnDefinitions>
-                <Image Grid.Column="0" Height="24" Source="/Resources/icons/icon=valveoperation.png"/>
-                <Label Grid.Column="2" Grid.Row="0"  Content="{Binding Title}" FontFamily="Segoe UI" FontWeight="Bold" HorizontalAlignment="Left" Padding="0" FontSize="14" VerticalAlignment="Center" Foreground="{StaticResource Gray_950}" />
-            </Grid>
+                    </Grid.ColumnDefinitions>
+                    <Image Grid.Column="0" Height="24" Source="/Resources/icons/icon=control_knobs.png"/>
+                    <Label Grid.Column="2" Grid.Row="0"  Content="{Binding Title}" FontFamily="Segoe UI" FontWeight="Bold" HorizontalAlignment="Left" Padding="0" FontSize="14" VerticalAlignment="Center" Foreground="{StaticResource Gray_950}" />
+                </Grid>
                 <TextBlock Grid.Row="2" Text="{Binding Message}" FontSize="16" FontFamily="Segoe UI" Padding="0" Margin="0"  VerticalAlignment="Center"  Foreground="{StaticResource Gray_950}" HorizontalAlignment="Left" />
             </Grid>
 
@@ -53,9 +53,9 @@
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
                 <Button Grid.Column="0" FontSize="14" Style="{StaticResource PrimaryButton}" HorizontalAlignment="Stretch" IsDefault="True" Content="확인" Command="{Binding OkCommand}"
-                        CommandParameter="{Binding ElementName=valveDialog}" Background="{StaticResource Sapphire_Blue}" FontFamily="Segoe UI" Foreground="{StaticResource Gray_50}"/>
+                    CommandParameter="{Binding ElementName=flowControlConfirmDialog}" Background="{StaticResource Sapphire_Blue}" FontFamily="Segoe UI" Foreground="{StaticResource Gray_50}"/>
                 <Button Grid.Column="2" FontSize="14" Style="{StaticResource DefaultButton}" IsCancel="True" Content="취소" Command="{Binding CancelCommand}" HorizontalAlignment="Stretch"
-                    CommandParameter="{Binding ElementName=valveDialog}" FontFamily="Segoe UI" Background="{StaticResource Gray_300}" Foreground="{StaticResource Gray_900}"/>
+                    CommandParameter="{Binding ElementName=flowControlConfirmDialog}" FontFamily="Segoe UI" Background="{StaticResource Gray_300}" Foreground="{StaticResource Gray_900}"/>
             </Grid>
         </Grid>
     </Border>

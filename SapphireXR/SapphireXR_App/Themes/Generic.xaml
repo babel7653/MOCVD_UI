@@ -133,6 +133,8 @@
     <System:Double x:Key="r_4">16</System:Double>
     <System:Double x:Key="r_5">20</System:Double>
 
+    <CornerRadius x:Key="r_3_sqrt">12</CornerRadius>
+
     <Style x:Key="DefaultTextBox" TargetType="TextBox">
         <Setter Property="FontFamily" Value="Segoe UI" />
         <Setter Property="FontSize" Value="10" />
@@ -684,6 +686,12 @@
                             <Setter Property="Background" Value="{StaticResource Gray_50}" />
                             <Setter TargetName="innerBorder" Property="Background" Value="{StaticResource Gray_50}" />
                             <Setter TargetName="innerBorder" Property="BorderBrush" Value="{StaticResource Gray_300}" />
+                        </Trigger>
+                        <Trigger Property="IsFocused" Value="True">
+                            <Setter Property="Foreground" Value="{StaticResource Gray_950}" />
+                            <Setter Property="Background" Value="{StaticResource Gray_400}" />
+                            <Setter TargetName="innerBorder" Property="Background" Value="{StaticResource Gray_400}" />
+                            <Setter TargetName="innerBorder" Property="BorderBrush" Value="{StaticResource Sapphire_Blue}" />
                         </Trigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>

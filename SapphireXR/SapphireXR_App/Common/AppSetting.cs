@@ -2,6 +2,7 @@
 using Newtonsoft.Json;
 using System.IO;
 using System.Windows;
+using System.Windows.Input;
 
 namespace SapphireXR_App.Common
 {
@@ -20,6 +21,17 @@ namespace SapphireXR_App.Common
                 PLCAddress = (string?)Util.GetSettingValue(appSettingRootToken, "PLCAddress") ?? PLCAddress;
                 PLCPort = (int?)(Int64?)Util.GetSettingValue(appSettingRootToken, "PLCPort") ?? PLCPort;
                 ConfigMode = (bool?)Util.GetSettingValue(appSettingRootToken, "ConfigMode") ?? ConfigMode;
+
+                JToken? token = appSettingRootToken["PrecursorSourceMonitorLabel"];
+                if (token != null)
+                {
+                    Dictionary<string, string>? precursorSourceMonitorLabel = JsonConvert.DeserializeObject<Dictionary<string, string>>(token.ToString());
+                    if (precursorSourceMonitorLabel != null)
+                    {
+                        PrecursorSourceMonitorLabel = precursorSourceMonitorLabel;
+                    }
+                }
+               
             }
             catch (Exception ex)
             {
@@ -33,7 +45,8 @@ namespace SapphireXR_App.Common
             {
                 File.WriteAllText(AppSettingFilePath, new JObject(new JProperty("LogFileDirectory", JsonConvert.SerializeObject(LogFileDirectory)), new JProperty("UnderFlowControlFallbackRatePercentage", JsonConvert.SerializeObject(UnderFlowControlFallbackRatePercentage)),
                         new JProperty("FloatingPointMaxNumberDigit", JsonConvert.SerializeObject(FloatingPointMaxNumberDigit)), new JProperty("PLCAddress", JsonConvert.SerializeObject(PLCAddress)),
-                        new JProperty("PLCPort", JsonConvert.SerializeObject(PLCPort)), new JProperty("ConfigMode", JsonConvert.SerializeObject(ConfigMode))).ToString());
+                        new JProperty("PLCPort", JsonConvert.SerializeObject(PLCPort)), new JProperty("ConfigMode", JsonConvert.SerializeObject(ConfigMode)), 
+                        new JProperty("PrecursorSourceMonitorLabel", JsonConvert.SerializeObject(PrecursorSourceMonitorLabel))).ToString());
             }
             catch(Exception exception)
             {
@@ -62,5 +75,7 @@ namespace SapphireXR_App.Common
         public static string PLCAddress = "Local";
         public static int PLCPort = 851;
         public static bool ConfigMode = false;
+        public static Dictionary<string, string> PrecursorSourceMonitorLabel = new Dictionary<string, string> { { "GasMonitor1", "H2" }, { "GasMonitor2", "N2" }, { "GasMonitor3", "SiH4" }, { "GasMonitor4", "NH3" },
+            { "SourceMonitor1", "TEB" }, { "SourceMonitor2", "TMAl" }, { "SourceMonitor3", "TMIn" }, { "SourceMonitor4", "TMGa" },  { "SourceMonitor5", "DTMGa" }, { "SourceMonitor6", "Cp2Mg" }};
     }
 }

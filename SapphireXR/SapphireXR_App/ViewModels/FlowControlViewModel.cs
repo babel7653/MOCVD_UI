@@ -85,10 +85,15 @@ namespace SapphireXR_App.ViewModels
         private void Confirm(Window window)
         {
             PopupExResult = PopupExResult.Confirm;
-            Confirmed!(PopupExResult.Confirm, new ControlValues { targetValue = (string.IsNullOrEmpty(TargetValue) ? null : int.Parse(TargetValue)), 
-                rampTime = (string.IsNullOrEmpty(RampTime) ? null : short.Parse(RampTime) )});
-            dispose();
-            window.Close();
+            if (Confirmed!(PopupExResult.Confirm, new ControlValues
+            {
+                targetValue = (string.IsNullOrEmpty(TargetValue) ? null : int.Parse(TargetValue)),
+                rampTime = (string.IsNullOrEmpty(RampTime) ? null : short.Parse(RampTime))
+            }) == true)
+            {
+                dispose();
+                window.Close();
+            }
         }
 
         [RelayCommand]
@@ -154,7 +159,7 @@ namespace SapphireXR_App.ViewModels
             public short? rampTime;
         }
 
-        public delegate void ConfirmedEventHandler(PopupExResult result, ControlValues controlValues);
+        public delegate bool ConfirmedEventHandler(PopupExResult result, ControlValues controlValues);
         public event ConfirmedEventHandler? Confirmed;
         public delegate void CanceledEventHandler(PopupExResult result);
         public event CanceledEventHandler? Canceled;

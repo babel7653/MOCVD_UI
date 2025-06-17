@@ -272,18 +272,18 @@
 
                         <!-- #Region 3. 상태 모니터링(가스압력, 항온조, 반응기)-->
                         <!-- 가스압력 모니터링 -->
-                        <control:GasMonitor x:Name="gasMonitor_H2" Canvas.Left="30" Canvas.Top="20"  Width="70" Height="34" MonitorID="H2"/>
-                        <control:GasMonitor x:Name="gasMonitor_N2" Canvas.Left="155" Canvas.Top="20"  Width="70" Height="34" MonitorID="N2"/>
-                        <control:GasMonitor x:Name="gasMonitor_NH3" Canvas.Left="398" Canvas.Top="20"  Width="70" Height="34" MonitorID="NH3"/>
-                        <control:GasMonitor x:Name="gasMonitor_SiH4" Canvas.Left="802" Canvas.Top="20"  Width="70" Height="34" MonitorID="SiH4"/>
+                        <control:GasMonitor x:Name="gasMonitor_H2" Canvas.Left="30" Canvas.Top="20"  Width="70" Height="34" MonitorID="Gas1"/>
+                        <control:GasMonitor x:Name="gasMonitor_N2" Canvas.Left="155" Canvas.Top="20"  Width="70" Height="34" MonitorID="Gas2"/>
+                        <control:GasMonitor x:Name="gasMonitor_NH3" Canvas.Left="398" Canvas.Top="20"  Width="70" Height="34" MonitorID="Gas3"/>
+                        <control:GasMonitor x:Name="gasMonitor_SiH4" Canvas.Left="802" Canvas.Top="20"  Width="70" Height="34" MonitorID="Gas4"/>
 
                         <!-- 항온조 온도 모니터링 -->
-                        <control:SourceMonitor x:Name="sourceMonitor_1" Canvas.Left="163" Canvas.Top="446" MonitorID="TEB"/>
-                        <control:SourceMonitor x:Name="sourceMonitor_2" Canvas.Left="313" Canvas.Top="446" MonitorID="TMAl"/>
-                        <control:SourceMonitor x:Name="sourceMonitor_3" Canvas.Left="463" Canvas.Top="446" MonitorID="TMIn"/>
-                        <control:SourceMonitor x:Name="sourceMonitor_4" Canvas.Left="613" Canvas.Top="446" MonitorID="TMGa"/>
-                        <control:SourceMonitor x:Name="sourceMonitor_5" Canvas.Left="763" Canvas.Top="446" MonitorID="DTMGa"/>
-                        <control:SourceMonitor x:Name="sourceMonitor_6" Canvas.Left="971" Canvas.Top="446" MonitorID="Cp2Mg"/>
+                        <control:SourceMonitor x:Name="sourceMonitor_1" Canvas.Left="163" Canvas.Top="446" MonitorID="Source1"/>
+                        <control:SourceMonitor x:Name="sourceMonitor_2" Canvas.Left="313" Canvas.Top="446" MonitorID="Source2"/>
+                        <control:SourceMonitor x:Name="sourceMonitor_3" Canvas.Left="463" Canvas.Top="446" MonitorID="Source3"/>
+                        <control:SourceMonitor x:Name="sourceMonitor_4" Canvas.Left="613" Canvas.Top="446" MonitorID="Source4"/>
+                        <control:SourceMonitor x:Name="sourceMonitor_5" Canvas.Left="763" Canvas.Top="446" MonitorID="Source5"/>
+                        <control:SourceMonitor x:Name="sourceMonitor_6" Canvas.Left="971" Canvas.Top="446" MonitorID="Source6"/>
 
                         <!-- 반응기 콘트롤러 -->
                         <Rectangle Canvas.Left="965" Canvas.Top="5" Width="330" Height="120" Stroke="#3d495a" StrokeThickness="2" />

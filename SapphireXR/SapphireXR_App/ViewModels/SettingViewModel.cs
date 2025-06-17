@@ -81,6 +81,76 @@ namespace SapphireXR_App.ViewModels
             
         }
 
+        static SettingViewModel()
+        {
+            var fdevice = File.ReadAllText(DevceIOSettingFilePath);
+            JToken? jDeviceInit = JToken.Parse(fdevice);
+            JToken? jAnalogDeviceIO = jDeviceInit["AnalogDeviceIO"];
+            if (jAnalogDeviceIO != null)
+            {
+                dAnalogDeviceIO = JsonConvert.DeserializeObject<Dictionary<string, AnalogDeviceIO>>(jAnalogDeviceIO.ToString());
+            }
+            JToken? jSwitchDI = jDeviceInit["SwitchDI"];
+            if (jSwitchDI != null)
+            {
+                dSwitchDI = JsonConvert.DeserializeObject<Dictionary<string, SwitchDI>>(jSwitchDI.ToString());
+            }
+            JToken? jGasDO = jDeviceInit["GasDO"];
+            if (jGasDO != null)
+            {
+                dGasDO = JsonConvert.DeserializeObject<Dictionary<string, GasDO>>(jGasDO.ToString());
+            }
+            JToken? jPreSet = jDeviceInit["PreSet"];
+            if (jPreSet != null)
+            {
+                dPreSet = JsonConvert.DeserializeObject<Dictionary<string, string>>(jPreSet.ToString());
+            }
+            JToken? jInterLockD = jDeviceInit["InterLockD"];
+            if (jInterLockD != null)
+            {
+                dInterLockD = JsonConvert.DeserializeObject<Dictionary<string, bool>>(jInterLockD.ToString());
+            }
+            JToken? jInterLockA = jDeviceInit["InterLockA"];
+            if (jInterLockA != null)
+            {
+                dInterLockA = JsonConvert.DeserializeObject<Dictionary<string, InterLockA>>(jInterLockA.ToString());
+            }
+            JToken? jValveDeviceIO = jDeviceInit["ValveDeviceIO"];
+            if (jValveDeviceIO != null)
+            {
+                var deserialized = JsonConvert.DeserializeObject<List<ValveDeviceIO>>(jValveDeviceIO.ToString());
+                if(deserialized != null)
+                {
+                    ValveDeviceIO = deserialized;
+                }
+                else
+                {
+                    ValveDeviceIO = CreateDefaultValveDeviceIO();
+                }
+            }
+            else
+            {
+                ValveDeviceIO = CreateDefaultValveDeviceIO();
+            }
+            JToken? jGasIO = jDeviceInit["GasIO"];
+            if (jGasIO != null)
+            {
+                var deserialized = JsonConvert.DeserializeObject<List<Device>>(jGasIO.ToString());
+                if (deserialized != null)
+                {
+                    GasIO = deserialized;
+                }
+                else
+                {
+                    GasIO = CreateDefaultGasIO();
+                }
+            }
+            else
+            {
+                GasIO = CreateDefaultGasIO();
+            }
+        }
+
         public SettingViewModel()
         {
             AlarmSettingLoad();
@@ -117,46 +187,12 @@ namespace SapphireXR_App.ViewModels
                 }
             };
             //Json파일 읽기 및 Pars
-            var fdevice = File.ReadAllText(DevceIOSettingFilePath);
-            JToken? jDeviceInit = JToken.Parse(fdevice);
-            JToken? jAnalogDeviceIO = jDeviceInit["AnalogDeviceIO"];
-            if(jAnalogDeviceIO != null)
-            {
-                dAnalogDeviceIO = JsonConvert.DeserializeObject<Dictionary<string, AnalogDeviceIO>>(jAnalogDeviceIO.ToString());
-                lAnalogDeviceIO = dAnalogDeviceIO?.Values.ToList();
-            }
-            JToken? jSwitchDI = jDeviceInit["SwitchDI"];
-            if(jSwitchDI != null)
-            {
-                dSwitchDI = JsonConvert.DeserializeObject<Dictionary<string, SwitchDI>>(jSwitchDI.ToString());
-                lSwitchDI = dSwitchDI?.Values.ToList();
-            }
-            JToken? jGasDO = jDeviceInit["GasDO"];
-            if(jGasDO != null)
-            {
-                dGasDO = JsonConvert.DeserializeObject<Dictionary<string, GasDO>>(jGasDO.ToString());
-                lGasDO = dGasDO?.Values.ToList();
-            }
-            JToken? jPreSet = jDeviceInit["PreSet"];
-            if(jPreSet != null)
-            {
-                dPreSet = JsonConvert.DeserializeObject<Dictionary<string, string>>(jPreSet.ToString());
-            }
-            JToken? jInterLockD = jDeviceInit["InterLockD"];
-            if(jInterLockD != null)
-            {
-                dInterLockD = JsonConvert.DeserializeObject<Dictionary<string, bool>>(jInterLockD.ToString());
-            }
-            JToken? jInterLockA = jDeviceInit["InterLockA"];
-            if(jInterLockA != null)
-            {
-                dInterLockA = JsonConvert.DeserializeObject<Dictionary<string, InterLockA>>(jInterLockA.ToString());
-            }
-            JToken? jUserState = jDeviceInit["UserState"];
-            if(jUserState != null)
-            {
-                userstate = JsonConvert.DeserializeObject<UserState>(jUserState.ToString());
-            }
+         
+          
+            lAnalogDeviceIO = dAnalogDeviceIO?.Values.ToList();
+            lSwitchDI = dSwitchDI?.Values.ToList();
+            lGasDO = dGasDO?.Values.ToList();
+         
             PLCService.WriteDeviceMaxValue(lAnalogDeviceIO);
             PLCService.ReadMaxValueFromPLC();
         }
@@ -164,23 +200,25 @@ namespace SapphireXR_App.ViewModels
         public void AlarmSettingSave()
         {
             JToken jsonAnalogDeviceIO = JsonConvert.SerializeObject(dAnalogDeviceIO);
+            JToken jValveDeviceIO = JsonConvert.SerializeObject(ValveDeviceIO);
+            JToken jGasIO = JsonConvert.SerializeObject(GasIO);
             JToken jsonSwitchDI = JsonConvert.SerializeObject(dSwitchDI);
             JToken jsonGasDO = JsonConvert.SerializeObject(dGasDO);
             JToken jPreSet = JsonConvert.SerializeObject(dPreSet);
             JToken jInterLockD = JsonConvert.SerializeObject(dInterLockD);
             JToken jInterLockA = JsonConvert.SerializeObject(dInterLockA);
-            JToken jUserState = JsonConvert.SerializeObject(userstate);
            
 
             JObject jDeviceIO = new(
                 new JProperty("AnalogDeviceIO", jsonAnalogDeviceIO),
+                new JProperty("ValveDeviceIO", jValveDeviceIO),
+                new JProperty("GasIO", jGasIO),
                 new JProperty("SwitchDI", jsonSwitchDI),
                 new JProperty("GasDO", jsonGasDO),
                 new JProperty("PreSet", jPreSet),
                 new JProperty("InterLockD", jInterLockD),
-                new JProperty("InterLockA", jInterLockA),
-                new JProperty("UserState", jUserState)
-                );
+                new JProperty("InterLockA", jInterLockA)
+            );
 
             if (File.Exists(DevceIOSettingFilePath)) File.Delete(DevceIOSettingFilePath);
             File.WriteAllText(DevceIOSettingFilePath, jDeviceIO.ToString());
@@ -229,7 +267,30 @@ namespace SapphireXR_App.ViewModels
             IOList[io++].OnOff = ioStateList[(int)PLCService.IOListIndex.SingalTower_WHITE];
             IOList[io++].OnOff = ioStateList[(int)PLCService.IOListIndex.SingalTower_BUZZWER];
         }
-       
+
+        private static List<ValveDeviceIO> CreateDefaultValveDeviceIO()
+        {
+            List<ValveDeviceIO> valveDeviceIO = new List<ValveDeviceIO>();
+
+            foreach(string valveID in PLCService.ValveIDtoOutputSolValveIdx1.Keys)
+            {
+                valveDeviceIO.Add(new () { ID = valveID, Name = valveID, SolValveID = valveID });
+            }
+            foreach (string valveID in PLCService.ValveIDtoOutputSolValveIdx2.Keys)
+            {
+                valveDeviceIO.Add(new() { ID = valveID, Name = valveID, SolValveID = valveID });
+            }
+
+            return valveDeviceIO;
+        }
+
+        private static List<Device> CreateDefaultGasIO()
+        {
+            return [new() { ID = "Gas1", Name = "H2"}, new() { ID = "Gas2", Name = "N2" }, new() { ID = "Gas3", Name = "NH3" }, new() { ID = "Gas4", Name = "SiH4" },
+                new() { ID = "Source1", Name = "TEB" }, new() { ID = "Source2", Name = "TMAI"}, new() { ID = "Source3", Name = "TMIn"}, new() { ID = "Source4", Name = "TMGa"},
+                new() { ID = "Source5", Name = "DTMGa"}, new() { ID = "Source6", Name = "Cp2Mg"}];
+        }
+
 
         [RelayCommand]
         private void ToggleInductionHeaterPower()
@@ -267,19 +328,23 @@ namespace SapphireXR_App.ViewModels
         public static readonly string DevceIOSettingFilePath = Util.GetResourceAbsoluteFilePath("/Configurations/DeviceIO.json");
         public static readonly string PrecursorSourceMonitorLabelSettingFilePath = Util.GetResourceAbsoluteFilePath("/Configurations/PrecursorSourceMonitorLabel.json");
 
-        public Dictionary<string, AnalogDeviceIO>? dAnalogDeviceIO = [];
-        public Dictionary<string, SwitchDI>? dSwitchDI = [];
-        public Dictionary<string, GasDO>? dGasDO = [];
-        public Dictionary<string, string>? dPreSet { get; set; } = [];
-        public Dictionary<string, InterLockA>? dInterLockA { get; set; } = [];
-        public Dictionary<string, bool>? dInterLockD { get; set; } = [];
+        public static Dictionary<string, AnalogDeviceIO>? dAnalogDeviceIO = [];
+        public static Dictionary<string, SwitchDI>? dSwitchDI = [];
+        public static Dictionary<string, GasDO>? dGasDO = [];
+        public static List<Device> GasIO { get; set; } = [];
+        public static List<ValveDeviceIO> ValveDeviceIO { get; set; } = [];
+        public static Dictionary<string, string>? dPreSet { get; set; } = [];
+        public static Dictionary<string, InterLockA>? dInterLockA { get; set; } = [];
+        public static Dictionary<string, bool>? dInterLockD { get; set; } = [];
         public List<AnalogDeviceIO>? lAnalogDeviceIO { get; set; } = [];
         public List<SwitchDI>? lSwitchDI { get; set; } = [];
         public List<GasDO>? lGasDO { get; set; } = [];
-        public UserState? userstate { get; set; } = new();
 
         [ObservableProperty]
         public IList<IOSetting> _iOList;
+
+        [ObservableProperty]
+        private bool _online = false;
 
         public bool WithoutConnection { get; set; }
 

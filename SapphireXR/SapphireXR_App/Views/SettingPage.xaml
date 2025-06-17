@@ -441,7 +441,7 @@
                                             </Style>
                                         </Grid.Resources>
                                         <Rectangle Style="{StaticResource subSection}"/>
-                                        <StackPanel Margin="{StaticResource p_5_sqrt}">
+                                        <StackPanel Margin="{StaticResource p_5_sqrt}" IsEnabled="False">
                                             <Label Content="Preset State">
                                                 <Label.Style>
                                                     <Style TargetType="Label" BasedOn="{StaticResource SectionTitle}">
@@ -465,7 +465,7 @@
                                                 </Grid.ColumnDefinitions>
                                                 <TextBlock Grid.Column="0" Text="System Start State" Style="{StaticResource infoTextBlockLeft}" Grid.ColumnSpan="2"/>
                                                 <Line Grid.Column="2" Style="{StaticResource seperatorLine}" Margin="8,0,8,0" />
-                                                <ComboBox x:Name="comboSystemStart" Grid.Column="3" Style="{StaticResource PresetStateCombobox}" SelectedIndex="{Binding Path=userstate.StartState}"/>
+                                                <ComboBox x:Name="comboSystemStart" Grid.Column="3" Style="{StaticResource PresetStateCombobox}"/>
                                             </Grid>
                                             <Grid>
                                                 <Grid.Margin>
@@ -478,7 +478,7 @@
                                                 </Grid.ColumnDefinitions>
                                                 <TextBlock Grid.Column="0" Text="Alarm State" Style="{StaticResource infoTextBlockLeft}"/>
                                                 <Line Grid.Column="1" Style="{StaticResource seperatorLine}" />
-                                                <ComboBox Name="comboAlarmStart" Grid.Column="2" Style="{StaticResource PresetStateCombobox}" SelectedIndex="{Binding Path=userstate.AlarmState}"/>
+                                                <ComboBox Name="comboAlarmStart" Grid.Column="2" Style="{StaticResource PresetStateCombobox}" />
                                             </Grid>
                                             <Grid>
                                               
@@ -489,7 +489,7 @@
                                                 </Grid.ColumnDefinitions>
                                                 <TextBlock Grid.Column="0" Style="{StaticResource infoTextBlockLeft}" Text="Recipe End"/>
                                                 <Line Grid.Column="1" Style="{StaticResource seperatorLine}" />
-                                                <ComboBox Name="comboRecipeEnd" Grid.Column="2" Style="{StaticResource PresetStateCombobox}" SelectedIndex="{Binding Path=userstate.EndState}" />
+                                                <ComboBox Name="comboRecipeEnd" Grid.Column="2" Style="{StaticResource PresetStateCombobox}" />
                                             </Grid>
                                         </StackPanel>
                                     </Grid>
@@ -538,57 +538,76 @@
                                     <Grid.Margin>
                                         <Thickness Right="{StaticResource p_6}" />
                                     </Grid.Margin>
-                                    <Grid.RowDefinitions>
-                                        <RowDefinition Height="490" />
-                                        <RowDefinition Height="*" />
-                                    </Grid.RowDefinitions>
-                                    <Grid Grid.Row="0" >
-                                        <Grid.Margin>
-                                            <Thickness Bottom="{StaticResource p_6}" />
-                                        </Grid.Margin>
-                                        <Rectangle Style="{StaticResource subSection}"/>
-                                        <StackPanel Margin="{StaticResource p_5_sqrt}">
-                                            <Grid>
-                                                <Grid.Margin>
-                                                    <Thickness Bottom="{StaticResource p_3}" />
-                                                </Grid.Margin>
-                                                <Grid.RowDefinitions>
-                                                    <RowDefinition Height="40" />
-                                                </Grid.RowDefinitions>
-                                                <Grid.ColumnDefinitions>
-                                                    <ColumnDefinition Width="Auto"/>
-                                                    <ColumnDefinition />
-                                                </Grid.ColumnDefinitions>
-                                                <Label Grid.Column="0" Style="{StaticResource SectionTitle}" Content="Device Naming" VerticalAlignment="Top"/>
-                                                <Button Grid.Column="1" x:Name="DeviceNameSave" Content="Save" Width="66" Height="28" VerticalAlignment="Top" HorizontalAlignment="Right" Style="{StaticResource PrimaryButton}"/>
-                                            </Grid>
-                                            <DataGrid x:Name="dgMaxValueSetting" ItemsSource="{Binding lAnalogDeviceIO}" Style="{StaticResource SettingDataGrid}" Height="350">
-                                                <DataGrid.Resources>
-                                                    <Style TargetType="ScrollBar" BasedOn="{StaticResource DefaultScrollbar}" />
-                                                </DataGrid.Resources>
-                                                <DataGrid.Columns>
-                                                    <DataGridTextColumn Header="ID" CanUserSort="False" CanUserResize="False" Width="60" Binding="{Binding Path=ID, Mode=TwoWay}" ElementStyle="{StaticResource EventLogElement}" />
-                                                    <DataGridTextColumn Header="Device Name" CanUserSort="False" CanUserResize="False" Width="*" Binding="{Binding Path=Name}"  ElementStyle="{StaticResource EventLogElement}" />
-                                                    <DataGridTextColumn Header="Max Value" CanUserSort="False" CanUserResize="False" Width="120" Binding="{Binding Path=MaxValue}"  ElementStyle="{StaticResource EventLogElement}" />
-                                                </DataGrid.Columns>
-                                            </DataGrid>
-                                        </StackPanel>
-                                    </Grid>
-                                    <Grid Grid.Row="1">
-                                        <Rectangle Style="{StaticResource subSection}"/>
-                                        <StackPanel Margin="{StaticResource p_5_sqrt}">
-                                            <DataGrid x:Name="DigitalMappingSetting" Style="{StaticResource SettingDataGrid}">
-                                                <DataGrid.Resources>
-                                                    <Style TargetType="ScrollBar" BasedOn="{StaticResource DefaultScrollbar}" />
-                                                </DataGrid.Resources>
-                                                <DataGrid.Columns>
-                                                    <DataGridTextColumn Header="Device ID" CanUserSort="False" CanUserResize="False" Width="60" Binding="{Binding}" ElementStyle="{StaticResource EventLogElement}" />
-                                                    <DataGridTextColumn Header="Device Name" CanUserSort="False" CanUserResize="False" Width="*" Binding="{Binding}" ElementStyle="{StaticResource EventLogElement}" />
-                                                    <DataGridTextColumn Header="Sol. ID" CanUserSort="False" CanUserResize="False" Width="120" Binding="{Binding}" ElementStyle="{StaticResource EventLogElement}" />
-                                                </DataGrid.Columns>
-                                            </DataGrid>
-                                        </StackPanel>
-                                    </Grid>
+                                    <Rectangle Style="{StaticResource subSection}"/>
+                                    <StackPanel Margin="{StaticResource p_5_sqrt}">
+                                        <StackPanel.Resources>
+                                            <Style x:Key="DeviceNamingSettingDataGrid" TargetType="DataGrid" BasedOn="{StaticResource SettingDataGrid}">
+                                                <Setter Property="Margin">
+                                                    <Setter.Value>
+                                                        <Thickness Bottom="{StaticResource p_3}" />
+                                                    </Setter.Value>
+                                                </Setter>
+                                                <Style.Triggers>
+                                                    <DataTrigger Binding="{Binding Online, UpdateSourceTrigger=PropertyChanged}" Value="True">
+                                                        <Setter Property="IsReadOnly" Value="True" />
+                                                    </DataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </StackPanel.Resources>
+                                        <Grid>
+                                            <Grid.Margin>
+                                                <Thickness Bottom="{StaticResource p_3}" />
+                                            </Grid.Margin>
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition Height="40" />
+                                            </Grid.RowDefinitions>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="Auto"/>
+                                                <ColumnDefinition />
+                                            </Grid.ColumnDefinitions>
+                                            <Label Grid.Column="0" Style="{StaticResource SectionTitle}" Content="Device Naming" VerticalAlignment="Top"/>
+                                            <Button Grid.Column="1" x:Name="DeviceNameSave" Content="Save" Width="66" Height="28" VerticalAlignment="Top" HorizontalAlignment="Right" Style="{StaticResource PrimaryButton}"/>
+                                        </Grid>
+                                        <DataGrid x:Name="dgMaxValueSetting" ItemsSource="{Binding lAnalogDeviceIO}" Style="{StaticResource DeviceNamingSettingDataGrid}" Height="300">
+                                            <DataGrid.Resources>
+                                                <Style TargetType="ScrollBar" BasedOn="{StaticResource DefaultScrollbar}" />
+                                            </DataGrid.Resources>
+                                            <DataGrid.Columns>
+                                                <DataGridTextColumn Header="ID" IsReadOnly="True" CanUserSort="False" CanUserResize="False" Width="60" Binding="{Binding Path=ID, Mode=OneTime, UpdateSourceTrigger=PropertyChanged}" ElementStyle="{StaticResource EventLogElement}" />
+                                                <DataGridTextColumn Header="Device Name" CanUserSort="False" CanUserResize="False" Width="*" Binding="{Binding Path=Name, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"  ElementStyle="{StaticResource EventLogElement}" />
+                                                <DataGridTextColumn Header="Max Value" CanUserSort="False" CanUserResize="False" Width="120" Binding="{Binding Path=MaxValue, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"  ElementStyle="{StaticResource EventLogElement}" />
+                                            </DataGrid.Columns>
+                                        </DataGrid>
+                                        <DataGrid x:Name="DigitalMappingSetting" ItemsSource="{Binding ValveDeviceIO}" Style="{StaticResource DeviceNamingSettingDataGrid}" Height="300">
+                                            <DataGrid.Resources>
+                                                <Style TargetType="ScrollBar" BasedOn="{StaticResource DefaultScrollbar}" />
+                                            </DataGrid.Resources>
+                                            <DataGrid.Columns>
+                                                <DataGridTextColumn Header="Device ID" IsReadOnly="True" CanUserSort="False" CanUserResize="False" Width="60" Binding="{Binding ID, UpdateSourceTrigger=PropertyChanged, Mode=OneTime}" ElementStyle="{StaticResource EventLogElement}" />
+                                                <DataGridTextColumn Header="Device Name" CanUserSort="False" CanUserResize="False" Width="*" Binding="{Binding Name, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" ElementStyle="{StaticResource EventLogElement}" />
+                                                <DataGridTextColumn Header="Sol. ID" IsReadOnly="True" CanUserSort="False" CanUserResize="False" Width="120" Binding="{Binding SolValveID, UpdateSourceTrigger=PropertyChanged, Mode=OneTime}" ElementStyle="{StaticResource EventLogElement}" />
+                                            </DataGrid.Columns>
+                                        </DataGrid>
+                                        <DataGrid ItemsSource="{Binding GasIO}" Height="220">
+                                            <DataGrid.Style>
+                                                <Style TargetType="DataGrid" BasedOn="{StaticResource SettingDataGrid}">
+                                                    <Style.Triggers>
+                                                        <DataTrigger Binding="{Binding Online}" Value="True">
+                                                            <Setter Property="IsReadOnly" Value="True" />
+                                                        </DataTrigger>
+                                                    </Style.Triggers>  
+                                                </Style>
+                                            </DataGrid.Style>
+                                            <DataGrid.Resources>
+                                                <Style TargetType="ScrollBar" BasedOn="{StaticResource DefaultScrollbar}" />
+                                            </DataGrid.Resources>
+                                            <DataGrid.Columns>
+                                                <DataGridTextColumn Header="Device ID" IsReadOnly="True" CanUserSort="False" CanUserResize="False" Width="60" Binding="{Binding ID, UpdateSourceTrigger=PropertyChanged, Mode=OneTime}" ElementStyle="{StaticResource EventLogElement}" />
+                                                <DataGridTextColumn Header="Device Name" CanUserSort="False" CanUserResize="False" Width="*" Binding="{Binding Name, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" ElementStyle="{StaticResource EventLogElement}" />
+                                            </DataGrid.Columns>
+                                        </DataGrid>
+                                    </StackPanel>
+
                                 </Grid>
                                 <Grid Grid.Column="2">
                                     <Rectangle Style="{StaticResource subSection}"/>

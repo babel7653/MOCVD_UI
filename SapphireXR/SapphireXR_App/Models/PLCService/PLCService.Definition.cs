@@ -6,6 +6,7 @@ using TwinCAT.Ads;
 using System.IO;
 using Newtonsoft.Json;
 using System.Windows;
+using SapphireXR_App.ViewModels;
 
 namespace SapphireXR_App.Models
 {
@@ -232,9 +233,9 @@ namespace SapphireXR_App.Models
 
         public static readonly Dictionary<string, int> dMonitoringMeterIndex = new Dictionary<string, int>
         {
-            { "UltimatePressure", 0 },  { "ExtPressure", 1},  { "DorPressure", 2}, { "N2", 3}, { "H2", 4}, { "NH3", 5},
-            { "SiH4", 6}, { "ShowerHeadTemp", 7}, { "InductionCoilTemp", 8}, { "HeaterPowerRate", 9 }, { "ValvePosition", 10 }, { "TEB", 11},
-             { "TMAl", 12},  { "TMIn", 13},  { "TMGa", 14},  { "DTMGa", 15},  { "Cp2Mg", 16}
+            { "UltimatePressure", 0 },  { "ExtPressure", 1},  { "DorPressure", 2}, { Util.GetGasDeviceName("Gas1"), 3}, {  Util.GetGasDeviceName("Gas2"), 4}, { Util.GetGasDeviceName("Gas3"), 5},
+            { Util.GetGasDeviceName("Gas4"), 6}, { "ShowerHeadTemp", 7}, { "InductionCoilTemp", 8}, { "HeaterPowerRate", 9 }, { "ValvePosition", 10 }, { Util.GetGasDeviceName("Source1"), 11},
+             { Util.GetGasDeviceName("Source2"), 12},  { Util.GetGasDeviceName("Source3"), 13},  { Util.GetGasDeviceName("Source4"), 14},  { Util.GetGasDeviceName("Source5"), 15},  { Util.GetGasDeviceName("Source6"), 16}
         };
 
         public static readonly uint LineHeaterTemperature = 8;

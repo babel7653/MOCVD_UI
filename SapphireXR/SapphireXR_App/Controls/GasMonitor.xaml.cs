@@ -1,5 +1,6 @@
 ﻿using System.Windows;
 using System.Windows.Controls;
+using SapphireXR_App.Common;
 using SapphireXR_App.ViewModels;
 
 namespace SapphireXR_App.Controls
@@ -20,7 +21,7 @@ namespace SapphireXR_App.Controls
         private void gasMonitor_Loaded(object sender, RoutedEventArgs e)
         {
             GasMonitor monitor = (GasMonitor)sender;
-            gasName.Text = monitor.MonitorID;
+            gasName.Text = Util.GetGasDeviceName(monitor.MonitorID);
             ((GasMonitorViewModel)DataContext).OnLoadedCommand.Execute(monitor.MonitorID);
         }
     }

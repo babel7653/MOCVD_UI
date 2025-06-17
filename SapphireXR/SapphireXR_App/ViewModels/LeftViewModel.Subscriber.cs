@@ -299,10 +299,10 @@ namespace SapphireXR_App.ViewModels
                 };
                 var getDeviceColor = (bool state) => state == true ? OnLampColor : OffLampColor;
 
-                SetIfChanged(getGasState(value, 3, 2), ref prevGasPressureN2State, (byte state) => leftViewModel.GasPressureN2StateColor = getGasStateColor(state));
-                SetIfChanged(getGasState(value, 5, 4), ref prevGasPressureH2State, (byte state) => leftViewModel.GasPressureH2StateColor = getGasStateColor(state));
-                SetIfChanged(getGasState(value, 7, 6), ref prevGasPressureNH3State, (byte state) => leftViewModel.GasPressureNH3StateColor = getGasStateColor(state));
-                SetIfChanged(getGasState(value, 9, 8), ref prevGasPressureSiH4State, (byte state) => leftViewModel.GasPressureSiH4StateColor = getGasStateColor(state));
+                SetIfChanged(getGasState(value, 3, 2), ref prevGasPressureN2State, (byte state) => leftViewModel.GasPressureGas2StateColor = getGasStateColor(state));
+                SetIfChanged(getGasState(value, 5, 4), ref prevGasPressureH2State, (byte state) => leftViewModel.GasPressureGas1StateColor = getGasStateColor(state));
+                SetIfChanged(getGasState(value, 7, 6), ref prevGasPressureNH3State, (byte state) => leftViewModel.GasPressureGas3StateColor = getGasStateColor(state));
+                SetIfChanged(getGasState(value, 9, 8), ref prevGasPressureSiH4State, (byte state) => leftViewModel.GasPressureGas4StateColor = getGasStateColor(state));
                 Util.SetIfChanged(value[10], ref prevRecipeStartState, (bool state) => leftViewModel.RecipeStartStateColor = getDeviceColor(state));
                 Util.SetIfChanged(value[11], ref prevReactorOpenState, (bool state) => leftViewModel.ReactorOpenStateColor = getDeviceColor(state));
                 Util.SetIfChanged(value[12], ref prevHeaterTurnOnState, (bool state) => leftViewModel.HeaterTurnOnStateColor = getDeviceColor(state));

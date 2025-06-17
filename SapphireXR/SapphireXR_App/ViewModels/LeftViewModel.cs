@@ -50,14 +50,14 @@ namespace SapphireXR_App.ViewModels
             {
                 valveStateSubscsribePostfix = valveStateSubscsribePostfixStr;
                 valveStateSubscrbers = [
-                    new ValveStateSubscriber(this, (bool nextValveState) => { if (nextValveState == true) { SiH4Carrier = NH3_2Carrier = NH3_1Carrier = "H2"; SiH4CarrierColor = NH3_2CarrierColor = NH3_1CarrierColor = H2Color;  } 
-                        else { SiH4Carrier = NH3_2Carrier = NH3_1Carrier = "N2"; SiH4CarrierColor = NH3_2CarrierColor = NH3_1CarrierColor = DefaultColor; }  }, "V01"),
-                    new ValveStateSubscriber(this, (bool nextValveState) => { if (nextValveState == true) { TEBCarrier = "H2"; TEBCarrierColor = H2Color; } else { TEBCarrier = "N2"; TEBCarrierColor = DefaultColor; }  }, "V05"),
-                    new ValveStateSubscriber(this, (bool nextValveState) => { if (nextValveState == true) { TMAlCarrier = "H2"; TMAlCarrierColor = H2Color; } else { TMAlCarrier = "N2"; TMAlCarrierColor = DefaultColor; } }, "V08"),
-                    new ValveStateSubscriber(this, (bool nextValveState) => { if (nextValveState == true) { TMInCarrier = "H2";  TMInCarrierColor = H2Color;} else { TMInCarrier = "N2";  TMInCarrierColor = DefaultColor;} }, "V11"),
-                    new ValveStateSubscriber(this, (bool nextValveState) => { if (nextValveState == true) { TMGaCarrier = "H2";  TMGaCarrierColor = H2Color;} else { TMGaCarrier = "N2";  TMGaCarrierColor =DefaultColor;} }, "V14"),
-                    new ValveStateSubscriber(this, (bool nextValveState) => { if (nextValveState == true) { DTMGaCarrier = "H2";  DTMGaCarrierColor = H2Color;} else { DTMGaCarrier = "N2";  DTMGaCarrierColor = DefaultColor;}  }, "V17"),
-                    new ValveStateSubscriber(this, (bool nextValveState) => { if (nextValveState == true) { Cp2MgCarrier = "H2";  Cp2MgCarrierColor = H2Color;} else { Cp2MgCarrier = "N2";  Cp2MgCarrierColor = DefaultColor;} }, "V20"),
+                    new ValveStateSubscriber(this, (bool nextValveState) => { if (nextValveState == true) { SiH4Carrier = NH3_2Carrier = NH3_1Carrier = Gas1; SiH4CarrierColor = NH3_2CarrierColor = NH3_1CarrierColor = H2Color;  } 
+                        else { SiH4Carrier = NH3_2Carrier = NH3_1Carrier = Gas2; SiH4CarrierColor = NH3_2CarrierColor = NH3_1CarrierColor = DefaultColor; }  }, "V01"),
+                    new ValveStateSubscriber(this, (bool nextValveState) => { if (nextValveState == true) { TEBCarrier = Gas1; TEBCarrierColor = H2Color; } else { TEBCarrier = Gas2; TEBCarrierColor = DefaultColor; }  }, "V05"),
+                    new ValveStateSubscriber(this, (bool nextValveState) => { if (nextValveState == true) { TMAlCarrier = Gas1; TMAlCarrierColor = H2Color; } else { TMAlCarrier = Gas2; TMAlCarrierColor = DefaultColor; } }, "V08"),
+                    new ValveStateSubscriber(this, (bool nextValveState) => { if (nextValveState == true) { TMInCarrier = Gas1;  TMInCarrierColor = H2Color;} else { TMInCarrier = Gas2;  TMInCarrierColor = DefaultColor;} }, "V11"),
+                    new ValveStateSubscriber(this, (bool nextValveState) => { if (nextValveState == true) { TMGaCarrier = Gas1;  TMGaCarrierColor = H2Color;} else { TMGaCarrier = Gas2;  TMGaCarrierColor =DefaultColor;} }, "V14"),
+                    new ValveStateSubscriber(this, (bool nextValveState) => { if (nextValveState == true) { DTMGaCarrier = Gas1;  DTMGaCarrierColor = H2Color;} else { DTMGaCarrier = Gas2;  DTMGaCarrierColor = DefaultColor;}  }, "V17"),
+                    new ValveStateSubscriber(this, (bool nextValveState) => { if (nextValveState == true) { Cp2MgCarrier = Gas1;  Cp2MgCarrierColor = H2Color;} else { Cp2MgCarrier = Gas2;  Cp2MgCarrierColor = DefaultColor;} }, "V20"),
                     new ValveStateSubscriber(this, (bool nextValveState) => { if (nextValveState == true) { NH3_1Source = NH3_2Source = "On";  NH3_1SourceColor = NH3_2SourceColor = OnColor; } else { NH3_1Source = NH3_2Source = "Off";  NH3_1SourceColor = NH3_2SourceColor = DefaultColor;} }, "V04"),
                     new ValveStateSubscriber(this, (bool nextValveState) => { if (nextValveState == true) { SiH4Source = "On";  SiH4SourceColor = OnColor;} else { SiH4Source = "Off";  SiH4SourceColor =DefaultColor;} }, "V03"),
                     new ValveStateSubscriber(this, (bool nextValveState) => { if (nextValveState == true) { TEBSource = "On";  TEBSourceColor =OnColor;} else { TEBSource = "Off";  TEBSourceColor = DefaultColor;}  }, "V07"),
@@ -269,6 +269,20 @@ namespace SapphireXR_App.ViewModels
             };
         }
 
+        public static string Gas3_1 { get; } = Util.GetGasDeviceName("Gas3") + "#1";
+        public static string Gas3_2 { get; } = Util.GetGasDeviceName("Gas3") + "#2";
+        public static string Gas4 { get; } = Util.GetGasDeviceName("Gas4");
+        public static string Source1 { get; } = Util.GetGasDeviceName("Source1");
+        public static string Source2 { get; } = Util.GetGasDeviceName("Source2");
+        public static string Source3 { get; } = Util.GetGasDeviceName("Source3");
+        public static string Source4 { get; } = Util.GetGasDeviceName("Source4");
+        public static string Source5 { get; } = Util.GetGasDeviceName("Source5");
+        public static string Source6 { get; } = Util.GetGasDeviceName("Source6");
+        public static string LogicalInterlockGas1 { get; } = "Gas Pressure " + Util.GetGasDeviceName("Gas1");
+        public static string LogicalInterlockGas2 { get; } = "Gas Pressure " + Util.GetGasDeviceName("Gas2");
+        public static string LogicalInterlockGas3 { get; } = "Gas Pressure " + Util.GetGasDeviceName("Gas3");
+        public static string LogicalInterlockGas4 { get; } = "Gas Pressure " + Util.GetGasDeviceName("Gas4");
+
         private static Brush OnLampColor = Application.Current.Resources.MergedDictionaries[0]["LampOnColor"] as Brush ?? Brushes.Lime;
         private static Brush OffLampColor = Application.Current.Resources.MergedDictionaries[0]["LampOffColor"] as Brush ?? Brushes.DarkGray;
         private static Brush ReadyLampColor = Application.Current.Resources.MergedDictionaries[0]["LampReadyColor"] as Brush ?? Brushes.Yellow;
@@ -285,6 +299,9 @@ namespace SapphireXR_App.ViewModels
         private static Brush ActiveSignalTowerGreen = Application.Current.Resources.MergedDictionaries[0]["ActiveSignalTowerGreen"] as Brush ?? Brushes.Green;
         private static Brush ActiveSignalTowerBlue = Application.Current.Resources.MergedDictionaries[0]["ActiveSignalTowerBlue"] as Brush ?? Brushes.Blue;
         private static Brush ActiveSignalTowerWhite = Application.Current.Resources.MergedDictionaries[0]["ActiveSignalTowerWhite"] as Brush ?? Brushes.White;
+
+        private static readonly string Gas1 = Util.GetGasDeviceName("Gas1");
+        private static readonly string Gas2 = Util.GetGasDeviceName("Gas2");
 
         [ObservableProperty]
         private string _showerHeadTemp = "";
@@ -326,13 +343,13 @@ namespace SapphireXR_App.ViewModels
         private Brush _signalTowerWhite = Brushes.Transparent;
 
         [ObservableProperty]
-        private Brush _gasPressureN2StateColor = Brushes.Transparent;
+        private Brush _gasPressureGas2StateColor = Brushes.Transparent;
         [ObservableProperty]
-        private Brush _gasPressureH2StateColor = Brushes.Transparent;
+        private Brush _gasPressureGas1StateColor = Brushes.Transparent;
         [ObservableProperty]
-        private Brush _gasPressureNH3StateColor = Brushes.Transparent;
+        private Brush _gasPressureGas3StateColor = Brushes.Transparent;
         [ObservableProperty]
-        private Brush _gasPressureSiH4StateColor = Brushes.Transparent;
+        private Brush _gasPressureGas4StateColor = Brushes.Transparent;
         [ObservableProperty]
         private Brush _recipeStartStateColor = Brushes.Transparent;
         [ObservableProperty]

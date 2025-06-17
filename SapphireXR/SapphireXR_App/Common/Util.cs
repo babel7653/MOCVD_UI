@@ -9,6 +9,7 @@ using System.Collections;
 using System.Globalization;
 using Newtonsoft.Json.Linq;
 using Newtonsoft.Json;
+using SapphireXR_App.ViewModels;
 
 namespace SapphireXR_App.Common
 {
@@ -240,6 +241,11 @@ namespace SapphireXR_App.Common
             }
 
             return null;
+        }
+
+        public static string GetGasDeviceName(string id)
+        {
+            return SettingViewModel.GasIO.Where((Device device) => device.ID == id).Select((Device device) => device.Name != null ? device.Name : "").FirstOrDefault()!;
         }
 
         public static void ConstraintEmptyToZeroOnDataGridCellCommitForRecipeRunEdit(object sender, DataGridCellEditEndingEventArgs e)

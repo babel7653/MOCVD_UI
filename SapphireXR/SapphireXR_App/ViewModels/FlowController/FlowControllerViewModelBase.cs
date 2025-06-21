@@ -5,6 +5,7 @@ using CommunityToolkit.Mvvm.Input;
 using System.Windows.Input;
 using SapphireXR_App.Bases;
 using CommunityToolkit.Mvvm.ComponentModel;
+using SapphireXR_App.Common;
 
 namespace SapphireXR_App.ViewModels.FlowController
 {
@@ -29,6 +30,8 @@ namespace SapphireXR_App.ViewModels.FlowController
         private bool? _isDeviationLimit;
         [ObservableProperty]
         public SolidColorBrush _borderBackground = DefaultBorderBackground;
+        [ObservableProperty]
+        private string? _name = "";
 
         public static SolidColorBrush MouseEnterColor
         {
@@ -60,21 +63,29 @@ namespace SapphireXR_App.ViewModels.FlowController
         {
             Type = type;
             ControllerID = controllerID;
+            var getName = (Dictionary<string, string> renameMapping) =>
+            {
+                string? name = renameMapping.Where((KeyValuePair<string, string> keyValue) => keyValue.Value == ControllerID).Select((KeyValuePair<string, string> keyValue) => keyValue.Key).FirstOrDefault();
+                if (name != null)
+                {
+                    Name = Util.GetFlowControllerName(name!);
+                }
+            };
             switch (Type)
             {
                 case "MFC":
-                    ControllerBorderBackground = Application.Current.Resources.MergedDictionaries[0]["MFCDisplayColor2"] as SolidColorBrush
-                        ?? ControllerBorderBackground;
+                    ControllerBorderBackground = Application.Current.Resources.MergedDictionaries[0]["MFCDisplayColor2"] as SolidColorBrush ?? ControllerBorderBackground;
+                    getName(Util.RecipeFlowControlFieldToControllerID);
                     break;
 
                 case "EPC":
-                    ControllerBorderBackground = Application.Current.Resources.MergedDictionaries[0]["EPCDisplayColor1"] as SolidColorBrush
-                        ?? ControllerBorderBackground;
+                    ControllerBorderBackground = Application.Current.Resources.MergedDictionaries[0]["EPCDisplayColor1"] as SolidColorBrush ?? ControllerBorderBackground;
+                    getName(Util.RecipeFlowControlFieldToControllerID);
                     break;
 
                 case "Reactor":
-                    ControllerBorderBackground = Application.Current.Resources.MergedDictionaries[0]["ReactorDisplayColor1"] as SolidColorBrush
-                       ?? ControllerBorderBackground;
+                    ControllerBorderBackground = Application.Current.Resources.MergedDictionaries[0]["ReactorDisplayColor1"] as SolidColorBrush ?? ControllerBorderBackground;
+                    getName(ReactorID);
                     break;
             }
             BorderBackground = ControllerBorderBackground;
@@ -94,5 +105,7 @@ namespace SapphireXR_App.ViewModels.FlowController
         });
 
         public ICommand OnClickedCommand => new RelayCommand<object[]?>(onClicked);
+
+        private static readonly Dictionary<string, string> ReactorID = new () { { "R01", "Temperature" }, { "R02", "Pressure"  }, { "R03", "Rotation" } };
     }
 }

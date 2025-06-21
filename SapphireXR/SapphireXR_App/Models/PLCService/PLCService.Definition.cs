@@ -233,9 +233,9 @@ namespace SapphireXR_App.Models
 
         public static readonly Dictionary<string, int> dMonitoringMeterIndex = new Dictionary<string, int>
         {
-            { "UltimatePressure", 0 },  { "ExtPressure", 1},  { "DorPressure", 2}, { Util.GetGasDeviceName("Gas1"), 3}, {  Util.GetGasDeviceName("Gas2"), 4}, { Util.GetGasDeviceName("Gas3"), 5},
-            { Util.GetGasDeviceName("Gas4"), 6}, { "ShowerHeadTemp", 7}, { "InductionCoilTemp", 8}, { "HeaterPowerRate", 9 }, { "ValvePosition", 10 }, { Util.GetGasDeviceName("Source1"), 11},
-             { Util.GetGasDeviceName("Source2"), 12},  { Util.GetGasDeviceName("Source3"), 13},  { Util.GetGasDeviceName("Source4"), 14},  { Util.GetGasDeviceName("Source5"), 15},  { Util.GetGasDeviceName("Source6"), 16}
+            { "UltimatePressure", 0 },  { "ExtPressure", 1},  { "DorPressure", 2}, { Util.GetGasDeviceName("Gas1") ?? "Gas 1", 3}, {  Util.GetGasDeviceName("Gas2") ?? "Gas 2", 4}, { Util.GetGasDeviceName("Gas3") ?? "Gas3", 5},
+            { Util.GetGasDeviceName("Gas4") ?? "Gas4", 6}, { "ShowerHeadTemp", 7}, { "InductionCoilTemp", 8}, { "HeaterPowerRate", 9 }, { "ValvePosition", 10 }, { Util.GetGasDeviceName("Source1") ?? "Source1", 11},
+             { Util.GetGasDeviceName("Source2") ?? "Source2", 12},  { Util.GetGasDeviceName("Source3") ?? "Source3", 13},  { Util.GetGasDeviceName("Source4") ?? "Source4", 14},  { Util.GetGasDeviceName("Source5") ?? "Source5", 15},  { Util.GetGasDeviceName("Source6") ?? "Source6", 16}
         };
 
         public static readonly uint LineHeaterTemperature = 8;

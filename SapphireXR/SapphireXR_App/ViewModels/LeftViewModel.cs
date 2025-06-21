@@ -269,14 +269,28 @@ namespace SapphireXR_App.ViewModels
             };
         }
 
-        public static string GetGas3Label(string gas3Name, int index)
+        public static string GetGas3Label(string? gas3Name, int index)
         {
-            return gas3Name + "#" + index;
+            if (gas3Name != default)
+            {
+                return gas3Name + "#" + index;
+            }
+            else
+            {
+                return "";
+            }
         }
 
-        public static string GetIogicalInterlockLabel(string gasName)
+        public static string GetIogicalInterlockLabel(string? gasName)
         {
-            return "Gas Pressure " + gasName;
+            if (gasName != default)
+            {
+                return "Gas Pressure " + gasName;
+            }
+            else
+            {
+                return "";
+            }
         }
 
         [ObservableProperty]
@@ -284,19 +298,19 @@ namespace SapphireXR_App.ViewModels
         [ObservableProperty]
         private static string _gas3_2 = GetGas3Label(Util.GetGasDeviceName("Gas3"), 2);
         [ObservableProperty]
-        private static string _gas4 = Util.GetGasDeviceName("Gas4");
+        private static string _gas4 = Util.GetGasDeviceName("Gas4") ?? "";
         [ObservableProperty]
-        private static string _source1 = Util.GetGasDeviceName("Source1");
+        private static string _source1 = Util.GetGasDeviceName("Source1") ?? "";
         [ObservableProperty]
-        private static string _source2 = Util.GetGasDeviceName("Source2");
+        private static string _source2 = Util.GetGasDeviceName("Source2") ?? "";
         [ObservableProperty]
-        private static string _source3 = Util.GetGasDeviceName("Source3");
+        private static string _source3 = Util.GetGasDeviceName("Source3") ?? "";
         [ObservableProperty]
-        private static string _source4 = Util.GetGasDeviceName("Source4");
+        private static string _source4 = Util.GetGasDeviceName("Source4") ?? "";
         [ObservableProperty]
-        private static string _source5 = Util.GetGasDeviceName("Source5");
+        private static string _source5 = Util.GetGasDeviceName("Source5") ?? "";
         [ObservableProperty]
-        private static string _source6 = Util.GetGasDeviceName("Source6");
+        private static string _source6 = Util.GetGasDeviceName("Source6") ?? "";
         [ObservableProperty]
         private static string _logicalInterlockGas1 = GetIogicalInterlockLabel(Util.GetGasDeviceName("Gas1"));
         [ObservableProperty]
@@ -323,8 +337,8 @@ namespace SapphireXR_App.ViewModels
         private static Brush ActiveSignalTowerBlue = Application.Current.Resources.MergedDictionaries[0]["ActiveSignalTowerBlue"] as Brush ?? Brushes.Blue;
         private static Brush ActiveSignalTowerWhite = Application.Current.Resources.MergedDictionaries[0]["ActiveSignalTowerWhite"] as Brush ?? Brushes.White;
 
-        private string Gas1 = Util.GetGasDeviceName("Gas1");
-        private string Gas2 = Util.GetGasDeviceName("Gas2");
+        private string Gas1 = Util.GetGasDeviceName("Gas1") ?? "";
+        private string Gas2 = Util.GetGasDeviceName("Gas2") ?? "";
 
         [ObservableProperty]
         private string _showerHeadTemp = "";

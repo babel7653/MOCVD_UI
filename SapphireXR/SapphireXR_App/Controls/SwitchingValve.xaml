@@ -7,7 +7,7 @@
              xmlns:local="clr-namespace:SapphireXR_App.Controls"
              mc:Ignorable="d" 
              x:Name="switchingValve"
-             d:DesignWidth="48" Height="24">
+             d:DesignWidth="48" Height="24" ToolTip="{Binding Name}">
     <local:Valve.Resources>
         <local:OnLoadedCommandParamConverver x:Key="onLoadedCommandConverter" />
         <SolidColorBrush x:Key="BorderBrushOnMouseEnter" Color="#9dbce8" />

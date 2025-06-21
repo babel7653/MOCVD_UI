@@ -10,6 +10,7 @@ using System.Globalization;
 using Newtonsoft.Json.Linq;
 using Newtonsoft.Json;
 using SapphireXR_App.ViewModels;
+using System.Linq;
 
 namespace SapphireXR_App.Common
 {
@@ -243,9 +244,19 @@ namespace SapphireXR_App.Common
             return null;
         }
 
-        public static string GetGasDeviceName(string id)
+        public static string? GetGasDeviceName(string id)
         {
-            return SettingViewModel.GasIO.Where((Device device) => device.ID == id).Select((Device device) => device.Name != null ? device.Name : "").FirstOrDefault()!;
+            return SettingViewModel.GasIO.Where((Device device) => device.ID == id).Select((Device device) => device.Name != null ? device.Name : default).FirstOrDefault();
+        }
+
+        public static string? GetFlowControllerName(string id)
+        {
+            return SettingViewModel.dAnalogDeviceIO.Where((KeyValuePair<string, AnalogDeviceIO> device) => device.Key == id).Select((KeyValuePair<string, AnalogDeviceIO> device) => device.Value.Name != null ? device.Value.Name : default).FirstOrDefault();
+        }
+
+        public static string? GetValveName(string id)
+        {
+            return SettingViewModel.ValveDeviceIO.Where((Device device) => device.ID == id).Select((Device device) => device.Name != null ? device.Name : default).FirstOrDefault();
         }
 
         public static void ConstraintEmptyToZeroOnDataGridCellCommitForRecipeRunEdit(object sender, DataGridCellEditEndingEventArgs e)

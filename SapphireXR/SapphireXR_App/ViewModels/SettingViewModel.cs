@@ -113,7 +113,11 @@ namespace SapphireXR_App.ViewModels
             JToken? jAnalogDeviceIO = jDeviceInit["AnalogDeviceIO"];
             if (jAnalogDeviceIO != null)
             {
-                dAnalogDeviceIO = JsonConvert.DeserializeObject<Dictionary<string, AnalogDeviceIO>>(jAnalogDeviceIO.ToString());
+                var deserialized = JsonConvert.DeserializeObject<Dictionary<string, AnalogDeviceIO>>(jAnalogDeviceIO.ToString());
+                if (deserialized != null)
+                {
+                    dAnalogDeviceIO = deserialized;
+                }
             }
             JToken? jSwitchDI = jDeviceInit["SwitchDI"];
             if (jSwitchDI != null)
@@ -362,7 +366,7 @@ namespace SapphireXR_App.ViewModels
         public static readonly string DevceIOSettingFilePath = Util.GetResourceAbsoluteFilePath("/Configurations/DeviceIO.json");
         public static readonly string PrecursorSourceMonitorLabelSettingFilePath = Util.GetResourceAbsoluteFilePath("/Configurations/PrecursorSourceMonitorLabel.json");
 
-        public static Dictionary<string, AnalogDeviceIO>? dAnalogDeviceIO = [];
+        public static Dictionary<string, AnalogDeviceIO> dAnalogDeviceIO = [];
         public static Dictionary<string, SwitchDI>? dSwitchDI = [];
         public static Dictionary<string, GasDO>? dGasDO = [];
         public static List<Device> GasIO { get; set; } = CreateDefaultGasIO();

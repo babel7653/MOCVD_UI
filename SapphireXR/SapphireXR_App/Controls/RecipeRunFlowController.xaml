@@ -7,7 +7,7 @@
              xmlns:local="clr-namespace:SapphireXR_App.Controls"
              mc:Ignorable="d"
              x:Name="recipeRunFlowController"
-             d:DesignHeight="34" d:DesignWidth="70">
+             d:DesignHeight="34" d:DesignWidth="70" ToolTip="{Binding Name}">
     <UserControl.Resources>
         <local:OnLoadedCommandParamConverver x:Key="onLoadedCommandConverter" />
     </UserControl.Resources>

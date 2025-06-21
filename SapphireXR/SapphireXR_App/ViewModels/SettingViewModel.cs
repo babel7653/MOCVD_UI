@@ -73,12 +73,37 @@ namespace SapphireXR_App.ViewModels
             private bool? prevVaccumPumpPowerOn = null;
             private bool? prevLineHeaterPowerOn = null;
         }
+
+        private class AppClosingSubscriber : IObserver<bool>
+        {
+            public AppClosingSubscriber(SettingViewModel vm)
+            {
+                settingViewModel = vm;
+            }
+
+            void IObserver<bool>.OnCompleted()
+            {
+                throw new NotImplementedException();
+            }
+
+            void IObserver<bool>.OnError(Exception error)
+            {
+                throw new NotImplementedException();
+            }
+
+            void IObserver<bool>.OnNext(bool value)
+            {
+                settingViewModel.AlarmSettingSave();
+            }
+
+            private SettingViewModel settingViewModel;
+        }
+
         public partial class IOSetting: ObservableObject
         {
             required public string Name { get; set; } = "";
             [ObservableProperty]
             private bool _onOff;
-            
         }
 
         static SettingViewModel()
@@ -140,14 +165,22 @@ namespace SapphireXR_App.ViewModels
                 {
                     GasIO = deserialized;
                 }
-                else
-                {
-                    GasIO = CreateDefaultGasIO();
-                }
             }
-            else
+            foreach (var io in GasIO)
             {
-                GasIO = CreateDefaultGasIO();
+                io.PropertyChanged += (object? sender, PropertyChangedEventArgs args) =>
+                {
+                    switch (args.PropertyName)
+                    {
+                        case nameof(Device.Name):
+                            Device? device = sender as Device;
+                            if (device != null && device.ID != null&& device.Name != null)
+                            {
+                                GasIOLabelChangedPublisher.Issue((device.ID, device.Name));
+                            }
+                            break;
+                    }
+                };
             }
         }
 
@@ -171,6 +204,7 @@ namespace SapphireXR_App.ViewModels
             };
             ObservableManager<BitArray>.Subscribe("DeviceIOList", iOStateListSubscriber = new IOStateListSubscriber(this));
             ObservableManager<BitArray>.Subscribe("OutputCmd1", modulePowerStateSubscriber = new ModulePowerStateSubscriber(this));
+            ObservableManager<bool>.Subscribe("App.Closing", appClosingSubscriber = new AppClosingSubscriber(this));
         }
         public void AlarmSettingLoad()
         {
@@ -331,7 +365,7 @@ namespace SapphireXR_App.ViewModels
         public static Dictionary<string, AnalogDeviceIO>? dAnalogDeviceIO = [];
         public static Dictionary<string, SwitchDI>? dSwitchDI = [];
         public static Dictionary<string, GasDO>? dGasDO = [];
-        public static List<Device> GasIO { get; set; } = [];
+        public static List<Device> GasIO { get; set; } = CreateDefaultGasIO();
         public static List<ValveDeviceIO> ValveDeviceIO { get; set; } = [];
         public static Dictionary<string, string>? dPreSet { get; set; } = [];
         public static Dictionary<string, InterLockA>? dInterLockA { get; set; } = [];
@@ -365,6 +399,8 @@ namespace SapphireXR_App.ViewModels
         [ObservableProperty]
         private string _lineHeaterPowerOn = "";
 
-        ModulePowerStateSubscriber modulePowerStateSubscriber;
+        private ModulePowerStateSubscriber modulePowerStateSubscriber;
+        private AppClosingSubscriber appClosingSubscriber;
+        private static ObservableManager<(string, string)>.DataIssuer GasIOLabelChangedPublisher = ObservableManager<(string, string)>.Get("GasIOLabelChanged");
     }
 }

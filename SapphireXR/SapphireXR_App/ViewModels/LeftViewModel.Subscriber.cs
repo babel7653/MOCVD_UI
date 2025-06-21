@@ -122,11 +122,11 @@ namespace SapphireXR_App.ViewModels
                 {
                     case 0:
                     case 1:
-                        leftViewModel.CurrentSourceStatusViewModel = new SourceStatusFromCurrentPLCStateViewModel();
+                        leftViewModel.CurrentSourceStatusViewModel = new SourceStatusFromCurrentPLCStateViewModel(leftViewModel);
                         break;
 
                     case 2:
-                        leftViewModel.CurrentSourceStatusViewModel = new SourceStatusFromCurrentRecipeStepViewModel();
+                        leftViewModel.CurrentSourceStatusViewModel = new SourceStatusFromCurrentRecipeStepViewModel(leftViewModel);
                         break;
                 }
             }
@@ -243,7 +243,7 @@ namespace SapphireXR_App.ViewModels
             {
                 if (leftViewModel.CurrentSourceStatusViewModel is SourceStatusFromCurrentRecipeStepViewModel)
                 {
-                    leftViewModel.CurrentSourceStatusViewModel = new SourceStatusFromCurrentRecipeStepViewModel();
+                    leftViewModel.CurrentSourceStatusViewModel = new SourceStatusFromCurrentRecipeStepViewModel(leftViewModel);
                 }
             }
 
@@ -319,6 +319,118 @@ namespace SapphireXR_App.ViewModels
             bool? prevPumpTurnOnState = null;
 
             LeftViewModel leftViewModel;
+        }
+
+        private class GasIOLabelSubscriber : IObserver<(string, string)>
+        {
+            public GasIOLabelSubscriber(LeftViewModel vm)
+            {
+                leftViewModel = vm;
+            }
+
+            void IObserver<(string, string)>.OnCompleted()
+            {
+                throw new NotImplementedException();
+            }
+
+            void IObserver<(string, string)>.OnError(Exception error)
+            {
+                throw new NotImplementedException();
+            }
+
+            void IObserver<(string, string)>.OnNext((string, string) value)
+            {
+                var updateCarrierStatus = (string prevGasName, string gasName) =>
+                {
+                    if (prevGasName == leftViewModel.CurrentSourceStatusViewModel.NH3_1Carrier)
+                    {
+                        leftViewModel.CurrentSourceStatusViewModel.NH3_1Carrier = gasName;
+                    }
+                    if (prevGasName == leftViewModel.CurrentSourceStatusViewModel.NH3_2Carrier)
+                    {
+                        leftViewModel.CurrentSourceStatusViewModel.NH3_2Carrier = gasName;
+                    }
+                    if (prevGasName == leftViewModel.CurrentSourceStatusViewModel.SiH4Carrier)
+                    {
+                        leftViewModel.CurrentSourceStatusViewModel.SiH4Carrier = gasName;
+                    }
+                    if (prevGasName == leftViewModel.CurrentSourceStatusViewModel.TEBCarrier)
+                    {
+                        leftViewModel.CurrentSourceStatusViewModel.TEBCarrier = gasName;
+                    }
+                    if (prevGasName == leftViewModel.CurrentSourceStatusViewModel.TMAlCarrier)
+                    {
+                        leftViewModel.CurrentSourceStatusViewModel.TMAlCarrier = gasName;
+                    }
+                    if (prevGasName == leftViewModel.CurrentSourceStatusViewModel.TMGaCarrier)
+                    {
+                        leftViewModel.CurrentSourceStatusViewModel.TMGaCarrier = gasName;
+                    }
+                    if (prevGasName == leftViewModel.CurrentSourceStatusViewModel.DTMGaCarrier)
+                    {
+                        leftViewModel.CurrentSourceStatusViewModel.DTMGaCarrier = gasName;
+                    }
+                    if (prevGasName == leftViewModel.CurrentSourceStatusViewModel.Cp2MgCarrier)
+                    {
+                        leftViewModel.CurrentSourceStatusViewModel.Cp2MgCarrier = gasName;
+                    }
+                    if (prevGasName == leftViewModel.CurrentSourceStatusViewModel.TMInCarrier)
+                    {
+                        leftViewModel.CurrentSourceStatusViewModel.TMInCarrier = gasName;
+                    }
+                };
+                switch (value.Item1)
+                {
+                    case "Gas1":
+                        updateCarrierStatus(leftViewModel.Gas1, value.Item2);
+                        leftViewModel.Gas1 = value.Item2;
+                        leftViewModel.LogicalInterlockGas1 = LeftViewModel.GetIogicalInterlockLabel(value.Item2);
+                        break;
+
+                    case "Gas2":
+                        updateCarrierStatus(leftViewModel.Gas2, value.Item2);
+                        leftViewModel.Gas2 = value.Item2;
+                        leftViewModel.LogicalInterlockGas2 = LeftViewModel.GetIogicalInterlockLabel(value.Item2);
+                        break;
+
+                    case "Gas3":
+                        leftViewModel.Gas3_1 = LeftViewModel.GetGas3Label(value.Item2, 1);
+                        leftViewModel.Gas3_2 = LeftViewModel.GetGas3Label(value.Item2, 2);
+                        leftViewModel.LogicalInterlockGas3 = LeftViewModel.GetIogicalInterlockLabel(value.Item2);
+                        break;
+
+                    case "Gas4":
+                        leftViewModel.Gas4 = value.Item2;
+                        leftViewModel.LogicalInterlockGas4 = LeftViewModel.GetIogicalInterlockLabel(value.Item2);
+                        break;
+
+                    case "Source1":
+                        leftViewModel.Source1 = value.Item2;
+                        break;
+
+                    case "Source2":
+                        leftViewModel.Source2 = value.Item2;
+                        break;
+
+                    case "Source3":
+                        leftViewModel.Source3 = value.Item2;
+                        break;
+
+                    case "Source4":
+                        leftViewModel.Source4 = value.Item2;
+                        break;
+
+                    case "Source5":
+                        leftViewModel.Source5 = value.Item2;
+                        break;
+
+                    case "Source6":
+                        leftViewModel.Source6 = value.Item2;
+                        break;
+                }
+            }
+
+            private LeftViewModel leftViewModel;
         }
     }
 }

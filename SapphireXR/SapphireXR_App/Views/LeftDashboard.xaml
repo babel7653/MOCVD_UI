@@ -184,18 +184,18 @@
                             <TextBlock Grid.Row="0" Grid.Column="1" Text="Carrier" HorizontalAlignment="Center" Margin="0,6,0,0" Foreground="{DynamicResource Gray_900}" FontSize="12"/>
                             <TextBlock Grid.Row="0" Grid.Column="2" Text="Source" HorizontalAlignment="Center" Margin="0,6,0,0" Foreground="{DynamicResource Gray_900}" FontSize="12"/>
                             <TextBlock Grid.Row="0" Grid.Column="3" Text="Manifold" HorizontalAlignment="Center" Margin="0,6,0,0" Foreground="{DynamicResource Gray_900}" FontSize="12" />
-                            <TextBlock Grid.Row="1" Grid.Column="0" Text="{Binding Gas3_1, UpdateSourceTrigger=PropertyChanged, Mode=OneTime}" HorizontalAlignment="Right" Margin="-1,6,5,0" FontFamily="Segoe UI" Foreground="{DynamicResource Gray_900}" FontSize="12" />
-                            <TextBlock Grid.Row="2" Grid.Column="0" Text="{Binding Gas3_2, UpdateSourceTrigger=PropertyChanged, Mode=OneTime}"  HorizontalAlignment="Right" Margin="-1,6,5,0" FontFamily="Segoe UI" Foreground="{DynamicResource Gray_900}" FontSize="12" />
-                            <TextBlock Grid.Row="3" Grid.Column="0" Text="{Binding Gas4, UpdateSourceTrigger=PropertyChanged, Mode=OneTime}"  HorizontalAlignment="Right" Margin="-1,6,5,0" FontFamily="Segoe UI" Foreground="{DynamicResource Gray_900}" FontSize="12" />
-                            <TextBlock Grid.Row="4" Grid.Column="0" Text="{Binding Source1, UpdateSourceTrigger=PropertyChanged, Mode=OneTime}"  HorizontalAlignment="Right" Margin="-1,6,5,0" FontFamily="Segoe UI" Foreground="{DynamicResource Gray_900}" FontSize="12" />
-                            <TextBlock Grid.Row="5" Grid.Column="0" Text="{Binding Source2, UpdateSourceTrigger=PropertyChanged, Mode=OneTime}"  HorizontalAlignment="Right" Margin="-1,6,5,0" FontFamily="Segoe UI" Foreground="{DynamicResource Gray_900}" FontSize="12" />
-                            <TextBlock Grid.Row="6" Grid.Column="0" Text="{Binding Source3, UpdateSourceTrigger=PropertyChanged, Mode=OneTime}"  HorizontalAlignment="Right" Margin="-1,6,5,0" FontFamily="Segoe UI" Foreground="{DynamicResource Gray_900}" FontSize="12" />
-                            <TextBlock Grid.Row="7" Grid.Column="0" Text="{Binding Source4, UpdateSourceTrigger=PropertyChanged, Mode=OneTime}"  HorizontalAlignment="Right" Margin="-1,6,5,0" FontFamily="Segoe UI" Foreground="{DynamicResource Gray_900}" FontSize="12" />
-                            <TextBlock Grid.Row="8" Grid.Column="0" Text="{Binding Source5, UpdateSourceTrigger=PropertyChanged, Mode=OneTime}"  HorizontalAlignment="Right" Margin="-1,6,5,0" FontFamily="Segoe UI" Foreground="{DynamicResource Gray_900}" FontSize="12" />
-                            <TextBlock Grid.Row="9" Grid.Column="0" Text="{Binding Source6, UpdateSourceTrigger=PropertyChanged, Mode=OneTime}"  HorizontalAlignment="Right" Margin="-1,6,5,0" FontFamily="Segoe UI" Foreground="{DynamicResource Gray_900}" FontSize="12" />
+                            <TextBlock Grid.Row="1" Grid.Column="0" Text="{Binding Gas3_1, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}" HorizontalAlignment="Right" Margin="-1,6,5,0" FontFamily="Segoe UI" Foreground="{DynamicResource Gray_900}" FontSize="12" />
+                            <TextBlock Grid.Row="2" Grid.Column="0" Text="{Binding Gas3_2, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"  HorizontalAlignment="Right" Margin="-1,6,5,0" FontFamily="Segoe UI" Foreground="{DynamicResource Gray_900}" FontSize="12" />
+                            <TextBlock Grid.Row="3" Grid.Column="0" Text="{Binding Gas4, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"  HorizontalAlignment="Right" Margin="-1,6,5,0" FontFamily="Segoe UI" Foreground="{DynamicResource Gray_900}" FontSize="12" />
+                            <TextBlock Grid.Row="4" Grid.Column="0" Text="{Binding Source1, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"  HorizontalAlignment="Right" Margin="-1,6,5,0" FontFamily="Segoe UI" Foreground="{DynamicResource Gray_900}" FontSize="12" />
+                            <TextBlock Grid.Row="5" Grid.Column="0" Text="{Binding Source2, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"  HorizontalAlignment="Right" Margin="-1,6,5,0" FontFamily="Segoe UI" Foreground="{DynamicResource Gray_900}" FontSize="12" />
+                            <TextBlock Grid.Row="6" Grid.Column="0" Text="{Binding Source3, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"  HorizontalAlignment="Right" Margin="-1,6,5,0" FontFamily="Segoe UI" Foreground="{DynamicResource Gray_900}" FontSize="12" />
+                            <TextBlock Grid.Row="7" Grid.Column="0" Text="{Binding Source4, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"  HorizontalAlignment="Right" Margin="-1,6,5,0" FontFamily="Segoe UI" Foreground="{DynamicResource Gray_900}" FontSize="12" />
+                            <TextBlock Grid.Row="8" Grid.Column="0" Text="{Binding Source5, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"  HorizontalAlignment="Right" Margin="-1,6,5,0" FontFamily="Segoe UI" Foreground="{DynamicResource Gray_900}" FontSize="12" />
+                            <TextBlock Grid.Row="9" Grid.Column="0" Text="{Binding Source6, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"  HorizontalAlignment="Right" Margin="-1,6,5,0" FontFamily="Segoe UI" Foreground="{DynamicResource Gray_900}" FontSize="12" />
                             <!--Background="{}" {}-->
                             <Border Grid.Row="1" Grid.Column="1" Style="{StaticResource SourceStatusIndicator}" >
-                                <TextBlock Text="{Binding CurrentSourceStatusViewModel.NH3_1Carrier}" Foreground="{Binding CurrentSourceStatusViewModel.NH3_1CarrierColor}" Style="{StaticResource SourceStatusIndicatorText}" />
+                                <TextBlock Text="{Binding CurrentSourceStatusViewModel.NH3_1Carrier, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}" Foreground="{Binding CurrentSourceStatusViewModel.NH3_1CarrierColor}" Style="{StaticResource SourceStatusIndicatorText}" />
                             </Border>
                             <Border Grid.Row="1" Grid.Column="2" Style="{StaticResource SourceStatusIndicator}">
                                 <TextBlock Text="{Binding CurrentSourceStatusViewModel.NH3_1Source}" Foreground="{Binding CurrentSourceStatusViewModel.NH3_1SourceColor}" Style="{StaticResource SourceStatusIndicatorText}" />
@@ -204,7 +204,7 @@
                                 <TextBlock Text="{Binding CurrentSourceStatusViewModel.NH3_1Vent}" Foreground="{Binding CurrentSourceStatusViewModel.NH3_1VentColor}" Style="{StaticResource SourceStatusIndicatorText}" />
                             </Border>
                             <Border Grid.Row="2" Grid.Column="1" Style="{StaticResource SourceStatusIndicator}">
-                                <TextBlock Text="{Binding CurrentSourceStatusViewModel.NH3_2Carrier}" Foreground="{Binding CurrentSourceStatusViewModel.NH3_2CarrierColor}" Style="{StaticResource SourceStatusIndicatorText}" />
+                                <TextBlock Text="{Binding CurrentSourceStatusViewModel.NH3_2Carrier, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}" Foreground="{Binding CurrentSourceStatusViewModel.NH3_2CarrierColor}" Style="{StaticResource SourceStatusIndicatorText}" />
                             </Border>
                             <Border Grid.Row="2" Grid.Column="2" Style="{StaticResource SourceStatusIndicator}">
                                 <TextBlock Text="{Binding CurrentSourceStatusViewModel.NH3_2Source}" Foreground="{Binding CurrentSourceStatusViewModel.NH3_2SourceColor}" Style="{StaticResource SourceStatusIndicatorText}" />
@@ -213,7 +213,7 @@
                                 <TextBlock Text="{Binding CurrentSourceStatusViewModel.NH3_2Vent}" Foreground="{Binding CurrentSourceStatusViewModel.NH3_2VentColor}" Style="{StaticResource SourceStatusIndicatorText}" />
                             </Border>
                             <Border Grid.Row="3" Grid.Column="1" Style="{StaticResource SourceStatusIndicator}">
-                                <TextBlock Text="{Binding CurrentSourceStatusViewModel.SiH4Carrier}" Foreground="{Binding CurrentSourceStatusViewModel.SiH4CarrierColor}" Style="{StaticResource SourceStatusIndicatorText}" />
+                                <TextBlock Text="{Binding CurrentSourceStatusViewModel.SiH4Carrier, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}" Foreground="{Binding CurrentSourceStatusViewModel.SiH4CarrierColor}" Style="{StaticResource SourceStatusIndicatorText}" />
                             </Border>
                             <Border Grid.Row="3" Grid.Column="2" Style="{StaticResource SourceStatusIndicator}">
                                 <TextBlock Text="{Binding CurrentSourceStatusViewModel.SiH4Source}" Foreground="{Binding CurrentSourceStatusViewModel.SiH4SourceColor}" Style="{StaticResource SourceStatusIndicatorText}" />
@@ -222,7 +222,7 @@
                                 <TextBlock Text="{Binding CurrentSourceStatusViewModel.SiH4Vent}" Foreground="{Binding CurrentSourceStatusViewModel.SiH4VentColor}" Style="{StaticResource SourceStatusIndicatorText}" />
                             </Border>
                             <Border Grid.Row="4" Grid.Column="1" Style="{StaticResource SourceStatusIndicator}">
-                                <TextBlock Text="{Binding CurrentSourceStatusViewModel.TEBCarrier}" Foreground="{Binding CurrentSourceStatusViewModel.TEBCarrierColor}" Style="{StaticResource SourceStatusIndicatorText}" />
+                                <TextBlock Text="{Binding CurrentSourceStatusViewModel.TEBCarrier, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}" Foreground="{Binding CurrentSourceStatusViewModel.TEBCarrierColor}" Style="{StaticResource SourceStatusIndicatorText}" />
                             </Border>
                             <Border Grid.Row="4" Grid.Column="2" Style="{StaticResource SourceStatusIndicator}">
                                 <TextBlock Text="{Binding CurrentSourceStatusViewModel.TEBSource}" Foreground="{Binding CurrentSourceStatusViewModel.TEBSourceColor}" Style="{StaticResource SourceStatusIndicatorText}" />
@@ -231,7 +231,7 @@
                                 <TextBlock Text="{Binding CurrentSourceStatusViewModel.TEBVent}" Foreground="{Binding CurrentSourceStatusViewModel.TEBVentColor}" Style="{StaticResource SourceStatusIndicatorText}" />
                             </Border>
                             <Border Grid.Row="5" Grid.Column="1" Style="{StaticResource SourceStatusIndicator}">
-                                <TextBlock Text="{Binding CurrentSourceStatusViewModel.TMAlCarrier}" Foreground="{Binding CurrentSourceStatusViewModel.TMAlCarrierColor}" Style="{StaticResource SourceStatusIndicatorText}" />
+                                <TextBlock Text="{Binding CurrentSourceStatusViewModel.TMAlCarrier, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}" Foreground="{Binding CurrentSourceStatusViewModel.TMAlCarrierColor}" Style="{StaticResource SourceStatusIndicatorText}" />
                             </Border>
                             <Border Grid.Row="5" Grid.Column="2" Style="{StaticResource SourceStatusIndicator}">
                                 <TextBlock Text="{Binding CurrentSourceStatusViewModel.TMAlSource}" Foreground="{Binding CurrentSourceStatusViewModel.TMAlSourceColor}" Style="{StaticResource SourceStatusIndicatorText}" />
@@ -240,7 +240,7 @@
                                 <TextBlock Text="{Binding CurrentSourceStatusViewModel.TMAlVent}" Foreground="{Binding CurrentSourceStatusViewModel.TMAlVentColor}" Style="{StaticResource SourceStatusIndicatorText}" />
                             </Border>
                             <Border Grid.Row="6" Grid.Column="1" Style="{StaticResource SourceStatusIndicator}">
-                                <TextBlock Text="{Binding CurrentSourceStatusViewModel.TMInCarrier}" Foreground="{Binding CurrentSourceStatusViewModel.TMInCarrierColor}" Style="{StaticResource SourceStatusIndicatorText}" />
+                                <TextBlock Text="{Binding CurrentSourceStatusViewModel.TMInCarrier, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}" Foreground="{Binding CurrentSourceStatusViewModel.TMInCarrierColor}" Style="{StaticResource SourceStatusIndicatorText}" />
                             </Border>
                             <Border Grid.Row="6" Grid.Column="2" Style="{StaticResource SourceStatusIndicator}">
                                 <TextBlock Text="{Binding CurrentSourceStatusViewModel.TMInSource}" Foreground="{Binding CurrentSourceStatusViewModel.TMInSourceColor}" Style="{StaticResource SourceStatusIndicatorText}" />
@@ -249,7 +249,7 @@
                                 <TextBlock Text="{Binding CurrentSourceStatusViewModel.TMInVent}" Foreground="{Binding CurrentSourceStatusViewModel.TMInVentColor}" Style="{StaticResource SourceStatusIndicatorText}" />
                             </Border>
                             <Border Grid.Row="7" Grid.Column="1" Style="{StaticResource SourceStatusIndicator}">
-                                <TextBlock Text="{Binding CurrentSourceStatusViewModel.TMGaCarrier}" Foreground="{Binding CurrentSourceStatusViewModel.TMGaCarrierColor}" Style="{StaticResource SourceStatusIndicatorText}" />
+                                <TextBlock Text="{Binding CurrentSourceStatusViewModel.TMGaCarrier, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}" Foreground="{Binding CurrentSourceStatusViewModel.TMGaCarrierColor}" Style="{StaticResource SourceStatusIndicatorText}" />
                             </Border>
                             <Border Grid.Row="7" Grid.Column="2" Style="{StaticResource SourceStatusIndicator}">
                                 <TextBlock Text="{Binding CurrentSourceStatusViewModel.TMGaSource}" Foreground="{Binding CurrentSourceStatusViewModel.TMGaSourceColor}" Style="{StaticResource SourceStatusIndicatorText}" />
@@ -257,8 +257,8 @@
                             <Border Grid.Row="7" Grid.Column="3" Style="{StaticResource SourceStatusIndicator}">
                                 <TextBlock Text="{Binding CurrentSourceStatusViewModel.TMGaVent}" Foreground="{Binding CurrentSourceStatusViewModel.TMGaVentColor}" Style="{StaticResource SourceStatusIndicatorText}" />
                             </Border>
-                            <Border Grid.Row="8" Grid.Column="1" Style="{StaticResource SourceStatusIndicator}">
-                                <TextBlock Text="{Binding CurrentSourceStatusViewModel.DTMGaCarrier}" Foreground="{Binding CurrentSourceStatusViewModel.DTMGaCarrierColor}" Style="{StaticResource SourceStatusIndicatorText}" />
+                            <Border Grid.Row="8" Grid.Column="1" Style="{StaticResource SourceStatusIndicator}" Margin="2,0,2,4">
+                                <TextBlock Text="{Binding CurrentSourceStatusViewModel.DTMGaCarrier, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}" Foreground="{Binding CurrentSourceStatusViewModel.DTMGaCarrierColor}" Style="{StaticResource SourceStatusIndicatorText}" />
                             </Border>
                             <Border Grid.Row="8" Grid.Column="2" Style="{StaticResource SourceStatusIndicator}">
                                 <TextBlock Text="{Binding CurrentSourceStatusViewModel.DTMGaSource}" Foreground="{Binding CurrentSourceStatusViewModel.DTMGaSourceColor}" Style="{StaticResource SourceStatusIndicatorText}" />

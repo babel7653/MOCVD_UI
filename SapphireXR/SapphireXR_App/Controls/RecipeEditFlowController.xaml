@@ -8,7 +8,7 @@
              xmlns:view="clr-namespace:SapphireXR_App.Views"
              mc:Ignorable="d"
              x:Name="recipeEditFlowController"
-             d:DesignHeight="34" d:DesignWidth="70" ToolTip="{Binding Name}">
+             d:DesignHeight="34" d:DesignWidth="70" ToolTip="{Binding Name, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}">
     <UserControl.Resources>
         <local:OnLoadedCommandParamConverver x:Key="onLoadedCommandConverter" />
     </UserControl.Resources>

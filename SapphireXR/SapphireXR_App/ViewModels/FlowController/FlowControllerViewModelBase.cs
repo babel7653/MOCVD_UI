@@ -11,6 +11,34 @@ namespace SapphireXR_App.ViewModels.FlowController
 {
     public abstract partial class FlowControllerViewModelBase : ViewModelBase, INotifyPropertyChanged
     {
+        private class FlowControllerLabelUpdater : IObserver<(string, string)>
+        {
+            public FlowControllerLabelUpdater(FlowControllerViewModelBase vm)
+            {
+                flowControllerViewModelBase = vm;
+            }
+
+            void IObserver<(string, string)>.OnCompleted()
+            {
+                throw new NotImplementedException();
+            }
+
+            void IObserver<(string, string)>.OnError(Exception error)
+            {
+                throw new NotImplementedException();
+            }
+
+            void IObserver<(string, string)>.OnNext((string, string) value)
+            {
+                if(flowControllerViewModelBase.ControllerID == value.Item1)
+                {
+                    flowControllerViewModelBase.Name = value.Item2;
+                }
+            }
+
+            private FlowControllerViewModelBase flowControllerViewModelBase;
+        }
+
         static FlowControllerViewModelBase()
         {
             MouseEnterColor = Application.Current.Resources.MergedDictionaries[0]["ValveOnMouseEnterColor"] as SolidColorBrush ?? MouseEnterColor;

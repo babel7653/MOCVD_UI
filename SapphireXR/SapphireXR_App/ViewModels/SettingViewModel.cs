@@ -110,6 +110,23 @@ namespace SapphireXR_App.ViewModels
         {
             var fdevice = File.ReadAllText(DevceIOSettingFilePath);
             JToken? jDeviceInit = JToken.Parse(fdevice);
+            if(jDeviceInit == null)
+            {
+                return;
+            }
+
+            var publishDeviceNameChanged = (object? sender, string? propertyName, ObservableManager<(string, string)>.DataIssuer publisher) =>
+            {
+                if (propertyName == nameof(Device.Name))
+                {
+                    Device? device = sender as Device;
+                    if (device != null && device.ID != null && device.Name != null)
+                    {
+                        publisher.Issue((device.ID, device.Name));
+                    }
+                }
+            };
+
             JToken? jAnalogDeviceIO = jDeviceInit["AnalogDeviceIO"];
             if (jAnalogDeviceIO != null)
             {
@@ -161,6 +178,13 @@ namespace SapphireXR_App.ViewModels
             {
                 ValveDeviceIO = CreateDefaultValveDeviceIO();
             }
+            foreach(var io in ValveDeviceIO)
+            {
+                io.PropertyChanged += (object? sender, PropertyChangedEventArgs args) =>
+                {
+                    PublishDeviceNameChanged(sender, args.PropertyName, ValveIOLabelChangedPublisher);
+                };
+            }
             JToken? jGasIO = jDeviceInit["GasIO"];
             if (jGasIO != null)
             {
@@ -174,16 +198,7 @@ namespace SapphireXR_App.ViewModels
             {
                 io.PropertyChanged += (object? sender, PropertyChangedEventArgs args) =>
                 {
-                    switch (args.PropertyName)
-                    {
-                        case nameof(Device.Name):
-                            Device? device = sender as Device;
-                            if (device != null && device.ID != null&& device.Name != null)
-                            {
-                                GasIOLabelChangedPublisher.Issue((device.ID, device.Name));
-                            }
-                            break;
-                    }
+                    PublishDeviceNameChanged(sender, args.PropertyName, GasIOLabelChangedPublisher);
                 };
             }
         }
@@ -210,6 +225,19 @@ namespace SapphireXR_App.ViewModels
             ObservableManager<BitArray>.Subscribe("OutputCmd1", modulePowerStateSubscriber = new ModulePowerStateSubscriber(this));
             ObservableManager<bool>.Subscribe("App.Closing", appClosingSubscriber = new AppClosingSubscriber(this));
         }
+
+        private static void PublishDeviceNameChanged(object? sender, string? propertyName, ObservableManager<(string, string)>.DataIssuer publisher)
+        {
+            if (propertyName == nameof(Device.Name))
+            {
+                Device? device = sender as Device;
+                if (device != null && device.ID != null && device.Name != null)
+                {
+                    publisher.Issue((device.ID, device.Name));
+                }
+            }
+        }
+
         public void AlarmSettingLoad()
         {
             PropertyChanged += (object? sender, PropertyChangedEventArgs args) =>
@@ -228,6 +256,16 @@ namespace SapphireXR_App.ViewModels
          
           
             lAnalogDeviceIO = dAnalogDeviceIO?.Values.ToList();
+            if (lAnalogDeviceIO != null)
+            {
+                foreach (var io in lAnalogDeviceIO)
+                {
+                    io.PropertyChanged += (object? sender, PropertyChangedEventArgs args) =>
+                    {
+                        PublishDeviceNameChanged(sender, args.PropertyName, AnalogIOLabelChangedPublisher);
+                    };
+                }
+            }
             lSwitchDI = dSwitchDI?.Values.ToList();
             lGasDO = dGasDO?.Values.ToList();
          
@@ -406,5 +444,7 @@ namespace SapphireXR_App.ViewModels
         private ModulePowerStateSubscriber modulePowerStateSubscriber;
         private AppClosingSubscriber appClosingSubscriber;
         private static ObservableManager<(string, string)>.DataIssuer GasIOLabelChangedPublisher = ObservableManager<(string, string)>.Get("GasIOLabelChanged");
+        private static ObservableManager<(string, string)>.DataIssuer ValveIOLabelChangedPublisher = ObservableManager<(string, string)>.Get("ValveIOLabelChanged");
+        private static ObservableManager<(string, string)>.DataIssuer AnalogIOLabelChangedPublisher = ObservableManager<(string, string)>.Get("AnalogIOLabelChanged");
     }
 }

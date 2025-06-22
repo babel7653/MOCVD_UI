@@ -135,7 +135,7 @@ namespace SapphireXR_App.ViewModels
             Deviation = string.Empty;
             CurrentValue = string.Empty;
             ControlValue = string.Empty;
-            MaxValue = (int)PLCService.ReadMaxValue(fcID);
+            MaxValue = (int)SettingViewModel.ReadMaxValue(fcID)!;
             FontColor = OnNormal;
             PropertyChanged += (object? sender, PropertyChangedEventArgs e) =>
             {

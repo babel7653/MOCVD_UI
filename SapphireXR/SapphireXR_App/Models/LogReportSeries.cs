@@ -1,5 +1,6 @@
 ﻿using OxyPlot;
 using System.Drawing;
+using SapphireXR_App.ViewModels;
 
 namespace SapphireXR_App.Models
 {
@@ -201,91 +202,91 @@ namespace SapphireXR_App.Models
             switch (deviceName)
             {
                 case nameof(RecipeLog.PV_M01):
-                    return recipeLog.PV_M01 / PLCService.ReadMaxValue("MFC01") * 100.0f;
+                    return recipeLog.PV_M01 / SettingViewModel.ReadMaxValue("MFC01") * 100.0f;
 
                 case nameof(RecipeLog.PV_M02):
-                    return recipeLog.PV_M02 / PLCService.ReadMaxValue("MFC02") * 100.0f;
+                    return recipeLog.PV_M02 / SettingViewModel.ReadMaxValue("MFC02") * 100.0f;
 
                 case nameof(RecipeLog.PV_M03):
-                    return recipeLog.PV_M03 / PLCService.ReadMaxValue("MFC03") * 100.0f;
+                    return recipeLog.PV_M03 / SettingViewModel.ReadMaxValue("MFC03") * 100.0f;
 
                 case nameof(RecipeLog.PV_M04):
-                    return recipeLog.PV_M04 / PLCService.ReadMaxValue("MFC04") * 100.0f;
+                    return recipeLog.PV_M04 / SettingViewModel.ReadMaxValue("MFC04") * 100.0f;
 
                 case nameof(RecipeLog.PV_M05):
-                    return recipeLog.PV_M05 / PLCService.ReadMaxValue("MFC05") * 100.0f;
+                    return recipeLog.PV_M05 / SettingViewModel.ReadMaxValue("MFC05") * 100.0f;
 
                 case nameof(RecipeLog.PV_M06):
-                    return recipeLog.PV_M06 / PLCService.ReadMaxValue("MFC06") * 100.0f;
+                    return recipeLog.PV_M06 / SettingViewModel.ReadMaxValue("MFC06") * 100.0f;
 
                 case nameof(RecipeLog.PV_M07):
-                    return recipeLog.PV_M07 / PLCService.ReadMaxValue("MFC07") * 100.0f;
+                    return recipeLog.PV_M07 / SettingViewModel.ReadMaxValue("MFC07") * 100.0f;
 
                 case nameof(RecipeLog.PV_M08):
-                    return recipeLog.PV_M08 / PLCService.ReadMaxValue("MFC08") * 100.0f;
+                    return recipeLog.PV_M08 / SettingViewModel.ReadMaxValue("MFC08") * 100.0f;
 
                 case nameof(RecipeLog.PV_M09):
-                    return recipeLog.PV_M09 / PLCService.ReadMaxValue("MFC09") * 100.0f;
+                    return recipeLog.PV_M09 / SettingViewModel.ReadMaxValue("MFC09") * 100.0f;
 
                 case nameof(RecipeLog.PV_M10):
-                    return recipeLog.PV_M10 / PLCService.ReadMaxValue("MFC10") * 100.0f;
+                    return recipeLog.PV_M10 / SettingViewModel.ReadMaxValue("MFC10") * 100.0f;
 
                 case nameof(RecipeLog.PV_M11):
-                    return recipeLog.PV_M11 / PLCService.ReadMaxValue("MFC11") * 100.0f;
+                    return recipeLog.PV_M11 / SettingViewModel.ReadMaxValue("MFC11") * 100.0f;
 
                 case nameof(RecipeLog.PV_M12):
-                    return recipeLog.PV_M12 / PLCService.ReadMaxValue("MFC12") * 100.0f;
+                    return recipeLog.PV_M12 / SettingViewModel.ReadMaxValue("MFC12") * 100.0f;
 
                 case nameof(RecipeLog.PV_M13):
-                    return recipeLog.PV_M13 / PLCService.ReadMaxValue("MFC13") * 100.0f;
+                    return recipeLog.PV_M13 / SettingViewModel.ReadMaxValue("MFC13") * 100.0f;
 
                 case nameof(RecipeLog.PV_M14):
-                    return recipeLog.PV_M14 / PLCService.ReadMaxValue("MFC14") * 100.0f;
+                    return recipeLog.PV_M14 / SettingViewModel.ReadMaxValue("MFC14") * 100.0f;
 
                 case nameof(RecipeLog.PV_M15):
-                    return recipeLog.PV_M15 / PLCService.ReadMaxValue("MFC15") * 100.0f;
+                    return recipeLog.PV_M15 / SettingViewModel.ReadMaxValue("MFC15") * 100.0f;
 
                 case nameof(RecipeLog.PV_M16):
-                    return recipeLog.PV_M16 / PLCService.ReadMaxValue("MFC16") * 100.0f;
+                    return recipeLog.PV_M16 / SettingViewModel.ReadMaxValue("MFC16") * 100.0f;
 
                 case nameof(RecipeLog.PV_M17):
-                    return recipeLog.PV_M17 / PLCService.ReadMaxValue("MFC17") * 100.0f;
+                    return recipeLog.PV_M17 / SettingViewModel.ReadMaxValue("MFC17") * 100.0f;
 
                 case nameof(RecipeLog.PV_M18):
-                    return recipeLog.PV_M18 / PLCService.ReadMaxValue("MFC18") * 100.0f;
+                    return recipeLog.PV_M18 / SettingViewModel.ReadMaxValue("MFC18") * 100.0f;
 
                 case nameof(RecipeLog.PV_M19):
-                    return recipeLog.PV_M19 / PLCService.ReadMaxValue("MFC19") * 100.0f;
+                    return recipeLog.PV_M19 / SettingViewModel.ReadMaxValue("MFC19") * 100.0f;
 
                 case nameof(RecipeLog.PV_E01):
-                    return recipeLog.PV_E01 / PLCService.ReadMaxValue("EPC01") * 100.0f;
+                    return recipeLog.PV_E01 / SettingViewModel.ReadMaxValue("EPC01") * 100.0f;
 
                 case nameof(RecipeLog.PV_E02):
-                    return recipeLog.PV_E02 / PLCService.ReadMaxValue("EPC02") * 100.0f;
+                    return recipeLog.PV_E02 / SettingViewModel.ReadMaxValue("EPC02") * 100.0f;
 
                 case nameof(RecipeLog.PV_E03):
-                    return recipeLog.PV_E03 / PLCService.ReadMaxValue("EPC03") * 100.0f;
+                    return recipeLog.PV_E03 / SettingViewModel.ReadMaxValue("EPC03") * 100.0f;
 
                 case nameof(RecipeLog.PV_E04):
-                    return recipeLog.PV_E04 / PLCService.ReadMaxValue("EPC04") * 100.0f;
+                    return recipeLog.PV_E04 / SettingViewModel.ReadMaxValue("EPC04") * 100.0f;
 
                 case nameof(RecipeLog.PV_E05):
-                    return recipeLog.PV_E05 / PLCService.ReadMaxValue("EPC05") * 100.0f;
+                    return recipeLog.PV_E05 / SettingViewModel.ReadMaxValue("EPC05") * 100.0f;
 
                 case nameof(RecipeLog.PV_E06):
-                    return recipeLog.PV_E06 / PLCService.ReadMaxValue("EPC06") * 100.0f;
+                    return recipeLog.PV_E06 / SettingViewModel.ReadMaxValue("EPC06") * 100.0f;
 
                 case nameof(RecipeLog.PV_E07):
-                    return recipeLog.PV_E07 / PLCService.ReadMaxValue("EPC07") * 100.0f;
+                    return recipeLog.PV_E07 / SettingViewModel.ReadMaxValue("EPC07") * 100.0f;
 
                 case nameof(RecipeLog.PV_TEMP):
-                    return recipeLog.PV_TEMP / PLCService.ReadMaxValue("Temperature") * 100.0f;
+                    return recipeLog.PV_TEMP / SettingViewModel.ReadMaxValue("Temperature") * 100.0f;
 
                 case nameof(RecipeLog.PV_ROT):
-                    return recipeLog.PV_ROT / PLCService.ReadMaxValue("Rotation") * 100.0f;
+                    return recipeLog.PV_ROT / SettingViewModel.ReadMaxValue("Rotation") * 100.0f;
 
                 case nameof(RecipeLog.PV_PRES):
-                    return recipeLog.PV_PRES / PLCService.ReadMaxValue("Pressure") * 100.0f;
+                    return recipeLog.PV_PRES / SettingViewModel.ReadMaxValue("Pressure") * 100.0f;
 
                 case nameof(RecipeLog.PV_IHT_KW):
                     return recipeLog.PV_IHT_KW / 100.0f;
@@ -297,91 +298,91 @@ namespace SapphireXR_App.Models
                     return recipeLog.PV_IHT_CW / 100.0f;
 
                 case nameof(RecipeLog.SV_M01):
-                    return recipeLog.SV_M01 / PLCService.ReadMaxValue("MFC01") * 100.0f;
+                    return recipeLog.SV_M01 / SettingViewModel.ReadMaxValue("MFC01") * 100.0f;
 
                 case nameof(RecipeLog.SV_M02):
-                    return recipeLog.SV_M02 / PLCService.ReadMaxValue("MFC02") * 100.0f;
+                    return recipeLog.SV_M02 / SettingViewModel.ReadMaxValue("MFC02") * 100.0f;
 
                 case nameof(RecipeLog.SV_M03):
-                    return recipeLog.SV_M03 / PLCService.ReadMaxValue("MFC03") * 100.0f;
+                    return recipeLog.SV_M03 / SettingViewModel.ReadMaxValue("MFC03") * 100.0f;
 
                 case nameof(RecipeLog.SV_M04):
-                    return recipeLog.SV_M04 / PLCService.ReadMaxValue("MFC04") * 100.0f;
+                    return recipeLog.SV_M04 / SettingViewModel.ReadMaxValue("MFC04") * 100.0f;
 
                 case nameof(RecipeLog.SV_M05):
-                    return recipeLog.SV_M05 / PLCService.ReadMaxValue("MFC05") * 100.0f;
+                    return recipeLog.SV_M05 / SettingViewModel.ReadMaxValue("MFC05") * 100.0f;
 
                 case nameof(RecipeLog.SV_M06):
-                    return recipeLog.SV_M06 / PLCService.ReadMaxValue("MFC06") * 100.0f;
+                    return recipeLog.SV_M06 / SettingViewModel.ReadMaxValue("MFC06") * 100.0f;
 
                 case nameof(RecipeLog.SV_M07):
-                    return recipeLog.SV_M07 / PLCService.ReadMaxValue("MFC07") * 100.0f;
+                    return recipeLog.SV_M07 / SettingViewModel.ReadMaxValue("MFC07") * 100.0f;
 
                 case nameof(RecipeLog.SV_M08):
-                    return recipeLog.SV_M08 / PLCService.ReadMaxValue("MFC08") * 100.0f;
+                    return recipeLog.SV_M08 / SettingViewModel.ReadMaxValue("MFC08") * 100.0f;
 
                 case nameof(RecipeLog.SV_M09):
-                    return recipeLog.SV_M09 / PLCService.ReadMaxValue("MFC09") * 100.0f;
+                    return recipeLog.SV_M09 / SettingViewModel.ReadMaxValue("MFC09") * 100.0f;
 
                 case nameof(RecipeLog.SV_M10):
-                    return recipeLog.SV_M10 / PLCService.ReadMaxValue("MFC10") * 100.0f;
+                    return recipeLog.SV_M10 / SettingViewModel.ReadMaxValue("MFC10") * 100.0f;
 
                 case nameof(RecipeLog.SV_M11):
-                    return recipeLog.SV_M11 / PLCService.ReadMaxValue("MFC11") * 100.0f;
+                    return recipeLog.SV_M11 / SettingViewModel.ReadMaxValue("MFC11") * 100.0f;
 
                 case nameof(RecipeLog.SV_M12):
-                    return recipeLog.SV_M12 / PLCService.ReadMaxValue("MFC12") * 100.0f;
+                    return recipeLog.SV_M12 / SettingViewModel.ReadMaxValue("MFC12") * 100.0f;
 
                 case nameof(RecipeLog.SV_M13):
-                    return recipeLog.SV_M13 / PLCService.ReadMaxValue("MFC13") * 100.0f;
+                    return recipeLog.SV_M13 / SettingViewModel.ReadMaxValue("MFC13") * 100.0f;
 
                 case nameof(RecipeLog.SV_M14):
-                    return recipeLog.SV_M14 / PLCService.ReadMaxValue("MFC14") * 100.0f;
+                    return recipeLog.SV_M14 / SettingViewModel.ReadMaxValue("MFC14") * 100.0f;
 
                 case nameof(RecipeLog.SV_M15):
-                    return recipeLog.SV_M15 / PLCService.ReadMaxValue("MFC15") * 100.0f;
+                    return recipeLog.SV_M15 / SettingViewModel.ReadMaxValue("MFC15") * 100.0f;
 
                 case nameof(RecipeLog.SV_M16):
-                    return recipeLog.SV_M16 / PLCService.ReadMaxValue("MFC16") * 100.0f;
+                    return recipeLog.SV_M16 / SettingViewModel.ReadMaxValue("MFC16") * 100.0f;
 
                 case nameof(RecipeLog.SV_M17):
-                    return recipeLog.SV_M17 / PLCService.ReadMaxValue("MFC17") * 100.0f;
+                    return recipeLog.SV_M17 / SettingViewModel.ReadMaxValue("MFC17") * 100.0f;
 
                 case nameof(RecipeLog.SV_M18):
-                    return recipeLog.SV_M18 / PLCService.ReadMaxValue("MFC18") * 100.0f;
+                    return recipeLog.SV_M18 / SettingViewModel.ReadMaxValue("MFC18") * 100.0f;
 
                 case nameof(RecipeLog.SV_M19):
-                    return recipeLog.SV_M19 / PLCService.ReadMaxValue("MFC19") * 100.0f;
+                    return recipeLog.SV_M19 / SettingViewModel.ReadMaxValue("MFC19") * 100.0f;
 
                 case nameof(RecipeLog.SV_E01):
-                    return recipeLog.SV_E01 / PLCService.ReadMaxValue("EPC01") * 100.0f;
+                    return recipeLog.SV_E01 / SettingViewModel.ReadMaxValue("EPC01") * 100.0f;
 
                 case nameof(RecipeLog.SV_E02):
-                    return recipeLog.SV_E02 / PLCService.ReadMaxValue("EPC02") * 100.0f;
+                    return recipeLog.SV_E02 / SettingViewModel.ReadMaxValue("EPC02") * 100.0f;
 
                 case nameof(RecipeLog.SV_E03):
-                    return recipeLog.SV_E03 / PLCService.ReadMaxValue("EPC03") * 100.0f;
+                    return recipeLog.SV_E03 / SettingViewModel.ReadMaxValue("EPC03") * 100.0f;
 
                 case nameof(RecipeLog.SV_E04):
-                    return recipeLog.SV_E04 / PLCService.ReadMaxValue("EPC04") * 100.0f;
+                    return recipeLog.SV_E04 / SettingViewModel.ReadMaxValue("EPC04") * 100.0f;
 
                 case nameof(RecipeLog.SV_E05):
-                    return recipeLog.SV_E05 / PLCService.ReadMaxValue("EPC05") * 100.0f;
+                    return recipeLog.SV_E05 / SettingViewModel.ReadMaxValue("EPC05") * 100.0f;
 
                 case nameof(RecipeLog.SV_E06):
-                    return recipeLog.SV_E06 / PLCService.ReadMaxValue("EPC06") * 100.0f;
+                    return recipeLog.SV_E06 / SettingViewModel.ReadMaxValue("EPC06") * 100.0f;
 
                 case nameof(RecipeLog.SV_E07):
-                    return recipeLog.SV_E07 / PLCService.ReadMaxValue("EPC07") * 100.0f;
+                    return recipeLog.SV_E07 / SettingViewModel.ReadMaxValue("EPC07") * 100.0f;
 
                 case nameof(RecipeLog.SV_TEMP):
-                    return recipeLog.SV_TEMP / PLCService.ReadMaxValue("Temperature") * 100.0f;
+                    return recipeLog.SV_TEMP / SettingViewModel.ReadMaxValue("Temperature") * 100.0f;
 
                 case nameof(RecipeLog.SV_ROT):
-                    return recipeLog.SV_ROT / PLCService.ReadMaxValue("Rotation") * 100.0f;
+                    return recipeLog.SV_ROT / SettingViewModel.ReadMaxValue("Rotation") * 100.0f;
 
                 case nameof(RecipeLog.SV_PRES):
-                    return recipeLog.SV_PRES / PLCService.ReadMaxValue("Pressure") * 100.0f;
+                    return recipeLog.SV_PRES / SettingViewModel.ReadMaxValue("Pressure") * 100.0f;
 
                 default:
                     return null;
@@ -393,91 +394,91 @@ namespace SapphireXR_App.Models
             switch (deviceName)
             {
                 case nameof(RecipeLog.PV_M01):
-                    return PLCService.ReadMaxValue("MFC01");
+                    return SettingViewModel.ReadMaxValue("MFC01");
 
                 case nameof(RecipeLog.PV_M02):
-                    return PLCService.ReadMaxValue("MFC02");
+                    return SettingViewModel.ReadMaxValue("MFC02");
 
                 case nameof(RecipeLog.PV_M03):
-                    return PLCService.ReadMaxValue("MFC03");
+                    return SettingViewModel.ReadMaxValue("MFC03");
 
                 case nameof(RecipeLog.PV_M04):
-                    return PLCService.ReadMaxValue("MFC04");
+                    return SettingViewModel.ReadMaxValue("MFC04");
 
                 case nameof(RecipeLog.PV_M05):
-                    return PLCService.ReadMaxValue("MFC05");
+                    return SettingViewModel.ReadMaxValue("MFC05");
 
                 case nameof(RecipeLog.PV_M06):
-                    return PLCService.ReadMaxValue("MFC06");
+                    return SettingViewModel.ReadMaxValue("MFC06");
 
                 case nameof(RecipeLog.PV_M07):
-                    return PLCService.ReadMaxValue("MFC07");
+                    return SettingViewModel.ReadMaxValue("MFC07");
 
                 case nameof(RecipeLog.PV_M08):
-                    return PLCService.ReadMaxValue("MFC08");
+                    return SettingViewModel.ReadMaxValue("MFC08");
 
                 case nameof(RecipeLog.PV_M09):
-                    return PLCService.ReadMaxValue("MFC09");
+                    return SettingViewModel.ReadMaxValue("MFC09");
 
                 case nameof(RecipeLog.PV_M10):
-                    return PLCService.ReadMaxValue("MFC10");
+                    return SettingViewModel.ReadMaxValue("MFC10");
 
                 case nameof(RecipeLog.PV_M11):
-                    return PLCService.ReadMaxValue("MFC11");
+                    return SettingViewModel.ReadMaxValue("MFC11");
 
                 case nameof(RecipeLog.PV_M12):
-                    return PLCService.ReadMaxValue("MFC12");
+                    return SettingViewModel.ReadMaxValue("MFC12");
 
                 case nameof(RecipeLog.PV_M13):
-                    return PLCService.ReadMaxValue("MFC13");
+                    return SettingViewModel.ReadMaxValue("MFC13");
 
                 case nameof(RecipeLog.PV_M14):
-                    return PLCService.ReadMaxValue("MFC14");
+                    return SettingViewModel.ReadMaxValue("MFC14");
 
                 case nameof(RecipeLog.PV_M15):
-                    return  PLCService.ReadMaxValue("MFC15");
+                    return  SettingViewModel.ReadMaxValue("MFC15");
 
                 case nameof(RecipeLog.PV_M16):
-                    return PLCService.ReadMaxValue("MFC16");
+                    return SettingViewModel.ReadMaxValue("MFC16");
 
                 case nameof(RecipeLog.PV_M17):
-                    return PLCService.ReadMaxValue("MFC17");
+                    return SettingViewModel.ReadMaxValue("MFC17");
 
                 case nameof(RecipeLog.PV_M18):
-                    return PLCService.ReadMaxValue("MFC18");
+                    return SettingViewModel.ReadMaxValue("MFC18");
 
                 case nameof(RecipeLog.PV_M19):
-                    return PLCService.ReadMaxValue("MFC19");
+                    return SettingViewModel.ReadMaxValue("MFC19");
 
                 case nameof(RecipeLog.PV_E01):
-                    return PLCService.ReadMaxValue("EPC01");
+                    return SettingViewModel.ReadMaxValue("EPC01");
 
                 case nameof(RecipeLog.PV_E02):
-                    return PLCService.ReadMaxValue("EPC02");
+                    return SettingViewModel.ReadMaxValue("EPC02");
 
                 case nameof(RecipeLog.PV_E03):
-                    return PLCService.ReadMaxValue("EPC03");
+                    return SettingViewModel.ReadMaxValue("EPC03");
 
                 case nameof(RecipeLog.PV_E04):
-                    return PLCService.ReadMaxValue("EPC04");
+                    return SettingViewModel.ReadMaxValue("EPC04");
 
                 case nameof(RecipeLog.PV_E05):
-                    return PLCService.ReadMaxValue("EPC05");
+                    return SettingViewModel.ReadMaxValue("EPC05");
 
                 case nameof(RecipeLog.PV_E06):
-                    return PLCService.ReadMaxValue("EPC06");
+                    return SettingViewModel.ReadMaxValue("EPC06");
 
                 case nameof(RecipeLog.PV_E07):
-                    return PLCService.ReadMaxValue("EPC07");
+                    return SettingViewModel.ReadMaxValue("EPC07");
 
                 case nameof(RecipeLog.PV_TEMP):
-                    return PLCService.ReadMaxValue("Temperature");
+                    return SettingViewModel.ReadMaxValue("Temperature");
 
                 case nameof(RecipeLog.PV_ROT):
-                    return PLCService.ReadMaxValue("Rotation");
+                    return SettingViewModel.ReadMaxValue("Rotation");
 
                 case nameof(RecipeLog.PV_PRES):
-                    return PLCService.ReadMaxValue("Pressure");
+                    return SettingViewModel.ReadMaxValue("Pressure");
 
                 case nameof(RecipeLog.PV_IHT_KW):
                     return 100.0f;
@@ -489,91 +490,91 @@ namespace SapphireXR_App.Models
                     return 100.0f;
 
                 case nameof(RecipeLog.SV_M01):
-                    return PLCService.ReadMaxValue("MFC01");
+                    return SettingViewModel.ReadMaxValue("MFC01");
 
                 case nameof(RecipeLog.SV_M02):
-                    return PLCService.ReadMaxValue("MFC02");
+                    return SettingViewModel.ReadMaxValue("MFC02");
 
                 case nameof(RecipeLog.SV_M03):
-                    return PLCService.ReadMaxValue("MFC03");
+                    return SettingViewModel.ReadMaxValue("MFC03");
 
                 case nameof(RecipeLog.SV_M04):
-                    return PLCService.ReadMaxValue("MFC04");
+                    return SettingViewModel.ReadMaxValue("MFC04");
 
                 case nameof(RecipeLog.SV_M05):
-                    return PLCService.ReadMaxValue("MFC05");
+                    return SettingViewModel.ReadMaxValue("MFC05");
 
                 case nameof(RecipeLog.SV_M06):
-                    return PLCService.ReadMaxValue("MFC06");
+                    return SettingViewModel.ReadMaxValue("MFC06");
 
                 case nameof(RecipeLog.SV_M07):
-                    return PLCService.ReadMaxValue("MFC07");
+                    return SettingViewModel.ReadMaxValue("MFC07");
 
                 case nameof(RecipeLog.SV_M08):
-                    return PLCService.ReadMaxValue("MFC08");
+                    return SettingViewModel.ReadMaxValue("MFC08");
 
                 case nameof(RecipeLog.SV_M09):
-                    return PLCService.ReadMaxValue("MFC09");
+                    return SettingViewModel.ReadMaxValue("MFC09");
 
                 case nameof(RecipeLog.SV_M10):
-                    return PLCService.ReadMaxValue("MFC10");
+                    return SettingViewModel.ReadMaxValue("MFC10");
 
                 case nameof(RecipeLog.SV_M11):
-                    return PLCService.ReadMaxValue("MFC11");
+                    return SettingViewModel.ReadMaxValue("MFC11");
 
                 case nameof(RecipeLog.SV_M12):
-                    return PLCService.ReadMaxValue("MFC12");
+                    return SettingViewModel.ReadMaxValue("MFC12");
 
                 case nameof(RecipeLog.SV_M13):
-                    return PLCService.ReadMaxValue("MFC13");
+                    return SettingViewModel.ReadMaxValue("MFC13");
 
                 case nameof(RecipeLog.SV_M14):
-                    return PLCService.ReadMaxValue("MFC14");
+                    return SettingViewModel.ReadMaxValue("MFC14");
 
                 case nameof(RecipeLog.SV_M15):
-                    return PLCService.ReadMaxValue("MFC15");
+                    return SettingViewModel.ReadMaxValue("MFC15");
 
                 case nameof(RecipeLog.SV_M16):
-                    return PLCService.ReadMaxValue("MFC16");
+                    return SettingViewModel.ReadMaxValue("MFC16");
 
                 case nameof(RecipeLog.SV_M17):
-                    return PLCService.ReadMaxValue("MFC17");
+                    return SettingViewModel.ReadMaxValue("MFC17");
 
                 case nameof(RecipeLog.SV_M18):
-                    return PLCService.ReadMaxValue("MFC18");
+                    return SettingViewModel.ReadMaxValue("MFC18");
 
                 case nameof(RecipeLog.SV_M19):
-                    return PLCService.ReadMaxValue("MFC19");
+                    return SettingViewModel.ReadMaxValue("MFC19");
 
                 case nameof(RecipeLog.SV_E01):
-                    return PLCService.ReadMaxValue("EPC01");
+                    return SettingViewModel.ReadMaxValue("EPC01");
 
                 case nameof(RecipeLog.SV_E02):
-                    return PLCService.ReadMaxValue("EPC02");
+                    return SettingViewModel.ReadMaxValue("EPC02");
 
                 case nameof(RecipeLog.SV_E03):
-                    return PLCService.ReadMaxValue("EPC03");
+                    return SettingViewModel.ReadMaxValue("EPC03");
 
                 case nameof(RecipeLog.SV_E04):
-                    return PLCService.ReadMaxValue("EPC04");
+                    return SettingViewModel.ReadMaxValue("EPC04");
 
                 case nameof(RecipeLog.SV_E05):
-                    return PLCService.ReadMaxValue("EPC05");
+                    return SettingViewModel.ReadMaxValue("EPC05");
 
                 case nameof(RecipeLog.SV_E06):
-                    return PLCService.ReadMaxValue("EPC06");
+                    return SettingViewModel.ReadMaxValue("EPC06");
 
                 case nameof(RecipeLog.SV_E07):
-                    return PLCService.ReadMaxValue("EPC07");
+                    return SettingViewModel.ReadMaxValue("EPC07");
 
                 case nameof(RecipeLog.SV_TEMP):
-                    return PLCService.ReadMaxValue("Temperature");
+                    return SettingViewModel.ReadMaxValue("Temperature");
 
                 case nameof(RecipeLog.SV_ROT):
-                    return PLCService.ReadMaxValue("Rotation");
+                    return SettingViewModel.ReadMaxValue("Rotation");
 
                 case nameof(RecipeLog.SV_PRES):
-                    return PLCService.ReadMaxValue("Pressure");
+                    return SettingViewModel.ReadMaxValue("Pressure");
 
                 default:
                     return null;

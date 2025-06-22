@@ -175,7 +175,7 @@ namespace SapphireXR_App.ViewModels
             Batch newBatch = new Batch() { Name = "UserState" + (Batches.Count + 1) };
             foreach((string flowController, string fullName) in Util.RecipeFlowControlFieldToControllerID)
             {
-                newBatch.AnalogIOUserStates.Add(new AnalogIOUserState() { ID = flowController, MaxValue = (int)PLCService.ReadMaxValue(fullName), FullIDName = Util.RecipeFlowControlFieldToControllerID[flowController] });
+                newBatch.AnalogIOUserStates.Add(new AnalogIOUserState() { ID = flowController, MaxValue = (int)SettingViewModel.ReadMaxValue(fullName)!, FullIDName = Util.RecipeFlowControlFieldToControllerID[flowController] });
             }
             foreach((string valve, int idx) in PLCService.ValveIDtoOutputSolValveIdx1)
             {

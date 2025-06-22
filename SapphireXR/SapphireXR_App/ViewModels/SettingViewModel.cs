@@ -238,6 +238,26 @@ namespace SapphireXR_App.ViewModels
             }
         }
 
+        public static int? ReadMaxValue(string id)
+        {
+            if (AnalogDeviceIDShortNameMap.TryGetValue(id, out var shortName) == true)
+            {
+                var found = dAnalogDeviceIO.Where((KeyValuePair<string, AnalogDeviceIO> analogDeviceIO) => shortName == analogDeviceIO.Key).Select((KeyValuePair<string, AnalogDeviceIO> analogDeviceIO) => analogDeviceIO.Value.MaxValue);
+                if(0 < found.Count())
+                {
+                    return found.First();
+                }
+                else
+                {
+                    return null;
+                }
+            }
+            else
+            {
+                return null;
+            }
+        }
+
         public void AlarmSettingLoad()
         {
             PropertyChanged += (object? sender, PropertyChangedEventArgs args) =>
@@ -270,7 +290,6 @@ namespace SapphireXR_App.ViewModels
             lGasDO = dGasDO?.Values.ToList();
          
             PLCService.WriteDeviceMaxValue(lAnalogDeviceIO);
-            PLCService.ReadMaxValueFromPLC();
         }
 
         public void AlarmSettingSave()
@@ -300,7 +319,6 @@ namespace SapphireXR_App.ViewModels
             File.WriteAllText(DevceIOSettingFilePath, jDeviceIO.ToString());
 
             PLCService.WriteDeviceMaxValue(lAnalogDeviceIO);
-            PLCService.ReadMaxValueFromPLC();
         }
 
         private void updateIOState(BitArray ioStateList)
@@ -446,5 +464,14 @@ namespace SapphireXR_App.ViewModels
         private static ObservableManager<(string, string)>.DataIssuer GasIOLabelChangedPublisher = ObservableManager<(string, string)>.Get("GasIOLabelChanged");
         private static ObservableManager<(string, string)>.DataIssuer ValveIOLabelChangedPublisher = ObservableManager<(string, string)>.Get("ValveIOLabelChanged");
         private static ObservableManager<(string, string)>.DataIssuer AnalogIOLabelChangedPublisher = ObservableManager<(string, string)>.Get("AnalogIOLabelChanged");
+        public static readonly Dictionary<string, string> AnalogDeviceIDShortNameMap = new Dictionary<string, string>
+        {
+            { "MFC01", "M01" }, { "MFC02", "M02" }, { "MFC03", "M03"  }, { "MFC04", "M04"  }, { "MFC05", "M05" },
+            { "MFC06", "M06" }, { "MFC07", "M07" }, { "MFC08", "M08" }, { "MFC09", "M09" }, { "MFC10", "M10" },
+            { "MFC11", "M11" }, { "MFC12", "M12" }, { "MFC13", "M13" }, {  "MFC14", "M14" }, { "MFC15", "M15" },
+            { "MFC16", "M16" }, { "MFC17", "M17" }, { "MFC18", "M18" }, { "MFC19", "M19"  },
+            { "EPC01", "E01" },  { "EPC02", "E02" }, { "EPC03", "E03" }, { "EPC04", "E04" }, { "EPC05", "E05" },
+            { "EPC06", "E06" }, { "EPC07", "E07" }, { "Temperature", "R01"  }, { "Pressure", "R02"  }, { "Rotation", "R03"  }
+        };
     }
 }

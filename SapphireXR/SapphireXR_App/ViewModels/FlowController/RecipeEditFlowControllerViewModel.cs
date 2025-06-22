@@ -65,8 +65,7 @@ namespace SapphireXR_App.ViewModels.FlowController
                         break;
                 }
             };
-            MaxValue = (int)PLCService.ReadMaxValue(controllerID);
-
+            MaxValue = SettingViewModel.ReadMaxValue(controllerID)!.Value;
         }
 
         protected override void onClicked(object[]? args)

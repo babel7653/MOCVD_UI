@@ -24,7 +24,7 @@ namespace SapphireXR_App.ViewModels
                 plotModel.TitleColor = OxyColors.White;
                 plotModel.Axes.Add(initializeXAxis());
 
-                double maxValue = PLCService.ReadMaxValue(title);
+                double maxValue = (double)SettingViewModel.ReadMaxValue(title)!;
                 double padding = maxValue * 0.01;
                 plotModel.Axes.Add(new LinearAxis
                 {

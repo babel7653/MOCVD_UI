@@ -1,6 +1,4 @@
-﻿using CommunityToolkit.Mvvm.Input;
-using System.Windows.Input;
-using SapphireXR_App.Enums;
+﻿using SapphireXR_App.Enums;
 using SapphireXR_App.Common;
 using SapphireXR_App.Models;
 using static SapphireXR_App.ViewModels.FlowControlViewModel;
@@ -15,7 +13,7 @@ namespace SapphireXR_App.ViewModels.FlowController
             public ControlTargetValueSubscriber(HomeFlowControllerViewModel viewModel)
             {
                 flowControllerViewModel = viewModel;
-                maxValue = PLCService.ReadMaxValue(viewModel.ControllerID);
+                maxValue = (float)SettingViewModel.ReadMaxValue(viewModel.ControllerID)!;
             }
             void IObserver<(float, float)>.OnCompleted()
             {

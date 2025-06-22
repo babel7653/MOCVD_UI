@@ -23,7 +23,6 @@ namespace SapphireXR_App.Models
             if (AppSetting.ConfigMode == false)
             {
                 ReadValveStateFromPLC();
-                ReadMaxValueFromPLC();
                 ReadCurrentValueFromPLC();
 
                 dCurrentValueIssuers = new Dictionary<string, ObservableManager<float>.DataIssuer>();
@@ -78,7 +77,6 @@ namespace SapphireXR_App.Models
                 dLogicalInterlockStateIssuer = ObservableManager<BitArray>.Get("LogicalInterlockState");
 
                 ObservableManager<bool>.Subscribe("Leak Test Mode", leakTestModeSubscriber = new LeakTestModeSubscriber());
-                ObservableManager<bool>.Subscribe("App.Closing", appCloseSubscriber = new AppCloseSubscriber());
 
                 timer = new DispatcherTimer();
                 timer.Interval = new TimeSpan(2000000);
@@ -107,20 +105,6 @@ namespace SapphireXR_App.Models
             {
                 ReadMaxValueFromFile();
             }
-        }
-
-        public static void ReadMaxValueFromPLC()
-        {
-            aDeviceMaxValue = Ads.ReadAny<float[]>(hDeviceMaxValuePLC, [dIndexController.Count]);
-        }
-
-        public static float ReadMaxValue(string flowControlID)
-        {
-            if (aDeviceMaxValue == null)
-            {
-                throw new Exception("aDeviceMaxValue is null in ReadMaxValue(), WriteDeviceMaxValue() must be called before");
-            }
-            return aDeviceMaxValue[dIndexController[flowControlID]];
         }
 
         private static void ReadCurrentValueFromPLC()
@@ -190,23 +174,7 @@ namespace SapphireXR_App.Models
 
         private static void ReadMaxValueFromFile()
         {
-            string maxValuesFilePath = Util.GetResourceAbsoluteFilePath("\\Configurations\\MaxValue.json");
-            try
-            {
-                JToken? maxValuesRootToken = JToken.Parse(File.ReadAllText(maxValuesFilePath));
-                if (maxValuesRootToken != null)
-                {
-                    JToken? maxValuesToken = maxValuesRootToken["MaxValues"];
-                    if(maxValuesToken != null)
-                    {
-                        aDeviceMaxValue = JsonConvert.DeserializeObject<float[]?>(maxValuesToken.ToString());
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                throw new Exception("Max Value 로그 파일 (" + maxValuesFilePath + ")로부터 현재 MaxValue값들을 저장하는데 문제가 생겼습니다. 애플리케이션이 종료됩니다. 원인은 다음과 같습니다: " + ex.ToString());
-            }
+          
         }
     }
 }

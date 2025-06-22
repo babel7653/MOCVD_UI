@@ -95,6 +95,7 @@ namespace SapphireXR_App.Models
                     index++;
                 }
                 Ads.WriteAny(hDeviceMaxValuePLC, maxValue, [dIndexController.Count]);
+                
                 // List Analog Device Input / Output
             }
             catch (Exception ex)

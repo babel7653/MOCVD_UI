@@ -135,7 +135,16 @@ namespace SapphireXR_App.ViewModels
             Deviation = string.Empty;
             CurrentValue = string.Empty;
             ControlValue = string.Empty;
-            MaxValue = (int)SettingViewModel.ReadMaxValue(fcID)!;
+            int? redMaxValue = SettingViewModel.ReadMaxValue(fcID);
+            if (redMaxValue != null)
+            {
+                MaxValue = (int)redMaxValue;
+            }
+            else
+            {
+                throw new Exception("Faiure happend in reading max value for flow control view window. Logic error in FlowControlViewModel constructor: "
+                       + "the value of \"fcID\", the third argument of the constructor \"" + fcID + "\" is not valid flow controller ID");
+            }
             FontColor = OnNormal;
             PropertyChanged += (object? sender, PropertyChangedEventArgs e) =>
             {

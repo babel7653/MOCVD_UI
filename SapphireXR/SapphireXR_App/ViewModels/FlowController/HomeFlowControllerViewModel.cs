@@ -13,7 +13,17 @@ namespace SapphireXR_App.ViewModels.FlowController
             public ControlTargetValueSubscriber(HomeFlowControllerViewModel viewModel)
             {
                 flowControllerViewModel = viewModel;
-                maxValue = (float)SettingViewModel.ReadMaxValue(viewModel.ControllerID)!;
+
+                int? redMaxValue = SettingViewModel.ReadMaxValue(viewModel.ControllerID);
+                if (redMaxValue != null)
+                {
+                    maxValue = (float)redMaxValue;
+                }
+                else
+                {
+                    throw new Exception("Faiure happend in reading max value for flow controller in home view. Logic error in ControlTargetValueSubscriber contructor in HomeFlowControllerViewModel: "
+                        + "the value of \"viewModel.ControllerID\", the constructor argument \"" + viewModel.ControllerID + "\" is not valid flow controller ID");
+                }
             }
             void IObserver<(float, float)>.OnCompleted()
             {

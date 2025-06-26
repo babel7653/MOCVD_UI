@@ -1,12 +1,14 @@
-﻿using CommunityToolkit.Mvvm.ComponentModel;
+﻿using System.Windows.Controls;
+using System.Windows.Documents;
+using System.Windows.Input;
+using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
 using OxyPlot;
 using OxyPlot.Axes;
-using OxyPlot.Series;
-using CommunityToolkit.Mvvm.Input;
-using SapphireXR_App.Models;
-using System.Windows.Input;
-using SapphireXR_App.Common;
 using OxyPlot.Legends;
+using OxyPlot.Series;
+using SapphireXR_App.Common;
+using SapphireXR_App.Models;
 
 namespace SapphireXR_App.ViewModels
 {
@@ -24,7 +26,13 @@ namespace SapphireXR_App.ViewModels
                 plotModel.TitleColor = OxyColors.White;
                 plotModel.Axes.Add(initializeXAxis());
 
-                double maxValue = (double)SettingViewModel.ReadMaxValue(title)!;
+                int? redMaxValue = SettingViewModel.ReadMaxValue(title);
+                if(redMaxValue == null)
+                {
+                    throw new Exception("Failure happened in creating chart in bottom view. Logic error in ControlTargetValueSeriesUpdater constructor: the value of \"title\", the constructor argument " +
+                        title + " is not valid flow controller ID");
+                }
+                double maxValue = (double)redMaxValue;
                 double padding = maxValue * 0.01;
                 plotModel.Axes.Add(new LinearAxis
                 {

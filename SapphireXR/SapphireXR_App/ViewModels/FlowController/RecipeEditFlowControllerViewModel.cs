@@ -1,5 +1,4 @@
 ﻿using SapphireXR_App.Common;
-using SapphireXR_App.Models;
 using System.ComponentModel;
 using CommunityToolkit.Mvvm.ComponentModel;
 
@@ -65,7 +64,16 @@ namespace SapphireXR_App.ViewModels.FlowController
                         break;
                 }
             };
-            MaxValue = SettingViewModel.ReadMaxValue(controllerID)!.Value;
+            int? redMaxValue = SettingViewModel.ReadMaxValue(controllerID);
+            if (redMaxValue != null)
+            {
+                MaxValue = redMaxValue.Value;
+            }
+            else
+            {
+                throw new Exception("Faiure happend in reading max value for flow controller in recipe edit view. Logic error in RecipeEditFlowControllerViewModel.onLoaded in HomeFlowControllerViewModel: "
+                       + "the value of \"controllerID\", the second argument of the onLoaded method \"" + controllerID + "\" is not valid flow controller ID");
+            }
         }
 
         protected override void onClicked(object[]? args)

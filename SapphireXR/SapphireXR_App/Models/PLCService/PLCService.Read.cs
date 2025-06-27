@@ -1,9 +1,6 @@
 ﻿using SapphireXR_App.Common;
 using System.Collections;
 using System.Windows.Threading;
-using Newtonsoft.Json.Linq;
-using System.IO;
-using Newtonsoft.Json;
 
 namespace SapphireXR_App.Models
 {
@@ -78,32 +75,34 @@ namespace SapphireXR_App.Models
 
                 ObservableManager<bool>.Subscribe("Leak Test Mode", leakTestModeSubscriber = new LeakTestModeSubscriber());
 
-                timer = new DispatcherTimer();
-                timer.Interval = new TimeSpan(2000000);
-                timer.Tick += OnTick;
-                timer.Start();
-
-                currentActiveRecipeListener = new DispatcherTimer();
-                currentActiveRecipeListener.Interval = new TimeSpan(TimeSpan.TicksPerMillisecond * 500);
-                currentActiveRecipeListener.Tick += (object? sender, EventArgs e) =>
+                if (timer == null)
                 {
-                    dCurrentActiveRecipeIssue.Issue(Ads.ReadAny<short>(hRcpStepN));
-                    if (RecipeRunEndNotified == false && Ads.ReadAny<short>(hCmd_RcpOperation) == 50)
+                    timer = new DispatcherTimer();
+                    timer.Interval = new TimeSpan(2000000);
+                    timer.Tick += OnTick;
+                    timer.Start();
+                }
+
+                if (currentActiveRecipeListener == null)
+                {
+                    currentActiveRecipeListener = new DispatcherTimer();
+                    currentActiveRecipeListener.Interval = new TimeSpan(TimeSpan.TicksPerMillisecond * 500);
+                    currentActiveRecipeListener.Tick += (object? sender, EventArgs e) =>
                     {
-                        dRecipeEndedPublisher.Issue(true);
-                        RecipeRunEndNotified = true;
-                    }
-                    else
-                        if (RecipeRunEndNotified == true && Ads.ReadAny<short>(hCmd_RcpOperation) == 0)
-                    {
-                        RecipeRunEndNotified = false;
-                    }
-                };
-                currentActiveRecipeListener.Start();
-            }
-            else
-            {
-                ReadMaxValueFromFile();
+                        dCurrentActiveRecipeIssue.Issue(Ads.ReadAny<short>(hRcpStepN));
+                        if (RecipeRunEndNotified == false && Ads.ReadAny<short>(hCmd_RcpOperation) == 50)
+                        {
+                            dRecipeEndedPublisher.Issue(true);
+                            RecipeRunEndNotified = true;
+                        }
+                        else
+                            if (RecipeRunEndNotified == true && Ads.ReadAny<short>(hCmd_RcpOperation) == 0)
+                        {
+                            RecipeRunEndNotified = false;
+                        }
+                    };
+                    currentActiveRecipeListener.Start();
+                }
             }
         }
 
@@ -170,11 +169,6 @@ namespace SapphireXR_App.Models
         {
             short inputState = Ads.ReadAny<short>(hInputState4);
             return new BitArray(BitConverter.IsLittleEndian == true ? BitConverter.GetBytes(inputState) : BitConverter.GetBytes(inputState).Reverse().ToArray())[bitIndex];
-        }
-
-        private static void ReadMaxValueFromFile()
-        {
-          
         }
     }
 }

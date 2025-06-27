@@ -3,6 +3,7 @@ using System.Collections;
 using System.Windows.Threading;
 using TwinCAT.Ads;
 using System.Windows;
+using System.Collections.Generic;
 
 namespace SapphireXR_App.Models
 {
@@ -126,10 +127,12 @@ namespace SapphireXR_App.Models
 
         private static LeakTestModeSubscriber? leakTestModeSubscriber = null;
 
+        public static bool Connected { get; private set; } = false;
+
         //Create an instance of the TcAdsClient()
         public static AdsClient Ads { get; set; }
-        private static DispatcherTimer? timer;
-        private static DispatcherTimer? currentActiveRecipeListener;
+        private static DispatcherTimer? timer = null;
+        private static DispatcherTimer? currentActiveRecipeListener = null;
 
         // Read from PLC State
         private static uint hReadValveStatePLC1;
@@ -201,9 +204,8 @@ namespace SapphireXR_App.Models
 
         public static readonly Dictionary<string, int> dMonitoringMeterIndex = new Dictionary<string, int>
         {
-            { "UltimatePressure", 0 },  { "ExtPressure", 1},  { "DorPressure", 2}, { Util.GetGasDeviceName("Gas1") ?? "Gas 1", 3}, {  Util.GetGasDeviceName("Gas2") ?? "Gas 2", 4}, { Util.GetGasDeviceName("Gas3") ?? "Gas3", 5},
-            { Util.GetGasDeviceName("Gas4") ?? "Gas4", 6}, { "ShowerHeadTemp", 7}, { "InductionCoilTemp", 8}, { "HeaterPowerRate", 9 }, { "ValvePosition", 10 }, { Util.GetGasDeviceName("Source1") ?? "Source1", 11},
-             { Util.GetGasDeviceName("Source2") ?? "Source2", 12},  { Util.GetGasDeviceName("Source3") ?? "Source3", 13},  { Util.GetGasDeviceName("Source4") ?? "Source4", 14},  { Util.GetGasDeviceName("Source5") ?? "Source5", 15},  { Util.GetGasDeviceName("Source6") ?? "Source6", 16}
+            { "UltimatePressure", 0 },  { "ExtPressure", 1},  { "DorPressure", 2}, { "Gas 1", 3}, { "Gas 2", 4}, { "Gas3", 5}, { "Gas4", 6}, { "ShowerHeadTemp", 7}, { "InductionCoilTemp", 8}, 
+            { "HeaterPowerRate", 9 }, { "ValvePosition", 10 }, { "Source1", 11}, { "Source2", 12},  { "Source3", 13},  { "Source4", 14},  { "Source5", 15},  { "Source6", 16}
         };
 
         public static readonly uint LineHeaterTemperature = 8;

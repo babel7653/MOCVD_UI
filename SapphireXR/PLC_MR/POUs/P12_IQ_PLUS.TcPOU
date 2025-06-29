@@ -15,10 +15,8 @@ VAR_OUTPUT
 	wCDG2_PV 			: WORD; //CD2 Current Pressure
 	bVacuumPumpCB		: BOOL;
 	bThrottleValveCP	: BOOL;
-	wTValve_PV			: WORD; //Currrent Value, Pressure or Position
 
 	//nInputStatus
-	ingNormal				: BOOL;
 	ingPressureControl 		: BOOL;
 	ingPositionControl 		: BOOL;
 	isValveOpen 			: BOOL;
@@ -68,9 +66,9 @@ END_VAR
       <ST><![CDATA[//Model : IQ Plus 
 //Pressure Range : 0 ~ 1,000 Torr
 IF GVL_IO.aOutputCmd[1].12 THEN // Pressure Mode Setting
-	nSetType := 2; // Position Control
-ELSE
 	nSetType := 1; // Pressure Control
+ELSE
+	nSetType := 2; // Position Control
 END_IF
 
 
@@ -98,10 +96,8 @@ wCDG2_PV 			:= REAL_TO_WORD(wByteCDG2_PV/PressureFactor);
 //To IQ Plus
 IF nTValveMode = 0 AND nSetType = 1 THEN
 	wTypedControlValue := REAL_TO_WORD(wControlValue * SetPointFactor * 0.1); //Pressure Control
-	wTValve_PV		:= wCDG2_PV; //Pressure Display
 ELSIF nTValveMode = 0 AND nSetType = 2 THEN
 	wTypedControlValue := REAL_TO_WORD(wControlValue * SetPointFactor); // Position Control
-	wTValve_PV		:= REAL_TO_WORD(wByteValvePosition_PV / 327.67) ; //Position Display
 END_IF
 
 wOutputSVBytes 		:= WORD_TO_USINT_Bit(wTypedControlValue);
@@ -127,17 +123,15 @@ END_IF
 
 //Update Valve Status
 CASE nInputStatus OF
-	0 : ingNormal := TRUE; //Pressure Control Performing.
+	0 : ingPressureControl := TRUE; //Pressure Control Performing.
 	1 : ingPositionControl := TRUE; //Position Control Performing.	
 	2 : isValveOpen := TRUE; //Valve Open, Stopped, Not Controlling.
 	3 : isValveNotInitialized := TRUE; //Valve not initialized power on or RESET Command.
 	4 : isValveClosed := TRUE; //Valve Closed, Stopped, Not Controlling.
 	5 : isValveFaultState := TRUE; //Has faulted during valve initialization or operation.
 	6 : ingValveInitializing := TRUE; //Initailizing Process.
-	7 : ingPressureControl := TRUE; //Pressure Control Performing.
 	8 : ingHoldState := TRUE; //intermediate position, not at open or close and not controlling pressure.
 END_CASE
-GVL_IO.aInputState[5] := nInputStatus; //Throttle Valve Status
 
 // nOutputMode
 // 0 : uses setpoint and setpoint type to control the valve.
@@ -154,8 +148,7 @@ GVL_IO.aDigitalOutputIO[2].3 := bPumpReset; // Pump Reset]]></ST>
     </Implementation>
     <LineIds Name="P12_IQ_PLUS">
       <LineId Id="273" Count="1" />
-      <LineId Id="367" Count="0" />
-      <LineId Id="432" Count="0" />
+      <LineId Id="367" Count="1" />
       <LineId Id="370" Count="1" />
       <LineId Id="369" Count="0" />
       <LineId Id="275" Count="0" />
@@ -173,15 +166,7 @@ GVL_IO.aDigitalOutputIO[2].3 := bPumpReset; // Pump Reset]]></ST>
       <LineId Id="158" Count="0" />
       <LineId Id="52" Count="7" />
       <LineId Id="361" Count="0" />
-      <LineId Id="62" Count="2" />
-      <LineId Id="437" Count="0" />
-      <LineId Id="65" Count="1" />
-      <LineId Id="438" Count="0" />
-      <LineId Id="67" Count="31" />
-      <LineId Id="433" Count="0" />
-      <LineId Id="99" Count="1" />
-      <LineId Id="435" Count="0" />
-      <LineId Id="101" Count="6" />
+      <LineId Id="62" Count="45" />
       <LineId Id="365" Count="0" />
       <LineId Id="5" Count="0" />
       <LineId Id="366" Count="0" />

@@ -74,8 +74,6 @@ P90_Interlock.bVacuumPumpMC := GVL_IO.aOutputCmd[1].2;
 P90_Interlock.bLineHeaterMC := GVL_IO.aOutputCmd[1].3;
 
 P11_E3508.bOutputManAuto := GVL_IO.aOutputCmd[1].11; //Temp Controller Mode Command
-P11_E3508.bHeaterOn := GVL_IO.aOutputCmd[1].4; // Induction Heater Turn ON
-
 P12_IQ_PLUS.bPumpOn := GVL_IO.aOutputCmd[1].6;
 P12_IQ_PLUS.nTValveMode := WORD_TO_USINT(GVL_IO.aOutputCmd[2]); //Throttle Valve Mode Setting 0:Normal 1:Close 2:Open 3:Hold 4:Reset
 ]]></ST>
@@ -99,7 +97,6 @@ P12_IQ_PLUS.nTValveMode := WORD_TO_USINT(GVL_IO.aOutputCmd[2]); //Throttle Valve
       <LineId Id="78" Count="2" />
       <LineId Id="85" Count="0" />
       <LineId Id="82" Count="0" />
-      <LineId Id="94" Count="1" />
       <LineId Id="81" Count="0" />
       <LineId Id="83" Count="1" />
     </LineIds>

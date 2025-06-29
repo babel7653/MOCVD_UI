@@ -92,7 +92,7 @@ ELSE
 END_IF
 
 (* Write to Induction Heater Value *)
-GVL_IO.aDigitalOutputIO[2].0 := bHeaterOn; //Induction Heater ON
+GVL_IO.aDigitalOutputIO[2].0 := bHeaterOn;
 GVL_IO.aDigitalOutputIO[2].1 := bHeaterReset;]]></ST>
     </Implementation>
     <LineIds Name="P11_E3508">

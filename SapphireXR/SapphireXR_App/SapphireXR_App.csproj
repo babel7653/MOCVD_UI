@@ -11,7 +11,6 @@
   <ItemGroup>
     <None Remove="Resources\Configurations\AppSetting.json" />
     <None Remove="Resources\Configurations\DeviceIO.json" />
-    <None Remove="Resources\Configurations\MaxValue.json" />
     <None Remove="Resources\icons\icon=analog.png" />
     <None Remove="Resources\icons\icon=app.png" />
     <None Remove="Resources\icons\icon=chevron.png" />
@@ -76,9 +75,6 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Resources\Configurations\DeviceIO.json">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Resources\Configurations\MaxValue.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Resource Include="Resources\icons\icon=analog.png">

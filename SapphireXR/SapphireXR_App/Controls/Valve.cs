@@ -1,9 +1,4 @@
-﻿using System.Windows;
-using System.Windows.Controls;
-using SapphireXR_App.Enums;
-using SapphireXR_App.Models;
-using SapphireXR_App.Common;
-using System.ComponentModel;
+﻿using System.Windows.Controls;
 
 namespace SapphireXR_App.Controls
 {

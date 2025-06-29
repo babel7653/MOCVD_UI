@@ -5,6 +5,7 @@ using System.Windows;
 using System.Collections;
 using System.ComponentModel;
 using TwinCAT.Ads;
+using SapphireXR_App.Enums;
 
 namespace SapphireXR_App.ViewModels
 {
@@ -256,6 +257,7 @@ namespace SapphireXR_App.ViewModels
             ObservableManager<bool>.Subscribe("Reset.CurrentRecipeStep", resetCurrentRecipeSubscriber = new ResetCurrentRecipeSubscriber(this));
             ObservableManager<BitArray>.Subscribe("LogicalInterlockState", logicalInterlockSubscriber = new LogicalInterlockSubscriber(this));
             ObservableManager<(string, string)>.Subscribe("GasIOLabelChanged", gasIOLabelSubscriber = new GasIOLabelSubscriber(this));
+            ObservableManager<PLCConnection>.Subscribe("PLCService.Connected", plcConnectionStateSubscriber = new PLCConnectionStateSubscriber(this)); 
           
             CurrentSourceStatusViewModel = new SourceStatusFromCurrentPLCStateViewModel(this);
             PropertyChanging += (object? sender, PropertyChangingEventArgs args) =>
@@ -267,6 +269,25 @@ namespace SapphireXR_App.ViewModels
                         break;
                 }
             };
+            PropertyChanged += (object? sender, PropertyChangedEventArgs args) =>
+            {
+                switch (args.PropertyName)
+                {
+                    case nameof(PLCConnectionStatus):
+                        switch(PLCConnectionStatus)
+                        {
+                            case "Connected":
+                                PLCConnectionStatusColor = PLCConnectedFontColor;
+                                break;
+
+                            case "Disconnected":
+                                PLCConnectionStatusColor = PLCDisconnectedFontColor;
+                                break;
+                        }
+                        break;
+                }
+            };
+            setConnectionStatusText(PLCConnection.Connected);
         }
 
         public static string GetGas3Label(string? gas3Name, int index)
@@ -290,6 +311,20 @@ namespace SapphireXR_App.ViewModels
             else
             {
                 return "";
+            }
+        }
+
+        private void setConnectionStatusText(PLCConnection connectionStatus)
+        {
+            switch (connectionStatus)
+            {
+                case PLCConnection.Connected:
+                    PLCConnectionStatus = "Connected";
+                    break;
+
+                case PLCConnection.Disconnected:
+                    PLCConnectionStatus = "Disconnected";
+                    break;
             }
         }
 
@@ -320,22 +355,25 @@ namespace SapphireXR_App.ViewModels
         [ObservableProperty]
         private static string _logicalInterlockGas4 = GetIogicalInterlockLabel(Util.GetGasDeviceName("Gas4"));
 
-        private static Brush OnLampColor = Application.Current.Resources.MergedDictionaries[0]["LampOnColor"] as Brush ?? Brushes.Lime;
-        private static Brush OffLampColor = Application.Current.Resources.MergedDictionaries[0]["LampOffColor"] as Brush ?? Brushes.DarkGray;
-        private static Brush ReadyLampColor = Application.Current.Resources.MergedDictionaries[0]["LampReadyColor"] as Brush ?? Brushes.Yellow;
-        private static Brush RunLampColor = Application.Current.Resources.MergedDictionaries[0]["LampRunolor"] as Brush ?? Brushes.Lime;
-        private static Brush FaultLampColor = Application.Current.Resources.MergedDictionaries[0]["LampFaultColor"] as Brush ?? Brushes.Red;
+        private static readonly Brush OnLampColor = Application.Current.Resources.MergedDictionaries[0]["LampOnColor"] as Brush ?? Brushes.Lime;
+        private static readonly Brush OffLampColor = Application.Current.Resources.MergedDictionaries[0]["LampOffColor"] as Brush ?? Brushes.DarkGray;
+        private static readonly Brush ReadyLampColor = Application.Current.Resources.MergedDictionaries[0]["LampReadyColor"] as Brush ?? Brushes.Yellow;
+        private static readonly Brush RunLampColor = Application.Current.Resources.MergedDictionaries[0]["LampRunolor"] as Brush ?? Brushes.Lime;
+        private static readonly Brush FaultLampColor = Application.Current.Resources.MergedDictionaries[0]["LampFaultColor"] as Brush ?? Brushes.Red;
 
-        private static Brush InActiveSignalTowerRed = Application.Current.Resources.MergedDictionaries[0]["InActiveSignalTowerRed"] as Brush ?? new SolidColorBrush(Color.FromRgb(0xff, 0xa0, 0xa0));
-        private static Brush InActiveSignalTowerYellow = Application.Current.Resources.MergedDictionaries[0]["InActiveSignalTowerYellow"] as Brush ?? new SolidColorBrush(Color.FromRgb(0xff, 0xff, 0xC5));
-        private static Brush InActiveSignalTowerGreen = Application.Current.Resources.MergedDictionaries[0]["InActiveSignalTowerGreen"] as Brush ?? new SolidColorBrush(Color.FromRgb(0xcd, 0xf5, 0xdd));
-        private static Brush InActiveSignalTowerBlue = Application.Current.Resources.MergedDictionaries[0]["InActiveSignalTowerBlue"] as Brush ?? new SolidColorBrush(Color.FromRgb(0x86, 0xCE, 0xFA));
-        private static Brush InActiveSignalTowerWhite = Application.Current.Resources.MergedDictionaries[0]["InActiveSignalTowerWhite"] as Brush ?? Brushes.LightGray;
-        private static Brush ActiveSignalTowerRed = Application.Current.Resources.MergedDictionaries[0]["ActiveSignalTowerRed"] as Brush ?? Brushes.Red;
-        private static Brush ActiveSignalTowerYellow = Application.Current.Resources.MergedDictionaries[0]["ActiveSignalTowerYellow"] as Brush ?? Brushes.Yellow;
-        private static Brush ActiveSignalTowerGreen = Application.Current.Resources.MergedDictionaries[0]["ActiveSignalTowerGreen"] as Brush ?? Brushes.Green;
-        private static Brush ActiveSignalTowerBlue = Application.Current.Resources.MergedDictionaries[0]["ActiveSignalTowerBlue"] as Brush ?? Brushes.Blue;
-        private static Brush ActiveSignalTowerWhite = Application.Current.Resources.MergedDictionaries[0]["ActiveSignalTowerWhite"] as Brush ?? Brushes.White;
+        private static readonly Brush InActiveSignalTowerRed = Application.Current.Resources.MergedDictionaries[0]["InActiveSignalTowerRed"] as Brush ?? new SolidColorBrush(Color.FromRgb(0xff, 0xa0, 0xa0));
+        private static readonly Brush InActiveSignalTowerYellow = Application.Current.Resources.MergedDictionaries[0]["InActiveSignalTowerYellow"] as Brush ?? new SolidColorBrush(Color.FromRgb(0xff, 0xff, 0xC5));
+        private static readonly Brush InActiveSignalTowerGreen = Application.Current.Resources.MergedDictionaries[0]["InActiveSignalTowerGreen"] as Brush ?? new SolidColorBrush(Color.FromRgb(0xcd, 0xf5, 0xdd));
+        private static readonly Brush InActiveSignalTowerBlue = Application.Current.Resources.MergedDictionaries[0]["InActiveSignalTowerBlue"] as Brush ?? new SolidColorBrush(Color.FromRgb(0x86, 0xCE, 0xFA));
+        private static readonly Brush InActiveSignalTowerWhite = Application.Current.Resources.MergedDictionaries[0]["InActiveSignalTowerWhite"] as Brush ?? Brushes.LightGray;
+        private static readonly Brush ActiveSignalTowerRed = Application.Current.Resources.MergedDictionaries[0]["ActiveSignalTowerRed"] as Brush ?? Brushes.Red;
+        private static readonly Brush ActiveSignalTowerYellow = Application.Current.Resources.MergedDictionaries[0]["ActiveSignalTowerYellow"] as Brush ?? Brushes.Yellow;
+        private static readonly Brush ActiveSignalTowerGreen = Application.Current.Resources.MergedDictionaries[0]["ActiveSignalTowerGreen"] as Brush ?? Brushes.Green;
+        private static readonly Brush ActiveSignalTowerBlue = Application.Current.Resources.MergedDictionaries[0]["ActiveSignalTowerBlue"] as Brush ?? Brushes.Blue;
+        private static readonly Brush ActiveSignalTowerWhite = Application.Current.Resources.MergedDictionaries[0]["ActiveSignalTowerWhite"] as Brush ?? Brushes.White;
+
+        private static readonly Brush PLCConnectedFontColor = Application.Current.Resources.MergedDictionaries[0]["Sapphire_Blue"] as Brush ?? new SolidColorBrush(Color.FromRgb(0x60, 0xCD, 0xFF));
+        private static readonly Brush PLCDisconnectedFontColor = Application.Current.Resources.MergedDictionaries[0]["Alert_Red_02"] as Brush ?? new SolidColorBrush(Color.FromRgb(0xEC, 0x3D, 0x3F));
 
         private string Gas1 = Util.GetGasDeviceName("Gas1") ?? "";
         private string Gas2 = Util.GetGasDeviceName("Gas2") ?? "";
@@ -416,7 +454,9 @@ namespace SapphireXR_App.ViewModels
         [ObservableProperty]
         private string _pLCAddressText = AmsNetId.Local.ToString();
         [ObservableProperty]
-        private string _pLCConnectionStatus = "Connected";
+        private string _pLCConnectionStatus = "Diconnected";
+        [ObservableProperty]
+        private Brush _pLCConnectionStatusColor = PLCDisconnectedFontColor;
 
         [ObservableProperty]
         private SourceStatusViewModel _currentSourceStatusViewModel;
@@ -430,5 +470,6 @@ namespace SapphireXR_App.ViewModels
         private readonly ResetCurrentRecipeSubscriber resetCurrentRecipeSubscriber;
         private readonly LogicalInterlockSubscriber logicalInterlockSubscriber;
         private readonly GasIOLabelSubscriber gasIOLabelSubscriber;
+        private readonly PLCConnectionStateSubscriber plcConnectionStateSubscriber;
     }
 }

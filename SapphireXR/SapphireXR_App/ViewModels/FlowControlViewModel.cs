@@ -2,7 +2,6 @@
 using CommunityToolkit.Mvvm.Input;
 using SapphireXR_App.Common;
 using SapphireXR_App.Enums;
-using SapphireXR_App.Models;
 using System.ComponentModel;
 using System.Windows;
 using System.Windows.Media;

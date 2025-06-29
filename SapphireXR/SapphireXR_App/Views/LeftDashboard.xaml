@@ -97,7 +97,7 @@
                         <TextBlock FontFamily="Segoe UI" FontSize="12" Grid.Row="0" Grid.Column="0" Foreground="{DynamicResource Gray_900}"><Run Language="ko-kr" Text="PLC Address"/></TextBlock>
                         <TextBlock Text="{Binding PLCAddressText}" Grid.Row="1" Grid.Column="0" FontFamily="Segoe UI" FontSize="14" Foreground="{DynamicResource Gray_950}" FontWeight="Bold"><Run Text="Machine Nam"/><Run Language="ko-kr" Text="e"/></TextBlock>
                         <TextBlock FontFamily="Segoe UI" Grid.Row="0" Grid.Column="1"  FontSize="12" Foreground="{DynamicResource Gray_900}"><Run Text="PLC "/><Run Language="ko-kr" Text="C"/><Run Text="onnection"/></TextBlock>
-                        <TextBlock Text="{Binding PLCConnectionStatus}" Grid.Row="1" Grid.Column="12" FontFamily="Segoe UI" FontSize="14" Foreground="{DynamicResource Sapphire_Blue}" FontWeight="Bold"><Run Text="Machine Nam"/><Run Language="ko-kr" Text="e"/></TextBlock>
+                        <TextBlock Text="{Binding PLCConnectionStatus}" Grid.Row="1" Grid.Column="12" FontFamily="Segoe UI" FontSize="14" Foreground="{Binding PLCConnectionStatusColor}" FontWeight="Bold"><Run Text="Machine Nam"/><Run Language="ko-kr" Text="e"/></TextBlock>
                     </Grid>
                 </Grid>
             </Grid>

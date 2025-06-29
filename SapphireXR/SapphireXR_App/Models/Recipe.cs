@@ -1,13 +1,9 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
-using CommunityToolkit.Mvvm.Input;
 using CsvHelper.Configuration.Attributes;
 using System.Collections;
-using System.ComponentModel;
-using System.Diagnostics.CodeAnalysis;
 using System.Runtime.InteropServices;
 using System.Windows;
 using System.Windows.Media;
-using System.Windows.Navigation;
 
 namespace SapphireXR_App.Models
 {
@@ -24,7 +20,7 @@ namespace SapphireXR_App.Models
             Jump = rhs.Jump;
             RPress = rhs.RPress;
             SRotation = rhs.SRotation;
-            Loop = rhs.Loop;
+            Repeat = rhs.Repeat;
             RTime = rhs.RTime;
             STemp = rhs.STemp;
             E01 = rhs.E01;
@@ -96,7 +92,7 @@ namespace SapphireXR_App.Models
         [ObservableProperty]
         public short _sRotation;
         public short cTemp { get; set; }
-        public short Loop { get; set; }
+        public short Repeat { get; set; }
         public short Jump { get; set; }
         //RecipeFloat Array
         [ObservableProperty]
@@ -246,7 +242,7 @@ namespace SapphireXR_App.Models
             aRecipeShort[4] = rhs.RPress;
             aRecipeShort[5] = rhs.SRotation;
             aRecipeShort[6] = rhs.cTemp;
-            aRecipeShort[7] = rhs.Loop;
+            aRecipeShort[7] = rhs.Repeat;
             aRecipeShort[8] = rhs.Jump;
             //Float Type Array
             aRecipeFloat[0] = rhs.M01;

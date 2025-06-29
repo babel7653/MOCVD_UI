@@ -11,6 +11,7 @@ using System.Windows.Controls;
 using System.ComponentModel;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
+using SapphireXR_App.Enums;
 
 namespace SapphireXR_App.ViewModels
 {
@@ -93,36 +94,14 @@ namespace SapphireXR_App.ViewModels
        
             ObservableManager<BitArray>.Subscribe("DigitalOutput3", digitalOutput3Subscriber = new DigitalOutput3Subscriber(this));
             ObservableManager<short>.Subscribe("ThrottleValveStatus", throttleValveStatusSubscriber = new ThrottleValveStatusSubscriber(this));
-            onPressureControlModeUpdated(PLCService.ReadPressureControlMode());
+            ObservableManager<PLCConnection>.Subscribe("PLCService.Connected", plcConnectionStateSubscriber = new PLCConnectionStateSubscriber(this));
 
             ThrottleValveControlModes = ["Control", "Open", "Close", "Hold", "Reset"];
-            ushort throttleValveMode = PLCService.ReadThrottleValveMode();
-            if(throttleValveMode < ThrottleValveModeCmdToString.Length)
-            {
-                CurrentThrottleValveControlMode = ThrottleValveModeCmdToString[throttleValveMode];
-                prevThrottleValveControlMode = CurrentThrottleValveControlMode;
-            }
 
-            try
+            if (PLCService.Connected == PLCConnection.Connected)
             {
-                BitArray outputCmd1 = PLCService.ReadOutputCmd1();
-                IsInductionHeaterOn = outputCmd1[(int)PLCService.OutputCmd1Index.InductionHeaterControl];
-                IsVaccumPumpOn = outputCmd1[(int)PLCService.OutputCmd1Index.VaccumPumpControl];
+                initRightDashBoard();
             }
-            catch (Exception)
-            {
-                MessageBox.Show("PLC로부터 Home의 Induction Heater와 VaccumPump On/Off 상태를 읽어오는데 실패하였습니다. 기본 Unknown으로 표시합니다.");
-            }
-            try
-            {
-                InputManualAuto = PLCService.ReadInputManAuto(7) == false ? "Auto" : "Manual";
-            }
-            catch (Exception)
-            {
-                MessageBox.Show("PLC로부터 Home의 Heater Control Mode 상태를 읽어오는데 실패하였습니다. 기본 Unknown으로 표시합니다.");
-                InputManualAuto = "Unknown";
-            }
-            
 
             PropertyChanged += (object? sender, PropertyChangedEventArgs args) =>
             {
@@ -133,11 +112,11 @@ namespace SapphireXR_App.ViewModels
                         break;
 
                     case nameof(IsVaccumPumpOn):
-                        VacuumPumpToggle(IsVaccumPumpOn);
+                        toggleVacuumPump(IsVaccumPumpOn);
                         break;
 
                     case nameof(IsInductionHeaterOn):
-                        InductionHeaterToggle(IsInductionHeaterOn);
+                        toggleInductionHeater(IsInductionHeaterOn);
                         break;
                 }
             };
@@ -147,30 +126,58 @@ namespace SapphireXR_App.ViewModels
             ObservableManager<string>.Get("ViewModelCreated").Issue("HomeViewModel");
         }
 
-
-        [RelayCommand]
-        private void VacuumPumpToggle(bool on)
+        private void initRightDashBoard()
         {
-            try
+            if (rightDashboardInitiated == false)
             {
-                PLCService.WriteOutputCmd1(PLCService.OutputCmd1Index.VaccumPumpControl, on);
-            }
-            catch (Exception exception) 
-            {
-                if (showMsgOnVacuumPumpToggleEx == true)
+                try
                 {
-                    showMsgOnVacuumPumpToggleEx = MessageBox.Show("PLC로 Vaccum Pump On/Off값을 쓰는데 실패했습니다. 이 메시지를 다시 표시하지 않으려면 Yes를 클릭하세요. 원인은 다음과 같습니다: " 
-                            + exception.Message, "", MessageBoxButton.YesNo, MessageBoxImage.Error) == MessageBoxResult.Yes ? false: true;
+                    onPressureControlModeUpdated(PLCService.ReadPressureControlMode());
+                    ushort throttleValveMode = PLCService.ReadThrottleValveMode();
+                    if (throttleValveMode < ThrottleValveModeCmdToString.Length)
+                    {
+                        CurrentThrottleValveControlMode = ThrottleValveModeCmdToString[throttleValveMode];
+                        prevThrottleValveControlMode = CurrentThrottleValveControlMode;
+                    }
+                    BitArray outputCmd1 = PLCService.ReadOutputCmd1();
+                    IsInductionHeaterOn = outputCmd1[(int)PLCService.OutputCmd1Index.InductionHeaterControl];
+                    IsVaccumPumpOn = outputCmd1[(int)PLCService.OutputCmd1Index.VaccumPumpControl];
+                    InputManualAuto = PLCService.ReadInputManAuto(7) == false ? "Auto" : "Manual";
+
+                    rightDashboardInitiated = true;
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Exception in HomeViewModel constructor. PLC로 부터 값을 읽어와 UI 상태를 초기화 하는데 실패했습니다. 원인은 다음과 같습니다: " + ex.Message);
+                }
+            }
+        }
+     
+        private void toggleVacuumPump(bool on)
+        {
+            if (PLCService.Connected == PLCConnection.Connected)
+            {
+                try
+                {
+                    PLCService.WriteOutputCmd1(PLCService.OutputCmd1Index.VaccumPumpControl, on);
+                }
+                catch (Exception exception)
+                {
+                    if (showMsgOnVacuumPumpToggleEx == true)
+                    {
+                        showMsgOnVacuumPumpToggleEx = MessageBox.Show("PLC로 Vaccum Pump On/Off값을 쓰는데 실패했습니다. 이 메시지를 다시 표시하지 않으려면 Yes를 클릭하세요. 원인은 다음과 같습니다: "
+                                + exception.Message, "", MessageBoxButton.YesNo, MessageBoxImage.Error) == MessageBoxResult.Yes ? false : true;
+                    }
                 }
             }
         }
 
-        bool CanVacuumPumpResetExecute()
+        private bool canVacuumPumpResetExecute()
         {
-            return ThrottleValveStatus == "Valve Fault";
+            return PLCService.Connected == PLCConnection.Connected && ThrottleValveStatus == "Valve Fault";
         }
 
-        [RelayCommand(CanExecute = "CanVacuumPumpResetExecute")]
+        [RelayCommand(CanExecute = "canVacuumPumpResetExecute")]
         private void VacuumPumpReset()
         {
             try
@@ -190,7 +197,12 @@ namespace SapphireXR_App.ViewModels
             }
         }
 
-        [RelayCommand]
+        private bool canToggleHeaterControlModeExecute()
+        {
+            return PLCService.Connected == PLCConnection.Connected;
+        }
+
+        [RelayCommand(CanExecute = "canToggleHeaterControlModeExecute")]
         private void ToggleHeaterControlMode()
         {
             try
@@ -214,23 +226,31 @@ namespace SapphireXR_App.ViewModels
         }
 
         [RelayCommand]
-        private void InductionHeaterToggle(bool on)
+        private void toggleInductionHeater(bool on)
         {
-            try
+            if (PLCService.Connected == PLCConnection.Connected)
             {
-                PLCService.WriteOutputCmd1(PLCService.OutputCmd1Index.InductionHeaterControl, on);
-            }
-            catch(Exception exception)
-            {
-                if(showMsgOnInductionHeaterToggleEx == true)
+                try
                 {
-                    showMsgOnInductionHeaterToggleEx = MessageBox.Show("PLC로 Heater Toggle 값을 쓰는데 실패했습니다. 이 메시지를 다시 표시하지 않으려면 Yes를 클릭하세요. 원인은 다음과 같습니다: "
-                                + exception.Message, "", MessageBoxButton.YesNo, MessageBoxImage.Error) == MessageBoxResult.Yes ? false : true;
+                    PLCService.WriteOutputCmd1(PLCService.OutputCmd1Index.InductionHeaterControl, on);
+                }
+                catch (Exception exception)
+                {
+                    if (showMsgOnInductionHeaterToggleEx == true)
+                    {
+                        showMsgOnInductionHeaterToggleEx = MessageBox.Show("PLC로 Heater Toggle 값을 쓰는데 실패했습니다. 이 메시지를 다시 표시하지 않으려면 Yes를 클릭하세요. 원인은 다음과 같습니다: "
+                                    + exception.Message, "", MessageBoxButton.YesNo, MessageBoxImage.Error) == MessageBoxResult.Yes ? false : true;
+                    }
                 }
             }
         }
 
-        [RelayCommand]
+        private bool canInductionHeaterResetExecute()
+        {
+            return PLCService.Connected == PLCConnection.Connected;
+        }
+
+        [RelayCommand(CanExecute = "canInductionHeaterResetExecute")]
         private void InductionHeaterReset()
         {
             try
@@ -264,7 +284,12 @@ namespace SapphireXR_App.ViewModels
             return 0 < EventLogs.Count;
         }
 
-        [RelayCommand]
+        private bool canTogglePressureControlModeExecute()
+        {
+            return PLCService.Connected == PLCConnection.Connected;
+        }
+
+        [RelayCommand(CanExecute = "canTogglePressureControlModeExecute")]
         private void TogglePressureControlMode()
         {
             try
@@ -297,7 +322,7 @@ namespace SapphireXR_App.ViewModels
             }
         }
 
-        public ICommand OnThrottleValveModeChangedCommand => new RelayCommand<object?>((object? args) =>
+        public RelayCommand<object?> OnThrottleValveModeChangedCommand => new RelayCommand<object?>((object? args) =>
         {
             SelectionChangedEventArgs? selectionChangedEventArgs = args as SelectionChangedEventArgs;
             if (selectionChangedEventArgs != null)
@@ -327,7 +352,8 @@ namespace SapphireXR_App.ViewModels
                     }
                 }
             }
-        });
+        }, 
+        (object? args) => PLCService.Connected == PLCConnection.Connected);
 
 
         private static void SynchronizeExpected<T>(T expected, Func<T> checkFunc, Action<T>? onSync, Action<T>? onFailed, long timeOutMS, string messageOnTimeout) where T : INumber<T>
@@ -439,6 +465,8 @@ namespace SapphireXR_App.ViewModels
         private bool _isVaccumPumpOn;
         [ObservableProperty]
         private bool _isInductionHeaterOn;
+        [ObservableProperty]
+        private bool _pLCConnected = PLCService.Connected == PLCConnection.Connected ? true: false;
 
         [ObservableProperty]
         private ObservableCollection<EventLog> _eventLogs = new ObservableCollection<EventLog>();
@@ -459,8 +487,9 @@ namespace SapphireXR_App.ViewModels
         private FlowControllerValueSubscriber[] flowControllerValueSubscribers;
         private DigitalOutput3Subscriber digitalOutput3Subscriber;
         private ThrottleValveStatusSubscriber throttleValveStatusSubscriber;
-        private ObservableManager<bool>.DataIssuer leakTestModePublisher;
+        private ObservableManager<bool>.Publisher leakTestModePublisher;
         private EventLogSubscriber eventLogSubscriber;
+        private PLCConnectionStateSubscriber plcConnectionStateSubscriber;
 
         private bool showMsgOnVacuumPumpToggleEx = true;
         private bool showMsgOnVacuumPumpResetEx = true;
@@ -470,6 +499,8 @@ namespace SapphireXR_App.ViewModels
         private bool showMsgOnTogglePressureControlModeEx = true;
         private bool showMsgOnThrottleValveModeChangedCommandEx = true;
         private bool showMsgOnLoadBatchOnRecipeEnd = true;
+
+        private bool rightDashboardInitiated = false;
     }
 }
 

@@ -15,6 +15,6 @@ namespace SapphireXR_App.ViewModels.FlowController
             selectedThis?.Issue(ControllerID);
         }
 
-        private ObservableManager<string>.DataIssuer? selectedThis;
+        private ObservableManager<string>.Publisher? selectedThis;
     }
 }

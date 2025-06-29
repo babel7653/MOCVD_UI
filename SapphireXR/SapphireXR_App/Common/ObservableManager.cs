@@ -14,7 +14,7 @@
             public void Dispose() =>_observers.Remove(_observer);
         }
 
-        public class DataIssuer : IObservable<T>
+        public class Publisher : IObservable<T>
         {
             public IDisposable Subscribe(IObserver<T> observer)
             {
@@ -34,12 +34,12 @@
         }
 
 
-        public static DataIssuer Get(string name)
+        public static Publisher Get(string name)
         {
-            DataIssuer found;
+            Publisher found;
             if (observables.TryGetValue(name, out found!) == false)
             {
-                DataIssuer issuer = new DataIssuer();
+                Publisher issuer = new Publisher();
                 observables.Add(name, issuer);
                 return issuer;
             }
@@ -51,7 +51,7 @@
 
         public static IDisposable Subscribe(string name, IObserver<T> observer)
         {
-            DataIssuer found;
+            Publisher found;
             if (observables.TryGetValue(name, out found!) == false)
             {
                 found = Get(name);
@@ -61,6 +61,6 @@
            
         }
 
-        static readonly Dictionary<string, DataIssuer> observables = new Dictionary<string, DataIssuer>();
+        static readonly Dictionary<string, Publisher> observables = new Dictionary<string, Publisher>();
     }
 }

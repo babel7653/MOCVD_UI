@@ -20,6 +20,7 @@ namespace SapphireXR_App.Common
                 PLCAddress = (string?)Util.GetSettingValue(appSettingRootToken, "PLCAddress") ?? PLCAddress;
                 PLCPort = (int?)(Int64?)Util.GetSettingValue(appSettingRootToken, "PLCPort") ?? PLCPort;
                 ConfigMode = (bool?)Util.GetSettingValue(appSettingRootToken, "ConfigMode") ?? ConfigMode;
+                ConnectionRetryMilleseconds = (uint?)(Int64?)Util.GetSettingValue(appSettingRootToken, "ConnectionRetryMilleseconds") ?? ConnectionRetryMilleseconds;
 
                 JToken? token = appSettingRootToken["PrecursorSourceMonitorLabel"];
                 if (token != null)
@@ -42,10 +43,11 @@ namespace SapphireXR_App.Common
         {
             try
             {
-                File.WriteAllText(AppSettingFilePath, new JObject(new JProperty("LogFileDirectory", JsonConvert.SerializeObject(LogFileDirectory)), new JProperty("UnderFlowControlFallbackRatePercentage", JsonConvert.SerializeObject(UnderFlowControlFallbackRatePercentage)),
-                        new JProperty("FloatingPointMaxNumberDigit", JsonConvert.SerializeObject(FloatingPointMaxNumberDigit)), new JProperty("PLCAddress", JsonConvert.SerializeObject(PLCAddress)),
-                        new JProperty("PLCPort", JsonConvert.SerializeObject(PLCPort)), new JProperty("ConfigMode", JsonConvert.SerializeObject(ConfigMode)), 
-                        new JProperty("PrecursorSourceMonitorLabel", JsonConvert.SerializeObject(PrecursorSourceMonitorLabel))).ToString());
+                File.WriteAllText(AppSettingFilePath, new JObject(new JProperty("LogFileDirectory", JsonConvert.SerializeObject(LogFileDirectory)), 
+                    new JProperty("UnderFlowControlFallbackRatePercentage", JsonConvert.SerializeObject(UnderFlowControlFallbackRatePercentage)),
+                    new JProperty("FloatingPointMaxNumberDigit", JsonConvert.SerializeObject(FloatingPointMaxNumberDigit)), new JProperty("PLCAddress", JsonConvert.SerializeObject(PLCAddress)),
+                    new JProperty("PLCPort", JsonConvert.SerializeObject(PLCPort)), new JProperty("ConfigMode", JsonConvert.SerializeObject(ConfigMode)), 
+                    new JProperty("PrecursorSourceMonitorLabel", JsonConvert.SerializeObject(PrecursorSourceMonitorLabel)), new JProperty("ConnectionRetryMilleseconds", JsonConvert.SerializeObject(ConnectionRetryMilleseconds))).ToString());
             }
             catch(Exception exception)
             {
@@ -67,10 +69,11 @@ namespace SapphireXR_App.Common
             }
         }
 
-        private static ObservableManager<int>.DataIssuer logIntervalInRecipeRunIssuer = ObservableManager<int>.Get("AppSetting.LogIntervalInRecipeRun");
+        private static ObservableManager<int>.Publisher logIntervalInRecipeRunIssuer = ObservableManager<int>.Get("AppSetting.LogIntervalInRecipeRun");
         public static string LogFileDirectory = Util.GetAbsoluteFilePathFromAppRelativePath("Log");
         private static readonly int UnderFlowControlFallbackRatePercentage = 1;
         public static readonly float UnderFlowControlFallbackRate;
+        public static uint ConnectionRetryMilleseconds = 1000;
         public static string PLCAddress = "Local";
         public static int PLCPort = 851;
         public static bool ConfigMode = false;

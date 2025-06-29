@@ -3,6 +3,7 @@ using SapphireXR_App.Common;
 using SapphireXR_App.Models;
 using static SapphireXR_App.ViewModels.FlowControlViewModel;
 using CommunityToolkit.Mvvm.ComponentModel;
+using System.Windows;
 
 namespace SapphireXR_App.ViewModels.FlowController
 {
@@ -81,13 +82,21 @@ namespace SapphireXR_App.ViewModels.FlowController
             {
                 if (FlowControlConfirmEx.Show("변경 확인", message) == ValveOperationExResult.Ok)
                 {
-                    if (controlValues.targetValue != null)
+                    try
                     {
-                        PLCService.WriteTargetValue(ControllerID, (int)controlValues.targetValue);
+                        if (controlValues.targetValue != null)
+                        {
+                            PLCService.WriteTargetValue(ControllerID, (int)controlValues.targetValue);
+                        }
+                        if (controlValues.rampTime != null)
+                        {
+                            PLCService.WriteRampTime(ControllerID, (short)controlValues.rampTime);
+                        }
                     }
-                    if (controlValues.rampTime != null)
+                    catch (Exception ex)
                     {
-                        PLCService.WriteRampTime(ControllerID, (short)controlValues.rampTime);
+                        MessageBox.Show("PLC로 값을 쓰는데 문제가 발생하였습니다. 자세한 원인은 다음과 같습니다: " + ex.Message);
+                        return false;
                     }
 
                     return true;
@@ -110,11 +119,23 @@ namespace SapphireXR_App.ViewModels.FlowController
 
         protected override void onClicked(object[]? args)
         {
-            selectedThis?.Issue(ControllerID);
+            switch(PLCService.Connected)
+            {
+                case PLCConnection.Connected:
+                    selectedThis?.Issue(ControllerID);
+                    break;
+
+                case PLCConnection.Disconnected:
+                    MessageBox.Show("현재 PLC에 연결되어 있지 않습니다.");
+                    break;
+            }
         }
 
+
+        private 
+
         protected ControlTargetValueSubscriber? controlTargetValueSubscriber;
-        private ObservableManager<string>.DataIssuer? selectedThis;
+        private ObservableManager<string>.Publisher? selectedThis;
 
         [ObservableProperty]
         private string _currentValue = "";

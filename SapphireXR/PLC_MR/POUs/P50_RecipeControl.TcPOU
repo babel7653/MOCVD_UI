@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4026.12">
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4026.11">
   <POU Name="P50_RecipeControl" Id="{e332a806-fd31-4290-a7c3-27f42c11d38e}" SpecialFunc="None">
     <Declaration><![CDATA[PROGRAM P50_RecipeControl
 VAR
@@ -108,7 +108,7 @@ END_VAR
 					END_IF
 				END_IF
 				
-				IF nRcpIndex >= RCP.iRcpTotalStep THEN
+				IF nRcpIndex > RCP.iRcpTotalStep THEN
 					RCP.cmd_RcpOperation := 50;
 				END_IF
 			END_IF

@@ -30,32 +30,50 @@ VAR
 	bAirPressureSensor		: BOOL;
 	bWaterFlowSensor		: BOOL;
 	
+	
+	bMaintKeyTest			: BOOL; //Test Variable
 END_VAR
 ]]></Declaration>
     <Implementation>
       <ST><![CDATA[(* Read from Device*)
-//Maintenance Mode
+//Interlock Variable Set
 bMaintKey := GVL_IO.aDigitalInputIO[1].0;
+bPowerResetSwitch := GVL_IO.aDigitalInputIO[1].1;
+bMainPowerMonitor := GVL_IO.aDigitalInputIO[7].5;
+bAirPressureSensor	:= GVL_IO.aDigitalInputIO[2].0; //Normally Contacted
+bWaterFlowSensor	:= GVL_IO.aDigitalInputIO[2].1;
 
+
+//Sinal Tower Set
 IF bMaintKey THEN
 	P92_Maintenance.nCaseSignalTower		:= 5;
 ELSIF bMaintKey = FALSE AND MAIN.bOperationMode = FALSE THEN
 	P92_Maintenance.nCaseSignalTower		:= 4;
 END_IF
 
-bPowerResetSwitch := GVL_IO.aDigitalInputIO[1].1;
-bMainPowerMonitor := GVL_IO.aDigitalInputIO[7].5;
-
-bAirPressureSensor	:= GVL_IO.aDigitalInputIO[2].0; //Normally Contacted
-bWaterFlowSensor	:= GVL_IO.aDigitalInputIO[2].1;
-
-IF P90_Interlock.bMaintKey THEN
+// 테스트용 값 bMaintKey -> bMaintKeyTest
+//Allowed a MC(Induction, Bath, Pump, L_Heater) Operation
+//IF P90_Interlock.bMaintKey THEN
+IF bMaintKeyTest THEN
 	P92_Maintenance.nCaseSignalTower := 4;
 	GVL_IO.aDigitalOutputIO[3].0 := bInductionHeaterMC;
 	GVL_IO.aDigitalOutputIO[3].1 := bThermalBathMC;
 	GVL_IO.aDigitalOutputIO[3].2 := bVacuumPumpMC;
 	GVL_IO.aDigitalOutputIO[3].3 := bLineHeaterMC;
+ELSE
+	//Gas Pressure Alarm H2
+	IF GVL_IO.aMonitoring_PV_Test[4] < GVL_IO.aInterlockSetTest[1] THEN
+		GVL_IO.aInterlock[1].2 := TRUE; //N2 Pressure Low Alarm
+		GVL_IO.aInterlock[1].3 := FALSE;
+	ELSIF (GVL_IO.aInterlockSetTest[1] <= GVL_IO.aMonitoring_PV_Test[4]) AND (GVL_IO.aMonitoring_PV_Test[4] < GVL_IO.aInterlockSetTest[2]) THEN
+		GVL_IO.aInterlock[1].2 := FALSE;
+		GVL_IO.aInterlock[1].3 := TRUE; //N2 Pressure Low Warning
+	ELSE
+		GVL_IO.aInterlock[1].2 := FALSE;
+		GVL_IO.aInterlock[1].3 := FALSE;
+	END_IF
 END_IF
+
 
 // For Test Value
 bSafetyGasState := TRUE;
@@ -83,22 +101,33 @@ GVL_IO.aDigitalOutputIO[2].4 := bUPSMode;]]></ST>
       <LineId Id="139" Count="0" />
       <LineId Id="300" Count="0" />
       <LineId Id="284" Count="0" />
+      <LineId Id="304" Count="1" />
+      <LineId Id="307" Count="0" />
+      <LineId Id="303" Count="0" />
+      <LineId Id="316" Count="0" />
+      <LineId Id="308" Count="0" />
       <LineId Id="296" Count="0" />
       <LineId Id="298" Count="0" />
       <LineId Id="295" Count="0" />
       <LineId Id="301" Count="1" />
       <LineId Id="299" Count="0" />
-      <LineId Id="282" Count="0" />
-      <LineId Id="140" Count="0" />
-      <LineId Id="211" Count="0" />
-      <LineId Id="293" Count="1" />
-      <LineId Id="145" Count="0" />
+      <LineId Id="322" Count="0" />
+      <LineId Id="309" Count="0" />
       <LineId Id="144" Count="0" />
       <LineId Id="20" Count="0" />
+      <LineId Id="324" Count="0" />
       <LineId Id="273" Count="0" />
       <LineId Id="21" Count="0" />
       <LineId Id="149" Count="0" />
-      <LineId Id="23" Count="2" />
+      <LineId Id="23" Count="1" />
+      <LineId Id="313" Count="2" />
+      <LineId Id="318" Count="0" />
+      <LineId Id="325" Count="0" />
+      <LineId Id="319" Count="1" />
+      <LineId Id="326" Count="3" />
+      <LineId Id="321" Count="0" />
+      <LineId Id="25" Count="0" />
+      <LineId Id="310" Count="0" />
       <LineId Id="138" Count="0" />
       <LineId Id="50" Count="0" />
       <LineId Id="33" Count="0" />

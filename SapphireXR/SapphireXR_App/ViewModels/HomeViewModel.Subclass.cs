@@ -1,5 +1,6 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using SapphireXR_App.Common;
+using SapphireXR_App.Enums;
 using SapphireXR_App.Models;
 using System.Collections;
 
@@ -116,11 +117,49 @@ namespace SapphireXR_App.ViewModels
                 homeViewModel.EventLogs.Add(value);
                 if(value.Type == "Recipe End")
                 {
-                    homeViewModel.loadBatchOnRecipeEnd();
+                    if (PLCService.Connected == PLCConnection.Connected)
+                    {
+                        homeViewModel.loadBatchOnRecipeEnd();
+                    }
                 }
             }
 
             private HomeViewModel homeViewModel;
+        }
+
+        private class PLCConnectionStateSubscriber : IObserver<Enums.PLCConnection>
+        {
+            public PLCConnectionStateSubscriber(HomeViewModel vm)
+            {
+                homeViewModel = vm;
+            }
+
+            void IObserver<PLCConnection>.OnCompleted()
+            {
+                throw new NotImplementedException();
+            }
+
+            void IObserver<PLCConnection>.OnError(Exception error)
+            {
+                throw new NotImplementedException();
+            }
+
+            void IObserver<PLCConnection>.OnNext(PLCConnection value)
+            {
+                if (value == PLCConnection.Connected)
+                {
+                    homeViewModel.initRightDashBoard();
+                }
+                homeViewModel.OnThrottleValveModeChangedCommand.NotifyCanExecuteChanged();
+                homeViewModel.TogglePressureControlModeCommand.NotifyCanExecuteChanged();
+                homeViewModel.InductionHeaterResetCommand.NotifyCanExecuteChanged();
+                homeViewModel.ToggleHeaterControlModeCommand.NotifyCanExecuteChanged();
+                homeViewModel.VacuumPumpResetCommand.NotifyCanExecuteChanged();
+                homeViewModel.manualBatchViewModel.LoadToPLCCommand.NotifyCanExecuteChanged();
+                homeViewModel.PLCConnected = PLCService.Connected == PLCConnection.Connected ? true : false;
+            }
+
+            HomeViewModel homeViewModel;
         }
     }
 }

@@ -2,6 +2,7 @@
 using SapphireXR_App.Enums;
 using System.Collections;
 using System.Windows;
+using System.Windows.Threading;
 using TwinCAT.Ads;
 using TwinCAT.PlcOpen;
 
@@ -11,10 +12,40 @@ namespace SapphireXR_App.Models
     {
         static PLCService()
         {
-            Ads = new AdsClient();
+            IntializePubSub();
         }
 
         public static void Connect()
+        {
+            if (Ads.IsConnected == true && Ads.ReadState().AdsState == AdsState.Run)
+            {
+                return;
+            }
+          
+            DateTime startTime = DateTime.Now;
+            while (true)
+            {
+                try
+                {
+                    TryConnect();
+                }
+                catch (Exception)
+                {
+                    if ((DateTime.Now - startTime).TotalMilliseconds < AppSetting.ConnectionRetryMilleseconds)
+                    {
+                        continue;
+                    }
+                    else
+                    {
+                        Connected = PLCConnection.Disconnected;
+                        throw;
+                    }
+                }
+                break;
+            }
+        }
+
+        private static void TryConnect()
         {
             try
             {
@@ -27,51 +58,12 @@ namespace SapphireXR_App.Models
                     Ads.Connect(AmsNetId.Local, AppSetting.PLCPort);
                 }
 
-                if (Ads.IsConnected == true)
+                if (Ads.IsConnected == true && Ads.ReadState().AdsState == AdsState.Run)
                 {
-                    //Read Set Value from PLC 
-                    hDeviceControlValuePLC = Ads.CreateVariableHandle("GVL_IO.aController_CV");
-                    //Read Present Value from Device of PLC
-                    hDeviceCurrentValuePLC = Ads.CreateVariableHandle("GVL_IO.aController_PV");
-                    //Read and Write Max Value of PLC 
-                    hDeviceMaxValuePLC = Ads.CreateVariableHandle("GVL_IO.aMaxValueController");
-
-                    hReadValveStatePLC1 = Ads.CreateVariableHandle("GVL_IO.aOutputSolValve[1]");
-                    hReadValveStatePLC2 = Ads.CreateVariableHandle("GVL_IO.aOutputSolValve[2]");
-                    hWriteDeviceTargetValuePLC = Ads.CreateVariableHandle("GVL_IO.aController_TV");
-                    hWriteDeviceRampTimePLC = Ads.CreateVariableHandle("GVL_IO.aController_RampTime");
-
-                    hMonitoring_PV = Ads.CreateVariableHandle("GVL_IO.aMonitoring_PV");
-                    hInputState = Ads.CreateVariableHandle("GVL_IO.aInputState");
-                    hInputState4 = Ads.CreateVariableHandle("GVL_IO.aInputState[4]");
-                    hDigitalOutput = Ads.CreateVariableHandle("GVL_IO.aDigitalOutputIO");
-                    hDigitalOutput2 = Ads.CreateVariableHandle("GVL_IO.aDigitalOutputIO[2]");
-                    hOutputCmd = Ads.CreateVariableHandle("GVL_IO.aOutputCmd");
-                    hOutputCmd1 = Ads.CreateVariableHandle("GVL_IO.aOutputCmd[1]");
-                    hOutputCmd2 = Ads.CreateVariableHandle("GVL_IO.aOutputCmd[2]");
-                    hInterlock1 = Ads.CreateVariableHandle("GVL_IO.aInterlock[1]");
-
-                    hRcp = Ads.CreateVariableHandle("RCP.aRecipe");
-                    hRcpTotalStep = Ads.CreateVariableHandle("RCP.iRcpTotalStep");
-                    hCmd_RcpOperation = Ads.CreateVariableHandle("RCP.cmd_RcpOperation");
-                    hState_RcpOperation = Ads.CreateVariableHandle("RCP.state_RcpOperation");
-                    hRcpStepN = Ads.CreateVariableHandle("P50_RecipeControl.nRcpIndex");
-                    hTemperaturePV = Ads.CreateVariableHandle("P13_LineHeater.rTemperaturePV");
-                    hOperationMode = Ads.CreateVariableHandle("MAIN.bOperationMode");
-                    hUserState = Ads.CreateVariableHandle("RCP.userState");
-                    hRecipeControlHoldTime = Ads.CreateVariableHandle("P50_RecipeControl.Hold_ET");
-                    hRecipeControlRampTime = Ads.CreateVariableHandle("P50_RecipeControl.Ramp_ET");
-                    hRecipeControlPauseTime = Ads.CreateVariableHandle("P50_RecipeControl.Pause_ET");
-                    hE3508InputManAuto = Ads.CreateVariableHandle("P11_E3508.nInputManAutoBytes");
-                    hOutputSetType = Ads.CreateVariableHandle("P12_IQ_PLUS.nOutputSetType");
-                    hOutputMode = Ads.CreateVariableHandle("P12_IQ_PLUS.nOutputMode");
-
-                    aDeviceRampTimes = new short[dIndexController.Count];
-                    aDeviceTargetValues = new float[dIndexController.Count];
-
+                    CreateHandle();
                     ReadInitialStateValueFromPLC();
 
-                    ObservableManager<PLCConnection>.Get("PLCService.Connected").Issue(PLCConnection.Connecrted);
+                    Connected = PLCConnection.Connected;
                 }
                 else
                 {
@@ -80,11 +72,162 @@ namespace SapphireXR_App.Models
             }
             catch (Exception e)
             {
-                throw new Exception("PLC로의 연결이 실패했습니다. 물리적 연결이나 서비스가 실행 중인지 확인해 보십시요." + (e.Message != string.Empty ? "문제의 원인은 다음과 같습니다: " + e.Message : e.Message));
+                throw new ConnectionFaiulreException(e.Message);
             }
         }
 
-        private static void OnTick(object? sender, EventArgs e)
+        private static void OnConnected()
+        {
+            connectionTryTimer?.Stop();
+            connectionTryTimer = null;
+
+            timer = new DispatcherTimer();
+            timer.Interval = new TimeSpan(2000000);
+            timer.Tick += ReadStateFromPLC;
+            timer.Start();
+
+            currentActiveRecipeListener = new DispatcherTimer();
+            currentActiveRecipeListener.Interval = new TimeSpan(TimeSpan.TicksPerMillisecond * 500);
+            currentActiveRecipeListener.Tick += (object? sender, EventArgs e) =>
+            {
+                try
+                {
+                    dCurrentActiveRecipeIssue?.Issue(Ads.ReadAny<short>(hRcpStepN));
+                    if (RecipeRunEndNotified == false && Ads.ReadAny<short>(hCmd_RcpOperation) == 50)
+                    {
+                        dRecipeEndedPublisher?.Issue(true);
+                        RecipeRunEndNotified = true;
+                    }
+                    else
+                        if (RecipeRunEndNotified == true && Ads.ReadAny<short>(hCmd_RcpOperation) == 0)
+                    {
+                        RecipeRunEndNotified = false;
+                    }
+                }
+                catch(Exception)
+                {
+                    Connected = PLCConnection.Disconnected;
+                }
+            };
+            currentActiveRecipeListener.Start();
+        }
+
+        private static void OnDisconnected()
+        {
+            timer?.Stop();
+            currentActiveRecipeListener?.Stop();
+
+            connectionTryTimer = new DispatcherTimer();
+            connectionTryTimer.Interval = new TimeSpan(TimeSpan.TicksPerMillisecond);
+            connectionTryTimer.Tick += (object? sender, EventArgs e) =>
+            {
+                try
+                {
+                    TryConnect();
+                }
+                catch { }
+            };
+            connectionTryTimer.Start();
+        }
+
+        private static void CreateHandle()
+        {
+            //Read Set Value from PLC 
+            hDeviceControlValuePLC = Ads.CreateVariableHandle("GVL_IO.aController_CV");
+            //Read Present Value from Device of PLC
+            hDeviceCurrentValuePLC = Ads.CreateVariableHandle("GVL_IO.aController_PV");
+            //Read and Write Max Value of PLC 
+            hDeviceMaxValuePLC = Ads.CreateVariableHandle("GVL_IO.aMaxValueController");
+
+            hReadValveStatePLC1 = Ads.CreateVariableHandle("GVL_IO.aOutputSolValve[1]");
+            hReadValveStatePLC2 = Ads.CreateVariableHandle("GVL_IO.aOutputSolValve[2]");
+            hWriteDeviceTargetValuePLC = Ads.CreateVariableHandle("GVL_IO.aController_TV");
+            hWriteDeviceRampTimePLC = Ads.CreateVariableHandle("GVL_IO.aController_RampTime");
+
+            hMonitoring_PV = Ads.CreateVariableHandle("GVL_IO.aMonitoring_PV");
+            hInputState = Ads.CreateVariableHandle("GVL_IO.aInputState");
+            hInputState4 = Ads.CreateVariableHandle("GVL_IO.aInputState[4]");
+            hDigitalOutput = Ads.CreateVariableHandle("GVL_IO.aDigitalOutputIO");
+            hDigitalOutput2 = Ads.CreateVariableHandle("GVL_IO.aDigitalOutputIO[2]");
+            hOutputCmd = Ads.CreateVariableHandle("GVL_IO.aOutputCmd");
+            hOutputCmd1 = Ads.CreateVariableHandle("GVL_IO.aOutputCmd[1]");
+            hOutputCmd2 = Ads.CreateVariableHandle("GVL_IO.aOutputCmd[2]");
+            hInterlock1 = Ads.CreateVariableHandle("GVL_IO.aInterlock[1]");
+
+            hRcp = Ads.CreateVariableHandle("RCP.aRecipe");
+            hRcpTotalStep = Ads.CreateVariableHandle("RCP.iRcpTotalStep");
+            hCmd_RcpOperation = Ads.CreateVariableHandle("RCP.cmd_RcpOperation");
+            hState_RcpOperation = Ads.CreateVariableHandle("RCP.state_RcpOperation");
+            hRcpStepN = Ads.CreateVariableHandle("P50_RecipeControl.nRcpIndex");
+            hTemperaturePV = Ads.CreateVariableHandle("P13_LineHeater.rTemperaturePV");
+            hOperationMode = Ads.CreateVariableHandle("MAIN.bOperationMode");
+            hUserState = Ads.CreateVariableHandle("RCP.userState");
+            hRecipeControlHoldTime = Ads.CreateVariableHandle("P50_RecipeControl.Hold_ET");
+            hRecipeControlRampTime = Ads.CreateVariableHandle("P50_RecipeControl.Ramp_ET");
+            hRecipeControlPauseTime = Ads.CreateVariableHandle("P50_RecipeControl.Pause_ET");
+            hE3508InputManAuto = Ads.CreateVariableHandle("P11_E3508.nInputManAutoBytes");
+            hOutputSetType = Ads.CreateVariableHandle("P12_IQ_PLUS.nOutputSetType");
+            hOutputMode = Ads.CreateVariableHandle("P12_IQ_PLUS.nOutputMode");
+        }
+
+        private static void IntializePubSub()
+        {
+            dCurrentValueIssuers = new Dictionary<string, ObservableManager<float>.Publisher>();
+            foreach (KeyValuePair<string, int> kv in dIndexController)
+            {
+                dCurrentValueIssuers.Add(kv.Key, ObservableManager<float>.Get("FlowControl." + kv.Key + ".CurrentValue"));
+            }
+            dControlValueIssuers = new Dictionary<string, ObservableManager<float>.Publisher>();
+            foreach (KeyValuePair<string, int> kv in dIndexController)
+            {
+                dControlValueIssuers.Add(kv.Key, ObservableManager<float>.Get("FlowControl." + kv.Key + ".ControlValue"));
+            }
+            dTargetValueIssuers = new Dictionary<string, ObservableManager<float>.Publisher>();
+            foreach (KeyValuePair<string, int> kv in dIndexController)
+            {
+                dTargetValueIssuers.Add(kv.Key, ObservableManager<float>.Get("FlowControl." + kv.Key + ".TargetValue"));
+            }
+            dControlCurrentValueIssuers = new Dictionary<string, ObservableManager<(float, float)>.Publisher>();
+            foreach (KeyValuePair<string, int> kv in dIndexController)
+            {
+                dControlCurrentValueIssuers.Add(kv.Key, ObservableManager<(float, float)>.Get("FlowControl." + kv.Key + ".ControlTargetValue.CurrentPLCState"));
+            }
+            aMonitoringCurrentValueIssuers = new Dictionary<string, ObservableManager<float>.Publisher>();
+            foreach (KeyValuePair<string, int> kv in dMonitoringMeterIndex)
+            {
+                aMonitoringCurrentValueIssuers.Add(kv.Key, ObservableManager<float>.Get("MonitoringPresentValue." + kv.Key + ".CurrentValue"));
+            }
+            dValveStateIssuers = new Dictionary<string, ObservableManager<bool>.Publisher>();
+            foreach ((string valveID, int valveIndex) in ValveIDtoOutputSolValveIdx1)
+            {
+                dValveStateIssuers.Add(valveID, ObservableManager<bool>.Get("Valve.OnOff." + valveID + ".CurrentPLCState"));
+            }
+            foreach ((string valveID, int valveIndex) in ValveIDtoOutputSolValveIdx2)
+            {
+                dValveStateIssuers.Add(valveID, ObservableManager<bool>.Get("Valve.OnOff." + valveID + ".CurrentPLCState"));
+            }
+            dCurrentActiveRecipeIssue = ObservableManager<short>.Get("RecipeRun.CurrentActiveRecipe");
+            baHardWiringInterlockStateIssuers = ObservableManager<BitArray>.Get("HardWiringInterlockState");
+            dIOStateList = ObservableManager<BitArray>.Get("DeviceIOList");
+            dRecipeEndedPublisher = ObservableManager<bool>.Get("RecipeEnded");
+            dLineHeaterTemperatureIssuers = ObservableManager<float[]>.Get("LineHeaterTemperature");
+            dRecipeControlHoldTimeIssuer = ObservableManager<int>.Get("RecipeControlTime.Hold");
+            dRecipeControlPauseTimeIssuer = ObservableManager<int>.Get("RecipeControlTime.Pause");
+            dRecipeControlRampTimeIssuer = ObservableManager<int>.Get("RecipeControlTime.Ramp");
+            dDigitalOutput2 = ObservableManager<BitArray>.Get("DigitalOutput2");
+            dDigitalOutput3 = ObservableManager<BitArray>.Get("DigitalOutput3");
+            dOutputCmd1 = ObservableManager<BitArray>.Get("OutputCmd1");
+            dInputManAuto = ObservableManager<BitArray>.Get("InputManAuto");
+            dThrottleValveControlMode = ObservableManager<short>.Get("ThrottleValveControlMode");
+            dPressureControlModeIssuer = ObservableManager<ushort>.Get("PressureControlMode");
+            dThrottleValveStatusIssuer = ObservableManager<short>.Get("ThrottleValveStatus");
+            dLogicalInterlockStateIssuer = ObservableManager<BitArray>.Get("LogicalInterlockState");
+            dPLCConnectionPublisher = ObservableManager<PLCConnection>.Get("PLCService.Connected");
+
+            ObservableManager<bool>.Subscribe("Leak Test Mode", leakTestModeSubscriber = new LeakTestModeSubscriber());
+        }
+
+        private static void ReadStateFromPLC(object? sender, EventArgs e)
         {
             try
             {
@@ -218,16 +361,20 @@ namespace SapphireXR_App.Models
                 }
                 if (exceptionStr != string.Empty)
                 {
-                    throw new Exception(exceptionStr);
+                    throw new ReadBufferException(exceptionStr);
                 }
             }
-            catch (Exception exception)
+            catch(ReadBufferException exception)
             {
-                if(ShowMessageOnOnTick == true)
+                if (ShowMessageOnOnTick == true)
                 {
                     ShowMessageOnOnTick = MessageBox.Show("PLC로부터 상태 (Analog Device Control/Valve 상태)를 읽어오는데 실패했습니다. 이 메시지를 다시 표시하지 않으려면 Yes를 클릭하세요. 원인은 다음과 같습니다: " + exception.Message, "",
                         MessageBoxButton.YesNo, MessageBoxImage.Error) == MessageBoxResult.Yes ? false : true;
                 }
+            }
+            catch (Exception)
+            {
+                Connected = PLCConnection.Disconnected;
             }
         }
 

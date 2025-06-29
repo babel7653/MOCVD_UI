@@ -13,6 +13,7 @@ using System.Windows;
 using System.ComponentModel;
 using SapphireXR_App.Common;
 using OxyPlot.Annotations;
+using SapphireXR_App.WindowServices;
 
 namespace SapphireXR_App.ViewModels
 {

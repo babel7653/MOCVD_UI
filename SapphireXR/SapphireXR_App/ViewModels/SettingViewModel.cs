@@ -8,6 +8,8 @@ using System.IO;
 using SapphireXR_App.Common;
 using System.ComponentModel;
 using System.Collections;
+using SapphireXR_App.Enums;
+using SapphireXR_App.WindowServices;
 
 
 namespace SapphireXR_App.ViewModels
@@ -99,6 +101,43 @@ namespace SapphireXR_App.ViewModels
             private SettingViewModel settingViewModel;
         }
 
+        private class PLCConnectionStateSubscriber : IObserver<PLCConnection>
+        {
+            public PLCConnectionStateSubscriber(SettingViewModel vm)
+            {
+                settingViewModel = vm;
+            }
+
+            void IObserver<PLCConnection>.OnCompleted()
+            {
+                throw new NotImplementedException();
+            }
+
+            void IObserver<PLCConnection>.OnError(Exception error)
+            {
+                throw new NotImplementedException();
+            }
+
+            void IObserver<PLCConnection>.OnNext(PLCConnection value)
+            {
+                if (value == PLCConnection.Connected)
+                {
+                    if (deviceMaxValueWrittenToPLC == false)
+                    {
+                        PLCService.WriteDeviceMaxValue(settingViewModel.lAnalogDeviceIO);
+                        deviceMaxValueWrittenToPLC = true;
+                    }
+                }
+                settingViewModel.ToggleInductionHeaterPowerCommand.NotifyCanExecuteChanged();
+                settingViewModel.ToggleThermalBathPowerCommand.NotifyCanExecuteChanged();
+                settingViewModel.ToggleVaccumPumpPowerCommand.NotifyCanExecuteChanged();
+                settingViewModel.ToggleLineHeaterPowerCommand.NotifyCanExecuteChanged();
+            }
+
+            private SettingViewModel settingViewModel;
+            private bool deviceMaxValueWrittenToPLC = false;
+        }
+
         public partial class IOSetting: ObservableObject
         {
             required public string Name { get; set; } = "";
@@ -115,7 +154,7 @@ namespace SapphireXR_App.ViewModels
                 return;
             }
 
-            var publishDeviceNameChanged = (object? sender, string? propertyName, ObservableManager<(string, string)>.DataIssuer publisher) =>
+            var publishDeviceNameChanged = (object? sender, string? propertyName, ObservableManager<(string, string)>.Publisher publisher) =>
             {
                 if (propertyName == nameof(Device.Name))
                 {
@@ -224,9 +263,10 @@ namespace SapphireXR_App.ViewModels
             ObservableManager<BitArray>.Subscribe("DeviceIOList", iOStateListSubscriber = new IOStateListSubscriber(this));
             ObservableManager<BitArray>.Subscribe("OutputCmd1", modulePowerStateSubscriber = new ModulePowerStateSubscriber(this));
             ObservableManager<bool>.Subscribe("App.Closing", appClosingSubscriber = new AppClosingSubscriber(this));
+            ObservableManager<PLCConnection>.Subscribe("PLCService.Connected", plcConnectionStateSubscriber = new PLCConnectionStateSubscriber(this));
         }
 
-        private static void PublishDeviceNameChanged(object? sender, string? propertyName, ObservableManager<(string, string)>.DataIssuer publisher)
+        private static void PublishDeviceNameChanged(object? sender, string? propertyName, ObservableManager<(string, string)>.Publisher publisher)
         {
             if (propertyName == nameof(Device.Name))
             {
@@ -272,8 +312,6 @@ namespace SapphireXR_App.ViewModels
                         break;
                 }
             };
-            //Json파일 읽기 및 Pars
-         
           
             lAnalogDeviceIO = dAnalogDeviceIO?.Values.ToList();
             if (lAnalogDeviceIO != null)
@@ -288,8 +326,11 @@ namespace SapphireXR_App.ViewModels
             }
             lSwitchDI = dSwitchDI?.Values.ToList();
             lGasDO = dGasDO?.Values.ToList();
-         
-            PLCService.WriteDeviceMaxValue(lAnalogDeviceIO);
+
+            if (PLCService.Connected == PLCConnection.Connected)
+            {
+                PLCService.WriteDeviceMaxValue(lAnalogDeviceIO);
+            }
         }
 
         public void AlarmSettingSave()
@@ -317,8 +358,6 @@ namespace SapphireXR_App.ViewModels
 
             if (File.Exists(DevceIOSettingFilePath)) File.Delete(DevceIOSettingFilePath);
             File.WriteAllText(DevceIOSettingFilePath, jDeviceIO.ToString());
-
-            PLCService.WriteDeviceMaxValue(lAnalogDeviceIO);
         }
 
         private void updateIOState(BitArray ioStateList)
@@ -385,8 +424,12 @@ namespace SapphireXR_App.ViewModels
                 new() { ID = "Source5", Name = "DTMGa"}, new() { ID = "Source6", Name = "Cp2Mg"}];
         }
 
+        private bool canCommandExecuteBase()
+        {
+            return PLCService.Connected == PLCConnection.Connected;
+        }
 
-        [RelayCommand]
+        [RelayCommand(CanExecute = "canCommandExecuteBase")]
         private void ToggleInductionHeaterPower()
         {
             if(OutputCmd1ToggleConfirmService.OnOff(InductionHeaterPowerOn, PLCService.OutputCmd1Index.InductionHeaterPower, "Induction Heater Power On/Off") == true)
@@ -394,7 +437,7 @@ namespace SapphireXR_App.ViewModels
                 
             }
         }
-        [RelayCommand]
+        [RelayCommand(CanExecute = "canCommandExecuteBase")]
         private void ToggleThermalBathPower()
         {
             if(OutputCmd1ToggleConfirmService.OnOff(ThermalBathPowerOn, PLCService.OutputCmd1Index.ThermalBathPower, "Thermal Power On/Off") == true)
@@ -402,7 +445,7 @@ namespace SapphireXR_App.ViewModels
                 
             }
         }
-        [RelayCommand]
+        [RelayCommand(CanExecute = "canCommandExecuteBase")]
         private void ToggleVaccumPumpPower()
         {
             if(OutputCmd1ToggleConfirmService.OnOff(VaccumPumpPowerOn, PLCService.OutputCmd1Index.VaccumPumpPower, "Vaccum Pump Power On/Off") == true)
@@ -410,7 +453,7 @@ namespace SapphireXR_App.ViewModels
                 
             }
         }
-        [RelayCommand]
+        [RelayCommand(CanExecute = "canCommandExecuteBase")]
         private void ToggleLineHeaterPower()
         {
             if(OutputCmd1ToggleConfirmService.OnOff(LineHeaterPowerOn, PLCService.OutputCmd1Index.LineHeaterPower, "Line Heater Power On/Off") == true)
@@ -448,8 +491,6 @@ namespace SapphireXR_App.ViewModels
         [ObservableProperty]
         private string? _logIntervalInRecipeRun;
 
-        private IOStateListSubscriber iOStateListSubscriber;
-
         [ObservableProperty]
         private string _inductionHeaterPowerOn = "";
         [ObservableProperty]
@@ -461,9 +502,12 @@ namespace SapphireXR_App.ViewModels
 
         private ModulePowerStateSubscriber modulePowerStateSubscriber;
         private AppClosingSubscriber appClosingSubscriber;
-        private static ObservableManager<(string, string)>.DataIssuer GasIOLabelChangedPublisher = ObservableManager<(string, string)>.Get("GasIOLabelChanged");
-        private static ObservableManager<(string, string)>.DataIssuer ValveIOLabelChangedPublisher = ObservableManager<(string, string)>.Get("ValveIOLabelChanged");
-        private static ObservableManager<(string, string)>.DataIssuer AnalogIOLabelChangedPublisher = ObservableManager<(string, string)>.Get("AnalogIOLabelChanged");
+        private IOStateListSubscriber iOStateListSubscriber;
+        private PLCConnectionStateSubscriber plcConnectionStateSubscriber;
+
+        private static ObservableManager<(string, string)>.Publisher GasIOLabelChangedPublisher = ObservableManager<(string, string)>.Get("GasIOLabelChanged");
+        private static ObservableManager<(string, string)>.Publisher ValveIOLabelChangedPublisher = ObservableManager<(string, string)>.Get("ValveIOLabelChanged");
+        private static ObservableManager<(string, string)>.Publisher AnalogIOLabelChangedPublisher = ObservableManager<(string, string)>.Get("AnalogIOLabelChanged");
         public static readonly Dictionary<string, string> AnalogDeviceIDShortNameMap = new Dictionary<string, string>
         {
             { "MFC01", "M01" }, { "MFC02", "M02" }, { "MFC03", "M03"  }, { "MFC04", "M04"  }, { "MFC05", "M05" },

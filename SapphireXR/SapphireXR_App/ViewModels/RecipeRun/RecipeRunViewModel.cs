@@ -9,6 +9,7 @@ using CommunityToolkit.Mvvm.Input;
 using Microsoft.Win32;
 using SapphireXR_App.Bases;
 using SapphireXR_App.Common;
+using SapphireXR_App.Enums;
 using SapphireXR_App.Models;
 using SapphireXR_App.ViewModels.BottomDashBoard;
 
@@ -87,12 +88,14 @@ namespace SapphireXR_App.ViewModels
             };
 
             EventLogs.CollectionChanged += (object? sender, NotifyCollectionChangedEventArgs args) => ClearEventLogCommand.NotifyCanExecuteChanged();
+            onPLCConnectionStateChanged(PLCService.Connected);
             ObservableManager<string>.Get("ViewModelCreated").Issue("RecipeRunViewModel");
+            ObservableManager<PLCConnection>.Subscribe("PLCService.Connected", plcConnectionStateSubscriber = new PLCConnectionStateSubscriber(this));
         }
 
         bool canRecipeOpenExecute()
         {
-            return !canCommandsExecuteOnActive();
+            return PLCService.Connected == PLCConnection.Connected && !canCommandsExecuteOnActive();
         }
         [RelayCommand(CanExecute =nameof(canRecipeOpenExecute))]
         private void RecipeOpen()
@@ -193,8 +196,9 @@ namespace SapphireXR_App.ViewModels
 
         private bool canStartStopCommadExecute()
         {
-            return CurrentRecipeUserState != RecipeUserState.Uninitialized;
+            return PLCService.Connected == PLCConnection.Connected && CurrentRecipeUserState != RecipeUserState.Uninitialized;
         }
+
         [RelayCommand(CanExecute = nameof(canStartStopCommadExecute))]
         private void RecipeStart()
         {
@@ -203,12 +207,12 @@ namespace SapphireXR_App.ViewModels
 
         bool canCommandsExecuteOnActive()
         {
-            return RecipeUserState.Run <= CurrentRecipeUserState && CurrentRecipeUserState <= RecipeUserState.Pause;
+            return PLCService.Connected == PLCConnection.Connected && RecipeUserState.Run <= CurrentRecipeUserState && CurrentRecipeUserState <= RecipeUserState.Pause;
         }
 
         bool canSkipCommandExecute()
         {
-            return CurrentRecipeUserState == RecipeUserState.Run;
+            return PLCService.Connected == PLCConnection.Connected && CurrentRecipeUserState == RecipeUserState.Run;
         }
         [RelayCommand(CanExecute = nameof(canSkipCommandExecute))]
         void RecipeSkip()
@@ -218,7 +222,7 @@ namespace SapphireXR_App.ViewModels
      
         bool canRefreshCommandExecute()
         {
-            return CurrentRecipeUserState == RecipeUserState.Pause;
+            return PLCService.Connected == PLCConnection.Connected && CurrentRecipeUserState == RecipeUserState.Pause;
         }
         [RelayCommand(CanExecute = nameof(canRefreshCommandExecute))]
         void RecipeRefresh()
@@ -265,7 +269,7 @@ namespace SapphireXR_App.ViewModels
         }
         bool canCleanCommandExecute()
         {
-            return CurrentRecipeUserState == RecipeUserState.Initiated || (RecipeUserState.Stopped <= CurrentRecipeUserState && CurrentRecipeUserState <= RecipeUserState.Ended);
+            return PLCService.Connected == PLCConnection.Connected && CurrentRecipeUserState == RecipeUserState.Initiated || (RecipeUserState.Stopped <= CurrentRecipeUserState && CurrentRecipeUserState <= RecipeUserState.Ended);
         }
         [RelayCommand(CanExecute = nameof(canCleanCommandExecute))]
         private void RecipeClean()
@@ -346,6 +350,16 @@ namespace SapphireXR_App.ViewModels
             //logTimer.Start();
         }
 
+        private void onPLCConnectionStateChanged(PLCConnection connection)
+        {
+            RecipeOpenCommand.NotifyCanExecuteChanged();
+            RecipeStartCommand.NotifyCanExecuteChanged();
+            RecipeSkipCommand.NotifyCanExecuteChanged();
+            RecipeRefreshCommand.NotifyCanExecuteChanged();
+            RecipeStopCommand.NotifyCanExecuteChanged();
+            RecipeCleanCommand.NotifyCanExecuteChanged();
+        }
+
         private void SyncPLCState(RecipeCommand command, bool updateState)
         {
             try
@@ -415,10 +429,11 @@ namespace SapphireXR_App.ViewModels
         private short currentRecipeNo = -1;
         private readonly RecipeEndedSubscriber? recipeEndedSubscriber = null;
         private RecipeCommand Start = RecipeCommand.Run;
-        private ObservableManager<RecipeUserState>.DataIssuer recipeRunStatePublisher;
+        private ObservableManager<RecipeUserState>.Publisher recipeRunStatePublisher;
         private LoadFromRecipeEditSubscriber loadFromRecipeEditSubscriber;
+        private PLCConnectionStateSubscriber plcConnectionStateSubscriber;
 
-        private ObservableManager<EventLog>.DataIssuer recipeEventIssuer;
+        private ObservableManager<EventLog>.Publisher recipeEventIssuer;
         private EventLogSubscriber eventLogSubscriber;
 
         [ObservableProperty]

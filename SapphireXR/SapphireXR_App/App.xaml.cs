@@ -13,27 +13,22 @@ namespace SapphireXR_App
         {
             Services = ConfigureServices();
             Startup += App_Startup;
-
         }
         private void App_Startup(object sender, StartupEventArgs e)
         {
             // 생성자 주입 구문을 사용하면 매개변수를 입력하지 않아도 객체가 만들어 지고 호출이 가능
-            // 단, 이것도 서비스에 등록이 되어야 함
+           try
+           {
+                PLCService.Connect();
+           }
+           catch(Exception ex)
+           {
+                MessageBox.Show("PLC로의 연결에 실패했습니다. 연결이 되지 않은 상태로 앱이 실행됩니다. 연결 실패의 원인은 다음과 같습니다." + ex.Message);
+           }
+
             try
             {
-                if(AppSetting.ConfigMode == false)
-                {
-                    PLCService.Connect();
-                }
-                Window? mainView;
-                if (AppSetting.ConfigMode == false)
-                {
-                    mainView = Current.Services.GetService<MainWindow>();
-                }
-                else
-                {
-                    mainView = Current.Services.GetService<MainWindow_Config>();
-                }
+                Window? mainView = Current.Services.GetService<MainWindow>();
                 if (mainView != null)
                 {
                     Application.Current.MainWindow.WindowState = WindowState.Maximized;

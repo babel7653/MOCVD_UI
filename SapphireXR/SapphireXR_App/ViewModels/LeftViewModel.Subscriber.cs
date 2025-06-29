@@ -3,6 +3,7 @@ using System.Numerics;
 using System.Windows.Media;
 using CommunityToolkit.Mvvm.ComponentModel;
 using SapphireXR_App.Common;
+using SapphireXR_App.Enums;
 using SapphireXR_App.Models;
 
 namespace SapphireXR_App.ViewModels
@@ -168,7 +169,7 @@ namespace SapphireXR_App.ViewModels
             private bool? signalTowerGreen = null;
             private bool? signalTowerBlue = null;
             private bool? signalTowerWhite = null;
-            private bool? signalTowerBuzzwer = null;
+            private bool? signalTowerBuzzer = null;
             private bool? dorVaccumState = null;
             private bool? tempControllerAlarm = null;
         }
@@ -288,10 +289,10 @@ namespace SapphireXR_App.ViewModels
                             return RunLampColor;
 
                         case 1:
-                            return ReadyLampColor;
+                            return FaultLampColor;
 
                         case 2:
-                            return FaultLampColor;
+                            return ReadyLampColor;
 
                         default:
                             return Brushes.Transparent;
@@ -428,6 +429,31 @@ namespace SapphireXR_App.ViewModels
                         leftViewModel.Source6 = value.Item2;
                         break;
                 }
+            }
+
+            private LeftViewModel leftViewModel;
+        }
+
+        private class PLCConnectionStateSubscriber : IObserver<PLCConnection>
+        {
+            public PLCConnectionStateSubscriber(LeftViewModel vm)
+            {
+                leftViewModel = vm;
+            }
+
+            void IObserver<PLCConnection>.OnCompleted()
+            {
+                throw new NotImplementedException();
+            }
+
+            void IObserver<PLCConnection>.OnError(Exception error)
+            {
+                throw new NotImplementedException();
+            }
+
+            void IObserver<PLCConnection>.OnNext(PLCConnection value)
+            {
+                leftViewModel.setConnectionStatusText(value);
             }
 
             private LeftViewModel leftViewModel;

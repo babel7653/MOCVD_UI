@@ -231,8 +231,8 @@ namespace SapphireXR_App.ViewModels
 
         public List<Recipe> newlyAddedForMarking = new List<Recipe>();
         private RecipeStateUpader? recipeStateUpdater;
-        private ObservableManager<(string, IList<Recipe>)>.DataIssuer loadToRecipeRunPublisher;
-        private ObservableManager<int>.DataIssuer switchTabToDataRunPublisher;
+        private ObservableManager<(string, IList<Recipe>)>.Publisher loadToRecipeRunPublisher;
+        private ObservableManager<int>.Publisher switchTabToDataRunPublisher;
 
 
         [ObservableProperty]

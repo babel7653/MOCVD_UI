@@ -1,4 +1,6 @@
-﻿using SapphireXR_App.Models;
+﻿using SapphireXR_App.Enums;
+using SapphireXR_App.Models;
+using System.Security.Policy;
 
 namespace SapphireXR_App.ViewModels
 {
@@ -110,6 +112,30 @@ namespace SapphireXR_App.ViewModels
             }
 
             private RecipeRunViewModel recipeRunViewModel;
+        }
+
+        private class PLCConnectionStateSubscriber : IObserver<PLCConnection>
+        {
+            public PLCConnectionStateSubscriber(RecipeRunViewModel vm)
+            {
+                recipeRunViewModel = vm;
+            }
+            void IObserver<PLCConnection>.OnCompleted()
+            {
+                throw new NotImplementedException();
+            }
+
+            void IObserver<PLCConnection>.OnError(Exception error)
+            {
+                throw new NotImplementedException();
+            }
+
+            void IObserver<PLCConnection>.OnNext(PLCConnection value)
+            {
+               recipeRunViewModel.onPLCConnectionStateChanged(value);
+            }
+
+            RecipeRunViewModel recipeRunViewModel;
         }
     }
 }

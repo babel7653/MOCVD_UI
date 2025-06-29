@@ -120,6 +120,6 @@ namespace SapphireXR_App.ViewModels
         public ObservableCollection<string> _names;
        
         public ObservableCollection<string> SelectedNames { get; } = new ObservableCollection<string>();
-        private ObservableManager<(SelectionToShowChanged, IList<string>)>.DataIssuer selectionChangedPublisher =  ObservableManager<(SelectionToShowChanged, IList<string>)>.Get("ReportSeriesSelection.ToShowChanged");
+        private ObservableManager<(SelectionToShowChanged, IList<string>)>.Publisher selectionChangedPublisher =  ObservableManager<(SelectionToShowChanged, IList<string>)>.Get("ReportSeriesSelection.ToShowChanged");
     }
 }

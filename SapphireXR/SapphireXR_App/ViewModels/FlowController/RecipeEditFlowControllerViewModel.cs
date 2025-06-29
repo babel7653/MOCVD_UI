@@ -102,7 +102,7 @@ namespace SapphireXR_App.ViewModels.FlowController
         [ObservableProperty]
         int _maxValue;
 
-        private ObservableManager<float>.DataIssuer? controlValuePublisher;
+        private ObservableManager<float>.Publisher? controlValuePublisher;
         private ControlValueResetSubscriber? controlValueResetSubscriber;
     }
 }

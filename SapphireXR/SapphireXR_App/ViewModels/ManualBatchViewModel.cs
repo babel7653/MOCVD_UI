@@ -136,8 +136,9 @@ namespace SapphireXR_App.ViewModels
 
         private bool canLoadToPLCCommand()
         {
-            return CurrentBatch != null;
+            return PLCService.Connected == Enums.PLCConnection.Connected && CurrentBatch != null;
         }
+
         [RelayCommand(CanExecute = "canLoadToPLCCommand")]
         private void LoadToPLC()
         {

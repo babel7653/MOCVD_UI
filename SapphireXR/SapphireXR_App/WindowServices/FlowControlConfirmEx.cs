@@ -2,9 +2,9 @@
 using SapphireXR_App.ViewModels;
 using SapphireXR_App.Views;
 
-namespace SapphireXR_App.Models
+namespace SapphireXR_App.WindowServices
 {
-    public static class ValveOperationEx
+    public static class FlowControlConfirmEx
     {
         public static ValveOperationExResult Show(string title, string message)
         {
@@ -13,6 +13,7 @@ namespace SapphireXR_App.Models
             {
                 DataContext = viewModel
             };
+            view.Topmost = true;
             view.ShowDialog();
 
             return viewModel.ValveOperationExResult;

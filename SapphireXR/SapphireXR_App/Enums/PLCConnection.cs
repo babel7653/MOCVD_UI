@@ -1,13 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace SapphireXR_App.Enums
+﻿namespace SapphireXR_App.Enums
 {
-    enum PLCConnection
+    public enum PLCConnection
     {
-        Connecrted = 0, Disconnected = 1
+        Connected = 0, Disconnected = 1
     }
 }

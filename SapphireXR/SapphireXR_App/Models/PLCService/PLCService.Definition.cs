@@ -3,7 +3,7 @@ using System.Collections;
 using System.Windows.Threading;
 using TwinCAT.Ads;
 using System.Windows;
-using System.Collections.Generic;
+using SapphireXR_App.Enums;
 
 namespace SapphireXR_App.Models
 {
@@ -12,6 +12,17 @@ namespace SapphireXR_App.Models
         internal class ReadValveStateException : Exception
         {
             public ReadValveStateException(string message) : base(message) { }
+        }
+
+        internal class ConnectionFaiulreException: Exception
+        {
+            public ConnectionFaiulreException(string internalMessage): base("PLC로의 연결이 실패했습니다. 물리적 연결이나 서비스가 실행 중인지 확인해 보십시요." + 
+                (internalMessage != string.Empty ? "문제의 원인은 다음과 같습니다: " + internalMessage : internalMessage)) { }
+        }
+
+        private class ReadBufferException: Exception
+        {
+            public ReadBufferException(string message): base(message) { }
         }
 
         internal class LeakTestModeSubscriber : IObserver<bool>
@@ -91,48 +102,107 @@ namespace SapphireXR_App.Models
             Pressure = 1, Position = 2
         }
 
+        public static readonly Dictionary<string, int> ValveIDtoOutputSolValveIdx1 = new Dictionary<string, int>
+        {
+            { "V01", 0 }, { "V02", 1 }, { "V03", 2 }, { "V04", 3 }, { "V05", 4 },
+            { "V06", 5 }, { "V07", 6 }, { "V08", 7 }, { "V09", 8 }, { "V10", 9 },
+            { "V11", 10 }, { "V12", 11 }, { "V13", 12 }, { "V14", 13 }, { "V15", 14 },
+            { "V16", 15 }, { "V37", 16 }, { "V38", 17 }, { "V39", 18 }, { "V40", 19 },
+            { "V41", 20 }, { "V42", 21 }, { "V43", 22 }, { "V44", 23 },  { "V45", 24 },
+            { "V46", 25 }
+        };
+        public static readonly Dictionary<string, int> ValveIDtoOutputSolValveIdx2 = new Dictionary<string, int>
+        {
+            { "V17", 0 }, { "V18", 1 }, { "V19", 2 }, { "V20", 3 }, { "V21", 4 },
+            { "V22", 5 }, { "V23", 6 }, { "V24", 7 }, { "V25", 8 }, { "V26", 9 },
+            { "V27", 10 }, { "V28", 11 }, { "V29", 12 }, { "V30", 13 }, { "V31", 14 },
+            { "V32", 15 }, { "V33", 16 }, { "V34", 17 }, { "V35", 18 }, { "V36", 19 },
+            { "V47", 20 }, { "V48", 21 }, { "V49", 22 }, { "V50", 23 },  { "V51", 24 },
+            { "V52", 25 }, { "V53", 26 }
+        };
+
+        public static readonly Dictionary<string, int> dIndexController = new Dictionary<string, int>
+        {
+            { "MFC01", 0 }, { "MFC02", 1 }, { "MFC03", 2 }, { "MFC04", 3 }, { "MFC05", 4 },
+            { "MFC06", 5 }, { "MFC07", 6 }, { "MFC08", 7 }, { "MFC09", 8 }, { "MFC10", 9 },
+            { "MFC11", 10 }, { "MFC12", 11 }, { "MFC13", 12 }, { "MFC14", 13 }, { "MFC15", 14 },
+            { "MFC16", 15 }, { "MFC17", 16 }, { "MFC18", 17 }, { "MFC19", 18 },
+            { "EPC01", 19 },  { "EPC02", 20 }, { "EPC03", 21 }, { "EPC04", 22 }, { "EPC05", 23 },
+            { "EPC06", 24 }, { "EPC07", 25 }, {"Temperature", 26}, {"Pressure", 27}, {"Rotation", 28}
+        };
+        public static readonly int NumControllers = dIndexController.Count;
+
+        public static readonly Dictionary<string, int> dMonitoringMeterIndex = new Dictionary<string, int>
+        {
+            { "UltimatePressure", 0 },  { "ExtPressure", 1},  { "DorPressure", 2}, { "Gas 1", 3}, { "Gas 2", 4}, { "Gas3", 5}, { "Gas4", 6}, { "ShowerHeadTemp", 7}, { "InductionCoilTemp", 8},
+            { "HeaterPowerRate", 9 }, { "ValvePosition", 10 }, { "Source1", 11}, { "Source2", 12},  { "Source3", 13},  { "Source4", 14},  { "Source5", 15},  { "Source6", 16}
+        };
+
+        public static readonly uint LineHeaterTemperature = 8;
+
         // Variable handles to be connected plc variables
         private static BitArray? baReadValveStatePLC1 = null;
         private static BitArray? baReadValveStatePLC2 = null;
-        private static float[]? aDeviceTargetValues = null;
         private static float[]? aDeviceCurrentValues = null;
         private static float[]? aDeviceControlValues = null;
-        private static short[]? aDeviceRampTimes = null;
         private static float[]? aMonitoring_PVs = null;
         private static short[]? aInputState = null;
         private static BitArray? bOutputCmd1 = null;
+        private static short[]? aDeviceRampTimes = new short[dIndexController.Count];
+        private static float[]? aDeviceTargetValues = new float[dIndexController.Count];
 
-        private static Dictionary<string, ObservableManager<float>.DataIssuer>? dCurrentValueIssuers;
-        private static Dictionary<string, ObservableManager<float>.DataIssuer>? dControlValueIssuers;
-        private static Dictionary<string, ObservableManager<float>.DataIssuer>? dTargetValueIssuers;
-        private static Dictionary<string, ObservableManager<(float, float)>.DataIssuer>? dControlCurrentValueIssuers;
-        private static Dictionary<string, ObservableManager<float>.DataIssuer>? aMonitoringCurrentValueIssuers;
-        private static ObservableManager<BitArray>.DataIssuer? baHardWiringInterlockStateIssuers;
-        private static ObservableManager<BitArray>.DataIssuer? dIOStateList;
-        private static Dictionary<string, ObservableManager<bool>.DataIssuer>? dValveStateIssuers;
-        private static ObservableManager<bool>.DataIssuer? dRecipeEndedPublisher;
-        private static ObservableManager<short>.DataIssuer? dCurrentActiveRecipeIssue;
-        private static ObservableManager<float[]>.DataIssuer? dLineHeaterTemperatureIssuers;
-        private static ObservableManager<int>.DataIssuer? dRecipeControlHoldTimeIssuer;
-        private static ObservableManager<int>.DataIssuer? dRecipeControlRampTimeIssuer;
-        private static ObservableManager<int>.DataIssuer? dRecipeControlPauseTimeIssuer;
-        private static ObservableManager<BitArray>.DataIssuer? dDigitalOutput2;
-        private static ObservableManager<BitArray>.DataIssuer? dDigitalOutput3;
-        private static ObservableManager<BitArray>.DataIssuer? dOutputCmd1;
-        private static ObservableManager<BitArray>.DataIssuer? dInputManAuto;
-        private static ObservableManager<short>.DataIssuer? dThrottleValveControlMode;
-        private static ObservableManager<ushort>.DataIssuer? dPressureControlModeIssuer;
-        private static ObservableManager<short>.DataIssuer? dThrottleValveStatusIssuer;
-        private static ObservableManager<BitArray>.DataIssuer? dLogicalInterlockStateIssuer;
+        private static Dictionary<string, ObservableManager<float>.Publisher>? dCurrentValueIssuers;
+        private static Dictionary<string, ObservableManager<float>.Publisher>? dControlValueIssuers;
+        private static Dictionary<string, ObservableManager<float>.Publisher>? dTargetValueIssuers;
+        private static Dictionary<string, ObservableManager<(float, float)>.Publisher>? dControlCurrentValueIssuers;
+        private static Dictionary<string, ObservableManager<float>.Publisher>? aMonitoringCurrentValueIssuers;
+        private static ObservableManager<BitArray>.Publisher? baHardWiringInterlockStateIssuers;
+        private static ObservableManager<BitArray>.Publisher? dIOStateList;
+        private static Dictionary<string, ObservableManager<bool>.Publisher>? dValveStateIssuers;
+        private static ObservableManager<bool>.Publisher? dRecipeEndedPublisher;
+        private static ObservableManager<short>.Publisher? dCurrentActiveRecipeIssue;
+        private static ObservableManager<float[]>.Publisher? dLineHeaterTemperatureIssuers;
+        private static ObservableManager<int>.Publisher? dRecipeControlHoldTimeIssuer;
+        private static ObservableManager<int>.Publisher? dRecipeControlRampTimeIssuer;
+        private static ObservableManager<int>.Publisher? dRecipeControlPauseTimeIssuer;
+        private static ObservableManager<BitArray>.Publisher? dDigitalOutput2;
+        private static ObservableManager<BitArray>.Publisher? dDigitalOutput3;
+        private static ObservableManager<BitArray>.Publisher? dOutputCmd1;
+        private static ObservableManager<BitArray>.Publisher? dInputManAuto;
+        private static ObservableManager<short>.Publisher? dThrottleValveControlMode;
+        private static ObservableManager<ushort>.Publisher? dPressureControlModeIssuer;
+        private static ObservableManager<short>.Publisher? dThrottleValveStatusIssuer;
+        private static ObservableManager<BitArray>.Publisher? dLogicalInterlockStateIssuer;
+        private static ObservableManager<PLCConnection>.Publisher? dPLCConnectionPublisher;
 
         private static LeakTestModeSubscriber? leakTestModeSubscriber = null;
 
-        public static bool Connected { get; private set; } = false;
+        public static PLCConnection Connected 
+        { 
+            get { return connected;  } 
+            private set 
+            { 
+                connected = value;
+                switch(connected)
+                {
+                    case PLCConnection.Connected:
+                        OnConnected();
+                        break;
+
+                    case PLCConnection.Disconnected:
+                        OnDisconnected();
+                        break;
+                }
+                dPLCConnectionPublisher?.Issue(value);
+            } 
+        }
+        private static PLCConnection connected = PLCConnection.Disconnected;
 
         //Create an instance of the TcAdsClient()
-        public static AdsClient Ads { get; set; }
+        public static AdsClient Ads { get; set; } = new AdsClient();
         private static DispatcherTimer? timer = null;
         private static DispatcherTimer? currentActiveRecipeListener = null;
+        private static DispatcherTimer? connectionTryTimer = null;
 
         // Read from PLC State
         private static uint hReadValveStatePLC1;
@@ -171,44 +241,6 @@ namespace SapphireXR_App.Models
 
         private static bool ShowMessageOnLeakTestModeSubscriberWriteValveState = true;
         private static bool ShowMessageOnOnTick = true;
-
-        public static readonly Dictionary<string, int> ValveIDtoOutputSolValveIdx1 = new Dictionary<string, int>
-        {
-            { "V01", 0 }, { "V02", 1 }, { "V03", 2 }, { "V04", 3 }, { "V05", 4 },
-            { "V06", 5 }, { "V07", 6 }, { "V08", 7 }, { "V09", 8 }, { "V10", 9 },
-            { "V11", 10 }, { "V12", 11 }, { "V13", 12 }, { "V14", 13 }, { "V15", 14 },
-            { "V16", 15 }, { "V37", 16 }, { "V38", 17 }, { "V39", 18 }, { "V40", 19 },
-            { "V41", 20 }, { "V42", 21 }, { "V43", 22 }, { "V44", 23 },  { "V45", 24 },
-            { "V46", 25 }
-        };
-        public static readonly Dictionary<string, int> ValveIDtoOutputSolValveIdx2 = new Dictionary<string, int>
-        {
-            { "V17", 0 }, { "V18", 1 }, { "V19", 2 }, { "V20", 3 }, { "V21", 4 },
-            { "V22", 5 }, { "V23", 6 }, { "V24", 7 }, { "V25", 8 }, { "V26", 9 },
-            { "V27", 10 }, { "V28", 11 }, { "V29", 12 }, { "V30", 13 }, { "V31", 14 },
-            { "V32", 15 }, { "V33", 16 }, { "V34", 17 }, { "V35", 18 }, { "V36", 19 },
-            { "V47", 20 }, { "V48", 21 }, { "V49", 22 }, { "V50", 23 },  { "V51", 24 },
-            { "V52", 25 }, { "V53", 26 }
-        };
-
-        public static readonly Dictionary<string, int> dIndexController = new Dictionary<string, int>
-        {
-            { "MFC01", 0 }, { "MFC02", 1 }, { "MFC03", 2 }, { "MFC04", 3 }, { "MFC05", 4 },
-            { "MFC06", 5 }, { "MFC07", 6 }, { "MFC08", 7 }, { "MFC09", 8 }, { "MFC10", 9 },
-            { "MFC11", 10 }, { "MFC12", 11 }, { "MFC13", 12 }, { "MFC14", 13 }, { "MFC15", 14 },
-            { "MFC16", 15 }, { "MFC17", 16 }, { "MFC18", 17 }, { "MFC19", 18 },
-            { "EPC01", 19 },  { "EPC02", 20 }, { "EPC03", 21 }, { "EPC04", 22 }, { "EPC05", 23 },
-            { "EPC06", 24 }, { "EPC07", 25 }, {"Temperature", 26}, {"Pressure", 27}, {"Rotation", 28}
-        };
-        public static readonly int NumControllers = dIndexController.Count;
-
-        public static readonly Dictionary<string, int> dMonitoringMeterIndex = new Dictionary<string, int>
-        {
-            { "UltimatePressure", 0 },  { "ExtPressure", 1},  { "DorPressure", 2}, { "Gas 1", 3}, { "Gas 2", 4}, { "Gas3", 5}, { "Gas4", 6}, { "ShowerHeadTemp", 7}, { "InductionCoilTemp", 8}, 
-            { "HeaterPowerRate", 9 }, { "ValvePosition", 10 }, { "Source1", 11}, { "Source2", 12},  { "Source3", 13},  { "Source4", 14},  { "Source5", 15},  { "Source6", 16}
-        };
-
-        public static readonly uint LineHeaterTemperature = 8;
 
         private static Dictionary<string, string> LeftCoupled = new Dictionary<string, string>();
         private static Dictionary<string, string> RightCoupled = new Dictionary<string, string>();

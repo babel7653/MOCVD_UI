@@ -918,7 +918,9 @@
                                                     <ColumnDefinition Width="8"/>
                                                     <ColumnDefinition />
                                                 </Grid.ColumnDefinitions>
-                                                <ToggleButton Style="{StaticResource ToggleSwitch}" PreviewMouseLeftButtonDown="ConfirmBeforeToggle" Grid.Column="0" x:Name="btHeaterOn" IsChecked="{Binding IsInductionHeaterOn, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" VerticalAlignment="Center" HorizontalAlignment="Center">
+                                                <ToggleButton Style="{StaticResource ToggleSwitch}" PreviewMouseLeftButtonDown="ConfirmBeforeToggle" Grid.Column="0" x:Name="btHeaterOn" 
+                                                              IsChecked="{Binding IsInductionHeaterOn, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" IsEnabled="{Binding PLCConnected, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}" 
+                                                              VerticalAlignment="Center" HorizontalAlignment="Center">
                                                     <ToggleButton.LayoutTransform>
                                                         <ScaleTransform ScaleX="0.9" ScaleY="0.9"/>
                                                     </ToggleButton.LayoutTransform>
@@ -1066,7 +1068,9 @@
                                                     <ColumnDefinition Width="8"/>
                                                     <ColumnDefinition />
                                                 </Grid.ColumnDefinitions>
-                                                <ToggleButton Style="{StaticResource ToggleSwitch}" PreviewMouseLeftButtonDown="ConfirmBeforeToggle" Grid.Column="0" x:Name="btPumpOn" IsChecked="{Binding IsVaccumPumpOn, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Center" HorizontalAlignment="Center">
+                                                <ToggleButton Style="{StaticResource ToggleSwitch}" PreviewMouseLeftButtonDown="ConfirmBeforeToggle" Grid.Column="0" x:Name="btPumpOn" 
+                                                              IsChecked="{Binding IsVaccumPumpOn, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" IsEnabled="{Binding PLCConnected, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}" 
+                                                              VerticalAlignment="Center" HorizontalAlignment="Center">
                                                     <ToggleButton.LayoutTransform>
                                                         <ScaleTransform ScaleX="0.9" ScaleY="0.9"/>
                                                     </ToggleButton.LayoutTransform>

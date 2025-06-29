@@ -110,7 +110,7 @@ namespace SapphireXR_App.ViewModels
             private IList? _selected;
             private IList<Recipe>? copied = null;
             public RecipeEditViewModel RecipeViewModel { get; set; }
-            private ObservableManager<IList<Recipe>>.DataIssuer recipeAddedPublishser = ObservableManager<IList<Recipe>>.Get("RecipeEdit.TabDataGrid.RecipeAdded");
+            private ObservableManager<IList<Recipe>>.Publisher recipeAddedPublishser = ObservableManager<IList<Recipe>>.Get("RecipeEdit.TabDataGrid.RecipeAdded");
 
             public IRelayCommand SelectionChangedCommand => new RelayCommand<object?>((object? args) =>
             {

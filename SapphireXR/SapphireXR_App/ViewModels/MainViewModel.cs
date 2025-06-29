@@ -3,6 +3,7 @@ using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
 using SapphireXR_App.Bases;
 using SapphireXR_App.Common;
+using SapphireXR_App.Enums;
 using SapphireXR_App.Models;
 using System.ComponentModel;
 using System.Windows;
@@ -10,7 +11,7 @@ using System.Windows.Input;
 
 namespace SapphireXR_App.ViewModels
 {
-    public partial class MainViewModel : ViewModelBase, IObserver<RecipeRunViewModel.RecipeUserState>, IObserver<int>, IObserver<string>
+    public partial class MainViewModel : ViewModelBase, IObserver<RecipeRunViewModel.RecipeUserState>, IObserver<int>, IObserver<string>, IObserver<PLCConnection>
     {
         [ObservableProperty]
         private string? navigationSource;
@@ -23,47 +24,55 @@ namespace SapphireXR_App.ViewModels
             NavigationSource = "Views/RecipeRunPage.xaml";
             //네비게이션 메시지 수신 등록
             WeakReferenceMessenger.Default.Register<NavigationMessage>(this, OnNavigationMessage);
-            if (AppSetting.ConfigMode == false)
+
+            if (PLCService.Connected == PLCConnection.Connected)
             {
-                PLCService.WriteOperationMode(false);
-
-                PropertyChanged += (object? sender, PropertyChangedEventArgs args) =>
-                {
-                    switch (args.PropertyName)
-                    {
-                        case nameof(SelectedTab):
-                            switch (SelectedTab)
-                            {
-                                case 0:
-                                    PLCService.WriteOperationMode(false);
-                                    break;
-
-                                case 1:
-                                    PLCService.WriteOperationMode(true);
-                                    break;
-                            }
-                            selectedTabPublisher.Issue(SelectedTab);
-                            break;
-
-                        case nameof(RecipeRunInactive):
-                            if (RecipeRunInactive == true)
-                            {
-                                onClosing = onRecipeInactive;
-                            }
-                            else
-                            {
-                                onClosing = onRecipeActive;
-                            }
-                            break;
-
-                    }
-                };
-
-                ObservableManager<RecipeRunViewModel.RecipeUserState>.Subscribe("RecipeRun.State", this);
-                ObservableManager<int>.Subscribe("SwitchTab", this);
+                changeOperationMode(SelectedTab);
             }
+
+            PropertyChanged += (object? sender, PropertyChangedEventArgs args) =>
+            {
+                switch (args.PropertyName)
+                {
+                    case nameof(SelectedTab):
+                        if (PLCService.Connected == PLCConnection.Connected)
+                        {
+                            changeOperationMode(SelectedTab);
+                        }
+                        selectedTabPublisher.Issue(SelectedTab);
+                        break;
+
+                    case nameof(RecipeRunInactive):
+                        if (RecipeRunInactive == true)
+                        {
+                            onClosing = onRecipeInactive;
+                        }
+                        else
+                        {
+                            onClosing = onRecipeActive;
+                        }
+                        break;
+                }
+            };
             onClosing = onRecipeInactive;
+            ObservableManager<RecipeRunViewModel.RecipeUserState>.Subscribe("RecipeRun.State", this);
+            ObservableManager<int>.Subscribe("SwitchTab", this);
             ObservableManager<string>.Subscribe("ViewModelCreated", this);
+            ObservableManager<PLCConnection>.Subscribe("PLCService.Connected", this);
+        }
+
+        private void changeOperationMode(int tab)
+        {
+            switch (tab)
+            {
+                case 0:
+                    PLCService.WriteOperationMode(false);
+                    break;
+
+                case 1:
+                    PLCService.WriteOperationMode(true);
+                    break;
+            }
         }
 
         private void OnNavigationMessage(object recipient, NavigationMessage message)
@@ -162,16 +171,39 @@ namespace SapphireXR_App.ViewModels
             }
         }
 
+        void IObserver<PLCConnection>.OnCompleted()
+        {
+            throw new NotImplementedException();
+        }
+
+        void IObserver<PLCConnection>.OnError(Exception error)
+        {
+            throw new NotImplementedException();
+        }
+
+        void IObserver<PLCConnection>.OnNext(PLCConnection value)
+        {
+            switch(value)
+            {
+                case PLCConnection.Connected:
+                    changeOperationMode(SelectedTab);
+                    break;
+
+                case PLCConnection.Disconnected:
+                    break;
+            }
+        }
+
         [ObservableProperty]
         private int _selectedTab;
         [ObservableProperty]
         private bool _recipeRunInactive = true;
+
         private Action<CancelEventArgs> onClosing;
-
-        private ObservableManager<int>.DataIssuer selectedTabPublisher = ObservableManager<int>.Get("MainView.SelectedTabIndex");
-        private ObservableManager<bool>.DataIssuer closingPublisher = ObservableManager<bool>.Get("App.Closing");
-        private ObservableManager<EventLog>.DataIssuer applicationEventIssuer = ObservableManager<EventLog>.Get("EventLog");
-
         private uint viewmodelInterestedCreatedCount = 0;
+
+        private ObservableManager<int>.Publisher selectedTabPublisher = ObservableManager<int>.Get("MainView.SelectedTabIndex");
+        private ObservableManager<bool>.Publisher closingPublisher = ObservableManager<bool>.Get("App.Closing");
+        private ObservableManager<EventLog>.Publisher applicationEventIssuer = ObservableManager<EventLog>.Get("EventLog");
     }
 }

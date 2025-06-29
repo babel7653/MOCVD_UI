@@ -756,8 +756,8 @@ namespace SapphireXR_App.ViewModels
                 }
             }
 
-            private Dictionary<string, ObservableManager<bool>.DataIssuer> valveStatePublishers = new Dictionary<string, ObservableManager<bool>.DataIssuer>();
-            private Dictionary<string, ObservableManager<float>.DataIssuer> flowValuePublishers = new Dictionary<string, ObservableManager<float>.DataIssuer>();
+            private Dictionary<string, ObservableManager<bool>.Publisher> valveStatePublishers = new Dictionary<string, ObservableManager<bool>.Publisher>();
+            private Dictionary<string, ObservableManager<float>.Publisher> flowValuePublishers = new Dictionary<string, ObservableManager<float>.Publisher>();
             private IList<IObserver<bool>> valveStateSubscribers = new List<IObserver<bool>>();
             private IList<IObserver<float>> controlStateSubscribers = new List<IObserver<float>>();
             private IList<IDisposable> unsubscribers = new List<IDisposable>();

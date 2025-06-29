@@ -4,6 +4,9 @@
     <Declaration><![CDATA[PROGRAM P50_RecipeControl
 VAR
 	nRcpIndex		: INT;
+	nLoopCount		: INT;
+	nLoopStart		: INT;
+	nLoopEnd		: INT;
 	nRcpStepTime 	: INT;
 	fbRecipeSequencer : FB_RecipeSequencer;
 	Pause_TIME		: TIME;
@@ -32,7 +35,11 @@ END_VAR
       <ST><![CDATA[CASE RCP.cmd_RcpOperation OF
 	0: //Init State
 		Rcp.state_RcpOperation := 0;
+		RCP.state_LoopCount := 0;
 		nRcpIndex := 0;
+		nLoopCount := 0;
+		nLoopStart := 0;
+		nLoopEnd := 0;
 		Pause_TON(IN:=FALSE);
 		ReStart_TON(IN:=FALSE);
 		Ramp_TON(IN:=FALSE);
@@ -67,9 +74,41 @@ END_VAR
 				Hold_TON(IN:=FALSE);
 				Hold_On := FALSE;
 				Ramp_On := TRUE;
-				IF nRcpIndex < Rcp.iRcpTotalStep THEN
-					nRcpIndex := nRcpIndex + 1;
-				ELSE 
+// 				IF nRcpIndex < Rcp.iRcpTotalStep THEN
+// 					nRcpIndex := nRcpIndex + 1;
+// 				ELSE 
+// 					RCP.cmd_RcpOperation := 50;
+// 				END_IF
+
+
+				IF RCP.state_LoopCount = 0 THEN
+					IF RCP.aRecipe[nRcpIndex].iRecipe[8] <> 0 THEN
+						nLoopCount := RCP.aRecipe[nRcpIndex].iRecipe[8];
+						nLoopEnd := nRcpIndex;
+						RCP.state_LoopCount := 1;
+						nLoopStart := RCP.aRecipe[nRcpIndex].iRecipe[9];
+						nRcpIndex := nLoopStart;
+					ELSE
+						nRcpIndex := nRcpIndex + 1;
+					END_IF
+				ELSIF RCP.state_LoopCount < nLoopCount THEN
+					IF nRcpIndex < nLoopEnd THEN
+						nRcpIndex := nRcpIndex + 1;
+					ELSE
+						nRcpIndex := nLoopStart;
+						RCP.state_LoopCount := RCP.state_LoopCount + 1;
+					END_IF
+				ELSE
+					IF nRcpIndex < nLoopEnd THEN
+						nRcpIndex := nRcpIndex + 1;
+					ELSE
+						nRcpIndex := nRcpIndex + 1;
+						RCP.state_LoopCount := 0;
+						nLoopCount := 0;
+					END_IF
+				END_IF
+				
+				IF nRcpIndex > RCP.iRcpTotalStep THEN
 					RCP.cmd_RcpOperation := 50;
 				END_IF
 			END_IF
@@ -156,7 +195,7 @@ END_VAR
 		Pause_TON(IN:=FALSE);
 		ReStart_TON(IN:=FALSE);
 		Rcp.userState := 40;
-		//nRcpIndex := 1;
+// 		nRcpIndex := 0;
 		P92_Maintenance.nCaseSignalTower := 4;
 		fbRecipeSequencer();
 		
@@ -164,7 +203,7 @@ END_VAR
 		Rcp.state_RcpOperation := 50;
 		Rcp.userState := 50;
 		fbRecipeSequencer(nRcpIndex := nRcpIndex);
-		//nRcpIndex := 1;
+// 		nRcpIndex := 0;
 		P92_Maintenance.nCaseSignalTower := 4;
 		fbRecipeSequencer();
 		
@@ -182,7 +221,10 @@ END_CASE
     <LineIds Name="P50_RecipeControl">
       <LineId Id="1" Count="1" />
       <LineId Id="393" Count="0" />
+      <LineId Id="464" Count="0" />
       <LineId Id="209" Count="0" />
+      <LineId Id="616" Count="1" />
+      <LineId Id="505" Count="0" />
       <LineId Id="211" Count="1" />
       <LineId Id="248" Count="1" />
       <LineId Id="251" Count="1" />
@@ -209,6 +251,32 @@ END_CASE
       <LineId Id="276" Count="1" />
       <LineId Id="280" Count="1" />
       <LineId Id="278" Count="0" />
+      <LineId Id="584" Count="0" />
+      <LineId Id="441" Count="0" />
+      <LineId Id="473" Count="0" />
+      <LineId Id="604" Count="0" />
+      <LineId Id="506" Count="0" />
+      <LineId Id="610" Count="0" />
+      <LineId Id="558" Count="0" />
+      <LineId Id="552" Count="0" />
+      <LineId Id="565" Count="0" />
+      <LineId Id="607" Count="1" />
+      <LineId Id="605" Count="0" />
+      <LineId Id="566" Count="0" />
+      <LineId Id="640" Count="0" />
+      <LineId Id="659" Count="1" />
+      <LineId Id="667" Count="0" />
+      <LineId Id="641" Count="1" />
+      <LineId Id="664" Count="0" />
+      <LineId Id="668" Count="2" />
+      <LineId Id="674" Count="1" />
+      <LineId Id="672" Count="0" />
+      <LineId Id="644" Count="0" />
+      <LineId Id="554" Count="0" />
+      <LineId Id="511" Count="0" />
+      <LineId Id="578" Count="0" />
+      <LineId Id="581" Count="0" />
+      <LineId Id="568" Count="0" />
       <LineId Id="258" Count="0" />
       <LineId Id="428" Count="0" />
       <LineId Id="285" Count="0" />

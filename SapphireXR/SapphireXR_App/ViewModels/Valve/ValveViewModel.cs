@@ -5,6 +5,7 @@ using System.Windows.Input;
 using CommunityToolkit.Mvvm.Input;
 using SapphireXR_App.Enums;
 using SapphireXR_App.Models;
+using SapphireXR_App.WindowServices;
 
 namespace SapphireXR_App.ViewModels
 {
@@ -151,8 +152,33 @@ namespace SapphireXR_App.ViewModels
                 }
             }
 
-            ObservableManager<bool>.DataIssuer isOpenChangedPubisher;
+            ObservableManager<bool>.Publisher isOpenChangedPubisher;
             ResetValveStateSubscriber resetValveStateSubscriber;
+        }
+
+        private class PLCConnectionStateSubscriber : IObserver<PLCConnection>
+        {
+            public PLCConnectionStateSubscriber(ValveViewModel vm)
+            {
+                valveViewModel = vm;
+            }
+
+            void IObserver<PLCConnection>.OnCompleted()
+            {
+                throw new NotImplementedException();
+            }
+
+            void IObserver<PLCConnection>.OnError(Exception error)
+            {
+                throw new NotImplementedException();
+            }
+
+            void IObserver<PLCConnection>.OnNext(PLCConnection value)
+            {
+                valveViewModel.OnClickCommand.NotifyCanExecuteChanged();
+            }
+
+            private ValveViewModel valveViewModel;
         }
 
         static internal ValveStateUpdater? CreateValveStateUpdater(Controls.Valve.UpdateTarget target, ValveViewModel viewModel)
@@ -193,7 +219,7 @@ namespace SapphireXR_App.ViewModels
         public event PropertyChangedEventHandler? PropertyChanged;
 
         public ICommand OnLoadedCommand { get; set; }
-        public ICommand OnClickCommand => new RelayCommand(OnClicked);
+        public RelayCommand OnClickCommand => new RelayCommand(OnClicked, () => PLCService.Connected == PLCConnection.Connected);
 
         protected abstract void OnClicked();
 

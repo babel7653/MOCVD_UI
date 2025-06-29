@@ -126,6 +126,9 @@
     <Compile Include="POUs\P92_Maintenance.TcPOU">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="POUs\P93_Setting.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="DUTs" />

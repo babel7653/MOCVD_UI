@@ -1,4 +1,6 @@
-﻿namespace SapphireXR_App.Models
+﻿using SapphireXR_App.Models;
+
+namespace SapphireXR_App.WindowServices
 {
     internal static class OutputCmd1ToggleConfirmService
     {
@@ -6,7 +8,7 @@
         {
             if (ValveOperationEx.Show(title, message) == Enums.ValveOperationExResult.Ok)
             {
-                PLCService.WriteOutputCmd1(index, !((currentState == stateOnTrue) ? true : false));
+                PLCService.WriteOutputCmd1(index, !(currentState == stateOnTrue ? true : false));
                 return true;
             }
             else

@@ -1,7 +1,7 @@
 ﻿using SapphireXR_App.Views;
 using SapphireXR_App.ViewModels;
 
-namespace SapphireXR_App.Models
+namespace SapphireXR_App.WindowServices
 {
     internal class ManualBatchEx
     {

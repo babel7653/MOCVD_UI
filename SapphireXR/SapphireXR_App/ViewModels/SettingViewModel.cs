@@ -9,6 +9,7 @@ using SapphireXR_App.Common;
 using System.ComponentModel;
 using System.Collections;
 using SapphireXR_App.Enums;
+using SapphireXR_App.WindowServices;
 
 
 namespace SapphireXR_App.ViewModels

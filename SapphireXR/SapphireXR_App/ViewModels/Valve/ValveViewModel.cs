@@ -5,6 +5,7 @@ using System.Windows.Input;
 using CommunityToolkit.Mvvm.Input;
 using SapphireXR_App.Enums;
 using SapphireXR_App.Models;
+using SapphireXR_App.WindowServices;
 
 namespace SapphireXR_App.ViewModels
 {

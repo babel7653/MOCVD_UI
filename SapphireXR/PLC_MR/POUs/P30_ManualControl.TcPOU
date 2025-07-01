@@ -51,7 +51,7 @@ END_VAR]]></Declaration>
 	GVL_IO.aController[28].rTargetValue := GVL_IO.aController_TV[28];
 	P12_IQ_PLUS.wControlValue := LREAL_TO_WORD(GVL_IO.aController[28].rControlValue); //Write to Pressure Controller
 	
-	GVL_IO.aController_PV[28] := WORD_TO_REAL(P12_IQ_PLUS.wTValve_PV);
+	GVL_IO.aController_PV[28] := WORD_TO_REAL(P12_IQ_PLUS.wCDG2_PV);
 	GVL_IO.aController_CV[28] := WORD_TO_REAL(P12_IQ_PLUS.wControlValue);
 	GVL_IO.aController[28]();
 	

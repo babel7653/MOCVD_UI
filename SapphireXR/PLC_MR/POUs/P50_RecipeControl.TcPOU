@@ -122,7 +122,6 @@ END_VAR
 				TEMP_PV := 1100;
 				C_TEMP := 0;
 			END_IF
-		
 		END_IF
 
 		P92_Maintenance.nCaseSignalTower := 3;
@@ -269,7 +268,6 @@ END_CASE
       <LineId Id="937" Count="0" />
       <LineId Id="959" Count="0" />
       <LineId Id="929" Count="0" />
-      <LineId Id="886" Count="0" />
       <LineId Id="874" Count="0" />
       <LineId Id="911" Count="0" />
       <LineId Id="428" Count="0" />

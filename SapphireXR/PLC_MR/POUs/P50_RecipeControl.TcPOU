@@ -5,8 +5,6 @@
 VAR
 	nRcpIndex		: INT;
 	nLoopCount		: INT;
-	nLoopStart		: INT;
-	nLoopEnd		: INT;
 	nRcpStepTime 	: INT;
 	fbRecipeSequencer : FB_RecipeSequencer;
 	Pause_TIME		: TIME;
@@ -38,11 +36,9 @@ END_VAR
       <ST><![CDATA[CASE RCP.cmd_RcpOperation OF
 	0: //Init State
 		Rcp.state_RcpOperation := 0;
-		RCP.state_LoopCount := 0;
+		RCP.state_LoopCount := 1;
 		nRcpIndex := 0;
 		nLoopCount := 0;
-		nLoopStart := 0;
-		nLoopEnd := 0;
 		Pause_TON(IN:=FALSE);
 		ReStart_TON(IN:=FALSE);
 		Ramp_TON(IN:=FALSE);
@@ -76,7 +72,8 @@ END_VAR
 			Hold_On := TRUE;
 			C_TEMP := RCP.aRecipe[nRcpIndex].iRecipe[7];
 		END_IF
-
+		
+		// Compare temperature
 		IF C_TEMP = 0 THEN
 			// Hold operation
 			Hold_TON(IN:=Hold_On, PT:=Hold_TIME, ET=>Hold_ET);
@@ -85,34 +82,19 @@ END_VAR
 				Hold_TON(IN:=FALSE);
 				Hold_On := FALSE;
 				Ramp_On := TRUE;
-				// Loop & Jump
-				IF RCP.state_LoopCount = 0 THEN
-					IF RCP.aRecipe[nRcpIndex].iRecipe[8] <> 0 THEN
-						nLoopCount := RCP.aRecipe[nRcpIndex].iRecipe[8];
-						nLoopStart := RCP.aRecipe[nRcpIndex].iRecipe[9];
-						nLoopEnd := nRcpIndex;
-						RCP.state_LoopCount := 1;
-						nRcpIndex := nLoopStart;
-					ELSE
-						nRcpIndex := nRcpIndex + 1;
-					END_IF
-				ELSIF RCP.state_LoopCount < nLoopCount THEN
-					IF nRcpIndex < nLoopEnd THEN
-						nRcpIndex := nRcpIndex + 1;
-					ELSE
-						nRcpIndex := nLoopStart;
+				//Loop & Jump operation
+				IF RCP.aRecipe[nRcpIndex].iRecipe[9] > 0 THEN
+					nLoopCount := RCP.aRecipe[nRcpIndex].iRecipe[8];
+					IF RCP.state_LoopCount < nLoopCount THEN
+						nRcpIndex := RCP.aRecipe[nRcpIndex].iRecipe[9];
 						RCP.state_LoopCount := RCP.state_LoopCount + 1;
+					ELSE
+						nRcpIndex := nRcpIndex + 1;
+						RCP.state_LoopCount := 1;
 					END_IF
 				ELSE
-					IF nRcpIndex < nLoopEnd THEN
-						nRcpIndex := nRcpIndex + 1;
-					ELSE
-						nRcpIndex := nRcpIndex + 1;
-						RCP.state_LoopCount := 0;
-						nLoopCount := 0;
-					END_IF
+					nRcpIndex := nRcpIndex + 1;
 				END_IF
-
 			END_IF
 		ELSE
 			// Generate Temperature PV for test
@@ -123,7 +105,6 @@ END_VAR
 				C_TEMP := 0;
 			END_IF
 		END_IF
-
 		P92_Maintenance.nCaseSignalTower := 3;
 
 		
@@ -232,8 +213,7 @@ END_CASE
       <LineId Id="393" Count="0" />
       <LineId Id="464" Count="0" />
       <LineId Id="209" Count="0" />
-      <LineId Id="616" Count="1" />
-      <LineId Id="505" Count="0" />
+      <LineId Id="616" Count="0" />
       <LineId Id="211" Count="1" />
       <LineId Id="248" Count="1" />
       <LineId Id="251" Count="1" />
@@ -252,24 +232,30 @@ END_CASE
       <LineId Id="923" Count="0" />
       <LineId Id="958" Count="0" />
       <LineId Id="868" Count="0" />
-      <LineId Id="870" Count="1" />
+      <LineId Id="980" Count="1" />
+      <LineId Id="871" Count="0" />
       <LineId Id="922" Count="0" />
       <LineId Id="259" Count="1" />
       <LineId Id="728" Count="0" />
       <LineId Id="743" Count="1" />
       <LineId Id="742" Count="0" />
-      <LineId Id="778" Count="3" />
-      <LineId Id="955" Count="0" />
-      <LineId Id="782" Count="1" />
-      <LineId Id="785" Count="19" />
-      <LineId Id="892" Count="1" />
+      <LineId Id="979" Count="0" />
+      <LineId Id="960" Count="0" />
+      <LineId Id="974" Count="0" />
+      <LineId Id="968" Count="1" />
+      <LineId Id="975" Count="1" />
+      <LineId Id="978" Count="0" />
+      <LineId Id="977" Count="0" />
+      <LineId Id="970" Count="0" />
+      <LineId Id="964" Count="1" />
+      <LineId Id="963" Count="0" />
+      <LineId Id="893" Count="0" />
       <LineId Id="887" Count="0" />
       <LineId Id="930" Count="3" />
       <LineId Id="937" Count="0" />
       <LineId Id="959" Count="0" />
       <LineId Id="929" Count="0" />
       <LineId Id="874" Count="0" />
-      <LineId Id="911" Count="0" />
       <LineId Id="428" Count="0" />
       <LineId Id="232" Count="0" />
       <LineId Id="142" Count="0" />

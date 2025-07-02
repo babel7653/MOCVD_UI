@@ -14,15 +14,15 @@ namespace SapphireXR_App.Models
             public ReadValveStateException(string message) : base(message) { }
         }
 
-        internal class ConnectionFaiulreException: Exception
+        internal class ConnectionFaiulreException : Exception
         {
-            public ConnectionFaiulreException(string internalMessage): base("PLC로의 연결이 실패했습니다. 물리적 연결이나 서비스가 실행 중인지 확인해 보십시요." + 
+            public ConnectionFaiulreException(string internalMessage) : base("PLC로의 연결이 실패했습니다. 물리적 연결이나 서비스가 실행 중인지 확인해 보십시요." +
                 (internalMessage != string.Empty ? "문제의 원인은 다음과 같습니다: " + internalMessage : internalMessage)) { }
         }
 
-        private class ReadBufferException: Exception
+        private class ReadBufferException : Exception
         {
-            public ReadBufferException(string message): base(message) { }
+            public ReadBufferException(string message) : base(message) { }
         }
 
         internal class LeakTestModeSubscriber : IObserver<bool>
@@ -40,9 +40,9 @@ namespace SapphireXR_App.Models
             void IObserver<bool>.OnNext(bool value)
             {
                 LeakTestMode = value;
-                if(value == false)
+                if (value == false)
                 {
-                    foreach((string valveID, string coupled) in LeftCoupled)
+                    foreach ((string valveID, string coupled) in LeftCoupled)
                     {
                         try
                         {
@@ -51,7 +51,7 @@ namespace SapphireXR_App.Models
                         }
                         catch (Exception exception)
                         {
-                            if(ShowMessageOnLeakTestModeSubscriberWriteValveState == true)
+                            if (ShowMessageOnLeakTestModeSubscriberWriteValveState == true)
                             {
                                 ShowMessageOnLeakTestModeSubscriberWriteValveState = MessageBox.Show("PLC로부터 Valve 상태를 읽어오는데 실패했습니다. 이 메시지를 다시 표시하지 않으려면 Yes를 클릭하세요. 원인은 다음과 같습니다: " + exception.Message, "",
                                     MessageBoxButton.YesNo, MessageBoxImage.Error) == MessageBoxResult.Yes ? false : true;
@@ -72,19 +72,19 @@ namespace SapphireXR_App.Models
         const int NumShortBits = sizeof(short) * 8;
         internal enum IOListIndex
         {
-            PowerResetSwitch = 2, Cover_UpperLimit = 3, Cover_LowerLimit = 4, SMPS_24V480 = 5, SMPS_24V72 = 6, SMPS_15VPlus= 7, SMPS_15VMinus = 8, CP_InudctionHeater = 9, 
-            CP_ThermalBath = 10,  CP_VaccumPump = 11, CP_LineHeater = 12, CP_RotationMotor = 13, CP_CoverMotor = 14, CP_ThrottleValve = 15, CP_Lamp = NumShortBits * 1, 
-            CP_SM515CP = NumShortBits * 1 + 1, LineHeader1 = NumShortBits * 1 + 2, LineHeader2 = NumShortBits * 1 + 3, LineHeader3 = NumShortBits * 1 + 4,  LineHeader4 = NumShortBits * 1 + 5, 
-            LineHeader5 = NumShortBits * 1 + 6, LineHeader6 = NumShortBits * 1 + 7, LineHeader7 = NumShortBits * 1 + 8, LineHeader8 = NumShortBits * 1 + 9, 
-            Bath_DeviationAlaram1 = NumShortBits * 1 + 10, Bath_DeviationAlaram2 = NumShortBits * 1 + 11, Bath_DeviationAlaram3 = NumShortBits * 1 + 12, 
-            Bath_DeviationAlaram4 = NumShortBits * 1 + 13,  Bath_DeviationAlaram5 = NumShortBits * 1 + 14, Bath_DeviationAlaram6 = NumShortBits * 1 + 15, 
-            SingalTower_RED = NumShortBits * 2, SingalTower_YELLOW = NumShortBits * 2 + 1, SingalTower_GREEN = NumShortBits * 2 + 2, SingalTower_BLUE = NumShortBits * 2 + 3, 
-            SingalTower_WHITE = NumShortBits * 2 + 4, SingalTower_BUZZWER = NumShortBits * 2 + 5, DOR_Vaccum_State = NumShortBits * 2 + 6, Temp_Controller_Alarm = NumShortBits * 2 + 7
+            PowerResetSwitch = 2, Cover_UpperLimit = 3, Cover_LowerLimit = 4, SMPS_24V480 = 5, SMPS_24V72 = 6, SMPS_15VPlus = 7, SMPS_15VMinus = 8, CP_InudctionHeater = 9,
+            CP_ThermalBath = 10, CP_VaccumPump = 11, CP_LineHeater = 12, CP_RotationMotor = 13, CP_CoverMotor = 14, CP_ThrottleValve = 15, CP_Lamp = NumShortBits * 1,
+            CP_SM515CP = NumShortBits * 1 + 1, LineHeader1 = NumShortBits * 1 + 2, LineHeader2 = NumShortBits * 1 + 3, LineHeader3 = NumShortBits * 1 + 4, LineHeader4 = NumShortBits * 1 + 5,
+            LineHeader5 = NumShortBits * 1 + 6, LineHeader6 = NumShortBits * 1 + 7, LineHeader7 = NumShortBits * 1 + 8, LineHeader8 = NumShortBits * 1 + 9,
+            Bath_DeviationAlaram1 = NumShortBits * 1 + 10, Bath_DeviationAlaram2 = NumShortBits * 1 + 11, Bath_DeviationAlaram3 = NumShortBits * 1 + 12,
+            Bath_DeviationAlaram4 = NumShortBits * 1 + 13, Bath_DeviationAlaram5 = NumShortBits * 1 + 14, Bath_DeviationAlaram6 = NumShortBits * 1 + 15,
+            SingalTower_RED = NumShortBits * 2, SingalTower_YELLOW = NumShortBits * 2 + 1, SingalTower_GREEN = NumShortBits * 2 + 2, SingalTower_BLUE = NumShortBits * 2 + 3,
+            SingalTower_WHITE = NumShortBits * 2 + 4, SingalTower_BUZZER = NumShortBits * 2 + 5, DOR_Vaccum_State = NumShortBits * 2 + 6, Temp_Controller_Alarm = NumShortBits * 2 + 7
         };
 
         internal enum DigitalOutput2Index
         {
-            InductionHeaterOn = 0, InductionHeaterReset, VaccumPumpOn, VaccumPumpReset, 
+            InductionHeaterOn = 0, InductionHeaterReset, VaccumPumpOn, VaccumPumpReset,
         }
 
         public enum DigitalOutput3Index
@@ -97,7 +97,7 @@ namespace SapphireXR_App.Models
             InductionHeaterPower = 0, ThermalBathPower, VaccumPumpPower, LineHeaterPower, InductionHeaterControl, InductionHeaterReset, VaccumPumpControl, VaccumPumpReset, TempControllerManAuto = 11, PressureControlMode = 12
         }
 
-        public enum OutputSetType: ushort
+        public enum OutputSetType : ushort
         {
             Pressure = 1, Position = 2
         }
@@ -138,7 +138,22 @@ namespace SapphireXR_App.Models
             { "HeaterPowerRate", 9 }, { "ValvePosition", 10 }, { "Source1", 11}, { "Source2", 12},  { "Source3", 13},  { "Source4", 14},  { "Source5", 15},  { "Source6", 16}
         };
 
-        public static readonly uint LineHeaterTemperature = 8;
+        private static readonly Dictionary<string, int> dAnalogDeviceAlarmWarningBit = new Dictionary<string, int>
+        {
+            { "R01", 0 }, { "R02", 1 }, { "R03", 2 },  { "M01", 3 }, { "M02", 4 }, { "M03", 5 },  { "M04", 6 }, { "M05", 7 }, { "M06", 8 }, { "M07", 9 }, { "M08", 10 }, { "M09", 11 },  
+            { "M10", 12 }, { "M11", 13 }, { "M12", 14 },  { "M13", 15 }, { "M14", 16 }, { "M15",17 }, { "M16", 18 }, { "M17", 19 }, { "M18", 20 },  { "M19", 21 }, { "E01", 22 }, { "E02", 23 }, 
+            { "E03", 24 }, { "E04", 25 }, { "E05", 26 }, { "E06", 27 }, { "E07", 28 }
+        };
+
+        private static readonly Dictionary<string, int> dDigitalDeviceAlarmWarningBit = new Dictionary<string, int>
+        {
+            { "A01", 0 }, { "A02", 1 }, { "A03", 2 },  { "A04", 3 }, { "A05", 4 }, { "A06", 5 },  { "A07", 6 }, { "A08", 7 }, { "A09", 8 }, { "A10", 9 }, { "A11", 10 }, { "A12", 11 },
+            { "A13", 12 }, { "A14", 13 }
+        };
+
+        public const uint LineHeaterTemperature = 8;
+        private const uint NumAlarmWarningArraySize = 6;
+        private const uint NumInterlockSet = 11;
 
         // Variable handles to be connected plc variables
         private static BitArray? baReadValveStatePLC1 = null;
@@ -150,6 +165,7 @@ namespace SapphireXR_App.Models
         private static BitArray? bOutputCmd1 = null;
         private static short[]? aDeviceRampTimes = new short[dIndexController.Count];
         private static float[]? aDeviceTargetValues = new float[dIndexController.Count];
+        private static int[] InterlockEnables = Enumerable.Repeat<int>(0, (int)NumAlarmWarningArraySize).ToArray(); 
 
         private static Dictionary<string, ObservableManager<float>.Publisher>? dCurrentValueIssuers;
         private static Dictionary<string, ObservableManager<float>.Publisher>? dControlValueIssuers;
@@ -235,6 +251,8 @@ namespace SapphireXR_App.Models
         private static uint hOutputSetType;
         private static uint hOutputMode;
         private static uint hInterlock1;
+        private static uint[] hInterlockEnable = new uint[NumAlarmWarningArraySize];
+        private static uint[] hInterlockset = new uint[NumInterlockSet];
 
         private static bool RecipeRunEndNotified = false;
         private static bool LeakTestMode = true;
@@ -244,5 +262,10 @@ namespace SapphireXR_App.Models
 
         private static Dictionary<string, string> LeftCoupled = new Dictionary<string, string>();
         private static Dictionary<string, string> RightCoupled = new Dictionary<string, string>();
+
+        private static HashSet<int> InterlockEnableUpperIndiceToCommit = new HashSet<int>();
+        private static HashSet<int> InterlockEnableLowerIndiceToCommit = new HashSet<int>();
+        private static Dictionary<int, float> AnalogDeviceInterlockSetIndiceToCommit = new Dictionary<int, float>();
+        private static (bool, float) DigitalDevicelnterlockSetToCommit = (false, 0.0f);
     }
 }

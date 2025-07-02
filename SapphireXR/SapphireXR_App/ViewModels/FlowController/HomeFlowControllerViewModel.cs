@@ -93,10 +93,11 @@ namespace SapphireXR_App.ViewModels.FlowController
                         {
                             PLCService.WriteRampTime(ControllerID, (short)controlValues.rampTime);
                         }
+                        ToastMessage.Show(ControllerID + " Target Value, Ramp Time 설정 완료", ToastMessage.MessageType.Sucess);
                     }
                     catch (Exception ex)
                     {
-                        MessageBox.Show("PLC로 값을 쓰는데 문제가 발생하였습니다. 자세한 원인은 다음과 같습니다: " + ex.Message);
+                        ToastMessage.Show("PLC로 값을 쓰는데 문제가 발생하였습니다. 자세한 원인은 다음과 같습니다: " + ex.Message, ToastMessage.MessageType.Error);
                         return false;
                     }
 

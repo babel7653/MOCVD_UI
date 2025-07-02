@@ -12,6 +12,7 @@ using SapphireXR_App.Common;
 using SapphireXR_App.Enums;
 using SapphireXR_App.Models;
 using SapphireXR_App.ViewModels.BottomDashBoard;
+using SapphireXR_App.WindowServices;
 
 namespace SapphireXR_App.ViewModels
 {
@@ -151,6 +152,7 @@ namespace SapphireXR_App.ViewModels
                     if (Start == RecipeCommand.Run)
                     {
                         recipeEventIssuer.Issue(new EventLog() { Date = Util.ToEventLogFormat(DateTime.Now), Message = "레시피가 시작되었습니다", Type = "Recipe Run" });
+                        ToastMessage.Show("Recipe가 시작되었습니다.", ToastMessage.MessageType.Information);
                     }
                     StartOrPause = false;
                     break;
@@ -164,13 +166,14 @@ namespace SapphireXR_App.ViewModels
                 case RecipeUserState.Stopped:
                     CurrentRecipe.stopLog();
                     recipeEventIssuer.Issue(new EventLog() { Date = Util.ToEventLogFormat(DateTime.Now), Message = "레시피가 중단되었습니다", Type = "Recipe Stop" });
+                    ToastMessage.Show("Recipe가 중단되었습니다.", ToastMessage.MessageType.Information);
                     toRecipeLoadedState();
                     break;
 
                 case RecipeUserState.Ended:
                     CurrentRecipe.stopLog();
                     recipeEventIssuer.Issue(new EventLog() { Date = Util.ToEventLogFormat(DateTime.Now), Message = "레시피가 종료되었습니다", Type = "Recipe End" });
-                    MessageBox.Show("Recipe가 종료되었습니다. 종료시간: " + DateTime.Now.ToString("HH:mm"));
+                    ToastMessage.Show("Recipe가 종료되었습니다. 종료시간: " + DateTime.Now.ToString("HH:mm"), ToastMessage.MessageType.Information);
                     toRecipeLoadedState();
                     break;
             }

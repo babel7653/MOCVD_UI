@@ -5,6 +5,7 @@ using SapphireXR_App.Bases;
 using SapphireXR_App.Common;
 using SapphireXR_App.Enums;
 using SapphireXR_App.Models;
+using SapphireXR_App.WindowServices;
 using System.ComponentModel;
 using System.Windows;
 using System.Windows.Input;
@@ -99,7 +100,7 @@ namespace SapphireXR_App.ViewModels
 
         private void onRecipeInactive(CancelEventArgs args)
         {
-            if (MessageBox.Show("프로그램을 종료하시겠습니까?", "종료 확인", MessageBoxButton.OKCancel) == MessageBoxResult.OK)
+            if (ConfirmMessage.Show("프로그램 종료", "프로그램을 종료하시겠습니까?", WindowStartupLocation.CenterScreen) == ValveOperationExResult.Ok)
             {
                 closingPublisher.Issue(true);
                 AppSetting.Save();
@@ -187,9 +188,11 @@ namespace SapphireXR_App.ViewModels
             {
                 case PLCConnection.Connected:
                     changeOperationMode(SelectedTab);
+                    ToastMessage.Show("PLC로 연결되었습니다", ToastMessage.MessageType.Sucess);
                     break;
 
                 case PLCConnection.Disconnected:
+                    ToastMessage.Show("PLC로 연결이 끊겼습니다.", ToastMessage.MessageType.Error);
                     break;
             }
         }

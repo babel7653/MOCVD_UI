@@ -57,17 +57,17 @@ namespace SapphireXR_App.ViewModels
                             }
                             catch (Exception exception)
                             {
-                                MessageBox.Show("PLC로 " + viewModel.ValveID + "값을 쓰는데 실패했습니다. 원인은 다음과 같습니다: " + exception.Message);
+                                ToastMessage.Show("PLC로 " + viewModel.ValveID + "값을 쓰는데 실패했습니다. 원인은 다음과 같습니다: " + exception.Message, ToastMessage.MessageType.Error);
                                 return;
                             }
 
                             viewModel.IsOpen = isOpen;
-                            MessageBox.Show(confirmMessage);
+                            ToastMessage.Show(confirmMessage, ToastMessage.MessageType.Sucess);
                         }
                         break;
 
                     case ValveOperationExResult.Cancel:
-                        MessageBox.Show(cancelMessage);
+                        ToastMessage.Show(cancelMessage, ToastMessage.MessageType.Information);
                         break;
                 }
             }

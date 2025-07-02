@@ -153,6 +153,14 @@ namespace SapphireXR_App.Models
             hOutputCmd1 = Ads.CreateVariableHandle("GVL_IO.aOutputCmd[1]");
             hOutputCmd2 = Ads.CreateVariableHandle("GVL_IO.aOutputCmd[2]");
             hInterlock1 = Ads.CreateVariableHandle("GVL_IO.aInterlock[1]");
+            for(uint arrayIndex = 0; arrayIndex < NumAlarmWarningArraySize; arrayIndex++)
+            {
+                hInterlockEnable[arrayIndex] = Ads.CreateVariableHandle("GVL_IO.aInterlockEnable[" + (arrayIndex + 1) + "]");
+            }
+            for (uint arrayIndex = 0; arrayIndex < NumInterlockSet; arrayIndex++)
+            {
+                hInterlockset[arrayIndex] = Ads.CreateVariableHandle("GVL_IO.aInterlockSet[" + (arrayIndex + 1) + "]");
+            }
 
             hRcp = Ads.CreateVariableHandle("RCP.aRecipe");
             hRcpTotalStep = Ads.CreateVariableHandle("RCP.iRcpTotalStep");

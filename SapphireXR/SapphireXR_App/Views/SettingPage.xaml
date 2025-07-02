@@ -96,13 +96,13 @@
                                                 <Thickness Bottom="{StaticResource p_2}" />
                                             </StackPanel.Margin>
                                             <TextBlock Text="Alarm Deviation(%)" Style="{StaticResource infoTextBlockLeft}" />
-                                            <TextBox x:Name="tbAlarmDeviatin" Text="{Binding Path=dPreSet[AlarmDeviation]}" Width="90" Height="36" Style="{StaticResource InfoTextBox}">
+                                            <TextBox x:Name="tbAlarmDeviatin" Text="{Binding AlarmDeviation, UpdateSourceTrigger=PropertyChanged}" Width="90" Height="36" Style="{StaticResource InfoTextBox}">
                                                 <TextBox.Margin>
                                                     <Thickness Left="{StaticResource p_2}" Right="{StaticResource p_4}" />
                                                 </TextBox.Margin>
                                             </TextBox>
                                             <TextBlock FontSize="12" Text="Warning Deviation(%)" Style="{StaticResource infoTextBlockLeft}" />
-                                            <TextBox x:Name="tbWarningDeviation" Text="{Binding Path=dPreSet[WarningDeviation]}" Width="90" Height="36" Style="{StaticResource InfoTextBox}">
+                                            <TextBox x:Name="tbWarningDeviation" Text="{Binding WarningDeviation, UpdateSourceTrigger=PropertyChanged}" Width="90" Height="36" Style="{StaticResource InfoTextBox}">
                                                 <TextBox.Margin>
                                                     <Thickness Left="{StaticResource p_2}" />
                                                 </TextBox.Margin>
@@ -113,33 +113,23 @@
                                                 <Thickness Bottom="{StaticResource p_2}" />
                                             </StackPanel.Margin>
                                             <TextBlock FontSize="12" Text="Delay Time(s)" Style="{StaticResource infoTextBlockLeft}" />
-                                            <TextBox x:Name="tbAlarmDelayTimeA" Text="{Binding Path=dPreSet[AlarmDelayTimeA]}" Height="36" Style="{StaticResource InfoTextBox}" Width="350">
+                                            <TextBox x:Name="tbAlarmDelayTimeA" Text="{Binding AnalogDeviceDelayTime, UpdateSourceTrigger=PropertyChanged}" Height="36" Style="{StaticResource InfoTextBox}" Width="135.5">
                                                 <TextBox.Margin>
-                                                    <Thickness Left="{StaticResource p_2}" />
+                                                    <Thickness Left="{StaticResource p_2}" Right="{StaticResource p_2}"/>
                                                 </TextBox.Margin>
                                             </TextBox>
-                                        </StackPanel>
-                                        <StackPanel Orientation="Horizontal">
-                                            <StackPanel.Margin>
-                                                <Thickness Bottom="{StaticResource p_3}" />
-                                            </StackPanel.Margin>
-                                            <Button x:Name="btnAlarmSettingLoad" Content="Load" Width="209.5" Height="28" Command="{Binding AlarmSettingLoadCommand}" Style="{StaticResource DefaultButton}">
-                                                <Button.Margin>
-                                                    <Thickness Right="{StaticResource p_2}" />
-                                                </Button.Margin>
-                                            </Button>
-                                            <Button x:Name="btnAlarmSettingSave" Content="Save" Width="209.5" Height="28" Command="{Binding AlarmSettingSaveCommand}" Style="{StaticResource PrimaryButton}"/>
+                                            <Button x:Name="btnAlarmSettingSave" Content="Save" Width="209.5" Height="28" Command="{Binding AnalogDeviceSettingSaveCommand}" HorizontalContentAlignment="Right" Style="{StaticResource PrimaryButton}"/>
                                         </StackPanel>
                                         <StackPanel>
-                                            <DataGrid x:Name="dgAlarmSettingA" Height="740" ItemsSource="{Binding lAnalogDeviceIO}" Style="{StaticResource SettingDataGrid}">
+                                            <DataGrid x:Name="dgAlarmSettingA" Height="780" ItemsSource="{Binding lAnalogDeviceIO}" Style="{StaticResource SettingDataGrid}">
                                                 <DataGrid.Resources>
                                                     <Style TargetType="ScrollBar" BasedOn="{StaticResource DefaultScrollbar}" />
                                                 </DataGrid.Resources>
                                                 <DataGrid.Columns>
-                                                    <DataGridTextColumn Header="ID" CanUserSort="False" CanUserResize="False" IsReadOnly="True" Width="50" Binding="{Binding Path=ID}" ElementStyle="{StaticResource EventLogElement}" />
-                                                    <DataGridTextColumn Header="Device Name" CanUserSort="False" CanUserResize="False" Width="*" IsReadOnly="True"  Binding="{Binding Path=Name}" ElementStyle="{StaticResource EventLogElement}" />
-                                                    <DataGridCheckBoxColumn Header="Alarm" Width="50"	CanUserSort="False" Binding="{Binding Path=AlarmSet}" EditingElementStyle="{StaticResource DataGridCheckBox}" ElementStyle="{StaticResource DataGridCheckBox}" />
-                                                    <DataGridCheckBoxColumn Header="Warning" Width="50"	CanUserSort="False" Binding="{Binding Path=WarningSet}" EditingElementStyle="{StaticResource DataGridCheckBox}" ElementStyle="{StaticResource DataGridCheckBox}" />
+                                                    <DataGridTextColumn Header="ID" CanUserSort="False" CanUserResize="False" IsReadOnly="True" Width="50" Binding="{Binding Path=ID, UpdateSourceTrigger=PropertyChanged}" ElementStyle="{StaticResource EventLogElement}" />
+                                                    <DataGridTextColumn Header="Device Name" CanUserSort="False" CanUserResize="False" Width="*" IsReadOnly="True"  Binding="{Binding Path=Name, UpdateSourceTrigger=PropertyChanged}" ElementStyle="{StaticResource EventLogElement}" />
+                                                    <DataGridCheckBoxColumn Header="Alarm" Width="50"	CanUserSort="False" Binding="{Binding Path=AlarmSet, UpdateSourceTrigger=PropertyChanged}" EditingElementStyle="{StaticResource DataGridCheckBox}" ElementStyle="{StaticResource DataGridCheckBox}" />
+                                                    <DataGridCheckBoxColumn Header="Warning" Width="50"	CanUserSort="False" Binding="{Binding Path=WarningSet, UpdateSourceTrigger=PropertyChanged}" EditingElementStyle="{StaticResource DataGridCheckBox}" ElementStyle="{StaticResource DataGridCheckBox}" />
                                                 </DataGrid.Columns>
                                             </DataGrid>
                                         </StackPanel>
@@ -162,12 +152,12 @@
                                                     <Thickness Right="{StaticResource p_2}" />
                                                 </TextBlock.Margin>
                                             </TextBlock>
-                                            <TextBox x:Name="tbAlarmDelayTimeD" Text="{Binding Path=dPreSet[AlarmDelayTimeD]}" Width="135.5" Height="36" Style="{StaticResource InfoTextBox}">
+                                            <TextBox x:Name="tbAlarmDelayTimeD" Text="{Binding DigitalDeviceDelayTime, UpdateSourceTrigger=PropertyChanged}" Width="135.5" Height="36" Style="{StaticResource InfoTextBox}">
                                                 <TextBox.Margin>
                                                     <Thickness Right="{StaticResource p_4}" />
                                                 </TextBox.Margin>
                                             </TextBox>
-                                            <Button x:Name="btnEventSettingSave" Content="Save" Width="200" Height="28" Command="{Binding  AlarmSettingSaveCommand}" Style="{StaticResource PrimaryButton}" />
+                                            <Button x:Name="btnEventSettingSave" Content="Save" Width="200" Height="28" Command="{Binding DigitalDeviceSettingSaveCommand}" Style="{StaticResource PrimaryButton}" />
                                         </StackPanel>
                                         <DataGrid x:Name="dgAlarmSettingD" ItemsSource="{Binding lSwitchDI}" Style="{StaticResource SettingDataGrid}">
                                             <DataGrid.Resources>
@@ -176,8 +166,8 @@
                                             <DataGrid.Columns>
                                                 <DataGridTextColumn Header="ID" IsReadOnly="True"  CanUserSort="False" CanUserResize="False" Width="50" Binding="{Binding Path=ID}" ElementStyle="{StaticResource EventLogElement}" />
                                                 <DataGridTextColumn Header="Device Name" IsReadOnly="True"  CanUserSort="False" CanUserResize="False" Width="*" Binding="{Binding Path=Name}" ElementStyle="{StaticResource EventLogElement}" />
-                                                <DataGridCheckBoxColumn Header="Alarm" CanUserSort="False" CanUserResize="False" Width="50" Binding="{Binding Path=AlarmSet}" ElementStyle="{StaticResource DataGridCheckBox}" EditingElementStyle="{StaticResource DataGridCheckBox}" />
-                                                <DataGridCheckBoxColumn Header="Warning" CanUserSort="False" CanUserResize="False" Width="50" Binding="{Binding Path=WarningSet}" ElementStyle="{StaticResource DataGridCheckBox}"  EditingElementStyle="{StaticResource DataGridCheckBox}" />
+                                                <DataGridCheckBoxColumn Header="Alarm" CanUserSort="False" CanUserResize="False" Width="50" Binding="{Binding Path=AlarmSet, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" ElementStyle="{StaticResource DataGridCheckBox}" EditingElementStyle="{StaticResource DataGridCheckBox}" />
+                                                <DataGridCheckBoxColumn Header="Warning" CanUserSort="False" CanUserResize="False" Width="50" Binding="{Binding Path=WarningSet, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" ElementStyle="{StaticResource DataGridCheckBox}"  EditingElementStyle="{StaticResource DataGridCheckBox}" />
                                             </DataGrid.Columns>
                                         </DataGrid>
                                     </StackPanel>
@@ -575,7 +565,7 @@
                                             <DataGrid.Columns>
                                                 <DataGridTextColumn Header="ID" IsReadOnly="True" CanUserSort="False" CanUserResize="False" Width="60" Binding="{Binding Path=ID, Mode=OneTime, UpdateSourceTrigger=PropertyChanged}" ElementStyle="{StaticResource EventLogElement}" />
                                                 <DataGridTextColumn Header="Device Name" CanUserSort="False" CanUserResize="False" Width="*" Binding="{Binding Path=Name, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"  ElementStyle="{StaticResource EventLogElement}" />
-                                                <DataGridTextColumn Header="Max Value" CanUserSort="False" CanUserResize="False" Width="120" Binding="{Binding Path=MaxValue, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"  ElementStyle="{StaticResource EventLogElement}" />
+                                                <DataGridTextColumn Header="Max Value" CanUserSort="False" CanUserResize="False" Width="120" Binding="{Binding Path=MaxValue, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" ElementStyle="{StaticResource EventLogElement}" />
                                             </DataGrid.Columns>
                                         </DataGrid>
                                         <DataGrid x:Name="DigitalMappingSetting" ItemsSource="{Binding ValveDeviceIO}" Style="{StaticResource DeviceNamingSettingDataGrid}" Height="300">
@@ -619,7 +609,7 @@
                                             </DataGrid.Resources>
                                             <DataGrid.Columns>
                                                 <DataGridTextColumn Header="Name" CanUserSort="False" CanUserResize="False" Width="*" Binding="{Binding Name}" ElementStyle="{StaticResource EventLogElement}"/>
-                                                <DataGridCheckBoxColumn Header="On/Off" CanUserSort="False" CanUserResize="False" Width="60" IsReadOnly="True" Binding="{Binding OnOff, UpdateSourceTrigger=PropertyChanged}" ElementStyle="{StaticResource DataGridCheckBox}" EditingElementStyle="{StaticResource DataGridCheckBox}" />
+                                                <DataGridCheckBoxColumn Header="On/Off" CanUserSort="False" CanUserResize="False" Width="60" IsReadOnly="True" Binding="{Binding OnOff, UpdateSourceTrigger=PropertyChanged}" ElementStyle="{StaticResource ValveOnOffCheckBox}" EditingElementStyle="{StaticResource DataGridCheckBox}" />
                                             </DataGrid.Columns>
                                         </DataGrid>
                                     </StackPanel>

@@ -176,5 +176,144 @@ namespace SapphireXR_App.Models
         {
             Ads.WriteAny(hOutputCmd2, value);
         }
+
+        private static int SetBit(bool bitValue, int bitField, int bit)
+        {
+            int invMask = ~(1 << bit);
+            bitField &= invMask;
+            bitField |= (bitValue ? 1 : 0) << bit;
+
+            return bitField; 
+        }
+
+        private static bool WriteDeviceAlarmWarningSettingState(string deviceID, int index, bool bitValue, Dictionary<string, int> deviceIDToBit)
+        {
+            int bit;
+            if (deviceIDToBit.TryGetValue(deviceID, out bit) == true)
+            {
+                InterlockEnables[index] = SetBit(bitValue, InterlockEnables[index], bit);
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        public static void WriteAnalogDeviceAlarmState(string deviceID, bool bitValue)
+        {
+            WriteDeviceAlarmWarningSettingState(deviceID, 1, bitValue, dAnalogDeviceAlarmWarningBit);
+            InterlockEnableLowerIndiceToCommit.Add(1);
+        }
+
+        public static void WriteAnalogDeviceWarningState(string deviceID, bool bitValue)
+        {
+            WriteDeviceAlarmWarningSettingState(deviceID, 2, bitValue, dAnalogDeviceAlarmWarningBit);
+            InterlockEnableLowerIndiceToCommit.Add(2);
+        }
+
+        public static void WriteDigitalDeviceAlarmState(string deviceID, bool bitValue)
+        {
+            WriteDeviceAlarmWarningSettingState(deviceID, 3, bitValue, dDigitalDeviceAlarmWarningBit);
+            InterlockEnableUpperIndiceToCommit.Add(3);
+        }
+
+        public static void WriteDigitalDeviceWarningState(string deviceID, bool bitValue)
+        {
+            WriteDeviceAlarmWarningSettingState(deviceID, 4, bitValue, dDigitalDeviceAlarmWarningBit);
+            InterlockEnableUpperIndiceToCommit.Add(4);
+        }
+
+        private static void CommitAlarmWarningSettingStateToPLC(HashSet<int> interlockEnableIndiceToCommit)
+        {
+            foreach (int index in interlockEnableIndiceToCommit)
+            {
+                Ads.WriteAny(hInterlockEnable[index], InterlockEnables[index]);
+            }
+            interlockEnableIndiceToCommit.Clear();
+        }
+
+        public static void CommitAnalogDeviceAlarmWarningSettingStateToPLC()
+        {
+            CommitAlarmWarningSettingStateToPLC(InterlockEnableLowerIndiceToCommit);
+            CommitInterlockSetToPLC(AnalogDeviceInterlockSetIndiceToCommit);
+        }
+
+        public static void CommitDigitalDeviceAlarmWarningSettingStateToPLC()
+        {
+            CommitAlarmWarningSettingStateToPLC(InterlockEnableUpperIndiceToCommit);
+            if(DigitalDevicelnterlockSetToCommit.Item1 == false)
+            {
+                Ads.WriteAny(hInterlockset[3], DigitalDevicelnterlockSetToCommit.Item2);
+                DigitalDevicelnterlockSetToCommit.Item1 = true;
+            }
+        }
+
+        public static void WriteAlarmWarningSetting(List<AnalogDeviceIO> analogDeviceIOs, List<SwitchDI> switchDIs)
+        {
+            var setBit = (string deviceID, int index, bool bitValue, Dictionary<string, int> deviceIDToBit) =>
+            {
+                int bit;
+                if (deviceIDToBit.TryGetValue(deviceID, out bit) == true)
+                {
+                    InterlockEnables[index] = SetBit(bitValue, InterlockEnables[index], bit);
+                }
+            };
+
+            foreach(AnalogDeviceIO analogDeviceIO in analogDeviceIOs)
+            {
+                if (analogDeviceIO.ID != null)
+                {
+                    setBit(analogDeviceIO.ID, 0, analogDeviceIO.AlarmSet, dAnalogDeviceAlarmWarningBit);
+                    setBit(analogDeviceIO.ID, 1, analogDeviceIO.WarningSet, dAnalogDeviceAlarmWarningBit);
+                }
+            }
+            foreach (SwitchDI switchID in switchDIs)
+            {
+                if (switchID.ID != null)
+                {
+                    setBit(switchID.ID, 2, switchID.AlarmSet, dDigitalDeviceAlarmWarningBit);
+                    setBit(switchID.ID, 3, switchID.WarningSet, dDigitalDeviceAlarmWarningBit);
+                }
+            }
+
+            for (uint alarmWarningSettingIndex = 0; alarmWarningSettingIndex < NumAlarmWarningArraySize; alarmWarningSettingIndex++)
+            {
+                Ads.WriteAny(hInterlockEnable[alarmWarningSettingIndex], InterlockEnables[alarmWarningSettingIndex]);
+            }
+        }
+
+        public static void WriteAlarmDeviationState(float deviation)
+        {
+            AnalogDeviceInterlockSetIndiceToCommit[0] = deviation;
+        }
+
+        public static void WriteWarningDeviationState(float deviation)
+        {
+            AnalogDeviceInterlockSetIndiceToCommit[1] = deviation;
+        }
+
+        public static void WriteAnalogDeviceDelayTime(float delayTime)
+        {
+            AnalogDeviceInterlockSetIndiceToCommit[2] = delayTime;
+        }
+
+        public static void WriteDigitalDeviceDelayTime(float delayTime)
+        {
+            DigitalDevicelnterlockSetToCommit = (false, delayTime);
+        }
+
+        private static void CommitInterlockSetToPLC(Dictionary<int, float> interlockSetIndiceToCommit)
+        {
+            foreach ((int index, float setValue) in interlockSetIndiceToCommit)
+            {
+                Ads.WriteAny(hInterlockset[index], setValue);
+            }
+            interlockSetIndiceToCommit.Clear();
+        }
+
+        public static void WriteBuzzerOnOff(bool onOff)
+        {
+        }
     }
 }

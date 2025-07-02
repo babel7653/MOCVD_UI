@@ -80,8 +80,8 @@ namespace SapphireXR_App.Models
 
         public static bool ReadInputState4(int bitIndex)
         {
-            short inputState = Ads.ReadAny<short>(hInputState4);
-            return new BitArray(BitConverter.IsLittleEndian == true ? BitConverter.GetBytes(inputState) : BitConverter.GetBytes(inputState).Reverse().ToArray())[bitIndex];
+            short inputState4 = Ads.ReadAny<short>(hInputState4);
+            return new BitArray(BitConverter.IsLittleEndian == true ? BitConverter.GetBytes(inputState4) : BitConverter.GetBytes(inputState4).Reverse().ToArray())[bitIndex];
         }
     }
 }

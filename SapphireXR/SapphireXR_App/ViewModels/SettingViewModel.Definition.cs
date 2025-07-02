@@ -116,12 +116,9 @@ namespace SapphireXR_App.ViewModels
             {
                 if (value == PLCConnection.Connected)
                 {
-                    if (deviceMaxValueWrittenToPLC == false)
-                    {
-                        PLCService.WriteDeviceMaxValue(settingViewModel.lAnalogDeviceIO);
-                        deviceMaxValueWrittenToPLC = true;
-                    }
+                    settingViewModel.initializeSettingToPLC();
                 }
+                settingViewModel.Online = value == PLCConnection.Connected ? true : false;
                 settingViewModel.ToggleInductionHeaterPowerCommand.NotifyCanExecuteChanged();
                 settingViewModel.ToggleThermalBathPowerCommand.NotifyCanExecuteChanged();
                 settingViewModel.ToggleVaccumPumpPowerCommand.NotifyCanExecuteChanged();
@@ -129,7 +126,6 @@ namespace SapphireXR_App.ViewModels
             }
 
             private SettingViewModel settingViewModel;
-            private bool deviceMaxValueWrittenToPLC = false;
         }
 
         public partial class IOSetting : ObservableObject
@@ -150,15 +146,25 @@ namespace SapphireXR_App.ViewModels
         public static Dictionary<string, string>? dPreSet { get; set; } = [];
         public static Dictionary<string, InterLockA>? dInterLockA { get; set; } = [];
         public static Dictionary<string, bool>? dInterLockD { get; set; } = [];
+
+        public float AlarmDeviation { get => AlarmDeviationValue; set => SetProperty(ref AlarmDeviationValue, value); }
+        public float WarningDeviation { get => WarningDeviationValue; set => SetProperty(ref WarningDeviationValue, value); }
+        public float AnalogDeviceDelayTime { get => AnalogDeviceDelayTimeValue; set => SetProperty(ref AnalogDeviceDelayTimeValue, value); }
+        public float DigitalDeviceDelayTime { get => DigitalDeviceDelayTimeValue; set => SetProperty(ref DigitalDeviceDelayTimeValue, value); }
+
         public List<AnalogDeviceIO>? lAnalogDeviceIO { get; set; } = [];
         public List<SwitchDI>? lSwitchDI { get; set; } = [];
         public List<GasDO>? lGasDO { get; set; } = [];
 
         [ObservableProperty]
         public IList<IOSetting> _iOList;
-
         [ObservableProperty]
         private bool _online = false;
+
+        private static float AlarmDeviationValue;
+        private static float WarningDeviationValue;
+        private static float AnalogDeviceDelayTimeValue;
+        private static float DigitalDeviceDelayTimeValue;
 
         public bool WithoutConnection { get; set; }
 
@@ -181,6 +187,8 @@ namespace SapphireXR_App.ViewModels
         private AppClosingSubscriber appClosingSubscriber;
         private IOStateListSubscriber iOStateListSubscriber;
         private PLCConnectionStateSubscriber plcConnectionStateSubscriber;
+
+        private bool settingToPLCInitialized = false;
 
         private static ObservableManager<(string, string)>.Publisher GasIOLabelChangedPublisher = ObservableManager<(string, string)>.Get("GasIOLabelChanged");
         private static ObservableManager<(string, string)>.Publisher ValveIOLabelChangedPublisher = ObservableManager<(string, string)>.Get("ValveIOLabelChanged");

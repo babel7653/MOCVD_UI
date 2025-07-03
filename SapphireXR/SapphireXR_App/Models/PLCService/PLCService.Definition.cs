@@ -102,6 +102,16 @@ namespace SapphireXR_App.Models
             Pressure = 1, Position = 2
         }
 
+        public enum InterlockEnableSetting
+        {
+            GasPressureAlarm = 0, GasPressureWarning, SHCoolingWaterTemp, CoilCoolingWaterTemp, ReactorPressure, SusceptorTemperature, PressureLimit, RetryCount, InductionPowerSupply, SusceptorRotationMotor
+        };
+
+        public enum InterlockValueSetting
+        {
+            GasPressureAlarm = 5, GasPressureWarning, SHCoolingWaterTemp, CoilCoolingWaterTemp, ReactorPressure, SusceptorTemperature, PressureLimit, RetryCount
+        };
+
         public static readonly Dictionary<string, int> ValveIDtoOutputSolValveIdx1 = new Dictionary<string, int>
         {
             { "V01", 0 }, { "V02", 1 }, { "V03", 2 }, { "V04", 3 }, { "V05", 4 },
@@ -153,7 +163,7 @@ namespace SapphireXR_App.Models
 
         public const uint LineHeaterTemperature = 8;
         private const uint NumAlarmWarningArraySize = 6;
-        private const uint NumInterlockSet = 11;
+        private const uint NumInterlockSet = 12;
 
         // Variable handles to be connected plc variables
         private static BitArray? baReadValveStatePLC1 = null;
@@ -267,5 +277,6 @@ namespace SapphireXR_App.Models
         private static HashSet<int> InterlockEnableLowerIndiceToCommit = new HashSet<int>();
         private static Dictionary<int, float> AnalogDeviceInterlockSetIndiceToCommit = new Dictionary<int, float>();
         private static (bool, float) DigitalDevicelnterlockSetToCommit = (false, 0.0f);
+        private static Dictionary<int, float> InterlockSetIndiceToCommit = new Dictionary<int, float>();
     }
 }

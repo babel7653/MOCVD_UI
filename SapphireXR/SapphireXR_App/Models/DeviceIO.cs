@@ -62,10 +62,17 @@ namespace SapphireXR_App.Models
     {
         public bool IsOn { get; set; }
     }
-    public class InterLockA
+    public partial class InterLockA: ObservableObject
     {
-        public bool IsEnable { get; set; }
-        public required string Treshold { get; set; }
+        [ObservableProperty]
+        private bool _isEnable;
+        [ObservableProperty]
+        private string _treshold = "";
+    }
+    public partial class InterLockD: ObservableObject
+    {
+        [ObservableProperty]
+        private bool _isEnable;
     }
     public class UserState
     {

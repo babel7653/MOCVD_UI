@@ -26,6 +26,7 @@ namespace SapphireXR_App.Models
             aDeviceTargetValues = Ads.ReadAny<float[]>(hWriteDeviceTargetValuePLC, [NumControllers]);
             aMonitoring_PVs = Ads.ReadAny<float[]>(hMonitoring_PV, [18]);
             aInputState = Ads.ReadAny<short[]>(hInputState, [5]);
+            InterlockEnables[0] = Ads.ReadAny<int>(hInterlockEnable[0]);
             ReadValveStateFromPLC();
         }
 
@@ -82,6 +83,22 @@ namespace SapphireXR_App.Models
         {
             short inputState4 = Ads.ReadAny<short>(hInputState4);
             return new BitArray(BitConverter.IsLittleEndian == true ? BitConverter.GetBytes(inputState4) : BitConverter.GetBytes(inputState4).Reverse().ToArray())[bitIndex];
+        }
+
+        private static bool ReadBit(int bitField, int bit)
+        {
+            int bitMask = 1 << bit;
+            return ((bitField & bitMask) != 0) ? true : false;
+        }
+
+        public static bool ReadFirstInterlockSetting(int bit)
+        {
+            return ReadBit(InterlockEnables[0], 2);
+        }
+
+        public static bool ReadBuzzerOnOff()
+        {
+            return ReadFirstInterlockSetting(2);
         }
     }
 }

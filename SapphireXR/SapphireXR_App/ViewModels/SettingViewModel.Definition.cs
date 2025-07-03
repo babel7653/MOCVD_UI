@@ -145,7 +145,7 @@ namespace SapphireXR_App.ViewModels
         public static List<ValveDeviceIO> ValveDeviceIO { get; set; } = [];
         public static Dictionary<string, string>? dPreSet { get; set; } = [];
         public static Dictionary<string, InterLockA>? dInterLockA { get; set; } = [];
-        public static Dictionary<string, bool>? dInterLockD { get; set; } = [];
+        public static Dictionary<string, InterLockD>? dInterLockD { get; set; } = [];
 
         public float AlarmDeviation { get => AlarmDeviationValue; set => SetProperty(ref AlarmDeviationValue, value); }
         public float WarningDeviation { get => WarningDeviationValue; set => SetProperty(ref WarningDeviationValue, value); }
@@ -193,6 +193,7 @@ namespace SapphireXR_App.ViewModels
         private static ObservableManager<(string, string)>.Publisher GasIOLabelChangedPublisher = ObservableManager<(string, string)>.Get("GasIOLabelChanged");
         private static ObservableManager<(string, string)>.Publisher ValveIOLabelChangedPublisher = ObservableManager<(string, string)>.Get("ValveIOLabelChanged");
         private static ObservableManager<(string, string)>.Publisher AnalogIOLabelChangedPublisher = ObservableManager<(string, string)>.Get("AnalogIOLabelChanged");
+        
         public static readonly Dictionary<string, string> AnalogDeviceIDShortNameMap = new Dictionary<string, string>
         {
             { "MFC01", "M01" }, { "MFC02", "M02" }, { "MFC03", "M03"  }, { "MFC04", "M04"  }, { "MFC05", "M05" },
@@ -201,6 +202,17 @@ namespace SapphireXR_App.ViewModels
             { "MFC16", "M16" }, { "MFC17", "M17" }, { "MFC18", "M18" }, { "MFC19", "M19"  },
             { "EPC01", "E01" },  { "EPC02", "E02" }, { "EPC03", "E03" }, { "EPC04", "E04" }, { "EPC05", "E05" },
             { "EPC06", "E06" }, { "EPC07", "E07" }, { "Temperature", "R01"  }, { "Pressure", "R02"  }, { "Rotation", "R03"  }
+        };
+        private static readonly Dictionary<string, (PLCService.InterlockEnableSetting, PLCService.InterlockValueSetting)> InterlockSettingNameToPLCServiceArgs = new ()
+        {
+            { "GasPressureAlarm", (PLCService.InterlockEnableSetting.GasPressureAlarm, PLCService.InterlockValueSetting.GasPressureAlarm) },
+            { "GasPressureWarning", (PLCService.InterlockEnableSetting.GasPressureWarning, PLCService.InterlockValueSetting.GasPressureWarning) },
+            { "SHCoolingWaterTemp", (PLCService.InterlockEnableSetting.SHCoolingWaterTemp, PLCService.InterlockValueSetting.SHCoolingWaterTemp) },
+            { "CoilCoolingWaterTemp", (PLCService.InterlockEnableSetting.CoilCoolingWaterTemp, PLCService.InterlockValueSetting.CoilCoolingWaterTemp) },
+            { "ReactorPressure", (PLCService.InterlockEnableSetting.ReactorPressure, PLCService.InterlockValueSetting.ReactorPressure) },
+            { "SusceptorTemperature", (PLCService.InterlockEnableSetting.SusceptorTemperature, PLCService.InterlockValueSetting.SusceptorTemperature) },
+            { "PressureLimit", (PLCService.InterlockEnableSetting.PressureLimit, PLCService.InterlockValueSetting.PressureLimit) },
+            { "ReTryCount", (PLCService.InterlockEnableSetting.RetryCount, PLCService.InterlockValueSetting.RetryCount) }
         };
     }
 }

@@ -159,7 +159,6 @@ namespace SapphireXR_App.ViewModels
                 Util.SetIfChanged(ioList[(int)PLCService.IOListIndex.SingalTower_GREEN], ref signalTowerGreen, (bool state) => { if (state == true) { leftViewModel.SignalTowerGreen = ActiveSignalTowerGreen; } else { leftViewModel.SignalTowerGreen = InActiveSignalTowerGreen; } });
                 Util.SetIfChanged(ioList[(int)PLCService.IOListIndex.SingalTower_BLUE], ref signalTowerBlue, (bool state) => { if (state == true) { leftViewModel.SignalTowerBlue = ActiveSignalTowerBlue; } else { leftViewModel.SignalTowerBlue = InActiveSignalTowerBlue; } });
                 Util.SetIfChanged(ioList[(int)PLCService.IOListIndex.SingalTower_WHITE], ref signalTowerWhite, (bool state) => { if (state == true) { leftViewModel.SignalTowerWhite = ActiveSignalTowerWhite; } else { leftViewModel.SignalTowerWhite = InActiveSignalTowerWhite; } });
-                Util.SetIfChanged(ioList[(int)PLCService.IOListIndex.SingalTower_BUZZER], ref signalTowerBuzzer, (bool state) => { if (state == true) { leftViewModel.BuzzerImage = LeftViewModel.BuzzerOnPath; } else { leftViewModel.BuzzerImage = LeftViewModel.BuzzerOffPath; } });
                 Util.SetIfChanged(ioList[(int)PLCService.IOListIndex.DOR_Vaccum_State], ref dorVaccumState, (bool state) => { if (state == true) { leftViewModel.DorVacuumStateLampColor = OnLampColor; } else { leftViewModel.DorVacuumStateLampColor = ReadyLampColor; } });
                 Util.SetIfChanged(ioList[(int)PLCService.IOListIndex.Temp_Controller_Alarm], ref tempControllerAlarm, (bool state) => { if (state == true) { leftViewModel.TempControllerAlarmLampColor = FaultLampColor; } else { leftViewModel.TempControllerAlarmLampColor = OffLampColor; } });
             }
@@ -170,7 +169,6 @@ namespace SapphireXR_App.ViewModels
             private bool? signalTowerGreen = null;
             private bool? signalTowerBlue = null;
             private bool? signalTowerWhite = null;
-            private bool? signalTowerBuzzer = null;
             private bool? dorVaccumState = null;
             private bool? tempControllerAlarm = null;
         }
@@ -277,7 +275,6 @@ namespace SapphireXR_App.ViewModels
                     prevValue = newValue;
                 }
             }
-
            
             void IObserver<BitArray>.OnNext(BitArray value)
             {

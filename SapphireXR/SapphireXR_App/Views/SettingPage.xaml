@@ -294,7 +294,6 @@
                                     <Grid.RowDefinitions>
                                         <RowDefinition Height="Auto"/>
                                         <RowDefinition Height="Auto"/>
-                                        <RowDefinition Height="*"/>
                                     </Grid.RowDefinitions>
                                     <Grid Grid.Row="0" Style="{StaticResource subSectionBottomMargin}">
                                         <Rectangle Style="{StaticResource subSection}"/>
@@ -312,14 +311,9 @@
                                                     <ColumnDefinition />
                                                     <ColumnDefinition Width="*" />
                                                 </Grid.ColumnDefinitions>
-                                                <Label Content="Double O-Ring Release" Style="{StaticResource SectionTitle}" Grid.Column="0" VerticalAlignment="Center"/>
-                                                <Button Grid.Column="1" x:Name="InterlockSave" Content="Save" Width="66" Height="28" HorizontalAlignment="Right" Command="{Binding AlarmSettingSaveCommand}" VerticalAlignment="Top" Style="{StaticResource PrimaryButton}" />
+                                                <Label Content="Utility" Style="{StaticResource SectionTitle}" Grid.Column="0" VerticalAlignment="Center"/>
+                                                <Button Grid.Column="1" x:Name="InterlockSave" Content="Save" Width="66" Height="28" HorizontalAlignment="Right" Command="{Binding InterlockSettingSaveCommand}" VerticalAlignment="Top" Style="{StaticResource PrimaryButton}" />
                                             </Grid>
-                                            <CheckBox x:Name="cbRecipeNotRunning"  Content="Recipe Not Running" IsChecked="{Binding Path=dInterLockD[RecipeNotRunning]}" Style="{StaticResource DefaultCheckBox}">
-                                                <CheckBox.Margin>
-                                                    <Thickness Bottom="{StaticResource p_2}" />
-                                                </CheckBox.Margin>
-                                            </CheckBox>
                                             <Grid>
                                                 <Grid.Margin>
                                                     <Thickness Bottom="{StaticResource p_2}" />
@@ -329,9 +323,9 @@
                                                     <ColumnDefinition Width="*" />
                                                     <ColumnDefinition Width="Auto" />
                                                 </Grid.ColumnDefinitions>
-                                                <CheckBox x:Name="cbReactorPressureLimit"  Grid.Column="0" Content="Reactor Pressure(Torr) >=" IsChecked="{Binding Path=dInterLockA[DORReactorPressure].IsEnable}" Style="{StaticResource DefaultCheckBox}" />
+                                                <CheckBox x:Name="cbRecipeNotRunning"  Grid.Column="0" Content="Gas Pressure Alarm (bar)" IsChecked="{Binding Path=dInterLockA[GasPressureAlarm].IsEnable, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Style="{StaticResource DefaultCheckBox}" />
                                                 <Line Grid.Column="1" Style="{StaticResource seperatorLine}" />
-                                                <TextBox x:Name="tbReactorPressureLimit" Grid.Column="2" Text="{Binding Path=dInterLockA[DORReactorPressure].Treshold}" Style="{StaticResource sectionTextBox}"/>
+                                                <TextBox x:Name="gasPressureAlarm" Grid.Column="2" Text="{Binding Path=dInterLockA[GasPressureAlarm].Treshold, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Style="{StaticResource sectionTextBox}"/>
                                             </Grid>
                                             <Grid>
                                                 <Grid.Margin>
@@ -342,21 +336,42 @@
                                                     <ColumnDefinition Width="*" />
                                                     <ColumnDefinition Width="Auto" />
                                                 </Grid.ColumnDefinitions>
-                                                <CheckBox x:Name="cbSusceptorTemperature" Grid.Column="0" Content="Susceptor Temperature" IsChecked="{Binding Path=dInterLockA[DORSusceptorTemperature].IsEnable}" Style="{StaticResource DefaultCheckBox}" />
+                                                <CheckBox x:Name="cbReactorPressureLimit"  Grid.Column="0" Content="Gas Pressure Warning (bar)" IsChecked="{Binding Path=dInterLockA[GasPressureWarning].IsEnable, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Style="{StaticResource DefaultCheckBox}" />
+                                                <Line Grid.Column="1" Style="{StaticResource seperatorLine}" />
+                                                <TextBox x:Name="tbReactorPressureLimit" Grid.Column="2" Text="{Binding Path=dInterLockA[GasPressureWarning].Treshold, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Style="{StaticResource sectionTextBox}"/>
+                                            </Grid>
+                                            <Grid>
+                                                <Grid.Margin>
+                                                    <Thickness Bottom="{StaticResource p_2}" />
+                                                </Grid.Margin>
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="Auto" />
+                                                    <ColumnDefinition Width="*" />
+                                                    <ColumnDefinition Width="Auto" />
+                                                </Grid.ColumnDefinitions>
+                                                <CheckBox x:Name="cbSusceptorTemperature" Grid.Column="0" Content="S/H Cooling Water Temp (℃)" IsChecked="{Binding Path=dInterLockA[SHCoolingWaterTemp].IsEnable, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Style="{StaticResource DefaultCheckBox}" />
                                                 <Line Grid.Column="1" Style="{StaticResource seperatorLine}" ></Line>
-                                                <TextBox x:Name="DORTemperatureSet" Grid.Column="2" Text="{Binding Path=dInterLockA[DORSusceptorTemperature].Treshold}" Style="{StaticResource sectionTextBox}"/>
+                                                <TextBox x:Name="DORTemperatureSet" Grid.Column="2" Text="{Binding Path=dInterLockA[SHCoolingWaterTemp].Treshold, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Style="{StaticResource sectionTextBox}"/>
+                                            </Grid>
+                                            <Grid>
+                                                <Grid.Margin>
+                                                    <Thickness Bottom="{StaticResource p_2}" />
+                                                </Grid.Margin>
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="Auto" />
+                                                    <ColumnDefinition Width="*" />
+                                                    <ColumnDefinition Width="Auto" />
+                                                </Grid.ColumnDefinitions>
+                                                <CheckBox x:Name="coilCoolingWaterTempEnabled" Grid.Column="0" Content="Coil Cooling Water Temp (℃) " IsChecked="{Binding Path=dInterLockA[CoilCoolingWaterTemp].IsEnable, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Style="{StaticResource DefaultCheckBox}" />
+                                                <Line Grid.Column="1" Style="{StaticResource seperatorLine}" ></Line>
+                                                <TextBox x:Name="coilCoolingWaterTempValue" Grid.Column="2" Text="{Binding Path=dInterLockA[CoilCoolingWaterTemp].Treshold, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Style="{StaticResource sectionTextBox}"/>
                                             </Grid>
                                             <Border Style="{StaticResource subSubSectionSeperator}" />
-                                            <Label Content="Double O-Ring Lock" Style="{StaticResource SectionTitle}" Grid.Column="0">
+                                            <Label Content="Reactor Open Condition" Style="{StaticResource SectionTitle}" Grid.Column="0">
                                                 <Label.Margin>
                                                     <Thickness Bottom="{StaticResource p_3}" />
                                                 </Label.Margin>
                                             </Label>
-                                            <CheckBox Content="Vacuum Valve Close" IsChecked="{Binding Path=dInterLockD[VacuumValveClose]}" Style="{StaticResource DefaultCheckBox}">
-                                                <CheckBox.Margin>
-                                                    <Thickness Bottom="{StaticResource p_2}" />
-                                                </CheckBox.Margin>
-                                            </CheckBox>
                                             <Grid>
                                                 <Grid.Margin>
                                                     <Thickness Bottom="{StaticResource p_2}" />
@@ -366,9 +381,9 @@
                                                     <ColumnDefinition Width="*" />
                                                     <ColumnDefinition Width="Auto" />
                                                 </Grid.ColumnDefinitions>
-                                                <CheckBox Grid.Column="0" Content="Pressure Limit" IsChecked="{Binding Path=dInterLockA[DORPressureLimit].IsEnable}" Style="{StaticResource DefaultCheckBox}" />
+                                                <CheckBox Grid.Column="0" Content="Reactor Pressure (Torr)" IsChecked="{Binding Path=dInterLockA[ReactorPressure].IsEnable, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Style="{StaticResource DefaultCheckBox}" />
                                                 <Line Grid.Column="1" Style="{StaticResource seperatorLine}" />
-                                                <TextBox x:Name="DORPressureLimit" Grid.Column="2" Text="{Binding Path=dInterLockA[DORSusceptorTemperature].Treshold}" Style="{StaticResource sectionTextBox}" />
+                                                <TextBox x:Name="reactorPressureValue" Grid.Column="2" Text="{Binding Path=dInterLockA[ReactorPressure].Treshold, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Style="{StaticResource sectionTextBox}" />
                                             </Grid>
                                             <Grid>
                                                 <Grid.Margin>
@@ -379,9 +394,41 @@
                                                     <ColumnDefinition Width="*" />
                                                     <ColumnDefinition Width="Auto" />
                                                 </Grid.ColumnDefinitions>
-                                                <CheckBox Grid.Column="0" Content="Alarm Limit Value" Style="{StaticResource DefaultCheckBox}" IsChecked="{Binding Path=dInterLockA[AlarmLimit].IsEnable}" />
+                                                <CheckBox Grid.Column="0" Content="Susceptor Temperature" IsChecked="{Binding Path=dInterLockA[SusceptorTemperature].IsEnable, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Style="{StaticResource DefaultCheckBox}" />
                                                 <Line Grid.Column="1" Style="{StaticResource seperatorLine}" />
-                                                <TextBox x:Name="DORAlarmLimit" Grid.Column="2" Style="{StaticResource sectionTextBox}" Text="{Binding Path=dInterLockA[AlarmLimit].Treshold}"/>
+                                                <TextBox x:Name="susceptorTempValue" Grid.Column="2" Text="{Binding Path=dInterLockA[SusceptorTemperature].Treshold, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Style="{StaticResource sectionTextBox}" />
+                                            </Grid>
+                                            <Border Style="{StaticResource subSubSectionSeperator}" />
+                                            <Label Content="Double O-Ring" Style="{StaticResource SectionTitle}" Grid.Column="0">
+                                                <Label.Margin>
+                                                    <Thickness Bottom="{StaticResource p_3}" />
+                                                </Label.Margin>
+                                            </Label>
+                                            <Grid>
+                                                <Grid.Margin>
+                                                    <Thickness Bottom="{StaticResource p_2}" />
+                                                </Grid.Margin>
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="Auto" />
+                                                    <ColumnDefinition Width="*" />
+                                                    <ColumnDefinition Width="Auto" />
+                                                </Grid.ColumnDefinitions>
+                                                <CheckBox Grid.Column="0" Content="Pressure Limit" IsChecked="{Binding Path=dInterLockA[PressureLimit].IsEnable, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Style="{StaticResource DefaultCheckBox}" />
+                                                <Line Grid.Column="1" Style="{StaticResource seperatorLine}" />
+                                                <TextBox x:Name="DORPressureLimit" Grid.Column="2" Text="{Binding Path=dInterLockA[PressureLimit].Treshold, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Style="{StaticResource sectionTextBox}" />
+                                            </Grid>
+                                            <Grid>
+                                                <Grid.Margin>
+                                                    <Thickness Bottom="{StaticResource p_2}" />
+                                                </Grid.Margin>
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="Auto" />
+                                                    <ColumnDefinition Width="*" />
+                                                    <ColumnDefinition Width="Auto" />
+                                                </Grid.ColumnDefinitions>
+                                                <CheckBox Grid.Column="0" Content="Re-Try Count" Style="{StaticResource DefaultCheckBox}" IsChecked="{Binding Path=dInterLockA[ReTryCount].IsEnable, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
+                                                <Line Grid.Column="1" Style="{StaticResource seperatorLine}" />
+                                                <TextBox x:Name="DORAlarmLimit" Grid.Column="2" Style="{StaticResource sectionTextBox}" Text="{Binding Path=dInterLockA[ReTryCount].Treshold, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
                                             </Grid>
                                             <Border Style="{StaticResource subSubSectionSeperator}" />
                                             <Label Content="Auto Power On" Style="{StaticResource SectionTitle}">
@@ -389,22 +436,12 @@
                                                     <Thickness Bottom="{StaticResource p_3}" />
                                                 </Label.Margin>
                                             </Label>
-                                            <CheckBox Grid.Row="9" Content="Induction Power Supply" IsChecked="{Binding Path=dInterLockD[InductionPowerSupply]}"  Style="{StaticResource DefaultCheckBox}">
+                                            <CheckBox Grid.Row="9" Content="Induction Power Supply" IsChecked="{Binding Path=dInterLockD[InductionPowerSupply].IsEnable, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"  Style="{StaticResource DefaultCheckBox}">
                                                 <CheckBox.Margin>
                                                     <Thickness Bottom="{StaticResource p_2}" />
                                                 </CheckBox.Margin>
                                             </CheckBox>
-                                            <CheckBox Content=" Susceptor Rotation Motor" IsChecked="{Binding Path=dInterLockD[SusceptorRotationMotor]}" Style="{StaticResource DefaultCheckBox}">
-                                                <CheckBox.Margin>
-                                                    <Thickness Bottom="{StaticResource p_2}" />
-                                                </CheckBox.Margin>
-                                            </CheckBox>
-                                            <CheckBox Grid.Row="11" Content=" Reactor Cabinet Lamp" IsChecked="{Binding Path=dInterLockD[ReactorCabinetLamp]}" Style="{StaticResource DefaultCheckBox}">
-                                                <CheckBox.Margin>
-                                                    <Thickness Bottom="{StaticResource p_2}" />
-                                                </CheckBox.Margin>
-                                            </CheckBox>
-                                            <CheckBox Content=" Gas Control Cabinet Lamp" IsChecked="{Binding Path=dInterLockD[GasControlLamp]}" Style="{StaticResource DefaultCheckBox}">
+                                            <CheckBox Content=" Susceptor Rotation Motor" IsChecked="{Binding Path=dInterLockD[SusceptorRotationMotor].IsEnable, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Style="{StaticResource DefaultCheckBox}">
                                                 <CheckBox.Margin>
                                                     <Thickness Bottom="{StaticResource p_2}" />
                                                 </CheckBox.Margin>
@@ -423,67 +460,7 @@
                                             </Grid>
                                         </StackPanel>
                                     </Grid>
-                                    <Grid Grid.Row="1"  Style="{StaticResource subSectionBottomMargin}">
-                                        <Grid.Resources>
-                                            <Style TargetType="ComboBox" x:Key="PresetStateCombobox" BasedOn="{StaticResource theComboBox}">
-                                                <Setter Property="Width" Value="160" />
-                                                <Setter Property="Height" Value="28" />
-                                            </Style>
-                                        </Grid.Resources>
-                                        <Rectangle Style="{StaticResource subSection}"/>
-                                        <StackPanel Margin="{StaticResource p_5_sqrt}" IsEnabled="False">
-                                            <Label Content="Preset State">
-                                                <Label.Style>
-                                                    <Style TargetType="Label" BasedOn="{StaticResource SectionTitle}">
-                                                        <Setter Property="Margin">
-                                                            <Setter.Value>
-                                                                <Thickness Bottom="{StaticResource p_1}" />
-                                                            </Setter.Value>
-                                                        </Setter>
-                                                    </Style>
-                                                </Label.Style>
-                                            </Label>
-                                            <Grid>
-                                                <Grid.Margin>
-                                                    <Thickness Bottom="{StaticResource p_2}" />
-                                                </Grid.Margin>
-                                                <Grid.ColumnDefinitions>
-                                                    <ColumnDefinition Width="17" />
-                                                    <ColumnDefinition Width="78.08"/>
-                                                    <ColumnDefinition Width="*" />
-                                                    <ColumnDefinition Width="Auto" />
-                                                </Grid.ColumnDefinitions>
-                                                <TextBlock Grid.Column="0" Text="System Start State" Style="{StaticResource infoTextBlockLeft}" Grid.ColumnSpan="2"/>
-                                                <Line Grid.Column="2" Style="{StaticResource seperatorLine}" Margin="8,0,8,0" />
-                                                <ComboBox x:Name="comboSystemStart" Grid.Column="3" Style="{StaticResource PresetStateCombobox}"/>
-                                            </Grid>
-                                            <Grid>
-                                                <Grid.Margin>
-                                                    <Thickness Bottom="{StaticResource p_2}" />
-                                                </Grid.Margin>
-                                                <Grid.ColumnDefinitions>
-                                                    <ColumnDefinition Width="Auto" />
-                                                    <ColumnDefinition Width="*" />
-                                                    <ColumnDefinition Width="Auto" />
-                                                </Grid.ColumnDefinitions>
-                                                <TextBlock Grid.Column="0" Text="Alarm State" Style="{StaticResource infoTextBlockLeft}"/>
-                                                <Line Grid.Column="1" Style="{StaticResource seperatorLine}" />
-                                                <ComboBox Name="comboAlarmStart" Grid.Column="2" Style="{StaticResource PresetStateCombobox}" />
-                                            </Grid>
-                                            <Grid>
-                                              
-                                                <Grid.ColumnDefinitions>
-                                                    <ColumnDefinition Width="Auto" />
-                                                    <ColumnDefinition Width="*" />
-                                                    <ColumnDefinition Width="Auto" />
-                                                </Grid.ColumnDefinitions>
-                                                <TextBlock Grid.Column="0" Style="{StaticResource infoTextBlockLeft}" Text="Recipe End"/>
-                                                <Line Grid.Column="1" Style="{StaticResource seperatorLine}" />
-                                                <ComboBox Name="comboRecipeEnd" Grid.Column="2" Style="{StaticResource PresetStateCombobox}" />
-                                            </Grid>
-                                        </StackPanel>
-                                    </Grid>
-                                    <Grid Grid.Row="2">
+                                    <Grid Grid.Row="1">
                                         <Rectangle Style="{StaticResource subSection}"/>
                                         <StackPanel Margin="{StaticResource p_5_sqrt}">
                                             <Label Style="{StaticResource SectionTitle}" Content="Module Power (Magnetic Contact)" />

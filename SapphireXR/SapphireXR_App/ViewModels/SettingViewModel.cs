@@ -78,12 +78,90 @@ namespace SapphireXR_App.ViewModels
             JToken? jInterLockD = jDeviceInit["InterLockD"];
             if (jInterLockD != null)
             {
-                dInterLockD = JsonConvert.DeserializeObject<Dictionary<string, bool>>(jInterLockD.ToString());
+                dInterLockD = JsonConvert.DeserializeObject<Dictionary<string, InterLockD>>(jInterLockD.ToString());
+                if (dInterLockD != null)
+                {
+                    foreach ((string name, InterLockD interlockD) in dInterLockD)
+                    {
+                        PLCService.InterlockEnableSetting? plcArg = null;
+                        switch (name)
+                        {
+                            case "InductionPowerSupply":
+                                plcArg = PLCService.InterlockEnableSetting.InductionPowerSupply;
+                                break;
+
+                            case "SusceptorRotationMotor":
+                                plcArg = PLCService.InterlockEnableSetting.SusceptorRotationMotor;
+                                break;
+                        }
+                        if (plcArg != null)
+                        {
+                            interlockD.PropertyChanged += (sender, args) =>
+                            {
+                                if (PLCService.Connected == PLCConnection.Connected)
+                                {
+                                    InterLockD? interlockD = sender as InterLockD;
+                                    if (interlockD != null)
+                                    {
+                                        switch(args.PropertyName)
+                                        {
+                                            case nameof(InterLockD.IsEnable):
+                                                PLCService.WriteInterlockEnableState(interlockD.IsEnable, plcArg.Value);
+                                                break;
+                                        }
+                                    }
+                                }
+                            };
+                        }
+                    }
+                }
             }
             JToken? jInterLockA = jDeviceInit["InterLockA"];
             if (jInterLockA != null)
             {
                 dInterLockA = JsonConvert.DeserializeObject<Dictionary<string, InterLockA>>(jInterLockA.ToString());
+                if (dInterLockA != null)
+                {
+                    foreach (KeyValuePair<string, InterLockA> analogLogInterlock in dInterLockA)
+                    {
+                        (PLCService.InterlockEnableSetting, PLCService.InterlockValueSetting) plcArgs;
+                        if(InterlockSettingNameToPLCServiceArgs.TryGetValue(analogLogInterlock.Key, out plcArgs) == true)
+                        { 
+                            analogLogInterlock.Value.PropertyChanged += (sender, args) =>
+                            {
+                                if (PLCService.Connected == PLCConnection.Connected)
+                                {
+                                    InterLockA? interlockA = sender as InterLockA;
+                                    if (interlockA != null)
+                                    {
+                                        switch (args.PropertyName)
+                                        {
+                                            case nameof(InterLockA.IsEnable):
+                                                PLCService.WriteInterlockEnableState(interlockA.IsEnable, plcArgs.Item1);
+                                            break;
+
+                                            case nameof(InterLockA.Treshold):
+                                                try
+                                                {
+                                                    PLCService.WriteInterlockValueState(float.Parse(interlockA.Treshold), plcArgs.Item2);
+                                                }
+                                                catch(ArgumentException)
+                                                { 
+                                                }
+                                                catch(FormatException)
+                                                {
+                                                }
+                                                catch(OverflowException)
+                                                {
+                                                }
+                                                break;
+                                        }
+                                    }
+                                }
+                            };
+                        }
+                    }
+                }
             }
             JToken? jValveDeviceIO = jDeviceInit["ValveDeviceIO"];
             if (jValveDeviceIO != null)
@@ -154,23 +232,26 @@ namespace SapphireXR_App.ViewModels
 
             PropertyChanged += (object? sender, PropertyChangedEventArgs args) =>
             {
-                switch (args.PropertyName)
+                if (PLCService.Connected == PLCConnection.Connected)
                 {
-                    case nameof(AlarmDeviation):
-                        PLCService.WriteAlarmDeviationState(AlarmDeviation);
-                        break;
+                    switch (args.PropertyName)
+                    {
+                        case nameof(AlarmDeviation):
+                            PLCService.WriteAlarmDeviationState(AlarmDeviation);
+                            break;
 
-                    case nameof(WarningDeviation):
-                        PLCService.WriteWarningDeviationState(WarningDeviation);
-                        break;
+                        case nameof(WarningDeviation):
+                            PLCService.WriteWarningDeviationState(WarningDeviation);
+                            break;
 
-                    case nameof(AnalogDeviceDelayTime):
-                        PLCService.WriteAnalogDeviceDelayTime(AnalogDeviceDelayTime);
-                        break;
+                        case nameof(AnalogDeviceDelayTime):
+                            PLCService.WriteAnalogDeviceDelayTime(AnalogDeviceDelayTime);
+                            break;
 
-                    case nameof(DigitalDeviceDelayTime):
-                        PLCService.WriteDigitalDeviceDelayTime(DigitalDeviceDelayTime);
-                        break;
+                        case nameof(DigitalDeviceDelayTime):
+                            PLCService.WriteDigitalDeviceDelayTime(DigitalDeviceDelayTime);
+                            break;
+                    }
                 }
             };
         }
@@ -359,6 +440,55 @@ namespace SapphireXR_App.ViewModels
             {
                 PLCService.WriteDeviceMaxValue(lAnalogDeviceIO);
                 PLCService.WriteAlarmWarningSetting(lAnalogDeviceIO ?? [], lSwitchDI ?? []);
+                
+                PLCService.WriteAlarmDeviationState(AlarmDeviation);
+                PLCService.WriteWarningDeviationState(WarningDeviation);
+                PLCService.WriteAnalogDeviceDelayTime(AnalogDeviceDelayTime);
+                PLCService.CommitAnalogDeviceInterlockSettingToPLC();
+                PLCService.WriteDigitalDeviceDelayTime(DigitalDeviceDelayTime);
+                PLCService.CommitDigitalDeviceInterlockSettingToPLC();
+
+                if (dInterLockA != null)
+                {
+                    foreach ((string name, InterLockA interlockA) in dInterLockA)
+                    {
+                        (PLCService.InterlockEnableSetting, PLCService.InterlockValueSetting) plcArgs;
+                        if (InterlockSettingNameToPLCServiceArgs.TryGetValue(name, out plcArgs) == true)
+                        {
+                            PLCService.WriteInterlockEnableState(interlockA.IsEnable, plcArgs.Item1);
+                            try
+                            {
+                                PLCService.WriteInterlockValueState(float.Parse(interlockA.Treshold), plcArgs.Item2);
+                            }
+                            catch (ArgumentNullException) { }
+                            catch (FormatException) { }
+                            catch (OverflowException) { }
+                        }
+                    }
+                }
+                if(dInterLockD != null)
+                {
+                    foreach((string name, InterLockD interlockD) in dInterLockD)
+                    {
+                        PLCService.InterlockEnableSetting? plcArg = null;
+                        switch (name)
+                        {
+                            case "InductionPowerSupply":
+                                plcArg = PLCService.InterlockEnableSetting.InductionPowerSupply;
+                                break;
+
+                            case "SusceptorRotationMotor":
+                                plcArg = PLCService.InterlockEnableSetting.SusceptorRotationMotor;
+                                break;
+                        }
+                        if(plcArg != null)
+                        {
+                            PLCService.WriteInterlockEnableState(interlockD.IsEnable, plcArg.Value);
+                        }
+                    }
+                }
+                PLCService.CommitInterlockEnableToPLC();
+                PLCService.CommitInterlockValueToPLC();
                 settingToPLCInitialized = true;
             }
         }
@@ -433,6 +563,13 @@ namespace SapphireXR_App.ViewModels
         private void DigitalDeviceSettingSave()
         {
             PLCService.CommitDigitalDeviceAlarmWarningSettingStateToPLC();
+            AlarmSettingSave();
+        }
+        [RelayCommand]
+        private void InterlockSettingSave()
+        {
+            PLCService.CommitInterlockEnableToPLC();
+            PLCService.CommitInterlockValueToPLC();
             AlarmSettingSave();
         }
     }

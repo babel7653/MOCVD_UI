@@ -323,6 +323,7 @@ namespace SapphireXR_App.ViewModels
             {
                 case PLCConnection.Connected:
                     PLCConnectionStatus = "Connected";
+                    BuzzerImage = PLCService.ReadBuzzerOnOff() == true ? BuzzerOnPath : BuzzerOffPath;
                     break;
 
                 case PLCConnection.Disconnected:
@@ -334,10 +335,11 @@ namespace SapphireXR_App.ViewModels
         [RelayCommand]
         public void ToggleBuzzerOnOff()
         {
-            bool onOff = BuzzerImage == LeftViewModel.BuzzerOffPath;
+            bool onOff = BuzzerImage == BuzzerOffPath;
             if(ConfirmMessage.Show("Buzzer 상태 변경", "Buzzer" + (onOff == true ? " On" : " Off") + " 상태로 변경하시겠습니까?", WindowStartupLocation.Manual) == ValveOperationExResult.Ok)
             {
                 PLCService.WriteBuzzerOnOff(onOff);
+                BuzzerImage = (onOff == true) ? BuzzerOnPath : BuzzerOffPath;
             }
             
         }

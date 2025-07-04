@@ -22,7 +22,7 @@
                 return new Unsubscriber(observers, observer);
             }
 
-            public void Issue(T data)
+            public void Publish(T data)
             {
                 foreach (var observer in observers)
                 {

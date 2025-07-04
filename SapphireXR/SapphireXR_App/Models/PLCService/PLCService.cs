@@ -92,10 +92,10 @@ namespace SapphireXR_App.Models
             {
                 try
                 {
-                    dCurrentActiveRecipeIssue?.Issue(Ads.ReadAny<short>(hRcpStepN));
+                    dCurrentActiveRecipeIssue?.Publish(Ads.ReadAny<short>(hRcpStepN));
                     if (RecipeRunEndNotified == false && Ads.ReadAny<short>(hCmd_RcpOperation) == 50)
                     {
-                        dRecipeEndedPublisher?.Issue(true);
+                        dRecipeEndedPublisher?.Publish(true);
                         RecipeRunEndNotified = true;
                     }
                     else
@@ -153,6 +153,14 @@ namespace SapphireXR_App.Models
             hOutputCmd1 = Ads.CreateVariableHandle("GVL_IO.aOutputCmd[1]");
             hOutputCmd2 = Ads.CreateVariableHandle("GVL_IO.aOutputCmd[2]");
             hInterlock1 = Ads.CreateVariableHandle("GVL_IO.aInterlock[1]");
+            for(uint arrayIndex = 0; arrayIndex < NumAlarmWarningArraySize; arrayIndex++)
+            {
+                hInterlockEnable[arrayIndex] = Ads.CreateVariableHandle("GVL_IO.aInterlockEnable[" + (arrayIndex + 1) + "]");
+            }
+            for (uint arrayIndex = 0; arrayIndex < NumInterlockSet; arrayIndex++)
+            {
+                hInterlockset[arrayIndex] = Ads.CreateVariableHandle("GVL_IO.aInterlockSet[" + (arrayIndex + 1) + "]");
+            }
 
             hRcp = Ads.CreateVariableHandle("RCP.aRecipe");
             hRcpTotalStep = Ads.CreateVariableHandle("RCP.iRcpTotalStep");
@@ -236,28 +244,28 @@ namespace SapphireXR_App.Models
                 {
                     foreach (KeyValuePair<string, int> kv in dIndexController)
                     {
-                        dControlValueIssuers?[kv.Key].Issue(aDeviceControlValues[dIndexController[kv.Key]]);
+                        dControlValueIssuers?[kv.Key].Publish(aDeviceControlValues[dIndexController[kv.Key]]);
                     }
                 }
                 if (aDeviceCurrentValues != null)
                 {
                     foreach (KeyValuePair<string, int> kv in dIndexController)
                     {
-                        dCurrentValueIssuers?[kv.Key].Issue(aDeviceCurrentValues[dIndexController[kv.Key]]);
+                        dCurrentValueIssuers?[kv.Key].Publish(aDeviceCurrentValues[dIndexController[kv.Key]]);
                     }
                 }
                 if (aDeviceTargetValues != null)
                 {
                     foreach (KeyValuePair<string, int> kv in dIndexController)
                     {
-                        dTargetValueIssuers?[kv.Key].Issue(aDeviceTargetValues[dIndexController[kv.Key]]);
+                        dTargetValueIssuers?[kv.Key].Publish(aDeviceTargetValues[dIndexController[kv.Key]]);
                     }
                 }
                 if (aDeviceControlValues != null && aDeviceCurrentValues != null)
                 {
                     foreach (KeyValuePair<string, int> kv in dIndexController)
                     {
-                        dControlCurrentValueIssuers?[kv.Key].Issue((aDeviceCurrentValues[dIndexController[kv.Key]], aDeviceControlValues[dIndexController[kv.Key]]));
+                        dControlCurrentValueIssuers?[kv.Key].Publish((aDeviceCurrentValues[dIndexController[kv.Key]], aDeviceControlValues[dIndexController[kv.Key]]));
                     }
                 }
 
@@ -265,54 +273,54 @@ namespace SapphireXR_App.Models
                 {
                     foreach (KeyValuePair<string, int> kv in dMonitoringMeterIndex)
                     {
-                        aMonitoringCurrentValueIssuers?[kv.Key].Issue(aMonitoring_PVs[kv.Value]);
+                        aMonitoringCurrentValueIssuers?[kv.Key].Publish(aMonitoring_PVs[kv.Value]);
                     }
                 }
 
                 if (aInputState != null)
                 {
                     short value = aInputState[0];
-                    baHardWiringInterlockStateIssuers?.Issue(new BitArray(BitConverter.IsLittleEndian == true ? BitConverter.GetBytes(value) : BitConverter.GetBytes(value).Reverse().ToArray()));
-                    dThrottleValveStatusIssuer?.Issue(aInputState[4]);
+                    baHardWiringInterlockStateIssuers?.Publish(new BitArray(BitConverter.IsLittleEndian == true ? BitConverter.GetBytes(value) : BitConverter.GetBytes(value).Reverse().ToArray()));
+                    dThrottleValveStatusIssuer?.Publish(aInputState[4]);
 
                     bool[] ioList = new bool[64];
                     for (int inputState = 1; inputState < aInputState.Length; ++inputState)
                     {
                         new BitArray(BitConverter.IsLittleEndian == true ? BitConverter.GetBytes(aInputState[inputState]) : BitConverter.GetBytes(aInputState[inputState]).Reverse().ToArray()).CopyTo(ioList, (inputState - 1) * sizeof(short) * 8);
                     }
-                    dIOStateList?.Issue(new BitArray(ioList));
+                    dIOStateList?.Publish(new BitArray(ioList));
                 }
 
                 if (baReadValveStatePLC1 != null)
                 {
                     foreach ((string valveID, int index) in ValveIDtoOutputSolValveIdx1)
                     {
-                        dValveStateIssuers?[valveID].Issue(baReadValveStatePLC1[index]);
+                        dValveStateIssuers?[valveID].Publish(baReadValveStatePLC1[index]);
                     }
                 }
                 if (baReadValveStatePLC2 != null)
                 {
                     foreach ((string valveID, int index) in ValveIDtoOutputSolValveIdx2)
                     {
-                        dValveStateIssuers?[valveID].Issue(baReadValveStatePLC2[index]);
+                        dValveStateIssuers?[valveID].Publish(baReadValveStatePLC2[index]);
                     }
                 }
-                dLineHeaterTemperatureIssuers?.Issue(Ads.ReadAny<float[]>(hTemperaturePV, [(int)LineHeaterTemperature]));
+                dLineHeaterTemperatureIssuers?.Publish(Ads.ReadAny<float[]>(hTemperaturePV, [(int)LineHeaterTemperature]));
 
                 byte[] digitalOutput = Ads.ReadAny<byte[]>(hDigitalOutput, [4]);
-                dDigitalOutput2?.Issue(new BitArray(new byte[1] { digitalOutput[1] }));
-                dDigitalOutput3?.Issue(new BitArray(new byte[1] { digitalOutput[2] }));
+                dDigitalOutput2?.Publish(new BitArray(new byte[1] { digitalOutput[1] }));
+                dDigitalOutput3?.Publish(new BitArray(new byte[1] { digitalOutput[2] }));
                 short[] outputCmd = Ads.ReadAny<short[]>(hOutputCmd, [3]);
-                dOutputCmd1?.Issue(bOutputCmd1 = new BitArray(BitConverter.IsLittleEndian == true ? BitConverter.GetBytes(outputCmd[0]) : BitConverter.GetBytes(outputCmd[0]).Reverse().ToArray()));
-                dThrottleValveControlMode?.Issue(outputCmd[1]);
+                dOutputCmd1?.Publish(bOutputCmd1 = new BitArray(BitConverter.IsLittleEndian == true ? BitConverter.GetBytes(outputCmd[0]) : BitConverter.GetBytes(outputCmd[0]).Reverse().ToArray()));
+                dThrottleValveControlMode?.Publish(outputCmd[1]);
                 ushort inputManAuto = Ads.ReadAny<ushort>(hE3508InputManAuto);
-                dInputManAuto?.Issue(new BitArray(BitConverter.IsLittleEndian == true ? BitConverter.GetBytes(inputManAuto) : BitConverter.GetBytes(inputManAuto).Reverse().ToArray()));
-                dPressureControlModeIssuer?.Issue(Ads.ReadAny<ushort>(hOutputSetType));
-                dRecipeControlHoldTimeIssuer?.Issue(Ads.ReadAny<TIME>(hRecipeControlHoldTime).Time.Seconds);
-                dRecipeControlRampTimeIssuer?.Issue(Ads.ReadAny<TIME>(hRecipeControlRampTime).Time.Seconds);
-                dRecipeControlPauseTimeIssuer?.Issue(Ads.ReadAny<TIME>(hRecipeControlPauseTime).Time.Seconds);
+                dInputManAuto?.Publish(new BitArray(BitConverter.IsLittleEndian == true ? BitConverter.GetBytes(inputManAuto) : BitConverter.GetBytes(inputManAuto).Reverse().ToArray()));
+                dPressureControlModeIssuer?.Publish(Ads.ReadAny<ushort>(hOutputSetType));
+                dRecipeControlHoldTimeIssuer?.Publish(Ads.ReadAny<TIME>(hRecipeControlHoldTime).Time.Seconds);
+                dRecipeControlRampTimeIssuer?.Publish(Ads.ReadAny<TIME>(hRecipeControlRampTime).Time.Seconds);
+                dRecipeControlPauseTimeIssuer?.Publish(Ads.ReadAny<TIME>(hRecipeControlPauseTime).Time.Seconds);
                 short iterlock1 = Ads.ReadAny<short>(hInterlock1);
-                dLogicalInterlockStateIssuer?.Issue(new BitArray(BitConverter.IsLittleEndian == true ? BitConverter.GetBytes(iterlock1) : BitConverter.GetBytes(iterlock1).Reverse().ToArray()));
+                dLogicalInterlockStateIssuer?.Publish(new BitArray(BitConverter.IsLittleEndian == true ? BitConverter.GetBytes(iterlock1) : BitConverter.GetBytes(iterlock1).Reverse().ToArray()));
 
                 string exceptionStr = string.Empty;
                 if (aDeviceControlValues == null)

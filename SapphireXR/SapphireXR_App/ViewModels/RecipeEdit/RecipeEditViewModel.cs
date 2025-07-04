@@ -34,8 +34,8 @@ namespace SapphireXR_App.ViewModels
 
             RecipePLCLoadCommand = new RelayCommand(() =>
             {
-                loadToRecipeRunPublisher.Issue(("", new RecipeObservableCollection(Recipes)));
-                switchTabToDataRunPublisher.Issue(1);
+                loadToRecipeRunPublisher.Publish(("", new RecipeObservableCollection(Recipes)));
+                switchTabToDataRunPublisher.Publish(1);
             },
              () => Recipes != null && 0 < Recipes.Count
              );

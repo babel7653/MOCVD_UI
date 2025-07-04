@@ -47,7 +47,7 @@ namespace SapphireXR_App.ViewModels.FlowController
                         {
                             if (ControlValue != "")
                             {
-                                controlValuePublisher.Issue(float.Parse(ControlValue));
+                                controlValuePublisher.Publish(float.Parse(ControlValue));
                             }
                         }
                         catch(ArgumentNullException)

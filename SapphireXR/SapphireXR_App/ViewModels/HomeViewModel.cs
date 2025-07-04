@@ -29,14 +29,14 @@ namespace SapphireXR_App.ViewModels
                     case "Show Leak Test Valve":
                         OnLeakTestVisibility = Visibility.Visible;
                         OffLeakTestVisibility = Visibility.Hidden;
-                        leakTestModePublisher.Issue(true);
+                        leakTestModePublisher.Publish(true);
                         LeakTestModeStr = disableLeakTestModeStr;
                         break;
 
                     case "Hide Leak Test Valve":
                         OnLeakTestVisibility = Visibility.Hidden;
                         OffLeakTestVisibility = Visibility.Visible;
-                        leakTestModePublisher.Issue(false);
+                        leakTestModePublisher.Publish(false);
                         LeakTestModeStr = enableLeakTestModeStr;
                         break;
                 }
@@ -124,7 +124,7 @@ namespace SapphireXR_App.ViewModels
 
             EventLogs.CollectionChanged += (object? sender, NotifyCollectionChangedEventArgs args) => ClearEventLogsCommand.NotifyCanExecuteChanged();
             ObservableManager<EventLog>.Subscribe("EventLog", eventLogSubscriber = new EventLogSubscriber(this));
-            ObservableManager<string>.Get("ViewModelCreated").Issue("HomeViewModel");
+            ObservableManager<string>.Get("ViewModelCreated").Publish("HomeViewModel");
         }
 
         private void initRightDashBoard()

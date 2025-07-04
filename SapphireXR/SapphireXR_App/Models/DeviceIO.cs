@@ -10,15 +10,17 @@ namespace SapphireXR_App.Models
         public bool CanEdit { get; } = false;
         public string? Description { get; set; }
     }
-    public class AnalogDeviceIO : Device
+    public partial class AnalogDeviceIO : Device
     {
         public int MaxValue { get; set; }
         public int MinSignal { get; set; }
         public float CurrentValue { get; set; }
         public float TargetValue { get; set; }
 
-        public bool AlarmSet { get; set; }
-        public bool WarningSet { get; set; }
+        [ObservableProperty]
+        public bool _alarmSet;
+        [ObservableProperty]
+        public bool _warningSet;
         public int UserState1 { get; set; }
         public int UserState2 { get; set; }
         public int UserState3 { get; set; }
@@ -47,21 +49,30 @@ namespace SapphireXR_App.Models
         public bool AlarmSet { get; set; }
         public bool WarningSet { get; set; }
     }
-    public class SwitchDI : Device
+    public partial class SwitchDI : Device
     {
         public bool IsOn { get; set; }
-        public bool AlarmSet { get; set; }
-        public bool WarningSet { get; set; }
+        [ObservableProperty]
+        public bool _alarmSet;
+        [ObservableProperty]
+        public bool _warningSet;
 
     }
     public class SwitchDO : Device
     {
         public bool IsOn { get; set; }
     }
-    public class InterLockA
+    public partial class InterLockA: ObservableObject
     {
-        public bool IsEnable { get; set; }
-        public required string Treshold { get; set; }
+        [ObservableProperty]
+        private bool _isEnable;
+        [ObservableProperty]
+        private string _treshold = "";
+    }
+    public partial class InterLockD: ObservableObject
+    {
+        [ObservableProperty]
+        private bool _isEnable;
     }
     public class UserState
     {

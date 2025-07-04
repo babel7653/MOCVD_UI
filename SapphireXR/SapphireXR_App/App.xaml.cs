@@ -1,5 +1,4 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
-using SapphireXR_App.Common;
 using SapphireXR_App.Models;
 using SapphireXR_App.ViewModels;
 using SapphireXR_App.Views;
@@ -61,7 +60,6 @@ namespace SapphireXR_App
            의존성이 추가된 MainView를 만듬
            */
             services.AddTransient<MainWindow>();
-            services.AddTransient<MainWindow_Config>();
             services.AddTransient(typeof(HomePage));
 
             services.AddTransient(typeof(MainViewModel));

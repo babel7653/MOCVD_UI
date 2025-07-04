@@ -169,7 +169,6 @@ namespace SapphireXR_App.ViewModels
             private bool? signalTowerGreen = null;
             private bool? signalTowerBlue = null;
             private bool? signalTowerWhite = null;
-            private bool? signalTowerBuzzer = null;
             private bool? dorVaccumState = null;
             private bool? tempControllerAlarm = null;
         }
@@ -276,7 +275,6 @@ namespace SapphireXR_App.ViewModels
                     prevValue = newValue;
                 }
             }
-
            
             void IObserver<BitArray>.OnNext(BitArray value)
             {

@@ -27,7 +27,7 @@ VAR_GLOBAL
 	aMonitoring_PV 			: ARRAY[1..17] OF REAL; //Gauge Monitoring Value to UI
 	aInputState				: ARRAY[1..5] OF WORD; // Digital Input from Device (Switch)
 	aOutputCmd				: ARRAY[1..3] OF WORD; // Digital Command from UI
-	aInterlock				: ARRAY[1..5] OF DWORD; // Interlock
+	aInterlock				: ARRAY[1..5] OF WORD; // Interlock
 	aInterlockSet			: ARRAY[1..12] OF REAL; // UI Interlokc Setting Value
 	aInterlockEnable		: ARRAY[1..6] OF DWORD; // UI Interlock Enable Setting
 	

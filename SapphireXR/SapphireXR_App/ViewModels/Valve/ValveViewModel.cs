@@ -131,7 +131,7 @@ namespace SapphireXR_App.ViewModels
             {
                 bool isOpen = !(viewModel.IsOpen);
                 viewModel.IsOpen = isOpen;
-                isOpenChangedPubisher.Issue(isOpen);
+                isOpenChangedPubisher.Publish(isOpen);
             }
 
             void IObserver<bool>.OnCompleted()

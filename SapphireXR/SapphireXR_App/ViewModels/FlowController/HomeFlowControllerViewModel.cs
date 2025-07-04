@@ -124,7 +124,7 @@ namespace SapphireXR_App.ViewModels.FlowController
             switch(PLCService.Connected)
             {
                 case PLCConnection.Connected:
-                    selectedThis?.Issue(ControllerID);
+                    selectedThis?.Publish(ControllerID);
                     break;
 
                 case PLCConnection.Disconnected:

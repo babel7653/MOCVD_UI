@@ -40,7 +40,7 @@ namespace SapphireXR_App.ViewModels
                         {
                             changeOperationMode(SelectedTab);
                         }
-                        selectedTabPublisher.Issue(SelectedTab);
+                        selectedTabPublisher.Publish(SelectedTab);
                         break;
 
                     case nameof(RecipeRunInactive):
@@ -102,7 +102,7 @@ namespace SapphireXR_App.ViewModels
         {
             if (ConfirmMessage.Show("프로그램 종료", "프로그램을 종료하시겠습니까?", WindowStartupLocation.CenterScreen) == ValveOperationExResult.Ok)
             {
-                closingPublisher.Issue(true);
+                closingPublisher.Publish(true);
                 AppSetting.Save();
             }
             else
@@ -167,7 +167,7 @@ namespace SapphireXR_App.ViewModels
                 ++viewmodelInterestedCreatedCount;
                 if (viewmodelInterestedCreatedCount == 2)
                 {
-                    applicationEventIssuer.Issue(new() { Date = Util.ToEventLogFormat(App.AppStartTime), Message = "SapphireXR 시작", Type = "Application" });
+                    applicationEventIssuer.Publish(new() { Date = Util.ToEventLogFormat(App.AppStartTime), Message = "SapphireXR 시작", Type = "Application" });
                 }
             }
         }

@@ -91,7 +91,7 @@ namespace SapphireXR_App.ViewModels
             {
                 Recipe added = new Recipe();
                 RecipeViewModel.Recipes!.Insert(index, added);
-                recipeAddedPublishser.Issue(new List<Recipe>() { added });
+                recipeAddedPublishser.Publish(new List<Recipe>() { added });
                 added.Foreground = Brushes.LightPink;
                 RecipeViewModel.newlyAddedForMarking.Add(added);
                 rearangeNumber(index);
@@ -163,7 +163,7 @@ namespace SapphireXR_App.ViewModels
                         {
                             recipe.Foreground = Brushes.LightPink;
                         }
-                        recipeAddedPublishser.Issue(added);
+                        recipeAddedPublishser.Publish(added);
                         rearangeNumber(insert);
 
                         RecipeViewModel.newlyAddedForMarking.AddRange(added);

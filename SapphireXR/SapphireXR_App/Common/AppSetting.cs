@@ -65,7 +65,7 @@ namespace SapphireXR_App.Common
             set
             {
                 _logIntervalInRecipeRunInMS = value;
-                logIntervalInRecipeRunIssuer.Issue(value);
+                logIntervalInRecipeRunIssuer.Publish(value);
             }
         }
 

@@ -31,7 +31,7 @@ namespace SapphireXR_App.ViewModels
                     Device? device = sender as Device;
                     if (device != null && device.ID != null && device.Name != null)
                     {
-                        publisher.Issue((device.ID, device.Name));
+                        publisher.Publish((device.ID, device.Name));
                     }
                 }
             };
@@ -263,7 +263,7 @@ namespace SapphireXR_App.ViewModels
                 Device? device = sender as Device;
                 if (device != null && device.ID != null && device.Name != null)
                 {
-                    publisher.Issue((device.ID, device.Name));
+                    publisher.Publish((device.ID, device.Name));
                 }
             }
         }

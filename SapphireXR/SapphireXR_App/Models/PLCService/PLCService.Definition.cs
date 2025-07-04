@@ -219,7 +219,7 @@ namespace SapphireXR_App.Models
                         OnDisconnected();
                         break;
                 }
-                dPLCConnectionPublisher?.Issue(value);
+                dPLCConnectionPublisher?.Publish(value);
             } 
         }
         private static PLCConnection connected = PLCConnection.Disconnected;

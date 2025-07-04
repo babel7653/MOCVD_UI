@@ -12,7 +12,7 @@ namespace SapphireXR_App.ViewModels.FlowController
 
         protected override void onClicked(object[]? args)
         {
-            selectedThis?.Issue(ControllerID);
+            selectedThis?.Publish(ControllerID);
         }
 
         private ObservableManager<string>.Publisher? selectedThis;

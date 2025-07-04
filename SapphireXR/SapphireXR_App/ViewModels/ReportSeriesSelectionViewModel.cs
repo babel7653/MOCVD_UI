@@ -49,7 +49,7 @@ namespace SapphireXR_App.ViewModels
                     }
                     Names.Remove(name);
                 }
-                selectionChangedPublisher.Issue((SelectionToShowChanged.Added, copy));
+                selectionChangedPublisher.Publish((SelectionToShowChanged.Added, copy));
             }
         }
 
@@ -82,7 +82,7 @@ namespace SapphireXR_App.ViewModels
                 List<string> names = Names.ToList();
                 names.Sort();
                 Names = new ObservableCollection<string>(names);
-                selectionChangedPublisher.Issue((SelectionToShowChanged.Removed, copy));
+                selectionChangedPublisher.Publish((SelectionToShowChanged.Removed, copy));
             }
         }
 

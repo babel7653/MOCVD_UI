@@ -206,6 +206,7 @@ namespace SapphireXR_App.ViewModels
             if (BatchOnRecipeEnd != null)
             {
                 Util.LoadBatchToPLC(BatchOnRecipeEnd);
+                WindowServices.ToastMessage.Show("Recipe End Batch가 실행됩니다", WindowServices.ToastMessage.MessageType.Information);
             }
         }
 
@@ -214,6 +215,7 @@ namespace SapphireXR_App.ViewModels
             if (BatchOnAlarmState != null)
             {
                 Util.LoadBatchToPLC(BatchOnAlarmState);
+                WindowServices.ToastMessage.Show("Alarm State Batch가 실행됩니다", WindowServices.ToastMessage.MessageType.Information);
             }
         }
 

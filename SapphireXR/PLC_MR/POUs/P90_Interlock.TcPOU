@@ -12,7 +12,8 @@ VAR_INPUT
 	bVacuumPumpMC 		: BOOL;
 	bLineHeaterMC 		: BOOL; 
 	
-	AlarmDelay_TIME_A		: TIME;
+	Delay_TIME_A		: TIME;
+
 END_VAR
 VAR_OUTPUT
 	bCoverOperationEnable	: BOOL;
@@ -22,6 +23,7 @@ VAR_OUTPUT
 	bMainPowerMonitor		: BOOL;
 	bRecipeEnable			: BOOL;
 	AlarmTrig				: BOOL;
+	WarningTrig				: BOOL;
 END_VAR	
 VAR
 	bMaintKey				: BOOL;
@@ -41,6 +43,8 @@ VAR
 	Warning_TON				: TON;
 	rTrigAlarm				: R_TRIG;
 	Alarm_ET				: TIME;
+	rTrigWarning			: R_TRIG;
+	Warning_ET				: TIME;
 	
 	bMaintKeyTest			: BOOL; //Test Variable
 END_VAR
@@ -62,7 +66,7 @@ ELSIF bMaintKey = FALSE AND MAIN.bOperationMode = FALSE THEN
 END_IF
 
 //Alarm Delay Time
-AlarmDelay_TIME_A := REAL_TO_TIME(GVL_IO.aInterlockSet[3]*1000); // UI Setting Analog Delay Time Value(Miliseconde)
+Delay_TIME_A := REAL_TO_TIME(GVL_IO.aInterlockSet[3]*1000); // UI Setting Analog Delay Time Value(Miliseconde)
 
 // 테스트용 값 bMaintKey -> bMaintKeyTest
 //Allowed a MC(Induction, Bath, Pump, L_Heater) Operation
@@ -77,32 +81,56 @@ ELSE
 	//Gas Pressure Alarm H2
 	IF GVL_IO.aMonitoring_PV_Test[4] < GVL_IO.aInterlockSet[5] THEN
 		GVL_IO.aInterlock[1].2 	:= TRUE; //N2 Pressure Low Alarm
+		GVL_IO.aInterlock[2].0  := TRUE; // Alarm Pop-up
 		GVL_IO.aInterlock[1].3 	:= FALSE;
 		AlarmState_A	:= TRUE;
 	ELSIF (GVL_IO.aInterlockSet[5] <= GVL_IO.aMonitoring_PV_Test[4]) AND (GVL_IO.aMonitoring_PV_Test[4] < GVL_IO.aInterlockSet[6]) THEN
 		GVL_IO.aInterlock[1].2 	:= FALSE;
 		GVL_IO.aInterlock[1].3 	:= TRUE; //N2 Pressure Low Warning
+		GVL_IO.aInterlock[4].0	:= TRUE;	// Warning Pop-up
 		WarningState_A	:= TRUE;
 	ELSE
 		GVL_IO.aInterlock[1].2 	:= FALSE;
+		GVL_IO.aInterlock[2].0  := FALSE; // Alarm Pop-up
 		GVL_IO.aInterlock[1].3 	:= FALSE;
+		GVL_IO.aInterlock[4].0	:= FALSE;	// Warning Pop-up
 		AlarmState_A			:= FALSE;
 		WarningState_A			:= FALSE;
 	END_IF
 	
-	Alarm_TON(IN:=AlarmState_A, PT:=AlarmDelay_TIME_A, ET=>Alarm_ET);
+	Alarm_TON(IN:=AlarmState_A, PT:=Delay_TIME_A, ET=>Alarm_ET);
 	rTrigAlarm(CLK:=Alarm_TON.Q);
 	IF rTrigAlarm.Q	THEN
+		Alarm_TON(IN:=FALSE);
+		AlarmState_A :=FALSE;
 		AlarmTrig := TRUE;
+	END_IF
+	
+	Warning_TON(IN:=WarningState_A, PT:=Delay_TIME_A, ET=>Warning_ET);
+	rTrigWarning(CLK:=Warning_TON.Q);
+	IF rTrigWarning.Q THEN
+		Warning_TON(IN:=FALSE);
+		WarningState_A :=FALSE;
+		WarningTrig := TRUE;
 	END_IF
 	
 END_IF
 
+//Alarm Trig Reset
+IF GVL_IO.aInterlockEnable[1].0 THEN
+	GVL_IO.aInterlockEnable[1].0 := FALSE; // Reset Button Toggle
+	GVL_IO.aInterlock[2] := 0; // Alarm Popup Reset
+	GVL_IO.aInterlock[3] := 0; // Alarm Popup Reset
+	AlarmTrig := FALSE;
+END_IF
 
-//IF GVL_IO.aInterlockEnable.0 THEN
-//	AlarmTrig := FALSE;
-//END_IF
-
+//Warning Trig Reset
+IF GVL_IO.aInterlockEnable[1].1 THEN
+	GVL_IO.aInterlockEnable[1].1 := FALSE; // Reset Button Toggle
+	GVL_IO.aInterlock[4] := 0; // Alarm Popup Reset
+	GVL_IO.aInterlock[5] := 0; // Alarm Popup Reset
+	WarningTrig := FALSE;
+END_IF
 
 // For Test Value
 bSafetyGasState := TRUE;
@@ -152,22 +180,38 @@ GVL_IO.aDigitalOutputIO[2].4 := bUPSMode;]]></ST>
       <LineId Id="23" Count="1" />
       <LineId Id="313" Count="2" />
       <LineId Id="318" Count="0" />
+      <LineId Id="362" Count="0" />
       <LineId Id="325" Count="0" />
       <LineId Id="335" Count="0" />
       <LineId Id="319" Count="1" />
       <LineId Id="326" Count="0" />
+      <LineId Id="363" Count="0" />
       <LineId Id="336" Count="0" />
-      <LineId Id="327" Count="2" />
+      <LineId Id="327" Count="1" />
+      <LineId Id="365" Count="0" />
+      <LineId Id="329" Count="0" />
+      <LineId Id="366" Count="0" />
       <LineId Id="356" Count="1" />
       <LineId Id="321" Count="0" />
       <LineId Id="330" Count="0" />
-      <LineId Id="349" Count="3" />
+      <LineId Id="349" Count="2" />
+      <LineId Id="367" Count="1" />
+      <LineId Id="352" Count="0" />
       <LineId Id="346" Count="1" />
+      <LineId Id="381" Count="1" />
+      <LineId Id="384" Count="3" />
+      <LineId Id="383" Count="0" />
+      <LineId Id="388" Count="0" />
       <LineId Id="25" Count="0" />
       <LineId Id="358" Count="0" />
       <LineId Id="361" Count="0" />
       <LineId Id="334" Count="0" />
-      <LineId Id="359" Count="1" />
+      <LineId Id="359" Count="0" />
+      <LineId Id="370" Count="0" />
+      <LineId Id="372" Count="0" />
+      <LineId Id="369" Count="0" />
+      <LineId Id="360" Count="0" />
+      <LineId Id="374" Count="6" />
       <LineId Id="339" Count="0" />
       <LineId Id="138" Count="0" />
       <LineId Id="50" Count="0" />

@@ -202,6 +202,7 @@ namespace SapphireXR_App.ViewModels
         [ObservableProperty]
         private bool _recipeRunInactive = true;
 
+
         private Action<CancelEventArgs> onClosing;
         private uint viewmodelInterestedCreatedCount = 0;
 

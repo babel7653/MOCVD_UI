@@ -254,9 +254,17 @@
                                 <CornerRadius TopLeft="{StaticResource r_1}" TopRight="{StaticResource r_1}" BottomLeft="{StaticResource r_1}" BottomRight="{StaticResource r_1}"/>
                             </Border.CornerRadius>
                         </Border>
-
-                        <Image Grid.Column="1" Source="/Resources/icons/icon=chevron.png" Width="12" Height="12" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        <Image x:Name="toogleImage" Grid.Column="1" Source="/Resources/icons/icon=chevron.png" Width="12" Height="12" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                     </Grid>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsChecked" Value="True">
+                            <Setter TargetName="toogleImage" Property="RenderTransform">
+                                <Setter.Value>
+                                    <RotateTransform Angle="180" CenterX="6" CenterY="6"/>
+                                </Setter.Value>
+                            </Setter>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
@@ -275,6 +283,17 @@
         <Setter Property="FontSize" Value="12" />
         <Setter Property="FontFamily" Value="Segoe UI" />
         <Setter Property="HorizontalContentAlignment" Value="Center" />
+        <Setter Property="ItemContainerStyle">
+            <Setter.Value>
+                <Style TargetType="ComboBoxItem">
+                    <Setter Property="Margin">
+                        <Setter.Value>
+                            <Thickness Top="{StaticResource p_1}" Bottom="{StaticResource p_1}" />
+                        </Setter.Value>
+                    </Setter>
+                </Style>
+            </Setter.Value>
+        </Setter>
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="ComboBox">
@@ -289,7 +308,6 @@
                             Focusable="false"
                             IsChecked="{Binding Path=IsDropDownOpen,Mode=TwoWay,RelativeSource={RelativeSource TemplatedParent}}"
                             ClickMode="Press"/>
-
                         <ContentPresenter
                             Name="ContentSite"
                             IsHitTestVisible="False"
@@ -315,16 +333,20 @@
                             IsOpen="{TemplateBinding IsDropDownOpen}"
                             AllowsTransparency="True"
                             Focusable="False"
-                            PopupAnimation="Slide">
+                            PopupAnimation="Slide"
+                            VerticalOffset="{StaticResource p_1}">
                             <Grid
                               Name="DropDown"
                               SnapsToDevicePixels="True"               
                               MinWidth="{TemplateBinding ActualWidth}"
-                              MaxHeight="{TemplateBinding MaxDropDownHeight}">
-                                <Border x:Name="DropDownBorder" BorderThickness="0" Background="{StaticResource Gray_300}">
+                              MaxHeight="{TemplateBinding MaxDropDownHeight}" Margin="0">
+                                <Border x:Name="DropDownBorder" BorderThickness="0" Background="{StaticResource Gray_300}" Margin="0" Padding="0">
                                     <Border.CornerRadius>
                                         <CornerRadius BottomLeft="{StaticResource r_1}" BottomRight="{StaticResource r_1}" TopLeft="{StaticResource r_1}" TopRight="{StaticResource r_1}" />
                                     </Border.CornerRadius>
+                                    <!--<Border.Padding>
+                                        <Thickness Bottom="0" Top="0" />
+                                    </Border.Padding>-->
                                 </Border>
                                 <ScrollViewer Margin="4,6,4,6" SnapsToDevicePixels="True">
                                     <StackPanel IsItemsHost="True" KeyboardNavigation.DirectionalNavigation="Contained" />
@@ -344,6 +366,13 @@
                             <Setter Property="IsTabStop" Value="false"/>
                             <Setter TargetName="PART_EditableTextBox" Property="Visibility" Value="Visible"/>
                             <Setter TargetName="ContentSite" Property="Visibility" Value="Hidden"/>
+                        </Trigger>
+                        <Trigger Property="IsEnabled" Value="False">
+                            <Setter Property="Background" Value="{StaticResource Gray_600}" />
+                            <Setter Property="Foreground" Value="{StaticResource Gray_800}" />
+                        </Trigger>
+                        <Trigger Property="IsDropDownOpen" Value="True">
+                            <Setter Property="Background" Value="{StaticResource Gray_200}" />
                         </Trigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>

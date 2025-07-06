@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Globalization;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Input;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Microsoft.Win32;
@@ -403,6 +404,10 @@ namespace SapphireXR_App.ViewModels
                 AppSetting.LogFileDirectory = openFolderDialog.FolderName;
             }
         }, () => CurrentRecipeUserState == RecipeUserState.Uninitialized);
+        public ICommand OnDoubleClickedCommand => new RelayCommand(() =>
+        {
+            EventLogWindow.Show();
+        });
 
         [ObservableProperty]
         private string _startText = "";

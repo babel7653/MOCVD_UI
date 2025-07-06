@@ -166,8 +166,6 @@ namespace SapphireXR_App.ViewModels
         private static float AnalogDeviceDelayTimeValue;
         private static float DigitalDeviceDelayTimeValue;
 
-        public bool WithoutConnection { get; set; }
-
         public ICommand AlarmSettingLoadCommand => new RelayCommand(AlarmSettingLoad);
         public ICommand AlarmSettingSaveCommand => new RelayCommand(AlarmSettingSave);
 

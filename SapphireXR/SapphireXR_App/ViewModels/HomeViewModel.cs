@@ -13,6 +13,7 @@ using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using SapphireXR_App.Enums;
 using SapphireXR_App.WindowServices;
+using TwinCAT.Ads.Server;
 
 namespace SapphireXR_App.ViewModels
 {
@@ -125,6 +126,10 @@ namespace SapphireXR_App.ViewModels
             EventLogs.CollectionChanged += (object? sender, NotifyCollectionChangedEventArgs args) => ClearEventLogsCommand.NotifyCanExecuteChanged();
             ObservableManager<EventLog>.Subscribe("EventLog", eventLogSubscriber = new EventLogSubscriber(this));
             ObservableManager<string>.Get("ViewModelCreated").Publish("HomeViewModel");
+
+            //PLCConnectionState.Instance.PropertyChanged += (sender, args) =>
+            //{
+            //};
         }
 
         private void initRightDashBoard()
@@ -403,6 +408,10 @@ namespace SapphireXR_App.ViewModels
         public ICommand ShowValveLabelCommand { get; set; }
         public ICommand ManualBatchCommand => new RelayCommand(() => {
             ManualBatchEx.Show(manualBatchViewModel);
+        });
+        public ICommand OnDoubleClickedCommand => new RelayCommand(() =>
+        {
+            EventLogWindow.Show();
         });
 
         [ObservableProperty]

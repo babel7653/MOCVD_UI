@@ -69,6 +69,7 @@ namespace SapphireXR_App
             services.AddTransient(typeof(LeftViewModel));
             services.AddTransient(typeof(SettingViewModel));
             services.AddTransient(typeof(RecipeRunViewModel));
+            services.AddTransient(typeof(EventLogViewModel));
 
             return services.BuildServiceProvider();
         }

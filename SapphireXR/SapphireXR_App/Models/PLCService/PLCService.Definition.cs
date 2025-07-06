@@ -4,6 +4,7 @@ using System.Windows.Threading;
 using TwinCAT.Ads;
 using System.Windows;
 using SapphireXR_App.Enums;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace SapphireXR_App.Models
 {

@@ -50,6 +50,7 @@ VAR
 	
 	// variales for check alarm & warning condition
 	i : INT;
+	pv_deviation : REAL;
 	bAlarm_State : BOOL;
 	bWarning_State : BOOL;
 	wAlarm_State : DWORD;
@@ -84,34 +85,24 @@ Delay_TIME_A := REAL_TO_TIME(GVL_IO.aInterlockSet[3]*1000); // UI Setting Analog
 // Check Alarm condition
 AlarmState_A := FALSE;
 wAlarm_State := 0;
-FOR i:=1 TO 29 DO
-	GVL_IO.aMonitoring_PV_Test[i] := GVL_IO.aController_CV[i] * 1.2;
-
-	fbAlarmDev(rCV:=GVL_IO.aController_CV[i], rPV:=GVL_IO.aMonitoring_PV_Test[i], rMax:=GVL_IO.aMaxValueController[i], rTh:=GVL_IO.aInterlockSet[1], bResult=>bAlarm_State);
-	IF bAlarm_State > TRUE THEN
-		j := 2*i;
-		wAlarm_State := wAlarm_State + INT_TO_DWORD(j);
-	END_IF
-END_FOR
-IF wAlarm_State > 0 THEN
-	AlarmState_A := TRUE;
-END_IF
-GVL_IO.aInterlock[2] := wAlarm_State;
-
-// Check warning condition
 WarningState_A := FALSE;
 wWarning_State := 0;
 FOR i:=1 TO 29 DO
-	fbWarningDev(rCV:=GVL_IO.aController_CV[i], rPV:=GVL_IO.aMonitoring_PV_Test[i], rMax:=GVL_IO.aMaxValueController[i], rTh:=GVL_IO.aInterlockSet[2], bResult=>bWarning_State);
-	IF bWarning_State > 1 THEN
-		j := 2*i;
-		wWarning_State := wWarning_State + INT_TO_DWORD(j);
+	GVL_IO.aMonitoring_PV_Test[i] := GVL_IO.aController_CV[i] * 0.8;
+
+	fbAlarmDev(rCV:=GVL_IO.aController_CV[i], rPV:=GVL_IO.aMonitoring_PV_Test[i], rMax:=GVL_IO.aMaxValueController[i], rTh:=GVL_IO.aInterlockSet[1], bResult=>pv_deviation);
+	IF pv_deviation > GVL_IO.aInterlockSet[1] THEN
+		wAlarm_State := wAlarm_State + 2*INT_TO_DWORD(i);
+		AlarmState_A := TRUE;
+	END_IF
+	IF pv_deviation > GVL_IO.aInterlockSet[2] AND pv_deviation < GVL_IO.aInterlockSet[1] THEN
+		wWarning_State := wWarning_State + 2*INT_TO_DWORD(i);
+		WarningState_A := TRUE;
 	END_IF
 END_FOR
-IF wWarning_State > 0 THEN
-	WarningState_A := TRUE;
-END_IF
-GVL_IO.aInterlock[3] := wWarning_State;
+
+// GVL_IO.aInterlock[2] := wAlarm_State;
+// GVL_IO.aInterlock[3] := wWarning_State;
 
 // 테스트용 값 bMaintKey -> bMaintKeyTest
 //Allowed a MC(Induction, Bath, Pump, L_Heater) Operation
@@ -149,6 +140,7 @@ ELSE
 		Alarm_TON(IN:=FALSE);
 		AlarmState_A :=FALSE;
 		AlarmTrig := TRUE;
+		GVL_IO.aInterlock[2] := wAlarm_State;
 	END_IF
 	
 	Warning_TON(IN:=WarningState_A, PT:=Delay_TIME_A, ET=>Warning_ET);
@@ -157,6 +149,7 @@ ELSE
 		Warning_TON(IN:=FALSE);
 		WarningState_A :=FALSE;
 		WarningTrig := TRUE;
+		GVL_IO.aInterlock[3] := wWarning_State;
 	END_IF
 	
 END_IF
@@ -221,24 +214,19 @@ GVL_IO.aDigitalOutputIO[2].4 := bUPSMode;]]></ST>
       <LineId Id="394" Count="0" />
       <LineId Id="430" Count="0" />
       <LineId Id="437" Count="0" />
+      <LineId Id="449" Count="0" />
+      <LineId Id="448" Count="0" />
       <LineId Id="396" Count="0" />
       <LineId Id="446" Count="1" />
       <LineId Id="397" Count="0" />
-      <LineId Id="402" Count="0" />
-      <LineId Id="438" Count="0" />
-      <LineId Id="436" Count="0" />
-      <LineId Id="404" Count="0" />
+      <LineId Id="451" Count="0" />
+      <LineId Id="453" Count="1" />
+      <LineId Id="463" Count="0" />
+      <LineId Id="456" Count="0" />
+      <LineId Id="458" Count="2" />
       <LineId Id="355" Count="0" />
-      <LineId Id="405" Count="2" />
+      <LineId Id="407" Count="0" />
       <LineId Id="434" Count="0" />
-      <LineId Id="411" Count="1" />
-      <LineId Id="432" Count="0" />
-      <LineId Id="442" Count="0" />
-      <LineId Id="414" Count="2" />
-      <LineId Id="439" Count="0" />
-      <LineId Id="417" Count="3" />
-      <LineId Id="423" Count="0" />
-      <LineId Id="400" Count="0" />
       <LineId Id="398" Count="0" />
       <LineId Id="433" Count="0" />
       <LineId Id="309" Count="0" />
@@ -268,9 +256,11 @@ GVL_IO.aDigitalOutputIO[2].4 := bUPSMode;]]></ST>
       <LineId Id="349" Count="2" />
       <LineId Id="367" Count="1" />
       <LineId Id="352" Count="0" />
+      <LineId Id="464" Count="0" />
       <LineId Id="346" Count="1" />
       <LineId Id="381" Count="1" />
       <LineId Id="384" Count="3" />
+      <LineId Id="462" Count="0" />
       <LineId Id="383" Count="0" />
       <LineId Id="388" Count="0" />
       <LineId Id="25" Count="0" />

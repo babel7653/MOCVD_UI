@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4026.11">
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4026.12">
   <POU Name="P90_Interlock" Id="{c8b81d81-de46-4c7a-a894-4387b2cd9bf7}" SpecialFunc="None">
     <Declaration><![CDATA[PROGRAM P90_Interlock
 VAR_INPUT
@@ -11,6 +11,9 @@ VAR_INPUT
 	bThermalBathMC		: BOOL;
 	bVacuumPumpMC 		: BOOL;
 	bLineHeaterMC 		: BOOL; 
+	
+	Delay_TIME_A		: TIME;
+
 END_VAR
 VAR_OUTPUT
 	bCoverOperationEnable	: BOOL;
@@ -19,6 +22,8 @@ VAR_OUTPUT
 	bPowerResetSwitch		: BOOL;
 	bMainPowerMonitor		: BOOL;
 	bRecipeEnable			: BOOL;
+	AlarmTrig				: BOOL;
+	WarningTrig				: BOOL;
 END_VAR	
 VAR
 	bMaintKey				: BOOL;
@@ -30,31 +35,147 @@ VAR
 	bAirPressureSensor		: BOOL;
 	bWaterFlowSensor		: BOOL;
 	
+	AlarmState_A			: BOOL;
+	WarningState_A			: BOOL;
+	AlarmState_D			: BOOL;
+	WarningState_D			: BOOL;
+	Alarm_TON				: TON;
+	Warning_TON				: TON;
+	rTrigAlarm				: R_TRIG;
+	Alarm_ET				: TIME;
+	rTrigWarning			: R_TRIG;
+	Warning_ET				: TIME;
+	
+	bMaintKeyTest			: BOOL; //Test Variable
+	
+	// variales for check alarm & warning condition
+	i : INT;
+	bAlarm_State : BOOL;
+	bWarning_State : BOOL;
+	wAlarm_State : DWORD;
+	wWarning_State : DWORD;
+	fbAlarmDev : FB_ControlerDeviation;
+	fbWarningDev : FB_ControlerDeviation;
+	
+	j: INT;
 END_VAR
 ]]></Declaration>
     <Implementation>
       <ST><![CDATA[(* Read from Device*)
-//Maintenance Mode
+//Interlock Variable Set
 bMaintKey := GVL_IO.aDigitalInputIO[1].0;
+bPowerResetSwitch := GVL_IO.aDigitalInputIO[1].1;
+bMainPowerMonitor := GVL_IO.aDigitalInputIO[7].5;
+bAirPressureSensor	:= GVL_IO.aDigitalInputIO[2].0; //Normally Contacted
+bWaterFlowSensor	:= GVL_IO.aDigitalInputIO[2].1;
 
+//Sinal Tower Set
 IF bMaintKey THEN
 	P92_Maintenance.nCaseSignalTower		:= 5;
 ELSIF bMaintKey = FALSE AND MAIN.bOperationMode = FALSE THEN
 	P92_Maintenance.nCaseSignalTower		:= 4;
 END_IF
 
-bPowerResetSwitch := GVL_IO.aDigitalInputIO[1].1;
-bMainPowerMonitor := GVL_IO.aDigitalInputIO[7].5;
+//Alarm Delay Time
+Delay_TIME_A := REAL_TO_TIME(GVL_IO.aInterlockSet[3]*1000); // UI Setting Analog Delay Time Value(Miliseconde)
 
-bAirPressureSensor	:= GVL_IO.aDigitalInputIO[2].0; //Normally Contacted
-bWaterFlowSensor	:= GVL_IO.aDigitalInputIO[2].1;
+// generate pv for test
 
-IF P90_Interlock.bMaintKey THEN
+// Check Alarm condition
+AlarmState_A := FALSE;
+wAlarm_State := 0;
+FOR i:=1 TO 29 DO
+	GVL_IO.aMonitoring_PV_Test[i] := GVL_IO.aController_CV[i] * 1.2;
+
+	fbAlarmDev(rCV:=GVL_IO.aController_CV[i], rPV:=GVL_IO.aMonitoring_PV_Test[i], rMax:=GVL_IO.aMaxValueController[i], rTh:=GVL_IO.aInterlockSet[1], bResult=>bAlarm_State);
+	IF bAlarm_State > TRUE THEN
+		j := 2*i;
+		wAlarm_State := wAlarm_State + INT_TO_DWORD(j);
+	END_IF
+END_FOR
+IF wAlarm_State > 0 THEN
+	AlarmState_A := TRUE;
+END_IF
+GVL_IO.aInterlock[2] := wAlarm_State;
+
+// Check warning condition
+WarningState_A := FALSE;
+wWarning_State := 0;
+FOR i:=1 TO 29 DO
+	fbWarningDev(rCV:=GVL_IO.aController_CV[i], rPV:=GVL_IO.aMonitoring_PV_Test[i], rMax:=GVL_IO.aMaxValueController[i], rTh:=GVL_IO.aInterlockSet[2], bResult=>bWarning_State);
+	IF bWarning_State > 1 THEN
+		j := 2*i;
+		wWarning_State := wWarning_State + INT_TO_DWORD(j);
+	END_IF
+END_FOR
+IF wWarning_State > 0 THEN
+	WarningState_A := TRUE;
+END_IF
+GVL_IO.aInterlock[3] := wWarning_State;
+
+// 테스트용 값 bMaintKey -> bMaintKeyTest
+//Allowed a MC(Induction, Bath, Pump, L_Heater) Operation
+//IF P90_Interlock.bMaintKey THEN
+IF bMaintKeyTest THEN
 	P92_Maintenance.nCaseSignalTower := 4;
 	GVL_IO.aDigitalOutputIO[3].0 := bInductionHeaterMC;
 	GVL_IO.aDigitalOutputIO[3].1 := bThermalBathMC;
 	GVL_IO.aDigitalOutputIO[3].2 := bVacuumPumpMC;
 	GVL_IO.aDigitalOutputIO[3].3 := bLineHeaterMC;
+ELSE
+	//Gas Pressure Alarm H2
+	IF GVL_IO.aMonitoring_PV_Test[4] < GVL_IO.aInterlockSet[5] THEN
+		GVL_IO.aInterlock[1].2 	:= TRUE; //N2 Pressure Low Alarm
+		GVL_IO.aInterlock[2].0  := TRUE; // Alarm Pop-up
+		GVL_IO.aInterlock[1].3 	:= FALSE;
+		AlarmState_A	:= TRUE;
+	ELSIF (GVL_IO.aInterlockSet[5] <= GVL_IO.aMonitoring_PV_Test[4]) AND (GVL_IO.aMonitoring_PV_Test[4] < GVL_IO.aInterlockSet[6]) THEN
+		GVL_IO.aInterlock[1].2 	:= FALSE;
+		GVL_IO.aInterlock[1].3 	:= TRUE; //N2 Pressure Low Warning
+		GVL_IO.aInterlock[4].0	:= TRUE;	// Warning Pop-up
+		WarningState_A	:= TRUE;
+	ELSE
+		GVL_IO.aInterlock[1].2 	:= FALSE;
+		GVL_IO.aInterlock[2].0  := FALSE; // Alarm Pop-up
+		GVL_IO.aInterlock[1].3 	:= FALSE;
+		GVL_IO.aInterlock[4].0	:= FALSE;	// Warning Pop-up
+		AlarmState_A			:= FALSE;
+		WarningState_A			:= FALSE;
+	END_IF
+	
+	Alarm_TON(IN:=AlarmState_A, PT:=Delay_TIME_A, ET=>Alarm_ET);
+	rTrigAlarm(CLK:=Alarm_TON.Q);
+	IF rTrigAlarm.Q	THEN
+		Alarm_TON(IN:=FALSE);
+		AlarmState_A :=FALSE;
+		AlarmTrig := TRUE;
+	END_IF
+	
+	Warning_TON(IN:=WarningState_A, PT:=Delay_TIME_A, ET=>Warning_ET);
+	rTrigWarning(CLK:=Warning_TON.Q);
+	IF rTrigWarning.Q THEN
+		Warning_TON(IN:=FALSE);
+		WarningState_A :=FALSE;
+		WarningTrig := TRUE;
+	END_IF
+	
+END_IF
+
+
+//Alarm Trig Reset
+IF GVL_IO.aInterlockEnable[1].0 THEN
+	GVL_IO.aInterlockEnable[1].0 := FALSE; // Reset Button Toggle
+	GVL_IO.aInterlock[2] := 0; // Alarm Popup Reset
+	GVL_IO.aInterlock[3] := 0; // Alarm Popup Reset
+	AlarmTrig := FALSE;
+END_IF
+
+//Warning Trig Reset
+IF GVL_IO.aInterlockEnable[1].1 THEN
+	GVL_IO.aInterlockEnable[1].1 := FALSE; // Reset Button Toggle
+	GVL_IO.aInterlock[4] := 0; // Alarm Popup Reset
+	GVL_IO.aInterlock[5] := 0; // Alarm Popup Reset
+	WarningTrig := FALSE;
 END_IF
 
 // For Test Value
@@ -83,22 +204,82 @@ GVL_IO.aDigitalOutputIO[2].4 := bUPSMode;]]></ST>
       <LineId Id="139" Count="0" />
       <LineId Id="300" Count="0" />
       <LineId Id="284" Count="0" />
+      <LineId Id="304" Count="1" />
+      <LineId Id="307" Count="0" />
+      <LineId Id="303" Count="0" />
+      <LineId Id="308" Count="0" />
       <LineId Id="296" Count="0" />
       <LineId Id="298" Count="0" />
       <LineId Id="295" Count="0" />
       <LineId Id="301" Count="1" />
       <LineId Id="299" Count="0" />
-      <LineId Id="282" Count="0" />
-      <LineId Id="140" Count="0" />
-      <LineId Id="211" Count="0" />
-      <LineId Id="293" Count="1" />
-      <LineId Id="145" Count="0" />
+      <LineId Id="353" Count="1" />
+      <LineId Id="322" Count="0" />
+      <LineId Id="444" Count="0" />
+      <LineId Id="393" Count="0" />
+      <LineId Id="445" Count="0" />
+      <LineId Id="394" Count="0" />
+      <LineId Id="430" Count="0" />
+      <LineId Id="437" Count="0" />
+      <LineId Id="396" Count="0" />
+      <LineId Id="446" Count="1" />
+      <LineId Id="397" Count="0" />
+      <LineId Id="402" Count="0" />
+      <LineId Id="438" Count="0" />
+      <LineId Id="436" Count="0" />
+      <LineId Id="404" Count="0" />
+      <LineId Id="355" Count="0" />
+      <LineId Id="405" Count="2" />
+      <LineId Id="434" Count="0" />
+      <LineId Id="411" Count="1" />
+      <LineId Id="432" Count="0" />
+      <LineId Id="442" Count="0" />
+      <LineId Id="414" Count="2" />
+      <LineId Id="439" Count="0" />
+      <LineId Id="417" Count="3" />
+      <LineId Id="423" Count="0" />
+      <LineId Id="400" Count="0" />
+      <LineId Id="398" Count="0" />
+      <LineId Id="433" Count="0" />
+      <LineId Id="309" Count="0" />
       <LineId Id="144" Count="0" />
       <LineId Id="20" Count="0" />
+      <LineId Id="324" Count="0" />
       <LineId Id="273" Count="0" />
       <LineId Id="21" Count="0" />
       <LineId Id="149" Count="0" />
-      <LineId Id="23" Count="2" />
+      <LineId Id="23" Count="1" />
+      <LineId Id="313" Count="2" />
+      <LineId Id="318" Count="0" />
+      <LineId Id="362" Count="0" />
+      <LineId Id="325" Count="0" />
+      <LineId Id="335" Count="0" />
+      <LineId Id="319" Count="1" />
+      <LineId Id="326" Count="0" />
+      <LineId Id="363" Count="0" />
+      <LineId Id="336" Count="0" />
+      <LineId Id="327" Count="1" />
+      <LineId Id="365" Count="0" />
+      <LineId Id="329" Count="0" />
+      <LineId Id="366" Count="0" />
+      <LineId Id="356" Count="1" />
+      <LineId Id="321" Count="0" />
+      <LineId Id="330" Count="0" />
+      <LineId Id="349" Count="2" />
+      <LineId Id="367" Count="1" />
+      <LineId Id="352" Count="0" />
+      <LineId Id="346" Count="1" />
+      <LineId Id="381" Count="1" />
+      <LineId Id="384" Count="3" />
+      <LineId Id="383" Count="0" />
+      <LineId Id="388" Count="0" />
+      <LineId Id="25" Count="0" />
+      <LineId Id="370" Count="0" />
+      <LineId Id="372" Count="0" />
+      <LineId Id="369" Count="0" />
+      <LineId Id="360" Count="0" />
+      <LineId Id="374" Count="6" />
+      <LineId Id="339" Count="0" />
       <LineId Id="138" Count="0" />
       <LineId Id="50" Count="0" />
       <LineId Id="33" Count="0" />
@@ -119,6 +300,8 @@ GVL_IO.aDigitalOutputIO[2].4 := bUPSMode;]]></ST>
       <LineId Id="135" Count="0" />
       <LineId Id="179" Count="0" />
       <LineId Id="210" Count="0" />
+      <LineId Id="106" Count="3" />
+      <LineId Id="2" Count="0" />
     </LineIds>
   </POU>
 </TcPlcObject>

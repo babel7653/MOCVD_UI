@@ -9,10 +9,6 @@ namespace SapphireXR_App.WindowServices
             if (EventLogViewWindow == null)
             {
                 EventLogViewWindow = new EventLogView() {  Topmost = true };
-                EventLogViewWindow.Closed += (sender, args) =>
-                {
-                    EventLogViewWindow = null;
-                };
             }
             EventLogViewWindow.Show();
         }

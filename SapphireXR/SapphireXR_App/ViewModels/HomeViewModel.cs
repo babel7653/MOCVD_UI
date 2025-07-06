@@ -123,8 +123,7 @@ namespace SapphireXR_App.ViewModels
                 }
             };
 
-            EventLogs.CollectionChanged += (object? sender, NotifyCollectionChangedEventArgs args) => ClearEventLogsCommand.NotifyCanExecuteChanged();
-            ObservableManager<EventLog>.Subscribe("EventLog", eventLogSubscriber = new EventLogSubscriber(this));
+            EventLogs.Instance.EventLogList.CollectionChanged += (object? sender, NotifyCollectionChangedEventArgs args) => ClearEventLogsCommand.NotifyCanExecuteChanged();
             ObservableManager<string>.Get("ViewModelCreated").Publish("HomeViewModel");
 
             //PLCConnectionState.Instance.PropertyChanged += (sender, args) =>
@@ -282,12 +281,12 @@ namespace SapphireXR_App.ViewModels
         [RelayCommand(CanExecute = "CanClearEventLogsExecute")]
         private void ClearEventLogs()
         {
-            EventLogs.Clear();
+            EventLogs.Instance.EventLogList.Clear();
         }
 
         private bool CanClearEventLogsExecute()
         {
-            return 0 < EventLogs.Count;
+            return 0 < EventLogs.Instance.EventLogList.Count;
         }
 
         private bool canTogglePressureControlModeExecute()
@@ -478,9 +477,6 @@ namespace SapphireXR_App.ViewModels
         [ObservableProperty]
         private bool _pLCConnected = PLCService.Connected == PLCConnection.Connected ? true: false;
 
-        [ObservableProperty]
-        private ObservableCollection<EventLog> _eventLogs = new ObservableCollection<EventLog>();
-
         private string? prevThrottleValveControlMode = null;
 
         private ManualBatchViewModel manualBatchViewModel = new ManualBatchViewModel();
@@ -498,7 +494,6 @@ namespace SapphireXR_App.ViewModels
         private DigitalOutput3Subscriber digitalOutput3Subscriber;
         private ThrottleValveStatusSubscriber throttleValveStatusSubscriber;
         private ObservableManager<bool>.Publisher leakTestModePublisher;
-        private EventLogSubscriber eventLogSubscriber;
         private PLCConnectionStateSubscriber plcConnectionStateSubscriber;
 
         private bool showMsgOnVacuumPumpToggleEx = true;

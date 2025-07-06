@@ -29,9 +29,9 @@ namespace SapphireXR_App.Views
             }
         }
 
-        private void OnClose(object sender, RoutedEventArgs e)
+        private void OnHide(object sender, RoutedEventArgs e)
         {
-            Close();
+            Hide();
         }
     }
 }

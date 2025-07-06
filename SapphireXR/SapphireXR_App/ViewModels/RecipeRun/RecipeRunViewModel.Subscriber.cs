@@ -1,6 +1,5 @@
 ﻿using SapphireXR_App.Enums;
 using SapphireXR_App.Models;
-using System.Security.Policy;
 
 namespace SapphireXR_App.ViewModels
 {
@@ -84,31 +83,6 @@ namespace SapphireXR_App.ViewModels
             void IObserver<bool>.OnNext(bool value)
             {
                 recipeRunViewModel.switchState(RecipeUserState.Ended);
-            }
-
-            private RecipeRunViewModel recipeRunViewModel;
-        }
-
-        private class EventLogSubscriber : IObserver<EventLog>
-        {
-            internal EventLogSubscriber(RecipeRunViewModel vm)
-            {
-                recipeRunViewModel = vm;
-            }
-
-            void IObserver<EventLog>.OnCompleted()
-            {
-                throw new NotImplementedException();
-            }
-
-            void IObserver<EventLog>.OnError(Exception error)
-            {
-                throw new NotImplementedException();
-            }
-
-            void IObserver<EventLog>.OnNext(EventLog value)
-            {
-                recipeRunViewModel.EventLogs.Add(value);
             }
 
             private RecipeRunViewModel recipeRunViewModel;

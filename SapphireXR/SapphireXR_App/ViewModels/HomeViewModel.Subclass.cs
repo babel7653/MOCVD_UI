@@ -95,38 +95,6 @@ namespace SapphireXR_App.ViewModels
             private short? prevThrottleValveControlMode = null;
         }
 
-        private class EventLogSubscriber : IObserver<EventLog>
-        {
-            internal EventLogSubscriber(HomeViewModel vm)
-            {
-                homeViewModel = vm;
-            }
-
-            void IObserver<EventLog>.OnCompleted()
-            {
-                throw new NotImplementedException();
-            }
-
-            void IObserver<EventLog>.OnError(Exception error)
-            {
-                throw new NotImplementedException();
-            }
-
-            void IObserver<EventLog>.OnNext(EventLog value)
-            {
-                homeViewModel.EventLogs.Add(value);
-                if(value.Type == "Recipe End")
-                {
-                    if (PLCService.Connected == PLCConnection.Connected)
-                    {
-                        homeViewModel.loadBatchOnRecipeEnd();
-                    }
-                }
-            }
-
-            private HomeViewModel homeViewModel;
-        }
-
         private class PLCConnectionStateSubscriber : IObserver<Enums.PLCConnection>
         {
             public PLCConnectionStateSubscriber(HomeViewModel vm)

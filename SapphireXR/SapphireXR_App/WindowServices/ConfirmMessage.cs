@@ -15,6 +15,7 @@ namespace SapphireXR_App.WindowServices
                 DataContext = viewModel,
                 WindowStartupLocation = windowStartupLocation
             };
+            view.Topmost = true;
             view.ShowDialog();
 
             return viewModel.ValveOperationExResult;

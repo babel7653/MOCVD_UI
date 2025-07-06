@@ -32,8 +32,6 @@ namespace SapphireXR_App.ViewModels
             ObservableManager<bool>.Subscribe("RecipeEnded", recipeEndedSubscriber = new RecipeEndedSubscriber(this));
             recipeRunStatePublisher = ObservableManager<RecipeUserState>.Get("RecipeRun.State");
             ObservableManager<(string, IList<Recipe>)>.Subscribe("RecipeEdit.LoadToRecipeRun", loadFromRecipeEditSubscriber = new LoadFromRecipeEditSubscriber(this));
-            recipeEventIssuer = ObservableManager<EventLog>.Get("EventLog");
-            ObservableManager<EventLog>.Subscribe("EventLog", eventLogSubscriber = new EventLogSubscriber(this));
 
             PropertyChanging += (object? sender, PropertyChangingEventArgs e) =>
             {
@@ -89,7 +87,7 @@ namespace SapphireXR_App.ViewModels
                 }
             };
 
-            EventLogs.CollectionChanged += (object? sender, NotifyCollectionChangedEventArgs args) => ClearEventLogCommand.NotifyCanExecuteChanged();
+            EventLogs.Instance.EventLogList.CollectionChanged += (object? sender, NotifyCollectionChangedEventArgs args) => ClearEventLogCommand.NotifyCanExecuteChanged();
             onPLCConnectionStateChanged(PLCService.Connected);
             ObservableManager<string>.Get("ViewModelCreated").Publish("RecipeRunViewModel");
             ObservableManager<PLCConnection>.Subscribe("PLCService.Connected", plcConnectionStateSubscriber = new PLCConnectionStateSubscriber(this));
@@ -152,7 +150,7 @@ namespace SapphireXR_App.ViewModels
                     CurrentRecipe.startLog();
                     if (Start == RecipeCommand.Run)
                     {
-                        recipeEventIssuer.Publish(new EventLog() { Date = Util.ToEventLogFormat(DateTime.Now), Message = "레시피가 시작되었습니다", Type = "Recipe Run" });
+                        EventLogs.Instance.EventLogList.Add(new EventLog() { Message = "레시피가 시작되었습니다", Name = "Recipe Run", Type = EventLog.LogType.Information });
                         ToastMessage.Show("Recipe가 시작되었습니다.", ToastMessage.MessageType.Information);
                     }
                     StartOrPause = false;
@@ -166,14 +164,14 @@ namespace SapphireXR_App.ViewModels
 
                 case RecipeUserState.Stopped:
                     CurrentRecipe.stopLog();
-                    recipeEventIssuer.Publish(new EventLog() { Date = Util.ToEventLogFormat(DateTime.Now), Message = "레시피가 중단되었습니다", Type = "Recipe Stop" });
+                    EventLogs.Instance.EventLogList.Add(new EventLog() { Message = "레시피가 중단되었습니다", Name = "Recipe Stop", Type = EventLog.LogType.Information });
                     ToastMessage.Show("Recipe가 중단되었습니다.", ToastMessage.MessageType.Information);
                     toRecipeLoadedState();
                     break;
 
                 case RecipeUserState.Ended:
                     CurrentRecipe.stopLog();
-                    recipeEventIssuer.Publish(new EventLog() { Date = Util.ToEventLogFormat(DateTime.Now), Message = "레시피가 종료되었습니다", Type = "Recipe End" });
+                    EventLogs.Instance.EventLogList.Add(new EventLog() { Message = "레시피가 종료되었습니다", Name = "Recipe End", Type = EventLog.LogType.Information });                 
                     ToastMessage.Show("Recipe가 종료되었습니다. 종료시간: " + DateTime.Now.ToString("HH:mm"), ToastMessage.MessageType.Information);
                     toRecipeLoadedState();
                     break;
@@ -284,12 +282,12 @@ namespace SapphireXR_App.ViewModels
 
         bool canClearEventLogExecute()
         {
-            return 0 < EventLogs.Count;
+            return 0 < EventLogs.Instance.EventLogList.Count();
         }
         [RelayCommand(CanExecute = nameof(canClearEventLogExecute))]
         private void ClearEventLog()
         {
-            EventLogs.Clear();
+            EventLogs.Instance.EventLogList.Clear();
         }
 
         void IObserver<short>.OnCompleted()
@@ -440,12 +438,6 @@ namespace SapphireXR_App.ViewModels
         private ObservableManager<RecipeUserState>.Publisher recipeRunStatePublisher;
         private LoadFromRecipeEditSubscriber loadFromRecipeEditSubscriber;
         private PLCConnectionStateSubscriber plcConnectionStateSubscriber;
-
-        private ObservableManager<EventLog>.Publisher recipeEventIssuer;
-        private EventLogSubscriber eventLogSubscriber;
-
-        [ObservableProperty]
-        private ObservableCollection<EventLog> _eventLogs = new ObservableCollection<EventLog>();
 
         [ObservableProperty]
         private RecipeUserState _currentRecipeUserState = RecipeUserState.Uninitialized;

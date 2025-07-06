@@ -6,6 +6,7 @@
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:SapphireXR_App.Views"
       xmlns:control="clr-namespace:SapphireXR_App.Controls"
+      xmlns:model="clr-namespace:SapphireXR_App.Models"
       xmlns:i="clr-namespace:Microsoft.Xaml.Behaviors;assembly=Microsoft.Xaml.Behaviors"
       xmlns:oxy="http://oxyplot.org/wpf"
       mc:Ignorable="d"
@@ -643,7 +644,7 @@
                                 </Label>
                                 <Button Width="134" HorizontalAlignment="Right" Style="{StaticResource DefaultButton}" Content="Clear" Command="{Binding ClearEventLogCommand}"/>
                             </DockPanel>
-                            <DataGrid x:Name="dgEventLog" ItemsSource="{Binding EventLogs}" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto" AutoGenerateColumns="False" Style="{StaticResource EventLog}" Height="100">
+                            <DataGrid x:Name="dgEventLog" ItemsSource="{Binding Source={x:Static model:EventLogs.Instance}, Path=EventLogList}" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto" AutoGenerateColumns="False" Style="{StaticResource EventLog}" Height="100">
                                 <DataGrid.Resources>
                                     <Style TargetType="ScrollBar" BasedOn="{StaticResource DefaultScrollbar}" />
                                 </DataGrid.Resources>
@@ -653,8 +654,8 @@
                                         </i:EventTrigger>
                                     </i:Interaction.Triggers>
                                     <DataGrid.Columns>
-                                        <DataGridTextColumn Header="Type" Binding="{Binding Type, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"  ElementStyle="{StaticResource EventLogElement}"/>
-                                        <DataGridTextColumn Header="Date" Binding="{Binding Date, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"  ElementStyle="{StaticResource EventLogElement}"/>
+                                        <DataGridTextColumn Header="Name" Binding="{Binding Name, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}" Width="Auto" ElementStyle="{StaticResource EventLogElement}"/>
+                                        <DataGridTextColumn Header="Date" Binding="{Binding Date, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"  Width="Auto" ElementStyle="{StaticResource EventLogElement}"/>
                                         <DataGridTextColumn Header="Message" Binding="{Binding Message, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}" ElementStyle="{StaticResource EventLogElement}" MinWidth="97"/>
                                     </DataGrid.Columns>
                             </DataGrid>

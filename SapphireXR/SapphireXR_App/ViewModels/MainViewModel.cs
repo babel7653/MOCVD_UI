@@ -60,6 +60,7 @@ namespace SapphireXR_App.ViewModels
             ObservableManager<int>.Subscribe("SwitchTab", this);
             ObservableManager<string>.Subscribe("ViewModelCreated", this);
             ObservableManager<PLCConnection>.Subscribe("PLCService.Connected", this);
+            EventLogs.Instance.EventLogList.Add(new EventLog() { Message = "SapphireXR이 시작되었습니다", Name = "Application", Type = EventLog.LogType.Information });
         }
 
         private void changeOperationMode(int tab)
@@ -167,7 +168,6 @@ namespace SapphireXR_App.ViewModels
                 ++viewmodelInterestedCreatedCount;
                 if (viewmodelInterestedCreatedCount == 2)
                 {
-                    applicationEventIssuer.Publish(new() { Date = Util.ToEventLogFormat(App.AppStartTime), Message = "SapphireXR 시작", Type = "Application" });
                 }
             }
         }
@@ -208,6 +208,5 @@ namespace SapphireXR_App.ViewModels
 
         private ObservableManager<int>.Publisher selectedTabPublisher = ObservableManager<int>.Get("MainView.SelectedTabIndex");
         private ObservableManager<bool>.Publisher closingPublisher = ObservableManager<bool>.Get("App.Closing");
-        private ObservableManager<EventLog>.Publisher applicationEventIssuer = ObservableManager<EventLog>.Get("EventLog");
     }
 }

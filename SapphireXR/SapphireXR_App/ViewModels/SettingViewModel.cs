@@ -556,20 +556,29 @@ namespace SapphireXR_App.ViewModels
         [RelayCommand]
         private void AnalogDeviceSettingSave()
         {
-            PLCService.CommitAnalogDeviceAlarmWarningSettingStateToPLC();
+            if (PLCConnectionState.Instance.Online == true)
+            {
+                PLCService.CommitAnalogDeviceAlarmWarningSettingStateToPLC();
+            }
             AlarmSettingSave();
         }
         [RelayCommand]
         private void DigitalDeviceSettingSave()
         {
-            PLCService.CommitDigitalDeviceAlarmWarningSettingStateToPLC();
+            if (PLCConnectionState.Instance.Online == true)
+            {
+                PLCService.CommitDigitalDeviceAlarmWarningSettingStateToPLC();
+            }
             AlarmSettingSave();
         }
         [RelayCommand]
         private void InterlockSettingSave()
         {
-            PLCService.CommitInterlockEnableToPLC();
-            PLCService.CommitInterlockValueToPLC();
+            if (PLCConnectionState.Instance.Online == true)
+            {
+                PLCService.CommitInterlockEnableToPLC();
+                PLCService.CommitInterlockValueToPLC();
+            }
             AlarmSettingSave();
         }
     }

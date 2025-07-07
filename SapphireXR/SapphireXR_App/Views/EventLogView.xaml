@@ -70,7 +70,7 @@
                         </Style>
                     </Button.Style>
                 </Button>
-                <Button Grid.Column="1" x:Name="LogFilterWarning" Command="{Binding ToggleShowWarningMessageCommand}">
+                <Button Grid.Column="1" x:Name="LogFilterWarning" Content="Warning" Command="{Binding ToggleShowWarningMessageCommand}">
                     <Button.Style>
                         <Style TargetType="Button" BasedOn="{StaticResource MessageToggleButton}">
                             <Style.Triggers>

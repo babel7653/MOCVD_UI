@@ -4,7 +4,6 @@ using System.Windows.Threading;
 using TwinCAT.Ads;
 using System.Windows;
 using SapphireXR_App.Enums;
-using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace SapphireXR_App.Models
 {
@@ -113,6 +112,8 @@ namespace SapphireXR_App.Models
             GasPressureAlarm = 5, GasPressureWarning, SHCoolingWaterTemp, CoilCoolingWaterTemp, ReactorPressure, SusceptorTemperature, PressureLimit, RetryCount
         };
 
+        internal enum TriggerType { Alarm = 0, Warning };
+
         public static readonly Dictionary<string, int> ValveIDtoOutputSolValveIdx1 = new Dictionary<string, int>
         {
             { "V01", 0 }, { "V02", 1 }, { "V03", 2 }, { "V04", 3 }, { "V05", 4 },
@@ -165,6 +166,9 @@ namespace SapphireXR_App.Models
         public const uint LineHeaterTemperature = 8;
         private const uint NumAlarmWarningArraySize = 6;
         private const uint NumInterlockSet = 12;
+        private const uint NumInterlock = 5;
+        public const uint NumDigitalDevice = 14;
+        public const uint NumAnalogDevice = 29;
 
         // Variable handles to be connected plc variables
         private static BitArray? baReadValveStatePLC1 = null;
@@ -261,9 +265,9 @@ namespace SapphireXR_App.Models
         private static uint hOutputCmd2;
         private static uint hOutputSetType;
         private static uint hOutputMode;
-        private static uint hInterlock1;
         private static uint[] hInterlockEnable = new uint[NumAlarmWarningArraySize];
         private static uint[] hInterlockset = new uint[NumInterlockSet];
+        private static uint[] hInterlock = new uint[NumInterlock];
 
         private static bool RecipeRunEndNotified = false;
         private static bool LeakTestMode = true;

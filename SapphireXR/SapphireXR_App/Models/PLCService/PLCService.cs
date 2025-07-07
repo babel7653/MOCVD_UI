@@ -152,7 +152,6 @@ namespace SapphireXR_App.Models
             hOutputCmd = Ads.CreateVariableHandle("GVL_IO.aOutputCmd");
             hOutputCmd1 = Ads.CreateVariableHandle("GVL_IO.aOutputCmd[1]");
             hOutputCmd2 = Ads.CreateVariableHandle("GVL_IO.aOutputCmd[2]");
-            hInterlock1 = Ads.CreateVariableHandle("GVL_IO.aInterlock[1]");
             for(uint arrayIndex = 0; arrayIndex < NumAlarmWarningArraySize; arrayIndex++)
             {
                 hInterlockEnable[arrayIndex] = Ads.CreateVariableHandle("GVL_IO.aInterlockEnable[" + (arrayIndex + 1) + "]");
@@ -160,6 +159,10 @@ namespace SapphireXR_App.Models
             for (uint arrayIndex = 0; arrayIndex < NumInterlockSet; arrayIndex++)
             {
                 hInterlockset[arrayIndex] = Ads.CreateVariableHandle("GVL_IO.aInterlockSet[" + (arrayIndex + 1) + "]");
+            }
+            for (uint arrayIndex = 0; arrayIndex < NumInterlock; ++arrayIndex)
+            {
+                hInterlock[arrayIndex] = Ads.CreateVariableHandle("GVL_IO.aInterlock[" + (arrayIndex + 1) + "]");
             }
 
             hRcp = Ads.CreateVariableHandle("RCP.aRecipe");
@@ -319,7 +322,8 @@ namespace SapphireXR_App.Models
                 dRecipeControlHoldTimeIssuer?.Publish(Ads.ReadAny<TIME>(hRecipeControlHoldTime).Time.Seconds);
                 dRecipeControlRampTimeIssuer?.Publish(Ads.ReadAny<TIME>(hRecipeControlRampTime).Time.Seconds);
                 dRecipeControlPauseTimeIssuer?.Publish(Ads.ReadAny<TIME>(hRecipeControlPauseTime).Time.Seconds);
-                short iterlock1 = Ads.ReadAny<short>(hInterlock1);
+                
+                int iterlock1 = Ads.ReadAny<int>(hInterlock[0]);
                 dLogicalInterlockStateIssuer?.Publish(new BitArray(BitConverter.IsLittleEndian == true ? BitConverter.GetBytes(iterlock1) : BitConverter.GetBytes(iterlock1).Reverse().ToArray()));
 
                 string exceptionStr = string.Empty;

@@ -1,0 +1,75 @@
+﻿<Window x:Class="SapphireXR_App.Views.TriggeredWarningAlarmView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:SapphireXR_App.Views"
+        mc:Ignorable="d"
+        WindowStartupLocation="CenterScreen" WindowStyle="None" Background="Transparent" AllowsTransparency="True"
+        x:Name="triggeredWarningAlarmView" Height="375" Width="400">
+    <Grid Background="Transparent">
+        <Grid.Resources>
+            <Style TargetType="{x:Type DataGrid}" x:Key="SettingDataGrid" BasedOn="{StaticResource EventLog}">
+                <Setter Property="AutoGenerateColumns" Value="False"/>
+                <Setter Property="CanUserSortColumns" Value="False"/>
+                <Setter Property="CanUserAddRows" Value="False"/>
+                <Setter Property="VerticalScrollBarVisibility" Value="Auto" />
+                <Setter Property="FontSize" Value="12" />
+                <Setter Property="HeadersVisibility" Value="None" />
+                <Setter Property="RowStyle">
+                    <Setter.Value>
+                        <Style TargetType="DataGridRow">
+                            <Setter Property="VerticalAlignment" Value="Center" />
+                            <Setter Property="Height" Value="30"/>
+                            <Setter Property="Background" Value="{StaticResource Gray_50}" />
+                        </Style>
+                    </Setter.Value>
+                </Setter>
+            </Style>
+        </Grid.Resources>
+        <Rectangle RadiusX="{StaticResource r_5}" RadiusY="{StaticResource r_5}" Fill="{StaticResource Gray_100}" />
+        <Grid Margin="{StaticResource p_5_sqrt}">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="60" />
+                <RowDefinition Height="20"/>
+                <RowDefinition Height="197" />
+                <RowDefinition Height="20" />
+                <RowDefinition Height="38" />
+            </Grid.RowDefinitions>
+            <Grid Grid.Row="0">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="24" />
+                    <RowDefinition Height="16"/>
+                    <RowDefinition Height="20" />
+                </Grid.RowDefinitions>
+                <Grid Grid.Row="0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="24" />
+                        <ColumnDefinition Width="2" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <Image Grid.Column="0" Source="{Binding IconSource, UpdateSourceTrigger=PropertyChanged, Mode=OneTime}" />
+                    <Label FontSize="14" Grid.Column="2" FontWeight="Bold" FontFamily="Segoe UI" Content="{Binding Title, UpdateSourceTrigger=PropertyChanged, Mode=OneTime}" Foreground="{Binding TitleColor, UpdateSourceTrigger=PropertyChanged, Mode=OneTime}" Padding="0" />
+                </Grid>
+                <Label Grid.Row="2" Content="{Binding Message}" FontFamily="Segoe UI" Foreground="{StaticResource Gray_950}" FontSize="16" Padding="0"/>
+            </Grid>
+            <DataGrid Grid.Row="2" Style="{StaticResource SettingDataGrid}" ItemsSource="{Binding OnList, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}">
+                <DataGrid.Resources>
+                    <Style TargetType="ScrollBar" BasedOn="{StaticResource DefaultScrollbar}" />
+                </DataGrid.Resources>
+                <DataGrid.Columns>
+                    <DataGridTextColumn Binding="{Binding}" Width="*" ElementStyle="{StaticResource EventLogElement}" />
+                </DataGrid.Columns>
+            </DataGrid>
+            <Grid Grid.Row="4">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="176" />
+                    <ColumnDefinition />
+                    <ColumnDefinition Width="176" />
+                </Grid.ColumnDefinitions>
+                <Button Grid.Column="0" Style="{StaticResource PrimaryButton}" Content="Reset" Command="{Binding ResetCommand}" />
+                <Button Grid.Column="2" Style="{StaticResource DefaultButton}" Content="Close" Command="{Binding CloseCommand}" CommandParameter="{Binding ElementName=triggeredWarningAlarmView}" />
+            </Grid>
+        </Grid>
+    </Grid>
+</Window>

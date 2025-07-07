@@ -85,7 +85,7 @@ namespace SapphireXR_App.Models
             return new BitArray(BitConverter.IsLittleEndian == true ? BitConverter.GetBytes(inputState4) : BitConverter.GetBytes(inputState4).Reverse().ToArray())[bitIndex];
         }
 
-        private static bool ReadBit(int bitField, int bit)
+        public static bool ReadBit(int bitField, int bit)
         {
             int bitMask = 1 << bit;
             return ((bitField & bitMask) != 0) ? true : false;
@@ -99,6 +99,26 @@ namespace SapphireXR_App.Models
         public static bool ReadBuzzerOnOff()
         {
             return ReadFirstInterlockSetting(2);
+        }
+
+        public static int ReadDigitalDeviceAlarms()
+        {
+            return Ads.ReadAny<int>(hInterlock[1]);
+        }
+
+        public static int ReadAnalogDeviceAlarms()
+        {
+            return Ads.ReadAny<int>(hInterlock[2]);
+        }
+
+        public static int ReadDigitalDeviceWarnings()
+        {
+            return Ads.ReadAny<int>(hInterlock[3]);
+        }
+
+        public static int ReadAnalogDeviceWarnings()
+        {
+            return Ads.ReadAny<int>(hInterlock[4]);
         }
     }
 }

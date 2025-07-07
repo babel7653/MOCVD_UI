@@ -6,13 +6,14 @@ using SapphireXR_App.Common;
 using SapphireXR_App.Enums;
 using SapphireXR_App.Models;
 using SapphireXR_App.WindowServices;
+using System.Collections;
 using System.ComponentModel;
 using System.Windows;
 using System.Windows.Input;
 
 namespace SapphireXR_App.ViewModels
 {
-    public partial class MainViewModel : ViewModelBase, IObserver<RecipeRunViewModel.RecipeUserState>, IObserver<int>, IObserver<string>, IObserver<PLCConnection>
+    public partial class MainViewModel : ViewModelBase, IObserver<RecipeRunViewModel.RecipeUserState>, IObserver<int>, IObserver<string>, IObserver<PLCConnection>, IObserver<BitArray>
     {
         [ObservableProperty]
         private string? navigationSource;
@@ -60,6 +61,7 @@ namespace SapphireXR_App.ViewModels
             ObservableManager<int>.Subscribe("SwitchTab", this);
             ObservableManager<string>.Subscribe("ViewModelCreated", this);
             ObservableManager<PLCConnection>.Subscribe("PLCService.Connected", this);
+            ObservableManager<BitArray>.Subscribe("LogicalInterlockState", this);
             EventLogs.Instance.EventLogList.Add(new EventLog() { Message = "SapphireXR이 시작되었습니다", Name = "Application", Type = EventLog.LogType.Information });
         }
 
@@ -197,11 +199,46 @@ namespace SapphireXR_App.ViewModels
             }
         }
 
+        void IObserver<BitArray>.OnCompleted()
+        {
+            throw new NotImplementedException();
+        }
+
+        void IObserver<BitArray>.OnError(Exception error)
+        {
+            throw new NotImplementedException();
+        }
+
+        void IObserver<BitArray>.OnNext(BitArray value)
+        {
+            if(value[0] == true && alarmShown == false)
+            {
+                TriggeredWarningAlarmWindow.Show(PLCService.TriggerType.Alarm);
+                alarmShown = true;
+            }
+            else if (value[0] == false)
+            {
+                alarmShown = false;
+            }
+
+            if (value[1] == true && warningShown == false)
+            {
+                TriggeredWarningAlarmWindow.Show(PLCService.TriggerType.Warning);
+                warningShown = true;
+            }
+            else if(value[1] == false)
+            {
+                warningShown = false;
+            }
+        }
+
+        private bool alarmShown = false;
+        private bool warningShown = false;
+
         [ObservableProperty]
         private int _selectedTab;
         [ObservableProperty]
         private bool _recipeRunInactive = true;
-
 
         private Action<CancelEventArgs> onClosing;
         private uint viewmodelInterestedCreatedCount = 0;

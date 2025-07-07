@@ -83,7 +83,6 @@
                     <Button.Margin>
                         <Thickness Left="{StaticResource p_2}" Right="{StaticResource p_2}" />
                     </Button.Margin>
-                    Warning
                 </Button>
                 <Button Grid.Column="2" x:Name="LogFilterInformation" Command="{Binding ToggleShowInformationMessageCommand}">
                     <Button.Style>

@@ -352,5 +352,15 @@ namespace SapphireXR_App.Models
         {
             CommitInterlockSetToPLC(InterlockSetIndiceToCommit);
         }
+
+        public static void WriteAlarmReset()
+        {
+            WriteFirstInterlockSetting(true, 0);
+        }
+
+        public static void WriteWarningReset()
+        {
+            WriteFirstInterlockSetting(true, 1);
+        }
     }
 }

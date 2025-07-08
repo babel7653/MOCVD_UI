@@ -10,7 +10,9 @@ using System.Globalization;
 using Newtonsoft.Json.Linq;
 using Newtonsoft.Json;
 using SapphireXR_App.ViewModels;
-using System.Linq;
+using SapphireXR_App.Enums;
+using SapphireXR_App.WindowServices;
+using System.Windows.Controls.Primitives;
 
 namespace SapphireXR_App.Common
 {
@@ -257,6 +259,24 @@ namespace SapphireXR_App.Common
         public static string? GetValveName(string id)
         {
             return SettingViewModel.ValveDeviceIO.Where((Device device) => device.ID == id).Select((Device device) => device.Name != null ? device.Name : default).FirstOrDefault();
+        }
+
+        public static void ConfirmBeforeToggle(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        {
+            ToggleButton? toggleSwitch = sender as ToggleButton;
+            if (toggleSwitch != null)
+            {
+                string destState = toggleSwitch.IsChecked == true ? "On" : "Off";
+                if (ValveOperationEx.Show("", destState + " 상태로 변경하시겠습니까?") == ValveOperationExResult.Cancel)
+                {
+                    e.Handled = true;
+                }
+                else
+                {
+                    toggleSwitch.IsChecked = !toggleSwitch.IsChecked;
+                    toggleSwitch.RaiseEvent(new RoutedEventArgs(ButtonBase.ClickEvent));
+                }
+            }
         }
 
         public static void ConstraintEmptyToZeroOnDataGridCellCommitForRecipeRunEdit(object sender, DataGridCellEditEndingEventArgs e)

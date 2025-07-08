@@ -9,7 +9,7 @@ namespace SapphireXR_App.Models
         public static PLCConnectionState Instance { get => Singleton; }
         private static PLCConnectionState Singleton = new PLCConnectionState();
 
-        public PLCConnectionState()
+        private PLCConnectionState()
         {
             ObservableManager<PLCConnection>.Subscribe("PLCService.Connected", this);
             Online = PLCService.Connected == PLCConnection.Connected ? true : false;

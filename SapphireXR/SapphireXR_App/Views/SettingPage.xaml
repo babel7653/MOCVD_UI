@@ -4,6 +4,7 @@
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:SapphireXR_App.Views"
+      xmlns:model="clr-namespace:SapphireXR_App.Models"
       mc:Ignorable="d" 
       d:DesignWidth="1620" d:DesignHeight="1020"
       Title="SettingPage" Background="{StaticResource Gray_300}">
@@ -487,16 +488,16 @@
                                                 </Grid.ColumnDefinitions>
                                                 <TextBlock Grid.Row="0" Grid.Column="0" Text="Induction Heater" HorizontalAlignment="Center" Style="{StaticResource infoTextBlockLeft}" />
                                                 <TextBlock Grid.Row="1" Grid.Column="0" Text="Power" HorizontalAlignment="Center" Style="{StaticResource infoTextBlockLeft}" />
-                                                <ToggleButton Grid.Row="2" Grid.Column="0"  Command="{Binding ToggleInductionHeaterPowerCommand}" HorizontalAlignment="Center" Style="{StaticResource toggleButonTopMargin}"/>  <!--<Button  Content="{Binding InductionHeaterPowerOn}" />-->
+                                                <ToggleButton Grid.Row="2" Grid.Column="0" IsChecked="{Binding InductionHeaterPowerOnOff, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" HorizontalAlignment="Center" Style="{StaticResource toggleButonTopMargin}" PreviewMouseLeftButtonDown="ConfirmBeforeToggle" IsEnabled="{Binding Source={x:Static model:PLCConnectionState.Instance}, Path=Online, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}" />  
                                                 <TextBlock Grid.Row="0" Grid.Column="1" Text="Thermal Bath" HorizontalAlignment="Center" Style="{StaticResource infoTextBlockLeft}" />
                                                 <TextBlock Grid.Row="1" Grid.Column="1" Text="Power" HorizontalAlignment="Center" Style="{StaticResource infoTextBlockLeft}" />
-                                                <ToggleButton Grid.Row="2" Grid.Column="1" HorizontalAlignment="Center" Command="{Binding ToggleThermalBathPowerCommand}" Style="{StaticResource toggleButonTopMargin}" />   <!--<Button  Content="{Binding ThermalBathPowerOn}" />-->
+                                                <ToggleButton Grid.Row="2" Grid.Column="1" IsChecked="{Binding ThermalBathPowerOnOff, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" HorizontalAlignment="Center" Style="{StaticResource toggleButonTopMargin}" PreviewMouseLeftButtonDown="ConfirmBeforeToggle" IsEnabled="{Binding Source={x:Static model:PLCConnectionState.Instance}, Path=Online, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}" />
                                                 <TextBlock Grid.Row="0" Grid.Column="2" Text="Vacuum Pump" HorizontalAlignment="Center" Style="{StaticResource infoTextBlockLeft}" />
                                                 <TextBlock Grid.Row="1" Grid.Column="2"  Text="Power" HorizontalAlignment="Center" Style="{StaticResource infoTextBlockLeft}" />
-                                                <ToggleButton  Grid.Row="2" Grid.Column="2" Command="{Binding ToggleVaccumPumpPowerCommand}" HorizontalAlignment="Center"  Style="{StaticResource toggleButonTopMargin}" /> <!--<Button  Content="{Binding VaccumPumpPowerOn}" />-->
+                                                <ToggleButton  Grid.Row="2" Grid.Column="2" IsChecked="{Binding VaccumPumpPowerOnOff, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" HorizontalAlignment="Center"  Style="{StaticResource toggleButonTopMargin}" PreviewMouseLeftButtonDown="ConfirmBeforeToggle" IsEnabled="{Binding Source={x:Static model:PLCConnectionState.Instance}, Path=Online, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}" />
                                                 <TextBlock Grid.Row="0" Grid.Column="3" Text="Line Heater"  HorizontalAlignment="Center" Style="{StaticResource infoTextBlockLeft}" />
                                                 <TextBlock Grid.Row="1" Grid.Column="3"  Text="Power"  HorizontalAlignment="Center" Style="{StaticResource infoTextBlockLeft}" />
-                                                <ToggleButton Grid.Row="2" Grid.Column="3"  Command="{Binding ToggleLineHeaterPowerCommand}" HorizontalAlignment="Center"  Style="{StaticResource ToggleSwitch}" />    <!--<Button  Content="{Binding LineHeaterPowerOn}" />-->
+                                                <ToggleButton Grid.Row="2" Grid.Column="3" IsChecked="{Binding LineHeaterPowerOnOff, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" HorizontalAlignment="Center"  Style="{StaticResource ToggleSwitch}" PreviewMouseLeftButtonDown="ConfirmBeforeToggle" IsEnabled="{Binding Source={x:Static model:PLCConnectionState.Instance}, Path=Online, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}" />
                                             </Grid>
                                         </StackPanel>
                                     </Grid>
@@ -515,7 +516,7 @@
                                                     </Setter.Value>
                                                 </Setter>
                                                 <Style.Triggers>
-                                                    <DataTrigger Binding="{Binding Online, UpdateSourceTrigger=PropertyChanged}" Value="True">
+                                                    <DataTrigger Binding="{Binding Source={x:Static model:PLCConnectionState.Instance}, Path=Online, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}" Value="True">
                                                         <Setter Property="IsReadOnly" Value="True" />
                                                     </DataTrigger>
                                                 </Style.Triggers>
@@ -559,7 +560,7 @@
                                             <DataGrid.Style>
                                                 <Style TargetType="DataGrid" BasedOn="{StaticResource SettingDataGrid}">
                                                     <Style.Triggers>
-                                                        <DataTrigger Binding="{Binding Online}" Value="True">
+                                                        <DataTrigger Binding="{Binding Source={x:Static model:PLCConnectionState.Instance}, Path=Online, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}" Value="True">
                                                             <Setter Property="IsReadOnly" Value="True" />
                                                         </DataTrigger>
                                                     </Style.Triggers>  

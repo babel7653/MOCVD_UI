@@ -34,41 +34,6 @@ namespace SapphireXR_App.ViewModels
 
             private SettingViewModel settingViewModel;
         }
-        private class ModulePowerStateSubscriber : IObserver<BitArray>
-        {
-            internal ModulePowerStateSubscriber(SettingViewModel vm)
-            {
-                settingViewModel = vm;
-            }
-
-            void IObserver<BitArray>.OnCompleted()
-            {
-                throw new NotImplementedException();
-            }
-
-            void IObserver<BitArray>.OnError(Exception error)
-            {
-                throw new NotImplementedException();
-            }
-
-            void IObserver<BitArray>.OnNext(BitArray value)
-            {
-                Util.SetIfChanged(value[(int)PLCService.DigitalOutput3Index.InductionHeaterMC], ref prevInpudctionHeaterPowerOn, (bool value)
-                    => { settingViewModel.InductionHeaterPowerOn = (value == true ? "On" : "Off"); });
-                Util.SetIfChanged(value[(int)PLCService.DigitalOutput3Index.ThermalBathMC], ref prevThermalBatchPowerOn, (bool value)
-                    => { settingViewModel.ThermalBathPowerOn = (value == true ? "On" : "Off"); });
-                Util.SetIfChanged(value[(int)PLCService.DigitalOutput3Index.VaccumPumpMC], ref prevVaccumPumpPowerOn, (bool value)
-                    => { settingViewModel.VaccumPumpPowerOn = (value == true ? "On" : "Off"); });
-                Util.SetIfChanged(value[(int)PLCService.DigitalOutput3Index.LineHeaterMC], ref prevLineHeaterPowerOn, (bool value)
-                    => { settingViewModel.LineHeaterPowerOn = (value == true ? "On" : "Off"); });
-            }
-
-            private SettingViewModel settingViewModel;
-            private bool? prevInpudctionHeaterPowerOn = null;
-            private bool? prevThermalBatchPowerOn = null;
-            private bool? prevVaccumPumpPowerOn = null;
-            private bool? prevLineHeaterPowerOn = null;
-        }
 
         private class AppClosingSubscriber : IObserver<bool>
         {
@@ -118,11 +83,6 @@ namespace SapphireXR_App.ViewModels
                 {
                     settingViewModel.initializeSettingToPLC();
                 }
-                settingViewModel.Online = value == PLCConnection.Connected ? true : false;
-                settingViewModel.ToggleInductionHeaterPowerCommand.NotifyCanExecuteChanged();
-                settingViewModel.ToggleThermalBathPowerCommand.NotifyCanExecuteChanged();
-                settingViewModel.ToggleVaccumPumpPowerCommand.NotifyCanExecuteChanged();
-                settingViewModel.ToggleLineHeaterPowerCommand.NotifyCanExecuteChanged();
             }
 
             private SettingViewModel settingViewModel;
@@ -158,8 +118,6 @@ namespace SapphireXR_App.ViewModels
 
         [ObservableProperty]
         public IList<IOSetting> _iOList;
-        [ObservableProperty]
-        private bool _online = false;
 
         private static float AlarmDeviationValue;
         private static float WarningDeviationValue;
@@ -173,15 +131,14 @@ namespace SapphireXR_App.ViewModels
         private string? _logIntervalInRecipeRun;
 
         [ObservableProperty]
-        private string _inductionHeaterPowerOn = "";
+        private bool? _inductionHeaterPowerOnOff = null;
         [ObservableProperty]
-        private string _thermalBathPowerOn = "";
+        private bool? _thermalBathPowerOnOff = null;
         [ObservableProperty]
-        private string _vaccumPumpPowerOn = "";
+        private bool? _vaccumPumpPowerOnOff = null;
         [ObservableProperty]
-        private string _lineHeaterPowerOn = "";
+        private bool? _lineHeaterPowerOnOff = null;
 
-        private ModulePowerStateSubscriber modulePowerStateSubscriber;
         private AppClosingSubscriber appClosingSubscriber;
         private IOStateListSubscriber iOStateListSubscriber;
         private PLCConnectionStateSubscriber plcConnectionStateSubscriber;

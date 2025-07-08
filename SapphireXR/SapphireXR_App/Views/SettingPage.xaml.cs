@@ -1,4 +1,5 @@
-﻿using SapphireXR_App.ViewModels;
+﻿using SapphireXR_App.Common;
+using SapphireXR_App.ViewModels;
 using System.Windows.Controls;
 
 namespace SapphireXR_App.Views
@@ -9,6 +10,11 @@ namespace SapphireXR_App.Views
         {
             InitializeComponent();
             DataContext = App.Current.Services.GetService(typeof(SettingViewModel));
+        }
+
+        private void ConfirmBeforeToggle(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        {
+            Util.ConfirmBeforeToggle(sender, e);
         }
     }
 }

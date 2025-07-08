@@ -1,4 +1,5 @@
-﻿using SapphireXR_App.Enums;
+﻿using SapphireXR_App.Common;
+using SapphireXR_App.Enums;
 using SapphireXR_App.ViewModels;
 using SapphireXR_App.WindowServices;
 using System.Windows;
@@ -18,20 +19,7 @@ namespace SapphireXR_App.Views
 
         private void ConfirmBeforeToggle(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
-            ToggleButton? toggleSwitch = sender as ToggleButton;
-            if (toggleSwitch != null)
-            {
-                string destState = toggleSwitch.IsChecked == true ? "On" : "Off";
-                if (ValveOperationEx.Show("", "상태로 변경하시겠습니까?") == ValveOperationExResult.Cancel)
-                {
-                    e.Handled = true;
-                }
-                else
-                {
-                    toggleSwitch.IsChecked = !toggleSwitch.IsChecked;
-                    toggleSwitch.RaiseEvent(new RoutedEventArgs(ButtonBase.ClickEvent));
-                }
-            }
+            Util.ConfirmBeforeToggle(sender, e);
         }
     }
 }

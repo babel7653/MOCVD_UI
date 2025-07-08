@@ -8,8 +8,6 @@ using SapphireXR_App.Common;
 using System.ComponentModel;
 using System.Collections;
 using SapphireXR_App.Enums;
-using SapphireXR_App.WindowServices;
-
 
 namespace SapphireXR_App.ViewModels
 {
@@ -223,10 +221,8 @@ namespace SapphireXR_App.ViewModels
                 new() { Name= "Singal Tower - RED", OnOff = true }, new() { Name= "Singal Tower - YELLOW", OnOff = true }, new() { Name= "Singal Tower - GREEN", OnOff = true },
                 new() { Name= "Singal Tower - BLUE", OnOff = true },  new() { Name= "Singal Tower - WHITE", OnOff = true }, new() { Name= "Singal Tower - BUZZWER", OnOff = true }
             };
-            Online = PLCService.Connected == PLCConnection.Connected ? true : false;
 
             ObservableManager<BitArray>.Subscribe("DeviceIOList", iOStateListSubscriber = new IOStateListSubscriber(this));
-            ObservableManager<BitArray>.Subscribe("OutputCmd1", modulePowerStateSubscriber = new ModulePowerStateSubscriber(this));
             ObservableManager<bool>.Subscribe("App.Closing", appClosingSubscriber = new AppClosingSubscriber(this));
             ObservableManager<PLCConnection>.Subscribe("PLCService.Connected", plcConnectionStateSubscriber = new PLCConnectionStateSubscriber(this));
 
@@ -250,6 +246,34 @@ namespace SapphireXR_App.ViewModels
 
                         case nameof(DigitalDeviceDelayTime):
                             PLCService.WriteDigitalDeviceDelayTime(DigitalDeviceDelayTime);
+                            break;
+
+                        case nameof(InductionHeaterPowerOnOff):
+                            if (InductionHeaterPowerOnOff != null)
+                            {
+                                PLCService.WriteOutputCmd1(PLCService.OutputCmd1Index.InductionHeaterPower, InductionHeaterPowerOnOff.Value);
+                            }
+                            break;
+
+                        case nameof(ThermalBathPowerOnOff):
+                            if(ThermalBathPowerOnOff != null)
+                            {
+                                PLCService.WriteOutputCmd1(PLCService.OutputCmd1Index.ThermalBathPower, ThermalBathPowerOnOff.Value);
+                            }
+                            break;
+
+                        case nameof(VaccumPumpPowerOnOff):
+                            if(VaccumPumpPowerOnOff != null)
+                            {
+                                PLCService.WriteOutputCmd1(PLCService.OutputCmd1Index.VaccumPumpPower, VaccumPumpPowerOnOff.Value);
+                            }
+                            break;
+
+                        case nameof(LineHeaterPowerOnOff):
+                            if(LineHeaterPowerOnOff != null)
+                            {
+                                PLCService.WriteOutputCmd1(PLCService.OutputCmd1Index.LineHeaterPower, LineHeaterPowerOnOff.Value);
+                            }
                             break;
                     }
                 }
@@ -448,6 +472,12 @@ namespace SapphireXR_App.ViewModels
                 PLCService.WriteDigitalDeviceDelayTime(DigitalDeviceDelayTime);
                 PLCService.CommitDigitalDeviceInterlockSettingToPLC();
 
+                BitArray outputCmd1 = PLCService.ReadOutputCmd1();
+                InductionHeaterPowerOnOff = outputCmd1[(int)PLCService.OutputCmd1Index.InductionHeaterPower];
+                ThermalBathPowerOnOff = outputCmd1[(int)PLCService.OutputCmd1Index.ThermalBathPower];
+                VaccumPumpPowerOnOff = outputCmd1[(int)PLCService.OutputCmd1Index.VaccumPumpPower];
+                LineHeaterPowerOnOff = outputCmd1[(int)PLCService.OutputCmd1Index.LineHeaterPower];
+
                 if (dInterLockA != null)
                 {
                     foreach ((string name, InterLockA interlockA) in dInterLockA)
@@ -489,6 +519,7 @@ namespace SapphireXR_App.ViewModels
                 }
                 PLCService.CommitInterlockEnableToPLC();
                 PLCService.CommitInterlockValueToPLC();
+
                 settingToPLCInitialized = true;
             }
         }
@@ -516,43 +547,6 @@ namespace SapphireXR_App.ViewModels
                 new() { ID = "Source5", Name = "DTMGa"}, new() { ID = "Source6", Name = "Cp2Mg"}];
         }
 
-        private bool canCommandExecuteBase()
-        {
-            return PLCService.Connected == PLCConnection.Connected;
-        }
-
-        [RelayCommand(CanExecute = "canCommandExecuteBase")]
-        private void ToggleInductionHeaterPower()
-        {
-            if(OutputCmd1ToggleConfirmService.OnOff(InductionHeaterPowerOn, PLCService.OutputCmd1Index.InductionHeaterPower, "Induction Heater Power On/Off") == true)
-            {
-                
-            }
-        }
-        [RelayCommand(CanExecute = "canCommandExecuteBase")]
-        private void ToggleThermalBathPower()
-        {
-            if(OutputCmd1ToggleConfirmService.OnOff(ThermalBathPowerOn, PLCService.OutputCmd1Index.ThermalBathPower, "Thermal Power On/Off") == true)
-            {
-                
-            }
-        }
-        [RelayCommand(CanExecute = "canCommandExecuteBase")]
-        private void ToggleVaccumPumpPower()
-        {
-            if(OutputCmd1ToggleConfirmService.OnOff(VaccumPumpPowerOn, PLCService.OutputCmd1Index.VaccumPumpPower, "Vaccum Pump Power On/Off") == true)
-            {
-                
-            }
-        }
-        [RelayCommand(CanExecute = "canCommandExecuteBase")]
-        private void ToggleLineHeaterPower()
-        {
-            if(OutputCmd1ToggleConfirmService.OnOff(LineHeaterPowerOn, PLCService.OutputCmd1Index.LineHeaterPower, "Line Heater Power On/Off") == true)
-            {
-                
-            }
-        }
         [RelayCommand]
         private void AnalogDeviceSettingSave()
         {

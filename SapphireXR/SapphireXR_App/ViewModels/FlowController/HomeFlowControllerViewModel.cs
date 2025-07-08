@@ -81,7 +81,7 @@ namespace SapphireXR_App.ViewModels.FlowController
 
             if (message != string.Empty)
             {
-                if (FlowControlConfirmEx.Show("변경 확인", message) == ValveOperationExResult.Ok)
+                if (FlowControlConfirmEx.Show("변경 확인", message) == DialogResult.Ok)
                 {
                     try
                     {

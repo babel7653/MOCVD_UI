@@ -267,7 +267,7 @@ namespace SapphireXR_App.Common
             if (toggleSwitch != null)
             {
                 string destState = toggleSwitch.IsChecked == true ? "On" : "Off";
-                if (ValveOperationEx.Show("", destState + " 상태로 변경하시겠습니까?") == ValveOperationExResult.Cancel)
+                if (ValveOperationEx.Show("", destState + " 상태로 변경하시겠습니까?") == DialogResult.Cancel)
                 {
                     e.Handled = true;
                 }

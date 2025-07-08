@@ -1,6 +1,6 @@
 ﻿namespace SapphireXR_App.Enums
 {
-    public enum ValveOperationExResult
+    public enum DialogResult
     {
         Ok=0, Cancel=1
     }

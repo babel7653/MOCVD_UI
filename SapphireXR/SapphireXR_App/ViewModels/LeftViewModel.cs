@@ -336,7 +336,7 @@ namespace SapphireXR_App.ViewModels
         public void ToggleBuzzerOnOff()
         {
             bool onOff = BuzzerImage == BuzzerOffPath;
-            if(ConfirmMessage.Show("Buzzer 상태 변경", "Buzzer" + (onOff == true ? " On" : " Off") + " 상태로 변경하시겠습니까?", WindowStartupLocation.Manual) == ValveOperationExResult.Ok)
+            if(ConfirmMessage.Show("Buzzer 상태 변경", "Buzzer" + (onOff == true ? " On" : " Off") + " 상태로 변경하시겠습니까?", WindowStartupLocation.Manual) == DialogResult.Ok)
             {
                 PLCService.WriteBuzzerOnOff(onOff);
                 BuzzerImage = (onOff == true) ? BuzzerOnPath : BuzzerOffPath;

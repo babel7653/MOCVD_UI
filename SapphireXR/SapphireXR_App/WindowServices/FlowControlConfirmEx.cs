@@ -6,7 +6,7 @@ namespace SapphireXR_App.WindowServices
 {
     public static class FlowControlConfirmEx
     {
-        public static ValveOperationExResult Show(string title, string message)
+        public static DialogResult Show(string title, string message)
         {
             var viewModel = new ValveOperationViewModel(title, message);
             FlowControlConfirmMessageView view = new FlowControlConfirmMessageView

@@ -187,7 +187,7 @@ namespace SapphireXR_App.ViewModels
         {
             try
             {
-                if (ValveOperationEx.Show("Vaccum Pump Reset", "Reset 하시겠습니까?") == Enums.ValveOperationExResult.Ok)
+                if (ValveOperationEx.Show("Vaccum Pump Reset", "Reset 하시겠습니까?") == Enums.DialogResult.Ok)
                 {
                     PLCService.WriteOutputCmd1(PLCService.OutputCmd1Index.VaccumPumpReset, true);
                 }
@@ -260,7 +260,7 @@ namespace SapphireXR_App.ViewModels
         {
             try
             {
-                if (ValveOperationEx.Show("Vaccum Pump Reset", "Reset 하시겠습니까?") == Enums.ValveOperationExResult.Ok)
+                if (ValveOperationEx.Show("Vaccum Pump Reset", "Reset 하시겠습니까?") == Enums.DialogResult.Ok)
                 {
                     PLCService.WriteOutputCmd1(PLCService.OutputCmd1Index.InductionHeaterReset, true);
                     //int timeout = 10000;
@@ -299,7 +299,7 @@ namespace SapphireXR_App.ViewModels
         {
             try
             {
-                if (ValveOperationEx.Show("Pressure Control Mode 변경", (PressureControlMode == PressureControlModePressure ? PressureControlModePosition : PressureControlModePressure) + "로 변경하시겠습니까?") == Enums.ValveOperationExResult.Ok)
+                if (ValveOperationEx.Show("Pressure Control Mode 변경", (PressureControlMode == PressureControlModePressure ? PressureControlModePosition : PressureControlModePressure) + "로 변경하시겠습니까?") == Enums.DialogResult.Ok)
                 {
                     if (PressureControlMode == PressureControlModePressure)
                     {

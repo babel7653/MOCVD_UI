@@ -6,7 +6,7 @@ namespace SapphireXR_App.WindowServices
     {
         internal static bool Toggle(PLCService.OutputCmd1Index index, string title, string message, string currentState, string stateOnTrue, string stateOnFalse)
         {
-            if (ValveOperationEx.Show(title, message) == Enums.ValveOperationExResult.Ok)
+            if (ValveOperationEx.Show(title, message) == Enums.DialogResult.Ok)
             {
                 PLCService.WriteOutputCmd1(index, !(currentState == stateOnTrue ? true : false));
                 return true;

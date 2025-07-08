@@ -35,11 +35,11 @@ namespace SapphireXR_App.Controls
                 var result = ValveOperationEx.Show("Switch Operation", $"{Switch.SwitchID} OFF 하시겠습니까?");
                 switch (result)
                 {
-                    case ValveOperationExResult.Ok:
+                    case DialogResult.Ok:
                         Switch.IsOn = !(Switch.IsOn);
                         MessageBox.Show($"{Switch.SwitchID} 스위치 OFF");
                         break;
-                    case ValveOperationExResult.Cancel:
+                    case DialogResult.Cancel:
                         MessageBox.Show($"{Switch.SwitchID} 취소됨1");
                         break;
                 }
@@ -49,11 +49,11 @@ namespace SapphireXR_App.Controls
                 var result = ValveOperationEx.Show("Switch Operation", $"{Switch.SwitchID} ON 하시겠습니까?");
                 switch (result)
                 {
-                    case ValveOperationExResult.Ok:
+                    case DialogResult.Ok:
                         Switch.IsOn = !(Switch.IsOn);
                         MessageBox.Show($"{Switch.SwitchID} 스위치 ON");
                         break;
-                    case ValveOperationExResult.Cancel:
+                    case DialogResult.Cancel:
                         MessageBox.Show($"{Switch.SwitchID} 취소됨2");
                         break;
                 }

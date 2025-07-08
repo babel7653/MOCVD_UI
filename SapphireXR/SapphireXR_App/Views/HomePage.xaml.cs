@@ -1,10 +1,6 @@
 ﻿using SapphireXR_App.Common;
-using SapphireXR_App.Enums;
 using SapphireXR_App.ViewModels;
-using SapphireXR_App.WindowServices;
-using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Controls.Primitives;
 
 namespace SapphireXR_App.Views
 {

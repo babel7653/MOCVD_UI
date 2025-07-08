@@ -103,7 +103,7 @@ namespace SapphireXR_App.ViewModels
 
         private void onRecipeInactive(CancelEventArgs args)
         {
-            if (ConfirmMessage.Show("프로그램 종료", "프로그램을 종료하시겠습니까?", WindowStartupLocation.CenterScreen) == ValveOperationExResult.Ok)
+            if (ConfirmMessage.Show("프로그램 종료", "프로그램을 종료하시겠습니까?", WindowStartupLocation.CenterScreen) == DialogResult.Ok)
             {
                 closingPublisher.Publish(true);
                 AppSetting.Save();

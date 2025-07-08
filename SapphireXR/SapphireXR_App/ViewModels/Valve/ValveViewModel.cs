@@ -47,7 +47,7 @@ namespace SapphireXR_App.ViewModels
                 var result = ValveOperationEx.Show("Valve Operation", valveOperationMessage);
                 switch (result)
                 {
-                    case ValveOperationExResult.Ok:
+                    case DialogResult.Ok:
                         bool isOpen = !(viewModel.IsOpen);
                         if (viewModel.ValveID != null)
                         {
@@ -66,7 +66,7 @@ namespace SapphireXR_App.ViewModels
                         }
                         break;
 
-                    case ValveOperationExResult.Cancel:
+                    case DialogResult.Cancel:
                         ToastMessage.Show(cancelMessage, ToastMessage.MessageType.Information);
                         break;
                 }

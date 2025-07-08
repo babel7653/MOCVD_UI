@@ -6,7 +6,7 @@ namespace SapphireXR_App.WindowServices
 {
     public static class ValveOperationEx
     {
-        public static ValveOperationExResult Show(string title, string message)
+        public static DialogResult Show(string title, string message)
         {
             var viewModel = new ValveOperationViewModel(title, message);
             ValveOperationView view = new ValveOperationView

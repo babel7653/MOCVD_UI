@@ -7,7 +7,7 @@ namespace SapphireXR_App.WindowServices
 {
     public static class ConfirmMessage
     {
-        public static ValveOperationExResult Show(string title, string message, WindowStartupLocation windowStartupLocation)
+        public static DialogResult Show(string title, string message, WindowStartupLocation windowStartupLocation)
         {
             var viewModel = new ValveOperationViewModel(title, message);
             ConfirmMessageView view = new ConfirmMessageView

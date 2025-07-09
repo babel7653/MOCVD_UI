@@ -1,7 +1,7 @@
-﻿using System.Collections.ObjectModel;
-using System.Collections.Specialized;
+﻿using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Globalization;
+using System.IO;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -32,6 +32,7 @@ namespace SapphireXR_App.ViewModels
             ObservableManager<bool>.Subscribe("RecipeEnded", recipeEndedSubscriber = new RecipeEndedSubscriber(this));
             recipeRunStatePublisher = ObservableManager<RecipeUserState>.Get("RecipeRun.State");
             ObservableManager<(string, IList<Recipe>)>.Subscribe("RecipeEdit.LoadToRecipeRun", loadFromRecipeEditSubscriber = new LoadFromRecipeEditSubscriber(this));
+            ObservableManager<PLCService.RecipeControlInfo>.Subscribe("RecipeControlInformation", recipeLoopInfoSubscriber = new RecipeLoopInfoSubscriber(this));
 
             PropertyChanging += (object? sender, PropertyChangingEventArgs e) =>
             {
@@ -102,12 +103,13 @@ namespace SapphireXR_App.ViewModels
         {
             try
             {
-                (bool result, string? recipeFilePath, List<Recipe>? recipes) = RecipeService.OpenRecipe(Config);
+                (bool result, string? recipeFilePath, List<Recipe>? recipes) = RecipeService.OpenRecipe(Config, AppSetting.RecipeRunRecipeInitialPath);
                 if (result == true)
                 {
                     if (0 < recipes!.Count)
                     {
                         CurrentRecipe = new RecipeContext(recipeFilePath!, recipes!);
+                        AppSetting.RecipeRunRecipeInitialPath = Path.GetDirectoryName(recipeFilePath);
                     }
                     else
                     {
@@ -438,6 +440,7 @@ namespace SapphireXR_App.ViewModels
         private ObservableManager<RecipeUserState>.Publisher recipeRunStatePublisher;
         private LoadFromRecipeEditSubscriber loadFromRecipeEditSubscriber;
         private PLCConnectionStateSubscriber plcConnectionStateSubscriber;
+        private RecipeLoopInfoSubscriber recipeLoopInfoSubscriber;
 
         [ObservableProperty]
         private RecipeUserState _currentRecipeUserState = RecipeUserState.Uninitialized;

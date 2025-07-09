@@ -21,6 +21,10 @@ namespace SapphireXR_App.Common
                 PLCPort = (int?)(Int64?)Util.GetSettingValue(appSettingRootToken, "PLCPort") ?? PLCPort;
                 ConfigMode = (bool?)Util.GetSettingValue(appSettingRootToken, "ConfigMode") ?? ConfigMode;
                 ConnectionRetryMilleseconds = (uint?)(Int64?)Util.GetSettingValue(appSettingRootToken, "ConnectionRetryMilleseconds") ?? ConnectionRetryMilleseconds;
+                RecipeRunRecipeInitialPath = (string?)Util.GetSettingValue(appSettingRootToken, "RecipeRunRecipeInitialPath");
+                RecipeEditRecipeInitialPath = (string?)Util.GetSettingValue(appSettingRootToken, "RecipeEditRecipeInitialPath");
+                RecipeLog1InitialPath = (string?)Util.GetSettingValue(appSettingRootToken, "RecipeLog1InitialPath");
+                RecipeLog2InitialPath = (string?)Util.GetSettingValue(appSettingRootToken, "RecipeLog2InitialPath");
 
                 JToken? token = appSettingRootToken["PrecursorSourceMonitorLabel"];
                 if (token != null)
@@ -31,7 +35,6 @@ namespace SapphireXR_App.Common
                         PrecursorSourceMonitorLabel = precursorSourceMonitorLabel;
                     }
                 }
-               
             }
             catch (Exception ex)
             {
@@ -47,7 +50,9 @@ namespace SapphireXR_App.Common
                     new JProperty("UnderFlowControlFallbackRatePercentage", JsonConvert.SerializeObject(UnderFlowControlFallbackRatePercentage)),
                     new JProperty("FloatingPointMaxNumberDigit", JsonConvert.SerializeObject(FloatingPointMaxNumberDigit)), new JProperty("PLCAddress", JsonConvert.SerializeObject(PLCAddress)),
                     new JProperty("PLCPort", JsonConvert.SerializeObject(PLCPort)), new JProperty("ConfigMode", JsonConvert.SerializeObject(ConfigMode)), 
-                    new JProperty("PrecursorSourceMonitorLabel", JsonConvert.SerializeObject(PrecursorSourceMonitorLabel)), new JProperty("ConnectionRetryMilleseconds", JsonConvert.SerializeObject(ConnectionRetryMilleseconds))).ToString());
+                    new JProperty("PrecursorSourceMonitorLabel", JsonConvert.SerializeObject(PrecursorSourceMonitorLabel)), new JProperty("ConnectionRetryMilleseconds", JsonConvert.SerializeObject(ConnectionRetryMilleseconds)),
+                    new JProperty("RecipeRunRecipeInitialPath", JsonConvert.SerializeObject(RecipeRunRecipeInitialPath)), new JProperty("RecipeEditRecipeInitialPath", JsonConvert.SerializeObject(RecipeEditRecipeInitialPath)),
+                    new JProperty("RecipeLog1InitialPath", JsonConvert.SerializeObject(RecipeLog1InitialPath)), new JProperty("RecipeLog2InitialPath", JsonConvert.SerializeObject(RecipeLog2InitialPath))).ToString());
             }
             catch(Exception exception)
             {
@@ -74,6 +79,10 @@ namespace SapphireXR_App.Common
         private static readonly int UnderFlowControlFallbackRatePercentage = 1;
         public static readonly float UnderFlowControlFallbackRate;
         public static uint ConnectionRetryMilleseconds = 1000;
+        public static string? RecipeRunRecipeInitialPath;
+        public static string? RecipeEditRecipeInitialPath;
+        public static string? RecipeLog1InitialPath ;
+        public static string? RecipeLog2InitialPath;
         public static string PLCAddress = "Local";
         public static int PLCPort = 851;
         public static bool ConfigMode = false;

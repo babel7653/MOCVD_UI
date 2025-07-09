@@ -169,6 +169,7 @@ namespace SapphireXR_App.Models
             hRcpTotalStep = Ads.CreateVariableHandle("RCP.iRcpTotalStep");
             hCmd_RcpOperation = Ads.CreateVariableHandle("RCP.cmd_RcpOperation");
             hState_RcpOperation = Ads.CreateVariableHandle("RCP.state_RcpOperation");
+            hRCPALoop = Ads.CreateVariableHandle("RCP.aLoop");
             hRcpStepN = Ads.CreateVariableHandle("P50_RecipeControl.nRcpIndex");
             hTemperaturePV = Ads.CreateVariableHandle("P13_LineHeater.rTemperaturePV");
             hOperationMode = Ads.CreateVariableHandle("MAIN.bOperationMode");
@@ -234,6 +235,7 @@ namespace SapphireXR_App.Models
             dThrottleValveStatusIssuer = ObservableManager<short>.Get("ThrottleValveStatus");
             dLogicalInterlockStateIssuer = ObservableManager<BitArray>.Get("LogicalInterlockState");
             dPLCConnectionPublisher = ObservableManager<PLCConnection>.Get("PLCService.Connected");
+            dRecipeControlInfoPublisher = ObservableManager<RecipeControlInfo>.Get("RecipeControlInformation");
 
             ObservableManager<bool>.Subscribe("Leak Test Mode", leakTestModeSubscriber = new LeakTestModeSubscriber());
         }
@@ -325,6 +327,10 @@ namespace SapphireXR_App.Models
                 
                 int iterlock1 = Ads.ReadAny<int>(hInterlock[0]);
                 dLogicalInterlockStateIssuer?.Publish(new BitArray(BitConverter.IsLittleEndian == true ? BitConverter.GetBytes(iterlock1) : BitConverter.GetBytes(iterlock1).Reverse().ToArray()));
+
+                short[] aLoop = Ads.ReadAny<short[]>(hRCPALoop, [5]);
+                dRecipeControlInfoPublisher?.Publish(new RecipeControlInfo() { currentLoopNumber = (aLoop[0] != -1) ? aLoop[0] : null, totalLoopNumber = (aLoop[1] != -1) ? aLoop[1] : null, 
+                    currentLoopStep = (aLoop[2] != -1) ? aLoop[2] : null, totalLoopStep = (aLoop[3] != -1) ? aLoop[3] : null, totalWaitTemp = aLoop[4], currentWaitTemp = (aMonitoring_PVs != null) ? (short)(aMonitoring_PVs[9]) : null });
 
                 string exceptionStr = string.Empty;
                 if (aDeviceControlValues == null)

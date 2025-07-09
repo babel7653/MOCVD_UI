@@ -123,10 +123,11 @@ namespace SapphireXR_App.ViewModels
         {
             try
             {
-                (bool result, string? recipeFilePath, List<Recipe>? recipes) = RecipeService.OpenRecipe(Config);
+                (bool result, string? recipeFilePath, List<Recipe>? recipes) = RecipeService.OpenRecipe(Config, AppSetting.RecipeEditRecipeInitialPath);
                 if (result == true)
                 {
                     RecipeFilePath = recipeFilePath!;
+                    AppSetting.RecipeEditRecipeInitialPath = Path.GetDirectoryName(recipeFilePath);
                     Recipes = new RecipeObservableCollection(recipes!);
                 }
             }

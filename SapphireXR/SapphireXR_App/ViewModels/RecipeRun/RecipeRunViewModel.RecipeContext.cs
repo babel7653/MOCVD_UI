@@ -159,6 +159,12 @@ namespace SapphireXR_App.ViewModels
                     }
                 }
                 FileLogger?.start();
+
+                if(recipeLoopInfoSubscriber == null)
+                {
+                    recipeLoopInfoSubscriber = new RecipeLoopInfoSubscriber(this);
+                }
+                recipeLoopInfoUnsubscriber = ObservableManager<PLCService.RecipeControlInfo>.Subscribe("RecipeControlInformation", recipeLoopInfoSubscriber);
             }
 
             public void pauseLog()
@@ -217,6 +223,7 @@ namespace SapphireXR_App.ViewModels
                 recipeControlHoldTimeUnsubscriber?.Dispose();
                 recipeControlRampTimeUnsubscriber?.Dispose();
                 recipeControlPauseTimeUnsubscriber?.Dispose();
+                recipeLoopInfoUnsubscriber?.Dispose();
             }
 
             public void toLoadedFromFileState()
@@ -245,6 +252,7 @@ namespace SapphireXR_App.ViewModels
                 recipeControlHoldTimeSubscriber = null;
                 recipeControlRampTimeSubscriber = null;
                 recipeControlPauseTimeSubscriber = null;
+                recipeLoopInfoUnsubscriber = null;
 
                 CurrentRecipeTime = null;
                 TotalRecipeTime = null;
@@ -370,6 +378,8 @@ namespace SapphireXR_App.ViewModels
             private IDisposable? recipeControlHoldTimeUnsubscriber = null;
             private IDisposable? recipeControlPauseTimeUnsubscriber = null;
             private IDisposable? recipeControlRampTimeUnsubscriber = null;
+            private RecipeLoopInfoSubscriber? recipeLoopInfoSubscriber = null;
+            private IDisposable? recipeLoopInfoUnsubscriber = null;
 
             [ObservableProperty]
             private Logger? _fileLogger = null;

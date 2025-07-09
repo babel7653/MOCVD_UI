@@ -11,7 +11,7 @@ namespace SapphireXR_App.ViewModels
         public EventLogViewModel()
         {
             var filterEventLogs = () => {
-                EventLogs = new ObservableCollection<EventLog>(Models.EventLogs.Instance.EventLogList.Where((log) =>
+                EventLogs = new (Models.EventLogs.Instance.EventLogList.Where((log) =>
                 {
                     switch (log.Type)
                     {

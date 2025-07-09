@@ -114,9 +114,9 @@ namespace SapphireXR_App.ViewModels
 
         private class RecipeLoopInfoSubscriber : IObserver<PLCService.RecipeControlInfo>
         {
-            public RecipeLoopInfoSubscriber(RecipeRunViewModel vm)
+            public RecipeLoopInfoSubscriber(RecipeContext vm)
             {
-                recipeRunViewModel = vm;
+                recipeContext = vm;
             }
 
             void IObserver<PLCService.RecipeControlInfo>.OnCompleted()
@@ -131,15 +131,15 @@ namespace SapphireXR_App.ViewModels
 
             void IObserver<PLCService.RecipeControlInfo>.OnNext(PLCService.RecipeControlInfo value)
             {
-                recipeRunViewModel.CurrentRecipe.TotalLoopNumber = value.totalLoopNumber;
-                recipeRunViewModel.CurrentRecipe.CurrentLoopNumber = value.currentLoopNumber;
-                recipeRunViewModel.CurrentRecipe.CurrentLoopStep = value.currentLoopStep;
-                recipeRunViewModel.CurrentRecipe.TotalLoopStep = value.totalLoopStep;
-                recipeRunViewModel.CurrentRecipe.TotalWaitTemp = value.totalWaitTemp;
-                recipeRunViewModel.CurrentRecipe.CurrentWaitTemp = value.currentWaitTemp;
+                recipeContext.TotalLoopNumber = value.totalLoopNumber;
+                recipeContext.CurrentLoopNumber = value.currentLoopNumber;
+                recipeContext.CurrentLoopStep = value.currentLoopStep;
+                recipeContext.TotalLoopStep = value.totalLoopStep;
+                recipeContext.TotalWaitTemp = value.totalWaitTemp;
+                recipeContext.CurrentWaitTemp = value.currentWaitTemp;
             }
 
-            private RecipeRunViewModel recipeRunViewModel;
+            private RecipeContext recipeContext;
         }
     }
 }

@@ -110,6 +110,10 @@ namespace SapphireXR_App.ViewModels
             });
             dataValuePlotModel.plotModel.Legends.Add(new Legend() { Key= "CurrentTargetValue" });
 
+            percentagePlotModel.plotModel.TextColor = OxyColors.White;
+            percentagePlotModel.plotModel.PlotAreaBorderColor = OxyColors.White;
+            percentagePlotModel.plotModel.SubtitleColor = OxyColors.White;
+            percentagePlotModel.plotModel.TitleColor = OxyColors.White;
             percentagePlotModel.plotModel.Axes.Add(new LinearAxis
             {
                 Title = "Percentage (%)",
@@ -131,8 +135,8 @@ namespace SapphireXR_App.ViewModels
                 IntervalLength = 60,
                 IsPanEnabled = true,
                 IsZoomEnabled = true,
-                MajorGridlineStyle = LineStyle.Solid,
-                MinorGridlineStyle = LineStyle.Solid,
+                MajorGridlineStyle = LineStyle.None,
+                MinorGridlineStyle = LineStyle.None,
                 AxislineColor = OxyColors.White,
                 MajorGridlineColor = OxyColors.White,
                 MinorGridlineColor = OxyColors.White,

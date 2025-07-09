@@ -32,7 +32,6 @@ namespace SapphireXR_App.ViewModels
             ObservableManager<bool>.Subscribe("RecipeEnded", recipeEndedSubscriber = new RecipeEndedSubscriber(this));
             recipeRunStatePublisher = ObservableManager<RecipeUserState>.Get("RecipeRun.State");
             ObservableManager<(string, IList<Recipe>)>.Subscribe("RecipeEdit.LoadToRecipeRun", loadFromRecipeEditSubscriber = new LoadFromRecipeEditSubscriber(this));
-            ObservableManager<PLCService.RecipeControlInfo>.Subscribe("RecipeControlInformation", recipeLoopInfoSubscriber = new RecipeLoopInfoSubscriber(this));
 
             PropertyChanging += (object? sender, PropertyChangingEventArgs e) =>
             {
@@ -440,7 +439,6 @@ namespace SapphireXR_App.ViewModels
         private ObservableManager<RecipeUserState>.Publisher recipeRunStatePublisher;
         private LoadFromRecipeEditSubscriber loadFromRecipeEditSubscriber;
         private PLCConnectionStateSubscriber plcConnectionStateSubscriber;
-        private RecipeLoopInfoSubscriber recipeLoopInfoSubscriber;
 
         [ObservableProperty]
         private RecipeUserState _currentRecipeUserState = RecipeUserState.Uninitialized;

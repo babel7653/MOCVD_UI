@@ -18,6 +18,14 @@ namespace SapphireXR_App.ViewModels
             resetToPLC = (type == PLCService.TriggerType.Alarm) ? PLCService.WriteAlarmReset : PLCService.WriteWarningReset;
             refreshOnList = (type == PLCService.TriggerType.Alarm) ? RefreshAlarmList : RefreshWarningList;
             OnList = refreshOnList();
+
+            onListUpdater = new DispatcherTimer();
+            onListUpdater.Interval = new TimeSpan(TimeSpan.TicksPerMillisecond * 500);
+            onListUpdater.Tick += (sender, args) =>
+            {
+                OnList = refreshOnList();
+            };
+            onListUpdater.Start();
         }
 
         private static string? GetAnalogDeviceNotificationName(uint index)
@@ -279,24 +287,13 @@ namespace SapphireXR_App.ViewModels
         private void Close(Window window)
         {
             resetToPLC();
+            onListUpdater.Stop();
             window.Close();
-            onListUpdater?.Stop();
-            onListUpdater = null;
         }
 
         [RelayCommand]
         private void Reset()
         {
-            if(onListUpdater == null)
-            {
-                onListUpdater = new DispatcherTimer();
-                onListUpdater.Interval = new TimeSpan(TimeSpan.TicksPerMillisecond * 500);
-                onListUpdater.Tick += (sender, args) =>
-                {
-                    OnList = refreshOnList();
-                };
-                onListUpdater.Start();
-            }
             resetToPLC();
         }
 
@@ -311,6 +308,6 @@ namespace SapphireXR_App.ViewModels
         private Action resetToPLC;
         private Func<List<string>> refreshOnList;
 
-        private DispatcherTimer? onListUpdater = null;
+        private DispatcherTimer onListUpdater;
     }
 }

@@ -72,9 +72,6 @@
     <Compile Include="POUs\FB_DeviceAlarm.TcPOU">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="POUs\FB_DeviceWarning.TcPOU">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="POUs\FB_GaugeLimit.TcPOU">
       <SubType>Code</SubType>
     </Compile>

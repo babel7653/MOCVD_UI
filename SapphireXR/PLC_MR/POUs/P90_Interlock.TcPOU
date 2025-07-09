@@ -46,9 +46,12 @@ VAR
 	tAlarmDelay_D			: TIME; //디지털 디바이스 지연시간
 	fbDeviceAlarm	:ARRAY[1..26] OF FB_DeviceAlarm; // MFC/EPC 디바이스 인스턴스
 	wDeviceAlarmEnable		: DWORD;
+	wDeviceWarningEnable	: DWORD;
 	bDeviationAlarm			: BOOL;
+	bDeviationWarning		: BOOL;
 	wDeviceAlarm			: DWORD;
-	
+	wDeviceWarning			: DWORD;
+
 	bMaintKeyTest			: BOOL; //Test Variable
 	i: INT;
 END_VAR
@@ -76,14 +79,18 @@ tAlarmDelay_D := REAL_TO_TIME(GVL_IO.aInterlockSet[4]*1000);
 //Controller Deviation Alarm Monitoring
 FOR i := 1 TO 26 DO
 	wDeviceAlarmEnable := SHR(GVL_IO.aInterlockEnable[2], (i+2)); //오늘쪽 쉬프트 연산
+	wDeviceWarningEnable := SHR(GVL_IO.aInterlockEnable[3], (i+2));
 	fbDeviceAlarm[i](
-		bEnable := wDeviceAlarmEnable.0,
+		bAlarmEnable := wDeviceAlarmEnable.0,
+		bWaringEnable := wDeviceWarningEnable.0,
 		fCurrentValue := GVL_IO.aController_PV[i],
 		fControlValue := GVL_IO.aController_CV[i],
 		fMaxValue := GVL_IO.aMaxValueController[i],
-		fAlarmTreshold := GVL_IO.aInterlockSet[i],
+		fAlarmTreshold := GVL_IO.aInterlockSet[1],
+		fWarningTreshold := GVL_IO.aInterlockSet[2],
 		tAlarmDelay := tAlarmDelay_A,
-		bDeviationAlarm => bDeviationAlarm //알람 출력
+		bDeviationAlarm => bDeviationAlarm, //알람 출력
+		bDeviationWarning => bDeviationWarning // 주의(Warning) 출력
 		);
 	IF bDeviationAlarm THEN		
 		GVL_IO.aInterlock[1].0 := TRUE; //Alarm Trig
@@ -95,15 +102,25 @@ FOR i := 1 TO 26 DO
 		wDeviceAlarm.0 := FALSE;
 		GVL_IO.aInterlock[3] := ROL(wDeviceAlarm, (i+2));
 	END_IF
+	
+	IF bDeviationWarning THEN
+		GVL_IO.aInterlock[1].1 := TRUE; // Warning Trig
+		wDeviceWarning := ROR(GVL_IO.aInterlock[5], (i+2));
+		wDeviceWarning.0 := TRUE;
+		GVL_IO.aInterlock[5] := ROL(wDeviceWarning, (i+2));
+	ELSE
+		wDeviceWarning := ROR(GVL_IO.aInterlock[5], (i+2));
+		wDeviceWarning.0 := FALSE;
+		GVL_IO.aInterlock[5] := ROL(wDeviceWarning, (i+2));
+	END_IF
 
-	IF GVL_IO.aInterlockEnable[1].0 THEN //리셋 버턴을 눌렀을 때
+	IF GVL_IO.aInterlockEnable[1].0 THEN //알람 리셋 버턴을 눌렀을 때
 		GVL_IO.aInterlock[1].0 := FALSE; //Alarm Trig Reset
 	END_IF
+	IF GVL_IO.aInterlockEnable[1].1 THEN //주의 리셋 버턴을 눌렀을 때
+		GVL_IO.aInterlock[1].1 := FALSE; //Alarm Trig Reset
+	END_IF
 END_FOR
-
-//Controller Deviation Warning Monitoring
-
-
 
 // 테스트용 값 bMaintKey -> bMaintKeyTest
 //Allowed a MC(Induction, Bath, Pump, L_Heater) Operation
@@ -211,9 +228,15 @@ GVL_IO.aDigitalOutputIO[2].4 := bUPSMode;
       <LineId Id="478" Count="0" />
       <LineId Id="438" Count="1" />
       <LineId Id="451" Count="0" />
+      <LineId Id="484" Count="0" />
       <LineId Id="440" Count="0" />
-      <LineId Id="444" Count="5" />
+      <LineId Id="444" Count="0" />
+      <LineId Id="485" Count="0" />
+      <LineId Id="445" Count="3" />
+      <LineId Id="486" Count="0" />
+      <LineId Id="449" Count="0" />
       <LineId Id="443" Count="0" />
+      <LineId Id="487" Count="0" />
       <LineId Id="442" Count="0" />
       <LineId Id="455" Count="0" />
       <LineId Id="459" Count="0" />
@@ -221,15 +244,21 @@ GVL_IO.aDigitalOutputIO[2].4 := bUPSMode;
       <LineId Id="460" Count="1" />
       <LineId Id="471" Count="0" />
       <LineId Id="476" Count="1" />
-      <LineId Id="475" Count="0" />
+      <LineId Id="494" Count="0" />
       <LineId Id="457" Count="0" />
+      <LineId Id="488" Count="2" />
+      <LineId Id="498" Count="1" />
+      <LineId Id="497" Count="0" />
+      <LineId Id="492" Count="0" />
+      <LineId Id="500" Count="1" />
+      <LineId Id="493" Count="0" />
+      <LineId Id="491" Count="0" />
       <LineId Id="464" Count="0" />
       <LineId Id="466" Count="1" />
       <LineId Id="462" Count="0" />
+      <LineId Id="503" Count="1" />
+      <LineId Id="502" Count="0" />
       <LineId Id="441" Count="0" />
-      <LineId Id="480" Count="1" />
-      <LineId Id="483" Count="0" />
-      <LineId Id="482" Count="0" />
       <LineId Id="355" Count="0" />
       <LineId Id="309" Count="0" />
       <LineId Id="144" Count="0" />

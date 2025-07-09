@@ -3,7 +3,6 @@ using ToastNotifications.Position;
 using ToastNotifications.Messages;
 using ToastNotifications;
 using System.Windows;
-using ToastNotifications.Core;
 
 namespace SapphireXR_App.WindowServices
 {

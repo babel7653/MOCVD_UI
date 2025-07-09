@@ -13,15 +13,13 @@ namespace SapphireXR_App.Views
         {
             InitializeComponent();
             DataContext = App.Current.Services.GetService(typeof(EventLogViewModel));
-            MouseLeftButtonDown += MessageBoxView_MouseLeftButtonDown;
-        }
-
-        private void MessageBoxView_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
-        {
-            if (e.LeftButton == MouseButtonState.Pressed)
+            MouseLeftButtonDown += (sender, args) =>
             {
-                DragMove();
-            }
+                if (args.LeftButton == MouseButtonState.Pressed)
+                {
+                    DragMove();
+                }
+            };
         }
 
         private void OnHide(object sender, RoutedEventArgs e)

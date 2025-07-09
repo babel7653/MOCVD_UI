@@ -12,7 +12,7 @@ namespace SapphireXR_App.WindowServices
             {
                 DataContext = new TriggeredWarningAlarmViewModel(type),
                 Topmost = true
-            }.ShowDialog();
+            }.Show();
         }
     }
 }

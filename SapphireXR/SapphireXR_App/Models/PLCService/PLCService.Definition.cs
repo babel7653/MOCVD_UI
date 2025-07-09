@@ -25,6 +25,16 @@ namespace SapphireXR_App.Models
             public ReadBufferException(string message) : base(message) { }
         }
 
+        internal struct RecipeControlInfo
+        {
+            public required short? totalLoopNumber;
+            public required short? currentLoopNumber;
+            public required short? currentLoopStep;
+            public required short? totalLoopStep;
+            public required short? totalWaitTemp;
+            public required short? currentWaitTemp;
+        }
+
         internal class LeakTestModeSubscriber : IObserver<bool>
         {
             void IObserver<bool>.OnCompleted()
@@ -205,6 +215,7 @@ namespace SapphireXR_App.Models
         private static ObservableManager<short>.Publisher? dThrottleValveStatusIssuer;
         private static ObservableManager<BitArray>.Publisher? dLogicalInterlockStateIssuer;
         private static ObservableManager<PLCConnection>.Publisher? dPLCConnectionPublisher;
+        private static ObservableManager<RecipeControlInfo>.Publisher? dRecipeControlInfoPublisher;
 
         private static LeakTestModeSubscriber? leakTestModeSubscriber = null;
 
@@ -245,6 +256,7 @@ namespace SapphireXR_App.Models
         private static uint hWriteDeviceRampTimePLC;
         private static uint hRcp;
         private static uint hRcpTotalStep;
+        private static uint hRCPALoop;
         private static uint hCmd_RcpOperation;
         private static uint hRcpStepN;
         private static uint hMonitoring_PV;

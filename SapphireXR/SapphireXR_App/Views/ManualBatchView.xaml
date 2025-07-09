@@ -7,7 +7,7 @@
         xmlns:i="clr-namespace:Microsoft.Xaml.Behaviors;assembly=Microsoft.Xaml.Behaviors"
         mc:Ignorable="d"
         WindowStyle="None" Background="Transparent" AllowsTransparency="True" WindowStartupLocation="CenterScreen"
-        Title="ManualBatchView" d:DesignWidth="400" d:DesignHeight="930" Height="955" Width="417" >
+        Title="ManualBatchView" d:DesignWidth="400" d:DesignHeight="930" Height="930" Width="400" >
     <Border Background="{StaticResource Gray_100}">
         <Border.CornerRadius>
             <CornerRadius TopLeft="{StaticResource r_3}" TopRight="{StaticResource r_3}" BottomLeft="{StaticResource r_3}" BottomRight="{StaticResource r_3}" />

@@ -1,7 +1,7 @@
-﻿using System.Collections.ObjectModel;
-using System.Collections.Specialized;
+﻿using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Globalization;
+using System.IO;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -102,12 +102,13 @@ namespace SapphireXR_App.ViewModels
         {
             try
             {
-                (bool result, string? recipeFilePath, List<Recipe>? recipes) = RecipeService.OpenRecipe(Config);
+                (bool result, string? recipeFilePath, List<Recipe>? recipes) = RecipeService.OpenRecipe(Config, AppSetting.RecipeRunRecipeInitialPath);
                 if (result == true)
                 {
                     if (0 < recipes!.Count)
                     {
                         CurrentRecipe = new RecipeContext(recipeFilePath!, recipes!);
+                        AppSetting.RecipeRunRecipeInitialPath = Path.GetDirectoryName(recipeFilePath);
                     }
                     else
                     {

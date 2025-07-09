@@ -31,12 +31,22 @@ namespace SapphireXR_App.ViewModels
             internal readonly PlotModel plotModel = new PlotModel();
         };
 
-        private static (IList<RecipeLog>?, string) OpenLogFile()
+        private static (IList<RecipeLog>?, string) OpenLogFile(string? initialDirectory)
         {
             OpenFileDialog openFileDialog = new OpenFileDialog();
             openFileDialog.Multiselect = false;
             openFileDialog.Filter = "csv 파일(*.csv)|*.csv";
+            
             string appBasePath = AppDomain.CurrentDomain.BaseDirectory;
+            if (Path.Exists(initialDirectory) == false)
+            {
+                initialDirectory = AppDomain.CurrentDomain.BaseDirectory + "Log";
+                if (Path.Exists(initialDirectory) == false)
+                {
+                    Directory.CreateDirectory(initialDirectory);
+                }
+            }
+            openFileDialog.InitialDirectory = initialDirectory;
 
             if (openFileDialog.ShowDialog() == false)
             {
@@ -100,6 +110,10 @@ namespace SapphireXR_App.ViewModels
             });
             dataValuePlotModel.plotModel.Legends.Add(new Legend() { Key= "CurrentTargetValue" });
 
+            percentagePlotModel.plotModel.TextColor = OxyColors.White;
+            percentagePlotModel.plotModel.PlotAreaBorderColor = OxyColors.White;
+            percentagePlotModel.plotModel.SubtitleColor = OxyColors.White;
+            percentagePlotModel.plotModel.TitleColor = OxyColors.White;
             percentagePlotModel.plotModel.Axes.Add(new LinearAxis
             {
                 Title = "Percentage (%)",
@@ -121,8 +135,8 @@ namespace SapphireXR_App.ViewModels
                 IntervalLength = 60,
                 IsPanEnabled = true,
                 IsZoomEnabled = true,
-                MajorGridlineStyle = LineStyle.Solid,
-                MinorGridlineStyle = LineStyle.Solid,
+                MajorGridlineStyle = LineStyle.None,
+                MinorGridlineStyle = LineStyle.None,
                 AxislineColor = OxyColors.White,
                 MajorGridlineColor = OxyColors.White,
                 MinorGridlineColor = OxyColors.White,
@@ -264,9 +278,9 @@ namespace SapphireXR_App.ViewModels
             doUpdateLogSeries(percentagePlotModel, Mode.Percentage);
         }
 
-        private string updateChart(LogNumber logNumber)
+        private string updateChart(LogNumber logNumber, string? initialPath)
         {
-            (IList<RecipeLog>? recipeLogs, string? logFilePath) = OpenLogFile();
+            (IList<RecipeLog>? recipeLogs, string? logFilePath) = OpenLogFile(initialPath);
             if(recipeLogs != null)
             {
                 updateLogSeries(logNumber, recipeLogs);
@@ -278,15 +292,17 @@ namespace SapphireXR_App.ViewModels
         [RelayCommand]
         public void OpenLog1File()
         {
-            string filePath = updateChart(LogNumber.One);
+            string filePath = updateChart(LogNumber.One, AppSetting.RecipeLog1InitialPath);
             Log1FilePath = filePath != string.Empty ? filePath : Log1FilePath;
+            AppSetting.RecipeLog1InitialPath = Path.GetDirectoryName(filePath);
         }
 
         [RelayCommand]
         public void OpenLog2File()
         {
-            string? filePath = updateChart(LogNumber.Two);
+            string? filePath = updateChart(LogNumber.Two, AppSetting.RecipeLog2InitialPath);
             Log2FilePath = filePath != string.Empty ? filePath : Log2FilePath;
+            AppSetting.RecipeLog2InitialPath = Path.GetDirectoryName(filePath);
         }
 
         [RelayCommand]

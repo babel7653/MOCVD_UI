@@ -111,5 +111,35 @@ namespace SapphireXR_App.ViewModels
 
             RecipeRunViewModel recipeRunViewModel;
         }
+
+        private class RecipeLoopInfoSubscriber : IObserver<PLCService.RecipeControlInfo>
+        {
+            public RecipeLoopInfoSubscriber(RecipeContext vm)
+            {
+                recipeContext = vm;
+            }
+
+            void IObserver<PLCService.RecipeControlInfo>.OnCompleted()
+            {
+                throw new NotImplementedException();
+            }
+
+            void IObserver<PLCService.RecipeControlInfo>.OnError(Exception error)
+            {
+                throw new NotImplementedException();
+            }
+
+            void IObserver<PLCService.RecipeControlInfo>.OnNext(PLCService.RecipeControlInfo value)
+            {
+                recipeContext.TotalLoopNumber = value.totalLoopNumber;
+                recipeContext.CurrentLoopNumber = value.currentLoopNumber;
+                recipeContext.CurrentLoopStep = value.currentLoopStep;
+                recipeContext.TotalLoopStep = value.totalLoopStep;
+                recipeContext.TotalWaitTemp = value.totalWaitTemp;
+                recipeContext.CurrentWaitTemp = value.currentWaitTemp;
+            }
+
+            private RecipeContext recipeContext;
+        }
     }
 }

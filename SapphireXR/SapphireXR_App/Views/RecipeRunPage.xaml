@@ -608,22 +608,22 @@
                                     <Label Grid.Row="15" Grid.Column="0" Content="Loop Number" Style="{StaticResource InfoLabelRight}" />
                                     <Label Grid.Row="17" Grid.Column="0" Content="Wait Temp" Style="{StaticResource InfoLabelRight}" />
 
-                                    <TextBox x:Name="tbRecipeCurrentTime" Grid.Row="1" Grid.Column="1" Text="{Binding CurrentRecipe.CurrentRecipeTime}" Style="{StaticResource RecipeRunInfoTextBox}" />
-                                    <TextBox x:Name="tbRecipeTotalTime" Grid.Row="1" Grid.Column="3" Text="{Binding CurrentRecipe.TotalRecipeTime}" Style="{StaticResource RecipeRunInfoTextBox}" />
-                                    <TextBox x:Name="tbRecipeCurrentStep" Grid.Row="3" Grid.Column="1" Text="{Binding CurrentRecipe.CurrentStep}" Style="{StaticResource RecipeRunInfoTextBox}" />
-                                    <TextBox x:Name="tbRecipeTotalStep" Grid.Row="3" Grid.Column="3" Text="{Binding CurrentRecipe.TotalStep}" Style="{StaticResource RecipeRunInfoTextBox}" />
-                                    <TextBox x:Name="tbRecipeStepName" Grid.Row="5" Grid.Column="1" Grid.ColumnSpan="3" Text="{Binding CurrentRecipe.StepName}" Style="{StaticResource RecipeRunSpanInfoTextBox}" />
-                                    <TextBox x:Name="tbRecipeCurrentRamp" Grid.Row="7" Grid.Column="1" Text="{Binding CurrentRecipe.CurrentRampTime}" Style="{StaticResource RecipeRunInfoTextBox}" />
-                                    <TextBox x:Name="tbRecipeTotalRamp" Grid.Row="7" Grid.Column="3" Text="{Binding CurrentRecipe.TotalRampTime}" Style="{StaticResource RecipeRunInfoTextBox}" />
-                                    <TextBox x:Name="tbRecipeCurrentHold" Grid.Row="9" Grid.Column="1" Text="{Binding CurrentRecipe.CurrentHoldTime}" Style="{StaticResource RecipeRunInfoTextBox}" />
-                                    <TextBox x:Name="tbRecipeTotalHold" Grid.Row="9" Grid.Column="3" Text="{Binding CurrentRecipe.TotalHoldTime}" Style="{StaticResource RecipeRunInfoTextBox}" />
-                                    <TextBox x:Name="tbRecipePauseTime" Grid.Row="11" Grid.Column="1" Grid.ColumnSpan="3" Text="{Binding CurrentRecipe.PauseTime}" Style="{StaticResource RecipeRunSpanInfoTextBox}" />
-                                    <TextBox x:Name="tbRecipeLoopStart" Grid.Row="13" Grid.Column="1" Text="{Binding CurrentRecipe.CurrentLoopStep}" Style="{StaticResource RecipeRunInfoTextBox}" />
-                                    <TextBox x:Name="tbRecipeLoopEnd" Grid.Row="13" Grid.Column="3" Text="{Binding CurrentRecipe.TotalLoopStep}" Style="{StaticResource RecipeRunInfoTextBox}" />
-                                    <TextBox x:Name="tbRecipeCurrentLoop" Grid.Row="15" Grid.Column="1" Text="{Binding CurrentRecipe.CurrentLoopNumber}" Style="{StaticResource RecipeRunInfoTextBox}" />
-                                    <TextBox x:Name="tbRecipeTotalLoop" Grid.Row="15" Grid.Column="3" Text="{Binding CurrentRecipe.TotalLoopNumber}" Style="{StaticResource RecipeRunInfoTextBox}" />
-                                    <TextBox x:Name="tbSusceptorCurrentTemp" Grid.Row="17" Grid.Column="1" Text="{Binding CurrentRecipe.CurrentWaitTemp}" Style="{StaticResource RecipeRunInfoTextBox}" />
-                                    <TextBox x:Name="tbRecipeWaitTemp" Grid.Row="17" Grid.Column="3" Text="{Binding CurrentRecipe.TotalWaitTemp}" Style="{StaticResource RecipeRunInfoTextBox}" />
+                                    <TextBox x:Name="tbRecipeCurrentTime" Grid.Row="1" Grid.Column="1" Text="{Binding CurrentRecipe.CurrentRecipeTime}" Style="{StaticResource RecipeRunInfoTextBox}" IsReadOnly="True" />
+                                        <TextBox x:Name="tbRecipeTotalTime" Grid.Row="1" Grid.Column="3" Text="{Binding CurrentRecipe.TotalRecipeTime}" Style="{StaticResource RecipeRunInfoTextBox}" IsReadOnly="True" />
+                                        <TextBox x:Name="tbRecipeCurrentStep" Grid.Row="3" Grid.Column="1" Text="{Binding CurrentRecipe.CurrentStep}" Style="{StaticResource RecipeRunInfoTextBox}" IsReadOnly="True" />
+                                        <TextBox x:Name="tbRecipeTotalStep" Grid.Row="3" Grid.Column="3" Text="{Binding CurrentRecipe.TotalStep}" Style="{StaticResource RecipeRunInfoTextBox}" IsReadOnly="True" />
+                                        <TextBox x:Name="tbRecipeStepName" Grid.Row="5" Grid.Column="1" Grid.ColumnSpan="3" Text="{Binding CurrentRecipe.StepName}" Style="{StaticResource RecipeRunSpanInfoTextBox}" IsReadOnly="True" />
+                                        <TextBox x:Name="tbRecipeCurrentRamp" Grid.Row="7" Grid.Column="1" Text="{Binding CurrentRecipe.CurrentRampTime}" Style="{StaticResource RecipeRunInfoTextBox}" IsReadOnly="True" />
+                                        <TextBox x:Name="tbRecipeTotalRamp" Grid.Row="7" Grid.Column="3" Text="{Binding CurrentRecipe.TotalRampTime}" Style="{StaticResource RecipeRunInfoTextBox}" IsReadOnly="True" />
+                                        <TextBox x:Name="tbRecipeCurrentHold" Grid.Row="9" Grid.Column="1" Text="{Binding CurrentRecipe.CurrentHoldTime}" Style="{StaticResource RecipeRunInfoTextBox}" IsReadOnly="True" />
+                                        <TextBox x:Name="tbRecipeTotalHold" Grid.Row="9" Grid.Column="3" Text="{Binding CurrentRecipe.TotalHoldTime}" Style="{StaticResource RecipeRunInfoTextBox}" IsReadOnly="True" />
+                                        <TextBox x:Name="tbRecipePauseTime" Grid.Row="11" Grid.Column="1" Grid.ColumnSpan="3" Text="{Binding CurrentRecipe.PauseTime}" Style="{StaticResource RecipeRunSpanInfoTextBox}" IsReadOnly="True" />
+                                        <TextBox x:Name="tbRecipeLoopStart" Grid.Row="13" Grid.Column="1" Text="{Binding CurrentRecipe.CurrentLoopStep}" Style="{StaticResource RecipeRunInfoTextBox}" IsReadOnly="True" />
+                                        <TextBox x:Name="tbRecipeLoopEnd" Grid.Row="13" Grid.Column="3" Text="{Binding CurrentRecipe.TotalLoopStep}" Style="{StaticResource RecipeRunInfoTextBox}" IsReadOnly="True" />
+                                        <TextBox x:Name="tbRecipeCurrentLoop" Grid.Row="15" Grid.Column="1" Text="{Binding CurrentRecipe.CurrentLoopNumber}" Style="{StaticResource RecipeRunInfoTextBox}" IsReadOnly="True" />
+                                        <TextBox x:Name="tbRecipeTotalLoop" Grid.Row="15" Grid.Column="3" Text="{Binding CurrentRecipe.TotalLoopNumber}" Style="{StaticResource RecipeRunInfoTextBox}" IsReadOnly="True" />
+                                        <TextBox x:Name="tbSusceptorCurrentTemp" Grid.Row="17" Grid.Column="1" Text="{Binding CurrentRecipe.CurrentWaitTemp}" Style="{StaticResource RecipeRunInfoTextBox}" IsReadOnly="True" />
+                                        <TextBox x:Name="tbRecipeWaitTemp" Grid.Row="17" Grid.Column="3" Text="{Binding CurrentRecipe.TotalWaitTemp}" Style="{StaticResource RecipeRunInfoTextBox}" IsReadOnly="True" />
                                 </Grid>
                             </StackPanel>
                         </Border>

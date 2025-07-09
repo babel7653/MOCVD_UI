@@ -43,8 +43,12 @@ VAR
 	Warning_ET				: TIME;
 	
 	tAlarmDelay_A			: TIME; //아날로그 디바이스 지연시간
-	fbMFC1Alarm				: FB_DeviceAlarm; // MFC/EPC 디바이스 인스턴스
-		
+	tAlarmDelay_D			: TIME; //디지털 디바이스 지연시간
+	fbDeviceAlarm	:ARRAY[1..26] OF FB_DeviceAlarm; // MFC/EPC 디바이스 인스턴스
+	wDeviceAlarmEnable		: DWORD;
+	bDeviationAlarm			: BOOL;
+	wDeviceAlarm			: DWORD;
+	
 	bMaintKeyTest			: BOOL; //Test Variable
 	i: INT;
 END_VAR
@@ -67,21 +71,39 @@ END_IF
 
 //알람 지연 시간 변환
 tAlarmDelay_A := REAL_TO_TIME(GVL_IO.aInterlockSet[3]*1000); // UI Setting Analog Delay Time Value(Miliseconde)
+tAlarmDelay_D := REAL_TO_TIME(GVL_IO.aInterlockSet[4]*1000);
 
 //Controller Deviation Alarm Monitoring
-IF bMaintKeyTest := FALSE THEN
-	fbMFC1Alarm(
-		bEnable := GVL_IO.aInterlockEnable[2].3,
-		fCurrentValue := GVL_IO.aController_PV[1],
-		fControlValue := GVL_IO.aController_CV[1],
-		fMaxValue := GVL_IO.aMaxValueController[1],
-		fTreshold := GVL_IO.aInterlockSet[1],
+FOR i := 1 TO 26 DO
+	wDeviceAlarmEnable := SHR(GVL_IO.aInterlockEnable[2], (i+2)); //오늘쪽 쉬프트 연산
+	fbDeviceAlarm[i](
+		bEnable := wDeviceAlarmEnable.0,
+		fCurrentValue := GVL_IO.aController_PV[i],
+		fControlValue := GVL_IO.aController_CV[i],
+		fMaxValue := GVL_IO.aMaxValueController[i],
+		fAlarmTreshold := GVL_IO.aInterlockSet[i],
 		tAlarmDelay := tAlarmDelay_A,
-		bDeviationAlarm => GVL_IO.aInterlock[3].3 //MFC1 알람 출력
+		bDeviationAlarm => bDeviationAlarm //알람 출력
 		);
-	// 디바이스 1의 알람 상태 출력
-	//fbMFC1Alarm();
-END_IF
+	IF bDeviationAlarm THEN		
+		GVL_IO.aInterlock[1].0 := TRUE; //Alarm Trig
+		wDeviceAlarm := ROR(GVL_IO.aInterlock[3], (i+2));
+		wDeviceAlarm.0 := TRUE;
+		GVL_IO.aInterlock[3] := ROL(wDeviceAlarm, (i+2));
+	ELSE
+		wDeviceAlarm := ROR(GVL_IO.aInterlock[3], (i+2));
+		wDeviceAlarm.0 := FALSE;
+		GVL_IO.aInterlock[3] := ROL(wDeviceAlarm, (i+2));
+	END_IF
+
+	IF GVL_IO.aInterlockEnable[1].0 THEN //리셋 버턴을 눌렀을 때
+		GVL_IO.aInterlock[1].0 := FALSE; //Alarm Trig Reset
+	END_IF
+END_FOR
+
+//Controller Deviation Warning Monitoring
+
+
 
 // 테스트용 값 bMaintKey -> bMaintKeyTest
 //Allowed a MC(Induction, Bath, Pump, L_Heater) Operation
@@ -185,17 +207,29 @@ GVL_IO.aDigitalOutputIO[2].4 := bUPSMode;
       <LineId Id="299" Count="0" />
       <LineId Id="353" Count="1" />
       <LineId Id="322" Count="0" />
-      <LineId Id="392" Count="0" />
-      <LineId Id="389" Count="0" />
-      <LineId Id="391" Count="0" />
-      <LineId Id="393" Count="0" />
-      <LineId Id="406" Count="3" />
-      <LineId Id="404" Count="0" />
-      <LineId Id="411" Count="0" />
-      <LineId Id="410" Count="0" />
-      <LineId Id="414" Count="0" />
-      <LineId Id="412" Count="1" />
-      <LineId Id="394" Count="0" />
+      <LineId Id="479" Count="0" />
+      <LineId Id="478" Count="0" />
+      <LineId Id="438" Count="1" />
+      <LineId Id="451" Count="0" />
+      <LineId Id="440" Count="0" />
+      <LineId Id="444" Count="5" />
+      <LineId Id="443" Count="0" />
+      <LineId Id="442" Count="0" />
+      <LineId Id="455" Count="0" />
+      <LineId Id="459" Count="0" />
+      <LineId Id="473" Count="0" />
+      <LineId Id="460" Count="1" />
+      <LineId Id="471" Count="0" />
+      <LineId Id="476" Count="1" />
+      <LineId Id="475" Count="0" />
+      <LineId Id="457" Count="0" />
+      <LineId Id="464" Count="0" />
+      <LineId Id="466" Count="1" />
+      <LineId Id="462" Count="0" />
+      <LineId Id="441" Count="0" />
+      <LineId Id="480" Count="1" />
+      <LineId Id="483" Count="0" />
+      <LineId Id="482" Count="0" />
       <LineId Id="355" Count="0" />
       <LineId Id="309" Count="0" />
       <LineId Id="144" Count="0" />

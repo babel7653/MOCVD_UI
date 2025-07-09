@@ -1,9 +1,8 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4026.11">
-  <POU Name="FB_DeviationCheck" Id="{561b60db-1bc6-4a2d-b910-b8ec68feb7ea}" SpecialFunc="None">
-    <Declaration><![CDATA[FUNCTION_BLOCK FB_DeviationCheck
+  <POU Name="FB_GaugeLimit" Id="{e1309d19-0844-487d-9879-15c8a89df55d}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK FB_GaugeLimit
 VAR_INPUT
-
 END_VAR
 VAR_OUTPUT
 END_VAR
@@ -13,7 +12,7 @@ END_VAR
     <Implementation>
       <ST><![CDATA[]]></ST>
     </Implementation>
-    <LineIds Name="FB_DeviationCheck">
+    <LineIds Name="FB_GaugeLimit">
       <LineId Id="1" Count="0" />
     </LineIds>
   </POU>

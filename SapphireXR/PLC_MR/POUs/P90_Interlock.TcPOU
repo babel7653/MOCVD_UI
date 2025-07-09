@@ -6,14 +6,10 @@ VAR_INPUT
 	bRecipeRunning : BOOL;
 	RecipeStopped : BOOL;
 	ManualOperation : BOOL;
-	
 	bInductionHeaterMC	: BOOL;
 	bThermalBathMC		: BOOL;
 	bVacuumPumpMC 		: BOOL;
 	bLineHeaterMC 		: BOOL; 
-	
-	Delay_TIME_A		: TIME;
-
 END_VAR
 VAR_OUTPUT
 	bCoverOperationEnable	: BOOL;
@@ -46,7 +42,11 @@ VAR
 	rTrigWarning			: R_TRIG;
 	Warning_ET				: TIME;
 	
+	tAlarmDelay_A			: TIME; //아날로그 디바이스 지연시간
+	fbMFC1Alarm				: FB_DeviceAlarm; // MFC/EPC 디바이스 인스턴스
+		
 	bMaintKeyTest			: BOOL; //Test Variable
+	i: INT;
 END_VAR
 ]]></Declaration>
     <Implementation>
@@ -59,14 +59,29 @@ bAirPressureSensor	:= GVL_IO.aDigitalInputIO[2].0; //Normally Contacted
 bWaterFlowSensor	:= GVL_IO.aDigitalInputIO[2].1;
 
 //Sinal Tower Set
-IF bMaintKey THEN
+IF bMaintKeyTest THEN //bMaintKey 변경
 	P92_Maintenance.nCaseSignalTower		:= 5;
 ELSIF bMaintKey = FALSE AND MAIN.bOperationMode = FALSE THEN
 	P92_Maintenance.nCaseSignalTower		:= 4;
 END_IF
 
-//Alarm Delay Time
-Delay_TIME_A := REAL_TO_TIME(GVL_IO.aInterlockSet[3]*1000); // UI Setting Analog Delay Time Value(Miliseconde)
+//알람 지연 시간 변환
+tAlarmDelay_A := REAL_TO_TIME(GVL_IO.aInterlockSet[3]*1000); // UI Setting Analog Delay Time Value(Miliseconde)
+
+//Controller Deviation Alarm Monitoring
+IF bMaintKeyTest := FALSE THEN
+	fbMFC1Alarm(
+		bEnable := GVL_IO.aInterlockEnable[2].3,
+		fCurrentValue := GVL_IO.aController_PV[1],
+		fControlValue := GVL_IO.aController_CV[1],
+		fMaxValue := GVL_IO.aMaxValueController[1],
+		fTreshold := GVL_IO.aInterlockSet[1],
+		tAlarmDelay := tAlarmDelay_A,
+		bDeviationAlarm => GVL_IO.aInterlock[3].3 //MFC1 알람 출력
+		);
+	// 디바이스 1의 알람 상태 출력
+	//fbMFC1Alarm();
+END_IF
 
 // 테스트용 값 bMaintKey -> bMaintKeyTest
 //Allowed a MC(Induction, Bath, Pump, L_Heater) Operation
@@ -98,7 +113,7 @@ ELSE
 		WarningState_A			:= FALSE;
 	END_IF
 	
-	Alarm_TON(IN:=AlarmState_A, PT:=Delay_TIME_A, ET=>Alarm_ET);
+	Alarm_TON(IN:=AlarmState_A, PT:=tAlarmDelay_A, ET=>Alarm_ET);
 	rTrigAlarm(CLK:=Alarm_TON.Q);
 	IF rTrigAlarm.Q	THEN
 		Alarm_TON(IN:=FALSE);
@@ -106,7 +121,7 @@ ELSE
 		AlarmTrig := TRUE;
 	END_IF
 	
-	Warning_TON(IN:=WarningState_A, PT:=Delay_TIME_A, ET=>Warning_ET);
+	Warning_TON(IN:=WarningState_A, PT:=tAlarmDelay_A, ET=>Warning_ET);
 	rTrigWarning(CLK:=Warning_TON.Q);
 	IF rTrigWarning.Q THEN
 		Warning_TON(IN:=FALSE);
@@ -152,7 +167,8 @@ bRecipeEnable := TRUE;
 
 (* Out to Device*)
 GVL_IO.aDigitalOutputIO[3].7 := bPowerResetLED;
-GVL_IO.aDigitalOutputIO[2].4 := bUPSMode;]]></ST>
+GVL_IO.aDigitalOutputIO[2].4 := bUPSMode;
+]]></ST>
     </Implementation>
     <LineIds Name="P90_Interlock">
       <LineId Id="139" Count="0" />
@@ -169,6 +185,17 @@ GVL_IO.aDigitalOutputIO[2].4 := bUPSMode;]]></ST>
       <LineId Id="299" Count="0" />
       <LineId Id="353" Count="1" />
       <LineId Id="322" Count="0" />
+      <LineId Id="392" Count="0" />
+      <LineId Id="389" Count="0" />
+      <LineId Id="391" Count="0" />
+      <LineId Id="393" Count="0" />
+      <LineId Id="406" Count="3" />
+      <LineId Id="404" Count="0" />
+      <LineId Id="411" Count="0" />
+      <LineId Id="410" Count="0" />
+      <LineId Id="414" Count="0" />
+      <LineId Id="412" Count="1" />
+      <LineId Id="394" Count="0" />
       <LineId Id="355" Count="0" />
       <LineId Id="309" Count="0" />
       <LineId Id="144" Count="0" />
@@ -233,6 +260,7 @@ GVL_IO.aDigitalOutputIO[2].4 := bUPSMode;]]></ST>
       <LineId Id="135" Count="0" />
       <LineId Id="179" Count="0" />
       <LineId Id="210" Count="0" />
+      <LineId Id="415" Count="0" />
     </LineIds>
   </POU>
 </TcPlcObject>

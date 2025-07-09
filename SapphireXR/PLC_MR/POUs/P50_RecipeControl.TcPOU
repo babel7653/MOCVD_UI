@@ -47,6 +47,9 @@ END_VAR
 		Hold_On	:= FALSE;
 		Loop_On := FALSE;
 		Rcp.userState := 0;
+		FOR i :=1 TO 4 DO 
+			Rcp.aLoop[i] := -1;
+		END_FOR
 		P92_Maintenance.nCaseSignalTower := 3; // Blue - Idle
 
 	10: //RUN
@@ -95,7 +98,7 @@ END_VAR
 					Wait_On := FALSE;
 					Loop_On := TRUE;
 				END_IF
-				n2 := n2+1;
+
 			ELSE
 				rTrigWait(CLK:=FALSE);
 				//Ramp_On := FALSE;
@@ -121,17 +124,19 @@ END_VAR
 						Rcp.aLoop[2] := Rcp.aLoop[2] + 1;
 					ELSE
 						FOR i :=1 TO 4 DO 
-						Rcp.aLoop[i] := 0;
+						Rcp.aLoop[i] := -1;
 						END_FOR
 						nRcpIndex := nRcpIndex + 1; // Next Recipe Step
 					END_IF
 				ELSE				
 					RCP.cmd_RcpOperation := 50;
 				END_IF
-			END_IF
-			
+			END_IF		
 			P92_Maintenance.nCaseSignalTower := 3;
 		ELSE
+			FOR i :=1 TO 4 DO 
+				Rcp.aLoop[i] := -1;
+			END_FOR
 			RCP.cmd_RcpOperation := 50;
 			P92_Maintenance.nCaseSignalTower := 4;
 		END_IF
@@ -243,6 +248,8 @@ END_CASE
       <LineId Id="251" Count="1" />
       <LineId Id="766" Count="0" />
       <LineId Id="850" Count="0" />
+      <LineId Id="1006" Count="1" />
+      <LineId Id="1005" Count="0" />
       <LineId Id="430" Count="0" />
       <LineId Id="787" Count="0" />
       <LineId Id="706" Count="2" />
@@ -296,8 +303,10 @@ END_CASE
       <LineId Id="760" Count="0" />
       <LineId Id="755" Count="0" />
       <LineId Id="761" Count="0" />
-      <LineId Id="835" Count="0" />
-      <LineId Id="738" Count="3" />
+      <LineId Id="738" Count="1" />
+      <LineId Id="1009" Count="1" />
+      <LineId Id="1008" Count="0" />
+      <LineId Id="740" Count="1" />
       <LineId Id="232" Count="0" />
       <LineId Id="142" Count="0" />
       <LineId Id="7" Count="0" />

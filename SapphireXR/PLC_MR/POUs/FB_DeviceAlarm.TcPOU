@@ -1,0 +1,59 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4026.11">
+  <POU Name="FB_DeviceAlarm" Id="{82e48a33-c1b0-431a-9e0b-7cfce8215d0a}" SpecialFunc="None">
+    <Declaration><![CDATA[//*********************************************************************
+// Function Block: FB_DeviceAlarm
+// Description: 각 디바이스의 편차 초과 알람을 처리합니다.
+// bEnable이 TRUE일 때만 알람 로직이 활성화됩니다.
+//*********************************************************************
+FUNCTION_BLOCK FB_DeviceAlarm
+VAR_INPUT
+	bEnable 		: BOOL; // 디바이스 활성화/비활성화 (TRUE = 활성화)
+	fCurrentValue 	: REAL; //현재값
+	fControlValue 	: REAL; //제어값
+	fMaxValue		: REAL; //최대값
+	fTreshold		: REAL; //편차 허용 임계값
+	tAlarmDelay		: TIME; //알람 지연 시간
+END_VAR
+VAR_OUTPUT
+	bDeviationAlarm	: BOOL; //편차 알람 발생
+	fDeviation		: REAL; // 현재편차(참고용)
+END_VAR
+VAR
+	// 내부 변수 (인스턴스별로 독립적)
+	fbDeviationAlarmTimer : TON; 
+	bDeviationCondition : BOOL; 
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[// bEnable이 TRUE일 때만 알람 로직 실행
+IF bEnable AND (fMaxValue <> 0) THEN
+	//편차 계산(%)
+	fDeviation :=ABS(fCurrentValue - fControlValue)/fMaxValue * 100;
+	//편차 알람 로직(지연 시간 적용)
+	IF fDeviation > fTreshold THEN
+		bDeviationCondition := TRUE;
+	ELSE
+		bDeviationCondition := FALSE;
+	END_IF
+	fbDeviationAlarmTimer(IN:=bDeviationCondition, PT:=tAlarmDelay);
+	bDeviationAlarm := fbDeviationAlarmTimer.Q;
+ELSE
+	// bEnable이 FALSE일 경우, 모든 알람 및 타이머를 비활성화/리셋
+    // Q 출력을 FALSE로 강제하고, IN 입력을 FALSE로 설정하여 타이머를 리셋합니다.
+	bDeviationAlarm := FALSE;
+	fbDeviationAlarmTimer(IN := FALSE, PT := tAlarmDelay); // 타이머 리셋
+	bDeviationCondition := FALSE; // 조건 플래그도 리셋
+	fDeviation := 0.0; // 편차 값도 0으로 초기화 (선택 사항)
+END_IF]]></ST>
+    </Implementation>
+    <LineIds Name="FB_DeviceAlarm">
+      <LineId Id="1" Count="0" />
+      <LineId Id="14" Count="0" />
+      <LineId Id="2" Count="9" />
+      <LineId Id="15" Count="1" />
+      <LineId Id="18" Count="4" />
+      <LineId Id="17" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

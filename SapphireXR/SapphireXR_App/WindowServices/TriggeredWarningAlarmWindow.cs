@@ -6,13 +6,15 @@ namespace SapphireXR_App.WindowServices
 {
     internal static class TriggeredWarningAlarmWindow
     {
-        internal static void Show(PLCService.TriggerType type)
+        internal static void Show(PLCService.TriggerType type, Action onClosed)
         {
-            new TriggeredWarningAlarmView()
+            TriggeredWarningAlarmView triggeredWarningAlarmView = new TriggeredWarningAlarmView()
             {
                 DataContext = new TriggeredWarningAlarmViewModel(type),
                 Topmost = true
-            }.Show();
+            };
+            triggeredWarningAlarmView.Closed += (sender, args) => onClosed();
+            triggeredWarningAlarmView.Show();
         }
     }
 }

@@ -31,32 +31,28 @@ VAR
 	bAirPressureSensor		: BOOL;
 	bWaterFlowSensor		: BOOL;
 	
-	AlarmState_A			: BOOL;
-	WarningState_A			: BOOL;
-	AlarmState_D			: BOOL;
-	WarningState_D			: BOOL;
-	Alarm_TON				: TON;
-	Warning_TON				: TON;
-	rTrigAlarm				: R_TRIG;
-	Alarm_ET				: TIME;
-	rTrigWarning			: R_TRIG;
-	Warning_ET				: TIME;
-	
 	tAlarmDelay_A			: TIME; //아날로그 디바이스 지연시간
 	tAlarmDelay_D			: TIME; //디지털 디바이스 지연시간
+	
 	fbDeviationCheck		:ARRAY[1..29] OF FB_DeviationCheck;
 	wDeviceAlarmEnable		: DWORD;
 	wDeviceWarningEnable	: DWORD;
 	bDeviationAlarm			: BOOL;
 	bDeviationWarning		: BOOL;
-	wDeviceAlarm			: DWORD;
-	wDeviceWarning			: DWORD;
+	wDeviationAlarm			: DWORD;
+	wDeviationWarning		: DWORD;
 
-
-
+	fbSensorLimitCheck		:ARRAY[1..4] OF FB_SensorLimitCheck;
+	wLimitAlarmEnable		: DWORD;
+	wLimitWarningEnable		: DWORD;
+	bLimitAlarm				: BOOL;
+	bLimitWarning			: BOOL;
+	wLimitAlarm				: DWORD;
+	wLimitWarning			: DWORD;
+	
 	bMaintKeyTest			: BOOL; //Test Variable
 	i	: INT;
-	j : int;
+	j 	: INT;
 END_VAR
 ]]></Declaration>
     <Implementation>
@@ -81,12 +77,13 @@ tAlarmDelay_D := REAL_TO_TIME(GVL_IO.aInterlockSet[4]*1000);
 
 //Controller Deviation Monitoring - MFC/EPC
 IF (bMaintKey = FALSE) THEN
+	
 	FOR i := 1 TO 26 DO
 		wDeviceAlarmEnable := SHR(GVL_IO.aInterlockEnable[2], (i+2)); //오늘쪽 쉬프트 연산
 		wDeviceWarningEnable := SHR(GVL_IO.aInterlockEnable[3], (i+2));
 		fbDeviationCheck[i](
 			bAlarmEnable := wDeviceAlarmEnable.0,
-			bWaringEnable := wDeviceWarningEnable.0,
+			bWarningEnable := wDeviceWarningEnable.0,
 			fCurrentValue := GVL_IO.aController_PV[i],
 			fControlValue := GVL_IO.aController_CV[i],
 			fMaxValue := GVL_IO.aMaxValueController[i],
@@ -99,44 +96,34 @@ IF (bMaintKey = FALSE) THEN
 		IF bDeviationAlarm THEN		
 			GVL_IO.aInterlock[1].0 := TRUE; //Alarm Trig
 			P92_Maintenance.nCaseSignalTower := 1; // Signal Tower RED - Alarm
-			wDeviceAlarm := ROR(GVL_IO.aInterlock[3], (i+2));
-			wDeviceAlarm.0 := TRUE;
-			GVL_IO.aInterlock[3] := ROL(wDeviceAlarm, (i+2));
+			wDeviationAlarm := ROR(GVL_IO.aInterlock[3], (i+2));
+			wDeviationAlarm.0 := TRUE;
+			GVL_IO.aInterlock[3] := ROL(wDeviationAlarm, (i+2));
 		ELSE
-			wDeviceAlarm := ROR(GVL_IO.aInterlock[3], (i+2));
-			wDeviceAlarm.0 := FALSE;
-			GVL_IO.aInterlock[3] := ROL(wDeviceAlarm, (i+2));	
+			wDeviationAlarm := ROR(GVL_IO.aInterlock[3], (i+2));
+			wDeviationAlarm.0 := FALSE;
+			GVL_IO.aInterlock[3] := ROL(wDeviationAlarm, (i+2));	
 		END_IF
 		
 		IF bDeviationWarning THEN
 			GVL_IO.aInterlock[1].1 := TRUE; // Warning Trig
 			P92_Maintenance.nCaseSignalTower := 2; // Signal Tower Yellow - Warning
-			wDeviceWarning := ROR(GVL_IO.aInterlock[5], (i+2));
-			wDeviceWarning.0 := TRUE;
-			GVL_IO.aInterlock[5] := ROL(wDeviceWarning, (i+2));
+			wDeviationWarning := ROR(GVL_IO.aInterlock[5], (i+2));
+			wDeviationWarning.0 := TRUE;
+			GVL_IO.aInterlock[5] := ROL(wDeviationWarning, (i+2));
 		ELSE
-			wDeviceWarning := ROR(GVL_IO.aInterlock[5], (i+2));
-			wDeviceWarning.0 := FALSE;
-			GVL_IO.aInterlock[5] := ROL(wDeviceWarning, (i+2));
-		END_IF
-	
-		IF GVL_IO.aInterlockEnable[1].0 THEN //알람 리셋 버턴을 눌렀을 때
-			GVL_IO.aInterlock[1].0 := FALSE; //Alarm Trig Reset
-			P92_Maintenance.nCaseSignalTower := 4; // Signal Tower Blue - Idle
-		END_IF
-		IF GVL_IO.aInterlockEnable[1].1 THEN //주의 리셋 버턴을 눌렀을 때
-			GVL_IO.aInterlock[1].1 := FALSE; //Warning Trig Reset
-			P92_Maintenance.nCaseSignalTower := 4; // Signal Tower Blue - Idle
+			wDeviationWarning := ROR(GVL_IO.aInterlock[5], (i+2));
+			wDeviationWarning.0 := FALSE;
+			GVL_IO.aInterlock[5] := ROL(wDeviationWarning, (i+2));
 		END_IF
 	END_FOR
-	
 	//Controller Deviation Monitoring - Temp, Pressure, Rotation
 	FOR i := 27 TO 29 DO
 		wDeviceAlarmEnable := SHR(GVL_IO.aInterlockEnable[2], (i-27)); //오늘쪽 쉬프트 연산, -27은 어레이 변수 옵셋값
 		wDeviceWarningEnable := SHR(GVL_IO.aInterlockEnable[3], (i-27));
 		fbDeviationCheck[i](
 			bAlarmEnable := wDeviceAlarmEnable.0,
-			bWaringEnable := wDeviceWarningEnable.0,
+			bWarningEnable := wDeviceWarningEnable.0,
 			fCurrentValue := GVL_IO.aController_PV[i],
 			fControlValue := GVL_IO.aController_CV[i],
 			fMaxValue := GVL_IO.aMaxValueController[i],
@@ -149,36 +136,97 @@ IF (bMaintKey = FALSE) THEN
 		IF bDeviationAlarm THEN		
 			GVL_IO.aInterlock[1].0 := TRUE; //Alarm Trig
 			P92_Maintenance.nCaseSignalTower := 1; // Signal Tower RED - Alarm
-			wDeviceAlarm := ROR(GVL_IO.aInterlock[3], (i-27));
-			wDeviceAlarm.0 := TRUE;
-			GVL_IO.aInterlock[3] := ROL(wDeviceAlarm, (i-27));
+			wDeviationAlarm := ROR(GVL_IO.aInterlock[3], (i-27));
+			wDeviationAlarm.0 := TRUE;
+			GVL_IO.aInterlock[3] := ROL(wDeviationAlarm, (i-27));
 		ELSE
-			wDeviceAlarm := ROR(GVL_IO.aInterlock[3], (i-27));
-			wDeviceAlarm.0 := FALSE;
-			GVL_IO.aInterlock[3] := ROL(wDeviceAlarm, (i-27));
+			wDeviationAlarm := ROR(GVL_IO.aInterlock[3], (i-27));
+			wDeviationAlarm.0 := FALSE;
+			GVL_IO.aInterlock[3] := ROL(wDeviationAlarm, (i-27));
 		END_IF
 		
 		IF bDeviationWarning THEN
 			GVL_IO.aInterlock[1].1 := TRUE; // Warning Trig
 			P92_Maintenance.nCaseSignalTower := 2; // Signal Tower Yellow - Warning
-			wDeviceWarning := ROR(GVL_IO.aInterlock[5], (i-27));
-			wDeviceWarning.0 := TRUE;
-			GVL_IO.aInterlock[5] := ROL(wDeviceWarning, (i-27));
+			wDeviationWarning := ROR(GVL_IO.aInterlock[5], (i-27));
+			wDeviationWarning.0 := TRUE;
+			GVL_IO.aInterlock[5] := ROL(wDeviationWarning, (i-27));
 		ELSE
-			wDeviceWarning := ROR(GVL_IO.aInterlock[5], (i-27));
-			wDeviceWarning.0 := FALSE;
-			GVL_IO.aInterlock[5] := ROL(wDeviceWarning, (i-27));
+			wDeviationWarning := ROR(GVL_IO.aInterlock[5], (i-27));
+			wDeviationWarning.0 := FALSE;
+			GVL_IO.aInterlock[5] := ROL(wDeviationWarning, (i-27));
+		END_IF	
+	END_FOR
+	//Gas Pressure Alarm N2, H2, NH3, SiH4
+	FOR i := 1 TO 4 DO
+		wLimitAlarmEnable := SHR(GVL_IO.aInterlockEnable[4], (i-1)); //오늘쪽 쉬프트 연산, 은 어레이 변수 옵셋값
+		wLimitWarningEnable := SHR(GVL_IO.aInterlockEnable[5], (i-1));
+		fbSensorLimitCheck[i](
+			bAlarmEnable := wLimitAlarmEnable.0,
+			bWarningEnable := wLimitWarningEnable.0,
+			fCurrentValue := GVL_IO.aMonitoring_PV[(i+3)],
+			fAlarmTreshold := GVL_IO.aInterlockSet[5],
+			fWarningTreshold := GVL_IO.aInterlockSet[6],
+			tAlarmDelay := tAlarmDelay_D,
+			bLimitAlarm => bLimitAlarm, //알람 출력
+			bLimitWarning => bLimitWarning //주의(Warning) 출력
+			);	
+		IF bLimitAlarm THEN		
+			GVL_IO.aInterlock[1].0 := TRUE; //Alarm Trig
+			P92_Maintenance.nCaseSignalTower := 1; // Signal Tower RED - Alarm
+			//팝업 표시
+			wLimitAlarm := ROR(GVL_IO.aInterlock[2], (i-1));
+			wLimitAlarm.0 := TRUE;
+			GVL_IO.aInterlock[2] := ROL(wLimitAlarm, (i-1));
+			//대시보드 표시
+			wLimitAlarm := ROR(GVL_IO.aInterlock[1], (i*2));
+			wLimitAlarm.0 := TRUE;
+			GVL_IO.aInterlock[1] := ROL(wLimitAlarm, (i*2));
+		ELSE
+			//팝업 표시
+			wLimitAlarm := ROR(GVL_IO.aInterlock[2], (i-1));
+			wLimitAlarm.0 := FALSE;
+			GVL_IO.aInterlock[2] := ROL(wLimitAlarm, (i-1));
+			//대시보드 표시
+			wLimitAlarm := ROR(GVL_IO.aInterlock[1], (i*2));
+			wLimitAlarm.0 := FALSE;
+			GVL_IO.aInterlock[1] := ROL(wLimitAlarm, (i*2));
 		END_IF
-	
-		IF GVL_IO.aInterlockEnable[1].0 THEN //알람 리셋 버턴을 눌렀을 때
-			GVL_IO.aInterlock[1].0 := FALSE; //Alarm Trig Reset
-			P92_Maintenance.nCaseSignalTower := 4; // Signal Tower Blue - Idle
-		END_IF
-		IF GVL_IO.aInterlockEnable[1].1 THEN //주의 리셋 버턴을 눌렀을 때
-			GVL_IO.aInterlock[1].1 := FALSE; //Warmomg Trig Reset
-			P92_Maintenance.nCaseSignalTower := 4; // Signal Tower Blue - Idle
+		
+		IF bLimitWarning THEN		
+			GVL_IO.aInterlock[1].1 := TRUE; //Warning Trig
+			P92_Maintenance.nCaseSignalTower := 2; // Signal Tower YELLOW - Warning
+			//팝업 표시
+			wLimitWarning := ROR(GVL_IO.aInterlock[4], (i-1));
+			wLimitWarning.0 := TRUE;
+			GVL_IO.aInterlock[4] := ROL(wLimitWarning, (i-1));
+			//대시보드 표시
+			wLimitWarning := ROR(GVL_IO.aInterlock[1], (i*2)+1);
+			wLimitWarning.0 := TRUE;
+			GVL_IO.aInterlock[1] := ROL(wLimitWarning, (i*2)+1);
+		ELSE
+			//팝업 표시
+			wLimitWarning := ROR(GVL_IO.aInterlock[4], (i-1));
+			wLimitWarning.0 := FALSE;
+			GVL_IO.aInterlock[4] := ROL(wLimitWarning, (i-1));
+			//대시보드 표시
+			wLimitWarning := ROR(GVL_IO.aInterlock[1], (i*2)+1);
+			wLimitWarning.0 := FALSE;
+			GVL_IO.aInterlock[1] := ROL(wLimitWarning, (i*2)+1);
 		END_IF
 	END_FOR
+	
+	IF GVL_IO.aInterlockEnable[1].0 THEN //알람 리셋 버턴을 눌렀을 때
+		GVL_IO.aInterlock[1].0 := FALSE; //Alarm Trig Reset
+		GVL_IO.aInterlockEnable[1].0 := FALSE; //버턴 초기화
+		P92_Maintenance.nCaseSignalTower := 4; // Signal Tower Blue - Idle
+	END_IF
+	IF GVL_IO.aInterlockEnable[1].1 THEN //주의 리셋 버턴을 눌렀을 때
+		GVL_IO.aInterlock[1].1 := FALSE; //Warmomg Trig Reset
+		GVL_IO.aInterlockEnable[1].1 := FALSE; //버턴 초기화
+		P92_Maintenance.nCaseSignalTower := 4; // Signal Tower Blue - Idle
+	END_IF
+	
 ELSE
 	//매인터넌스 키가 ON 되었을 때 MC(Induction, Bath, Pump, L_Heater) 조작 허용
 	P92_Maintenance.nCaseSignalTower := 4; // Signal Tower Blue - Idle
@@ -188,62 +236,17 @@ ELSE
 	GVL_IO.aDigitalOutputIO[3].3 := bLineHeaterMC;
 END_IF
 
-
-//IF P90_Interlock.bMaintKey THEN
-
-	//Gas Pressure Alarm H2
-	IF GVL_IO.aMonitoring_PV_Test[4] < GVL_IO.aInterlockSet[5] THEN
-		GVL_IO.aInterlock[1].2 	:= TRUE; //N2 Pressure Low Alarm
-		GVL_IO.aInterlock[2].0  := TRUE; // Alarm Pop-up
-		GVL_IO.aInterlock[1].3 	:= FALSE;
-		AlarmState_A	:= TRUE;
-	ELSIF (GVL_IO.aInterlockSet[5] <= GVL_IO.aMonitoring_PV_Test[4]) AND (GVL_IO.aMonitoring_PV_Test[4] < GVL_IO.aInterlockSet[6]) THEN
-		GVL_IO.aInterlock[1].2 	:= FALSE;
-		GVL_IO.aInterlock[1].3 	:= TRUE; //N2 Pressure Low Warning
-		GVL_IO.aInterlock[4].0	:= TRUE;	// Warning Pop-up
-		WarningState_A	:= TRUE;
-	ELSE
-		GVL_IO.aInterlock[1].2 	:= FALSE;
-		GVL_IO.aInterlock[2].0  := FALSE; // Alarm Pop-up
-		GVL_IO.aInterlock[1].3 	:= FALSE;
-		GVL_IO.aInterlock[4].0	:= FALSE;	// Warning Pop-up
-		AlarmState_A			:= FALSE;
-		WarningState_A			:= FALSE;
-	END_IF
-	
-	Alarm_TON(IN:=AlarmState_A, PT:=tAlarmDelay_A, ET=>Alarm_ET);
-	rTrigAlarm(CLK:=Alarm_TON.Q);
-	IF rTrigAlarm.Q	THEN
-		Alarm_TON(IN:=FALSE);
-		AlarmState_A :=FALSE;
-		AlarmTrig := TRUE;
-	END_IF
-	
-	Warning_TON(IN:=WarningState_A, PT:=tAlarmDelay_A, ET=>Warning_ET);
-	rTrigWarning(CLK:=Warning_TON.Q);
-	IF rTrigWarning.Q THEN
-		Warning_TON(IN:=FALSE);
-		WarningState_A :=FALSE;
-		WarningTrig := TRUE;
-	END_IF
-	
-
-
-//Alarm Trig Reset
-IF GVL_IO.aInterlockEnable[1].0 THEN
-	GVL_IO.aInterlockEnable[1].0 := FALSE; // Reset Button Toggle
-	GVL_IO.aInterlock[2] := 0; // Alarm Popup Reset
-	GVL_IO.aInterlock[3] := 0; // Alarm Popup Reset
-	AlarmTrig := FALSE;
-END_IF
-
-//Warning Trig Reset
-IF GVL_IO.aInterlockEnable[1].1 THEN
-	GVL_IO.aInterlockEnable[1].1 := FALSE; // Reset Button Toggle
-	GVL_IO.aInterlock[4] := 0; // Alarm Popup Reset
-	GVL_IO.aInterlock[5] := 0; // Alarm Popup Reset
-	WarningTrig := FALSE;
-END_IF
+// //Alarm Trig Reset
+// IF GVL_IO.aInterlockEnable[1].0 THEN //알람 리셋 버턴을 눌렀을 때
+// 	GVL_IO.aInterlock[1].0 := FALSE; //Alarm Trig Reset
+// 	P92_Maintenance.nCaseSignalTower := 4; // Signal Tower Blue - Idle
+// END_IF
+// 
+// //Warning Trig Reset
+// IF GVL_IO.aInterlockEnable[1].1 THEN //주의 리셋 버턴을 눌렀을 때
+// 	GVL_IO.aInterlock[1].1 := FALSE; //Warning Trig Reset
+// 	P92_Maintenance.nCaseSignalTower := 4; // Signal Tower Blue - Idle
+// END_IF
 
 // For Test Value
 bSafetyGasState := TRUE;
@@ -287,51 +290,38 @@ GVL_IO.aDigitalOutputIO[2].4 := bUPSMode;
       <LineId Id="478" Count="0" />
       <LineId Id="438" Count="0" />
       <LineId Id="653" Count="0" />
-      <LineId Id="656" Count="96" />
+      <LineId Id="1038" Count="0" />
+      <LineId Id="656" Count="38" />
+      <LineId Id="705" Count="38" />
       <LineId Id="654" Count="0" />
+      <LineId Id="906" Count="25" />
+      <LineId Id="951" Count="2" />
+      <LineId Id="950" Count="0" />
+      <LineId Id="954" Count="0" />
+      <LineId Id="932" Count="3" />
+      <LineId Id="1018" Count="0" />
+      <LineId Id="936" Count="2" />
+      <LineId Id="955" Count="0" />
+      <LineId Id="958" Count="1" />
+      <LineId Id="957" Count="0" />
+      <LineId Id="960" Count="0" />
+      <LineId Id="939" Count="3" />
+      <LineId Id="966" Count="6" />
+      <LineId Id="945" Count="1" />
+      <LineId Id="905" Count="0" />
+      <LineId Id="1036" Count="0" />
+      <LineId Id="1027" Count="8" />
+      <LineId Id="1026" Count="0" />
+      <LineId Id="1037" Count="0" />
       <LineId Id="753" Count="0" />
       <LineId Id="759" Count="0" />
       <LineId Id="755" Count="3" />
       <LineId Id="754" Count="0" />
       <LineId Id="655" Count="0" />
-      <LineId Id="760" Count="0" />
-      <LineId Id="144" Count="0" />
-      <LineId Id="20" Count="0" />
-      <LineId Id="313" Count="2" />
-      <LineId Id="318" Count="0" />
-      <LineId Id="362" Count="0" />
-      <LineId Id="325" Count="0" />
-      <LineId Id="335" Count="0" />
-      <LineId Id="319" Count="1" />
-      <LineId Id="326" Count="0" />
-      <LineId Id="363" Count="0" />
-      <LineId Id="336" Count="0" />
-      <LineId Id="327" Count="1" />
-      <LineId Id="365" Count="0" />
-      <LineId Id="329" Count="0" />
-      <LineId Id="366" Count="0" />
-      <LineId Id="356" Count="1" />
-      <LineId Id="321" Count="0" />
-      <LineId Id="330" Count="0" />
-      <LineId Id="349" Count="2" />
-      <LineId Id="367" Count="1" />
-      <LineId Id="352" Count="0" />
-      <LineId Id="346" Count="1" />
-      <LineId Id="381" Count="1" />
-      <LineId Id="384" Count="3" />
-      <LineId Id="383" Count="0" />
-      <LineId Id="388" Count="0" />
-      <LineId Id="25" Count="0" />
-      <LineId Id="358" Count="0" />
-      <LineId Id="361" Count="0" />
-      <LineId Id="334" Count="0" />
-      <LineId Id="359" Count="0" />
-      <LineId Id="370" Count="0" />
-      <LineId Id="372" Count="0" />
-      <LineId Id="369" Count="0" />
-      <LineId Id="360" Count="0" />
-      <LineId Id="374" Count="6" />
-      <LineId Id="339" Count="0" />
+      <LineId Id="974" Count="3" />
+      <LineId Id="980" Count="5" />
+      <LineId Id="988" Count="0" />
+      <LineId Id="973" Count="0" />
       <LineId Id="138" Count="0" />
       <LineId Id="50" Count="0" />
       <LineId Id="33" Count="0" />

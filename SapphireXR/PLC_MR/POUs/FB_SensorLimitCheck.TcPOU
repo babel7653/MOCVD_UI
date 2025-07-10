@@ -9,7 +9,7 @@
 FUNCTION_BLOCK FB_SensorLimitCheck
 VAR_INPUT
 	bAlarmEnable	: BOOL; //디바이스 활성화/비활성화 (TRUE = 활성화)
-	bWaringEnable	: BOOL;
+	bWarningEnable	: BOOL;
 	fCurrentValue 	: REAL; //현재값
 	fAlarmTreshold	: REAL; //알람 허용 임계값
 	fWarningTreshold : REAL; //경고 허용 임계값
@@ -30,7 +30,7 @@ END_VAR]]></Declaration>
       <ST><![CDATA[// bAlarmEnable이 TRUE일 때만 알람 로직 실행
 IF bAlarmEnable THEN
 	//허용값 알람 로직(지연 시간 적용)
-	IF fCurrentValue > fAlarmTreshold THEN
+	IF fCurrentValue < fAlarmTreshold THEN
 		bLimitAlarmCondition := TRUE;
 	ELSE
 		bLimitAlarmCondition := FALSE;
@@ -46,9 +46,9 @@ ELSE
 END_IF
 
 // bWarningEnable이 TRUE일 때만 알람 로직 실행
-IF bWaringEnable THEN
+IF bWarningEnable THEN
 	//허용값 주의 로직(지연 시간 적용)
-	IF (fCurrentValue > fWarningTreshold) AND (fCurrentValue <= fAlarmTreshold ) THEN
+	IF (fCurrentValue < fWarningTreshold) AND (fCurrentValue >= fAlarmTreshold ) THEN
 		bLimitWarningCondition := TRUE;
 	ELSE
 		bLimitWarningCondition := FALSE;

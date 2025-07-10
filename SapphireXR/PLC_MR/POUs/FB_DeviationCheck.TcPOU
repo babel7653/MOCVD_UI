@@ -9,7 +9,7 @@
 FUNCTION_BLOCK FB_DeviationCheck
 VAR_INPUT
 	bAlarmEnable	: BOOL; // 디바이스 활성화/비활성화 (TRUE = 활성화)
-	bWaringEnable	: BOOL;
+	bWarningEnable	: BOOL;
 	fCurrentValue 	: REAL; //현재값
 	fControlValue 	: REAL; //제어값
 	fMaxValue		: REAL; //최대값
@@ -53,7 +53,7 @@ ELSE
 END_IF
 
 // bWarningEnable이 TRUE일 때만 알람 로직 실행
-IF bWaringEnable AND (fMaxValue <> 0) THEN
+IF bWarningEnable AND (fMaxValue <> 0) THEN
 	//편차 계산(%)
 	fDeviationWarning :=ABS(fCurrentValue - fControlValue)/fMaxValue * 100;
 	//편차 알람 로직(지연 시간 적용)

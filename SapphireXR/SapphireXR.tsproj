@@ -161,7 +161,7 @@
 		</System>
 		<Plc>
 			<Project GUID="{8B546B3A-EC4D-41CC-9C57-49402FFC4072}" Name="PLC_MR" PrjFilePath="PLC_MR\PLC_MR.plcproj" TmcFilePath="PLC_MR\PLC_MR.tmc" ReloadTmc="true" AmsPort="851" FileArchiveSettings="#x000e" SymbolicMapping="true">
-				<Instance Id="#x08502000" TcSmClass="TComPlcObjDef" KeepUnrestoredLinks="2" TmcHash="{C74E26C6-E4DD-3C74-B6AF-90D412497671}" TmcPath="PLC_MR\PLC_MR.tmc">
+				<Instance Id="#x08502000" TcSmClass="TComPlcObjDef" KeepUnrestoredLinks="2" TmcHash="{930CCFE4-022A-6C72-D1CA-B23F27850A3B}" TmcPath="PLC_MR\PLC_MR.tmc">
 					<Name>PLC_MR Instance</Name>
 					<CLSID ClassFactory="TcPlc30">{08500001-0000-0000-F000-000000000064}</CLSID>
 					<Vars VarGrpType="2" ContextId="1" AreaNo="17">

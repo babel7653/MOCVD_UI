@@ -91,7 +91,7 @@
                                     </Grid.Margin>
                                     <Rectangle RadiusX="{StaticResource r_5}" RadiusY="{StaticResource r_5}" Stroke="{StaticResource Gray_300}"></Rectangle>
                                     <StackPanel Orientation="Vertical" Margin="{StaticResource p_5_sqrt}">
-                                        <Label Style="{StaticResource SectionTitle}"  Content="Logical Interlock" />
+                                        <Label Style="{StaticResource SectionTitle}"  Content="Alarm Setting (Analog)" />
                                         <StackPanel Grid.Row="1" Orientation="Horizontal">
                                             <StackPanel.Margin>
                                                 <Thickness Bottom="{StaticResource p_2}" />

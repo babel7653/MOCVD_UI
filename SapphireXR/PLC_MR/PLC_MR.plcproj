@@ -69,16 +69,16 @@
     <Compile Include="PlcTask_Standard.TcTTO">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="POUs\FB_DeviceAlarm.TcPOU">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="POUs\FB_GaugeLimit.TcPOU">
+    <Compile Include="POUs\FB_DeviationCheck.TcPOU">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="POUs\FB_RampGenerator.TcPOU">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="POUs\FB_RecipeSequencer.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="POUs\FB_SensorLimitCheck.TcPOU">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="POUs\MAIN.TcPOU">

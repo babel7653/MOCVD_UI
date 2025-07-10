@@ -1,12 +1,12 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4026.11">
-  <POU Name="FB_DeviceAlarm" Id="{82e48a33-c1b0-431a-9e0b-7cfce8215d0a}" SpecialFunc="None">
+  <POU Name="FB_DeviationCheck" Id="{8c7477eb-6bd1-44a7-8478-0fc84a7a7e4d}" SpecialFunc="None">
     <Declaration><![CDATA[//*********************************************************************
-// Function Block: FB_DeviceAlarm
+// Function Block: FB_DeviationCheck
 // Description: 각 디바이스의 편차 초과 알람을 처리합니다.
 // bEnable이 TRUE일 때만 알람 로직이 활성화됩니다.
 //*********************************************************************
-FUNCTION_BLOCK FB_DeviceAlarm
+FUNCTION_BLOCK FB_DeviationCheck
 VAR_INPUT
 	bAlarmEnable	: BOOL; // 디바이스 활성화/비활성화 (TRUE = 활성화)
 	bWaringEnable	: BOOL;
@@ -52,7 +52,7 @@ ELSE
 	fDeviationAlarm := 0.0; // 편차 값도 0으로 초기화 (선택 사항)
 END_IF
 
-// bAlarmEnable이 TRUE일 때만 알람 로직 실행
+// bWarningEnable이 TRUE일 때만 알람 로직 실행
 IF bWaringEnable AND (fMaxValue <> 0) THEN
 	//편차 계산(%)
 	fDeviationWarning :=ABS(fCurrentValue - fControlValue)/fMaxValue * 100;
@@ -71,20 +71,10 @@ ELSE
 	fbDeviationWarningTimer(IN := FALSE, PT := tAlarmDelay); // 타이머 리셋
 	bDeviationWarningCondition := FALSE; // 조건 플래그도 리셋
 	fDeviationWarning := 0.0; // 편차 값도 0으로 초기화 (선택 사항)
-END_IF
-]]></ST>
+END_IF]]></ST>
     </Implementation>
-    <LineIds Name="FB_DeviceAlarm">
-      <LineId Id="1" Count="0" />
-      <LineId Id="24" Count="0" />
-      <LineId Id="66" Count="0" />
-      <LineId Id="27" Count="14" />
-      <LineId Id="23" Count="0" />
-      <LineId Id="62" Count="0" />
-      <LineId Id="42" Count="0" />
-      <LineId Id="44" Count="17" />
-      <LineId Id="43" Count="0" />
-      <LineId Id="17" Count="0" />
+    <LineIds Name="FB_DeviationCheck">
+      <LineId Id="1" Count="39" />
     </LineIds>
   </POU>
 </TcPlcObject>

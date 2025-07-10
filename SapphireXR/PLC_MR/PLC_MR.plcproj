@@ -72,6 +72,9 @@
     <Compile Include="POUs\FB_DeviationCheck.TcPOU">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="POUs\FB_FaultCheck.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="POUs\FB_RampGenerator.TcPOU">
       <SubType>Code</SubType>
     </Compile>

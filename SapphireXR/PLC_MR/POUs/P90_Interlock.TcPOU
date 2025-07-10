@@ -50,6 +50,14 @@ VAR
 	wLimitAlarm				: DWORD;
 	wLimitWarning			: DWORD;
 	
+	fbFaultCheck			:ARRAY[1..6] OF FB_FaultCheck;
+	wAlarmEnable			: DWORD;
+	wWarningEnable			: DWORD;
+	bFaultAlarm				: BOOL;
+	bFaultWarning			: BOOL;
+	wAlarm					: DWORD;
+	wWarning				: DWORD;
+	
 	bMaintKeyTest			: BOOL; //Test Variable
 	i	: INT;
 	j 	: INT;
@@ -216,6 +224,53 @@ IF (bMaintKey = FALSE) THEN
 		END_IF
 	END_FOR
 	
+	//Cooling Water, Over
+	FOR i := 5 TO 8 DO
+		wLimitAlarmEnable := SHR(GVL_IO.aInterlockEnable[4], (i-1)); //오늘쪽 쉬프트 연산, 은 어레이 변수 옵셋값
+		wLimitWarningEnable := SHR(GVL_IO.aInterlockEnable[5], (i-1));
+
+		fbSensorLimitCheck[i](
+			bAlarmEnable := wLimitAlarmEnable.0,
+			bWarningEnable := wLimitWarningEnable.0,
+			fCurrentValue := GVL_IO.aMonitoring_PV[(i+3)],
+			fAlarmTreshold := (GVL_IO.aInterlockSet[i+2] + 10),
+			fWarningTreshold := GVL_IO.aInterlockSet[i+2],
+			tAlarmDelay := tAlarmDelay_D,
+			bLimitAlarm => bLimitAlarm, //알람 출력
+			bLimitWarning => bLimitWarning //주의(Warning) 출력
+			);	
+	END_FOR
+
+	//Device Fault Check - Pneumatic, Heater, Pump, Motor, GC Door, RC Door
+	FOR i := 1 TO 6 DO
+		wAlarmEnable := SHR(GVL_IO.aInterlockEnable[4], (i+7));
+		wWarningEnable := SHR(GVL_IO.aInterlockEnable[5], (i+7));
+		fbFaultCheck[i](
+			bAlarmEnable := wAlarmEnable.0,
+			bWarningEnable := wWarningEnable.0,
+			bCurrentState := ,
+			tAlarmDelay := tAlarmDelay_D,
+			bAlarm => bFaultAlarm,
+			bWarning => bFaultWarning
+			);
+		IF bFaultAlarm THEN
+			GVL_IO.aInterlock[1].0 := TRUE; //Alarm Trig
+			P92_Maintenance.nCaseSignalTower := 1; // Signal Tower RED - Alarm
+			//팝업 표시
+			wAlarm := ROR(GVL_IO.aInterlock[2], (i+3));
+			wAlarm.0 := TRUE;
+			GVL_IO.aInterlock[2] := ROL(wAlarm, (i+3));
+		END_IF
+		IF bFaultWarning THEN
+			GVL_IO.aInterlock[1].1 := TRUE; //Warning Trig
+			P92_Maintenance.nCaseSignalTower := 2; // Signal Tower YELLOW - Warning
+			//팝업 표시
+			wAlarm := ROR(GVL_IO.aInterlock[4], (i+3));
+			wAlarm.0 := TRUE;
+			GVL_IO.aInterlock[4] := ROL(wAlarm, (i+3));
+		END_IF
+	END_FOR
+	
 	IF GVL_IO.aInterlockEnable[1].0 THEN //알람 리셋 버턴을 눌렀을 때
 		GVL_IO.aInterlock[1].0 := FALSE; //Alarm Trig Reset
 		GVL_IO.aInterlockEnable[1].0 := FALSE; //버턴 초기화
@@ -236,17 +291,6 @@ ELSE
 	GVL_IO.aDigitalOutputIO[3].3 := bLineHeaterMC;
 END_IF
 
-// //Alarm Trig Reset
-// IF GVL_IO.aInterlockEnable[1].0 THEN //알람 리셋 버턴을 눌렀을 때
-// 	GVL_IO.aInterlock[1].0 := FALSE; //Alarm Trig Reset
-// 	P92_Maintenance.nCaseSignalTower := 4; // Signal Tower Blue - Idle
-// END_IF
-// 
-// //Warning Trig Reset
-// IF GVL_IO.aInterlockEnable[1].1 THEN //주의 리셋 버턴을 눌렀을 때
-// 	GVL_IO.aInterlock[1].1 := FALSE; //Warning Trig Reset
-// 	P92_Maintenance.nCaseSignalTower := 4; // Signal Tower Blue - Idle
-// END_IF
 
 // For Test Value
 bSafetyGasState := TRUE;
@@ -309,7 +353,27 @@ GVL_IO.aDigitalOutputIO[2].4 := bUPSMode;
       <LineId Id="966" Count="6" />
       <LineId Id="945" Count="1" />
       <LineId Id="905" Count="0" />
+      <LineId Id="1062" Count="0" />
       <LineId Id="1036" Count="0" />
+      <LineId Id="1039" Count="0" />
+      <LineId Id="1043" Count="1" />
+      <LineId Id="1057" Count="0" />
+      <LineId Id="1045" Count="8" />
+      <LineId Id="1041" Count="1" />
+      <LineId Id="1060" Count="1" />
+      <LineId Id="1040" Count="0" />
+      <LineId Id="1065" Count="0" />
+      <LineId Id="1067" Count="1" />
+      <LineId Id="1070" Count="0" />
+      <LineId Id="1072" Count="4" />
+      <LineId Id="1071" Count="0" />
+      <LineId Id="1078" Count="0" />
+      <LineId Id="1081" Count="4" />
+      <LineId Id="1079" Count="1" />
+      <LineId Id="1087" Count="6" />
+      <LineId Id="1086" Count="0" />
+      <LineId Id="1066" Count="0" />
+      <LineId Id="1064" Count="0" />
       <LineId Id="1027" Count="8" />
       <LineId Id="1026" Count="0" />
       <LineId Id="1037" Count="0" />
@@ -318,10 +382,7 @@ GVL_IO.aDigitalOutputIO[2].4 := bUPSMode;
       <LineId Id="755" Count="3" />
       <LineId Id="754" Count="0" />
       <LineId Id="655" Count="0" />
-      <LineId Id="974" Count="3" />
-      <LineId Id="980" Count="5" />
-      <LineId Id="988" Count="0" />
-      <LineId Id="973" Count="0" />
+      <LineId Id="1054" Count="0" />
       <LineId Id="138" Count="0" />
       <LineId Id="50" Count="0" />
       <LineId Id="33" Count="0" />

@@ -138,6 +138,8 @@ namespace SapphireXR_App.ViewModels
         private bool? _vaccumPumpPowerOnOff = null;
         [ObservableProperty]
         private bool? _lineHeaterPowerOnOff = null;
+        [ObservableProperty]
+        private bool _isAnalogAlarmHighlight = false;
 
         private AppClosingSubscriber appClosingSubscriber;
         private IOStateListSubscriber iOStateListSubscriber;

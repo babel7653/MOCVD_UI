@@ -277,6 +277,12 @@ namespace SapphireXR_App.ViewModels
                             break;
                     }
                 }
+
+                switch(args.PropertyName)
+                {
+                    case nameof(IsAnalogAlarmHighlight):
+                        break;
+                }
             };
         }
 
@@ -381,6 +387,66 @@ namespace SapphireXR_App.ViewModels
             if (PLCService.Connected == PLCConnection.Connected)
             {
                 initializeSettingToPLC();
+            }
+        }
+
+        [RelayCommand]
+        private void AnalogDeviceIOAllAlarmCheck()
+        {
+            if (lAnalogDeviceIO != null)
+            {
+                foreach (var analogIO in lAnalogDeviceIO)
+                {
+                    if (analogIO != null)
+                    {
+                        analogIO.AlarmSet = !analogIO.AlarmSet;
+                    }
+                }
+            }
+        }
+
+        [RelayCommand]
+        private void AnalogDeviceIOAllWarningCheck()
+        {
+            if (lAnalogDeviceIO != null)
+            {
+                foreach (var analogIO in lAnalogDeviceIO)
+                {
+                    if (analogIO != null)
+                    {
+                        analogIO.WarningSet = !analogIO.WarningSet;
+                    }
+                }
+            }
+        }
+
+        [RelayCommand]
+        private void DigitalDeviceIOAllAlarmCheck()
+        {
+            if (lSwitchDI != null)
+            {
+                foreach (var digitalIO in lSwitchDI)
+                {
+                    if (digitalIO != null)
+                    {
+                        digitalIO.AlarmSet = !digitalIO.AlarmSet;
+                    }
+                }
+            }
+        }
+
+        [RelayCommand]
+        private void DigitalDeviceIOAllWarningCheck()
+        {
+            if (lSwitchDI != null)
+            {
+                foreach (var digitalIO in lSwitchDI)
+                {
+                    if (digitalIO != null)
+                    {
+                        digitalIO.WarningSet = !digitalIO.WarningSet;
+                    }
+                }
             }
         }
 

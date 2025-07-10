@@ -5,23 +5,28 @@
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:SapphireXR_App.Views"
       xmlns:model="clr-namespace:SapphireXR_App.Models"
+      xmlns:behavior="clr-namespace:SapphireXR_App.Behavior"
       mc:Ignorable="d" 
       d:DesignWidth="1620" d:DesignHeight="1020"
       Title="SettingPage" Background="{StaticResource Gray_300}">
     <Page.Resources>
+        <Style TargetType="DataGridColumnHeader" x:Key="ioListColumnHeader" BasedOn="{StaticResource EventLogColumnHeader}">
+            <Setter Property="Height" Value="28" />
+        </Style>
+        <Style TargetType="DataGridColumnHeader" x:Key="checkAllColumnHeader" BasedOn="{StaticResource ioListColumnHeader}">
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Foreground" Value="{StaticResource Sapphire_Blue}" />
+                </Trigger>
+            </Style.Triggers>
+        </Style>
         <Style TargetType="{x:Type DataGrid}" x:Key="SettingDataGrid" BasedOn="{StaticResource EventLog}">
             <Setter Property="AutoGenerateColumns" Value="False"/>
             <Setter Property="CanUserSortColumns" Value="False"/>
             <Setter Property="CanUserAddRows" Value="False"/>
             <Setter Property="VerticalScrollBarVisibility" Value="Auto" />
             <Setter Property="FontSize" Value="12" />
-            <Setter Property="ColumnHeaderStyle">
-                <Setter.Value>
-                    <Style TargetType="DataGridColumnHeader" BasedOn="{StaticResource EventLogColumnHeader}">
-                        <Setter Property="Height" Value="28" />
-                    </Style>
-                </Setter.Value>
-            </Setter>
+            <Setter Property="ColumnHeaderStyle" Value="{StaticResource ioListColumnHeader}" />
         </Style>
         <Style x:Key="SettingTabControl" TargetType="TabControl" BasedOn="{StaticResource DefaultVerticalTabControl}">
             <Setter Property="Background" Value="{StaticResource Gray_300}" />
@@ -129,8 +134,20 @@
                                                 <DataGrid.Columns>
                                                     <DataGridTextColumn Header="ID" CanUserSort="False" CanUserResize="False" IsReadOnly="True" Width="50" Binding="{Binding Path=ID, UpdateSourceTrigger=PropertyChanged}" ElementStyle="{StaticResource EventLogElement}" />
                                                     <DataGridTextColumn Header="Device Name" CanUserSort="False" CanUserResize="False" Width="*" IsReadOnly="True"  Binding="{Binding Path=Name, UpdateSourceTrigger=PropertyChanged}" ElementStyle="{StaticResource EventLogElement}" />
-                                                    <DataGridCheckBoxColumn Header="Alarm" Width="50"	CanUserSort="False" Binding="{Binding Path=AlarmSet, UpdateSourceTrigger=PropertyChanged}" EditingElementStyle="{StaticResource DataGridCheckBox}" ElementStyle="{StaticResource DataGridCheckBox}" />
-                                                    <DataGridCheckBoxColumn Header="Warning" Width="50"	CanUserSort="False" Binding="{Binding Path=WarningSet, UpdateSourceTrigger=PropertyChanged}" EditingElementStyle="{StaticResource DataGridCheckBox}" ElementStyle="{StaticResource DataGridCheckBox}" />
+                                                    <DataGridCheckBoxColumn Header="Alarm" Width="50"	CanUserSort="False" Binding="{Binding Path=AlarmSet, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" EditingElementStyle="{StaticResource DataGridCheckBox}" ElementStyle="{StaticResource DataGridCheckBox}">
+                                                        <DataGridCheckBoxColumn.HeaderStyle>
+                                                            <Style TargetType="DataGridColumnHeader" BasedOn="{StaticResource checkAllColumnHeader}">
+                                                                <Setter Property="behavior:DataGridColumnHeaderClickBehavior.ClickCommand" Value="{Binding DataContext.AnalogDeviceIOAllAlarmCheckCommand, RelativeSource={RelativeSource AncestorType=DataGrid}}" />
+                                                            </Style>
+                                                        </DataGridCheckBoxColumn.HeaderStyle>
+                                                    </DataGridCheckBoxColumn>
+                                                    <DataGridCheckBoxColumn Header="Warning" Width="50"	CanUserSort="False" Binding="{Binding Path=WarningSet, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" EditingElementStyle="{StaticResource DataGridCheckBox}" ElementStyle="{StaticResource DataGridCheckBox}">
+                                                        <DataGridCheckBoxColumn.HeaderStyle>
+                                                            <Style TargetType="DataGridColumnHeader" BasedOn="{StaticResource checkAllColumnHeader}">
+                                                                <Setter Property="behavior:DataGridColumnHeaderClickBehavior.ClickCommand" Value="{Binding DataContext.AnalogDeviceIOAllWarningCheckCommand, RelativeSource={RelativeSource AncestorType=DataGrid}}" />
+                                                            </Style>
+                                                        </DataGridCheckBoxColumn.HeaderStyle>
+                                                    </DataGridCheckBoxColumn>
                                                 </DataGrid.Columns>
                                             </DataGrid>
                                         </StackPanel>
@@ -167,8 +184,20 @@
                                             <DataGrid.Columns>
                                                 <DataGridTextColumn Header="ID" IsReadOnly="True"  CanUserSort="False" CanUserResize="False" Width="50" Binding="{Binding Path=ID}" ElementStyle="{StaticResource EventLogElement}" />
                                                 <DataGridTextColumn Header="Device Name" IsReadOnly="True"  CanUserSort="False" CanUserResize="False" Width="*" Binding="{Binding Path=Name}" ElementStyle="{StaticResource EventLogElement}" />
-                                                <DataGridCheckBoxColumn Header="Alarm" CanUserSort="False" CanUserResize="False" Width="50" Binding="{Binding Path=AlarmSet, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" ElementStyle="{StaticResource DataGridCheckBox}" EditingElementStyle="{StaticResource DataGridCheckBox}" />
-                                                <DataGridCheckBoxColumn Header="Warning" CanUserSort="False" CanUserResize="False" Width="50" Binding="{Binding Path=WarningSet, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" ElementStyle="{StaticResource DataGridCheckBox}"  EditingElementStyle="{StaticResource DataGridCheckBox}" />
+                                                <DataGridCheckBoxColumn Header="Alarm" CanUserSort="False" CanUserResize="False" Width="50" Binding="{Binding Path=AlarmSet, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" ElementStyle="{StaticResource DataGridCheckBox}" EditingElementStyle="{StaticResource DataGridCheckBox}">
+                                                    <DataGridCheckBoxColumn.HeaderStyle>
+                                                        <Style TargetType="DataGridColumnHeader" BasedOn="{StaticResource checkAllColumnHeader}">
+                                                            <Setter Property="behavior:DataGridColumnHeaderClickBehavior.ClickCommand" Value="{Binding DataContext.DigitalDeviceIOAllAlarmCheckCommand, RelativeSource={RelativeSource AncestorType=DataGrid}}" />
+                                                        </Style>
+                                                    </DataGridCheckBoxColumn.HeaderStyle>
+                                                </DataGridCheckBoxColumn>
+                                                <DataGridCheckBoxColumn Header="Warning" CanUserSort="False" CanUserResize="False" Width="50" Binding="{Binding Path=WarningSet, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" ElementStyle="{StaticResource DataGridCheckBox}"  EditingElementStyle="{StaticResource DataGridCheckBox}">
+                                                    <DataGridCheckBoxColumn.HeaderStyle>
+                                                        <Style TargetType="DataGridColumnHeader" BasedOn="{StaticResource checkAllColumnHeader}">
+                                                            <Setter Property="behavior:DataGridColumnHeaderClickBehavior.ClickCommand" Value="{Binding DataContext.DigitalDeviceIOAllWarningCheckCommand, RelativeSource={RelativeSource AncestorType=DataGrid}}" />
+                                                        </Style>
+                                                    </DataGridCheckBoxColumn.HeaderStyle>
+                                                </DataGridCheckBoxColumn>
                                             </DataGrid.Columns>
                                         </DataGrid>
                                     </StackPanel>

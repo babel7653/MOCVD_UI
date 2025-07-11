@@ -171,7 +171,7 @@ namespace SapphireXR_App.Models
         private static readonly Dictionary<string, int> dDigitalDeviceAlarmWarningBit = new Dictionary<string, int>
         {
             { "A01", 0 }, { "A02", 1 }, { "A03", 2 },  { "A04", 3 }, { "A05", 4 }, { "A06", 5 },  { "A07", 6 }, { "A08", 7 }, { "A09", 8 }, { "A10", 9 }, { "A11", 10 }, { "A12", 11 },
-            { "A13", 12 }, { "A14", 13 }
+            { "A13", 12 }, { "A14", 13 }, { "A15", 14 }
         };
 
         public const uint LineHeaterTemperature = 8;

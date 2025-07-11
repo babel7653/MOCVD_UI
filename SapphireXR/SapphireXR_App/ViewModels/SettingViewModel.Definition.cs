@@ -264,14 +264,16 @@ namespace SapphireXR_App.ViewModels
         };
         private static readonly Dictionary<string, (PLCService.InterlockEnableSetting, PLCService.InterlockValueSetting)> InterlockSettingNameToPLCServiceArgs = new ()
         {
-            { "GasPressureAlarm", (PLCService.InterlockEnableSetting.GasPressureAlarm, PLCService.InterlockValueSetting.GasPressureAlarm) },
-            { "GasPressureWarning", (PLCService.InterlockEnableSetting.GasPressureWarning, PLCService.InterlockValueSetting.GasPressureWarning) },
-            { "SHCoolingWaterTemp", (PLCService.InterlockEnableSetting.SHCoolingWaterTemp, PLCService.InterlockValueSetting.SHCoolingWaterTempAlarm) },
-            { "CoilCoolingWaterTemp", (PLCService.InterlockEnableSetting.CoilCoolingWaterTemp, PLCService.InterlockValueSetting.CoilCoolingWaterTempAlarm) },
-            { "ReactorPressure", (PLCService.InterlockEnableSetting.ReactorPressure, PLCService.InterlockValueSetting.ReactorOverPressure) },
-            { "SusceptorTemperature", (PLCService.InterlockEnableSetting.SusceptorTemperature, PLCService.InterlockValueSetting.SusceptorOverTemperature) },
-            { "PressureLimit", (PLCService.InterlockEnableSetting.PressureLimit, PLCService.InterlockValueSetting.DoubleORingPressureLimit) },
-            { "ReTryCount", (PLCService.InterlockEnableSetting.RetryCount, PLCService.InterlockValueSetting.DoubleORingRetryCount) }
+            { "ProcessGasPressureAlarm", (PLCService.InterlockEnableSetting.GasPressureAlarm, PLCService.InterlockValueSetting.ProcessGasPressureAlarm) },
+            { "ProcessGasPressureWarning", (PLCService.InterlockEnableSetting.GasPressureWarning, PLCService.InterlockValueSetting.ProcessGasPressureWarning) },
+            { "CWTempSHAlarm", (PLCService.InterlockEnableSetting.SHCoolingWaterTemp, PLCService.InterlockValueSetting.CWTempSHAlarm) },
+            { "CWTempSHWarning", (PLCService.InterlockEnableSetting.CoilCoolingWaterTemp, PLCService.InterlockValueSetting.CWTempSHWarning) },
+            { "CWTempCoilAlarm", (PLCService.InterlockEnableSetting.ReactorPressure, PLCService.InterlockValueSetting.CWTempCoilAlarm) },
+            { "CWTempCoilWarning", (PLCService.InterlockEnableSetting.SusceptorTemperature, PLCService.InterlockValueSetting.CWTempCoilWarning) },
+            { "ReactorOverPressure", (PLCService.InterlockEnableSetting.PressureLimit, PLCService.InterlockValueSetting.ReactorOverPressure) },
+            { "SusceptorOverTemperature", (PLCService.InterlockEnableSetting.ReactorPressure, PLCService.InterlockValueSetting.SusceptorOverTemperature) },
+            { "PressureLimit", (PLCService.InterlockEnableSetting.PressureLimit, PLCService.InterlockValueSetting.PressureLimit) },
+            { "ReTryCount", (PLCService.InterlockEnableSetting.RetryCount, PLCService.InterlockValueSetting.RetryCount) }
         };
     }
 }

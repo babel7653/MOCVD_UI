@@ -63,14 +63,14 @@ namespace SapphireXR_App.ViewModels
             ObservableManager<PLCConnection>.Subscribe("PLCService.Connected", this);
             ObservableManager<BitArray>.Subscribe("LogicalInterlockState", this);
             EventLogs.Instance.EventLogList.Add(new EventLog() { Message = "SapphireXR이 시작되었습니다", Name = "Application", Type = EventLog.LogType.Information });
-            EventLogs.Instance.EventLogList.Add(new EventLog() { Message = "M01 Deviation!", Name = "Alarm", Type = EventLog.LogType.Alarm });
-            EventLogs.Instance.EventLogList.Add(new EventLog() { Message = "Time Expire", Name = "Alarm", Type = EventLog.LogType.Alarm });
-            EventLogs.Instance.EventLogList.Add(new EventLog() { Message = "N2 Low", Name = "Warning", Type = EventLog.LogType.Warning });
-            EventLogs.Instance.EventLogList.Add(new EventLog() { Message = "E01 Deviation!", Name = "Alarm", Type = EventLog.LogType.Alarm });
-            EventLogs.Instance.EventLogList.Add(new EventLog() { Message = "NH3 Low", Name = "Warning", Type = EventLog.LogType.Warning });
-            EventLogs.Instance.EventLogList.Add(new EventLog() { Message = "H2 Low", Name = "Warning", Type = EventLog.LogType.Warning });
-            EventLogs.Instance.EventLogList.Add(new EventLog() { Message = "Setting값 저장이 완료되었습니다.", Name = "Application", Type = EventLog.LogType.Information });
-            EventLogs.Instance.EventLogList.Add(new EventLog() { Message = "Setting값 로드가 완료되었습니다.", Name = "Application", Type = EventLog.LogType.Information });
+            //EventLogs.Instance.EventLogList.Add(new EventLog() { Message = "M01 Deviation!", Name = "Alarm", Type = EventLog.LogType.Alarm });
+            //EventLogs.Instance.EventLogList.Add(new EventLog() { Message = "Time Expire", Name = "Alarm", Type = EventLog.LogType.Alarm });
+            //EventLogs.Instance.EventLogList.Add(new EventLog() { Message = "N2 Low", Name = "Warning", Type = EventLog.LogType.Warning });
+            //EventLogs.Instance.EventLogList.Add(new EventLog() { Message = "E01 Deviation!", Name = "Alarm", Type = EventLog.LogType.Alarm });
+            //EventLogs.Instance.EventLogList.Add(new EventLog() { Message = "NH3 Low", Name = "Warning", Type = EventLog.LogType.Warning });
+            //EventLogs.Instance.EventLogList.Add(new EventLog() { Message = "H2 Low", Name = "Warning", Type = EventLog.LogType.Warning });
+            //EventLogs.Instance.EventLogList.Add(new EventLog() { Message = "Setting값 저장이 완료되었습니다.", Name = "Application", Type = EventLog.LogType.Information });
+            //EventLogs.Instance.EventLogList.Add(new EventLog() { Message = "Setting값 로드가 완료되었습니다.", Name = "Application", Type = EventLog.LogType.Information });
         }
 
         private void changeOperationMode(int tab)

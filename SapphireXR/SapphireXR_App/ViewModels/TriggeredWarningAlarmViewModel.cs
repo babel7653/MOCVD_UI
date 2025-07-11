@@ -285,13 +285,14 @@ namespace SapphireXR_App.ViewModels
                     string? notificationName = GetAnalogDeviceNotificationName(analogDevice);
                     if (notificationName != null)
                     {
-                        onList.Add(notificationName + " Deviation!");
+                        string message = notificationName + " Deviation!";
+                        onList.Add(message);
                         if (keysEventLogged.Contains(notificationName) == false)
                         {
                             EventLogs.Instance.EventLogList.Add(new EventLog()
                             {
                                 Date = DateTime.Now,
-                                Message = notificationName,
+                                Message = message,
                                 Name = (triggerType == PLCService.TriggerType.Alarm) ? "Analog Alarm" : "Analog Warning",
                                 Type = (triggerType == PLCService.TriggerType.Alarm) ? EventLog.LogType.Alarm : EventLog.LogType.Warning
                             });

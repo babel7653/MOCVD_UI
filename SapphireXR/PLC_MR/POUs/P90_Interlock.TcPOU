@@ -24,12 +24,8 @@ END_VAR
 VAR
 	bMaintKey				: BOOL;
 	bSafetyGasState			: BOOL;
-	bAlarmState				: BOOL;
 	bPowerResetLED			: BOOL;
 	bUPSMode				: BOOL;
-
-	bAirPressureSensor		: BOOL;
-	bWaterFlowSensor		: BOOL;
 	
 	tAlarmDelay_A			: TIME; //아날로그 디바이스 지연시간
 	tAlarmDelay_D			: TIME; //디지털 디바이스 지연시간
@@ -67,9 +63,9 @@ VAR
 	fDeviceAlarmTreshold		: REAL;
 	fDeviceWarningTreshold		: REAL;
 	
-	bMaintKeyTest			: BOOL; //Test Variable
 	i	: INT;
 	j 	: INT;
+	
 END_VAR
 ]]></Declaration>
     <Implementation>
@@ -78,11 +74,9 @@ END_VAR
 bMaintKey := GVL_IO.aDigitalInputIO[1].0;
 bPowerResetSwitch := GVL_IO.aDigitalInputIO[1].1;
 bMainPowerMonitor := GVL_IO.aDigitalInputIO[7].5;
-bAirPressureSensor	:= GVL_IO.aDigitalInputIO[2].0; //Normally Contacted
-bWaterFlowSensor	:= GVL_IO.aDigitalInputIO[2].1;
 
 //Sinal Tower Set
-IF bMaintKeyTest THEN //bMaintKey 변경
+IF (bMaintKey = TRUE) THEN //bMaintKey 변경
 	P92_Maintenance.nCaseSignalTower		:= 5; //Signal Tower White - Maintenance
 ELSIF (bMaintKey = FALSE) AND MAIN.bOperationMode = FALSE THEN
 	P92_Maintenance.nCaseSignalTower		:= 4; //Signal Tower Blue - Idle
@@ -94,7 +88,6 @@ tAlarmDelay_D := REAL_TO_TIME(GVL_IO.aInterlockSet[4]*1000);
 
 //Controller Deviation Monitoring - MFC/EPC
 IF (bMaintKey = FALSE) THEN
-	
 	FOR i := 1 TO 26 DO
 		wDeviceAlarmEnable := SHR(GVL_IO.aInterlockEnable[2], (i+2)); //오늘쪽 쉬프트 연산
 		wDeviceWarningEnable := SHR(GVL_IO.aInterlockEnable[3], (i+2));
@@ -383,20 +376,29 @@ ELSE
 	GVL_IO.aDigitalOutputIO[3].3 := bLineHeaterMC;
 END_IF
 
+// Recipe Start Available
+GVL_IO.aInterlock[1].10 := 
+	NOT(AlarmTrig) AND
+	NOT(WarningTrig) AND
+	bMaintKey AND
+	NOT(GVL_IO.aInputState[2].4) AND //Cover Lower Limt
+	GVL_IO.aInputState[4].6 //DOR State
+	;
 
 // For Test Value
 bSafetyGasState := TRUE;
 
 // AND Valve01 = FALSE(H2) AND Valve02 = FALSE(H2) AND Valve03(SiH4) AND Valve04(NH2)
 // All MO-Source ByPass Stat
-bAlarmState := TRUE;
+AlarmTrig := TRUE;
 
-bCoverOperationEnable := bSafetyGasState AND bAlarmState AND P17_DOROperation.isDOROnState = FALSE; //For Test -P16
+
+bCoverOperationEnable := bSafetyGasState AND AlarmTrig AND P17_DOROperation.isDOROnState = FALSE; //For Test -P16
 // bCoverOpenEnable := ing_Racipe AND bAlarmClear AND isInductionHeater = FAULSE
 
-bDORVacEnable := P16_CoverOperation.isCoverClosed AND bAlarmState AND bSafetyGasState AND P17_DOROperation.isDOROnState = FALSE; //For Test -P17
+bDORVacEnable := P16_CoverOperation.isCoverClosed AND AlarmTrig AND bSafetyGasState AND P17_DOROperation.isDOROnState = FALSE; //For Test -P17
 // add : Vacuum Pump ON
-bDORAtmEnable := bAlarmState AND bSafetyGasState AND P17_DOROperation.isDOROnState = TRUE;
+bDORAtmEnable := AlarmTrig AND bSafetyGasState AND P17_DOROperation.isDOROnState = TRUE;
 // Susceptor Temperature, Vacuum Range > 700Torr
 
 //bRecipeEnable := bMaintKey=FALSE AND bRecipeRunning=FALSE AND P16_CoverOperation.isCoverClosed AND P12_IQ_PLUS.bPumpOn;
@@ -412,8 +414,6 @@ GVL_IO.aDigitalOutputIO[2].4 := bUPSMode;
       <LineId Id="300" Count="0" />
       <LineId Id="284" Count="0" />
       <LineId Id="304" Count="1" />
-      <LineId Id="307" Count="0" />
-      <LineId Id="303" Count="0" />
       <LineId Id="308" Count="0" />
       <LineId Id="296" Count="0" />
       <LineId Id="298" Count="0" />
@@ -426,7 +426,6 @@ GVL_IO.aDigitalOutputIO[2].4 := bUPSMode;
       <LineId Id="478" Count="0" />
       <LineId Id="438" Count="0" />
       <LineId Id="653" Count="0" />
-      <LineId Id="1038" Count="0" />
       <LineId Id="656" Count="38" />
       <LineId Id="705" Count="38" />
       <LineId Id="654" Count="0" />
@@ -519,12 +518,16 @@ GVL_IO.aDigitalOutputIO[2].4 := bUPSMode;
       <LineId Id="755" Count="3" />
       <LineId Id="754" Count="0" />
       <LineId Id="655" Count="0" />
-      <LineId Id="1054" Count="0" />
+      <LineId Id="1211" Count="0" />
       <LineId Id="138" Count="0" />
+      <LineId Id="1212" Count="0" />
+      <LineId Id="1227" Count="5" />
+      <LineId Id="1226" Count="0" />
       <LineId Id="50" Count="0" />
       <LineId Id="33" Count="0" />
       <LineId Id="242" Count="0" />
       <LineId Id="51" Count="2" />
+      <LineId Id="1210" Count="0" />
       <LineId Id="83" Count="0" />
       <LineId Id="31" Count="0" />
       <LineId Id="34" Count="0" />

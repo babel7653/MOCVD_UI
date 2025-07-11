@@ -15,15 +15,16 @@ namespace SapphireXR_App.ViewModels
             TitleColor = (type == PLCService.TriggerType.Alarm) ? new SolidColorBrush(Color.FromRgb(0xEC, 0x3D, 0x3F)) : new SolidColorBrush(Color.FromRgb(0xFF, 0x8D, 0x60));
             Title = type.ToString();
             Message = "Please check the " + Title.ToLower() + " events";
+
             resetToPLC = (type == PLCService.TriggerType.Alarm) ? PLCService.WriteAlarmReset : PLCService.WriteWarningReset;
-            refreshOnList = (type == PLCService.TriggerType.Alarm) ? RefreshAlarmList : RefreshWarningList;
-            OnList = refreshOnList();
+            refreshOnListFunc = (type == PLCService.TriggerType.Alarm) ? refreshAlarmList : refreshWarningList;
+            OnList = refreshOnListFunc(type);
 
             onListUpdater = new DispatcherTimer();
             onListUpdater.Interval = new TimeSpan(TimeSpan.TicksPerMillisecond * 500);
             onListUpdater.Tick += (sender, args) =>
             {
-                OnList = refreshOnList();
+                OnList = refreshOnListFunc(type);
             };
             onListUpdater.Start();
         }
@@ -239,17 +240,17 @@ namespace SapphireXR_App.ViewModels
             }
         }
 
-        private static List<string> RefreshAlarmList()
+        private List<string> refreshAlarmList(PLCService.TriggerType triggerType)
         {
-            return RefreshOnList(PLCService.ReadDigitalDeviceAlarms, PLCService.ReadAnalogDeviceAlarms);
+            return refreshOnList(PLCService.ReadDigitalDeviceAlarms, PLCService.ReadAnalogDeviceAlarms, triggerType);
         }
 
-        private static List<string> RefreshWarningList()
+        private  List<string> refreshWarningList(PLCService.TriggerType triggerType)
         {
-            return RefreshOnList(PLCService.ReadDigitalDeviceWarnings, PLCService.ReadAnalogDeviceWarnings);
+            return refreshOnList(PLCService.ReadDigitalDeviceWarnings, PLCService.ReadAnalogDeviceWarnings, triggerType);
         }
 
-        private static List<string> RefreshOnList(Func<int> plcServiceReadDigitalState, Func<int> plcServiceReadAnalogState)
+        private List<string> refreshOnList(Func<int> plcServiceReadDigitalState, Func<int> plcServiceReadAnalogState, PLCService.TriggerType triggerType)
         {
             List<string> onList = new List<string>();
 
@@ -262,6 +263,16 @@ namespace SapphireXR_App.ViewModels
                     if (notificationName != null)
                     {
                         onList.Add(notificationName);
+                        if (keysEventLogged.Contains(notificationName) == false)
+                        {
+                            EventLogs.Instance.EventLogList.Add(new EventLog()
+                            {
+                                Date = DateTime.Now, Message = notificationName,
+                                Name = (triggerType == PLCService.TriggerType.Alarm) ? "Digital Alarm" : "Digital Warning",
+                                Type = (triggerType == PLCService.TriggerType.Alarm) ? EventLog.LogType.Alarm : EventLog.LogType.Warning
+                            });
+                            keysEventLogged.Add(notificationName);
+                        }
                     }
                 }
             }
@@ -275,6 +286,17 @@ namespace SapphireXR_App.ViewModels
                     if (notificationName != null)
                     {
                         onList.Add(notificationName + " Deviation!");
+                        if (keysEventLogged.Contains(notificationName) == false)
+                        {
+                            EventLogs.Instance.EventLogList.Add(new EventLog()
+                            {
+                                Date = DateTime.Now,
+                                Message = notificationName,
+                                Name = (triggerType == PLCService.TriggerType.Alarm) ? "Analog Alarm" : "Analog Warning",
+                                Type = (triggerType == PLCService.TriggerType.Alarm) ? EventLog.LogType.Alarm : EventLog.LogType.Warning
+                            });
+                            keysEventLogged.Add(notificationName);
+                        }
                     }
                 }
             }
@@ -306,7 +328,8 @@ namespace SapphireXR_App.ViewModels
         private List<string> _onList;
 
         private Action resetToPLC;
-        private Func<List<string>> refreshOnList;
+        private Func<PLCService.TriggerType, List<string>> refreshOnListFunc;
+        private HashSet<string> keysEventLogged = new HashSet<string>();
 
         private DispatcherTimer onListUpdater;
     }

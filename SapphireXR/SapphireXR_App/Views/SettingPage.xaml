@@ -134,20 +134,44 @@
                                                 <DataGrid.Columns>
                                                     <DataGridTextColumn Header="ID" CanUserSort="False" CanUserResize="False" IsReadOnly="True" Width="50" Binding="{Binding Path=ID, UpdateSourceTrigger=PropertyChanged}" ElementStyle="{StaticResource EventLogElement}" />
                                                     <DataGridTextColumn Header="Device Name" CanUserSort="False" CanUserResize="False" Width="*" IsReadOnly="True"  Binding="{Binding Path=Name, UpdateSourceTrigger=PropertyChanged}" ElementStyle="{StaticResource EventLogElement}" />
-                                                    <DataGridCheckBoxColumn Header="Alarm" Width="50"	CanUserSort="False" Binding="{Binding Path=AlarmSet, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" EditingElementStyle="{StaticResource DataGridCheckBox}" ElementStyle="{StaticResource DataGridCheckBox}">
-                                                        <DataGridCheckBoxColumn.HeaderStyle>
+                                                    <DataGridTemplateColumn Header="Alarm" Width="50" CanUserSort="False">
+                                                        <DataGridTemplateColumn.HeaderStyle>
                                                             <Style TargetType="DataGridColumnHeader" BasedOn="{StaticResource checkAllColumnHeader}">
-                                                                <Setter Property="behavior:DataGridColumnHeaderClickBehavior.ClickCommand" Value="{Binding DataContext.AnalogDeviceIOAllAlarmCheckCommand, RelativeSource={RelativeSource AncestorType=DataGrid}}" />
+                                                                <Setter Property="behavior:DataGridColumnHeaderBehavior.ClickCommand" Value="{Binding Path=DataContext.AnalogAlarmCheckAllColumnViewModel.ToggleCheckCommand, RelativeSource={RelativeSource AncestorType=DataGrid}}" />
+                                                                <Setter Property="behavior:DataGridColumnHeaderBehavior.MouseEnterCommand" Value="{Binding Path=DataContext.AnalogAlarmCheckAllColumnViewModel.ShowGuidePlaceHolderCommand, RelativeSource={RelativeSource AncestorType=DataGrid}}" />
+                                                                <Setter Property="behavior:DataGridColumnHeaderBehavior.MouseLeaveCommand" Value="{Binding Path=DataContext.AnalogAlarmCheckAllColumnViewModel.HideGuidePlaceHolderCommand, RelativeSource={RelativeSource AncestorType=DataGrid}}" />
                                                             </Style>
-                                                        </DataGridCheckBoxColumn.HeaderStyle>
-                                                    </DataGridCheckBoxColumn>
-                                                    <DataGridCheckBoxColumn Header="Warning" Width="50"	CanUserSort="False" Binding="{Binding Path=WarningSet, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" EditingElementStyle="{StaticResource DataGridCheckBox}" ElementStyle="{StaticResource DataGridCheckBox}">
-                                                        <DataGridCheckBoxColumn.HeaderStyle>
+                                                        </DataGridTemplateColumn.HeaderStyle>
+                                                        <DataGridTemplateColumn.CellTemplate>
+                                                            <DataTemplate>
+                                                                <Grid>
+                                                                    <CheckBox IsChecked="{Binding Path=DataContext.AnalogAlarmCheckAllColumnViewModel.IsPlaceHolderCheck, RelativeSource={RelativeSource AncestorType=DataGrid}}" Style="{StaticResource DataGridCheckBox}" Opacity="0.3" HorizontalAlignment="Center" VerticalAlignment="Center"
+                                                                        Visibility="{Binding Path=DataContext.AnalogAlarmCheckAllColumnViewModel.ShowGuidePlaceHolderCheckBox, RelativeSource={RelativeSource AncestorType=DataGrid}}" />
+                                                                    <CheckBox IsChecked="{Binding AlarmSet, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Style="{StaticResource DataGridCheckBox}" HorizontalAlignment="Center" VerticalAlignment="Center" 
+                                                                        Visibility="{Binding Path=DataContext.AnalogAlarmCheckAllColumnViewModel.ShowCheckBox, RelativeSource={RelativeSource AncestorType=DataGrid}}" />
+                                                                </Grid>
+                                                            </DataTemplate>
+                                                        </DataGridTemplateColumn.CellTemplate>
+                                                    </DataGridTemplateColumn>
+                                                    <DataGridTemplateColumn Header="Warning" Width="60"	CanUserSort="False">
+                                                        <DataGridTemplateColumn.HeaderStyle>
                                                             <Style TargetType="DataGridColumnHeader" BasedOn="{StaticResource checkAllColumnHeader}">
-                                                                <Setter Property="behavior:DataGridColumnHeaderClickBehavior.ClickCommand" Value="{Binding DataContext.AnalogDeviceIOAllWarningCheckCommand, RelativeSource={RelativeSource AncestorType=DataGrid}}" />
+                                                                <Setter Property="behavior:DataGridColumnHeaderBehavior.ClickCommand" Value="{Binding Path=DataContext.AnalogWarningCheckAllColumnViewModel .ToggleCheckCommand, RelativeSource={RelativeSource AncestorType=DataGrid}}" />
+                                                                <Setter Property="behavior:DataGridColumnHeaderBehavior.MouseEnterCommand" Value="{Binding Path=DataContext.AnalogWarningCheckAllColumnViewModel .ShowGuidePlaceHolderCommand, RelativeSource={RelativeSource AncestorType=DataGrid}}" />
+                                                                <Setter Property="behavior:DataGridColumnHeaderBehavior.MouseLeaveCommand" Value="{Binding Path=DataContext.AnalogWarningCheckAllColumnViewModel .HideGuidePlaceHolderCommand, RelativeSource={RelativeSource AncestorType=DataGrid}}" />
                                                             </Style>
-                                                        </DataGridCheckBoxColumn.HeaderStyle>
-                                                    </DataGridCheckBoxColumn>
+                                                        </DataGridTemplateColumn.HeaderStyle>
+                                                        <DataGridTemplateColumn.CellTemplate>
+                                                            <DataTemplate>
+                                                                <Grid>
+                                                                    <CheckBox IsChecked="{Binding Path=DataContext.AnalogWarningCheckAllColumnViewModel.IsPlaceHolderCheck, RelativeSource={RelativeSource AncestorType=DataGrid}}" Style="{StaticResource DataGridCheckBox}" Opacity="0.3" HorizontalAlignment="Center" VerticalAlignment="Center"
+                                                                        Visibility="{Binding Path=DataContext.AnalogWarningCheckAllColumnViewModel.ShowGuidePlaceHolderCheckBox, RelativeSource={RelativeSource AncestorType=DataGrid}}" />
+                                                                    <CheckBox IsChecked="{Binding WarningSet, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Style="{StaticResource DataGridCheckBox}" HorizontalAlignment="Center" VerticalAlignment="Center" 
+                                                                        Visibility="{Binding Path=DataContext.AnalogWarningCheckAllColumnViewModel.ShowCheckBox, RelativeSource={RelativeSource AncestorType=DataGrid}}" />
+                                                                </Grid>
+                                                            </DataTemplate>
+                                                        </DataGridTemplateColumn.CellTemplate>
+                                                    </DataGridTemplateColumn>
                                                 </DataGrid.Columns>
                                             </DataGrid>
                                         </StackPanel>
@@ -184,20 +208,44 @@
                                             <DataGrid.Columns>
                                                 <DataGridTextColumn Header="ID" IsReadOnly="True"  CanUserSort="False" CanUserResize="False" Width="50" Binding="{Binding Path=ID}" ElementStyle="{StaticResource EventLogElement}" />
                                                 <DataGridTextColumn Header="Device Name" IsReadOnly="True"  CanUserSort="False" CanUserResize="False" Width="*" Binding="{Binding Path=Name}" ElementStyle="{StaticResource EventLogElement}" />
-                                                <DataGridCheckBoxColumn Header="Alarm" CanUserSort="False" CanUserResize="False" Width="50" Binding="{Binding Path=AlarmSet, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" ElementStyle="{StaticResource DataGridCheckBox}" EditingElementStyle="{StaticResource DataGridCheckBox}">
-                                                    <DataGridCheckBoxColumn.HeaderStyle>
+                                                <DataGridTemplateColumn Header="Alarm" CanUserSort="False" CanUserResize="False" Width="50">
+                                                    <DataGridTemplateColumn.HeaderStyle>
                                                         <Style TargetType="DataGridColumnHeader" BasedOn="{StaticResource checkAllColumnHeader}">
-                                                            <Setter Property="behavior:DataGridColumnHeaderClickBehavior.ClickCommand" Value="{Binding DataContext.DigitalDeviceIOAllAlarmCheckCommand, RelativeSource={RelativeSource AncestorType=DataGrid}}" />
+                                                            <Setter Property="behavior:DataGridColumnHeaderBehavior.ClickCommand" Value="{Binding Path=DataContext.DigitalAlarmCheckAllColumnViewModel.ToggleCheckCommand, RelativeSource={RelativeSource AncestorType=DataGrid}}" />
+                                                            <Setter Property="behavior:DataGridColumnHeaderBehavior.MouseEnterCommand" Value="{Binding Path=DataContext.DigitalAlarmCheckAllColumnViewModel.ShowGuidePlaceHolderCommand, RelativeSource={RelativeSource AncestorType=DataGrid}}" />
+                                                            <Setter Property="behavior:DataGridColumnHeaderBehavior.MouseLeaveCommand" Value="{Binding Path=DataContext.DigitalAlarmCheckAllColumnViewModel.HideGuidePlaceHolderCommand, RelativeSource={RelativeSource AncestorType=DataGrid}}" />
                                                         </Style>
-                                                    </DataGridCheckBoxColumn.HeaderStyle>
-                                                </DataGridCheckBoxColumn>
-                                                <DataGridCheckBoxColumn Header="Warning" CanUserSort="False" CanUserResize="False" Width="50" Binding="{Binding Path=WarningSet, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" ElementStyle="{StaticResource DataGridCheckBox}"  EditingElementStyle="{StaticResource DataGridCheckBox}">
-                                                    <DataGridCheckBoxColumn.HeaderStyle>
+                                                    </DataGridTemplateColumn.HeaderStyle>
+                                                    <DataGridTemplateColumn.CellTemplate>
+                                                        <DataTemplate>
+                                                            <Grid>
+                                                                <CheckBox IsChecked="{Binding Path=DataContext.DigitalAlarmCheckAllColumnViewModel.IsPlaceHolderCheck, RelativeSource={RelativeSource AncestorType=DataGrid}}" Style="{StaticResource DataGridCheckBox}" Opacity="0.3" HorizontalAlignment="Center" VerticalAlignment="Center"
+                                                                    Visibility="{Binding Path=DataContext.DigitalAlarmCheckAllColumnViewModel.ShowGuidePlaceHolderCheckBox, RelativeSource={RelativeSource AncestorType=DataGrid}}" />
+                                                                <CheckBox IsChecked="{Binding AlarmSet, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Style="{StaticResource DataGridCheckBox}" HorizontalAlignment="Center" VerticalAlignment="Center" 
+                                                                    Visibility="{Binding Path=DataContext.DigitalAlarmCheckAllColumnViewModel.ShowCheckBox, RelativeSource={RelativeSource AncestorType=DataGrid}}" />
+                                                            </Grid>
+                                                        </DataTemplate>
+                                                    </DataGridTemplateColumn.CellTemplate>
+                                                </DataGridTemplateColumn>
+                                                <DataGridTemplateColumn Header="Warning" Width="60" CanUserSort="False" CanUserResize="False">
+                                                    <DataGridTemplateColumn.HeaderStyle>
                                                         <Style TargetType="DataGridColumnHeader" BasedOn="{StaticResource checkAllColumnHeader}">
-                                                            <Setter Property="behavior:DataGridColumnHeaderClickBehavior.ClickCommand" Value="{Binding DataContext.DigitalDeviceIOAllWarningCheckCommand, RelativeSource={RelativeSource AncestorType=DataGrid}}" />
+                                                            <Setter Property="behavior:DataGridColumnHeaderBehavior.ClickCommand" Value="{Binding Path=DataContext.DigitalWarningCheckAllColumnViewModel.ToggleCheckCommand, RelativeSource={RelativeSource AncestorType=DataGrid}}" />
+                                                            <Setter Property="behavior:DataGridColumnHeaderBehavior.MouseEnterCommand" Value="{Binding Path=DataContext.DigitalWarningCheckAllColumnViewModel.ShowGuidePlaceHolderCommand, RelativeSource={RelativeSource AncestorType=DataGrid}}" />
+                                                            <Setter Property="behavior:DataGridColumnHeaderBehavior.MouseLeaveCommand" Value="{Binding Path=DataContext.DigitalWarningCheckAllColumnViewModel.HideGuidePlaceHolderCommand, RelativeSource={RelativeSource AncestorType=DataGrid}}" />
                                                         </Style>
-                                                    </DataGridCheckBoxColumn.HeaderStyle>
-                                                </DataGridCheckBoxColumn>
+                                                    </DataGridTemplateColumn.HeaderStyle>
+                                                    <DataGridTemplateColumn.CellTemplate>
+                                                        <DataTemplate>
+                                                            <Grid>
+                                                                <CheckBox IsChecked="{Binding Path=DataContext.DigitalWarningCheckAllColumnViewModel.IsPlaceHolderCheck, RelativeSource={RelativeSource AncestorType=DataGrid}}" Style="{StaticResource DataGridCheckBox}" Opacity="0.3" HorizontalAlignment="Center" VerticalAlignment="Center"
+                                                                          Visibility="{Binding Path=DataContext.DigitalWarningCheckAllColumnViewModel.ShowGuidePlaceHolderCheckBox, RelativeSource={RelativeSource AncestorType=DataGrid}}" />
+                                                                <CheckBox IsChecked="{Binding WarningSet, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Style="{StaticResource DataGridCheckBox}" HorizontalAlignment="Center" VerticalAlignment="Center" 
+                                                                          Visibility="{Binding Path=DataContext.DigitalWarningCheckAllColumnViewModel.ShowCheckBox, RelativeSource={RelativeSource AncestorType=DataGrid}}" />
+                                                            </Grid>
+                                                        </DataTemplate>
+                                                    </DataGridTemplateColumn.CellTemplate>
+                                                </DataGridTemplateColumn>
                                             </DataGrid.Columns>
                                         </DataGrid>
                                     </StackPanel>
@@ -326,6 +374,12 @@
                                         <RowDefinition Height="Auto"/>
                                     </Grid.RowDefinitions>
                                     <Grid Grid.Row="0" Style="{StaticResource subSectionBottomMargin}">
+                                        <Grid.Resources>
+                                            <Style TargetType="Label">
+                                                <Setter Property="Foreground" Value="{StaticResource Gray_900}" />
+                                                <Setter Property="VerticalAlignment" Value="Center" />
+                                            </Style>
+                                        </Grid.Resources>
                                         <Rectangle Style="{StaticResource subSection}"/>
                                         <StackPanel Margin="{StaticResource p_5_sqrt}">
                                             <Label Content="Interlock Setting" Style="{StaticResource SectionTitle}">
@@ -353,7 +407,7 @@
                                                     <ColumnDefinition Width="*" />
                                                     <ColumnDefinition Width="Auto" />
                                                 </Grid.ColumnDefinitions>
-                                                <CheckBox x:Name="cbRecipeNotRunning"  Grid.Column="0" Content="Gas Pressure Alarm (bar)" IsChecked="{Binding Path=dInterLockA[GasPressureAlarm].IsEnable, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Style="{StaticResource DefaultCheckBox}" />
+                                                <Label Grid.Column="0">Gas Pressure Alarm (bar)</Label>
                                                 <Line Grid.Column="1" Style="{StaticResource seperatorLine}" />
                                                 <TextBox x:Name="gasPressureAlarm" Grid.Column="2" Text="{Binding Path=dInterLockA[GasPressureAlarm].Treshold, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Style="{StaticResource sectionTextBox}"/>
                                             </Grid>
@@ -366,7 +420,7 @@
                                                     <ColumnDefinition Width="*" />
                                                     <ColumnDefinition Width="Auto" />
                                                 </Grid.ColumnDefinitions>
-                                                <CheckBox x:Name="cbReactorPressureLimit"  Grid.Column="0" Content="Gas Pressure Warning (bar)" IsChecked="{Binding Path=dInterLockA[GasPressureWarning].IsEnable, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Style="{StaticResource DefaultCheckBox}" />
+                                                <Label Grid.Column="0">Gas Pressure Warning (bar)</Label>
                                                 <Line Grid.Column="1" Style="{StaticResource seperatorLine}" />
                                                 <TextBox x:Name="tbReactorPressureLimit" Grid.Column="2" Text="{Binding Path=dInterLockA[GasPressureWarning].Treshold, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Style="{StaticResource sectionTextBox}"/>
                                             </Grid>
@@ -379,7 +433,7 @@
                                                     <ColumnDefinition Width="*" />
                                                     <ColumnDefinition Width="Auto" />
                                                 </Grid.ColumnDefinitions>
-                                                <CheckBox x:Name="cbSusceptorTemperature" Grid.Column="0" Content="S/H Cooling Water Temp (℃)" IsChecked="{Binding Path=dInterLockA[SHCoolingWaterTemp].IsEnable, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Style="{StaticResource DefaultCheckBox}" />
+                                                <Label Grid.Column="0">S/H Cooling Water Temp (℃)</Label>
                                                 <Line Grid.Column="1" Style="{StaticResource seperatorLine}" ></Line>
                                                 <TextBox x:Name="DORTemperatureSet" Grid.Column="2" Text="{Binding Path=dInterLockA[SHCoolingWaterTemp].Treshold, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Style="{StaticResource sectionTextBox}"/>
                                             </Grid>
@@ -392,7 +446,7 @@
                                                     <ColumnDefinition Width="*" />
                                                     <ColumnDefinition Width="Auto" />
                                                 </Grid.ColumnDefinitions>
-                                                <CheckBox x:Name="coilCoolingWaterTempEnabled" Grid.Column="0" Content="Coil Cooling Water Temp (℃) " IsChecked="{Binding Path=dInterLockA[CoilCoolingWaterTemp].IsEnable, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Style="{StaticResource DefaultCheckBox}" />
+                                                <Label Grid.Column="0">Coil Cooling Water Temp (℃)</Label>
                                                 <Line Grid.Column="1" Style="{StaticResource seperatorLine}" ></Line>
                                                 <TextBox x:Name="coilCoolingWaterTempValue" Grid.Column="2" Text="{Binding Path=dInterLockA[CoilCoolingWaterTemp].Treshold, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Style="{StaticResource sectionTextBox}"/>
                                             </Grid>

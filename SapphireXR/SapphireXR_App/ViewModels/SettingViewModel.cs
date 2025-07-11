@@ -8,6 +8,7 @@ using SapphireXR_App.Common;
 using System.ComponentModel;
 using System.Collections;
 using SapphireXR_App.Enums;
+using System.Windows;
 
 namespace SapphireXR_App.ViewModels
 {
@@ -226,6 +227,11 @@ namespace SapphireXR_App.ViewModels
             ObservableManager<bool>.Subscribe("App.Closing", appClosingSubscriber = new AppClosingSubscriber(this));
             ObservableManager<PLCConnection>.Subscribe("PLCService.Connected", plcConnectionStateSubscriber = new PLCConnectionStateSubscriber(this));
 
+            AnalogWarningCheckAllColumnViewModel = new CheckAllColumnViewModel<AnalogDeviceIO>(lAnalogDeviceIO, PLCService.TriggerType.Warning);
+            AnalogAlarmCheckAllColumnViewModel = new CheckAllColumnViewModel<AnalogDeviceIO>(lAnalogDeviceIO, PLCService.TriggerType.Alarm);
+            DigitalWarningCheckAllColumnViewModel = new CheckAllColumnViewModel<SwitchDI>(lSwitchDI, PLCService.TriggerType.Warning);
+            DigitalAlarmCheckAllColumnViewModel = new CheckAllColumnViewModel<SwitchDI>(lSwitchDI, PLCService.TriggerType.Alarm);
+
             PropertyChanged += (object? sender, PropertyChangedEventArgs args) =>
             {
                 if (PLCService.Connected == PLCConnection.Connected)
@@ -276,12 +282,6 @@ namespace SapphireXR_App.ViewModels
                             }
                             break;
                     }
-                }
-
-                switch(args.PropertyName)
-                {
-                    case nameof(IsAnalogAlarmHighlight):
-                        break;
                 }
             };
         }
@@ -447,8 +447,28 @@ namespace SapphireXR_App.ViewModels
                         digitalIO.WarningSet = !digitalIO.WarningSet;
                     }
                 }
+                HieDigitalDeviceIOWarningCheckBoxGuidePlaceHolder();
             }
         }
+
+        [RelayCommand]
+        private void ShowDigitalDeviceIOWarningCheckBoxGuidePlaceHolder()
+        {
+            ShowDigitalDeviceAlarmGuideCheckBoxPlaceHolder = Visibility.Visible;
+            ShowDigitalDeviceAlarmCheckBox = Visibility.Hidden;
+        }
+
+        [RelayCommand]
+        private void HieDigitalDeviceIOWarningCheckBoxGuidePlaceHolder()
+        {
+            ShowDigitalDeviceAlarmGuideCheckBoxPlaceHolder = Visibility.Hidden;
+            ShowDigitalDeviceAlarmCheckBox = Visibility.Visible;
+        }
+
+        [ObservableProperty]
+        private Visibility _showDigitalDeviceAlarmCheckBox = Visibility.Visible;
+        [ObservableProperty]
+        private Visibility _showDigitalDeviceAlarmGuideCheckBoxPlaceHolder = Visibility.Hidden;
 
         public void AlarmSettingSave()
         {

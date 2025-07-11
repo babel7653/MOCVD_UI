@@ -4,7 +4,11 @@ using SapphireXR_App.Common;
 using SapphireXR_App.Enums;
 using SapphireXR_App.Models;
 using System.Collections;
+using System.Printing;
+using System.Runtime.CompilerServices;
+using System.Windows;
 using System.Windows.Input;
+using static SapphireXR_App.ViewModels.SettingViewModel;
 
 namespace SapphireXR_App.ViewModels
 {
@@ -88,6 +92,98 @@ namespace SapphireXR_App.ViewModels
             private SettingViewModel settingViewModel;
         }
 
+        public partial class CheckAllColumnViewModel<T>: ObservableObject where T : WarningAlarmDevice
+        {
+            public CheckAllColumnViewModel(List<T>? list, PLCService.TriggerType alarmOrWarning)
+            {
+                ioList = list;
+                doToggleCheck = (alarmOrWarning == PLCService.TriggerType.Alarm) ? setAllAlarmCheck : setAllWarningCheck;
+                doAllChecked = (alarmOrWarning == PLCService.TriggerType.Alarm) ? allAlarmChecked : allWarningChecked;
+                PropertyChanged += (sender, args) =>
+                {
+                    switch (args.PropertyName)
+                    {
+                        case nameof(ShowGuidePlaceHolderCheckBox):
+                            ShowCheckBox = (ShowGuidePlaceHolderCheckBox == Visibility.Hidden) ? Visibility.Visible : Visibility.Hidden;
+                            break;
+                    }
+                };
+            }
+
+            [RelayCommand]
+            private void ToggleCheck()
+            {
+                doToggleCheck();
+                HideGuidePlaceHolder();
+            }
+
+            private void setAllChecked(Action<T> forEach)
+            {
+                if (ioList != null)
+                {
+                    foreach (T io in ioList)
+                    {
+                        forEach(io);
+                    }
+                }
+            }
+
+            private void setAllWarningCheck()
+            {
+                setAllChecked((T io) => io.WarningSet = IsPlaceHolderCheck);
+            }
+
+            private void setAllAlarmCheck()
+            {
+                setAllChecked((T io) => io.AlarmSet = IsPlaceHolderCheck);
+            }
+
+            private bool allChecked(Func<T, bool> predicate)
+            {
+                if (ioList != null)
+                {
+                    return ioList.All(predicate);
+                }
+                {
+                    return false;
+                }
+            }
+
+            private bool allWarningChecked()
+            {
+               return allChecked(io => io.WarningSet == true);
+            }
+
+            private bool allAlarmChecked()
+            {
+                return allChecked(io => io.AlarmSet == true);
+            }
+
+            [RelayCommand]
+            private void HideGuidePlaceHolder()
+            {
+                ShowGuidePlaceHolderCheckBox = Visibility.Hidden;
+            }
+
+            [RelayCommand]
+            private void ShowGuidePlaceHolder()
+            {
+                IsPlaceHolderCheck = !doAllChecked();
+                ShowGuidePlaceHolderCheckBox = Visibility.Visible;
+            }
+
+            [ObservableProperty]
+            private Visibility _showGuidePlaceHolderCheckBox = Visibility.Hidden;
+            [ObservableProperty]
+            private Visibility _showCheckBox = Visibility.Visible;
+            [ObservableProperty]
+            private bool _isPlaceHolderCheck = false;
+
+            private List<T>? ioList;
+            private Action doToggleCheck;
+            private Func<bool> doAllChecked;
+        }
+
         public partial class IOSetting : ObservableObject
         {
             required public string Name { get; set; } = "";
@@ -123,6 +219,12 @@ namespace SapphireXR_App.ViewModels
         private static float WarningDeviationValue;
         private static float AnalogDeviceDelayTimeValue;
         private static float DigitalDeviceDelayTimeValue;
+
+        public CheckAllColumnViewModel<AnalogDeviceIO> AnalogWarningCheckAllColumnViewModel { get; set; }
+        public CheckAllColumnViewModel<AnalogDeviceIO> AnalogAlarmCheckAllColumnViewModel { get; set; }
+        public CheckAllColumnViewModel<SwitchDI> DigitalWarningCheckAllColumnViewModel { get; set; }
+        public CheckAllColumnViewModel<SwitchDI> DigitalAlarmCheckAllColumnViewModel { get; set; }
+
 
         public ICommand AlarmSettingLoadCommand => new RelayCommand(AlarmSettingLoad);
         public ICommand AlarmSettingSaveCommand => new RelayCommand(AlarmSettingSave);
@@ -164,12 +266,12 @@ namespace SapphireXR_App.ViewModels
         {
             { "GasPressureAlarm", (PLCService.InterlockEnableSetting.GasPressureAlarm, PLCService.InterlockValueSetting.GasPressureAlarm) },
             { "GasPressureWarning", (PLCService.InterlockEnableSetting.GasPressureWarning, PLCService.InterlockValueSetting.GasPressureWarning) },
-            { "SHCoolingWaterTemp", (PLCService.InterlockEnableSetting.SHCoolingWaterTemp, PLCService.InterlockValueSetting.SHCoolingWaterTemp) },
-            { "CoilCoolingWaterTemp", (PLCService.InterlockEnableSetting.CoilCoolingWaterTemp, PLCService.InterlockValueSetting.CoilCoolingWaterTemp) },
-            { "ReactorPressure", (PLCService.InterlockEnableSetting.ReactorPressure, PLCService.InterlockValueSetting.ReactorPressure) },
-            { "SusceptorTemperature", (PLCService.InterlockEnableSetting.SusceptorTemperature, PLCService.InterlockValueSetting.SusceptorTemperature) },
-            { "PressureLimit", (PLCService.InterlockEnableSetting.PressureLimit, PLCService.InterlockValueSetting.PressureLimit) },
-            { "ReTryCount", (PLCService.InterlockEnableSetting.RetryCount, PLCService.InterlockValueSetting.RetryCount) }
+            { "SHCoolingWaterTemp", (PLCService.InterlockEnableSetting.SHCoolingWaterTemp, PLCService.InterlockValueSetting.SHCoolingWaterTempAlarm) },
+            { "CoilCoolingWaterTemp", (PLCService.InterlockEnableSetting.CoilCoolingWaterTemp, PLCService.InterlockValueSetting.CoilCoolingWaterTempAlarm) },
+            { "ReactorPressure", (PLCService.InterlockEnableSetting.ReactorPressure, PLCService.InterlockValueSetting.ReactorOverPressure) },
+            { "SusceptorTemperature", (PLCService.InterlockEnableSetting.SusceptorTemperature, PLCService.InterlockValueSetting.SusceptorOverTemperature) },
+            { "PressureLimit", (PLCService.InterlockEnableSetting.PressureLimit, PLCService.InterlockValueSetting.DoubleORingPressureLimit) },
+            { "ReTryCount", (PLCService.InterlockEnableSetting.RetryCount, PLCService.InterlockValueSetting.DoubleORingRetryCount) }
         };
     }
 }

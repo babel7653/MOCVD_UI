@@ -10,17 +10,21 @@ namespace SapphireXR_App.Models
         public bool CanEdit { get; } = false;
         public string? Description { get; set; }
     }
-    public partial class AnalogDeviceIO : Device
+    public partial class WarningAlarmDevice: Device
+    {
+        [ObservableProperty]
+        private bool _alarmSet;
+        [ObservableProperty]
+        private bool _warningSet;
+    }
+
+    public partial class AnalogDeviceIO : WarningAlarmDevice
     {
         public int MaxValue { get; set; }
         public int MinSignal { get; set; }
         public float CurrentValue { get; set; }
         public float TargetValue { get; set; }
-
-        [ObservableProperty]
-        public bool _alarmSet;
-        [ObservableProperty]
-        public bool _warningSet;
+    
         public int UserState1 { get; set; }
         public int UserState2 { get; set; }
         public int UserState3 { get; set; }
@@ -49,14 +53,9 @@ namespace SapphireXR_App.Models
         public bool AlarmSet { get; set; }
         public bool WarningSet { get; set; }
     }
-    public partial class SwitchDI : Device
+    public partial class SwitchDI : WarningAlarmDevice
     {
         public bool IsOn { get; set; }
-        [ObservableProperty]
-        public bool _alarmSet;
-        [ObservableProperty]
-        public bool _warningSet;
-
     }
     public class SwitchDO : Device
     {

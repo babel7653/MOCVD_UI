@@ -119,10 +119,11 @@ namespace SapphireXR_App.Models
 
         public enum InterlockValueSetting
         {
-            GasPressureAlarm = 5, GasPressureWarning, SHCoolingWaterTemp, CoilCoolingWaterTemp, ReactorPressure, SusceptorTemperature, PressureLimit, RetryCount
+            GasPressureAlarm = 5, GasPressureWarning, SHCoolingWaterTempAlarm, SHCoolingWaterTempWarning, CoilCoolingWaterTempAlarm, CoilCoolingWaterTempWarning, SusceptorOverTemperature, ReactorOverPressure, 
+            CanOpenReactorPressure, CanOpenSusceptorTemperature, DoubleORingPressureLimit, DoubleORingRetryCount
         };
 
-        internal enum TriggerType { Alarm = 0, Warning };
+        public enum TriggerType { Alarm = 0, Warning };
 
         public static readonly Dictionary<string, int> ValveIDtoOutputSolValveIdx1 = new Dictionary<string, int>
         {
@@ -175,7 +176,7 @@ namespace SapphireXR_App.Models
 
         public const uint LineHeaterTemperature = 8;
         private const uint NumAlarmWarningArraySize = 6;
-        private const uint NumInterlockSet = 12;
+        private const uint NumInterlockSet = 16;
         private const uint NumInterlock = 5;
         public const uint NumDigitalDevice = 14;
         public const uint NumAnalogDevice = 29;

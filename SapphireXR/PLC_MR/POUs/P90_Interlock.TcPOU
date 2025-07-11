@@ -53,10 +53,19 @@ VAR
 	fbFaultCheck			:ARRAY[1..6] OF FB_FaultCheck;
 	wAlarmEnable			: DWORD;
 	wWarningEnable			: DWORD;
+
 	bFaultAlarm				: BOOL;
 	bFaultWarning			: BOOL;
 	wAlarm					: DWORD;
 	wWarning				: DWORD;
+		
+	bAlarmEnable			: BOOL;
+	bWarningEnable			: BOOL;
+	bDeviceCurrentAlarmState	: BOOL;
+	bDeviceCurrentWarningState 	: BOOL;
+	fDeviceCurrentValue			: REAL;
+	fDeviceAlarmTreshold		: REAL;
+	fDeviceWarningTreshold		: REAL;
 	
 	bMaintKeyTest			: BOOL; //Test Variable
 	i	: INT;
@@ -224,50 +233,134 @@ IF (bMaintKey = FALSE) THEN
 		END_IF
 	END_FOR
 	
-	//Cooling Water, Over
-	FOR i := 5 TO 8 DO
-		wLimitAlarmEnable := SHR(GVL_IO.aInterlockEnable[4], (i-1)); //오늘쪽 쉬프트 연산, 은 어레이 변수 옵셋값
-		wLimitWarningEnable := SHR(GVL_IO.aInterlockEnable[5], (i-1));
-
+	//Cooling Water Over Temperature, Susceptor Over Temperature, Reactor Over Pressure
+	FOR i := 1 TO 4 DO
+		CASE i OF
+			1: //CW Temperature High S/H
+				bAlarmEnable := GVL_IO.aInterlockEnable[4].4;
+				bWarningEnable := GVL_IO.aInterlockEnable[5].4;
+				fDeviceCurrentValue := GVL_IO.aMonitoring_PV[8];
+				fDeviceAlarmTreshold := GVL_IO.aInterlockSet[7];
+				fDeviceWarningTreshold := GVL_IO.aInterlockSet[8];
+			2: //CW Temperature High Coil
+				bAlarmEnable := GVL_IO.aInterlockEnable[4].5;
+				bWarningEnable := GVL_IO.aInterlockEnable[5].5;
+				fDeviceCurrentValue := GVL_IO.aMonitoring_PV[9];
+				fDeviceAlarmTreshold := GVL_IO.aInterlockSet[9];
+				fDeviceWarningTreshold := GVL_IO.aInterlockSet[10];
+			3: //Susceptor Over Temperature
+				bAlarmEnable := GVL_IO.aInterlockEnable[4].6;
+				bWarningEnable := GVL_IO.aInterlockEnable[5].6;
+				fDeviceCurrentValue := GVL_IO.aController_PV[27];
+				fDeviceAlarmTreshold := GVL_IO.aInterlockSet[11];
+				fDeviceWarningTreshold := (GVL_IO.aInterlockSet[11] - 20.0); //20도 아래에서 Warning 발생				
+			4: //Reactor Over Pressure Alarm
+				bAlarmEnable := GVL_IO.aInterlockEnable[4].7;
+				bWarningEnable := GVL_IO.aInterlockEnable[5].7;
+				fDeviceCurrentValue := GVL_IO.aController_PV[28];
+				fDeviceAlarmTreshold := GVL_IO.aInterlockSet[12];
+				fDeviceWarningTreshold := (GVL_IO.aInterlockSet[12] - 50.0); //50Torr 아래에서 Warning 발생							
+		END_CASE
 		fbSensorLimitCheck[i](
-			bAlarmEnable := wLimitAlarmEnable.0,
-			bWarningEnable := wLimitWarningEnable.0,
-			fCurrentValue := GVL_IO.aMonitoring_PV[(i+3)],
-			fAlarmTreshold := (GVL_IO.aInterlockSet[i+2] + 10),
-			fWarningTreshold := GVL_IO.aInterlockSet[i+2],
+			bAlarmEnable := bAlarmEnable,
+			bWarningEnable := bWarningEnable,
+			fCurrentValue := fDeviceCurrentValue,
+			fAlarmTreshold := fDeviceAlarmTreshold,
+			fWarningTreshold := fDeviceWarningTreshold,
 			tAlarmDelay := tAlarmDelay_D,
 			bLimitAlarm => bLimitAlarm, //알람 출력
 			bLimitWarning => bLimitWarning //주의(Warning) 출력
-			);	
+			);
+		IF bLimitAlarm THEN		
+			GVL_IO.aInterlock[1].0 := TRUE; //Alarm Trig
+			P92_Maintenance.nCaseSignalTower := 1; // Signal Tower RED - Alarm
+			wDeviationAlarm := ROR(GVL_IO.aInterlock[2], (i+3));
+			wDeviationAlarm.0 := TRUE;
+			GVL_IO.aInterlock[2] := ROL(wDeviationAlarm, (i+3));
+		ELSE
+			wDeviationAlarm := ROR(GVL_IO.aInterlock[2], (i+3));
+			wDeviationAlarm.0 := FALSE;
+			GVL_IO.aInterlock[2] := ROL(wDeviationAlarm, (i+3));
+		END_IF
+		
+		IF bDeviationWarning THEN
+			GVL_IO.aInterlock[1].1 := TRUE; // Warning Trig
+			P92_Maintenance.nCaseSignalTower := 2; // Signal Tower Yellow - Warning
+			wDeviationWarning := ROR(GVL_IO.aInterlock[4], (i+3));
+			wDeviationWarning.0 := TRUE;
+			GVL_IO.aInterlock[4] := ROL(wDeviationWarning, (i+3));
+		ELSE
+			wDeviationWarning := ROR(GVL_IO.aInterlock[4], (i+3));
+			wDeviationWarning.0 := FALSE;
+			GVL_IO.aInterlock[4] := ROL(wDeviationWarning, (i+3));
+		END_IF		
 	END_FOR
-
+	
 	//Device Fault Check - Pneumatic, Heater, Pump, Motor, GC Door, RC Door
-	FOR i := 1 TO 6 DO
-		wAlarmEnable := SHR(GVL_IO.aInterlockEnable[4], (i+7));
-		wWarningEnable := SHR(GVL_IO.aInterlockEnable[5], (i+7));
+	FOR i := 1 TO 7 DO
+		CASE i OF
+			1: //CDA Alarm Switch (Pneumatic)
+				bAlarmEnable := GVL_IO.aInterlockEnable[4].8;
+				bWarningEnable := GVL_IO.aInterlockEnable[5].8;
+				bDeviceCurrentAlarmState := GVL_IO.aInputState[1].4;
+				bDeviceCurrentWarningState := GVL_IO.aInputState[1].4;
+			2: //Cooling Water Switch
+				bAlarmEnable := GVL_IO.aInterlockEnable[4].9;
+				bWarningEnable := GVL_IO.aInterlockEnable[5].9;
+				bDeviceCurrentAlarmState := GVL_IO.aInputState[1].5;
+				bDeviceCurrentWarningState := GVL_IO.aInputState[1].5;
+			3: //Induction Heater Fault
+				bAlarmEnable := GVL_IO.aInterlockEnable[4].10;
+				bWarningEnable := GVL_IO.aInterlockEnable[5].10;
+				bDeviceCurrentAlarmState := GVL_IO.aInputState[1].8;
+				bDeviceCurrentWarningState := GVL_IO.aInputState[1].8;
+			4: //Rotatin Motor Fault
+				bAlarmEnable := GVL_IO.aInterlockEnable[4].11;
+				bWarningEnable := GVL_IO.aInterlockEnable[5].11;
+				bDeviceCurrentAlarmState := GVL_IO.aInputState[1].11;
+				bDeviceCurrentWarningState := GVL_IO.aInputState[1].11;
+			5: //Vacuum Pump Fault
+				bAlarmEnable := GVL_IO.aInterlockEnable[4].12;
+				bWarningEnable := GVL_IO.aInterlockEnable[5].12;
+				bDeviceCurrentAlarmState := GVL_IO.aInputState[1].12;
+				bDeviceCurrentWarningState := GVL_IO.aInputState[1].14;
+			6: //Gas Cabinet Door Open
+				bAlarmEnable := GVL_IO.aInterlockEnable[4].13;
+				bWarningEnable := GVL_IO.aInterlockEnable[5].13;
+				bDeviceCurrentAlarmState := GVL_IO.aInputState[2].0;
+				bDeviceCurrentWarningState := GVL_IO.aInputState[2].0;
+			7: //Reactor Cabinet Door Open
+				bAlarmEnable := GVL_IO.aInterlockEnable[4].14;
+				bWarningEnable := GVL_IO.aInterlockEnable[5].14;
+				bDeviceCurrentAlarmState := GVL_IO.aInputState[2].1;
+				bDeviceCurrentWarningState := GVL_IO.aInputState[2].1;		
+		END_CASE
+
 		fbFaultCheck[i](
-			bAlarmEnable := wAlarmEnable.0,
-			bWarningEnable := wWarningEnable.0,
-			bCurrentState := ,
+			bAlarmEnable := bAlarmEnable,
+			bWarningEnable := bWarningEnable,
+			bCurrentAlarmState := bDeviceCurrentAlarmState,
+			bCurrentWarningState := bDeviceCurrentWarningState,
 			tAlarmDelay := tAlarmDelay_D,
 			bAlarm => bFaultAlarm,
 			bWarning => bFaultWarning
 			);
+			
 		IF bFaultAlarm THEN
 			GVL_IO.aInterlock[1].0 := TRUE; //Alarm Trig
 			P92_Maintenance.nCaseSignalTower := 1; // Signal Tower RED - Alarm
 			//팝업 표시
-			wAlarm := ROR(GVL_IO.aInterlock[2], (i+3));
+			wAlarm := ROR(GVL_IO.aInterlock[2], (i+7));
 			wAlarm.0 := TRUE;
-			GVL_IO.aInterlock[2] := ROL(wAlarm, (i+3));
+			GVL_IO.aInterlock[2] := ROL(wAlarm, (i+7));
 		END_IF
 		IF bFaultWarning THEN
 			GVL_IO.aInterlock[1].1 := TRUE; //Warning Trig
 			P92_Maintenance.nCaseSignalTower := 2; // Signal Tower YELLOW - Warning
 			//팝업 표시
-			wAlarm := ROR(GVL_IO.aInterlock[4], (i+3));
+			wAlarm := ROR(GVL_IO.aInterlock[4], (i+7));
 			wAlarm.0 := TRUE;
-			GVL_IO.aInterlock[4] := ROL(wAlarm, (i+3));
+			GVL_IO.aInterlock[4] := ROL(wAlarm, (i+7));
 		END_IF
 	END_FOR
 	
@@ -280,8 +373,7 @@ IF (bMaintKey = FALSE) THEN
 		GVL_IO.aInterlock[1].1 := FALSE; //Warmomg Trig Reset
 		GVL_IO.aInterlockEnable[1].1 := FALSE; //버턴 초기화
 		P92_Maintenance.nCaseSignalTower := 4; // Signal Tower Blue - Idle
-	END_IF
-	
+	END_IF	
 ELSE
 	//매인터넌스 키가 ON 되었을 때 MC(Induction, Bath, Pump, L_Heater) 조작 허용
 	P92_Maintenance.nCaseSignalTower := 4; // Signal Tower Blue - Idle
@@ -356,17 +448,63 @@ GVL_IO.aDigitalOutputIO[2].4 := bUPSMode;
       <LineId Id="1062" Count="0" />
       <LineId Id="1036" Count="0" />
       <LineId Id="1039" Count="0" />
-      <LineId Id="1043" Count="1" />
-      <LineId Id="1057" Count="0" />
+      <LineId Id="1094" Count="1" />
+      <LineId Id="1098" Count="0" />
+      <LineId Id="1152" Count="0" />
+      <LineId Id="1112" Count="1" />
+      <LineId Id="1153" Count="0" />
+      <LineId Id="1101" Count="1" />
+      <LineId Id="1154" Count="0" />
+      <LineId Id="1116" Count="1" />
+      <LineId Id="1155" Count="0" />
+      <LineId Id="1105" Count="1" />
+      <LineId Id="1156" Count="0" />
+      <LineId Id="1120" Count="1" />
+      <LineId Id="1157" Count="0" />
+      <LineId Id="1109" Count="0" />
+      <LineId Id="1111" Count="0" />
+      <LineId Id="1159" Count="0" />
+      <LineId Id="1124" Count="1" />
+      <LineId Id="1160" Count="0" />
+      <LineId Id="1096" Count="0" />
       <LineId Id="1045" Count="8" />
-      <LineId Id="1041" Count="1" />
-      <LineId Id="1060" Count="1" />
+      <LineId Id="1041" Count="0" />
+      <LineId Id="1130" Count="21" />
+      <LineId Id="1129" Count="0" />
+      <LineId Id="1042" Count="0" />
+      <LineId Id="1161" Count="0" />
+      <LineId Id="1061" Count="0" />
       <LineId Id="1040" Count="0" />
-      <LineId Id="1065" Count="0" />
+      <LineId Id="1162" Count="0" />
+      <LineId Id="1171" Count="3" />
+      <LineId Id="1183" Count="0" />
+      <LineId Id="1185" Count="0" />
+      <LineId Id="1187" Count="2" />
+      <LineId Id="1186" Count="0" />
+      <LineId Id="1176" Count="0" />
+      <LineId Id="1179" Count="1" />
+      <LineId Id="1178" Count="0" />
+      <LineId Id="1181" Count="0" />
+      <LineId Id="1195" Count="0" />
+      <LineId Id="1197" Count="2" />
+      <LineId Id="1196" Count="0" />
+      <LineId Id="1184" Count="0" />
+      <LineId Id="1191" Count="2" />
+      <LineId Id="1190" Count="0" />
+      <LineId Id="1200" Count="0" />
+      <LineId Id="1203" Count="2" />
+      <LineId Id="1202" Count="0" />
+      <LineId Id="1201" Count="0" />
+      <LineId Id="1207" Count="2" />
+      <LineId Id="1206" Count="0" />
+      <LineId Id="1164" Count="0" />
       <LineId Id="1067" Count="1" />
       <LineId Id="1070" Count="0" />
-      <LineId Id="1072" Count="4" />
+      <LineId Id="1072" Count="1" />
+      <LineId Id="1182" Count="0" />
+      <LineId Id="1074" Count="2" />
       <LineId Id="1071" Count="0" />
+      <LineId Id="1177" Count="0" />
       <LineId Id="1078" Count="0" />
       <LineId Id="1081" Count="4" />
       <LineId Id="1079" Count="1" />
@@ -376,7 +514,6 @@ GVL_IO.aDigitalOutputIO[2].4 := bUPSMode;
       <LineId Id="1064" Count="0" />
       <LineId Id="1027" Count="8" />
       <LineId Id="1026" Count="0" />
-      <LineId Id="1037" Count="0" />
       <LineId Id="753" Count="0" />
       <LineId Id="759" Count="0" />
       <LineId Id="755" Count="3" />

@@ -4,7 +4,6 @@
     <Declaration><![CDATA[PROGRAM P70_Interface
 VAR
 	b : BOOL;
-	
 END_VAR]]></Declaration>
     <Implementation>
       <ST><![CDATA[(* UI Right Dashboard Variable*)
@@ -12,8 +11,8 @@ GVL_IO.aInputState[1].0 	:= GVL_IO.aDigitalInputIO[1].0; //Maintenance Key
 GVL_IO.aInputState[1].1		:= P92_Maintenance.bReactorCabinetLamp; //Reactor Cabinet Lamp
 GVL_IO.aInputState[1].2		:= P92_Maintenance.bGasCabinetLamp; // Gas Cabinet Lamp
 GVL_IO.aInputState[1].3		:= P92_Maintenance.bPowerDistributeLamp; // Power Cabinet Lamp
-GVL_IO.aInputState[1].4 	:= P90_Interlock.bAirPressureSensor; //CDA Alarm Switch
-GVL_IO.aInputState[1].5		:= P90_Interlock.bWaterFlowSensor; //Water Flow Sensor
+GVL_IO.aInputState[1].4 	:= GVL_IO.aDigitalInputIO[2].0; //CDA Alarm Switch
+GVL_IO.aInputState[1].5		:= GVL_IO.aDigitalInputIO[2].1; //Water Flow Sensor
 GVL_IO.aInputState[1].6 	:= P11_E3508.isHeaterReady; //Induction Heater
 GVL_IO.aInputState[1].7 	:= P11_E3508.isHeaterRun; //Induction Heater
 GVL_IO.aInputState[1].8 	:= P11_E3508.isHeaterFault; //Induction Heater

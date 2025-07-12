@@ -41,11 +41,7 @@ IF TimeCycle.Q THEN
 	GVL_IO.aMonitoring_PV[8] := GVL_IO.aAnalogInputIO[37] * 0.1; // PT100, Shower Head, Cal. 0.1
 	GVL_IO.aMonitoring_PV[9] := GVL_IO.aAnalogInputIO[38] * 0.1; // PT100, Shower Head, Cal. 0.1
 	
-END_IF
-
-//IF P90_Interlock.bMaintKeyTest:= FALSE THEN
-	
-//END_IF]]></ST>
+END_IF]]></ST>
     </Implementation>
     <LineIds Name="P91_Monitoring">
       <LineId Id="184" Count="0" />
@@ -68,9 +64,6 @@ END_IF
       <LineId Id="60" Count="0" />
       <LineId Id="128" Count="0" />
       <LineId Id="5" Count="0" />
-      <LineId Id="203" Count="0" />
-      <LineId Id="73" Count="0" />
-      <LineId Id="204" Count="1" />
     </LineIds>
   </POU>
 </TcPlcObject>

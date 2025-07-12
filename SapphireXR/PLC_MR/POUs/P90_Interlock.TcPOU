@@ -12,21 +12,29 @@ VAR_INPUT
 	bLineHeaterMC 		: BOOL; 
 END_VAR
 VAR_OUTPUT
-	bCoverOperationEnable	: BOOL;
-	bDORVacEnable			: BOOL;
-	bDORAtmEnable			: BOOL;
+	bRecipeStartAvailable	: BOOL;
+	bReactorOpenEnable		: BOOL;
+	bHeaterOnEnable			: BOOL;
+	bPumpOnEnable			: BOOL;
+	
+	bDorOnEnable			: BOOL;
+	bDorOffEnable			: BOOL;
+	bOpenEnableTemp			: BOOL;
+	bOpenEnablePress		: BOOL;	
+	
 	bPowerResetSwitch		: BOOL;
 	bMainPowerMonitor		: BOOL;
 	bRecipeEnable			: BOOL;
 	AlarmTrig				: BOOL;
 	WarningTrig				: BOOL;
+	bMaintKey				: BOOL;
+	bGasStateProcess		: BOOL;
+	bGasStateSource			: BOOL;
+	bGasStateVent			: BOOL;
 END_VAR	
 VAR
-	bMaintKey				: BOOL;
-	bSafetyGasState			: BOOL;
 	bPowerResetLED			: BOOL;
 	bUPSMode				: BOOL;
-	
 	tAlarmDelay_A			: TIME; //아날로그 디바이스 지연시간
 	tAlarmDelay_D			: TIME; //디지털 디바이스 지연시간
 	
@@ -74,6 +82,23 @@ END_VAR
 bMaintKey := GVL_IO.aDigitalInputIO[1].0;
 bPowerResetSwitch := GVL_IO.aDigitalInputIO[1].1;
 bMainPowerMonitor := GVL_IO.aDigitalInputIO[7].5;
+bGasStateProcess := GVL_IO.aOutputSolValve[1].0 AND //HYD Carrier Change Valve
+	GVL_IO.aOutputSolValve[1].1 AND //Main Carrier Change Valve
+	GVL_IO.aOutputSolValve[1].2 AND //SiH4 Source Change Valve
+	GVL_IO.aOutputSolValve[1].3 //NH3 Source Change Valve
+	; //All False이면 Safety State
+bGasStateSource := GVL_IO.aOutputSolValve[1].4 AND GVL_IO.aOutputSolValve[1].5 AND GVL_IO.aOutputSolValve[1].6 AND //Source #1
+	GVL_IO.aOutputSolValve[1].7 AND GVL_IO.aOutputSolValve[1].8 AND GVL_IO.aOutputSolValve[1].9 AND //Source #2
+	GVL_IO.aOutputSolValve[1].10 AND GVL_IO.aOutputSolValve[1].11 AND GVL_IO.aOutputSolValve[1].12 AND //Source #3
+	GVL_IO.aOutputSolValve[1].13 AND GVL_IO.aOutputSolValve[1].14 AND GVL_IO.aOutputSolValve[1].15 AND //Source #4
+	GVL_IO.aOutputSolValve[2].0 AND GVL_IO.aOutputSolValve[2].1 AND GVL_IO.aOutputSolValve[2].2 AND //Source #5
+	GVL_IO.aOutputSolValve[2].3 AND GVL_IO.aOutputSolValve[2].4 AND GVL_IO.aOutputSolValve[2].6 //Source #6
+	; //All False이면 Safety State
+bGasStateVent := GVL_IO.aOutputSolValve[2].15;
+GVL_IO.aInterlock[1].10 := bRecipeStartAvailable;
+GVL_IO.aInterlock[1].11 := bReactorOpenEnable;
+GVL_IO.aInterlock[1].12 := bHeaterOnEnable;
+GVL_IO.aInterlock[1].13 := bPumpOnEnable;
 
 //Sinal Tower Set
 IF (bMaintKey = TRUE) THEN //bMaintKey 변경
@@ -376,32 +401,53 @@ ELSE
 	GVL_IO.aDigitalOutputIO[3].3 := bLineHeaterMC;
 END_IF
 
-// Recipe Start Available
-GVL_IO.aInterlock[1].10 := 
+bRecipeStartAvailable := //레시피 가능한 상태이면 TRUE
 	NOT(AlarmTrig) AND
 	NOT(WarningTrig) AND
-	bMaintKey AND
-	NOT(GVL_IO.aInputState[2].4) AND //Cover Lower Limt
-	GVL_IO.aInputState[4].6 //DOR State
+	NOT(bMaintKey) AND
+	GVL_IO.aInputState[2].4 AND //Cover Lower Limt
+	GVL_IO.aInputState[4].6 AND //DOR State
+	NOT(RCP.state_RcpOperation = 10) AND //Not Recipe Run State
+	NOT(bGasStateProcess) AND //Safety Process Gas : TRUE
+	NOT(bGasStateSource) AND //Safety Source Gas : TRUE
+	NOT(bGasStateVent) AND
+	P11_E3508. bManAuto_E3508 AND //Temperature Controller Auto : True
+	P12_IQ_PLUS. ingPressureControl //Throttle Valve Pressure Control Mode : True 
 	;
 
-// For Test Value
-bSafetyGasState := TRUE;
+bDorOnEnable :=
+	NOT(AlarmTrig) AND
+	P16_CoverOperation.isCoverClosed AND
+	P17_DOROperation.isDOROnState AND
+	P12_IQ_PLUS.isPumpRunning
+	;
+bHeaterOnEnable := bDorOnEnable;
 
-// AND Valve01 = FALSE(H2) AND Valve02 = FALSE(H2) AND Valve03(SiH4) AND Valve04(NH2)
-// All MO-Source ByPass Stat
-AlarmTrig := TRUE;
-
-
-bCoverOperationEnable := bSafetyGasState AND AlarmTrig AND P17_DOROperation.isDOROnState = FALSE; //For Test -P16
-// bCoverOpenEnable := ing_Racipe AND bAlarmClear AND isInductionHeater = FAULSE
-
-bDORVacEnable := P16_CoverOperation.isCoverClosed AND AlarmTrig AND bSafetyGasState AND P17_DOROperation.isDOROnState = FALSE; //For Test -P17
-// add : Vacuum Pump ON
-bDORAtmEnable := AlarmTrig AND bSafetyGasState AND P17_DOROperation.isDOROnState = TRUE;
-// Susceptor Temperature, Vacuum Range > 700Torr
-
-//bRecipeEnable := bMaintKey=FALSE AND bRecipeRunning=FALSE AND P16_CoverOperation.isCoverClosed AND P12_IQ_PLUS.bPumpOn;
+// DOR Off Conditions
+IF  GVL_IO.aController_PV[27] < GVL_IO.aInterlockSet[13] THEN
+	bOpenEnableTemp := TRUE;
+ELSE
+	bOpenEnableTemp := FALSE;
+END_IF
+IF  GVL_IO.aController_PV[28] < GVL_IO.aInterlockSet[14] THEN
+	bOpenEnablePress := TRUE;
+ELSE
+	bOpenEnablePress := FALSE;
+END_IF
+bDorOffEnable :=
+	NOT(AlarmTrig) AND
+	NOT(P17_DOROperation.isDOROnState) AND
+	NOT(RCP.state_RcpOperation = 10) AND //Not Recipe Run State
+	NOT(bGasStateProcess) AND //Safety Process Gas : TRUE
+	NOT(bGasStateSource) AND //Safety Source Gas : TRUE
+	bGasStateVent AND //Vent Valve는 펌프 뒤쪽 Open
+	NOT(GVL_IO.aInterlockEnable[6].4) AND //Can Open Temperature Check
+	bOpenEnableTemp AND
+	NOT(GVL_IO.aInterlockEnable[6].5) AND //Can Open Pressure Check
+	bOpenEnablePress ;
+	;
+bReactorOpenEnable := bDorOffEnable;
+	
 bRecipeEnable := TRUE;
 
 (* Out to Device*)
@@ -414,7 +460,18 @@ GVL_IO.aDigitalOutputIO[2].4 := bUPSMode;
       <LineId Id="300" Count="0" />
       <LineId Id="284" Count="0" />
       <LineId Id="304" Count="1" />
-      <LineId Id="308" Count="0" />
+      <LineId Id="1244" Count="0" />
+      <LineId Id="1247" Count="3" />
+      <LineId Id="1245" Count="0" />
+      <LineId Id="1251" Count="1" />
+      <LineId Id="1246" Count="0" />
+      <LineId Id="1253" Count="2" />
+      <LineId Id="1240" Count="0" />
+      <LineId Id="1273" Count="0" />
+      <LineId Id="1272" Count="0" />
+      <LineId Id="1338" Count="0" />
+      <LineId Id="1358" Count="0" />
+      <LineId Id="1339" Count="0" />
       <LineId Id="296" Count="0" />
       <LineId Id="298" Count="0" />
       <LineId Id="295" Count="0" />
@@ -518,26 +575,35 @@ GVL_IO.aDigitalOutputIO[2].4 := bUPSMode;
       <LineId Id="755" Count="3" />
       <LineId Id="754" Count="0" />
       <LineId Id="655" Count="0" />
-      <LineId Id="1211" Count="0" />
       <LineId Id="138" Count="0" />
       <LineId Id="1212" Count="0" />
-      <LineId Id="1227" Count="5" />
-      <LineId Id="1226" Count="0" />
-      <LineId Id="50" Count="0" />
-      <LineId Id="33" Count="0" />
-      <LineId Id="242" Count="0" />
-      <LineId Id="51" Count="2" />
-      <LineId Id="1210" Count="0" />
-      <LineId Id="83" Count="0" />
-      <LineId Id="31" Count="0" />
-      <LineId Id="34" Count="0" />
-      <LineId Id="43" Count="0" />
-      <LineId Id="38" Count="0" />
-      <LineId Id="58" Count="0" />
-      <LineId Id="56" Count="0" />
-      <LineId Id="42" Count="0" />
-      <LineId Id="275" Count="0" />
-      <LineId Id="178" Count="0" />
+      <LineId Id="1227" Count="4" />
+      <LineId Id="1233" Count="0" />
+      <LineId Id="1232" Count="0" />
+      <LineId Id="1258" Count="1" />
+      <LineId Id="1262" Count="1" />
+      <LineId Id="1243" Count="0" />
+      <LineId Id="1299" Count="0" />
+      <LineId Id="1276" Count="0" />
+      <LineId Id="1282" Count="0" />
+      <LineId Id="1277" Count="0" />
+      <LineId Id="1283" Count="0" />
+      <LineId Id="1280" Count="0" />
+      <LineId Id="1278" Count="0" />
+      <LineId Id="1357" Count="0" />
+      <LineId Id="1345" Count="0" />
+      <LineId Id="1347" Count="9" />
+      <LineId Id="1346" Count="0" />
+      <LineId Id="1284" Count="0" />
+      <LineId Id="1287" Count="0" />
+      <LineId Id="1293" Count="0" />
+      <LineId Id="1289" Count="2" />
+      <LineId Id="1286" Count="0" />
+      <LineId Id="1341" Count="2" />
+      <LineId Id="1294" Count="0" />
+      <LineId Id="1292" Count="0" />
+      <LineId Id="1337" Count="0" />
+      <LineId Id="1308" Count="0" />
       <LineId Id="274" Count="0" />
       <LineId Id="276" Count="0" />
       <LineId Id="135" Count="0" />

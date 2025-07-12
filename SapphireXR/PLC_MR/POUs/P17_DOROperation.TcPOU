@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4026.11">
   <POU Name="P17_DOROperation" Id="{47a43ac8-2dfa-477f-bf65-90da71792e7e}" SpecialFunc="None">
     <Declaration><![CDATA[PROGRAM P17_DOROperation
 VAR_INPUT
@@ -60,7 +60,7 @@ rPressurePV_kPa := (nPressurePV-3256)*SlopeFactor;
 TimerVacSwitch(IN:=bVacSwitch OR bDOROn, PT:=T#100MS);
 rTrigSwitch(CLK:=TimerVacSwitch.Q);
 
-IF rTrigSwitch.Q AND P90_Interlock.bDORVacEnable THEN
+IF rTrigSwitch.Q AND P90_Interlock.bDorOnEnable THEN
 	nCase 		:= 1;
 	nTryCount 	:= 0; //Try One more Vacuum 
 END_IF
@@ -68,7 +68,6 @@ END_IF
 CASE nCase OF
 	1: //Initialize
 		isDOROnState := FALSE;
-		//P90_Interlock.bCoverOperationEnable := FALSE; // Cover Operation Disable
 		bV_DORVac 	:= TRUE; //V34 Open
 		bV_DORFill	:= FALSE; //V35 Close
 		bAtmLED		:= FALSE;
@@ -109,7 +108,7 @@ END_CASE
 TimerAtmSwitch(IN:=bAtmSwitch OR bDOROff, PT:=T#100MS);
 rTrigSwitch(CLK:=TimerAtmSwitch.Q);
 
-IF rTrigSwitch.Q AND P90_Interlock.bDORAtmEnable THEN
+IF rTrigSwitch.Q AND P90_Interlock.bDorOffEnable THEN
 	nCase := 2;
 END_IF
 
@@ -194,7 +193,8 @@ GVL_IO.aDigitalOutputIO[4].1 := bAtmLED;]]></ST>
       <LineId Id="377" Count="0" />
       <LineId Id="353" Count="0" />
       <LineId Id="496" Count="0" />
-      <LineId Id="459" Count="5" />
+      <LineId Id="459" Count="2" />
+      <LineId Id="463" Count="1" />
       <LineId Id="536" Count="0" />
       <LineId Id="465" Count="30" />
       <LineId Id="269" Count="0" />

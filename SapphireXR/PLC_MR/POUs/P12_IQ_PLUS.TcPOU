@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.15">
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4026.11">
   <POU Name="P12_IQ_PLUS" Id="{e511b755-5d71-4ab9-9c97-639ef910a29b}" SpecialFunc="None">
     <Declaration><![CDATA[PROGRAM P12_IQ_PLUS
 VAR_INPUT
@@ -26,6 +26,12 @@ VAR_OUTPUT
 	ingValveInitializing 	: BOOL;
 	ingHoldState 			: BOOL;
 	
+	// Vacuum Pump Status
+	isPumpFault				: BOOL;
+	isPumpWarning			: BOOL;
+	isPumpAlarm				: BOOL;
+	isFBRunning				: BOOL;
+	isPumpRunning			: BOOL;
 END_VAR
 VAR
 	//Input from IQ-PLUS Throttle Valve
@@ -47,13 +53,6 @@ VAR
 	wByteCDG2_PV 			: WORD; //CDG2 Current Pressure
 	wByteValvePosition_PV : WORD; //Current Valve Position (0~100%)
 	nInputStatusOld : USINT := 9; //Value Change Monitoring, First Temp value
-			
-	// Vacuum Pump Status
-	isPumpFault				: BOOL;
-	isPumpWarning			: BOOL;
-	isPumpAlarm				: BOOL;
-	isFBRunning				: BOOL;
-	isPumpRunning			: BOOL;
 END_VAR
 
 VAR CONSTANT

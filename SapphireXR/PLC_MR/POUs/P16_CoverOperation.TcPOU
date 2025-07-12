@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4026.11">
   <POU Name="P16_CoverOperation" Id="{413bd09a-4287-4ca5-a610-3ab16d733b75}" SpecialFunc="None">
     <Declaration><![CDATA[PROGRAM P16_CoverOperation
 VAR_OUTPUT
@@ -36,7 +36,7 @@ bCoverCP 		:=  GVL_IO.aDigitalInputIO[5].4;
 TimerDownDelayOff(IN:=bLowerLimit, PT:=T#500MS);
 
 // Cover Operation Condition
-IF P90_Interlock.bCoverOperationEnable THEN
+IF P90_Interlock.bReactorOpenEnable THEN
 	bOnUpRelay := (bDownSwitch = FALSE AND bUpSwitch = TRUE AND bUpperLimit = FALSE);
 	bOnDownRelay := (bDownSwitch = TRUE AND bUpSwitch = FALSE AND (bLowerLimit = FALSE OR TimerDownDelayOff.Q = FALSE ));
 END_IF

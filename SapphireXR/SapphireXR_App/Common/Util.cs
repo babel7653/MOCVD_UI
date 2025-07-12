@@ -211,25 +211,28 @@ namespace SapphireXR_App.Common
 
         public static void LoadBatchToPLC(Batch batch)
         {
-            PLCService.WriteTargetValue(batch.AnalogIOUserStates.Select((AnalogIOUserState analogIOUserState) => (float)analogIOUserState.Value).ToArray());
-            PLCService.WriteRampTime(Enumerable.Repeat((short)batch.RampingTime, batch.AnalogIOUserStates.Count).ToArray());
-
-            int partSize = sizeof(int) * 8;
-            BitArray firstValveStates = new BitArray(partSize);
-            BitArray secondValveStates = new BitArray(partSize);
-            foreach(DigitalIOUserState digitalIOUserState in batch.DigitalIOUserStates)
+            if (batch.RampingTime != null)
             {
-                int index;
-                if(PLCService.ValveIDtoOutputSolValveIdx1.TryGetValue(digitalIOUserState.ID, out index) == true)
+                PLCService.WriteTargetValue(batch.AnalogIOUserStates.Select((AnalogIOUserState analogIOUserState) => (float)analogIOUserState.Value).ToArray());
+                PLCService.WriteRampTime(Enumerable.Repeat((short)batch.RampingTime, batch.AnalogIOUserStates.Count).ToArray());
+
+                int partSize = sizeof(int) * 8;
+                BitArray firstValveStates = new BitArray(partSize);
+                BitArray secondValveStates = new BitArray(partSize);
+                foreach (DigitalIOUserState digitalIOUserState in batch.DigitalIOUserStates)
                 {
-                    firstValveStates[index] = digitalIOUserState.On;
+                    int index;
+                    if (PLCService.ValveIDtoOutputSolValveIdx1.TryGetValue(digitalIOUserState.ID, out index) == true)
+                    {
+                        firstValveStates[index] = digitalIOUserState.On;
+                    }
+                    else if (PLCService.ValveIDtoOutputSolValveIdx2.TryGetValue(digitalIOUserState.ID, out index) == true)
+                    {
+                        secondValveStates[index] = digitalIOUserState.On;
+                    }
                 }
-                else if(PLCService.ValveIDtoOutputSolValveIdx2.TryGetValue(digitalIOUserState.ID, out index) == true)
-                {
-                    secondValveStates[index] = digitalIOUserState.On;
-                }
+                PLCService.WriteValveState(firstValveStates, secondValveStates);
             }
-            PLCService.WriteValveState(firstValveStates, secondValveStates);
         }
 
         public static object? GetSettingValue(JToken rootToken, string key)

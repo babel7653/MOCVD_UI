@@ -106,10 +106,10 @@
                     <Style TargetType="ScrollBar" BasedOn="{StaticResource DefaultScrollbar}" />
                 </DataGrid.Resources>
                 <DataGrid.Columns>
-                    <DataGridTextColumn Header="Type" IsReadOnly="True" CanUserSort="False" CanUserResize="False" Width="Auto" Binding="{Binding Type}" ElementStyle="{StaticResource EventLogElement}" />
-                    <DataGridTextColumn Header="Massage" IsReadOnly="True" CanUserSort="False" CanUserResize="False" Width="*" Binding="{Binding Message}" ElementStyle="{StaticResource EventLogElement}" />
-                    <DataGridTextColumn Header="Date" IsReadOnly="True"  CanUserSort="False" CanUserResize="False" Width="Auto" Binding="{Binding Date, StringFormat='{}{0:d}'}" ElementStyle="{StaticResource EventLogElement}" />
-                    <DataGridTextColumn Header="Time" IsReadOnly="True"  CanUserSort="False" CanUserResize="False" Width="Auto" Binding="{Binding Date, StringFormat='{}{0:T}'}" ElementStyle="{StaticResource EventLogElement}" />
+                    <DataGridTextColumn Header="Type" IsReadOnly="True" CanUserSort="True" CanUserResize="True" Width="Auto" Binding="{Binding Type}" ElementStyle="{StaticResource EventLogElement}" />
+                    <DataGridTextColumn Header="Massage" IsReadOnly="True" CanUserSort="True" CanUserResize="True" Width="*" Binding="{Binding Message}" ElementStyle="{StaticResource EventLogElement}" />
+                    <DataGridTextColumn Header="Date" IsReadOnly="True"  CanUserSort="True" CanUserResize="True" Width="Auto" Binding="{Binding Date, StringFormat='{}{0:d}'}" ElementStyle="{StaticResource EventLogElement}" />
+                    <DataGridTextColumn Header="Time" IsReadOnly="True"  CanUserSort="True" CanUserResize="True" Width="Auto" Binding="{Binding Date, StringFormat='{}{0:T}'}" ElementStyle="{StaticResource EventLogElement}" />
                 </DataGrid.Columns>
             </DataGrid>
         </StackPanel>

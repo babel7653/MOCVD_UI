@@ -114,13 +114,13 @@ namespace SapphireXR_App.Models
 
         public enum InterlockEnableSetting
         {
-            GasPressureAlarm = 0, GasPressureWarning, SHCoolingWaterTemp, CoilCoolingWaterTemp, ReactorPressure, SusceptorTemperature, PressureLimit, RetryCount, InductionPowerSupply, SusceptorRotationMotor
+            Buzzer = 2, CanOpenSusceptorTemperature, CanOpenReactorPressure, PressureLimit, RetryCount, InductionPowerSupply, SusceptorRotationMotor
         };
 
         public enum InterlockValueSetting
         {
-            ProcessGasPressureAlarm = 5, ProcessGasPressureWarning, CWTempSHAlarm, CWTempSHWarning, CWTempCoilAlarm, CWTempCoilWarning, SusceptorOverTemperature, ReactorOverPressure, 
-            CanOpenReactorPressure, CanOpenSusceptorTemperature, PressureLimit, RetryCount
+            ProcessGasPressureAlarm = 5, ProcessGasPressureWarning, CWTempSHAlarm, CWTempSHWarning, CWTempCoilAlarm, CWTempCoilWarning, SusceptorOverTemperature, ReactorOverPressure,
+            CanOpenSusceptorTemperature, CanOpenReactorPressure, PressureLimit, RetryCount
         };
 
         public enum TriggerType { Alarm = 0, Warning };

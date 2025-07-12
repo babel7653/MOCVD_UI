@@ -335,12 +335,12 @@ namespace SapphireXR_App.Models
 
         public static void WriteInterlockEnableState(bool onOff, InterlockEnableSetting interlockEnableSetting)
         {
-            InterlockEnables[5] = SetBit(onOff, InterlockEnables[5], (int)interlockEnableSetting);
+            InterlockEnables[0] = SetBit(onOff, InterlockEnables[0], (int)interlockEnableSetting);
         }
 
         public static void CommitInterlockEnableToPLC()
         {
-            Ads.WriteAny(hInterlockEnable[5], InterlockEnables[5]);
+            Ads.WriteAny(hInterlockEnable[0], InterlockEnables[0]);
         }
 
         public static void WriteInterlockValueState(float value, InterlockValueSetting interlockEnableSetting)

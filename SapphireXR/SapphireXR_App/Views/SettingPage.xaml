@@ -339,9 +339,9 @@
                                                 </Setter.Value>
                                             </Setter>
                                         </Style>
-                                        <Style TargetType="TextBox" x:Key="sectionTextBox" BasedOn="{StaticResource ButtonLikeTextBox}">
+                                        <Style TargetType="TextBox" x:Key="sectionTextBox" BasedOn="{StaticResource InfoTextBox}">
                                             <Setter Property="Width" Value="135.5" />
-                                            <Setter Property="Height" Value="36" />
+                                            <Setter Property="Height" Value="32" />
                                         </Style>
                                         <Style TargetType="Line" x:Key="seperatorLine">
                                             <Setter Property="X1" Value="0" />
@@ -476,6 +476,32 @@
                                                 <Line Grid.Column="1" Style="{StaticResource seperatorLine}" ></Line>
                                                 <TextBox Grid.Column="2" Text="{Binding Path=dInterLockA[CWTempCoilWarning].Treshold, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Style="{StaticResource sectionTextBox}"/>
                                             </Grid>
+                                            <Grid>
+                                                <Grid.Margin>
+                                                    <Thickness Bottom="{StaticResource p_2}" />
+                                                </Grid.Margin>
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="Auto" />
+                                                    <ColumnDefinition Width="*" />
+                                                    <ColumnDefinition Width="Auto" />
+                                                </Grid.ColumnDefinitions>
+                                                <Label Grid.Column="0">Reactor Over Pressure (Torr)</Label>
+                                                <Line Grid.Column="1" Style="{StaticResource seperatorLine}" />
+                                                <TextBox x:Name="reactorPressureValue" Grid.Column="2" Text="{Binding Path=dInterLockA[ReactorOverPressure].Treshold, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Style="{StaticResource sectionTextBox}" />
+                                            </Grid>
+                                            <Grid>
+                                                <Grid.Margin>
+                                                    <Thickness Bottom="{StaticResource p_2}" />
+                                                </Grid.Margin>
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="Auto" />
+                                                    <ColumnDefinition Width="*" />
+                                                    <ColumnDefinition Width="Auto" />
+                                                </Grid.ColumnDefinitions>
+                                                <Label Grid.Column="0">Susceptor Over Temperature</Label>
+                                                <Line Grid.Column="1" Style="{StaticResource seperatorLine}" />
+                                                <TextBox Grid.Column="2" Text="{Binding Path=dInterLockA[SusceptorOverTemperature].Treshold, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Style="{StaticResource sectionTextBox}" />
+                                            </Grid>
                                             <Border Style="{StaticResource subSubSectionSeperator}" />
                                             <Label Content="Reactor Open Condition" Style="{StaticResource SectionTitle}" Grid.Column="0">
                                                 <Label.Margin>
@@ -491,9 +517,9 @@
                                                     <ColumnDefinition Width="*" />
                                                     <ColumnDefinition Width="Auto" />
                                                 </Grid.ColumnDefinitions>
-                                                <CheckBox Grid.Column="0" Content="Reactor Over Pressure (Torr)" IsChecked="{Binding Path=dInterLockA[ReactorOverPressure].IsEnable, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Style="{StaticResource DefaultCheckBox}" />
+                                                <CheckBox Grid.Column="0" Content="Reactor Pressure (Torr)" IsChecked="{Binding Path=dInterLockA[CanOpenReactorPressure].IsEnable, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Style="{StaticResource DefaultCheckBox}" />
                                                 <Line Grid.Column="1" Style="{StaticResource seperatorLine}" />
-                                                <TextBox x:Name="reactorPressureValue" Grid.Column="2" Text="{Binding Path=dInterLockA[ReactorOverPressure].Treshold, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Style="{StaticResource sectionTextBox}" />
+                                                <TextBox Grid.Column="2" Text="{Binding Path=dInterLockA[CanOpenReactorPressure].Treshold, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Style="{StaticResource sectionTextBox}" />
                                             </Grid>
                                             <Grid>
                                                 <Grid.Margin>
@@ -504,9 +530,9 @@
                                                     <ColumnDefinition Width="*" />
                                                     <ColumnDefinition Width="Auto" />
                                                 </Grid.ColumnDefinitions>
-                                                <CheckBox Grid.Column="0" Content="Susceptor Over Temperature" IsChecked="{Binding Path=dInterLockA[SusceptorOverTemperature].IsEnable, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Style="{StaticResource DefaultCheckBox}" />
+                                                <CheckBox Grid.Column="0" Content="Susceptor Temperature" IsChecked="{Binding Path=dInterLockA[CanOpenSusceptorTemperature].IsEnable, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Style="{StaticResource DefaultCheckBox}" />
                                                 <Line Grid.Column="1" Style="{StaticResource seperatorLine}" />
-                                                <TextBox x:Name="susceptorTempValue" Grid.Column="2" Text="{Binding Path=dInterLockA[SusceptorOverTemperature].Treshold, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Style="{StaticResource sectionTextBox}" />
+                                                <TextBox x:Name="susceptorTempValue" Grid.Column="2" Text="{Binding Path=dInterLockA[CanOpenSusceptorTemperature].Treshold, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Style="{StaticResource sectionTextBox}" />
                                             </Grid>
                                             <Border Style="{StaticResource subSubSectionSeperator}" />
                                             <Label Content="Double O-Ring" Style="{StaticResource SectionTitle}" Grid.Column="0">

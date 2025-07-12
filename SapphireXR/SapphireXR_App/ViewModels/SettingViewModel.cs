@@ -9,6 +9,7 @@ using System.ComponentModel;
 using System.Collections;
 using SapphireXR_App.Enums;
 using System.Windows;
+using System.Net;
 
 namespace SapphireXR_App.ViewModels
 {
@@ -121,12 +122,12 @@ namespace SapphireXR_App.ViewModels
                 dInterLockA = JsonConvert.DeserializeObject<Dictionary<string, InterLockA>>(jInterLockA.ToString());
                 if (dInterLockA != null)
                 {
-                    foreach (KeyValuePair<string, InterLockA> analogLogInterlock in dInterLockA)
+                    foreach ((string name, InterLockA interlockA) in dInterLockA)
                     {
-                        (PLCService.InterlockEnableSetting, PLCService.InterlockValueSetting) plcArgs;
-                        if(InterlockSettingNameToPLCServiceArgs.TryGetValue(analogLogInterlock.Key, out plcArgs) == true)
-                        { 
-                            analogLogInterlock.Value.PropertyChanged += (sender, args) =>
+                        PLCService.InterlockEnableSetting interlockEnableSetting;
+                        if (InterlockSettingNameToPLCInterlockEnableSettingEnum.TryGetValue(name, out interlockEnableSetting) == true)
+                        {
+                            interlockA.PropertyChanged += (sender, args) =>
                             {
                                 if (PLCService.Connected == PLCConnection.Connected)
                                 {
@@ -136,13 +137,29 @@ namespace SapphireXR_App.ViewModels
                                         switch (args.PropertyName)
                                         {
                                             case nameof(InterLockA.IsEnable):
-                                                PLCService.WriteInterlockEnableState(interlockA.IsEnable, plcArgs.Item1);
-                                            break;
-
+                                                PLCService.WriteInterlockEnableState(interlockA.IsEnable, interlockEnableSetting);
+                                                break;
+                                        }
+                                    }
+                                }
+                            };
+                        }
+                        PLCService.InterlockValueSetting interlockValueSetting;
+                        if (InterlockSettingNameToPLCInterlockValueSettingEnum.TryGetValue(name, out interlockValueSetting) == true)
+                        {
+                            interlockA.PropertyChanged += (sender, args) =>
+                            {
+                                if (PLCService.Connected == PLCConnection.Connected)
+                                {
+                                    InterLockA? interlockA = sender as InterLockA;
+                                    if (interlockA != null)
+                                    {
+                                        switch (args.PropertyName)
+                                        {
                                             case nameof(InterLockA.Treshold):
                                                 try
                                                 {
-                                                    PLCService.WriteInterlockValueState(float.Parse(interlockA.Treshold), plcArgs.Item2);
+                                                    PLCService.WriteInterlockValueState(float.Parse(interlockA.Treshold), interlockValueSetting);
                                                 }
                                                 catch(ArgumentException)
                                                 { 
@@ -568,13 +585,18 @@ namespace SapphireXR_App.ViewModels
                 {
                     foreach ((string name, InterLockA interlockA) in dInterLockA)
                     {
-                        (PLCService.InterlockEnableSetting, PLCService.InterlockValueSetting) plcArgs;
-                        if (InterlockSettingNameToPLCServiceArgs.TryGetValue(name, out plcArgs) == true)
+                        PLCService.InterlockEnableSetting interlockEnableSetting;
+                        if (InterlockSettingNameToPLCInterlockEnableSettingEnum.TryGetValue(name, out interlockEnableSetting) == true)
                         {
-                            PLCService.WriteInterlockEnableState(interlockA.IsEnable, plcArgs.Item1);
+                            PLCService.WriteInterlockEnableState(interlockA.IsEnable, interlockEnableSetting);
+                          
+                        }
+                        PLCService.InterlockValueSetting interlockValueSetting;
+                        if(InterlockSettingNameToPLCInterlockValueSettingEnum.TryGetValue(name, out interlockValueSetting) == true)
+                        {
                             try
                             {
-                                PLCService.WriteInterlockValueState(float.Parse(interlockA.Treshold), plcArgs.Item2);
+                                PLCService.WriteInterlockValueState(float.Parse(interlockA.Treshold), interlockValueSetting);
                             }
                             catch (ArgumentNullException) { }
                             catch (FormatException) { }

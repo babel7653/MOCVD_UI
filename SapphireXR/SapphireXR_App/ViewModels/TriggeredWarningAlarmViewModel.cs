@@ -242,37 +242,42 @@ namespace SapphireXR_App.ViewModels
 
         private List<string> refreshAlarmList(PLCService.TriggerType triggerType)
         {
-            return refreshOnList(PLCService.ReadDigitalDeviceAlarms, PLCService.ReadAnalogDeviceAlarms, triggerType);
+            return refreshOnList(PLCService.ReadDigitalDeviceAlarms, PLCService.ReadAnalogDeviceAlarms, triggerType, KeysAlarmEventLogged);
         }
 
         private  List<string> refreshWarningList(PLCService.TriggerType triggerType)
         {
-            return refreshOnList(PLCService.ReadDigitalDeviceWarnings, PLCService.ReadAnalogDeviceWarnings, triggerType);
+            return refreshOnList(PLCService.ReadDigitalDeviceWarnings, PLCService.ReadAnalogDeviceWarnings, triggerType, KeysWarningEventLogged);
         }
 
-        private List<string> refreshOnList(Func<int> plcServiceReadDigitalState, Func<int> plcServiceReadAnalogState, PLCService.TriggerType triggerType)
+        private List<string> refreshOnList(Func<int> plcServiceReadDigitalState, Func<int> plcServiceReadAnalogState, PLCService.TriggerType triggerType, HashSet<string> keysEventLogged)
         {
             List<string> onList = new List<string>();
 
             int digitalDeviceAlarms = plcServiceReadDigitalState();
             for(uint digitalDevice = 0; digitalDevice < PLCService.NumDigitalDevice; ++digitalDevice)
             {
-                if(PLCService.ReadBit(digitalDeviceAlarms, (int)digitalDevice) == true)
+                string? notificationName = GetDigitalDeviceNotificationName(digitalDevice);
+                if (notificationName != null)
                 {
-                    string? notificationName = GetDigitalDeviceNotificationName(digitalDevice);
-                    if (notificationName != null)
+                    if (PLCService.ReadBit(digitalDeviceAlarms, (int)digitalDevice) == true)
                     {
                         onList.Add(notificationName);
                         if (keysEventLogged.Contains(notificationName) == false)
                         {
                             EventLogs.Instance.EventLogList.Add(new EventLog()
                             {
-                                Date = DateTime.Now, Message = notificationName,
+                                Date = DateTime.Now,
+                                Message = notificationName,
                                 Name = (triggerType == PLCService.TriggerType.Alarm) ? "Digital Alarm" : "Digital Warning",
                                 Type = (triggerType == PLCService.TriggerType.Alarm) ? EventLog.LogType.Alarm : EventLog.LogType.Warning
                             });
                             keysEventLogged.Add(notificationName);
                         }
+                    }
+                    else
+                    {
+                        keysEventLogged.Remove(notificationName);
                     }
                 }
             }
@@ -280,10 +285,10 @@ namespace SapphireXR_App.ViewModels
             int analogDeviceAlarms = plcServiceReadAnalogState();
             for(uint analogDevice = 0; analogDevice < PLCService.NumAnalogDevice; ++analogDevice)
             {
-                if(PLCService.ReadBit(analogDeviceAlarms, (int)analogDevice) == true)
+                string? notificationName = GetAnalogDeviceNotificationName(analogDevice);
+                if (notificationName != null)
                 {
-                    string? notificationName = GetAnalogDeviceNotificationName(analogDevice);
-                    if (notificationName != null)
+                    if (PLCService.ReadBit(analogDeviceAlarms, (int)analogDevice) == true)
                     {
                         string message = notificationName + " Deviation!";
                         onList.Add(message);
@@ -298,6 +303,10 @@ namespace SapphireXR_App.ViewModels
                             });
                             keysEventLogged.Add(notificationName);
                         }
+                    }
+                    else
+                    {
+                        keysEventLogged.Remove(notificationName);
                     }
                 }
             }
@@ -330,7 +339,8 @@ namespace SapphireXR_App.ViewModels
 
         private Action resetToPLC;
         private Func<PLCService.TriggerType, List<string>> refreshOnListFunc;
-        private HashSet<string> keysEventLogged = new HashSet<string>();
+        private static HashSet<string> KeysAlarmEventLogged = new HashSet<string>();
+        private static HashSet<string> KeysWarningEventLogged = new HashSet<string>();
 
         private DispatcherTimer onListUpdater;
     }

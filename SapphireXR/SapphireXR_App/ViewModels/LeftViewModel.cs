@@ -323,7 +323,9 @@ namespace SapphireXR_App.ViewModels
             {
                 case PLCConnection.Connected:
                     PLCConnectionStatus = "Connected";
-                    BuzzerImage = PLCService.ReadBuzzerOnOff() == true ? BuzzerOnPath : BuzzerOffPath;
+                    bool onOff = PLCService.ReadBuzzerOnOff();
+                    BuzzerImage = onOff == true ? BuzzerOnPath : BuzzerOffPath;
+                    PLCService.WriteInterlockEnableState(onOff, PLCService.InterlockEnableSetting.Buzzer);
                     break;
 
                 case PLCConnection.Disconnected:

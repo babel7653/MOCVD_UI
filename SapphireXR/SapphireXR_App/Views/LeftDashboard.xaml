@@ -4,6 +4,7 @@
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:SapphireXR_App.Views"
+      xmlns:model="clr-namespace:SapphireXR_App.Models"
       mc:Ignorable="d" 
       d:DesignHeight="1080" d:DesignWidth="300"
       Title="LeftDashboard">
@@ -139,7 +140,7 @@
                                     </Style.Triggers>
                                 </Style>
                             </Button.Style>
-                            <Image Source="{Binding BuzzerImage}" Width="25" Height="25" />
+                            <Image Source="{Binding BuzzerImage}" Width="25" Height="25" IsEnabled="{Binding Source={x:Static model:PLCConnectionState.Instance}, Path=Online}"/>
                         </Button>
                     </StackPanel>
                 </Grid>

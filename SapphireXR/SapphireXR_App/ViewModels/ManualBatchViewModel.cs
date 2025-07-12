@@ -47,7 +47,7 @@ namespace SapphireXR_App.ViewModels
             private string _name = "";
 
             [ObservableProperty]
-            private int _rampingTime = 0;
+            private int? _rampingTime = null;
 
             [ObservableProperty]
             private IList<AnalogIOUserState> _analogIOUserStates = new List<AnalogIOUserState>();
@@ -136,7 +136,7 @@ namespace SapphireXR_App.ViewModels
 
         private bool canLoadToPLCCommand()
         {
-            return PLCService.Connected == Enums.PLCConnection.Connected && CurrentBatch != null;
+            return PLCService.Connected == Enums.PLCConnection.Connected && CurrentBatch != null && CurrentBatch.RampingTime != null && CurrentBatch.RampingTime != 0;
         }
 
         [RelayCommand(CanExecute = "canLoadToPLCCommand")]
@@ -187,6 +187,10 @@ namespace SapphireXR_App.ViewModels
                 newBatch.DigitalIOUserStates.Add(new DigitalIOUserState() { ID = valve });
             }
             Batches.Add(newBatch);
+            newBatch.PropertyChanged += (sender, e) =>
+            {
+                LoadToPLCCommand.NotifyCanExecuteChanged();
+            };
             CurrentBatch = newBatch;
         });
 

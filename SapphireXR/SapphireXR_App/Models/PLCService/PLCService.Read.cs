@@ -26,7 +26,6 @@ namespace SapphireXR_App.Models
             aDeviceTargetValues = Ads.ReadAny<float[]>(hWriteDeviceTargetValuePLC, [NumControllers]);
             aMonitoring_PVs = Ads.ReadAny<float[]>(hMonitoring_PV, [18]);
             aInputState = Ads.ReadAny<short[]>(hInputState, [5]);
-            InterlockEnables[0] = Ads.ReadAny<int>(hInterlockEnable[0]);
             ReadValveStateFromPLC();
         }
 
@@ -91,14 +90,11 @@ namespace SapphireXR_App.Models
             return ((bitField & bitMask) != 0) ? true : false;
         }
 
-        public static bool ReadFirstInterlockSetting(int bit)
-        {
-            return ReadBit(InterlockEnables[0], 2);
-        }
+      
 
         public static bool ReadBuzzerOnOff()
         {
-            return ReadFirstInterlockSetting(2);
+            return ReadBit(Ads.ReadAny<int>(hInterlockEnable[0]), 2);
         }
 
         public static int ReadDigitalDeviceAlarms()

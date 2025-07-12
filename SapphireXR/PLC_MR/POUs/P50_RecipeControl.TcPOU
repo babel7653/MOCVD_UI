@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4026.12">
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4026.11">
   <POU Name="P50_RecipeControl" Id="{e332a806-fd31-4290-a7c3-27f42c11d38e}" SpecialFunc="None">
     <Declaration><![CDATA[PROGRAM P50_RecipeControl
 VAR
@@ -116,7 +116,7 @@ END_VAR
 					Rcp.aLoop[4] := RCP.aRecipe[nRcpIndex].iRecipe[9]; 		// Rcp.aLoop[4]: loop end
 					Rcp.aLoop[3] := nRcpIndex; 								// Rcp.aLoop[3]: loop bigin
 				END_IF
-				IF Rcp.aLoop[2] < (Rcp.aLoop[1] - 2) THEN					// Rcp.aLoop[2]: current loop count
+				IF Rcp.aLoop[2] < (Rcp.aLoop[1] - 1) THEN					// Rcp.aLoop[2]: current loop count
 					IF nRcpIndex < Rcp.aLoop[4] THEN
 						nRcpIndex := nRcpIndex + 1;
 					ELSE
@@ -238,8 +238,7 @@ END_CASE
 ]]></ST>
     </Implementation>
     <LineIds Name="P50_RecipeControl">
-      <LineId Id="1" Count="75" />
-      <LineId Id="79" Count="124" />
+      <LineId Id="1" Count="200" />
     </LineIds>
   </POU>
 </TcPlcObject>

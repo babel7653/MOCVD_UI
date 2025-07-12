@@ -3,9 +3,9 @@
   <POU Name="P90_Interlock" Id="{c8b81d81-de46-4c7a-a894-4387b2cd9bf7}" SpecialFunc="None">
     <Declaration><![CDATA[PROGRAM P90_Interlock
 VAR_INPUT
-	bRecipeRunning : BOOL;
-	RecipeStopped : BOOL;
-	ManualOperation : BOOL;
+	bRecipeRunning 		: BOOL;
+	RecipeStopped 		: BOOL;
+	ManualOperation 	: BOOL;
 	bInductionHeaterMC	: BOOL;
 	bThermalBathMC		: BOOL;
 	bVacuumPumpMC 		: BOOL;
@@ -24,7 +24,7 @@ VAR_OUTPUT
 	
 	bPowerResetSwitch		: BOOL;
 	bMainPowerMonitor		: BOOL;
-	bRecipeEnable			: BOOL;
+
 	AlarmTrig				: BOOL;
 	WarningTrig				: BOOL;
 	bMaintKey				: BOOL;
@@ -315,7 +315,7 @@ IF (bMaintKey = FALSE) THEN
 	END_FOR
 	
 	//Device Fault Check - Pneumatic, Heater, Pump, Motor, GC Door, RC Door
-	FOR i := 1 TO 7 DO
+	FOR i := 1 TO 8 DO
 		CASE i OF
 			1: //CDA Alarm Switch (Pneumatic)
 				bAlarmEnable := GVL_IO.aInterlockEnable[4].8;
@@ -351,7 +351,20 @@ IF (bMaintKey = FALSE) THEN
 				bAlarmEnable := GVL_IO.aInterlockEnable[4].14;
 				bWarningEnable := GVL_IO.aInterlockEnable[5].14;
 				bDeviceCurrentAlarmState := GVL_IO.aInputState[2].1;
-				bDeviceCurrentWarningState := GVL_IO.aInputState[2].1;		
+				bDeviceCurrentWarningState := GVL_IO.aInputState[2].1;
+			8: //DOR Fault
+				bAlarmEnable := GVL_IO.aInterlockEnable[4].15;
+				bWarningEnable := GVL_IO.aInterlockEnable[5].15;
+				IF (P17_DOROperation.bError = 1) THEN
+					bDeviceCurrentAlarmState := TRUE;
+				ELSE
+					bDeviceCurrentAlarmState := FALSE;
+				END_IF
+				IF (P17_DOROperation.bError = 2) OR (P17_DOROperation.bError = 3) THEN
+					bDeviceCurrentWarningState := TRUE;
+				ELSE
+					bDeviceCurrentWarningState := FALSE;
+				END_IF
 		END_CASE
 
 		fbFaultCheck[i](
@@ -447,8 +460,6 @@ bDorOffEnable :=
 	bOpenEnablePress ;
 	;
 bReactorOpenEnable := bDorOffEnable;
-	
-bRecipeEnable := TRUE;
 
 (* Out to Device*)
 GVL_IO.aDigitalOutputIO[3].7 := bPowerResetLED;
@@ -553,6 +564,13 @@ GVL_IO.aDigitalOutputIO[2].4 := bUPSMode;
       <LineId Id="1201" Count="0" />
       <LineId Id="1207" Count="2" />
       <LineId Id="1206" Count="0" />
+      <LineId Id="1361" Count="2" />
+      <LineId Id="1367" Count="1" />
+      <LineId Id="1370" Count="1" />
+      <LineId Id="1369" Count="0" />
+      <LineId Id="1372" Count="1" />
+      <LineId Id="1375" Count="1" />
+      <LineId Id="1374" Count="0" />
       <LineId Id="1164" Count="0" />
       <LineId Id="1067" Count="1" />
       <LineId Id="1070" Count="0" />
@@ -603,8 +621,6 @@ GVL_IO.aDigitalOutputIO[2].4 := bUPSMode;
       <LineId Id="1294" Count="0" />
       <LineId Id="1292" Count="0" />
       <LineId Id="1337" Count="0" />
-      <LineId Id="1308" Count="0" />
-      <LineId Id="274" Count="0" />
       <LineId Id="276" Count="0" />
       <LineId Id="135" Count="0" />
       <LineId Id="179" Count="0" />

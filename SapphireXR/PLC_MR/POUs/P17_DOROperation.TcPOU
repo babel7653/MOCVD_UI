@@ -5,6 +5,10 @@
 VAR_INPUT
 	bDOROn				: BOOL; //UI Input Button
 	bDOROff				: BOOL; //UI Input Button
+	fTresholdPressure	: REAL;
+	fTresholdCount		: REAL;
+	bPressureEnable 	: BOOL;
+	bCountEnable		: BOOL;
 END_VAR
 VAR_OUTPUT
 	isDOROnState		: BOOL := FALSE; //DOR ON State
@@ -32,6 +36,7 @@ VAR
 	TimerWaitCheck		: TON;
 	TimerVacRealease	: TON;
 	nCase				: INT := 0;
+	nTresholdCount		: INT;
 	nTryCount			: INT;
 	bVacuumRealse		: BOOL;
 	//Temperatur Variable
@@ -50,11 +55,16 @@ END_VAR
 
 (* Read from Device Value *)
 // DOR Operation Switch
-bVacSwitch := GVL_IO.aDigitalInputIO[1].4; //Switch Input
-bAtmSwitch := GVL_IO.aDigitalInputIO[1].5; //Switch Input
-nPressurePV := GVL_IO.aAnalogInputIO[29];
-rPressurePV_kPa := (nPressurePV-3256)*SlopeFactor;
+bVacSwitch 			:= GVL_IO.aDigitalInputIO[1].4; //Switch Input
+bAtmSwitch 			:= GVL_IO.aDigitalInputIO[1].5; //Switch Input
+nPressurePV 		:= GVL_IO.aAnalogInputIO[29];
+rPressurePV_kPa 	:= (nPressurePV-3256)*SlopeFactor;
 
+fTresholdPressure 	:= GVL_IO.aInterlockSet[15];
+fTresholdCount 		:= GVL_IO.aInterlockSet[16];
+bPressureEnable 	:= GVL_IO.aInterlockEnable[1].5;
+bCountEnable 		:= GVL_IO.aInterlockEnable[1].6;
+nTresholdCount 		:= REAL_TO_INT(fTresholdCount); //Try One more Vacuum 
 (* If Vacuum 'ON' Switch Press, Change DOR Vacuum State *)
 //DOR Operation Signal generation
 TimerVacSwitch(IN:=bVacSwitch OR bDOROn, PT:=T#100MS);
@@ -62,7 +72,7 @@ rTrigSwitch(CLK:=TimerVacSwitch.Q);
 
 IF rTrigSwitch.Q AND P90_Interlock.bDorOnEnable THEN
 	nCase 		:= 1;
-	nTryCount 	:= 0; //Try One more Vacuum 
+	nTryCount 	:= 1; //Try One more Vacuum 
 END_IF
 
 CASE nCase OF
@@ -83,13 +93,13 @@ CASE nCase OF
 
 		TimerWaitCheck(IN:=TRUE, PT:=T#5S);
 		IF TimerWaitCheck.Q THEN
-			IF rPressurePV_kPa > 70 THEN
+			IF rPressurePV_kPa > fTresholdPressure THEN
 				bV_DORVac 		:= FALSE; //V34 Close
 				isDOROnState 	:= TRUE;
 				bVacLED 			:= TRUE; //Switch LED
 				bError			:= 0;
 				nCase 			:= 0;
-			ELSIF nTryCount < 2 THEN
+			ELSIF nTryCount < nTresholdCount THEN
 				TimerWaitCheck(IN:=FALSE);
 				nTryCount 		:= nTryCount + 1;				
 				nCase 			:= 1;
@@ -142,7 +152,7 @@ CASE nCase OF
 END_CASE
 
 (* If Vacuum 'ON' State, Check the Vacuum range *)
-IF isDOROnState AND rPressurePV_kPa <50 AND nTryCount < 3 THEN
+IF isDOROnState AND rPressurePV_kPa < (fTresholdPressure - 20) AND nTryCount < 3 THEN
 	bError := 2; // Vacuum release
 	TimerVacRealease(IN:=TRUE, PT:=T#2S);
 	
@@ -169,7 +179,11 @@ ELSIF bError = 2 THEN
 ELSIF nTryCount >= 3 THEN
 	bV_DORVac := FALSE;
 	bError := 3; //Vacuum Released
-	
+END_IF
+
+//알람 리셋
+IF GVL_IO.aInterlockEnable[1].0 OR GVL_IO.aInterlockEnable[1].1 THEN
+	bError := 0;
 END_IF
 
 (* Write to Device Value *)
@@ -183,7 +197,9 @@ GVL_IO.aDigitalOutputIO[4].1 := bAtmLED;]]></ST>
       <LineId Id="21" Count="5" />
       <LineId Id="28" Count="0" />
       <LineId Id="69" Count="0" />
+      <LineId Id="628" Count="0" />
       <LineId Id="458" Count="0" />
+      <LineId Id="629" Count="3" />
       <LineId Id="123" Count="0" />
       <LineId Id="122" Count="0" />
       <LineId Id="119" Count="0" />
@@ -225,8 +241,11 @@ GVL_IO.aDigitalOutputIO[4].1 := bAtmLED;]]></ST>
       <LineId Id="626" Count="0" />
       <LineId Id="618" Count="0" />
       <LineId Id="620" Count="1" />
-      <LineId Id="627" Count="0" />
       <LineId Id="367" Count="0" />
+      <LineId Id="639" Count="0" />
+      <LineId Id="635" Count="0" />
+      <LineId Id="634" Count="0" />
+      <LineId Id="636" Count="1" />
       <LineId Id="41" Count="2" />
       <LineId Id="51" Count="1" />
       <LineId Id="44" Count="0" />

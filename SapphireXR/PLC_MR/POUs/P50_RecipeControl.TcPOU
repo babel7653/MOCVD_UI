@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4026.11">
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4026.12">
   <POU Name="P50_RecipeControl" Id="{e332a806-fd31-4290-a7c3-27f42c11d38e}" SpecialFunc="None">
     <Declaration><![CDATA[PROGRAM P50_RecipeControl
 VAR
@@ -111,25 +111,23 @@ END_VAR
 			rTrigLoop(CLK:=Loop_On);
 			IF rTrigLoop.Q THEN
 				Ramp_On := TRUE;
-				//Hold_On := FALSE;
-				Loop_On := FALSE;
-				IF RCP.aRecipe[nRcpIndex].iRecipe[8] = 0 THEN
-					nRcpIndex := nRcpIndex + 1;
-				ELSIF RCP.aRecipe[nRcpIndex].iRecipe[8] > 0 THEN
-					Rcp.aLoop[1] := RCP.aRecipe[nRcpIndex].iRecipe[8];
-					Rcp.aLoop[3] := nRcpIndex;
-					IF Rcp.aLoop[2] < Rcp.aLoop[1] THEN
-						Rcp.aLoop[4] := RCP.aRecipe[nRcpIndex].iRecipe[9]; // Jump to Recipe Step
-						nRcpIndex := Rcp.aLoop[4];
-						Rcp.aLoop[2] := Rcp.aLoop[2] + 1;
+				IF RCP.aRecipe[nRcpIndex].iRecipe[8] <> 0 AND RCP.aRecipe[nRcpIndex].iRecipe[9] <> 0 THEN
+					Rcp.aLoop[1] := RCP.aRecipe[nRcpIndex].iRecipe[8]; 		// Rcp.aLoop[1]: loop repeat number
+					Rcp.aLoop[4] := RCP.aRecipe[nRcpIndex].iRecipe[9]; 		// Rcp.aLoop[4]: loop end
+					Rcp.aLoop[3] := nRcpIndex; 								// Rcp.aLoop[3]: loop bigin
+				END_IF
+				IF Rcp.aLoop[2] < (Rcp.aLoop[1] - 2) THEN					// Rcp.aLoop[2]: current loop count
+					IF nRcpIndex < Rcp.aLoop[4] THEN
+						nRcpIndex := nRcpIndex + 1;
 					ELSE
-						FOR i :=1 TO 4 DO 
-						Rcp.aLoop[i] := -1;
-						END_FOR
-						nRcpIndex := nRcpIndex + 1; // Next Recipe Step
+						Rcp.aLoop[2] := Rcp.aLoop[2] + 1;
+						nRcpIndex := Rcp.aLoop[3];
 					END_IF
-				ELSE				
-					RCP.cmd_RcpOperation := 50;
+				ELSE
+					FOR i :=1 TO 4 DO 
+					Rcp.aLoop[i] := -1;
+					END_FOR
+					nRcpIndex := nRcpIndex + 1; // Next Recipe Step
 				END_IF
 			END_IF		
 			P92_Maintenance.nCaseSignalTower := 3;
@@ -240,139 +238,8 @@ END_CASE
 ]]></ST>
     </Implementation>
     <LineIds Name="P50_RecipeControl">
-      <LineId Id="1" Count="1" />
-      <LineId Id="393" Count="0" />
-      <LineId Id="209" Count="0" />
-      <LineId Id="211" Count="1" />
-      <LineId Id="248" Count="1" />
-      <LineId Id="251" Count="1" />
-      <LineId Id="766" Count="0" />
-      <LineId Id="850" Count="0" />
-      <LineId Id="1006" Count="1" />
-      <LineId Id="1005" Count="0" />
-      <LineId Id="430" Count="0" />
-      <LineId Id="787" Count="0" />
-      <LineId Id="706" Count="2" />
-      <LineId Id="744" Count="1" />
-      <LineId Id="743" Count="0" />
-      <LineId Id="709" Count="8" />
-      <LineId Id="746" Count="0" />
-      <LineId Id="718" Count="5" />
-      <LineId Id="980" Count="0" />
-      <LineId Id="764" Count="0" />
-      <LineId Id="724" Count="1" />
-      <LineId Id="747" Count="0" />
-      <LineId Id="892" Count="0" />
-      <LineId Id="726" Count="3" />
-      <LineId Id="763" Count="0" />
-      <LineId Id="730" Count="0" />
-      <LineId Id="1003" Count="0" />
-      <LineId Id="765" Count="0" />
-      <LineId Id="737" Count="0" />
-      <LineId Id="967" Count="0" />
-      <LineId Id="969" Count="0" />
-      <LineId Id="989" Count="1" />
-      <LineId Id="993" Count="1" />
-      <LineId Id="996" Count="0" />
-      <LineId Id="995" Count="0" />
-      <LineId Id="991" Count="0" />
-      <LineId Id="984" Count="0" />
-      <LineId Id="997" Count="1" />
-      <LineId Id="1000" Count="1" />
-      <LineId Id="1004" Count="0" />
-      <LineId Id="1002" Count="0" />
-      <LineId Id="894" Count="0" />
-      <LineId Id="750" Count="0" />
-      <LineId Id="748" Count="0" />
-      <LineId Id="767" Count="0" />
-      <LineId Id="754" Count="0" />
-      <LineId Id="756" Count="0" />
-      <LineId Id="782" Count="1" />
-      <LineId Id="757" Count="2" />
-      <LineId Id="796" Count="0" />
-      <LineId Id="813" Count="0" />
-      <LineId Id="798" Count="0" />
-      <LineId Id="816" Count="0" />
-      <LineId Id="799" Count="2" />
-      <LineId Id="819" Count="0" />
-      <LineId Id="803" Count="0" />
-      <LineId Id="818" Count="0" />
-      <LineId Id="820" Count="0" />
-      <LineId Id="804" Count="0" />
-      <LineId Id="794" Count="0" />
-      <LineId Id="760" Count="0" />
-      <LineId Id="755" Count="0" />
-      <LineId Id="761" Count="0" />
-      <LineId Id="738" Count="1" />
-      <LineId Id="1009" Count="1" />
-      <LineId Id="1008" Count="0" />
-      <LineId Id="740" Count="1" />
-      <LineId Id="232" Count="0" />
-      <LineId Id="142" Count="0" />
-      <LineId Id="7" Count="0" />
-      <LineId Id="170" Count="0" />
-      <LineId Id="288" Count="1" />
-      <LineId Id="292" Count="0" />
-      <LineId Id="310" Count="0" />
-      <LineId Id="363" Count="0" />
-      <LineId Id="295" Count="0" />
-      <LineId Id="298" Count="0" />
-      <LineId Id="312" Count="0" />
-      <LineId Id="364" Count="0" />
-      <LineId Id="293" Count="0" />
-      <LineId Id="375" Count="0" />
-      <LineId Id="371" Count="0" />
-      <LineId Id="374" Count="0" />
-      <LineId Id="372" Count="0" />
-      <LineId Id="290" Count="0" />
-      <LineId Id="300" Count="3" />
-      <LineId Id="299" Count="0" />
-      <LineId Id="179" Count="0" />
-      <LineId Id="425" Count="0" />
-      <LineId Id="197" Count="0" />
-      <LineId Id="435" Count="0" />
-      <LineId Id="387" Count="1" />
-      <LineId Id="202" Count="0" />
-      <LineId Id="424" Count="0" />
-      <LineId Id="315" Count="1" />
-      <LineId Id="327" Count="4" />
-      <LineId Id="326" Count="0" />
-      <LineId Id="332" Count="0" />
-      <LineId Id="334" Count="7" />
-      <LineId Id="359" Count="0" />
-      <LineId Id="342" Count="2" />
-      <LineId Id="333" Count="0" />
-      <LineId Id="365" Count="0" />
-      <LineId Id="345" Count="0" />
-      <LineId Id="347" Count="7" />
-      <LineId Id="358" Count="0" />
-      <LineId Id="355" Count="2" />
-      <LineId Id="361" Count="0" />
-      <LineId Id="346" Count="0" />
-      <LineId Id="317" Count="0" />
-      <LineId Id="436" Count="0" />
-      <LineId Id="201" Count="0" />
-      <LineId Id="437" Count="0" />
-      <LineId Id="9" Count="0" />
-      <LineId Id="386" Count="0" />
-      <LineId Id="203" Count="1" />
-      <LineId Id="427" Count="0" />
-      <LineId Id="434" Count="0" />
-      <LineId Id="199" Count="0" />
-      <LineId Id="438" Count="0" />
-      <LineId Id="10" Count="0" />
-      <LineId Id="385" Count="0" />
-      <LineId Id="426" Count="0" />
-      <LineId Id="390" Count="0" />
-      <LineId Id="433" Count="0" />
-      <LineId Id="200" Count="0" />
-      <LineId Id="439" Count="0" />
-      <LineId Id="175" Count="0" />
-      <LineId Id="376" Count="3" />
-      <LineId Id="223" Count="1" />
-      <LineId Id="389" Count="0" />
-      <LineId Id="135" Count="0" />
-      <LineId Id="15" Count="0" />
+      <LineId Id="1" Count="75" />
+      <LineId Id="79" Count="124" />
     </LineIds>
   </POU>
 </TcPlcObject>

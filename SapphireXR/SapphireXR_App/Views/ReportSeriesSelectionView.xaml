@@ -6,31 +6,88 @@
         xmlns:local="clr-namespace:SapphireXR_App.Views"
         xmlns:i="clr-namespace:Microsoft.Xaml.Behaviors;assembly=Microsoft.Xaml.Behaviors"
         mc:Ignorable="d"
-        Title="Series Selection" Height="560" Width="400">
+        Title="Series Selection" Height="416" Width="520" WindowStyle="None" AllowsTransparency="True" Background="Transparent" WindowStartupLocation="CenterScreen">
     <Grid>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition/>
-            <ColumnDefinition Width="30"/>
-            <ColumnDefinition/>
-        </Grid.ColumnDefinitions>
-        <ListBox ItemsSource="{Binding Names, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}" Grid.Row="0" Grid.Column="0" SelectionMode="Extended">
-            <i:Interaction.Triggers>
-                <i:EventTrigger EventName="SelectionChanged">
-                    <i:InvokeCommandAction Command="{Binding LeftSelectionChangedCommand}" PassEventArgsToCommand="True"/>
-                </i:EventTrigger>
-            </i:Interaction.Triggers>
-        </ListBox>
-        <StackPanel VerticalAlignment="Center" Grid.Row="0" Grid.Column="1">
-            <Button Content="&gt;&gt;" Height="13" FontSize="5" Padding="0 0 0 0" Command="{Binding AddToSelectedCommand}"/>
-            <Separator Opacity="0" Height="2"/>
-            <Button Content="&lt;&lt;" Height="13" FontSize="5" Padding="0 0 0 0" Command="{Binding RemoveFromSelectedCommand}"/>
-        </StackPanel>
-        <ListBox ItemsSource="{Binding SelectedNames, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}" Grid.Row="0" Grid.Column="2" SelectionMode="Extended">
-            <i:Interaction.Triggers>
-                <i:EventTrigger EventName="SelectionChanged">
-                    <i:InvokeCommandAction Command="{Binding RightSelectionChangedCommand}" PassEventArgsToCommand="True"/>
-                </i:EventTrigger>
-            </i:Interaction.Triggers>
-        </ListBox>
+        <Rectangle Grid.Row="0" RadiusX="{StaticResource r_5}" RadiusY="{StaticResource r_5}" Fill="{StaticResource Gray_100}" />
+        <Grid Grid.Row="0">
+            <Grid.Margin>
+                <Thickness Top="{StaticResource p_1}" Left="{StaticResource p_5}" Right="{StaticResource p_5}" Bottom="{StaticResource p_5}" />
+            </Grid.Margin>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="24" />
+                <RowDefinition Height="8" />
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            <Grid Grid.Row="0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="24" />
+                </Grid.ColumnDefinitions>
+                <Button Grid.Column="1" Width="24" Height="24" Style="{StaticResource CloseMenuButton}" Click="OnClose">
+                    <Image Source="/Resources/icons/icon=close.png"  />
+                </Button>
+            </Grid>
+            <Grid Grid.Row="2">
+                <Grid.Resources>
+                    <Style TargetType="{x:Type DataGrid}" x:Key="SeriesSelectionDataGrid" BasedOn="{StaticResource EventLog}">
+                        <Setter Property="AutoGenerateColumns" Value="False"/>
+                        <Setter Property="CanUserSortColumns" Value="False"/>
+                        <Setter Property="CanUserAddRows" Value="False"/>
+                        <Setter Property="VerticalScrollBarVisibility" Value="Auto" />
+                        <Setter Property="FontSize" Value="12" />
+                        <Setter Property="ColumnHeaderStyle">
+                            <Setter.Value>
+                                <Style TargetType="DataGridColumnHeader" BasedOn="{StaticResource EventLogColumnHeader}">
+                                    <Setter Property="Height" Value="30" />
+                                </Style>
+                            </Setter.Value>
+                        </Setter>
+                    </Style>
+                </Grid.Resources>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="200" />
+                    <ColumnDefinition Width="80" />
+                    <ColumnDefinition Width="200" />
+                </Grid.ColumnDefinitions>
+                <DataGrid ItemsSource="{Binding Names, UpdateSourceTrigger=PropertyChanged, Mode=OneTime}" Grid.Column="0" SelectionMode="Extended" Style="{StaticResource SeriesSelectionDataGrid}">
+                    <DataGrid.Resources>
+                        <Style TargetType="ScrollBar" BasedOn="{StaticResource DefaultScrollbar}" />
+                    </DataGrid.Resources>
+                    <i:Interaction.Triggers>
+                        <i:EventTrigger EventName="SelectionChanged">
+                            <i:InvokeCommandAction Command="{Binding LeftSelectionChangedCommand}" PassEventArgsToCommand="True"/>
+                        </i:EventTrigger>
+                    </i:Interaction.Triggers>
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="Device Name" IsReadOnly="True" CanUserSort="True" CanUserResize="True" Width="*" Binding="{Binding}" />
+                    </DataGrid.Columns>
+                </DataGrid>
+                <Grid Grid.Column="1" Margin="{StaticResource p_5_sqrt}">
+                    <Grid Height="64">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="28" />
+                            <RowDefinition Height="8" />
+                            <RowDefinition Height="28" />
+                        </Grid.RowDefinitions>
+                        <Button Content="&gt;" Height="28" FontSize="12" Padding="0 0 0 0" Grid.Row="0" Style="{StaticResource DefaultButton}" Command="{Binding AddToSelectedCommand}"/>
+
+                        <Button Content="&lt;" Height="28" FontSize="12" Padding="0 0 0 0" Grid.Row="2" Style="{StaticResource DefaultButton}" Command="{Binding RemoveFromSelectedCommand}"/>
+                    </Grid>
+                </Grid>
+                <StackPanel VerticalAlignment="Center" Grid.Row="0" Grid.Column="1">
+
+                </StackPanel>
+                <DataGrid ItemsSource="{Binding SelectedNames, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}" Grid.Row="0" Grid.Column="2" SelectionMode="Extended" Style="{StaticResource SeriesSelectionDataGrid}">
+                    <i:Interaction.Triggers>
+                        <i:EventTrigger EventName="SelectionChanged">
+                            <i:InvokeCommandAction Command="{Binding RightSelectionChangedCommand}" PassEventArgsToCommand="True"/>
+                        </i:EventTrigger>
+                    </i:Interaction.Triggers>
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="Device Name" IsReadOnly="True" CanUserSort="True" CanUserResize="True" Width="*" Binding="{Binding}" />
+                    </DataGrid.Columns>
+                </DataGrid>
+            </Grid>
+        </Grid>
     </Grid>
 </Window>

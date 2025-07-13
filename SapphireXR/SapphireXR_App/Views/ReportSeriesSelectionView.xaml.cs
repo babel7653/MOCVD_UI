@@ -1,4 +1,5 @@
 ﻿using System.Windows;
+using System.Windows.Input;
 
 namespace SapphireXR_App.Views
 {
@@ -10,6 +11,18 @@ namespace SapphireXR_App.Views
         public ReportSeriesSelectionView()
         {
             InitializeComponent();
+            MouseLeftButtonDown += (sender, args) =>
+            {
+                if (args.LeftButton == MouseButtonState.Pressed)
+                {
+                    DragMove();
+                }
+            };
+        }
+
+        private void OnClose(object sender, RoutedEventArgs e)
+        {
+            Close();
         }
     }
 }

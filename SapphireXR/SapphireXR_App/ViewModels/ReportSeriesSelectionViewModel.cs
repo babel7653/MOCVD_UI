@@ -91,7 +91,7 @@ namespace SapphireXR_App.ViewModels
             SelectionChangedEventArgs? selectionChangedEventArgs = args as SelectionChangedEventArgs;
             if (selectionChangedEventArgs != null)
             {
-                ListBox? source = selectionChangedEventArgs.Source as ListBox;
+                DataGrid? source = selectionChangedEventArgs.Source as DataGrid;
                 if (source != null)
                 {
                     return source.SelectedItems;

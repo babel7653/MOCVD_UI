@@ -90,8 +90,6 @@ namespace SapphireXR_App.Models
             return ((bitField & bitMask) != 0) ? true : false;
         }
 
-      
-
         public static bool ReadBuzzerOnOff()
         {
             return ReadBit(Ads.ReadAny<int>(hInterlockEnable[0]), 2);
@@ -115,6 +113,11 @@ namespace SapphireXR_App.Models
         public static int ReadAnalogDeviceWarnings()
         {
             return Ads.ReadAny<int>(hInterlock[4]);
+        }
+
+        public static bool ReadRecipeStartAvailable()
+        {
+            return ReadBit(Ads.ReadAny<int>(hInterlock[0]), 10);
         }
     }
 }

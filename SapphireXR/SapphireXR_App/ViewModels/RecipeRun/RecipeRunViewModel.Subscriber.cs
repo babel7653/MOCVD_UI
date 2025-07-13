@@ -1,5 +1,6 @@
 ﻿using SapphireXR_App.Enums;
 using SapphireXR_App.Models;
+using System.Collections;
 
 namespace SapphireXR_App.ViewModels
 {
@@ -140,6 +141,36 @@ namespace SapphireXR_App.ViewModels
             }
 
             private RecipeContext recipeContext;
+        }
+
+        private class LogicalInterlockStateSubscriber : IObserver<BitArray>
+        {
+            public LogicalInterlockStateSubscriber(RecipeRunViewModel vm)
+            {
+                recipeRunViewModel = vm;
+            }
+
+            void IObserver<BitArray>.OnCompleted()
+            {
+                throw new NotImplementedException();
+            }
+
+            void IObserver<BitArray>.OnError(Exception error)
+            {
+                throw new NotImplementedException();
+            }
+
+            void IObserver<BitArray>.OnNext(BitArray value)
+            {
+                if (value[10] != prevValue)
+                {
+                    recipeRunViewModel.onRecipeInterlockOnRecipeStart(value[10]);
+                    prevValue = value[10];
+                }
+            }
+
+            bool? prevValue = null;
+            RecipeRunViewModel recipeRunViewModel;
         }
     }
 }

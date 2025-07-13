@@ -1,4 +1,5 @@
-﻿using System.Collections.Specialized;
+﻿using System.Collections;
+using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Globalization;
 using System.IO;
@@ -32,6 +33,7 @@ namespace SapphireXR_App.ViewModels
             ObservableManager<bool>.Subscribe("RecipeEnded", recipeEndedSubscriber = new RecipeEndedSubscriber(this));
             recipeRunStatePublisher = ObservableManager<RecipeUserState>.Get("RecipeRun.State");
             ObservableManager<(string, IList<Recipe>)>.Subscribe("RecipeEdit.LoadToRecipeRun", loadFromRecipeEditSubscriber = new LoadFromRecipeEditSubscriber(this));
+            ObservableManager<BitArray>.Subscribe("LogicalInterlockState", logicalInterlockStateSubscriber = new LogicalInterlockStateSubscriber(this));
 
             PropertyChanging += (object? sender, PropertyChangingEventArgs e) =>
             {
@@ -81,8 +83,8 @@ namespace SapphireXR_App.ViewModels
                         }
                         break;
 
-                    case nameof(CurrentRecipeUserState):
-                 
+                    case nameof(RecipeStartAvailableInterlock):
+                        RecipeStartCommand.NotifyCanExecuteChanged();
                         break;
                 }
             };
@@ -199,7 +201,7 @@ namespace SapphireXR_App.ViewModels
 
         private bool canStartStopCommadExecute()
         {
-            return PLCService.Connected == PLCConnection.Connected && CurrentRecipeUserState != RecipeUserState.Uninitialized;
+            return PLCService.Connected == PLCConnection.Connected && CurrentRecipeUserState != RecipeUserState.Uninitialized && RecipeStartAvailableInterlock == true;
         }
 
         [RelayCommand(CanExecute = nameof(canStartStopCommadExecute))]
@@ -361,6 +363,10 @@ namespace SapphireXR_App.ViewModels
             RecipeRefreshCommand.NotifyCanExecuteChanged();
             RecipeStopCommand.NotifyCanExecuteChanged();
             RecipeCleanCommand.NotifyCanExecuteChanged();
+            if(connection == PLCConnection.Connected)
+            {
+                RecipeStartAvailableInterlock = PLCService.ReadRecipeStartAvailable();
+            }
         }
 
         private void SyncPLCState(RecipeCommand command, bool updateState)
@@ -386,6 +392,18 @@ namespace SapphireXR_App.ViewModels
             SyncPLCState(command, true);
         }
 
+        private void onRecipeInterlockOnRecipeStart(bool active)
+        {
+            RecipeStartAvailableInterlock = active;
+            if(active == false)
+            {
+                if (RecipeUserState.Run <= CurrentRecipeUserState && CurrentRecipeUserState <= RecipeUserState.Pause)
+                {
+                    switchState(RecipeUserState.Stopped);
+                }
+            }
+        }
+
         private static RecipeContext EmptyRecipeContext = new RecipeContext();
 
         [ObservableProperty]
@@ -403,10 +421,7 @@ namespace SapphireXR_App.ViewModels
                 AppSetting.LogFileDirectory = openFolderDialog.FolderName;
             }
         }, () => CurrentRecipeUserState == RecipeUserState.Uninitialized);
-        public ICommand OnDoubleClickedCommand => new RelayCommand(() =>
-        {
-            EventLogWindow.Show();
-        });
+        public ICommand OnDoubleClickedCommand => new RelayCommand(() => { EventLogWindow.Show(); });
 
         [ObservableProperty]
         private string _startText = "";
@@ -439,6 +454,10 @@ namespace SapphireXR_App.ViewModels
         private ObservableManager<RecipeUserState>.Publisher recipeRunStatePublisher;
         private LoadFromRecipeEditSubscriber loadFromRecipeEditSubscriber;
         private PLCConnectionStateSubscriber plcConnectionStateSubscriber;
+        private LogicalInterlockStateSubscriber logicalInterlockStateSubscriber;
+
+        [ObservableProperty]
+        private bool recipeStartAvailableInterlock = false;
 
         [ObservableProperty]
         private RecipeUserState _currentRecipeUserState = RecipeUserState.Uninitialized;

@@ -8,10 +8,7 @@
         mc:Ignorable="d"
         WindowStyle="None" Background="Transparent" AllowsTransparency="True" WindowStartupLocation="CenterScreen"
         Title="ManualBatchView" d:DesignWidth="400" d:DesignHeight="930" Height="930" Width="400" >
-    <Border Background="{StaticResource Gray_100}">
-        <Border.CornerRadius>
-            <CornerRadius TopLeft="{StaticResource r_3}" TopRight="{StaticResource r_3}" BottomLeft="{StaticResource r_3}" BottomRight="{StaticResource r_3}" />
-        </Border.CornerRadius>
+    <Border Background="{StaticResource Gray_100}" CornerRadius="{StaticResource r_3_sqrt}">
         <Border.Padding>
             <Thickness Left="{StaticResource p_5}" Right="{StaticResource p_5}" Bottom="{StaticResource p_5}" Top="{StaticResource p_1}" />
         </Border.Padding>

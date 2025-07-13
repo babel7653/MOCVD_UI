@@ -9,7 +9,7 @@
         WindowStartupLocation="CenterScreen"
         mc:Ignorable="d"
         Title="EventLogView" Height="Auto" Width="700" Background="Transparent" AllowsTransparency="True">
-    <Grid Background="{StaticResource Gray_100}">
+    <Grid>
         <Grid.Resources>
             <Style TargetType="{x:Type DataGrid}" x:Key="SettingDataGrid" BasedOn="{StaticResource EventLog}">
                 <Setter Property="AutoGenerateColumns" Value="False"/>
@@ -26,7 +26,7 @@
                 </Setter>
             </Style>
         </Grid.Resources>
-        <Rectangle RadiusX="{StaticResource r_5}" RadiusY="{StaticResource r_5}"  />
+        <Border Background="{StaticResource Gray_100}" CornerRadius="{StaticResource r_3_sqrt}">
         <StackPanel Orientation="Vertical">
             <StackPanel.Margin>
                 <Thickness Top="{StaticResource p_1}" Left="{StaticResource p_5}" Right="{StaticResource p_5}" Bottom="{StaticResource p_5}" />
@@ -113,5 +113,6 @@
                 </DataGrid.Columns>
             </DataGrid>
         </StackPanel>
+        </Border>
     </Grid>
 </Window>

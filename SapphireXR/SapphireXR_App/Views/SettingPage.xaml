@@ -145,7 +145,7 @@
                                                         <DataGridTemplateColumn.CellTemplate>
                                                             <DataTemplate>
                                                                 <Grid>
-                                                                    <CheckBox IsChecked="{Binding Path=DataContext.AnalogAlarmCheckAllColumnViewModel.IsPlaceHolderCheck, RelativeSource={RelativeSource AncestorType=DataGrid}}" Style="{StaticResource DataGridCheckBox}" Opacity="0.3" HorizontalAlignment="Center" VerticalAlignment="Center"
+                                                                    <CheckBox IsChecked="{Binding Path=DataContext.AnalogAlarmCheckAllColumnViewModel.IsPlaceHolderCheck, RelativeSource={RelativeSource AncestorType=DataGrid}}" Style="{StaticResource DataGridCheckBox}" Opacity="0.2" HorizontalAlignment="Center" VerticalAlignment="Center"
                                                                         Visibility="{Binding Path=DataContext.AnalogAlarmCheckAllColumnViewModel.ShowGuidePlaceHolderCheckBox, RelativeSource={RelativeSource AncestorType=DataGrid}}" />
                                                                     <CheckBox IsChecked="{Binding AlarmSet, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Style="{StaticResource DataGridCheckBox}" HorizontalAlignment="Center" VerticalAlignment="Center" 
                                                                         Visibility="{Binding Path=DataContext.AnalogAlarmCheckAllColumnViewModel.ShowCheckBox, RelativeSource={RelativeSource AncestorType=DataGrid}}" />
@@ -164,7 +164,7 @@
                                                         <DataGridTemplateColumn.CellTemplate>
                                                             <DataTemplate>
                                                                 <Grid>
-                                                                    <CheckBox IsChecked="{Binding Path=DataContext.AnalogWarningCheckAllColumnViewModel.IsPlaceHolderCheck, RelativeSource={RelativeSource AncestorType=DataGrid}}" Style="{StaticResource DataGridCheckBox}" Opacity="0.3" HorizontalAlignment="Center" VerticalAlignment="Center"
+                                                                    <CheckBox IsChecked="{Binding Path=DataContext.AnalogWarningCheckAllColumnViewModel.IsPlaceHolderCheck, RelativeSource={RelativeSource AncestorType=DataGrid}}" Style="{StaticResource DataGridCheckBox}" Opacity="0.2" HorizontalAlignment="Center" VerticalAlignment="Center"
                                                                         Visibility="{Binding Path=DataContext.AnalogWarningCheckAllColumnViewModel.ShowGuidePlaceHolderCheckBox, RelativeSource={RelativeSource AncestorType=DataGrid}}" />
                                                                     <CheckBox IsChecked="{Binding WarningSet, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Style="{StaticResource DataGridCheckBox}" HorizontalAlignment="Center" VerticalAlignment="Center" 
                                                                         Visibility="{Binding Path=DataContext.AnalogWarningCheckAllColumnViewModel.ShowCheckBox, RelativeSource={RelativeSource AncestorType=DataGrid}}" />
@@ -219,7 +219,7 @@
                                                     <DataGridTemplateColumn.CellTemplate>
                                                         <DataTemplate>
                                                             <Grid>
-                                                                <CheckBox IsChecked="{Binding Path=DataContext.DigitalAlarmCheckAllColumnViewModel.IsPlaceHolderCheck, RelativeSource={RelativeSource AncestorType=DataGrid}}" Style="{StaticResource DataGridCheckBox}" Opacity="0.3" HorizontalAlignment="Center" VerticalAlignment="Center"
+                                                                <CheckBox IsChecked="{Binding Path=DataContext.DigitalAlarmCheckAllColumnViewModel.IsPlaceHolderCheck, RelativeSource={RelativeSource AncestorType=DataGrid}}" Style="{StaticResource DataGridCheckBox}" Opacity="0.2" HorizontalAlignment="Center" VerticalAlignment="Center"
                                                                     Visibility="{Binding Path=DataContext.DigitalAlarmCheckAllColumnViewModel.ShowGuidePlaceHolderCheckBox, RelativeSource={RelativeSource AncestorType=DataGrid}}" />
                                                                 <CheckBox IsChecked="{Binding AlarmSet, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Style="{StaticResource DataGridCheckBox}" HorizontalAlignment="Center" VerticalAlignment="Center" 
                                                                     Visibility="{Binding Path=DataContext.DigitalAlarmCheckAllColumnViewModel.ShowCheckBox, RelativeSource={RelativeSource AncestorType=DataGrid}}" />
@@ -238,7 +238,7 @@
                                                     <DataGridTemplateColumn.CellTemplate>
                                                         <DataTemplate>
                                                             <Grid>
-                                                                <CheckBox IsChecked="{Binding Path=DataContext.DigitalWarningCheckAllColumnViewModel.IsPlaceHolderCheck, RelativeSource={RelativeSource AncestorType=DataGrid}}" Style="{StaticResource DataGridCheckBox}" Opacity="0.3" HorizontalAlignment="Center" VerticalAlignment="Center"
+                                                                <CheckBox IsChecked="{Binding Path=DataContext.DigitalWarningCheckAllColumnViewModel.IsPlaceHolderCheck, RelativeSource={RelativeSource AncestorType=DataGrid}}" Style="{StaticResource DataGridCheckBox}" Opacity="0.2" HorizontalAlignment="Center" VerticalAlignment="Center"
                                                                           Visibility="{Binding Path=DataContext.DigitalWarningCheckAllColumnViewModel.ShowGuidePlaceHolderCheckBox, RelativeSource={RelativeSource AncestorType=DataGrid}}" />
                                                                 <CheckBox IsChecked="{Binding WarningSet, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Style="{StaticResource DataGridCheckBox}" HorizontalAlignment="Center" VerticalAlignment="Center" 
                                                                           Visibility="{Binding Path=DataContext.DigitalWarningCheckAllColumnViewModel.ShowCheckBox, RelativeSource={RelativeSource AncestorType=DataGrid}}" />

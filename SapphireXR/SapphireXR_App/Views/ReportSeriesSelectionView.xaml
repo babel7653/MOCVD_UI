@@ -59,7 +59,7 @@
                         </i:EventTrigger>
                     </i:Interaction.Triggers>
                     <DataGrid.Columns>
-                        <DataGridTextColumn Header="Device Name" IsReadOnly="True" CanUserSort="True" CanUserResize="True" Width="*" Binding="{Binding}" />
+                        <DataGridTextColumn Header="Device Name" IsReadOnly="True" CanUserSort="True" CanUserResize="True" Width="*" Binding="{Binding}" ElementStyle="{StaticResource EventLogElement}" />
                     </DataGrid.Columns>
                 </DataGrid>
                 <Grid Grid.Column="1" Margin="{StaticResource p_5_sqrt}">

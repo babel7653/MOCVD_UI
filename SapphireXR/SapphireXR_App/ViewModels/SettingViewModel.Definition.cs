@@ -131,11 +131,13 @@ namespace SapphireXR_App.ViewModels
             private void setAllWarningCheck()
             {
                 setAllChecked((T io) => io.WarningSet = IsPlaceHolderCheck);
+                IsPlaceHolderCheck = !IsPlaceHolderCheck;
             }
 
             private void setAllAlarmCheck()
             {
                 setAllChecked((T io) => io.AlarmSet = IsPlaceHolderCheck);
+                IsPlaceHolderCheck = !IsPlaceHolderCheck;
             }
 
             private bool allChecked(Func<T, bool> predicate)

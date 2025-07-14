@@ -64,21 +64,15 @@ namespace SapphireXR_App.ViewModels
                             if (currentRecipe != null)
                             {
                                 short prevIndex = (short)Recipes.IndexOf(currentRecipe);
-                                if (prevIndex < index)
+                                for (short cur = 0; cur < index; cur++)
                                 {
-                                    for (short cur = prevIndex; cur < index; cur++)
-                                    {
-                                        Recipes[cur].Background = Recipe.DefaultBackground;
-                                        Recipes[cur].Foreground = DisabledRecipeListForeground;
-                                    }
+                                    Recipes[cur].Background = Recipe.DefaultBackground;
+                                    Recipes[cur].Foreground = DisabledRecipeListForeground;
                                 }
-                                else
+                                for(short cur = (short)(index + 1); cur < Recipes.Count; cur++)
                                 {
-                                    for (short cur = (short)(index + 1); cur <= prevIndex; cur++)
-                                    {
-                                        Recipes[cur].Background = Recipe.DefaultBackground;
-                                        Recipes[cur].Foreground = Recipe.DefaultForeground;
-                                    }
+                                    Recipes[cur].Background = Recipe.DefaultBackground;
+                                    Recipes[cur].Foreground = Recipe.DefaultForeground;
                                 }
                             }
                             currentRecipe = next;

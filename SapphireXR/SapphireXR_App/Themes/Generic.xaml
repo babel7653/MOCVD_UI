@@ -144,7 +144,7 @@
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="TextBox">
-                    <Border Background="{StaticResource Gray_400}" BorderBrush="{StaticResource Gray_300}" BorderThickness="1.2" x:Name="innerBorder">
+                    <Border Background="{StaticResource Gray_400}" BorderBrush="{StaticResource Gray_300}" BorderThickness="1" x:Name="innerBorder">
                         <Border.CornerRadius>
                             <CornerRadius TopLeft="{StaticResource r_1}" TopRight="{StaticResource r_1}" BottomLeft="{StaticResource r_1}" BottomRight="{StaticResource r_1}" />
                         </Border.CornerRadius>
@@ -156,11 +156,11 @@
                             <Setter TargetName="innerBorder" Property="Background" Value="{StaticResource Gray_600}" />
                             <Setter TargetName="innerBorder" Property="BorderBrush" Value="{StaticResource Gray_500}" />
                         </Trigger>
-                        <Trigger Property="IsFocused" Value="True">
-                            <Setter TargetName="innerBorder" Property="BorderBrush" Value="{StaticResource Sapphire_Blue}" />
-                        </Trigger>
                         <Trigger Property="IsMouseOver" Value="True">
                             <Setter TargetName="innerBorder" Property="BorderBrush" Value="{StaticResource Gray_200}" />
+                        </Trigger>
+                        <Trigger Property="IsFocused" Value="True">
+                            <Setter TargetName="innerBorder" Property="BorderBrush" Value="{StaticResource Sapphire_Blue}" />
                         </Trigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>
@@ -707,6 +707,7 @@
         </Style.Resources>
     </Style>
     <Style TargetType="TextBox" x:Key="InfoTextBox">
+        <Setter Property="IsReadOnly" Value="True" />
         <Setter Property="FontSize" Value="12" />
         <Setter Property="FontFamily" Value="Segoe UI" />
         <Setter Property="Foreground" Value="{StaticResource Gray_950}" />
@@ -722,20 +723,6 @@
                         </Border.CornerRadius>
                         <ScrollViewer x:Name="PART_ContentHost" Margin="0" />
                     </Border>
-                    <ControlTemplate.Triggers>
-                        <Trigger Property="IsEnabled" Value="false">
-                            <Setter Property="Foreground" Value="{StaticResource Gray_950}" />
-                            <Setter Property="Background" Value="{StaticResource Gray_50}" />
-                            <Setter TargetName="innerBorder" Property="Background" Value="{StaticResource Gray_50}" />
-                            <Setter TargetName="innerBorder" Property="BorderBrush" Value="{StaticResource Gray_300}" />
-                        </Trigger>
-                        <Trigger Property="IsFocused" Value="True">
-                            <Setter Property="Foreground" Value="{StaticResource Gray_950}" />
-                            <Setter Property="Background" Value="{StaticResource Gray_400}" />
-                            <Setter TargetName="innerBorder" Property="Background" Value="{StaticResource Gray_400}" />
-                            <Setter TargetName="innerBorder" Property="BorderBrush" Value="{StaticResource Sapphire_Blue}" />
-                        </Trigger>
-                    </ControlTemplate.Triggers>
                 </ControlTemplate>
             </Setter.Value>
         </Setter>

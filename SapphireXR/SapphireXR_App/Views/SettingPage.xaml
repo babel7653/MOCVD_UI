@@ -85,6 +85,12 @@
                         <Rectangle RadiusX="{StaticResource r_5}" RadiusY="{StaticResource r_5}" Fill="{StaticResource Gray_50}"/>
                         <Grid>
                             <Grid Margin="{StaticResource p_5_sqrt}">
+                                <Grid.Resources>
+                                    <Style TargetType="TextBox" BasedOn="{StaticResource DefaultTextBox}">
+                                        <Setter Property="FontSize" Value="12"/>
+                                        <Setter Property="Height" Value="36" />
+                                    </Style>
+                                </Grid.Resources>
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="495"/>
                                     <ColumnDefinition Width="495"/>
@@ -102,13 +108,13 @@
                                                 <Thickness Bottom="{StaticResource p_2}" />
                                             </StackPanel.Margin>
                                             <TextBlock Text="Alarm Deviation(%)" Style="{StaticResource infoTextBlockLeft}" />
-                                            <TextBox x:Name="tbAlarmDeviatin" Text="{Binding AlarmDeviation, UpdateSourceTrigger=PropertyChanged}" Width="90" Height="36" Style="{StaticResource InfoTextBox}">
+                                            <TextBox x:Name="tbAlarmDeviatin" Text="{Binding AlarmDeviation, UpdateSourceTrigger=PropertyChanged}" Width="90">
                                                 <TextBox.Margin>
                                                     <Thickness Left="{StaticResource p_2}" Right="{StaticResource p_4}" />
                                                 </TextBox.Margin>
                                             </TextBox>
                                             <TextBlock FontSize="12" Text="Warning Deviation(%)" Style="{StaticResource infoTextBlockLeft}" />
-                                            <TextBox x:Name="tbWarningDeviation" Text="{Binding WarningDeviation, UpdateSourceTrigger=PropertyChanged}" Width="90" Height="36" Style="{StaticResource InfoTextBox}">
+                                            <TextBox x:Name="tbWarningDeviation" Text="{Binding WarningDeviation, UpdateSourceTrigger=PropertyChanged}" Width="90">
                                                 <TextBox.Margin>
                                                     <Thickness Left="{StaticResource p_2}" />
                                                 </TextBox.Margin>
@@ -119,7 +125,7 @@
                                                 <Thickness Bottom="{StaticResource p_2}" />
                                             </StackPanel.Margin>
                                             <TextBlock FontSize="12" Text="Delay Time(s)" Style="{StaticResource infoTextBlockLeft}" />
-                                            <TextBox x:Name="tbAlarmDelayTimeA" Text="{Binding AnalogDeviceDelayTime, UpdateSourceTrigger=PropertyChanged}" Height="36" Style="{StaticResource InfoTextBox}" Width="135.5">
+                                            <TextBox x:Name="tbAlarmDelayTimeA" Text="{Binding AnalogDeviceDelayTime, UpdateSourceTrigger=PropertyChanged}" Width="135.5">
                                                 <TextBox.Margin>
                                                     <Thickness Left="{StaticResource p_2}" Right="{StaticResource p_2}"/>
                                                 </TextBox.Margin>
@@ -194,7 +200,7 @@
                                                     <Thickness Right="{StaticResource p_2}" />
                                                 </TextBlock.Margin>
                                             </TextBlock>
-                                            <TextBox x:Name="tbAlarmDelayTimeD" Text="{Binding DigitalDeviceDelayTime, UpdateSourceTrigger=PropertyChanged}" Width="135.5" Height="36" Style="{StaticResource InfoTextBox}">
+                                            <TextBox x:Name="tbAlarmDelayTimeD" Text="{Binding DigitalDeviceDelayTime, UpdateSourceTrigger=PropertyChanged}" Width="135.5">
                                                 <TextBox.Margin>
                                                     <Thickness Right="{StaticResource p_4}" />
                                                 </TextBox.Margin>
@@ -339,9 +345,10 @@
                                                 </Setter.Value>
                                             </Setter>
                                         </Style>
-                                        <Style TargetType="TextBox" x:Key="sectionTextBox" BasedOn="{StaticResource InfoTextBox}">
+                                        <Style TargetType="TextBox" x:Key="sectionTextBox" BasedOn="{StaticResource DefaultTextBox}">
                                             <Setter Property="Width" Value="135.5" />
                                             <Setter Property="Height" Value="32" />
+                                            <Setter Property="FontSize" Value="12" />
                                         </Style>
                                         <Style TargetType="Line" x:Key="seperatorLine">
                                             <Setter Property="X1" Value="0" />

@@ -850,11 +850,11 @@
                                             </Grid.ColumnDefinitions>
                                             <StackPanel Grid.Row="0" Grid.Column="0" Orientation="Vertical">
                                                 <Label HorizontalAlignment="Center" Content="Target Val." Foreground="{StaticResource Gray_900}" FontSize="12" FontFamily="Segoe UI" Style="{StaticResource labelOverTextBox}"/>
-                                                <TextBox x:Name="tbTargetTemp"  Grid.Column="0" Grid.Row="1"  Text="{Binding TargetTemp}" IsReadOnly="True" HorizontalAlignment="Stretch" Height="18" Style="{StaticResource DefaultTextBox}"/>
+                                                <TextBox x:Name="tbTargetTemp"  Grid.Column="0" Grid.Row="1"  Text="{Binding TargetTemp}" IsReadOnly="True" HorizontalAlignment="Stretch" Height="18" Style="{StaticResource InfoTextBox}"/>
                                             </StackPanel>
                                             <StackPanel Grid.Row="0" Grid.Column="2" Orientation="Vertical">
                                                 <Label HorizontalAlignment="Center" Content="Control Val." Foreground="{StaticResource Gray_900}" FontSize="12" FontFamily="Segoe UI" Style="{StaticResource labelOverTextBox}"/>
-                                                <TextBox x:Name="tbControlTemp"  Grid.Column="2" Grid.Row="1" Text="{Binding ControlTemp}" IsReadOnly="True" HorizontalAlignment="Stretch" Height="18" Style="{StaticResource DefaultTextBox}"/>
+                                                <TextBox x:Name="tbControlTemp"  Grid.Column="2" Grid.Row="1" Text="{Binding ControlTemp}" IsReadOnly="True" HorizontalAlignment="Stretch" Height="18" Style="{StaticResource InfoTextBox}"/>
                                             </StackPanel>
                                         </Grid>
                                     </Border>
@@ -876,11 +876,11 @@
                                             </Grid.ColumnDefinitions>
                                             <StackPanel Grid.Row="0" Grid.Column="0" Orientation="Vertical">
                                                 <Label HorizontalAlignment="Center" Content="Current Val." Foreground="{StaticResource Gray_900}" FontSize="12" FontFamily="Segoe UI" Style="{StaticResource labelOverTextBox}" />
-                                                <TextBox x:Name="tbCurrentTemp"  Text="{Binding CurrentTemp}" IsReadOnly="True" HorizontalAlignment="Stretch" Height="18" Style="{StaticResource DefaultTextBox}"/>
+                                                <TextBox x:Name="tbCurrentTemp"  Text="{Binding CurrentTemp}" IsReadOnly="True" HorizontalAlignment="Stretch" Height="18" Style="{StaticResource InfoTextBox}"/>
                                             </StackPanel>
                                             <StackPanel Grid.Row="0" Grid.Column="2" Orientation="Vertical">
                                                 <Label HorizontalAlignment="Center" Content="Power Rate" Foreground="{StaticResource Gray_900}" FontSize="12" FontFamily="Segoe UI" Style="{StaticResource labelOverTextBox}" />
-                                                <TextBox x:Name="tbPowerRateTemp" Text="{Binding PowerRateTemp}" IsReadOnly="True" HorizontalAlignment="Stretch" Height="18" Style="{StaticResource DefaultTextBox}"/>
+                                                <TextBox x:Name="tbPowerRateTemp" Text="{Binding PowerRateTemp}" IsReadOnly="True" HorizontalAlignment="Stretch" Height="18" Style="{StaticResource InfoTextBox}"/>
                                             </StackPanel>
                                         </Grid>
                                     </Border>
@@ -977,11 +977,11 @@
                                             </Grid.ColumnDefinitions>
                                             <StackPanel Grid.Row="0" Grid.Column="0" Orientation="Vertical">
                                                 <Label HorizontalAlignment="Center" Content="Target Val." Foreground="{StaticResource Gray_900}" FontSize="12" FontFamily="Segoe UI" Style="{StaticResource labelOverTextBox}"/>
-                                                <TextBox x:Name="tbTargetPress"  Grid.Column="0" Grid.Row="1"  Text="{Binding TargetPress}" IsReadOnly="True" HorizontalAlignment="Stretch" Height="18" Style="{StaticResource DefaultTextBox}"/>
+                                                <TextBox x:Name="tbTargetPress"  Grid.Column="0" Grid.Row="1"  Text="{Binding TargetPress}" IsReadOnly="True" HorizontalAlignment="Stretch" Height="18" Style="{StaticResource InfoTextBox}"/>
                                             </StackPanel>
                                             <StackPanel Grid.Row="0" Grid.Column="2" Orientation="Vertical">
                                                 <Label HorizontalAlignment="Center" Content="Control Val." Foreground="{StaticResource Gray_900}" FontSize="12" FontFamily="Segoe UI" Style="{StaticResource labelOverTextBox}"/>
-                                                <TextBox x:Name="tbControlPress"  Grid.Column="2" Grid.Row="1" Text="{Binding ControlPress}" IsReadOnly="True" HorizontalAlignment="Stretch" Height="18" Style="{StaticResource DefaultTextBox}"/>
+                                                <TextBox x:Name="tbControlPress"  Grid.Column="2" Grid.Row="1" Text="{Binding ControlPress}" IsReadOnly="True" HorizontalAlignment="Stretch" Height="18" Style="{StaticResource InfoTextBox}"/>
                                             </StackPanel>
                                         </Grid>
                                     </Border>
@@ -1003,11 +1003,11 @@
                                             </Grid.ColumnDefinitions>
                                             <StackPanel Grid.Row="0" Grid.Column="0" Orientation="Vertical">
                                                 <Label HorizontalAlignment="Center" Content="Current Val." Foreground="{StaticResource Gray_900}" FontSize="12" FontFamily="Segoe UI" Style="{StaticResource labelOverTextBox}" />
-                                                <TextBox x:Name="tbCurrentPress"  Text="{Binding CurrentPress}" IsReadOnly="True" HorizontalAlignment="Stretch" Height="18" Style="{StaticResource DefaultTextBox}"/>
+                                                <TextBox x:Name="tbCurrentPress"  Text="{Binding CurrentPress}" IsReadOnly="True" HorizontalAlignment="Stretch" Height="18" Style="{StaticResource InfoTextBox}"/>
                                             </StackPanel>
                                             <StackPanel Grid.Row="0" Grid.Column="2" Orientation="Vertical">
                                                 <Label HorizontalAlignment="Center" Content="Position" Foreground="{StaticResource Gray_900}" FontSize="12" FontFamily="Segoe UI" Style="{StaticResource labelOverTextBox}" />
-                                                <TextBox x:Name="tbPosition" Text="{Binding ValvePosition}" IsReadOnly="True" HorizontalAlignment="Stretch" Height="18" Style="{StaticResource DefaultTextBox}"/>
+                                                <TextBox x:Name="tbPosition" Text="{Binding ValvePosition}" IsReadOnly="True" HorizontalAlignment="Stretch" Height="18" Style="{StaticResource InfoTextBox}"/>
                                             </StackPanel>
                                         </Grid>
                                     </Border>
@@ -1179,15 +1179,15 @@
                                             </Grid.ColumnDefinitions>
                                             <StackPanel Grid.Row="0" Grid.Column="0" Orientation="Vertical">
                                                 <Label HorizontalAlignment="Center" Content="Target Val." Foreground="{StaticResource Gray_900}" FontSize="12" FontFamily="Segoe UI" Style="{StaticResource labelOverTextBox}"/>
-                                                <TextBox x:Name="tbTargetRotation"  Grid.Column="0" Grid.Row="1"  Text="{Binding TargetRotation}" IsReadOnly="True" HorizontalAlignment="Stretch" Height="18" Style="{StaticResource DefaultTextBox}"/>
+                                                <TextBox x:Name="tbTargetRotation"  Grid.Column="0" Grid.Row="1"  Text="{Binding TargetRotation}" IsReadOnly="True" HorizontalAlignment="Stretch" Height="18" Style="{StaticResource InfoTextBox}"/>
                                             </StackPanel>
                                             <StackPanel Grid.Row="0" Grid.Column="2" Orientation="Vertical">
                                                 <Label HorizontalAlignment="Center" Content="Control Val." Foreground="{StaticResource Gray_900}" FontSize="12" FontFamily="Segoe UI" Style="{StaticResource labelOverTextBox}"/>
-                                                <TextBox x:Name="tbControlRotation"  Grid.Column="2" Grid.Row="1" Text="{Binding ControlRotation}" IsReadOnly="True" HorizontalAlignment="Stretch" Height="18" Style="{StaticResource DefaultTextBox}"/>
+                                                <TextBox x:Name="tbControlRotation"  Grid.Column="2" Grid.Row="1" Text="{Binding ControlRotation}" IsReadOnly="True" HorizontalAlignment="Stretch" Height="18" Style="{StaticResource InfoTextBox}"/>
                                             </StackPanel>
                                             <StackPanel Grid.Row="0" Grid.Column="4" Orientation="Vertical">
                                                 <Label HorizontalAlignment="Center" Content="Current Val." Foreground="{StaticResource Gray_900}" FontSize="12" FontFamily="Segoe UI" Style="{StaticResource labelOverTextBox}"/>
-                                                <TextBox x:Name="tbCurrentRotation"  Grid.Column="2" Grid.Row="1" Text="{Binding CurrentRotation}" IsReadOnly="True" HorizontalAlignment="Stretch" Height="18" Style="{StaticResource DefaultTextBox}"/>
+                                                <TextBox x:Name="tbCurrentRotation"  Grid.Column="2" Grid.Row="1" Text="{Binding CurrentRotation}" IsReadOnly="True" HorizontalAlignment="Stretch" Height="18" Style="{StaticResource InfoTextBox}"/>
                                             </StackPanel>
                                         </Grid>
                                     </Border>

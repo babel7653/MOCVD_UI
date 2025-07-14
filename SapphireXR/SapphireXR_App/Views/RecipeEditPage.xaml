@@ -516,7 +516,7 @@
                             <Style x:Key="InfoTextLabelRight" TargetType="Label" BasedOn="{StaticResource infoLabelLeft}">
                                 <Setter Property="HorizontalAlignment" Value="Right" />
                             </Style>
-                            <Style x:Key="RecipeEditInfroTextBox" TargetType="TextBox" BasedOn="{StaticResource InfoTextBox}">
+                            <Style x:Key="RecipeEditInfoTextBox" TargetType="TextBox" BasedOn="{StaticResource InfoTextBox}">
                                 <Setter Property="Width" Value="82" />
                                 <Setter Property="Height" Value="24" />
                             </Style>
@@ -572,11 +572,11 @@
                                         <Label Grid.Row="6" Grid.Column="0" Content="Ramping Rate Press." Style="{StaticResource InfoTextLabelRight}"/>
                                         <Label Grid.Row="8" Grid.Column="0" Content="Total Flow Rate" Style="{StaticResource InfoTextLabelRight}" />
 
-                                        <TextBox x:Name="tbTotalRecipeTime" Grid.Row="0" Grid.Column="2" Text="{Binding CurrentRecipeInformationViewModel.TotalRecipeTime}" Style="{StaticResource RecipeEditInfroTextBox}" />
-                                        <TextBox x:Name="tbTotalStepNumber" Grid.Row="2" Grid.Column="2" Text="{Binding CurrentRecipeInformationViewModel.TotalStepNumber}" Style="{StaticResource RecipeEditInfroTextBox}" />
-                                        <TextBox x:Name="tbRampingRateTemp" Grid.Row="4" Grid.Column="2" Text="{Binding CurrentRecipeInformationViewModel.RampingRateTemp}" Style="{StaticResource RecipeEditInfroTextBox}" />
-                                        <TextBox x:Name="tbRampingRatePress" Grid.Row="6" Grid.Column="2" Text="{Binding CurrentRecipeInformationViewModel.RampingRatePress}" Style="{StaticResource RecipeEditInfroTextBox}" />
-                                        <TextBox x:Name="tbTotalFlowRate" Grid.Row="8" Grid.Column="2" Text="{Binding CurrentRecipeInformationViewModel.TotalFlowRate}" Style="{StaticResource RecipeEditInfroTextBox}" />
+                                        <TextBox x:Name="tbTotalRecipeTime" Grid.Row="0" Grid.Column="2" Text="{Binding CurrentRecipeInformationViewModel.TotalRecipeTime}" Style="{StaticResource RecipeEditInfoTextBox}" />
+                                        <TextBox x:Name="tbTotalStepNumber" Grid.Row="2" Grid.Column="2" Text="{Binding CurrentRecipeInformationViewModel.TotalStepNumber}" Style="{StaticResource RecipeEditInfoTextBox}" />
+                                        <TextBox x:Name="tbRampingRateTemp" Grid.Row="4" Grid.Column="2" Text="{Binding CurrentRecipeInformationViewModel.RampingRateTemp}" Style="{StaticResource RecipeEditInfoTextBox}" />
+                                        <TextBox x:Name="tbRampingRatePress" Grid.Row="6" Grid.Column="2" Text="{Binding CurrentRecipeInformationViewModel.RampingRatePress}" Style="{StaticResource RecipeEditInfoTextBox}" />
+                                        <TextBox x:Name="tbTotalFlowRate" Grid.Row="8" Grid.Column="2" Text="{Binding CurrentRecipeInformationViewModel.TotalFlowRate}" Style="{StaticResource RecipeEditInfoTextBox}" />
 
                                         <Label Grid.Row="0" Grid.Column="4" HorizontalAlignment="Left" Content="sec." Style="{StaticResource InfoTextLabelRight}" />
                                         <Label Grid.Row="2" Grid.Column="4" HorizontalAlignment="Left"  Content="°C/sec." Style="{StaticResource InfoTextLabelRight}" />

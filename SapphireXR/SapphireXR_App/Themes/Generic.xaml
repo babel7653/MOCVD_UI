@@ -609,6 +609,25 @@
             </Setter.Value>
         </Setter>
     </Style>
+    <Style TargetType="DataGridCell" x:Key="RecipeListCell">
+        <Setter Property="BorderThickness" Value="0" />
+        <Setter Property="Background" Value="{StaticResource Gray_50}" />
+        <Setter Property="TextBlock.TextAlignment" Value="Center" />
+        <Setter Property="VerticalContentAlignment" Value="Center" />
+        <Style.Triggers>
+            <MultiTrigger>
+                <MultiTrigger.Conditions>
+                    <Condition Property="IsSelected" Value="True" />
+                    <Condition Property="IsKeyboardFocusWithin" Value="False"/>
+                </MultiTrigger.Conditions>
+                <Setter Property="Foreground" Value="DimGray" />
+            </MultiTrigger>
+        </Style.Triggers>
+    </Style>
+    <Style TargetType="DataGridRow" x:Key="RecipeListRow">
+        <Setter Property="Height" Value="26"/>
+        <Setter Property="Background" Value="{StaticResource Gray_50}" />
+    </Style>
     <Style TargetType="DataGrid" x:Key="RecipeList">
         <Style.Resources>
             <Style TargetType="ScrollBar" BasedOn="{StaticResource DefaultScrollbar}" />
@@ -630,24 +649,7 @@
                 </Style>
             </Setter.Value>
         </Setter>
-        <Setter Property="CellStyle">
-            <Setter.Value>
-                <Style TargetType="DataGridCell">
-                    <Setter Property="BorderThickness" Value="0" />
-                    <Setter Property="Background" Value="{StaticResource Gray_50}" />
-                    <Setter Property="TextBlock.TextAlignment" Value="Center" />
-                    <Setter Property="VerticalContentAlignment" Value="Center" />
-                    <Style.Triggers>
-                        <MultiTrigger>
-                            <MultiTrigger.Conditions>
-                                <Condition Property="IsSelected" Value="True" />
-                                <Condition Property="IsKeyboardFocusWithin" Value="False"/>
-                            </MultiTrigger.Conditions>
-                            <Setter Property="Foreground" Value="DimGray" />
-                        </MultiTrigger>
-                    </Style.Triggers>
-                </Style>
-            </Setter.Value>
+        <Setter Property="CellStyle" Value="{StaticResource RecipeListCell}">
         </Setter>
         <Setter Property="RowHeaderStyle" x:Name="RecipeListRowHeaderStyle">
             <Setter.Value>
@@ -656,14 +658,7 @@
                 </Style>
             </Setter.Value>
         </Setter>
-        <Setter Property="RowStyle">
-            <Setter.Value>
-                <Style TargetType="DataGridRow">
-                    <Setter Property="Height" Value="26"/>
-                    <Setter Property="Background" Value="{StaticResource Gray_50}" />
-                </Style>
-            </Setter.Value>
-        </Setter>
+        <Setter Property="RowStyle" Value="{StaticResource RecipeListRow}" />
     </Style>
     <Style TargetType="Button" x:Key="ImageButton">
         <Setter Property="OverridesDefaultStyle" Value="True" />

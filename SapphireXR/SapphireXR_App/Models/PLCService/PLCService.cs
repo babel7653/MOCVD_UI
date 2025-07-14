@@ -328,7 +328,7 @@ namespace SapphireXR_App.Models
                 int iterlock1 = Ads.ReadAny<int>(hInterlock[0]);
                 dLogicalInterlockStateIssuer?.Publish(new BitArray(BitConverter.IsLittleEndian == true ? BitConverter.GetBytes(iterlock1) : BitConverter.GetBytes(iterlock1).Reverse().ToArray()));
 
-                short[] aLoop = Ads.ReadAny<short[]>(hRCPALoop, [5]);
+                short[] aLoop = Ads.ReadAny<short[]>(hRCPALoop, [6]);
                 dRecipeControlInfoPublisher?.Publish(new RecipeControlInfo() { currentLoopNumber = (aLoop[0] != -1) ? aLoop[0] : null, totalLoopNumber = (aLoop[1] != -1) ? aLoop[1] : null, 
                     currentLoopStep = (aLoop[2] != -1) ? aLoop[2] : null, totalLoopStep = (aLoop[3] != -1) ? aLoop[3] : null, totalWaitTemp = aLoop[4], currentWaitTemp = (aMonitoring_PVs != null) ? (short)(aMonitoring_PVs[9]) : null });
 

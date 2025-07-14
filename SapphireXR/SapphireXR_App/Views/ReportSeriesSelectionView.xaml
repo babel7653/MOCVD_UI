@@ -42,6 +42,30 @@
                                 </Style>
                             </Setter.Value>
                         </Setter>
+                        <Setter Property="CellStyle">
+                            <Setter.Value>
+                                <Style TargetType="DataGridCell" BasedOn="{StaticResource RecipeListCell}">
+                                    <Style.Triggers>
+                                        <Trigger Property="IsSelected" Value="True">
+                                            <Setter Property="Foreground" Value="{StaticResource Gray_950}" />
+                                            <Setter Property="Background" Value="{StaticResource Gray_300}" />
+                                        </Trigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Setter.Value>
+                        </Setter>
+                        <Setter Property="RowStyle">
+                            <Setter.Value>
+                                <Style TargetType="DataGridRow" BasedOn="{StaticResource RecipeListRow}">
+                                    <Style.Triggers>
+                                        <Trigger Property="IsSelected" Value="true">
+                                            <Setter Property="Foreground" Value="{StaticResource Gray_950}" />
+                                            <Setter Property="Background" Value="{StaticResource Gray_300}" />
+                                        </Trigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Setter.Value>
+                        </Setter>
                     </Style>
                 </Grid.Resources>
                 <Grid.ColumnDefinitions>
@@ -84,7 +108,7 @@
                         </i:EventTrigger>
                     </i:Interaction.Triggers>
                     <DataGrid.Columns>
-                        <DataGridTextColumn Header="Device Name" IsReadOnly="True" CanUserSort="True" CanUserResize="True" Width="*" Binding="{Binding}" />
+                        <DataGridTextColumn Header="Device Name" IsReadOnly="True" CanUserSort="True" CanUserResize="True" Width="*" Binding="{Binding}" ElementStyle="{StaticResource EventLogElement}" />
                     </DataGrid.Columns>
                 </DataGrid>
             </Grid>

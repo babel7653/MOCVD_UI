@@ -9,11 +9,10 @@
         Background="Transparent"
         AllowsTransparency="True"
         SizeToContent="WidthAndHeight"
-        MinWidth="400"
-        MinHeight="158"
+        MinHeight="160"
         WindowStartupLocation="CenterScreen"
         x:Name="valveDialog"
-        Title="ValveOperationPopup" Height="150" Width="400">
+        Title="ValveOperationPopup" Height="160" Width="400">
     <Window.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>

@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4026.11">
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4026.12">
   <POU Name="P50_RecipeControl" Id="{e332a806-fd31-4290-a7c3-27f42c11d38e}" SpecialFunc="None">
     <Declaration><![CDATA[PROGRAM P50_RecipeControl
 VAR
@@ -51,6 +51,7 @@ END_VAR
 			Rcp.aLoop[i] := -1;
 		END_FOR
 		P92_Maintenance.nCaseSignalTower := 3; // Blue - Idle
+		test_temp := 1100;
 
 	10: //RUN
 		IF nRcpIndex = 0 THEN
@@ -89,7 +90,22 @@ END_VAR
 					Wait_On := FALSE;
 					Loop_On := TRUE;
 				END_IF
-			ELSIF test_temp < RCP.aRecipe[nRcpIndex].iRecipe[7] THEN	
+			
+			//Wait Operation
+// 			ELSIF RCP.aRecipe[nRcpIndex].iRecipe[7] <= GVL_IO.aController_PV[27] THEN
+			ELSIF RCP.aRecipe[nRcpIndex].iRecipe[7] <= test_temp THEN	// test
+				rTrigWait(CLK:=FALSE);
+				//Ramp_On := FALSE;
+				Hold_On := FALSE;
+				Wait_On := TRUE;
+				Loop_On := FALSE;
+				
+				test_temp := test_temp - 1;  // test
+				RCP.aLoop[5] := RCP.aRecipe[nRcpIndex].iRecipe[7];	// RCP.aLoop[5]: wait temp
+				RCP.aLoop[6] := test_temp;							// RCP.aLoop[6]: current temp
+				
+			//Move to Loop Operation
+			ELSE
 				rTrigWait(CLK:= Wait_On);
 				IF rTrigWait.Q THEN
 					rTrigWait(CLK:=FALSE);
@@ -97,43 +113,46 @@ END_VAR
 					Hold_On := FALSE;
 					Wait_On := FALSE;
 					Loop_On := TRUE;
+					
+					test_temp := 1100;	// test
+					RCP.aLoop[5] := -1;
+					RCP.aLoop[6] := -1;
 				END_IF
-
-			ELSE
-				rTrigWait(CLK:=FALSE);
-				//Ramp_On := FALSE;
-				Hold_On := FALSE;
-				Wait_On := TRUE;
-				Loop_On := FALSE;
 			END_IF
 			
 			//Loop Operation
+			IF RCP.aRecipe[nRcpIndex].iRecipe[8] <> 0 AND RCP.aRecipe[nRcpIndex].iRecipe[9] <> 0 THEN
+				RCP.aLoop[2] := RCP.aRecipe[nRcpIndex].iRecipe[8]; 		// RCP.aLoop[2]: total loop number
+				RCP.aLoop[4] := RCP.aRecipe[nRcpIndex].iRecipe[9]; 		// RCP.aLoop[4]: loop end
+				RCP.aLoop[3] := nRcpIndex; 								// RCP.aLoop[3]: loop bigin
+				IF RCP.aLoop[1] = -1 THEN
+					RCP.aLoop[1] := 0;
+				END_IF
+			END_IF
 			rTrigLoop(CLK:=Loop_On);
 			IF rTrigLoop.Q THEN
 				Ramp_On := TRUE;
-				IF RCP.aRecipe[nRcpIndex].iRecipe[8] <> 0 AND RCP.aRecipe[nRcpIndex].iRecipe[9] <> 0 THEN
-					Rcp.aLoop[1] := RCP.aRecipe[nRcpIndex].iRecipe[8]; 		// Rcp.aLoop[1]: loop repeat number
-					Rcp.aLoop[4] := RCP.aRecipe[nRcpIndex].iRecipe[9]; 		// Rcp.aLoop[4]: loop end
-					Rcp.aLoop[3] := nRcpIndex; 								// Rcp.aLoop[3]: loop bigin
-				END_IF
-				IF Rcp.aLoop[2] < (Rcp.aLoop[1] - 1) THEN					// Rcp.aLoop[2]: current loop count
-					IF nRcpIndex < Rcp.aLoop[4] THEN
+				IF RCP.aLoop[1] < RCP.aLoop[2] THEN						// RCP.aLoop[1]: current loop number
+					IF nRcpIndex < RCP.aLoop[4] THEN
 						nRcpIndex := nRcpIndex + 1;
 					ELSE
-						Rcp.aLoop[2] := Rcp.aLoop[2] + 1;
-						nRcpIndex := Rcp.aLoop[3];
+						RCP.aLoop[1] := RCP.aLoop[1] + 1;
+						nRcpIndex := RCP.aLoop[3];
 					END_IF
 				ELSE
-					FOR i :=1 TO 4 DO 
-					Rcp.aLoop[i] := -1;
-					END_FOR
 					nRcpIndex := nRcpIndex + 1; // Next Recipe Step
+					IF nRcpIndex > RCP.aLoop[4] THEN
+						FOR i :=1 TO 4 DO 
+							RCP.aLoop[i] := -1;
+						END_FOR
+						Loop_On := FALSE;
+					END_IF
 				END_IF
 			END_IF		
 			P92_Maintenance.nCaseSignalTower := 3;
 		ELSE
 			FOR i :=1 TO 4 DO 
-				Rcp.aLoop[i] := -1;
+				RCP.aLoop[i] := -1;
 			END_FOR
 			RCP.cmd_RcpOperation := 50;
 			P92_Maintenance.nCaseSignalTower := 4;
@@ -238,7 +257,26 @@ END_CASE
 ]]></ST>
     </Implementation>
     <LineIds Name="P50_RecipeControl">
-      <LineId Id="1" Count="200" />
+      <LineId Id="1" Count="15" />
+      <LineId Id="269" Count="0" />
+      <LineId Id="17" Count="37" />
+      <LineId Id="211" Count="1" />
+      <LineId Id="55" Count="10" />
+      <LineId Id="213" Count="1" />
+      <LineId Id="66" Count="15" />
+      <LineId Id="219" Count="5" />
+      <LineId Id="247" Count="0" />
+      <LineId Id="82" Count="0" />
+      <LineId Id="226" Count="0" />
+      <LineId Id="83" Count="1" />
+      <LineId Id="90" Count="5" />
+      <LineId Id="235" Count="1" />
+      <LineId Id="260" Count="1" />
+      <LineId Id="264" Count="1" />
+      <LineId Id="263" Count="0" />
+      <LineId Id="268" Count="0" />
+      <LineId Id="266" Count="0" />
+      <LineId Id="102" Count="107" />
     </LineIds>
   </POU>
 </TcPlcObject>

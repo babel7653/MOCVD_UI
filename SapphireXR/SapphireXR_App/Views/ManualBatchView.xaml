@@ -130,12 +130,12 @@
                             <Thickness  Bottom="{StaticResource p_1}" />
                         </TextBlock.Margin>
                     </TextBlock>
-                    <TextBox Grid.Row="3" Grid.Column="0" Height="26" Width="176" Text="{Binding CurrentBatch.Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" IsEnabled="{Binding NameEnabled}" Style="{StaticResource InfoTextBox}" HorizontalAlignment="Left">
+                    <TextBox Grid.Row="3" Grid.Column="0" Height="26" Width="176" Text="{Binding CurrentBatch.Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" IsEnabled="{Binding NameEnabled}" Style="{StaticResource DefaultTextBox}" HorizontalAlignment="Left">
                         <TextBox.Margin>
                             <Thickness Right="{StaticResource p_2}" Bottom="{StaticResource p_2}" />
                         </TextBox.Margin>
                     </TextBox>
-                    <local:NumberBox Grid.Row="3" Grid.Column="1" Width="176" Height="26" Text="{Binding CurrentBatch.RampingTime, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" IsEnabled="{Binding RampingTimeEnabled}" LostFocus="NumberBox_LostFocus" Style="{StaticResource InfoTextBox}">
+                    <local:NumberBox Grid.Row="3" Grid.Column="1" Width="176" Height="26" Text="{Binding CurrentBatch.RampingTime, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" IsEnabled="{Binding RampingTimeEnabled}" LostFocus="NumberBox_LostFocus" Style="{StaticResource DefaultTextBox}">
                         <TextBox.Margin>
                             <Thickness Bottom="{StaticResource p_2}" />
                         </TextBox.Margin>

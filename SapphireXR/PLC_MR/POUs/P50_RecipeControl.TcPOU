@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4026.11">
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4026.12">
   <POU Name="P50_RecipeControl" Id="{e332a806-fd31-4290-a7c3-27f42c11d38e}" SpecialFunc="None">
     <Declaration><![CDATA[PROGRAM P50_RecipeControl
 VAR
@@ -109,108 +109,58 @@ END_VAR
 					Wait_On := FALSE;
 					Loop_On := TRUE;
 				END_IF
-				
-			ELSIF GVL_IO.aController_PV[27] < RCP.aRecipe[nRcpIndex].iRecipe[7] THEN	
+			ELSIF test_temp < RCP.aRecipe[nRcpIndex].iRecipe[7] THEN	
 				rTrigWait(CLK:= Wait_On);
 				IF rTrigWait.Q THEN
 					rTrigWait(CLK:=FALSE);
+					//Ramp_On := FALSE;
 					Hold_On := FALSE;
 					Wait_On := FALSE;
 					Loop_On := TRUE;
-					FOR i := 5 TO 6 DO //Loop 초기화
-						Rcp.aLoop[i] := -1;
-					END_FOR
 				END_IF
+
 			ELSE
 				rTrigWait(CLK:=FALSE);
+				//Ramp_On := FALSE;
 				Hold_On := FALSE;
 				Wait_On := TRUE;
 				Loop_On := FALSE;
-				RCP.aLoop[5] := RCP.aRecipe[nRcpIndex].iRecipe[7]; //Recipe Wait Temperature
-				RCP.aLoop[6] := REAL_TO_INT(GVL_IO.aController_PV[27]); //Susceptor Current Temperature
 			END_IF
 			
 			//Loop Operation
+			IF RCP.aRecipe[nRcpIndex].iRecipe[8] <> 0 AND RCP.aRecipe[nRcpIndex].iRecipe[9] <> 0 THEN
+				RCP.aLoop[2] := RCP.aRecipe[nRcpIndex].iRecipe[8]; 		// RCP.aLoop[2]: total loop number
+				RCP.aLoop[4] := RCP.aRecipe[nRcpIndex].iRecipe[9]; 		// RCP.aLoop[4]: loop end
+				RCP.aLoop[3] := nRcpIndex; 								// RCP.aLoop[3]: loop bigin
+				IF RCP.aLoop[1] = -1 THEN
+					RCP.aLoop[1] := 0;
+				END_IF
+			END_IF
 			rTrigLoop(CLK:=Loop_On);
 			IF rTrigLoop.Q THEN
 				Ramp_On := TRUE;
-				Loop_On := FALSE;
-				rTrigLoop(CLK:=FALSE);
-				
-				IF (RCP.aRecipe[nRcpIndex].iRecipe[8] <= 0) AND (bLoopIng = FALSE) THEN //루프 해제
- 					nRcpIndex := nRcpIndex + 1; // 다음 스텝
-					k1 := k1 +1;
-				ELSIF RCP.aLoop[1] < RCP.aLoop[2] AND nRcpIndex < RCP.aLoop[4] AND (bLoopIng = FALSE) THEN //루프 시작
-					nRcpIndex := nRcpIndex + 1;
-					RCP.aLoop[1] := RCP.aLoop[1] + 1; //Loop Count
-					bLoopIng := TRUE;
-					k2 := k2 +1;
-				ELSIF RCP.aLoop[1] < RCP.aLoop[2] AND nRcpIndex < RCP.aLoop[4] AND (bLoopIng =TRUE) THEN //루프 중간
-					nRcpIndex := nRcpIndex + 1;
-					k3 := k3 +1;
-				ELSIF RCP.aLoop[1] < RCP.aLoop[2] AND nRcpIndex = RCP.aLoop[4] AND (bLoopIng =TRUE) THEN //루프 끝 스텝
-					nRcpIndex := RCP.aLoop[3]; // Loop Start
-					k4 := k4 +1;
-				ELSE
-					nRcpIndex := nRcpIndex + 1; // 다음 스텝
-					bLoopIng := FALSE;
+				IF RCP.aRecipe[nRcpIndex].iRecipe[8] <> 0 AND RCP.aRecipe[nRcpIndex].iRecipe[9] <> 0 THEN
+					Rcp.aLoop[1] := RCP.aRecipe[nRcpIndex].iRecipe[8]; 		// Rcp.aLoop[1]: loop repeat number
+					Rcp.aLoop[4] := RCP.aRecipe[nRcpIndex].iRecipe[9]; 		// Rcp.aLoop[4]: loop end
+					Rcp.aLoop[3] := nRcpIndex; 								// Rcp.aLoop[3]: loop bigin
 				END_IF
-			END_IF
-
-// 			IF RCP.aRecipe[nRcpIndex].iRecipe[8] <= 0 OR (nRcpIndex > RCP.aRecipe[nRcpIndex].iRecipe[9]) THEN //루프 적용 안됨			
-// 				rTrigLoop(CLK:=Loop_On);
-// 				IF rTrigLoop.Q THEN
-// 					rTrigLoop(CLK:=FALSE);
-// 					Ramp_On := TRUE;
-// 					Loop_On := FALSE;
-// 					nRcpIndex := nRcpIndex + 1; // 다음 스텝
-// 				END_IF
-// 			ELSE
-// 				// Loop Paremeter 초기화
-// 				IF bInitLoop THEN
-// 					RCP.aLoop[1] := 0; // Current Loop Count
-// 					RCP.aLoop[2] := RCP.aRecipe[nRcpIndex].iRecipe[8]; // Total Loop Number
-// 					RCP.aLoop[3] := nRcpIndex; // Start Step
-// 					RCP.aLoop[4] := RCP.aRecipe[nRcpIndex].iRecipe[9]; // Loop End Step	
-// 					bInitLoop := FALSE;
-// 				END_IF
-// 	
-// 				IF 	RCP.aLoop[1] < RCP.aLoop[2] AND nRcpIndex < RCP.aLoop[4] THEN	
-// 					rTrigLoop(CLK:=Loop_On);
-// 					IF rTrigLoop.Q THEN
-// 						rTrigLoop(CLK:=FALSE);
-// 						Ramp_On := TRUE;
-// 						Loop_On := TRUE;
-// 						nRcpIndex := nRcpIndex + 1; // 다음 스텝
-// 						RCP.aLoop[1] := RCP.aLoop[1] + 1;
-// 						k1 := k1+1;
-// 					END_IF
-// 				ELSIF RCP.aLoop[1] < RCP.aLoop[2] AND nRcpIndex = RCP.aLoop[4] THEN //종료 스텝
-// 					rTrigLoop(CLK:=TRUE);
-// 					IF rTrigLoop.Q THEN
-// 						rTrigLoop(CLK:=FALSE);
-// 						Ramp_On := TRUE;
-// 						Loop_On := TRUE;
-// 						nRcpIndex := RCP.aLoop[3]; // 루프 시작 스텝
-// 						RCP.aLoop[1] := RCP.aLoop[1] + 1; //Current Loop Count
-// 						k2 := k2+1;
-// 					END_IF
-// 				ELSIF RCP.aLoop[1] >= RCP.aLoop[2] THEN //최종 카운트
-// 					rTrigLoop(CLK:=Loop_On);
-// 					IF rTrigLoop.Q THEN
-// 						rTrigLoop(CLK:=FALSE);
-// 						Ramp_On := TRUE;
-// 						Loop_On := TRUE;
-// 						nRcpIndex := nRcpIndex + 1; // 다음 스텝
-// 						bInitLoop := FALSE; // 루프변수 초기화
-// 						k3 := k3+1;
-// 					END_IF				
-// 				END_IF 
-// 				
-// 			END_IF
-// 			
+				IF Rcp.aLoop[2] < (Rcp.aLoop[1] - 1) THEN					// Rcp.aLoop[2]: current loop count
+					IF nRcpIndex < Rcp.aLoop[4] THEN
+						nRcpIndex := nRcpIndex + 1;
+					ELSE
+						Rcp.aLoop[2] := Rcp.aLoop[2] + 1;
+						nRcpIndex := Rcp.aLoop[3];
+					END_IF
+				ELSE
+					FOR i :=1 TO 4 DO 
+					Rcp.aLoop[i] := -1;
+					END_FOR
+					nRcpIndex := nRcpIndex + 1; // Next Recipe Step
+				END_IF
+			END_IF		
+			P92_Maintenance.nCaseSignalTower := 3;
 		ELSE
-			FOR i :=1 TO 6 DO 
+			FOR i :=1 TO 4 DO 
 				Rcp.aLoop[i] := -1;
 			END_FOR
 			RCP.cmd_RcpOperation := 50;
@@ -320,98 +270,7 @@ END_CASE
 ]]></ST>
     </Implementation>
     <LineIds Name="P50_RecipeControl">
-      <LineId Id="1" Count="14" />
-      <LineId Id="304" Count="0" />
-      <LineId Id="615" Count="0" />
-      <LineId Id="16" Count="0" />
-      <LineId Id="599" Count="1" />
-      <LineId Id="613" Count="1" />
-      <LineId Id="17" Count="1" />
-      <LineId Id="271" Count="1" />
-      <LineId Id="270" Count="0" />
-      <LineId Id="19" Count="5" />
-      <LineId Id="265" Count="0" />
-      <LineId Id="26" Count="5" />
-      <LineId Id="527" Count="0" />
-      <LineId Id="520" Count="6" />
-      <LineId Id="313" Count="0" />
-      <LineId Id="204" Count="0" />
-      <LineId Id="34" Count="15" />
-      <LineId Id="51" Count="3" />
-      <LineId Id="233" Count="0" />
-      <LineId Id="216" Count="3" />
-      <LineId Id="221" Count="2" />
-      <LineId Id="274" Count="1" />
-      <LineId Id="259" Count="0" />
-      <LineId Id="224" Count="0" />
-      <LineId Id="226" Count="0" />
-      <LineId Id="238" Count="0" />
-      <LineId Id="229" Count="2" />
-      <LineId Id="260" Count="1" />
-      <LineId Id="232" Count="0" />
-      <LineId Id="370" Count="0" />
-      <LineId Id="567" Count="2" />
-      <LineId Id="606" Count="0" />
-      <LineId Id="605" Count="0" />
-      <LineId Id="607" Count="1" />
-      <LineId Id="575" Count="0" />
-      <LineId Id="577" Count="1" />
-      <LineId Id="601" Count="0" />
-      <LineId Id="612" Count="0" />
-      <LineId Id="609" Count="0" />
-      <LineId Id="616" Count="0" />
-      <LineId Id="602" Count="0" />
-      <LineId Id="610" Count="0" />
-      <LineId Id="617" Count="0" />
-      <LineId Id="611" Count="0" />
-      <LineId Id="618" Count="0" />
-      <LineId Id="620" Count="0" />
-      <LineId Id="619" Count="0" />
-      <LineId Id="621" Count="0" />
-      <LineId Id="624" Count="0" />
-      <LineId Id="622" Count="0" />
-      <LineId Id="597" Count="1" />
-      <LineId Id="493" Count="0" />
-      <LineId Id="420" Count="0" />
-      <LineId Id="446" Count="1" />
-      <LineId Id="484" Count="0" />
-      <LineId Id="448" Count="3" />
-      <LineId Id="428" Count="0" />
-      <LineId Id="457" Count="0" />
-      <LineId Id="459" Count="0" />
-      <LineId Id="453" Count="3" />
-      <LineId Id="452" Count="0" />
-      <LineId Id="458" Count="0" />
-      <LineId Id="460" Count="1" />
-      <LineId Id="440" Count="1" />
-      <LineId Id="485" Count="0" />
-      <LineId Id="442" Count="2" />
-      <LineId Id="463" Count="0" />
-      <LineId Id="487" Count="0" />
-      <LineId Id="472" Count="0" />
-      <LineId Id="462" Count="0" />
-      <LineId Id="466" Count="1" />
-      <LineId Id="483" Count="0" />
-      <LineId Id="468" Count="2" />
-      <LineId Id="465" Count="0" />
-      <LineId Id="482" Count="0" />
-      <LineId Id="471" Count="0" />
-      <LineId Id="473" Count="0" />
-      <LineId Id="476" Count="1" />
-      <LineId Id="486" Count="0" />
-      <LineId Id="478" Count="3" />
-      <LineId Id="488" Count="0" />
-      <LineId Id="475" Count="0" />
-      <LineId Id="445" Count="0" />
-      <LineId Id="464" Count="0" />
-      <LineId Id="384" Count="0" />
-      <LineId Id="382" Count="0" />
-      <LineId Id="335" Count="5" />
-      <LineId Id="103" Count="80" />
-      <LineId Id="269" Count="0" />
-      <LineId Id="267" Count="1" />
-      <LineId Id="266" Count="0" />
-      <LineId Id="184" Count="17" />
+      <LineId Id="1" Count="200" />
     </LineIds>
   </POU>
 </TcPlcObject>

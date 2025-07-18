@@ -88,5 +88,4 @@
     <SolidColorBrush x:Key="ActiveSignalTowerGreen" Color="Green"/>
     <SolidColorBrush x:Key="ActiveSignalTowerBlue" Color="Blue"/>
     <SolidColorBrush x:Key="ActiveSignalTowerWhite" Color="White"/>
-
 </ResourceDictionary>

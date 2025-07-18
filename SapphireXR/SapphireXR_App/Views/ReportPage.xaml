@@ -83,7 +83,7 @@
             </Grid>
         </Grid>
         <Rectangle Grid.Row="1" Fill="{StaticResource Gray_50}" RadiusX="{StaticResource r_2}" RadiusY="{StaticResource r_2}" />
-        <oxy:PlotView Model="{Binding FlowControlLivePlot}" Background="Transparent" Grid.Row="1" ZoomVerticalCursor="" ZoomRectangleCursor="" ZoomHorizontalCursor="" PanCursor="">
+        <oxy:PlotView Margin="8, 0, 8, 0" Model="{Binding FlowControlLivePlot}" Background="Transparent" Grid.Row="1" ZoomVerticalCursor="" ZoomRectangleCursor="" ZoomHorizontalCursor="" PanCursor="">
         </oxy:PlotView>
     </Grid>
 </Page>

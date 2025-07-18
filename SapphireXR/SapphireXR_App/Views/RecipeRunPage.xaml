@@ -14,10 +14,6 @@
       Title="RecipeRunPage"
       Background="{StaticResource Gray_100}">
     <Page.Resources>
-        <Style x:Key="BaseStyle" TargetType="{x:Type Control}">
-            <Setter Property="FontSize" Value="11"/>
-            <Setter Property="FontFamily" Value="NanumGothic"/>
-        </Style>
         <Style x:Key="RecipeOperationStyle" TargetType="{x:Type Button}">
             <Setter Property="Cursor" Value="Hand"/>
             <Setter Property="Height" Value="30"/>

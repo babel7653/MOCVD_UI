@@ -1088,56 +1088,6 @@
                                 </StackPanel>
                             </StackPanel>
                         </Border>
-                        <!--<StackPanel Orientation="Vertical">
-                            <Label Foreground="DeepSkyBlue" FontSize="14" HorizontalContentAlignment="Center">
-                                <Bold>Pressure Controller</Bold>
-                            </Label>
-                            <Line X1="5" Y1="0" X2="295" Y2="0" Stroke="DeepSkyBlue" StrokeThickness="2"/>
-                            <Grid>
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition/>
-                                    <ColumnDefinition/>
-                                    <ColumnDefinition/>
-                                    <ColumnDefinition/>
-                                </Grid.ColumnDefinitions>
-                                <Grid.RowDefinitions>
-                                    <RowDefinition Height="22"/>
-                                    <RowDefinition/>
-                                </Grid.RowDefinitions>
-                                <TextBlock Grid.Column="0" Grid.Row="0" Text="Target Val." Margin="0,6,0,0"/>
-                                <TextBlock Grid.Column="1" Grid.Row="0" Text="Control Val." Margin="0,6,0,0"/>
-                                <TextBlock Grid.Column="2" Grid.Row="0" Text="Current Val." Margin="0,6,0,0"/>
-                                <TextBlock Grid.Column="3" Grid.Row="0" Text="Position" Margin="0,6,0,0"/>
-                                <TextBox x:Name="tbTargetPress"  Grid.Column="0" Grid.Row="1"  Text="{Binding TargetPress}" IsReadOnly="True"/>
-                                <TextBox x:Name="tbControlPress"  Grid.Column="1" Grid.Row="1" Text="{Binding ControlPress}" IsReadOnly="True"/>
-                                <TextBox x:Name="tbCurrentPress"  Grid.Column="2" Grid.Row="1" Text="{Binding CurrentPress}" IsReadOnly="True"/>
-                                <TextBox x:Name="tbPosition" Grid.Column="3" Grid.Row="1" Text="{Binding ValvePosition}" IsReadOnly="True"/>
-                            </Grid>
-                            <StackPanel Orientation="Horizontal" Height="30">
-                                <Label Width="140" VerticalContentAlignment="Bottom" Content="Pressure Control Mode" />
-                                <Button Content="{Binding PressureControlMode}" Command="{Binding TogglePressureControlModeCommand}"/>
-                            </StackPanel>
-                            <StackPanel Orientation="Horizontal" Height="30">
-                                <Label  Width="140" VerticalContentAlignment="Bottom" Content="Throttle Valve Mode" />
-                                <ComboBox ItemsSource="{Binding ThrottleValveControlModes, Mode=OneTime}" SelectedItem="{Binding CurrentThrottleValveControlMode, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
-                                    <i:Interaction.Triggers>
-                                        <i:EventTrigger EventName="SelectionChanged">
-                                            <i:InvokeCommandAction Command="{Binding OnThrottleValveModeChangedCommand}" PassEventArgsToCommand="True"/>
-                                        </i:EventTrigger>
-                                    </i:Interaction.Triggers>
-                                </ComboBox>
-                            </StackPanel>
-
-                            <StackPanel Orientation="Horizontal" Height="30">
-                                <Label Width="140" VerticalContentAlignment="Bottom" Content="Throttle Valve Status" />
-                                <TextBox x:Name="btTrottleStatus" IsReadOnly="True" Text="{Binding ThrottleValveStatus}" Width="121" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Style="{StaticResource InfoTextBoxStyle}" Height="19" />
-                            </StackPanel>
-                            <StackPanel Orientation="Horizontal" Height="30">
-                                <Label Width="140" Content="Vacuum Pump" VerticalContentAlignment="Bottom"/>
-                                <Button x:Name="btPumpOn" Content="{Binding VaccumPumpOn}" Command="{Binding VacuumPumpToggleCommand}"/>
-                                <Button x:Name="btPumpReset" Content="Reset" Command="{Binding VacuumPumpResetCommand}"/>
-                            </StackPanel>
-                        </StackPanel>-->
                     </Grid>
                     <!-- Susceptor Rotation Current Status -->
                     <Grid Grid.Row="3">

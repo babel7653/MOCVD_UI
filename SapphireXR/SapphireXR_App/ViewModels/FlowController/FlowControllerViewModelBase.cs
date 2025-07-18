@@ -72,14 +72,22 @@ namespace SapphireXR_App.ViewModels.FlowController
 
         protected virtual void onLoaded(object? param)
         {
-            string type = (string)((object[])param!)[0];
-            if (type == string.Empty)
+            if (param == null)
+            {                 
+                throw new Exception("FlowControllerViewModelBase onLoaded parameter is null");
+            }
+            object[]? args = param as object[];
+            if(args == null || args.Length < 2)
+            {
+                throw new Exception("FlowControllerViewModelBase onLoaded parameter is not valid");
+            }
+            string? type = args[0] as string;
+            if (type == null || type == string.Empty)
             {
                 throw new Exception("Type property of FlowController not set");
             }
-
-            string controllerID = (string)((object[])param)[1];
-            if (controllerID == string.Empty)
+            string? controllerID = args[1] as string;
+            if (controllerID == null || controllerID == string.Empty)
             {
                 throw new Exception("ControllerID property of FlowController not set");
             }

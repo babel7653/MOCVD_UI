@@ -39,7 +39,13 @@ namespace SapphireXR_App.ViewModels.FlowController
 
             void IObserver<(float, float)>.OnNext((float, float) values)
             {
-                if (values.Item1 / maxValue < AppSetting.UnderFlowControlFallbackRate)
+                if(maxValue == 0)
+                {
+                    throw new InvalidOperationException("Max value for flow controller cannot be zero. Logic error in ControlTargetValueSubscriber.OnNext method in HomeFlowControllerViewModel: "
+                        + "the value of \"viewModel.ControllerID\", the constructor argument \"" + flowControllerViewModel.ControllerID + "\" is not valid flow controller ID");
+                }
+
+                if ((values.Item1 / maxValue) < AppSetting.UnderFlowControlFallbackRate)
                 {
                     values.Item1 = 0.0f;
                 }
@@ -109,7 +115,6 @@ namespace SapphireXR_App.ViewModels.FlowController
         }
         public void OnFlowControllerCanceled(PopupExResult result)
         {
-
         }
 
         protected override void onLoaded(string type, string controllerID)
@@ -132,9 +137,6 @@ namespace SapphireXR_App.ViewModels.FlowController
                     break;
             }
         }
-
-
-        private 
 
         protected ControlTargetValueSubscriber? controlTargetValueSubscriber;
         private ObservableManager<string>.Publisher? selectedThis;

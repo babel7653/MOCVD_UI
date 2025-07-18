@@ -56,6 +56,10 @@
                     <Button x:Name="PlotLog2FileClose" Content="Open" Command="{Binding OpenLog2FileCommand}" Style="{StaticResource PrimaryButton}" Width="66"/>
             </StackPanel>
             <StackPanel Grid.Row="0" Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Right">
+                    <StackPanel.Resources>
+                        <local:ChartModeToStringConverter x:Key="chartModeToString" />
+                        <local:ChartModeListToStringConverter x:Key="chartModeListToString" />
+                    </StackPanel.Resources>
                     <CheckBox VerticalAlignment="Center" IsChecked="{Binding ShowStageLine, Mode=OneWayToSource, UpdateSourceTrigger=PropertyChanged}" FontSize="12" FontFamily="Segoe UI" Foreground="{StaticResource Gray_900}" Style="{StaticResource DefaultCheckBox}">
                         <CheckBox.Margin>
                             <Thickness Right="{StaticResource p_4}" />
@@ -78,7 +82,7 @@
                         </Button.Margin>
                     </Button>
                     <TextBlock Text="Mode" VerticalAlignment="Center" Width="46" Style="{StaticResource infoTextBlockLeft}"/>
-                <ComboBox ItemsSource="{Binding ChartMode, Mode=OneTime}" SelectedItem="{Binding CurrentMode, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Width="160" VerticalAlignment="Stretch" Style="{StaticResource theComboBox}"/>
+                    <ComboBox ItemsSource="{Binding ChartMode, Mode=OneTime, Converter={StaticResource chartModeListToString}}" SelectedItem="{Binding CurrentMode, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, Converter={StaticResource chartModeToString}}" Width="160" VerticalAlignment="Stretch" Style="{StaticResource theComboBox}" />
             </StackPanel>
             </Grid>
         </Grid>

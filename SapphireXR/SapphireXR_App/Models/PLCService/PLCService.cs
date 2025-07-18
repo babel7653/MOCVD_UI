@@ -79,36 +79,40 @@ namespace SapphireXR_App.Models
         private static void OnConnected()
         {
             connectionTryTimer?.Stop();
-            connectionTryTimer = null;
 
-            timer = new DispatcherTimer();
-            timer.Interval = new TimeSpan(2000000);
-            timer.Tick += ReadStateFromPLC;
-            timer.Start();
-
-            currentActiveRecipeListener = new DispatcherTimer();
-            currentActiveRecipeListener.Interval = new TimeSpan(TimeSpan.TicksPerMillisecond * 500);
-            currentActiveRecipeListener.Tick += (object? sender, EventArgs e) =>
+            if (timer == null)
             {
-                try
+                timer = new DispatcherTimer();
+                timer.Interval = new TimeSpan(2000000);
+                timer.Tick += ReadStateFromPLC;
+            }
+            timer.Start();
+            if (currentActiveRecipeListener == null)
+            {
+                currentActiveRecipeListener = new DispatcherTimer();
+                currentActiveRecipeListener.Interval = new TimeSpan(TimeSpan.TicksPerMillisecond * 500);
+                currentActiveRecipeListener.Tick += (object? sender, EventArgs e) =>
                 {
-                    dCurrentActiveRecipeIssue?.Publish(Ads.ReadAny<short>(hRcpStepN));
-                    if (RecipeRunEndNotified == false && Ads.ReadAny<short>(hCmd_RcpOperation) == 50)
+                    try
                     {
-                        dRecipeEndedPublisher?.Publish(true);
-                        RecipeRunEndNotified = true;
+                        dCurrentActiveRecipeIssue?.Publish(Ads.ReadAny<short>(hRcpStepN));
+                        if (RecipeRunEndNotified == false && Ads.ReadAny<short>(hCmd_RcpOperation) == 50)
+                        {
+                            dRecipeEndedPublisher?.Publish(true);
+                            RecipeRunEndNotified = true;
+                        }
+                        else
+                            if (RecipeRunEndNotified == true && Ads.ReadAny<short>(hCmd_RcpOperation) == 0)
+                        {
+                            RecipeRunEndNotified = false;
+                        }
                     }
-                    else
-                        if (RecipeRunEndNotified == true && Ads.ReadAny<short>(hCmd_RcpOperation) == 0)
+                    catch (Exception)
                     {
-                        RecipeRunEndNotified = false;
+                        Connected = PLCConnection.Disconnected;
                     }
-                }
-                catch(Exception)
-                {
-                    Connected = PLCConnection.Disconnected;
-                }
-            };
+                };
+            }
             currentActiveRecipeListener.Start();
         }
 
@@ -117,16 +121,19 @@ namespace SapphireXR_App.Models
             timer?.Stop();
             currentActiveRecipeListener?.Stop();
 
-            connectionTryTimer = new DispatcherTimer();
-            connectionTryTimer.Interval = new TimeSpan(TimeSpan.TicksPerMillisecond);
-            connectionTryTimer.Tick += (object? sender, EventArgs e) =>
-            {
-                try
+            if (connectionTryTimer == null)
+            { 
+                connectionTryTimer = new DispatcherTimer();
+                connectionTryTimer.Interval = new TimeSpan(TimeSpan.TicksPerMillisecond);
+                connectionTryTimer.Tick += (object? sender, EventArgs e) =>
                 {
-                    TryConnect();
-                }
-                catch { }
-            };
+                    try
+                    {
+                        TryConnect();
+                    }
+                    catch { }
+                };
+            }
             connectionTryTimer.Start();
         }
 

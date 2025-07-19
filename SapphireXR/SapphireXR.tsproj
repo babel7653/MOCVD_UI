@@ -70,21 +70,21 @@
 			</ArrayInfo>
 		</DataType>
 		<DataType>
-			<Name GUID="{5ECE311A-666B-EA42-EF24-80819F90C791}" IecBaseType="true" AutoDeleteType="true">ARRAY [1..2] OF UINT</Name>
-			<BitSize>32</BitSize>
-			<BaseType GUID="{18071995-0000-0000-0000-000000000005}">UINT</BaseType>
-			<ArrayInfo>
-				<LBound>1</LBound>
-				<Elements>2</Elements>
-			</ArrayInfo>
-		</DataType>
-		<DataType>
 			<Name GUID="{17AA5A85-F6CA-C6DC-214E-9BEBB0300F00}" IecBaseType="true" AutoDeleteType="true">ARRAY [1..40] OF INT</Name>
 			<BitSize>640</BitSize>
 			<BaseType GUID="{18071995-0000-0000-0000-000000000006}">INT</BaseType>
 			<ArrayInfo>
 				<LBound>1</LBound>
 				<Elements>40</Elements>
+			</ArrayInfo>
+		</DataType>
+		<DataType>
+			<Name GUID="{5ECE311A-666B-EA42-EF24-80819F90C791}" IecBaseType="true" AutoDeleteType="true">ARRAY [1..2] OF UINT</Name>
+			<BitSize>32</BitSize>
+			<BaseType GUID="{18071995-0000-0000-0000-000000000005}">UINT</BaseType>
+			<ArrayInfo>
+				<LBound>1</LBound>
+				<Elements>2</Elements>
 			</ArrayInfo>
 		</DataType>
 		<DataType>
@@ -161,7 +161,7 @@
 		</System>
 		<Plc>
 			<Project GUID="{8B546B3A-EC4D-41CC-9C57-49402FFC4072}" Name="PLC_MR" PrjFilePath="PLC_MR\PLC_MR.plcproj" TmcFilePath="PLC_MR\PLC_MR.tmc" ReloadTmc="true" AmsPort="851" FileArchiveSettings="#x000e" SymbolicMapping="true">
-				<Instance Id="#x08502000" TcSmClass="TComPlcObjDef" KeepUnrestoredLinks="2" TmcHash="{E0E724F7-412D-42E8-C605-B42EDF36E177}" TmcPath="PLC_MR\PLC_MR.tmc">
+				<Instance Id="#x08502000" TcSmClass="TComPlcObjDef" KeepUnrestoredLinks="2" TmcHash="{C889A47C-E4AC-83F3-80DD-6F0B63C0CD33}" TmcPath="PLC_MR\PLC_MR.tmc">
 					<Name>PLC_MR Instance</Name>
 					<CLSID ClassFactory="TcPlc30">{08500001-0000-0000-F000-000000000064}</CLSID>
 					<Vars VarGrpType="2" ContextId="1" AreaNo="17">
@@ -289,13 +289,13 @@
 							<Type GUID="{FCDBB749-6934-9DE5-84BB-81E17F32BE0D}">ARRAY [1..9] OF BYTE</Type>
 						</Var>
 						<Var>
-							<Name>GVL_IO.aAnalogInputIO2</Name>
-							<Type GUID="{5ECE311A-666B-EA42-EF24-80819F90C791}">ARRAY [1..2] OF UINT</Type>
-						</Var>
-						<Var>
 							<Name>GVL_IO.aAnalogInputIO</Name>
 							<Comment><![CDATA[ Analog Input to INT]]></Comment>
 							<Type GUID="{17AA5A85-F6CA-C6DC-214E-9BEBB0300F00}">ARRAY [1..40] OF INT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_IO.aAnalogInputIO2</Name>
+							<Type GUID="{5ECE311A-666B-EA42-EF24-80819F90C791}">ARRAY [1..2] OF UINT</Type>
 						</Var>
 					</Vars>
 					<Vars VarGrpType="2" AreaNo="1">

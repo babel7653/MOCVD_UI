@@ -18,6 +18,9 @@
     <LibraryReferences>{aac5e59b-9f97-4b76-a932-1e3a4f03ab13}</LibraryReferences>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="DUTs\E_RecipeRun.TcDUT">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="DUTs\outWord.TcDUT">
       <SubType>Code</SubType>
     </Compile>

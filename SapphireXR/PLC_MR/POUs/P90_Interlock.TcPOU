@@ -414,19 +414,20 @@ ELSE
 	GVL_IO.aDigitalOutputIO[3].3 := bLineHeaterMC;
 END_IF
 
-bRecipeStartAvailable := //레시피 가능한 상태이면 TRUE
-	NOT(AlarmTrig) AND
-	NOT(WarningTrig) AND
-	NOT(bMaintKey) AND
-	GVL_IO.aInputState[2].4 AND //Cover Lower Limt
-	GVL_IO.aInputState[4].6 AND //DOR State
-	NOT(RCP.state_RcpOperation = 10) AND //Not Recipe Run State
-	NOT(bGasStateProcess) AND //Safety Process Gas : TRUE
-	NOT(bGasStateSource) AND //Safety Source Gas : TRUE
-	NOT(bGasStateVent) AND
-	P11_E3508. bManAuto_E3508 AND //Temperature Controller Auto : True
-	P12_IQ_PLUS. ingPressureControl //Throttle Valve Pressure Control Mode : True 
-	;
+// bRecipeStartAvailable := //레시피 가능한 상태이면 TRUE
+// 	NOT(AlarmTrig) AND
+// 	NOT(WarningTrig) AND
+// 	NOT(bMaintKey) AND
+// 	GVL_IO.aInputState[2].4 AND //Cover Lower Limt
+// 	GVL_IO.aInputState[4].6 AND //DOR State
+// 	NOT(RCP.state_RcpOperation = 10) AND //Not Recipe Run State
+// 	NOT(bGasStateProcess) AND //Safety Process Gas : TRUE
+// 	NOT(bGasStateSource) AND //Safety Source Gas : TRUE
+// 	NOT(bGasStateVent) AND
+// 	P11_E3508. bManAuto_E3508 AND //Temperature Controller Auto : True
+// 	P12_IQ_PLUS. ingPressureControl //Throttle Valve Pressure Control Mode : True 
+// 	;
+bRecipeStartAvailable := TRUE; // 테스트용 변수
 
 bDorOnEnable :=
 	NOT(AlarmTrig) AND
@@ -602,6 +603,7 @@ GVL_IO.aDigitalOutputIO[2].4 := bUPSMode;
       <LineId Id="1262" Count="1" />
       <LineId Id="1243" Count="0" />
       <LineId Id="1299" Count="0" />
+      <LineId Id="1377" Count="0" />
       <LineId Id="1276" Count="0" />
       <LineId Id="1282" Count="0" />
       <LineId Id="1277" Count="0" />

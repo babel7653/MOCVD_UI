@@ -6,6 +6,7 @@ using System.Globalization;
 using System.IO;
 using System.Windows;
 using System.Windows.Media;
+using static System.Formats.Asn1.AsnWriter;
 
 namespace SapphireXR_App.ViewModels
 {
@@ -20,10 +21,21 @@ namespace SapphireXR_App.ViewModels
                 Recipes = recipes;
 
                 int totalRecipeTime = 0;
-                foreach (Recipe recipe in Recipes)
+                for(int step = 0; step < Recipes.Count;)
                 {
-                    totalRecipeTime += recipe.RTime;
-                    totalRecipeTime += recipe.HTime;
+                    Recipe recipe = Recipes[step];
+
+                    int loopTototalRecipeTime = 0;
+                    int loopLimit = Math.Max(recipe.No, recipe.Jump);
+                    for (int loopStep = step; loopStep < loopLimit; ++loopStep)
+                    {
+                        loopTototalRecipeTime += Recipes[loopStep].RTime;
+                        loopTototalRecipeTime += Recipes[loopStep].HTime;
+                    }
+                    int loopCount = Math.Max(1, (int)recipe.Repeat);
+                    totalRecipeTime += (loopTototalRecipeTime * loopCount);
+
+                    step = loopLimit;
                 }
                 TotalRecipeTime = totalRecipeTime;
                 TotalStep = Recipes.Count;
@@ -249,9 +261,7 @@ namespace SapphireXR_App.ViewModels
                 recipeLoopInfoUnsubscriber = null;
 
                 CurrentRecipeTime = null;
-                TotalRecipeTime = null;
                 CurrentStep = null;
-                TotalStep = null;
                 StepName = "";
                 CurrentRampTime = null;
                 TotalRampTime = null;
@@ -259,9 +269,9 @@ namespace SapphireXR_App.ViewModels
                 TotalHoldTime = null;
                 PauseTime = null;
                 CurrentLoopStep = null;
-                TotalLoopStep = null;
                 CurrentLoopNumber = null;
                 TotalLoopNumber = null;
+                TotalLoopStep = null;
                 CurrentWaitTemp = null;
                 TotalWaitTemp = null;
             }

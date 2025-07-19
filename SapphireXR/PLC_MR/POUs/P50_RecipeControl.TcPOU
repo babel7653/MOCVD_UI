@@ -47,11 +47,10 @@ END_VAR
 		Hold_On	:= FALSE;
 		Loop_On := FALSE;
 		Rcp.userState := 0;
-		FOR i :=1 TO 4 DO 
+		FOR i :=1 TO 6 DO 
 			Rcp.aLoop[i] := -1;
 		END_FOR
 		P92_Maintenance.nCaseSignalTower := 3; // Blue - Idle
-		test_temp := 1100;
 
 	10: //RUN
 		IF nRcpIndex = 0 THEN
@@ -92,8 +91,7 @@ END_VAR
 				END_IF
 			
 			//Wait Operation
-// 			ELSIF RCP.aRecipe[nRcpIndex].iRecipe[7] <= GVL_IO.aController_PV[27] THEN
-			ELSIF RCP.aRecipe[nRcpIndex].iRecipe[7] <= test_temp THEN	// test
+			ELSIF RCP.aRecipe[nRcpIndex].iRecipe[7] < GVL_IO.aController_PV[27] THEN
 				rTrigWait(CLK:=FALSE);
 				//Ramp_On := FALSE;
 				Hold_On := FALSE;
@@ -114,7 +112,6 @@ END_VAR
 					Wait_On := FALSE;
 					Loop_On := TRUE;
 					
-					test_temp := 1100;	// test
 					RCP.aLoop[5] := -1;
 					RCP.aLoop[6] := -1;
 				END_IF
@@ -151,7 +148,7 @@ END_VAR
 			END_IF		
 			P92_Maintenance.nCaseSignalTower := 3;
 		ELSE
-			FOR i :=1 TO 4 DO 
+			FOR i :=1 TO 6 DO 
 				RCP.aLoop[i] := -1;
 			END_FOR
 			RCP.cmd_RcpOperation := 50;
@@ -250,20 +247,30 @@ END_VAR
 		Hold_TON(IN:=FALSE);
 		Ramp_On := TRUE;
 		Hold_On := FALSE;
-		nRcpIndex := nRcpIndex + 1;
+		IF nRcpIndex = RCP.aLoop[4] THEN
+			IF RCP.aLoop[1] < RCP.aLoop[2] THEN
+				RCP.aLoop[1] := RCP.aLoop[1] + 1;
+				nRcpIndex := RCP.aLoop[3];
+			ELSE
+				nRcpIndex := nRcpIndex + 1;
+			END_IF
+		ELSE
+			nRcpIndex := nRcpIndex + 1;
+		END_IF
+
 		RCP.cmd_RcpOperation := 10;
 		fbRecipeSequencer();
 END_CASE
 ]]></ST>
     </Implementation>
     <LineIds Name="P50_RecipeControl">
-      <LineId Id="1" Count="15" />
-      <LineId Id="269" Count="0" />
-      <LineId Id="17" Count="37" />
+      <LineId Id="1" Count="53" />
       <LineId Id="211" Count="1" />
-      <LineId Id="55" Count="10" />
+      <LineId Id="55" Count="0" />
+      <LineId Id="57" Count="8" />
       <LineId Id="213" Count="1" />
-      <LineId Id="66" Count="15" />
+      <LineId Id="66" Count="8" />
+      <LineId Id="76" Count="5" />
       <LineId Id="219" Count="5" />
       <LineId Id="247" Count="0" />
       <LineId Id="82" Count="0" />
@@ -276,7 +283,19 @@ END_CASE
       <LineId Id="263" Count="0" />
       <LineId Id="268" Count="0" />
       <LineId Id="266" Count="0" />
-      <LineId Id="102" Count="107" />
+      <LineId Id="102" Count="102" />
+      <LineId Id="272" Count="0" />
+      <LineId Id="281" Count="0" />
+      <LineId Id="290" Count="0" />
+      <LineId Id="285" Count="0" />
+      <LineId Id="274" Count="0" />
+      <LineId Id="286" Count="0" />
+      <LineId Id="270" Count="0" />
+      <LineId Id="287" Count="0" />
+      <LineId Id="289" Count="0" />
+      <LineId Id="279" Count="0" />
+      <LineId Id="278" Count="0" />
+      <LineId Id="206" Count="3" />
     </LineIds>
   </POU>
 </TcPlcObject>

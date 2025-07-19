@@ -14,6 +14,8 @@ using System.ComponentModel;
 using SapphireXR_App.Common;
 using OxyPlot.Annotations;
 using SapphireXR_App.WindowServices;
+using System.Windows.Media;
+using OxyPlot.Wpf;
 
 namespace SapphireXR_App.ViewModels
 {
@@ -76,9 +78,12 @@ namespace SapphireXR_App.ViewModels
 
         public ReportViewModel() 
         {
+            OxyColor background = (Application.Current.Resources.MergedDictionaries[0]["Gray_50"] as Brush ?? new SolidColorBrush(Color.FromRgb(0x1c, 0x1c, 0x1c))).ToOxyColor();
+
+            dataValuePlotModel.plotModel.Background = background;
             dataValuePlotModel.plotModel.TextColor = OxyColors.White;
             dataValuePlotModel.plotModel.PlotAreaBorderColor = OxyColors.White;
-            dataValuePlotModel. plotModel.SubtitleColor = OxyColors.White;
+            dataValuePlotModel.plotModel.SubtitleColor = OxyColors.White;
             dataValuePlotModel.plotModel.TitleColor = OxyColors.White;
             dataValuePlotModel.plotModel.Axes.Add(new LinearAxis
             {
@@ -110,6 +115,7 @@ namespace SapphireXR_App.ViewModels
             });
             dataValuePlotModel.plotModel.Legends.Add(new Legend() { Key= "CurrentTargetValue" });
 
+            percentagePlotModel.plotModel.Background = background;
             percentagePlotModel.plotModel.TextColor = OxyColors.White;
             percentagePlotModel.plotModel.PlotAreaBorderColor = OxyColors.White;
             percentagePlotModel.plotModel.SubtitleColor = OxyColors.White;
@@ -325,7 +331,7 @@ namespace SapphireXR_App.ViewModels
                 {
                     using (FileStream fileStream = File.Create(saveFileDialog.FileName))
                     {
-                        new SvgExporter { Width = FlowControlLivePlot.Width, Height = FlowControlLivePlot.Height }.Export(FlowControlLivePlot, fileStream);
+                        new OxyPlot.Wpf.SvgExporter { Width = FlowControlLivePlot.Width, Height = FlowControlLivePlot.Height }.Export(FlowControlLivePlot, fileStream);
                     }
                 }
                 catch(Exception exception)

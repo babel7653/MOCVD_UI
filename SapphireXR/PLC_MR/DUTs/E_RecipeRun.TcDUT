@@ -1,0 +1,20 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4026.11">
+  <DUT Name="E_RecipeRun" Id="{5e38f956-9195-425f-b108-a9af18eb5129}">
+    <Declaration><![CDATA[{attribute 'qualified_only'}
+{attribute 'strict'}
+{attribute 'to_string'}
+TYPE E_RecipeRun :
+(
+	Idle,			// 대기상태 (레시피 시작 대기) 
+	Initialize,		// 초기화 상태 (변수 초기화)
+	Ramp,			// Ramp 처리 상태 (현재 스텝의 동작 수행)
+	CheckHoldType,	// Hold Type 확인
+	TimeHold,		// 시간기준 Hold
+	TempHold		// 온도기준 Hold
+
+):= Idle;
+END_TYPE
+]]></Declaration>
+  </DUT>
+</TcPlcObject>

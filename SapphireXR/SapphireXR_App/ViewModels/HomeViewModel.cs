@@ -9,11 +9,9 @@ using System.Collections;
 using System.Numerics;
 using System.Windows.Controls;
 using System.ComponentModel;
-using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using SapphireXR_App.Enums;
 using SapphireXR_App.WindowServices;
-using TwinCAT.Ads.Server;
 
 namespace SapphireXR_App.ViewModels
 {
@@ -78,7 +76,7 @@ namespace SapphireXR_App.ViewModels
                 "MonitoringPresentValue.UltimatePressure.CurrentValue"),
                 new FlowControllerValueSubscriber<float>((float value) => { TargetRotation = Util.FloatingPointStrWithMaxDigit(value, AppSetting.FloatingPointMaxNumberDigit); }, 
                 "FlowControl.Rotation.TargetValue"),
-                new FlowControllerValueSubscriber<float>((float value) => { ControlRotation =Util.FloatingPointStrWithMaxDigit(value, AppSetting.FloatingPointMaxNumberDigit); }, 
+                new FlowControllerValueSubscriber<float>((float value) => { ControlRotation = Util.FloatingPointStrWithMaxDigit(value, AppSetting.FloatingPointMaxNumberDigit); }, 
                 "FlowControl.Rotation.ControlValue"),
                 new FlowControllerValueSubscriber<float>((float value) => { CurrentRotation = Util.FloatingPointStrWithMaxDigit(value, AppSetting.FloatingPointMaxNumberDigit); }, 
                 "FlowControl.Rotation.CurrentValue")];
@@ -125,10 +123,6 @@ namespace SapphireXR_App.ViewModels
 
             EventLogs.Instance.EventLogList.CollectionChanged += (object? sender, NotifyCollectionChangedEventArgs args) => ClearEventLogsCommand.NotifyCanExecuteChanged();
             ObservableManager<string>.Get("ViewModelCreated").Publish("HomeViewModel");
-
-            //PLCConnectionState.Instance.PropertyChanged += (sender, args) =>
-            //{
-            //};
         }
 
         private void initRightDashBoard()
@@ -160,19 +154,16 @@ namespace SapphireXR_App.ViewModels
      
         private void toggleVacuumPump(bool on)
         {
-            if (PLCService.Connected == PLCConnection.Connected)
+            try
             {
-                try
+                PLCService.WriteOutputCmd1(PLCService.OutputCmd1Index.VaccumPumpControl, on);
+            }
+            catch (Exception exception)
+            {
+                if (showMsgOnVacuumPumpToggleEx == true)
                 {
-                    PLCService.WriteOutputCmd1(PLCService.OutputCmd1Index.VaccumPumpControl, on);
-                }
-                catch (Exception exception)
-                {
-                    if (showMsgOnVacuumPumpToggleEx == true)
-                    {
-                        showMsgOnVacuumPumpToggleEx = MessageBox.Show("PLC로 Vaccum Pump On/Off값을 쓰는데 실패했습니다. 이 메시지를 다시 표시하지 않으려면 Yes를 클릭하세요. 원인은 다음과 같습니다: "
-                                + exception.Message, "", MessageBoxButton.YesNo, MessageBoxImage.Error) == MessageBoxResult.Yes ? false : true;
-                    }
+                    showMsgOnVacuumPumpToggleEx = MessageBox.Show("PLC로 Vaccum Pump On/Off값을 쓰는데 실패했습니다. 이 메시지를 다시 표시하지 않으려면 Yes를 클릭하세요. 원인은 다음과 같습니다: "
+                            + exception.Message, "", MessageBoxButton.YesNo, MessageBoxImage.Error) == MessageBoxResult.Yes ? false : true;
                 }
             }
         }
@@ -233,19 +224,16 @@ namespace SapphireXR_App.ViewModels
         [RelayCommand]
         private void toggleInductionHeater(bool on)
         {
-            if (PLCService.Connected == PLCConnection.Connected)
+            try
             {
-                try
+                PLCService.WriteOutputCmd1(PLCService.OutputCmd1Index.InductionHeaterControl, on);
+            }
+            catch (Exception exception)
+            {
+                if (showMsgOnInductionHeaterToggleEx == true)
                 {
-                    PLCService.WriteOutputCmd1(PLCService.OutputCmd1Index.InductionHeaterControl, on);
-                }
-                catch (Exception exception)
-                {
-                    if (showMsgOnInductionHeaterToggleEx == true)
-                    {
-                        showMsgOnInductionHeaterToggleEx = MessageBox.Show("PLC로 Heater Toggle 값을 쓰는데 실패했습니다. 이 메시지를 다시 표시하지 않으려면 Yes를 클릭하세요. 원인은 다음과 같습니다: "
-                                    + exception.Message, "", MessageBoxButton.YesNo, MessageBoxImage.Error) == MessageBoxResult.Yes ? false : true;
-                    }
+                    showMsgOnInductionHeaterToggleEx = MessageBox.Show("PLC로 Heater Toggle 값을 쓰는데 실패했습니다. 이 메시지를 다시 표시하지 않으려면 Yes를 클릭하세요. 원인은 다음과 같습니다: "
+                                + exception.Message, "", MessageBoxButton.YesNo, MessageBoxImage.Error) == MessageBoxResult.Yes ? false : true;
                 }
             }
         }

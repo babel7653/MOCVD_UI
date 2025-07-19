@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4026.11">
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4026.12">
   <POU Name="P92_Maintenance" Id="{17478ea4-373a-4676-aa4e-f86e85a19514}" SpecialFunc="None">
     <Declaration><![CDATA[PROGRAM P92_Maintenance
 VAR_INPUT
@@ -86,7 +86,7 @@ CASE nCaseSignalTower OF
 		IF TimerSignalTower.Q THEN
 			TimerSignalTower(IN:=FALSE);
 			IF bSignalTower = 0 THEN
-				bSignalTower := 2#0000_0001; // RED
+				bSignalTower := 2#0010_0001; // RED & BUZZER
 			ELSE
 				bSignalTower := 0;
 			END_IF
@@ -118,7 +118,7 @@ CASE nCaseSignalTower OF
 	6: //BUZZER
 		bSignalTower := 2#0010_0001;
 		IF bBuzzerStop THEN
-			bSignalTower := 2#0000_0001;
+			bSignalTower := 2#0000_0001;  // RED
 		END_IF
 	ELSE
 		bSignalTower := 0;

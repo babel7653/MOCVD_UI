@@ -55,6 +55,7 @@
                             <Setter Property="HorizontalAlignment" Value="Right" />
                             <Setter Property="Width" Value="96" />
                             <Setter Property="Foreground" Value="{StaticResource Gray_900}" />
+                            <Setter Property="FontSize" Value="12" />
                         </Style>
                         <Style x:Key="readOnlyTextInput" TargetType="Border">
                             <Setter Property="Background" Value="{StaticResource Gray_400}" />
@@ -87,9 +88,9 @@
                         <ColumnDefinition Width="104"/>
                     </Grid.ColumnDefinitions>
                     <TextBlock Grid.Row="0" Grid.Column="0" Style="{StaticResource label}">Target Value</TextBlock>
-                    <local:NumberBoxWithMax Grid.Row="0" Grid.Column="1" x:Name="txtInput" Text="{Binding TargetValue}" MaxValue="{Binding MaxValue}" Style="{StaticResource textInput}"/>
+                    <local:NumberBoxWithMax Grid.Row="0" Grid.Column="1" x:Name="txtInput" Text="{Binding TargetValue, UpdateSourceTrigger=PropertyChanged}" MaxValue="{Binding MaxValue}" Style="{StaticResource textInput}"/>
                     <TextBlock Grid.Row="2" Grid.Column="0" Style="{StaticResource label}">Ramp Time(s)</TextBlock>
-                    <local:NumberBox Grid.Row="2" Grid.Column="1" x:Name="txtInput1" Text="{Binding RampTime}" Style="{StaticResource textInput}"/>
+                    <local:NumberBox Grid.Row="2" Grid.Column="1" x:Name="txtInput1" Text="{Binding RampTime, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource textInput}"/>
                     <TextBlock Grid.Row="4" Grid.Column="0" Style="{StaticResource label}">Deviation</TextBlock>
                     <Border Grid.Row="4" Grid.Column="1" Style="{StaticResource readOnlyTextInput}">
                         <Label  x:Name="txtFlowDeviaion" Content="{Binding Deviation}" Style="{StaticResource valueLabel}" />

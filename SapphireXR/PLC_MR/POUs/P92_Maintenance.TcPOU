@@ -3,7 +3,6 @@
   <POU Name="P92_Maintenance" Id="{17478ea4-373a-4676-aa4e-f86e85a19514}" SpecialFunc="None">
     <Declaration><![CDATA[PROGRAM P92_Maintenance
 VAR_INPUT
-	bBuzzerStop				: BOOL;
 	nCaseSignalTower		: INT;
 END_VAR
 VAR_OUTPUT
@@ -41,6 +40,7 @@ VAR
 	// Signal Tower
 	bSignalTower			: BYTE;
 	TimerSignalTower		: TON;
+	bBuzzerStop				: BOOL;
 END_VAR
 ]]></Declaration>
     <Implementation>
@@ -80,6 +80,8 @@ END_IF
 bPowerDistributeLamp := NOT(bPowerDistributeMagnet); //Magnet Switch
 
 (* Blink Signal Tower *)
+
+bBuzzerStop := GVL_IO.aInputState[4].5;
 CASE nCaseSignalTower OF
 	1: //RED 
 		TimerSignalTower(IN:=TRUE, PT:=T#500MS);
@@ -162,6 +164,8 @@ GVL_IO.aDigitalOutputIO[1].5 		:= bSignalTower.5; //5:BUZZER-Alarm
       <LineId Id="381" Count="0" />
       <LineId Id="397" Count="0" />
       <LineId Id="146" Count="0" />
+      <LineId Id="409" Count="0" />
+      <LineId Id="408" Count="0" />
       <LineId Id="156" Count="0" />
       <LineId Id="147" Count="0" />
       <LineId Id="160" Count="0" />

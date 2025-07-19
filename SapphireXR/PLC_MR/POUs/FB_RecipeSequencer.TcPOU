@@ -8,6 +8,7 @@ END_VAR
 
 VAR
 	i 	: INT;
+	k	: int; //Test
 END_VAR
 ]]></Declaration>
     <Implementation>
@@ -36,7 +37,8 @@ END_IF
 GVL_IO.aController[27].nRampTime := RCP.aRecipe[nRcpIndex].iRecipe[2];
 GVL_IO.aController[27].rTargetValue := RCP.aRecipe[nRcpIndex].iRecipe[4];
 P11_E3508.wControlValue := LREAL_TO_WORD(GVL_IO.aController[27].rControlValue); //Write to Temperature Controller
-GVL_IO.aController_PV[27] := WORD_TO_REAL(P11_E3508.wE3508_PV);
+//GVL_IO.aController_PV[27] := WORD_TO_REAL(P11_E3508.wE3508_PV);
+GVL_IO.aController_PV[27] := k ; //Test;
 GVL_IO.aController_CV[27] := WORD_TO_REAL(P11_E3508.wControlValue);
 GVL_IO.aController[27]();
 
@@ -98,7 +100,9 @@ GVL_IO.aOutputSolValve[2].15 := RCP.aRecipe[nRcpIndex].dRecipe.25; //V32]]></ST>
       <LineId Id="245" Count="0" />
       <LineId Id="292" Count="0" />
       <LineId Id="250" Count="8" />
-      <LineId Id="260" Count="1" />
+      <LineId Id="260" Count="0" />
+      <LineId Id="298" Count="0" />
+      <LineId Id="261" Count="0" />
       <LineId Id="243" Count="0" />
       <LineId Id="291" Count="0" />
       <LineId Id="265" Count="0" />

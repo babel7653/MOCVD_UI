@@ -9,10 +9,13 @@ TYPE E_RecipeRun :
 	Idle,			// 대기상태 (레시피 시작 대기) 
 	Initialize,		// 초기화 상태 (변수 초기화)
 	Ramp,			// Ramp 처리 상태 (현재 스텝의 동작 수행)
-	CheckHoldType,	// Hold Type 확인
-	TimeHold,		// 시간기준 Hold
-	TempHold		// 온도기준 Hold
-
+	CheckHoldTemp,	// Hold Type 확인
+	CheckLoop,		// Loop Type 확인
+	InitLoopPrameter, // Loop 변수 초기화
+	CheckLoopCount, 	// Loop 회수 확인
+	CheckLoopEndStep, // 마지막 Loop 확인
+	CheckRepeatOrNext,
+	LoopFinish
 ):= Idle;
 END_TYPE
 ]]></Declaration>

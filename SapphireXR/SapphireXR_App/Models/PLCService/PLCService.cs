@@ -337,7 +337,7 @@ namespace SapphireXR_App.Models
 
                 short[] aLoop = Ads.ReadAny<short[]>(hRCPALoop, [6]);
                 dRecipeControlInfoPublisher?.Publish(new RecipeControlInfo() { currentLoopNumber = (aLoop[0] != -1) ? aLoop[0] : null, totalLoopNumber = (aLoop[1] != -1) ? aLoop[1] : null, 
-                    currentLoopStep = (aLoop[2] != -1) ? aLoop[2] : null, totalLoopStep = (aLoop[3] != -1) ? aLoop[3] : null, totalWaitTemp = (aLoop[4] != -1) ? aLoop[4] : null, currentWaitTemp = (aLoop[5] != -1) ? aLoop[5] : null });
+                    currentLoopStep = (aLoop[2] != -1) ? aLoop[2] : null, totalLoopStep = (aLoop[3] != -1) ? aLoop[3] : null});
 
                 string exceptionStr = string.Empty;
                 if (aDeviceControlValues == null)

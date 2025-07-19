@@ -11,29 +11,29 @@ namespace SapphireXR_App.ViewModels
     {
         public partial class RecipeContext : ObservableObject, IDisposable
         {
-            private class TemperatureControlValueSubscriber : IObserver<int>
+            private class TemperatureCurrentValueSubscriber : IObserver<float>
             {
-                internal TemperatureControlValueSubscriber(RecipeContext rc)
+                internal TemperatureCurrentValueSubscriber(RecipeContext rc)
                 {
                     recipeContext = rc;
                 }
 
-                void IObserver<int>.OnCompleted()
+                void IObserver<float>.OnCompleted()
                 {
                     throw new NotImplementedException();
                 }
 
-                void IObserver<int>.OnError(Exception error)
+                void IObserver<float>.OnError(Exception error)
                 {
                     throw new NotImplementedException();
                 }
 
-                void IObserver<int>.OnNext(int value)
+                void IObserver<float>.OnNext(float value)
                 {
                     if (prevValue == null || prevValue != value)
                     {
-                        recipeContext.CurrentWaitTemp = value;
-                        prevValue = value;
+                        recipeContext.CurrentWaitTemp = (int)value;
+                        prevValue = recipeContext.CurrentWaitTemp;
                     }
                 }
 

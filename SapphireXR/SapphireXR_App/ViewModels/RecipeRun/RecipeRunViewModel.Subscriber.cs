@@ -136,8 +136,6 @@ namespace SapphireXR_App.ViewModels
                 recipeContext.CurrentLoopNumber = value.currentLoopNumber;
                 recipeContext.CurrentLoopStep = value.currentLoopStep;
                 recipeContext.TotalLoopStep = value.totalLoopStep;
-                recipeContext.TotalWaitTemp = value.totalWaitTemp;
-                recipeContext.CurrentWaitTemp = value.currentWaitTemp;
             }
 
             private RecipeContext recipeContext;

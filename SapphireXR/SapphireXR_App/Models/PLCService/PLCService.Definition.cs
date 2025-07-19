@@ -31,8 +31,6 @@ namespace SapphireXR_App.Models
             public required short? currentLoopNumber;
             public required short? currentLoopStep;
             public required short? totalLoopStep;
-            public required short? totalWaitTemp;
-            public required short? currentWaitTemp;
         }
 
         internal class LeakTestModeSubscriber : IObserver<bool>

@@ -17,6 +17,7 @@
             <Style.Triggers>
                 <Trigger Property="IsMouseOver" Value="True">
                     <Setter Property="Foreground" Value="{StaticResource Sapphire_Blue}" />
+                    <Setter Property="Cursor" Value="Hand" />
                 </Trigger>
             </Style.Triggers>
         </Style>
@@ -154,7 +155,7 @@
                                                                     <CheckBox IsChecked="{Binding Path=DataContext.AnalogAlarmCheckAllColumnViewModel.IsPlaceHolderCheck, RelativeSource={RelativeSource AncestorType=DataGrid}}" Style="{StaticResource DataGridCheckBox}" Opacity="0.2" HorizontalAlignment="Center" VerticalAlignment="Center"
                                                                         Visibility="{Binding Path=DataContext.AnalogAlarmCheckAllColumnViewModel.ShowGuidePlaceHolderCheckBox, RelativeSource={RelativeSource AncestorType=DataGrid}}" />
                                                                     <CheckBox IsChecked="{Binding AlarmSet, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Style="{StaticResource DataGridCheckBox}" HorizontalAlignment="Center" VerticalAlignment="Center" 
-                                                                        Visibility="{Binding Path=DataContext.AnalogAlarmCheckAllColumnViewModel.ShowCheckBox, RelativeSource={RelativeSource AncestorType=DataGrid}}" />
+                                                                        Visibility="{Binding Path=DataContext.AnalogAlarmCheckAllColumnViewModel.ShowCheckBox, RelativeSource={RelativeSource AncestorType=DataGrid}}"  />
                                                                 </Grid>
                                                             </DataTemplate>
                                                         </DataGridTemplateColumn.CellTemplate>

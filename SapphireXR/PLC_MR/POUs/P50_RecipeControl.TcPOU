@@ -29,16 +29,9 @@ VAR
 	Hold_On			: BOOL;
 	Loop_On			: BOOL;
 	Wait_On			: BOOL;
-	bInitLoop		: BOOL;
-	bLoopIng		: BOOL;
+
 	i				: INT;
-	k1 : INT;
-	k2 : INT;
-	k3 : INT;
-	k4 : INT;
-	k5 : INT;
-	k6 : INT;
-	testTemp	: INT; //GVL_IO.aController_PV[27] 
+	test_temp		: INT; //GVL_IO.aMonitoring_PV[10]
 END_VAR
 ]]></Declaration>
     <Implementation>
@@ -54,18 +47,11 @@ END_VAR
 		Hold_On	:= FALSE;
 		Loop_On := FALSE;
 		Rcp.userState := 0;
-		FOR i :=1 TO 6 DO //Loop 초기화
+		FOR i :=1 TO 4 DO 
 			Rcp.aLoop[i] := -1;
 		END_FOR
-		bInitLoop := TRUE;
-		bLoopIng := FALSE;	
 		P92_Maintenance.nCaseSignalTower := 3; // Blue - Idle
-		k1 := 0;
-		k2 := 0;
-		k3 := 0;
-		k4 := 0;
-		k5 := 0;
-		k6 := 0;
+
 	10: //RUN
 		IF nRcpIndex = 0 THEN
 			nRcpIndex := 1;
@@ -73,23 +59,13 @@ END_VAR
 			RCP.cmd_RcpOperation := 50;
 			P92_Maintenance.nCaseSignalTower := 3; // Blue - Idle
 		END_IF
-		
+
 		Rcp.userState := 10;
 		IF nRcpIndex <= Rcp.iRcpTotalStep THEN
 			Rcp.state_RcpOperation := 10; // Recipe Running
 			Ramp_TIME := INT_TO_TIME(RCP.aRecipe[nRcpIndex].iRecipe[2]*1000); // second -> milisecond time
 			Hold_TIME := INT_TO_TIME(RCP.aRecipe[nRcpIndex].iRecipe[3]*1000);
 			fbRecipeSequencer(nRcpIndex := nRcpIndex);
-			
-			// Loop Paremeter 초기화
-			IF bInitLoop AND RCP.aRecipe[nRcpIndex].iRecipe[8] > 0 THEN
-				RCP.aLoop[1] := 1; // Current Loop Count
-				RCP.aLoop[2] := RCP.aRecipe[nRcpIndex].iRecipe[8]; // Total Loop Number
-				RCP.aLoop[3] := nRcpIndex; // Start Step
-				RCP.aLoop[4] := RCP.aRecipe[nRcpIndex].iRecipe[9]; // Loop End Step	
-				bInitLoop := FALSE;
-				bLoopIng := FALSE;
-			END_IF
 			
 			//Ramp Operation
 			Ramp_TON(IN:=Ramp_On, PT:=Ramp_TIME, ET=>Ramp_ET);
@@ -103,74 +79,65 @@ END_VAR
 			END_IF
 			
 			//Hold Operation
-			IF RCP.aRecipe[nRcpIndex].iRecipe[7] = 0 THEN // Time Base : Hold Mode
+			IF RCP.aRecipe[nRcpIndex].iRecipe[7] = 0 THEN // Time Hold Mode
 				Hold_TON(IN:=Hold_On, PT:=Hold_TIME, ET=>Hold_ET);
 				rTrigHold(CLK:=Hold_TON.Q);
 				IF rTrigHold.Q THEN
 					Hold_TON(IN:=FALSE);
+					//Ramp_On := FALSE;
 					Hold_On := FALSE;
 					Wait_On := FALSE;
 					Loop_On := TRUE;
-					k4 := k4+1;
-				END_IF								
-			ELSIF GVL_IO.aController_PV[27] < RCP.aRecipe[nRcpIndex].iRecipe[7] THEN	
+				END_IF
+			ELSIF test_temp < RCP.aRecipe[nRcpIndex].iRecipe[7] THEN	
 				rTrigWait(CLK:= Wait_On);
 				IF rTrigWait.Q THEN
 					rTrigWait(CLK:=FALSE);
+					//Ramp_On := FALSE;
 					Hold_On := FALSE;
 					Wait_On := FALSE;
 					Loop_On := TRUE;
-					FOR i := 5 TO 6 DO //Loop 초기화
-						Rcp.aLoop[i] := -1;
-					END_FOR
-					k5 := k5+1;
 				END_IF
+
 			ELSE
 				rTrigWait(CLK:=FALSE);
+				//Ramp_On := FALSE;
 				Hold_On := FALSE;
 				Wait_On := TRUE;
 				Loop_On := FALSE;
-				RCP.aLoop[5] := RCP.aRecipe[nRcpIndex].iRecipe[7]; //Recipe Wait Temperature
-				RCP.aLoop[6] := REAL_TO_INT(GVL_IO.aController_PV[27]); //Susceptor Current Temperature
-				k6 := k6+1;
 			END_IF
 			
 			//Loop Operation
 			rTrigLoop(CLK:=Loop_On);
 			IF rTrigLoop.Q THEN
 				Ramp_On := TRUE;
-				Loop_On := FALSE;
-				IF (RCP.aRecipe[nRcpIndex].iRecipe[8] <=0) AND (bLoopIng = FALSE) THEN
-					nRcpIndex := nRcpIndex + 1;
-					k1 := k1 + 1;
-				ELSIF (RCP.aLoop[1] < RCP.aLoop[2]) AND (nRcpIndex < RCP.aLoop[4]) AND (bLoopIng = FALSE) THEN // 루프 반복, 루프 시작 스텝
-					nRcpIndex := nRcpIndex + 1; // 다음 스텝
-					bLoopIng := TRUE;
-					k2 := k2 + 1;
-				ELSIF (RCP.aLoop[1] < RCP.aLoop[2]) AND (nRcpIndex < RCP.aLoop[4]) AND (bLoopIng = TRUE) THEN //루프 반복, 진행
-					nRcpIndex := nRcpIndex + 1; // 다음 스텝
-					bLoopIng := TRUE;
-					k3 := k3 + 1;
-				ELSIF (RCP.aLoop[1] < RCP.aLoop[2]) AND (nRcpIndex = RCP.aLoop[4]) AND (bLoopIng = TRUE) THEN // 루프 반복, 루프 종료 스템
-					nRcpIndex := RCP.aLoop[3]; // 루프 시작 스텝
-					RCP.aLoop[1] := RCP.aLoop[1] + 1; //루프 카운트 증가
-					bLoopIng := FALSE;
-					k4 := k4 + 1;
-				ELSE
-					nRcpIndex := nRcpIndex + 1; // 다음 스텝
-					bInitLoop := TRUE; //루프 변수 초기화
-					bLoopIng := FALSE;
-					k5 := k5 + 1;
+				IF RCP.aRecipe[nRcpIndex].iRecipe[8] <> 0 AND RCP.aRecipe[nRcpIndex].iRecipe[9] <> 0 THEN
+					Rcp.aLoop[1] := RCP.aRecipe[nRcpIndex].iRecipe[8]; 		// Rcp.aLoop[1]: loop repeat number
+					Rcp.aLoop[4] := RCP.aRecipe[nRcpIndex].iRecipe[9]; 		// Rcp.aLoop[4]: loop end
+					Rcp.aLoop[3] := nRcpIndex; 								// Rcp.aLoop[3]: loop bigin
 				END_IF
-			END_IF
-			
+				IF Rcp.aLoop[2] < (Rcp.aLoop[1] - 1) THEN					// Rcp.aLoop[2]: current loop count
+					IF nRcpIndex < Rcp.aLoop[4] THEN
+						nRcpIndex := nRcpIndex + 1;
+					ELSE
+						Rcp.aLoop[2] := Rcp.aLoop[2] + 1;
+						nRcpIndex := Rcp.aLoop[3];
+					END_IF
+				ELSE
+					FOR i :=1 TO 4 DO 
+					Rcp.aLoop[i] := -1;
+					END_FOR
+					nRcpIndex := nRcpIndex + 1; // Next Recipe Step
+				END_IF
+			END_IF		
+			P92_Maintenance.nCaseSignalTower := 3;
 		ELSE
 			FOR i :=1 TO 4 DO 
 				Rcp.aLoop[i] := -1;
 			END_FOR
 			RCP.cmd_RcpOperation := 50;
 			P92_Maintenance.nCaseSignalTower := 4;
-		END_IF	
+		END_IF
 		
 	20: //PAUSE
 		Rcp.state_RcpOperation := 20;
@@ -252,10 +219,6 @@ END_VAR
 		P92_Maintenance.nCaseSignalTower := 4;
 		fbRecipeSequencer();
 		
-		FOR i :=1 TO 6 DO //Loop 초기화
-			Rcp.aLoop[i] := -1;
-		END_FOR
-		
 	50: //END
 		Rcp.state_RcpOperation := 50;
 		Rcp.userState := 50;
@@ -275,48 +238,7 @@ END_CASE
 ]]></ST>
     </Implementation>
     <LineIds Name="P50_RecipeControl">
-      <LineId Id="1" Count="22" />
-      <LineId Id="248" Count="0" />
-      <LineId Id="24" Count="0" />
-      <LineId Id="28" Count="20" />
-      <LineId Id="243" Count="0" />
-      <LineId Id="49" Count="0" />
-      <LineId Id="232" Count="0" />
-      <LineId Id="50" Count="10" />
-      <LineId Id="291" Count="8" />
-      <LineId Id="321" Count="0" />
-      <LineId Id="300" Count="0" />
-      <LineId Id="302" Count="9" />
-      <LineId Id="322" Count="0" />
-      <LineId Id="312" Count="7" />
-      <LineId Id="323" Count="0" />
-      <LineId Id="87" Count="2" />
-      <LineId Id="120" Count="0" />
-      <LineId Id="235" Count="1" />
-      <LineId Id="234" Count="0" />
-      <LineId Id="233" Count="0" />
-      <LineId Id="240" Count="0" />
-      <LineId Id="244" Count="0" />
-      <LineId Id="241" Count="0" />
-      <LineId Id="326" Count="0" />
-      <LineId Id="336" Count="0" />
-      <LineId Id="333" Count="0" />
-      <LineId Id="339" Count="0" />
-      <LineId Id="341" Count="1" />
-      <LineId Id="340" Count="0" />
-      <LineId Id="328" Count="1" />
-      <LineId Id="327" Count="0" />
-      <LineId Id="337" Count="0" />
-      <LineId Id="334" Count="0" />
-      <LineId Id="325" Count="0" />
-      <LineId Id="331" Count="1" />
-      <LineId Id="338" Count="0" />
-      <LineId Id="335" Count="0" />
-      <LineId Id="324" Count="0" />
-      <LineId Id="238" Count="0" />
-      <LineId Id="237" Count="0" />
-      <LineId Id="121" Count="80" />
-      <LineId Id="204" Count="27" />
+      <LineId Id="1" Count="200" />
     </LineIds>
   </POU>
 </TcPlcObject>

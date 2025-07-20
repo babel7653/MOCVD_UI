@@ -129,5 +129,26 @@ namespace SapphireXR_App.ViewModels
 
             HomeViewModel homeViewModel;
         }
+
+        private class RecipeEndedSubscriber : IObserver<bool>
+        {
+            internal RecipeEndedSubscriber(HomeViewModel vm)
+            {
+                homeViewModel = vm;
+            }
+            void IObserver<bool>.OnCompleted()
+            {
+                throw new NotImplementedException();
+            }
+            void IObserver<bool>.OnError(Exception error)
+            {
+                throw new NotImplementedException();
+            }
+            void IObserver<bool>.OnNext(bool value)
+            {
+                homeViewModel.loadBatchOnRecipeEnd();
+            }
+            private HomeViewModel homeViewModel;
+        }
     }
 }

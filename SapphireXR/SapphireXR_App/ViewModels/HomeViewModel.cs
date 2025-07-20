@@ -1,17 +1,18 @@
-﻿using CommunityToolkit.Mvvm.Input;
-using SapphireXR_App.ViewModels.BottomDashBoard;
-using System.Windows;
-using System.Windows.Input;
-using CommunityToolkit.Mvvm.ComponentModel;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
 using SapphireXR_App.Common;
-using SapphireXR_App.Models;
-using System.Collections;
-using System.Numerics;
-using System.Windows.Controls;
-using System.ComponentModel;
-using System.Collections.Specialized;
 using SapphireXR_App.Enums;
+using SapphireXR_App.Models;
+using SapphireXR_App.ViewModels.BottomDashBoard;
 using SapphireXR_App.WindowServices;
+using System.Collections;
+using System.Collections.Specialized;
+using System.ComponentModel;
+using System.Numerics;
+using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Input;
+using static SapphireXR_App.ViewModels.RecipeRunViewModel;
 
 namespace SapphireXR_App.ViewModels
 {
@@ -95,6 +96,7 @@ namespace SapphireXR_App.ViewModels
             ObservableManager<BitArray>.Subscribe("DigitalOutput3", digitalOutput3Subscriber = new DigitalOutput3Subscriber(this));
             ObservableManager<short>.Subscribe("ThrottleValveStatus", throttleValveStatusSubscriber = new ThrottleValveStatusSubscriber(this));
             ObservableManager<PLCConnection>.Subscribe("PLCService.Connected", plcConnectionStateSubscriber = new PLCConnectionStateSubscriber(this));
+            ObservableManager<bool>.Subscribe("RecipeRunViewModel.RecipeEnded", recipeEndedSubscriber = new RecipeEndedSubscriber(this));
 
             ThrottleValveControlModes = ["Control", "Open", "Close", "Hold", "Reset"];
 
@@ -483,6 +485,7 @@ namespace SapphireXR_App.ViewModels
         private ThrottleValveStatusSubscriber throttleValveStatusSubscriber;
         private ObservableManager<bool>.Publisher leakTestModePublisher;
         private PLCConnectionStateSubscriber plcConnectionStateSubscriber;
+        private RecipeEndedSubscriber recipeEndedSubscriber;
 
         private bool showMsgOnVacuumPumpToggleEx = true;
         private bool showMsgOnVacuumPumpResetEx = true;

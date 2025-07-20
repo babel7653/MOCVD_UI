@@ -25,14 +25,6 @@ namespace SapphireXR_App.Models
             public ReadBufferException(string message) : base(message) { }
         }
 
-        internal struct RecipeControlInfo
-        {
-            public required short? totalLoopNumber;
-            public required short? currentLoopNumber;
-            public required short? currentLoopStep;
-            public required short? totalLoopStep;
-        }
-
         internal class LeakTestModeSubscriber : IObserver<bool>
         {
             void IObserver<bool>.OnCompleted()
@@ -214,7 +206,7 @@ namespace SapphireXR_App.Models
         private static ObservableManager<short>.Publisher? dThrottleValveStatusIssuer;
         private static ObservableManager<BitArray>.Publisher? dLogicalInterlockStateIssuer;
         private static ObservableManager<PLCConnection>.Publisher? dPLCConnectionPublisher;
-        private static ObservableManager<RecipeControlInfo>.Publisher? dRecipeControlInfoPublisher;
+        private static ObservableManager<bool>.Publisher? dOperationModeChangingPublisher;
 
         private static LeakTestModeSubscriber? leakTestModeSubscriber = null;
 

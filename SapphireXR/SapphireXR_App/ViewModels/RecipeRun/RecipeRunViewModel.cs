@@ -34,6 +34,7 @@ namespace SapphireXR_App.ViewModels
             recipeRunStatePublisher = ObservableManager<RecipeUserState>.Get("RecipeRun.State");
             ObservableManager<(string, IList<Recipe>)>.Subscribe("RecipeEdit.LoadToRecipeRun", loadFromRecipeEditSubscriber = new LoadFromRecipeEditSubscriber(this));
             ObservableManager<BitArray>.Subscribe("LogicalInterlockState", logicalInterlockStateSubscriber = new LogicalInterlockStateSubscriber(this));
+            recipeEndedPOnClientSideuPublisher = ObservableManager<bool>.Get("RecipeRunViewModel.RecipeEnded");
 
             PropertyChanging += (object? sender, PropertyChangingEventArgs e) =>
             {
@@ -93,6 +94,7 @@ namespace SapphireXR_App.ViewModels
             onPLCConnectionStateChanged(PLCService.Connected);
             ObservableManager<string>.Get("ViewModelCreated").Publish("RecipeRunViewModel");
             ObservableManager<PLCConnection>.Subscribe("PLCService.Connected", plcConnectionStateSubscriber = new PLCConnectionStateSubscriber(this));
+            ObservableManager<bool>.Subscribe("OperationModeChanging", operationModeChangingSubscriber = new OperationModeChangingSubscriber(this));
         }
 
         bool canRecipeOpenExecute()
@@ -177,6 +179,7 @@ namespace SapphireXR_App.ViewModels
                     EventLogs.Instance.EventLogList.Add(new EventLog() { Message = "레시피가 종료되었습니다", Name = "Recipe End", Type = EventLog.LogType.Information });                 
                     ToastMessage.Show("Recipe가 종료되었습니다. 종료시간: " + DateTime.Now.ToString("HH:mm"), ToastMessage.MessageType.Information);
                     toRecipeLoadedState();
+                    recipeEndedPOnClientSideuPublisher.Publish(true);
                     break;
             }
             RecipeOpenCommand.NotifyCanExecuteChanged();
@@ -189,8 +192,17 @@ namespace SapphireXR_App.ViewModels
             recipeRunStatePublisher?.Publish(CurrentRecipeUserState);
         }
 
+        private bool recipeRunning()
+        {
+            return RecipeUserState.Run <= CurrentRecipeUserState && CurrentRecipeUserState <= RecipeUserState.Pause;
+        }
+
         private void startCommand()
         {
+            if (recipeMode == false)
+            {
+                PLCService.WriteOperationMode(true);
+            }
             SyncPLCState(Start);
         }
 
@@ -212,7 +224,7 @@ namespace SapphireXR_App.ViewModels
 
         bool canCommandsExecuteOnActive()
         {
-            return PLCService.Connected == PLCConnection.Connected && RecipeUserState.Run <= CurrentRecipeUserState && CurrentRecipeUserState <= RecipeUserState.Pause;
+            return PLCService.Connected == PLCConnection.Connected && recipeRunning();
         }
 
         bool canSkipCommandExecute()
@@ -415,7 +427,6 @@ namespace SapphireXR_App.ViewModels
             openFolderDialog.InitialDirectory = AppDomain.CurrentDomain.BaseDirectory;
             openFolderDialog.Multiselect = false;
 
-
             if (openFolderDialog.ShowDialog() == true)
             {
                 AppSetting.LogFileDirectory = openFolderDialog.FolderName;
@@ -455,6 +466,9 @@ namespace SapphireXR_App.ViewModels
         private LoadFromRecipeEditSubscriber loadFromRecipeEditSubscriber;
         private PLCConnectionStateSubscriber plcConnectionStateSubscriber;
         private LogicalInterlockStateSubscriber logicalInterlockStateSubscriber;
+        private ObservableManager<bool>.Publisher recipeEndedPOnClientSideuPublisher;
+        private OperationModeChangingSubscriber operationModeChangingSubscriber;
+        private bool recipeMode = false;
 
         [ObservableProperty]
         private bool recipeStartAvailableInterlock = false;

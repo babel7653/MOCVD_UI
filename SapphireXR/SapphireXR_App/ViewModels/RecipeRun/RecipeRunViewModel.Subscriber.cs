@@ -107,7 +107,7 @@ namespace SapphireXR_App.ViewModels
 
             void IObserver<PLCConnection>.OnNext(PLCConnection value)
             {
-               recipeRunViewModel.onPLCConnectionStateChanged(value);
+                recipeRunViewModel.onPLCConnectionStateChanged(value);
             }
 
             RecipeRunViewModel recipeRunViewModel;
@@ -141,6 +141,34 @@ namespace SapphireXR_App.ViewModels
 
             bool? prevValue = null;
             RecipeRunViewModel recipeRunViewModel;
+        }
+
+        private class OperationModeChangingSubscriber : IObserver<bool>
+        {
+            public OperationModeChangingSubscriber(RecipeRunViewModel vm)
+            {
+                recipeRunViewModel = vm;
+            }
+            void IObserver<bool>.OnCompleted()
+            {
+                throw new NotImplementedException();
+            }
+            void IObserver<bool>.OnError(Exception error)
+            {
+                throw new NotImplementedException();
+            }
+            void IObserver<bool>.OnNext(bool value)
+            {
+                if (value == false)
+                {
+                    if (recipeRunViewModel.recipeRunning() == true)
+                    {
+                        recipeRunViewModel.RecipeStop();
+                    }
+                }
+                recipeRunViewModel.recipeMode = value;
+            }
+            private RecipeRunViewModel recipeRunViewModel;
         }
     }
 }

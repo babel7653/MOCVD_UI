@@ -241,7 +241,7 @@ namespace SapphireXR_App.Models
             dThrottleValveStatusIssuer = ObservableManager<short>.Get("ThrottleValveStatus");
             dLogicalInterlockStateIssuer = ObservableManager<BitArray>.Get("LogicalInterlockState");
             dPLCConnectionPublisher = ObservableManager<PLCConnection>.Get("PLCService.Connected");
-            dRecipeControlInfoPublisher = ObservableManager<RecipeControlInfo>.Get("RecipeControlInformation");
+            dOperationModeChangingPublisher = ObservableManager<bool>.Get("OperationModeChanging");
 
             ObservableManager<bool>.Subscribe("Leak Test Mode", leakTestModeSubscriber = new LeakTestModeSubscriber());
         }

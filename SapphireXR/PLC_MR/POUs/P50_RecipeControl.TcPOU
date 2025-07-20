@@ -27,16 +27,9 @@ VAR
 	rTrigWait		: R_TRIG;
 	Ramp_On			: BOOL;
 	Hold_On			: BOOL;
-	Loop_On			: BOOL;
-	Wait_On			: BOOL;
 	bIngLoop		: BOOL;
-
 	i				: INT;
-	test_temp		: INT; //GVL_IO.aMonitoring_PV[10]
 	eRecipeRun		: E_RecipeRun := E_RecipeRun.Idle; //레시피 상태
-	k1 : INT;
-	k2 : INT;
-	k3 : INT;
 END_VAR
 ]]></Declaration>
     <Implementation>
@@ -50,7 +43,6 @@ END_VAR
 		Hold_TON(IN:=FALSE);
 		Ramp_On := TRUE;
 		Hold_On	:= FALSE;
-		Loop_On := FALSE;
 		bIngLoop := FALSE;
 		
 		Rcp.userState := 0;
@@ -58,9 +50,6 @@ END_VAR
 			Rcp.aLoop[i] := -1;
 		END_FOR
 		P92_Maintenance.nCaseSignalTower := 3; // Blue - Idle
-		k1 := 0;
-		k2 := 0;
-		k3 := 0;
 
 	10: //RUN
 		IF nRcpIndex = 0 THEN
@@ -84,15 +73,21 @@ END_VAR
 					// 아무것도 하지 않음			
 					;
 				E_RecipeRun.Ramp: // Ramp 수행
+					IF RCP.aRecipe[nRcpIndex].iRecipe[8] > 0 AND bIngLoop = FALSE THEN
+						bIngLoop := TRUE;
+						RCP.aLoop[1] := 1; // Current Loop Count
+						RCP.aLoop[2] := RCP.aRecipe[nRcpIndex].iRecipe[8]; // Total Loop Number
+						RCP.aLoop[3] := nRcpIndex; // Start Step
+						RCP.aLoop[4] := RCP.aRecipe[nRcpIndex].iRecipe[9]; // Loop End Step	
+					END_IF
+					
 					Ramp_TON(IN:=TRUE, PT:=Ramp_TIME, ET=>Ramp_ET);
 					rTrigRamp(CLK:=Ramp_TON.Q);
 					IF rTrigRamp.Q THEN
 						Ramp_TON(IN:=FALSE);
-						//Ramp_On := FALSE;
-						//Hold_On	:= TRUE;
 						eRecipeRun := E_RecipeRun.CheckHoldTemp;
-						k3 := k3 + 1;
 					END_IF
+
 					
 				E_RecipeRun.CheckHoldTemp: //Hold Temp 확인
 					IF RCP.aRecipe[nRcpIndex].iRecipe[7] = 0 THEN
@@ -114,33 +109,23 @@ END_VAR
 						nRcpIndex := nRcpIndex + 1;
 						eRecipeRun := E_RecipeRun.Ramp;
 					ELSIF RCP.aRecipe[nRcpIndex].iRecipe[8] > 0 AND bIngLoop = FALSE THEN //Loop Mode 시작일 때
-						eRecipeRun := E_RecipeRun.InitLoopPrameter;
+						eRecipeRun := E_RecipeRun.CheckRepeatOrNext;
 						bIngLoop := TRUE;
 					ELSE
 						eRecipeRun := E_RecipeRun.CheckRepeatOrNext;
 					END_IF
-					
-				E_RecipeRun.InitLoopPrameter: //루프 변수 초기화
-						RCP.aLoop[1] := 1; // Current Loop Count
-						RCP.aLoop[2] := RCP.aRecipe[nRcpIndex].iRecipe[8]; // Total Loop Number
-						RCP.aLoop[3] := nRcpIndex; // Start Step
-						RCP.aLoop[4] := RCP.aRecipe[nRcpIndex].iRecipe[9]; // Loop End Step
-						eRecipeRun := E_RecipeRun.CheckRepeatOrNext;
-				
+			
 				E_RecipeRun.CheckRepeatOrNext:
 					IF nRcpIndex < RCP.aLoop[4] THEN
 						nRcpIndex := nRcpIndex + 1;
-						eRecipeRun := E_RecipeRun.Ramp;
-						k3 := k3 +1;					
+						eRecipeRun := E_RecipeRun.Ramp;				
 					ELSE
 						IF RCP.aLoop[1] < RCP.aLoop[2] THEN //반복 횟수가 작으면
 							RCP.aLoop[1] := RCP.aLoop[1] + 1; //반복 카운트 증가
 							nRcpIndex := RCP.aLoop[3]; //반복 시작 스텝
 							eRecipeRun := E_RecipeRun.Ramp;
-							k1 := k1 +1;
 						ELSE
-							eRecipeRun := E_RecipeRun.LoopFinish;
-							k2 := k2 +1;							
+							eRecipeRun := E_RecipeRun.LoopFinish;							
 						END_IF
 					END_IF
 					
@@ -148,7 +133,9 @@ END_VAR
 					nRcpIndex := nRcpIndex + 1;
 					bIngLoop := FALSE;
 					eRecipeRun := E_RecipeRun.Ramp;
-	
+					FOR i :=1 TO 6 DO 
+						RCP.aLoop[i] := -1;
+					END_FOR	
 			END_CASE
 			
 		ELSE
@@ -268,11 +255,9 @@ END_CASE
 ]]></ST>
     </Implementation>
     <LineIds Name="P50_RecipeControl">
-      <LineId Id="1" Count="10" />
+      <LineId Id="1" Count="9" />
       <LineId Id="454" Count="1" />
-      <LineId Id="12" Count="4" />
-      <LineId Id="493" Count="2" />
-      <LineId Id="17" Count="3" />
+      <LineId Id="12" Count="8" />
       <LineId Id="410" Count="0" />
       <LineId Id="21" Count="3" />
       <LineId Id="372" Count="0" />
@@ -283,12 +268,14 @@ END_CASE
       <LineId Id="32" Count="0" />
       <LineId Id="373" Count="0" />
       <LineId Id="370" Count="0" />
-      <LineId Id="375" Count="2" />
-      <LineId Id="380" Count="2" />
-      <LineId Id="408" Count="0" />
-      <LineId Id="396" Count="0" />
-      <LineId Id="383" Count="0" />
-      <LineId Id="407" Count="0" />
+      <LineId Id="375" Count="1" />
+      <LineId Id="526" Count="1" />
+      <LineId Id="529" Count="3" />
+      <LineId Id="525" Count="0" />
+      <LineId Id="534" Count="0" />
+      <LineId Id="377" Count="0" />
+      <LineId Id="380" Count="3" />
+      <LineId Id="511" Count="0" />
       <LineId Id="384" Count="0" />
       <LineId Id="404" Count="0" />
       <LineId Id="386" Count="0" />
@@ -310,28 +297,24 @@ END_CASE
       <LineId Id="446" Count="0" />
       <LineId Id="445" Count="0" />
       <LineId Id="447" Count="0" />
-      <LineId Id="449" Count="0" />
+      <LineId Id="523" Count="0" />
       <LineId Id="510" Count="0" />
       <LineId Id="452" Count="1" />
       <LineId Id="389" Count="0" />
-      <LineId Id="473" Count="0" />
-      <LineId Id="448" Count="0" />
-      <LineId Id="463" Count="2" />
-      <LineId Id="462" Count="0" />
-      <LineId Id="470" Count="0" />
-      <LineId Id="468" Count="0" />
+      <LineId Id="535" Count="0" />
       <LineId Id="471" Count="0" />
       <LineId Id="474" Count="0" />
       <LineId Id="499" Count="1" />
-      <LineId Id="498" Count="0" />
       <LineId Id="486" Count="0" />
-      <LineId Id="501" Count="7" />
+      <LineId Id="501" Count="3" />
+      <LineId Id="506" Count="1" />
       <LineId Id="492" Count="0" />
       <LineId Id="469" Count="0" />
       <LineId Id="489" Count="0" />
       <LineId Id="481" Count="1" />
       <LineId Id="497" Count="0" />
       <LineId Id="484" Count="0" />
+      <LineId Id="517" Count="1" />
       <LineId Id="496" Count="0" />
       <LineId Id="371" Count="0" />
       <LineId Id="104" Count="100" />

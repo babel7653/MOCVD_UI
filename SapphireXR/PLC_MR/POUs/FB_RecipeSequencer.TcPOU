@@ -8,7 +8,7 @@ END_VAR
 
 VAR
 	i 	: INT;
-	k	: int; //Test
+	k	: int; //레시피 Wait Temp 테스트용 변수
 END_VAR
 ]]></Declaration>
     <Implementation>

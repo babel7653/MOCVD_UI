@@ -11,7 +11,6 @@ TYPE E_RecipeRun :
 	Ramp,			// Ramp 처리 상태 (현재 스텝의 동작 수행)
 	CheckHoldTemp,	// Hold Type 확인
 	CheckLoop,		// Loop Type 확인
-	InitLoopPrameter, // Loop 변수 초기화
 	CheckLoopCount, 	// Loop 회수 확인
 	CheckLoopEndStep, // 마지막 Loop 확인
 	CheckRepeatOrNext,

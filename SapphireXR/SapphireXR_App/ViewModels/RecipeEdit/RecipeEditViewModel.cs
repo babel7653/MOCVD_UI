@@ -10,7 +10,6 @@ using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Globalization;
 using System.IO;
-using System.Linq.Expressions;
 using System.Windows;
 
 namespace SapphireXR_App.ViewModels

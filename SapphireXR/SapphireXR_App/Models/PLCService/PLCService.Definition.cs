@@ -255,7 +255,6 @@ namespace SapphireXR_App.Models
         private static uint hWriteDeviceRampTimePLC;
         private static uint hRcp;
         private static uint hRcpTotalStep;
-        private static uint hRCPALoop;
         private static uint hCmd_RcpOperation;
         private static uint hRcpStepN;
         private static uint hMonitoring_PV;

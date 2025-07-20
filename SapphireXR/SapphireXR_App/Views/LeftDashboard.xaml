@@ -119,11 +119,31 @@
                                 <Setter Property="Stroke" Value="LightSlateGray"/>
                             </Style>
                         </StackPanel.Resources>
-                        <Rectangle x:Name="SignalTowerRed" Fill="{Binding SignalTowerRed, UpdateSourceTrigger=PropertyChanged}" Width="40" Height="10" RadiusX="4" RadiusY="4" Margin="4,0,0,0" Stroke="{x:Null}"/>
-                        <Rectangle x:Name="SignalTowerYellow" Fill="{Binding SignalTowerYellow, UpdateSourceTrigger=PropertyChanged}" Width="40" Height="10" RadiusX="4" RadiusY="4" Margin="4,0,0,0" Stroke="{x:Null}"/>
-                        <Rectangle x:Name="SignalTowerGreen" Fill="{Binding SignalTowerGreen, UpdateSourceTrigger=PropertyChanged}" Width="40" Height="10" RadiusX="4" RadiusY="4" Margin="4,0,0,0" Stroke="{x:Null}"/>
-                        <Rectangle x:Name="SignalTowerBlue" Fill="{Binding SignalTowerBlue, UpdateSourceTrigger=PropertyChanged}" Width="40" Height="10" RadiusX="4" RadiusY="4" Margin="4,0,0,0" Stroke="{x:Null}"/>
-                        <Rectangle x:Name="SignalTowerWhite" Fill="{Binding SignalTowerWhite, UpdateSourceTrigger=PropertyChanged}" Width="40" Height="10" RadiusX="4" RadiusY="4" Margin="4,0,0,0" Stroke="{x:Null}"/>
+                        <Rectangle x:Name="SignalTowerRed" Fill="{Binding SignalTowerRed, UpdateSourceTrigger=PropertyChanged}" Width="40" Height="10" RadiusX="4" RadiusY="4" Margin="4,0,0,0" Stroke="{x:Null}">
+                            <Rectangle.Effect>
+                                <DropShadowEffect Color="{Binding SignalTowerRed, UpdateSourceTrigger=PropertyChanged}" BlurRadius="10" ShadowDepth="0" Opacity="{Binding GlowOpacity}" />
+                            </Rectangle.Effect>
+                        </Rectangle>
+                        <Rectangle x:Name="SignalTowerYellow" Fill="{Binding SignalTowerYellow, UpdateSourceTrigger=PropertyChanged}" Width="40" Height="10" RadiusX="4" RadiusY="4" Margin="4,0,0,0" Stroke="{x:Null}">
+                            <Rectangle.Effect>
+                                <DropShadowEffect Color="{Binding SignalTowerYellow, UpdateSourceTrigger=PropertyChanged}" BlurRadius="10" ShadowDepth="0" Opacity="{Binding GlowOpacity}" />
+                            </Rectangle.Effect>
+                        </Rectangle>
+                        <Rectangle x:Name="SignalTowerGreen" Fill="{Binding SignalTowerGreen, UpdateSourceTrigger=PropertyChanged}" Width="40" Height="10" RadiusX="4" RadiusY="4" Margin="4,0,0,0" Stroke="{x:Null}">
+                            <Rectangle.Effect>
+                                <DropShadowEffect Color="{Binding SignalTowerGreen, UpdateSourceTrigger=PropertyChanged}" BlurRadius="10" ShadowDepth="0" Opacity="{Binding GlowOpacity}" />
+                            </Rectangle.Effect>
+                        </Rectangle>
+                        <Rectangle x:Name="SignalTowerBlue" Fill="{Binding SignalTowerBlue, UpdateSourceTrigger=PropertyChanged}" Width="40" Height="10" RadiusX="4" RadiusY="4" Margin="4,0,0,0" Stroke="{x:Null}">
+                            <Rectangle.Effect>
+                                <DropShadowEffect Color="{Binding SignalTowerBlue, UpdateSourceTrigger=PropertyChanged}" BlurRadius="10" ShadowDepth="0"  Opacity="{Binding GlowOpacity}" />
+                            </Rectangle.Effect>
+                        </Rectangle>
+                        <Rectangle x:Name="SignalTowerWhite" Fill="{Binding SignalTowerWhite, UpdateSourceTrigger=PropertyChanged}" Width="40" Height="10" RadiusX="4" RadiusY="4" Margin="4,0,0,0" Stroke="{x:Null}">
+                            <Rectangle.Effect>
+                                <DropShadowEffect Color="{Binding SignalTowerWhite, UpdateSourceTrigger=PropertyChanged}" BlurRadius="10" ShadowDepth="0" Opacity="{Binding GlowOpacity}" />
+                            </Rectangle.Effect>
+                        </Rectangle>
                         <Button Width="25" Height="25" Command="{Binding ToggleBuzzerOnOffCommand}">
                             <Button.Style>
                                 <Style TargetType="Button" BasedOn="{StaticResource ImageButton}">

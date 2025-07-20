@@ -158,6 +158,7 @@ namespace SapphireXR_App.Models
 
         public static void WriteOperationMode(bool operatonMode)
         {
+            dOperationModeChangingPublisher?.Publish(operatonMode);
             Ads.WriteAny(hOperationMode, operatonMode);
         }
 

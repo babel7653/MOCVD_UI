@@ -439,6 +439,9 @@ namespace SapphireXR_App.ViewModels
         private Brush _signalTowerWhite = Brushes.Transparent;
 
         [ObservableProperty]
+        private double _glowOpacity = 0.0;
+
+        [ObservableProperty]
         private Brush _gasPressureGas2StateColor = Brushes.Transparent;
         [ObservableProperty]
         private Brush _gasPressureGas1StateColor = Brushes.Transparent;

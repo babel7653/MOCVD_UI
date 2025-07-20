@@ -13,28 +13,59 @@ namespace SapphireXR_App.ViewModels
     {
         public partial class RecipeContext : ObservableObject, IDisposable
         {
+            public partial class LoopContext : ObservableObject
+            {
+                [ObservableProperty]
+                private int? _loopStartStep = null;
+
+                [ObservableProperty]
+                private int? _loopEndStep = null;
+
+                [ObservableProperty]
+                private int? _currentLoopCount = null;
+
+                [ObservableProperty]
+                private int? totalLoop = null;
+            }
+
             public RecipeContext() { }
             public RecipeContext(string recipeFilePath, IList<Recipe> recipes)
             {
                 RecipeFilePath = recipeFilePath;
                 Recipes = recipes;
 
+                loopContexts = new LoopContext[Recipes.Count];
                 int totalRecipeTime = 0;
-                for(int step = 0; step < Recipes.Count;)
+                for (int step = 0; step < Recipes.Count;)
                 {
                     Recipe recipe = Recipes[step];
 
                     int loopTototalRecipeTime = 0;
                     int loopLimit = Math.Max(recipe.No, recipe.Jump);
-                    for (int loopStep = step; loopStep < loopLimit; ++loopStep)
-                    {
-                        loopTototalRecipeTime += Recipes[loopStep].RTime;
-                        loopTototalRecipeTime += Recipes[loopStep].HTime;
-                    }
                     int loopCount = Math.Max(1, (int)recipe.Repeat);
+                    LoopContext loopContext;
+                    if (1 < loopCount)
+                    {
+                        loopContext = new LoopContext()
+                        {
+                            LoopStartStep = step + 1,
+                            LoopEndStep = loopLimit,
+                            CurrentLoopCount = 0,
+                            TotalLoop = loopCount,
+                        };
+                    }
+                    else
+                    {
+                        loopContext = EmptyLoopContext;
+                    }
+                    for (; step < loopLimit; ++step)
+                    {
+                        loopTototalRecipeTime += Recipes[step].RTime;
+                        loopTototalRecipeTime += Recipes[step].HTime;
+                     
+                        loopContexts[step] = loopContext;
+                    }
                     totalRecipeTime += (loopTototalRecipeTime * loopCount);
-
-                    step = loopLimit;
                 }
                 TotalRecipeTime = totalRecipeTime;
                 TotalStep = Recipes.Count;
@@ -106,6 +137,16 @@ namespace SapphireXR_App.ViewModels
                             TotalRampTime = currentRecipe.RTime;
                             TotalHoldTime = currentRecipe.HTime;
 
+                            if (CurrentLoopContext != loopContexts[index])
+                            {
+                                CurrentLoopContext = loopContexts[index];
+                            }
+
+                            if (CurrentLoopContext.CurrentLoopCount != null && CurrentLoopContext.LoopStartStep == currentRecipe.No)
+                            {
+                                ++(CurrentLoopContext.CurrentLoopCount);
+                            }
+
                             if (0 < currentRecipe.cTemp)
                             {
                                 TotalWaitTemp = currentRecipe.cTemp;
@@ -114,7 +155,7 @@ namespace SapphireXR_App.ViewModels
                             }
                             else
                             {
-                                if(temperatureControlValueUnsubscriber != null)
+                                if (temperatureControlValueUnsubscriber != null)
                                 {
                                     temperatureControlValueUnsubscriber.Dispose();
                                     temperatureControlValueUnsubscriber = null;
@@ -157,7 +198,7 @@ namespace SapphireXR_App.ViewModels
                         {
                             MessageBox.Show("로그 디렉토리을 생성하는데 실패했습니다. 로그 기능은 작동하지 않은 채로 동작합니다. 원인은 다음과 같습니다: " + exception.Message);
                         }
-                }
+                    }
                     LogFilePath = AppSetting.LogFileDirectory + "\\" + fileName.Substring(0, fileNameEnd) + "_" + DateTime.Now.ToString("_yyyy_MM_dd_HH_mm_ss") + fileName.Substring(fileNameEnd);
                     try
                     {
@@ -170,12 +211,6 @@ namespace SapphireXR_App.ViewModels
                     }
                 }
                 FileLogger?.start();
-
-                if(recipeLoopInfoSubscriber == null)
-                {
-                    recipeLoopInfoSubscriber = new RecipeLoopInfoSubscriber(this);
-                }
-                recipeLoopInfoUnsubscriber = ObservableManager<PLCService.RecipeControlInfo>.Subscribe("RecipeControlInformation", recipeLoopInfoSubscriber);
             }
 
             public void pauseLog()
@@ -234,7 +269,6 @@ namespace SapphireXR_App.ViewModels
                 recipeControlHoldTimeUnsubscriber?.Dispose();
                 recipeControlRampTimeUnsubscriber?.Dispose();
                 recipeControlPauseTimeUnsubscriber?.Dispose();
-                recipeLoopInfoUnsubscriber?.Dispose();
             }
 
             public void toLoadedFromFileState()
@@ -263,7 +297,6 @@ namespace SapphireXR_App.ViewModels
                 recipeControlHoldTimeSubscriber = null;
                 recipeControlRampTimeSubscriber = null;
                 recipeControlPauseTimeSubscriber = null;
-                recipeLoopInfoUnsubscriber = null;
 
                 CurrentRecipeTime = null;
                 CurrentStep = null;
@@ -279,6 +312,15 @@ namespace SapphireXR_App.ViewModels
                 TotalLoopStep = null;
                 CurrentWaitTemp = null;
                 TotalWaitTemp = null;
+
+                foreach (LoopContext loopContext in loopContexts)
+                {
+                    if (loopContext != EmptyLoopContext)
+                    {
+                        loopContext.CurrentLoopCount = 0;
+                    }
+                }
+                CurrentLoopContext = EmptyLoopContext;
             }
 
             protected virtual void Dispose(bool disposing)
@@ -387,8 +429,11 @@ namespace SapphireXR_App.ViewModels
             private IDisposable? recipeControlHoldTimeUnsubscriber = null;
             private IDisposable? recipeControlPauseTimeUnsubscriber = null;
             private IDisposable? recipeControlRampTimeUnsubscriber = null;
-            private RecipeLoopInfoSubscriber? recipeLoopInfoSubscriber = null;
-            private IDisposable? recipeLoopInfoUnsubscriber = null;
+
+            private LoopContext[] loopContexts = [];
+            private static LoopContext EmptyLoopContext = new LoopContext();
+            [ObservableProperty]
+            private LoopContext _currentLoopContext = EmptyLoopContext;
 
             [ObservableProperty]
             private Logger? _fileLogger = null;

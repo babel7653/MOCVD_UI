@@ -56,11 +56,33 @@ namespace SapphireXR_App.ViewModels
             private IList<DigitalIOUserState> _digitalIOUserStates = new List<DigitalIOUserState>();
         }
 
+        private class AlarmTriggeredSubscriber : IObserver<bool>
+        {
+            public AlarmTriggeredSubscriber(ManualBatchViewModel vm)
+            {
+                manualBatchViewModel = vm;
+            }
+            void IObserver<bool>.OnCompleted()
+            {
+                throw new NotImplementedException();
+            }
+
+            void IObserver<bool>.OnError(Exception error)
+            {
+                throw new NotImplementedException();
+            }
+
+            void IObserver<bool>.OnNext(bool value)
+            {
+                manualBatchViewModel.loadBatchOnAlaramState();
+            }
+
+            ManualBatchViewModel manualBatchViewModel;
+        }
+
         public ManualBatchViewModel()
         {
-            NotifyCollectionChangedEventHandler batchCollectionChanged = (object? sender, NotifyCollectionChangedEventArgs e) => {
-                MinusCommand.NotifyCanExecuteChanged();
-            };
+            NotifyCollectionChangedEventHandler batchCollectionChanged = (object? sender, NotifyCollectionChangedEventArgs e) => MinusCommand.NotifyCanExecuteChanged();
             PropertyChanging += (object? sender, PropertyChangingEventArgs args) => {
                 switch(args.PropertyName)
                 {
@@ -127,6 +149,7 @@ namespace SapphireXR_App.ViewModels
             }
 
             ObservableManager<bool>.Subscribe("App.Closing", this);
+            ObservableManager<bool>.Subscribe("AlarmTriggered", alarmTriggeredSubscriber = new AlarmTriggeredSubscriber(this));
         }
 
         bool batchesEmpty()
@@ -209,8 +232,9 @@ namespace SapphireXR_App.ViewModels
         {
             if (BatchOnRecipeEnd != null)
             {
+                PLCService.WriteOperationMode(false);
                 Util.LoadBatchToPLC(BatchOnRecipeEnd);
-                WindowServices.ToastMessage.Show("Recipe End Batch가 실행됩니다", WindowServices.ToastMessage.MessageType.Information);
+                WindowServices.ToastMessage.Show("Recipe 종료 시 실행되도록 설정된 사용자 정의 Batch인 " + BatchOnRecipeEnd.Name + "가 실행됩니다", WindowServices.ToastMessage.MessageType.Information);
             }
         }
 
@@ -218,8 +242,9 @@ namespace SapphireXR_App.ViewModels
         {
             if (BatchOnAlarmState != null)
             {
+                PLCService.WriteOperationMode(false);
                 Util.LoadBatchToPLC(BatchOnAlarmState);
-                WindowServices.ToastMessage.Show("Alarm State Batch가 실행됩니다", WindowServices.ToastMessage.MessageType.Information);
+                WindowServices.ToastMessage.Show("알람 시 설정된 사용자 정의 Batch인 " + BatchOnAlarmState.Name + "가 실행됩니다", WindowServices.ToastMessage.MessageType.Information);
             }
         }
 
@@ -257,5 +282,7 @@ namespace SapphireXR_App.ViewModels
 
         [ObservableProperty]
         private Batch? _batchOnRecipeEnd;
+
+        private AlarmTriggeredSubscriber alarmTriggeredSubscriber;
     }
 }

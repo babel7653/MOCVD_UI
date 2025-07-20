@@ -107,38 +107,10 @@ namespace SapphireXR_App.ViewModels
 
             void IObserver<PLCConnection>.OnNext(PLCConnection value)
             {
-               recipeRunViewModel.onPLCConnectionStateChanged(value);
+                recipeRunViewModel.onPLCConnectionStateChanged(value);
             }
 
             RecipeRunViewModel recipeRunViewModel;
-        }
-
-        private class RecipeLoopInfoSubscriber : IObserver<PLCService.RecipeControlInfo>
-        {
-            public RecipeLoopInfoSubscriber(RecipeContext vm)
-            {
-                recipeContext = vm;
-            }
-
-            void IObserver<PLCService.RecipeControlInfo>.OnCompleted()
-            {
-                throw new NotImplementedException();
-            }
-
-            void IObserver<PLCService.RecipeControlInfo>.OnError(Exception error)
-            {
-                throw new NotImplementedException();
-            }
-
-            void IObserver<PLCService.RecipeControlInfo>.OnNext(PLCService.RecipeControlInfo value)
-            {
-                recipeContext.TotalLoopNumber = value.totalLoopNumber;
-                recipeContext.CurrentLoopNumber = value.currentLoopNumber;
-                recipeContext.CurrentLoopStep = value.currentLoopStep;
-                recipeContext.TotalLoopStep = value.totalLoopStep;
-            }
-
-            private RecipeContext recipeContext;
         }
 
         private class LogicalInterlockStateSubscriber : IObserver<BitArray>
@@ -169,6 +141,34 @@ namespace SapphireXR_App.ViewModels
 
             bool? prevValue = null;
             RecipeRunViewModel recipeRunViewModel;
+        }
+
+        private class OperationModeChangingSubscriber : IObserver<bool>
+        {
+            public OperationModeChangingSubscriber(RecipeRunViewModel vm)
+            {
+                recipeRunViewModel = vm;
+            }
+            void IObserver<bool>.OnCompleted()
+            {
+                throw new NotImplementedException();
+            }
+            void IObserver<bool>.OnError(Exception error)
+            {
+                throw new NotImplementedException();
+            }
+            void IObserver<bool>.OnNext(bool value)
+            {
+                if (value == false)
+                {
+                    if (recipeRunViewModel.recipeRunning() == true)
+                    {
+                        recipeRunViewModel.RecipeStop();
+                    }
+                }
+                recipeRunViewModel.recipeMode = value;
+            }
+            private RecipeRunViewModel recipeRunViewModel;
         }
     }
 }

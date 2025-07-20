@@ -222,6 +222,7 @@ namespace SapphireXR_App.ViewModels
             if(value[0] == true && showAlarm == true)
             {
                 TriggeredWarningAlarmWindow.Show(PLCService.TriggerType.Alarm, () => showAlarm = true);
+                alarmTriggeredPublisher.Publish(true);
                 showAlarm = false;
             }
 
@@ -245,5 +246,6 @@ namespace SapphireXR_App.ViewModels
 
         private ObservableManager<int>.Publisher selectedTabPublisher = ObservableManager<int>.Get("MainView.SelectedTabIndex");
         private ObservableManager<bool>.Publisher closingPublisher = ObservableManager<bool>.Get("App.Closing");
+        private ObservableManager<bool>.Publisher alarmTriggeredPublisher = ObservableManager<bool>.Get("AlarmTriggered");
     }
 }

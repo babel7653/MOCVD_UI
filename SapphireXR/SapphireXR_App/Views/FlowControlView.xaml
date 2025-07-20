@@ -55,7 +55,6 @@
                             <Setter Property="HorizontalAlignment" Value="Right" />
                             <Setter Property="Width" Value="96" />
                             <Setter Property="Foreground" Value="{StaticResource Gray_900}" />
-                            <Setter Property="FontSize" Value="12" />
                         </Style>
                         <Style x:Key="readOnlyTextInput" TargetType="Border">
                             <Setter Property="Background" Value="{StaticResource Gray_400}" />

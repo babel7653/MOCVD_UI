@@ -39,7 +39,7 @@
 
     <Style x:Key="DefaultTextBox" TargetType="TextBox">
         <Setter Property="FontFamily" Value="Segoe UI" />
-        <Setter Property="FontSize" Value="10" />
+        <Setter Property="FontSize" Value="12" />
         <Setter Property="Foreground" Value="{StaticResource Gray_950}" />
         <Setter Property="TextAlignment" Value="Center"/>
         <Setter Property="VerticalContentAlignment" Value="Center"/>

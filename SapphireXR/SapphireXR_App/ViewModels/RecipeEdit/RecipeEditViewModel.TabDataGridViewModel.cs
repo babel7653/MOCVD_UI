@@ -167,7 +167,6 @@ namespace SapphireXR_App.ViewModels
                         rearangeNumber(insert);
 
                         RecipeViewModel.newlyAddedForMarking.AddRange(added);
-                       
                     }
                 }
             });

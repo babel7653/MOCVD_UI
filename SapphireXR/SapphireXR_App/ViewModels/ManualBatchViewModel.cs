@@ -62,6 +62,7 @@ namespace SapphireXR_App.ViewModels
             {
                 manualBatchViewModel = vm;
             }
+
             void IObserver<bool>.OnCompleted()
             {
                 throw new NotImplementedException();
@@ -74,7 +75,10 @@ namespace SapphireXR_App.ViewModels
 
             void IObserver<bool>.OnNext(bool value)
             {
-                manualBatchViewModel.loadBatchOnAlaramState();
+                if (value == true)
+                {
+                    manualBatchViewModel.loadBatchOnAlaramState();
+                }
             }
 
             ManualBatchViewModel manualBatchViewModel;

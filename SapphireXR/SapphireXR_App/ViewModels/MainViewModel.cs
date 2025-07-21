@@ -219,13 +219,18 @@ namespace SapphireXR_App.ViewModels
 
         void IObserver<BitArray>.OnNext(BitArray value)
         {
+            if (prevAlarmValue != value[0])
+            {
+                alarmTriggeredPublisher.Publish(value[0]);
+                prevAlarmValue = value[0];
+            }
+
             if(value[0] == true && showAlarm == true)
             {
                 TriggeredWarningAlarmWindow.Show(PLCService.TriggerType.Alarm, () => showAlarm = true);
-                alarmTriggeredPublisher.Publish(true);
+                
                 showAlarm = false;
             }
-
             if (value[1] == true && showWarning == true)
             {
                 TriggeredWarningAlarmWindow.Show(PLCService.TriggerType.Warning, () => showWarning = true);
@@ -235,6 +240,8 @@ namespace SapphireXR_App.ViewModels
 
         private bool showAlarm = true;
         private bool showWarning = true;
+
+        private bool? prevAlarmValue = null;
 
         [ObservableProperty]
         private int _selectedTab;

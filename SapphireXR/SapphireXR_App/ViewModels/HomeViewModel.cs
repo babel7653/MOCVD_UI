@@ -12,7 +12,6 @@ using System.Numerics;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
-using static SapphireXR_App.ViewModels.RecipeRunViewModel;
 
 namespace SapphireXR_App.ViewModels
 {

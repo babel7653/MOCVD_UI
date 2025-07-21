@@ -134,7 +134,7 @@ namespace SapphireXR_App.ViewModels
             {
                 if (value[10] != prevValue)
                 {
-                    recipeRunViewModel.onRecipeInterlockOnRecipeStart(value[10]);
+                    recipeRunViewModel.RecipeStartAvailableInterlock = value[10];
                     prevValue = value[10];
                 }
             }
@@ -168,6 +168,28 @@ namespace SapphireXR_App.ViewModels
                 }
                 recipeRunViewModel.recipeMode = value;
             }
+            private RecipeRunViewModel recipeRunViewModel;
+        }
+
+        private class AlarmTriggeredSubscriber : IObserver<bool>
+        {
+            public AlarmTriggeredSubscriber(RecipeRunViewModel vm)
+            {
+                recipeRunViewModel = vm;
+            }
+            void IObserver<bool>.OnCompleted()
+            {
+                throw new NotImplementedException();
+            }
+            void IObserver<bool>.OnError(Exception error)
+            {
+                throw new NotImplementedException();
+            }
+            void IObserver<bool>.OnNext(bool value)
+            {
+                recipeRunViewModel.AlarmTriggered = value;
+            }
+
             private RecipeRunViewModel recipeRunViewModel;
         }
     }

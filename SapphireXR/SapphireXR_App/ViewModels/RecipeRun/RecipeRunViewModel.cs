@@ -1,12 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Specialized;
-using System.ComponentModel;
-using System.Globalization;
-using System.IO;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Input;
-using CommunityToolkit.Mvvm.ComponentModel;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Microsoft.Win32;
 using SapphireXR_App.Bases;
@@ -15,6 +7,15 @@ using SapphireXR_App.Enums;
 using SapphireXR_App.Models;
 using SapphireXR_App.ViewModels.BottomDashBoard;
 using SapphireXR_App.WindowServices;
+using System;
+using System.Collections;
+using System.Collections.Specialized;
+using System.ComponentModel;
+using System.Globalization;
+using System.IO;
+using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Input;
 
 namespace SapphireXR_App.ViewModels
 {
@@ -34,7 +35,7 @@ namespace SapphireXR_App.ViewModels
             recipeRunStatePublisher = ObservableManager<RecipeUserState>.Get("RecipeRun.State");
             ObservableManager<(string, IList<Recipe>)>.Subscribe("RecipeEdit.LoadToRecipeRun", loadFromRecipeEditSubscriber = new LoadFromRecipeEditSubscriber(this));
             ObservableManager<BitArray>.Subscribe("LogicalInterlockState", logicalInterlockStateSubscriber = new LogicalInterlockStateSubscriber(this));
-            recipeEndedPOnClientSideuPublisher = ObservableManager<bool>.Get("RecipeRunViewModel.RecipeEnded");
+            recipeEndedPOnClientSidePublisher = ObservableManager<bool>.Get("RecipeRunViewModel.RecipeEnded");
 
             PropertyChanging += (object? sender, PropertyChangingEventArgs e) =>
             {
@@ -85,6 +86,18 @@ namespace SapphireXR_App.ViewModels
                         break;
 
                     case nameof(RecipeStartAvailableInterlock):
+                        if (RecipeStartAvailableInterlock == false && recipeRunning() == true)
+                        {
+                            RecipeStop();
+                        }
+                        RecipeStartCommand.NotifyCanExecuteChanged();
+                        break;
+
+                    case nameof(AlarmTriggered):
+                        if(AlarmTriggered == true && recipeRunning() == true)
+                        {
+                            RecipeStop();
+                        }
                         RecipeStartCommand.NotifyCanExecuteChanged();
                         break;
                 }
@@ -95,6 +108,7 @@ namespace SapphireXR_App.ViewModels
             ObservableManager<string>.Get("ViewModelCreated").Publish("RecipeRunViewModel");
             ObservableManager<PLCConnection>.Subscribe("PLCService.Connected", plcConnectionStateSubscriber = new PLCConnectionStateSubscriber(this));
             ObservableManager<bool>.Subscribe("OperationModeChanging", operationModeChangingSubscriber = new OperationModeChangingSubscriber(this));
+            ObservableManager<bool>.Subscribe("AlarmTriggered", alarmTriggeredSubscriber = new AlarmTriggeredSubscriber(this));
         }
 
         bool canRecipeOpenExecute()
@@ -179,7 +193,7 @@ namespace SapphireXR_App.ViewModels
                     EventLogs.Instance.EventLogList.Add(new EventLog() { Message = "레시피가 종료되었습니다", Name = "Recipe End", Type = EventLog.LogType.Information });                 
                     ToastMessage.Show("Recipe가 종료되었습니다. 종료시간: " + DateTime.Now.ToString("HH:mm"), ToastMessage.MessageType.Information);
                     toRecipeLoadedState();
-                    recipeEndedPOnClientSideuPublisher.Publish(true);
+                    recipeEndedPOnClientSidePublisher.Publish(true);
                     break;
             }
             RecipeOpenCommand.NotifyCanExecuteChanged();
@@ -213,7 +227,7 @@ namespace SapphireXR_App.ViewModels
 
         private bool canStartStopCommadExecute()
         {
-            return PLCService.Connected == PLCConnection.Connected && CurrentRecipeUserState != RecipeUserState.Uninitialized && RecipeStartAvailableInterlock == true;
+            return PLCService.Connected == PLCConnection.Connected && CurrentRecipeUserState != RecipeUserState.Uninitialized && RecipeStartAvailableInterlock == true && AlarmTriggered == false;
         }
 
         [RelayCommand(CanExecute = nameof(canStartStopCommadExecute))]
@@ -378,6 +392,7 @@ namespace SapphireXR_App.ViewModels
             if(connection == PLCConnection.Connected)
             {
                 RecipeStartAvailableInterlock = PLCService.ReadRecipeStartAvailable();
+                AlarmTriggered = PLCService.ReadAlarmTriggered();
             }
         }
 
@@ -402,18 +417,6 @@ namespace SapphireXR_App.ViewModels
         private void SyncPLCState(RecipeCommand command)
         {
             SyncPLCState(command, true);
-        }
-
-        private void onRecipeInterlockOnRecipeStart(bool active)
-        {
-            RecipeStartAvailableInterlock = active;
-            if(active == false)
-            {
-                if (RecipeUserState.Run <= CurrentRecipeUserState && CurrentRecipeUserState <= RecipeUserState.Pause)
-                {
-                    switchState(RecipeUserState.Stopped);
-                }
-            }
         }
 
         private static RecipeContext EmptyRecipeContext = new RecipeContext();
@@ -466,12 +469,15 @@ namespace SapphireXR_App.ViewModels
         private LoadFromRecipeEditSubscriber loadFromRecipeEditSubscriber;
         private PLCConnectionStateSubscriber plcConnectionStateSubscriber;
         private LogicalInterlockStateSubscriber logicalInterlockStateSubscriber;
-        private ObservableManager<bool>.Publisher recipeEndedPOnClientSideuPublisher;
+        private ObservableManager<bool>.Publisher recipeEndedPOnClientSidePublisher;
         private OperationModeChangingSubscriber operationModeChangingSubscriber;
+        private AlarmTriggeredSubscriber alarmTriggeredSubscriber;
         private bool recipeMode = false;
 
         [ObservableProperty]
         private bool recipeStartAvailableInterlock = false;
+        [ObservableProperty]
+        private bool alarmTriggered = false;
 
         [ObservableProperty]
         private RecipeUserState _currentRecipeUserState = RecipeUserState.Uninitialized;

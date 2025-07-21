@@ -118,5 +118,10 @@ namespace SapphireXR_App.Models
         {
             return ReadBit(Ads.ReadAny<int>(hInterlock[0]), 10);
         }
+
+        public static bool ReadAlarmTriggered()
+        {
+            return ReadBit(Ads.ReadAny<int>(hInterlock[0]), 0);
+        }
     }
 }

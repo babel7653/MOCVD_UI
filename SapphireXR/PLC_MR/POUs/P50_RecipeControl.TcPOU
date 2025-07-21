@@ -42,7 +42,7 @@ END_VAR
 rTrigAlarm(CLK:=P90_Interlock.AlarmTrig);
 	IF rTrigAlarm.Q THEN
 		//bOperationMode := FALSE; //알람 발생시 매뉴얼 모드로 전환
-		RCP.cmd_RcpOperation := 0; //레시피 종료
+		//RCP.cmd_RcpOperation := 40; //레시피 종료
 		rTrigAlarm(CLK:=FALSE); //트리거 초기화
 	END_IF
 	

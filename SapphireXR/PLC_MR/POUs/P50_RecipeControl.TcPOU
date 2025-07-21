@@ -2,6 +2,10 @@
 <TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4026.11">
   <POU Name="P50_RecipeControl" Id="{e332a806-fd31-4290-a7c3-27f42c11d38e}" SpecialFunc="None">
     <Declaration><![CDATA[PROGRAM P50_RecipeControl
+VAR_OUTPUT
+	bAlarmTest		: BOOL; // 알람 테스트용 변수
+END_VAR
+
 VAR
 	nRcpIndex		: INT;
 	nRcpStepTime 	: INT;
@@ -30,10 +34,19 @@ VAR
 	bIngLoop		: BOOL;
 	i				: INT;
 	eRecipeRun		: E_RecipeRun := E_RecipeRun.Idle; //레시피 상태
+	rTrigAlarm		: R_TRIG; //알람 발생시 트리그
 END_VAR
 ]]></Declaration>
     <Implementation>
-      <ST><![CDATA[CASE RCP.cmd_RcpOperation OF
+      <ST><![CDATA[
+rTrigAlarm(CLK:=P90_Interlock.AlarmTrig);
+	IF rTrigAlarm.Q THEN
+		//bOperationMode := FALSE; //알람 발생시 매뉴얼 모드로 전환
+		RCP.cmd_RcpOperation := 0; //레시피 종료
+		rTrigAlarm(CLK:=FALSE); //트리거 초기화
+	END_IF
+	
+CASE RCP.cmd_RcpOperation OF
 	0: //Init State
 		Rcp.state_RcpOperation := 0;
 		nRcpIndex := 0;
@@ -255,6 +268,10 @@ END_CASE
 ]]></ST>
     </Implementation>
     <LineIds Name="P50_RecipeControl">
+      <LineId Id="543" Count="0" />
+      <LineId Id="537" Count="4" />
+      <LineId Id="536" Count="0" />
+      <LineId Id="542" Count="0" />
       <LineId Id="1" Count="9" />
       <LineId Id="454" Count="1" />
       <LineId Id="12" Count="8" />

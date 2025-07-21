@@ -73,7 +73,6 @@ VAR
 	
 	i	: INT;
 	j 	: INT;
-	
 END_VAR
 ]]></Declaration>
     <Implementation>
@@ -443,11 +442,13 @@ IF  GVL_IO.aController_PV[27] < GVL_IO.aInterlockSet[13] THEN
 ELSE
 	bOpenEnableTemp := FALSE;
 END_IF
+
 IF  GVL_IO.aController_PV[28] < GVL_IO.aInterlockSet[14] THEN
 	bOpenEnablePress := TRUE;
 ELSE
 	bOpenEnablePress := FALSE;
 END_IF
+
 bDorOffEnable :=
 	NOT(AlarmTrig) AND
 	NOT(P17_DOROperation.isDOROnState) AND
@@ -462,6 +463,9 @@ bDorOffEnable :=
 	;
 bReactorOpenEnable := bDorOffEnable;
 
+AlarmTrig := P50_RecipeControl.bAlarmTest; //테스트용 변수
+
+GVL_IO.aInterlock[1].0 := AlarmTrig; //알람트리거 변경
 (* Out to Device*)
 GVL_IO.aDigitalOutputIO[3].7 := bPowerResetLED;
 GVL_IO.aDigitalOutputIO[2].4 := bUPSMode;
@@ -612,8 +616,11 @@ GVL_IO.aDigitalOutputIO[2].4 := bUPSMode;
       <LineId Id="1278" Count="0" />
       <LineId Id="1357" Count="0" />
       <LineId Id="1345" Count="0" />
-      <LineId Id="1347" Count="9" />
+      <LineId Id="1347" Count="5" />
+      <LineId Id="1378" Count="0" />
+      <LineId Id="1353" Count="3" />
       <LineId Id="1346" Count="0" />
+      <LineId Id="1379" Count="0" />
       <LineId Id="1284" Count="0" />
       <LineId Id="1287" Count="0" />
       <LineId Id="1293" Count="0" />
@@ -623,7 +630,10 @@ GVL_IO.aDigitalOutputIO[2].4 := bUPSMode;
       <LineId Id="1294" Count="0" />
       <LineId Id="1292" Count="0" />
       <LineId Id="1337" Count="0" />
+      <LineId Id="1382" Count="0" />
       <LineId Id="276" Count="0" />
+      <LineId Id="1381" Count="0" />
+      <LineId Id="1380" Count="0" />
       <LineId Id="135" Count="0" />
       <LineId Id="179" Count="0" />
       <LineId Id="210" Count="0" />

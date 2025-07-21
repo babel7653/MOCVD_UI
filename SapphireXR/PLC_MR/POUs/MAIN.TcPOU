@@ -4,6 +4,7 @@
     <Declaration><![CDATA[PROGRAM MAIN
 VAR
 	bOperationMode	: BOOL; // False:Manual, True:RecipeControl
+
 	bTest1 : BOOL;
 	bTest2 : BOOL;
 	bTest3 : BOOL;
@@ -25,9 +26,9 @@ P22_Background_ThermalBath();
 P22_Background_ThermalBath();
 
 IF NOT(bOperationMode) THEN
-	P30_ManualControl(state_Control := 10);
+	P30_ManualControl(state_Control := 10); //매뉴얼 콘트롤
 ELSE
-	P50_RecipeControl();
+	P50_RecipeControl(); //레시피 콘트론
 END_IF
 
 P70_Interface();
@@ -62,7 +63,8 @@ bTest3 := GVL_IO.aInputState[1].14;
       <LineId Id="345" Count="0" />
       <LineId Id="282" Count="1" />
       <LineId Id="291" Count="0" />
-      <LineId Id="374" Count="2" />
+      <LineId Id="374" Count="0" />
+      <LineId Id="377" Count="1" />
       <LineId Id="317" Count="0" />
       <LineId Id="165" Count="0" />
       <LineId Id="219" Count="1" />

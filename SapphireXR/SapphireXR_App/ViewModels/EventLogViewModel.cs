@@ -3,7 +3,6 @@ using CommunityToolkit.Mvvm.Input;
 using SapphireXR_App.Models;
 using System.Collections.ObjectModel;
 
-
 namespace SapphireXR_App.ViewModels
 {
     internal partial class EventLogViewModel: ObservableObject

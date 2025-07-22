@@ -103,19 +103,15 @@ namespace SapphireXR_App.ViewModels
                         Recipe next = Recipes[index];
                         if (next != currentRecipe)
                         {
-                            if (currentRecipe != null)
+                            for (short cur = 0; cur < index; cur++)
                             {
-                                short prevIndex = (short)Recipes.IndexOf(currentRecipe);
-                                for (short cur = 0; cur < index; cur++)
-                                {
-                                    Recipes[cur].Background = Recipe.DefaultBackground;
-                                    Recipes[cur].Foreground = DisabledRecipeListForeground;
-                                }
-                                for(short cur = (short)(index + 1); cur < Recipes.Count; cur++)
-                                {
-                                    Recipes[cur].Background = Recipe.DefaultBackground;
-                                    Recipes[cur].Foreground = Recipe.DefaultForeground;
-                                }
+                                Recipes[cur].Background = Recipe.DefaultBackground;
+                                Recipes[cur].Foreground = DisabledRecipeListForeground;
+                            }
+                            for (short cur = (short)(index + 1); cur < Recipes.Count; cur++)
+                            {
+                                Recipes[cur].Background = Recipe.DefaultBackground;
+                                Recipes[cur].Foreground = Recipe.DefaultForeground;
                             }
                             currentRecipe = next;
                             currentRecipeIndex = index;
@@ -171,6 +167,18 @@ namespace SapphireXR_App.ViewModels
                 }
 
                 return null;
+            }
+
+            public void moveNext()
+            {
+                if (currentRecipe != null)
+                {
+                    int next = currentRecipe.No + 1;
+                    if (currentRecipe.No == CurrentLoopContext.LoopEndStep)
+                    {
+                        next -= (CurrentLoopContext.LoopEndStep.Value - CurrentLoopContext.LoopStartStep!.Value + 1) * ((0 < (CurrentLoopContext.TotalLoop!.Value - CurrentLoopContext.CurrentLoopCount!.Value)) ? 1 : 0);
+                    }
+                }
             }
 
             public void startLog()

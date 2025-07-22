@@ -28,52 +28,5 @@ namespace SapphireXR_App.Views
                 App.Current.Shutdown();
             }
         }
-
-        private void onTabItemMouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
-        {
-            changeTabBackForeground(sender, e, (tabItem) => tabItem.IsSelected == false, (border, textBlock) =>
-            {
-                border.Background = BackgroundColorOnMousePressedEvent;
-                textBlock.Foreground = FontColorOnMousePressedEvent;
-            });
-        }
-
-        private void onTabItemMouseUp(object sender, System.Windows.Input.MouseButtonEventArgs e)
-        {
-            changeTabBackForeground(sender, e, (tabItem) => true, (border, textBlock) => {
-                border.ClearValue(Border.BackgroundProperty);
-                textBlock.ClearValue(TextBlock.ForegroundProperty);
-            });
-        }
-
-        private void changeTabBackForeground(object sender, System.Windows.Input.MouseButtonEventArgs e, Func<TabItem, bool> selected, Action<Border, TextBlock> changeColor)
-        {
-            Border? border = sender as Border;
-            if (border != null)
-            {
-                TabItem? tabItem = border.TemplatedParent as TabItem;
-                if (tabItem != null && selected(tabItem) == true)
-                {
-                    ContentPresenter? contentPresenter = border.Child as ContentPresenter;
-                    if (contentPresenter != null)
-                    {
-                        StackPanel? stackPanel = contentPresenter.Content as StackPanel;
-                        if (stackPanel != null)
-                        {
-                            foreach (UIElement child in stackPanel.Children)
-                            {
-                                if (child is TextBlock textBlock)
-                                {
-                                    changeColor(border, (TextBlock)child);
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        }
-
-        private static Brush FontColorOnMousePressedEvent = Application.Current.Resources.MergedDictionaries[0]["Gray_800"] as Brush ?? Brushes.Red;
-        private static Brush BackgroundColorOnMousePressedEvent = Application.Current.Resources.MergedDictionaries[0]["Gray_50"] as Brush ?? Brushes.Blue;
     }
 }

@@ -1,7 +1,8 @@
-﻿using System.Windows;
-using System.Windows.Controls;
-using SapphireXR_App.Common;
+﻿using SapphireXR_App.Common;
 using SapphireXR_App.ViewModels;
+using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Input;
 
 namespace SapphireXR_App.Views
 {
@@ -15,6 +16,13 @@ namespace SapphireXR_App.Views
             InitializeComponent();
             DataContext = viewModel;
             flowControllerDataGridTextColumnTextBoxValidaterMaxValue = new FlowControllerDataGridTextColumnTextBoxValidaterMaxValue(viewModel, nameof(viewModel.CurrentBatch));
+            MouseLeftButtonDown += (sender, args) =>
+            {
+                if (args.LeftButton == MouseButtonState.Pressed)
+                {
+                    DragMove();
+                }
+            };
         }
 
         private FlowControllerDataGridTextColumnTextBoxValidaterMaxValue flowControllerDataGridTextColumnTextBoxValidaterMaxValue;

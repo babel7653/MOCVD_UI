@@ -34,7 +34,7 @@
                             <Setter Property="Template">
                                 <Setter.Value>
                                     <ControlTemplate TargetType="TabItem">
-                                        <Border  Name="Panel" MouseLeftButtonDown="onTabItemMouseDown" MouseLeftButtonUp="onTabItemMouseUp">
+                                        <Border  Name="Panel">
                                             <ContentPresenter x:Name="ContentSite" VerticalAlignment="Center" HorizontalAlignment="Center" ContentSource="Header" Margin="10,2"  />
                                             <Border.CornerRadius>
                                                 <CornerRadius TopLeft="{StaticResource r_2}" TopRight="{StaticResource r_2}"/>

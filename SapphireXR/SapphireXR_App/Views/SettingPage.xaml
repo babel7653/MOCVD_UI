@@ -62,6 +62,15 @@
                             <Trigger Property="IsSelected" Value="False">
                                 <Setter TargetName="Panel" Property="Background" Value="{StaticResource Gray_300}" />
                             </Trigger>
+                            <MultiTrigger>
+                                <MultiTrigger.Conditions>
+                                    <Condition Property="IsSelected" Value="False" />
+                                    <Condition Property="IsMouseOver" Value="True" />
+                                </MultiTrigger.Conditions>
+                                <Setter TargetName="Panel" Property="Background" Value="{StaticResource Gray_200}" />
+                                <Setter Property="Foreground" Value="{StaticResource Gray_800}" />
+                                <Setter TargetName="Panel" Property="Cursor" Value="Hand" />
+                            </MultiTrigger>
                         </ControlTemplate.Triggers>
                     </ControlTemplate>
                 </Setter.Value>

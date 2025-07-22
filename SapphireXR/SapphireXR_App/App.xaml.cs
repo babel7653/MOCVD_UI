@@ -2,6 +2,7 @@
 using SapphireXR_App.Models;
 using SapphireXR_App.ViewModels;
 using SapphireXR_App.Views;
+using SapphireXR_App.WindowServices;
 using System.Windows;
 
 namespace SapphireXR_App
@@ -16,14 +17,15 @@ namespace SapphireXR_App
         private void App_Startup(object sender, StartupEventArgs e)
         {
             // 생성자 주입 구문을 사용하면 매개변수를 입력하지 않아도 객체가 만들어 지고 호출이 가능
-           try
-           {
+            bool connectedToPLC = true;
+            try
+            {
                 PLCService.Connect();
-           }
-           catch(Exception ex)
-           {
-                MessageBox.Show("PLC로의 연결에 실패했습니다. 연결이 되지 않은 상태로 앱이 실행됩니다. 연결 실패의 원인은 다음과 같습니다." + ex.Message);
-           }
+            }
+            catch(Exception)
+            {
+                connectedToPLC = false;
+            }
 
             try
             {
@@ -32,6 +34,10 @@ namespace SapphireXR_App
                 {
                     Application.Current.MainWindow.WindowState = WindowState.Maximized;
                     mainView.Show();
+                    if(connectedToPLC == false)
+                    {
+                        ToastMessage.Show("PLC에 연결되지 않았습니다.", ToastMessage.MessageType.Error);
+                    }
                 }
                 else
                 {

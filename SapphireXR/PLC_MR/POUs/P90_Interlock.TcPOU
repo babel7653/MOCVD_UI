@@ -101,9 +101,11 @@ GVL_IO.aInterlock[1].13 := bPumpOnEnable;
 
 //Sinal Tower Set
 IF (bMaintKey = TRUE) THEN //bMaintKey 변경
-	P92_Maintenance.nCaseSignalTower		:= 5; //Signal Tower White - Maintenance
-ELSIF (bMaintKey = FALSE) AND MAIN.bOperationMode = FALSE THEN
-	P92_Maintenance.nCaseSignalTower		:= 4; //Signal Tower Blue - Idle
+	//P92_Maintenance.nCaseSignalTower		:= 4; //Signal Tower Blue - Maintenance
+	P92_Maintenance.eTowerLamp := E_TowerLamp.BLUE; //Tower Lamp - Maint
+//ELSIF (bMaintKey = FALSE) AND MAIN.bOperationMode = FALSE THEN
+	//P92_Maintenance.nCaseSignalTower		:= 5; //Signal Tower White - Idle
+	//P92_Maintenance.eTowerLamp := E_TowerLamp.WHITE; //Tower Lamp - Idle
 END_IF
 
 //알람 지연 시간 변환
@@ -129,7 +131,7 @@ IF (bMaintKey = FALSE) THEN
 			);
 		IF bDeviationAlarm THEN		
 			GVL_IO.aInterlock[1].0 := TRUE; //Alarm Trig
-			P92_Maintenance.nCaseSignalTower := 1; // Signal Tower RED - Alarm
+			//P92_Maintenance.nCaseSignalTower := 1; // Signal Tower RED - Alarm
 			wDeviationAlarm := ROR(GVL_IO.aInterlock[3], (i+2));
 			wDeviationAlarm.0 := TRUE;
 			GVL_IO.aInterlock[3] := ROL(wDeviationAlarm, (i+2));
@@ -141,7 +143,7 @@ IF (bMaintKey = FALSE) THEN
 		
 		IF bDeviationWarning THEN
 			GVL_IO.aInterlock[1].1 := TRUE; // Warning Trig
-			P92_Maintenance.nCaseSignalTower := 2; // Signal Tower Yellow - Warning
+			//P92_Maintenance.nCaseSignalTower := 2; // Signal Tower Yellow - Warning
 			wDeviationWarning := ROR(GVL_IO.aInterlock[5], (i+2));
 			wDeviationWarning.0 := TRUE;
 			GVL_IO.aInterlock[5] := ROL(wDeviationWarning, (i+2));
@@ -169,7 +171,7 @@ IF (bMaintKey = FALSE) THEN
 			);
 		IF bDeviationAlarm THEN		
 			GVL_IO.aInterlock[1].0 := TRUE; //Alarm Trig
-			P92_Maintenance.nCaseSignalTower := 1; // Signal Tower RED - Alarm
+			//P92_Maintenance.nCaseSignalTower := 1; // Signal Tower RED - Alarm
 			wDeviationAlarm := ROR(GVL_IO.aInterlock[3], (i-27));
 			wDeviationAlarm.0 := TRUE;
 			GVL_IO.aInterlock[3] := ROL(wDeviationAlarm, (i-27));
@@ -181,7 +183,7 @@ IF (bMaintKey = FALSE) THEN
 		
 		IF bDeviationWarning THEN
 			GVL_IO.aInterlock[1].1 := TRUE; // Warning Trig
-			P92_Maintenance.nCaseSignalTower := 2; // Signal Tower Yellow - Warning
+			//P92_Maintenance.nCaseSignalTower := 2; // Signal Tower Yellow - Warning
 			wDeviationWarning := ROR(GVL_IO.aInterlock[5], (i-27));
 			wDeviationWarning.0 := TRUE;
 			GVL_IO.aInterlock[5] := ROL(wDeviationWarning, (i-27));
@@ -207,7 +209,7 @@ IF (bMaintKey = FALSE) THEN
 			);	
 		IF bLimitAlarm THEN		
 			GVL_IO.aInterlock[1].0 := TRUE; //Alarm Trig
-			P92_Maintenance.nCaseSignalTower := 1; // Signal Tower RED - Alarm
+			//P92_Maintenance.nCaseSignalTower := 1; // Signal Tower RED - Alarm
 			//팝업 표시
 			wLimitAlarm := ROR(GVL_IO.aInterlock[2], (i-1));
 			wLimitAlarm.0 := TRUE;
@@ -229,7 +231,7 @@ IF (bMaintKey = FALSE) THEN
 		
 		IF bLimitWarning THEN		
 			GVL_IO.aInterlock[1].1 := TRUE; //Warning Trig
-			P92_Maintenance.nCaseSignalTower := 2; // Signal Tower YELLOW - Warning
+			//P92_Maintenance.nCaseSignalTower := 2; // Signal Tower YELLOW - Warning
 			//팝업 표시
 			wLimitWarning := ROR(GVL_IO.aInterlock[4], (i-1));
 			wLimitWarning.0 := TRUE;
@@ -290,7 +292,7 @@ IF (bMaintKey = FALSE) THEN
 			);
 		IF bLimitAlarm THEN		
 			GVL_IO.aInterlock[1].0 := TRUE; //Alarm Trig
-			P92_Maintenance.nCaseSignalTower := 1; // Signal Tower RED - Alarm
+			//P92_Maintenance.nCaseSignalTower := 1; // Signal Tower RED - Alarm
 			wDeviationAlarm := ROR(GVL_IO.aInterlock[2], (i+3));
 			wDeviationAlarm.0 := TRUE;
 			GVL_IO.aInterlock[2] := ROL(wDeviationAlarm, (i+3));
@@ -302,7 +304,7 @@ IF (bMaintKey = FALSE) THEN
 		
 		IF bDeviationWarning THEN
 			GVL_IO.aInterlock[1].1 := TRUE; // Warning Trig
-			P92_Maintenance.nCaseSignalTower := 2; // Signal Tower Yellow - Warning
+			//P92_Maintenance.nCaseSignalTower := 2; // Signal Tower Yellow - Warning
 			wDeviationWarning := ROR(GVL_IO.aInterlock[4], (i+3));
 			wDeviationWarning.0 := TRUE;
 			GVL_IO.aInterlock[4] := ROL(wDeviationWarning, (i+3));
@@ -378,7 +380,7 @@ IF (bMaintKey = FALSE) THEN
 			
 		IF bFaultAlarm THEN
 			GVL_IO.aInterlock[1].0 := TRUE; //Alarm Trig
-			P92_Maintenance.nCaseSignalTower := 1; // Signal Tower RED - Alarm
+			//P92_Maintenance.nCaseSignalTower := 1; // Signal Tower RED - Alarm
 			//팝업 표시
 			wAlarm := ROR(GVL_IO.aInterlock[2], (i+7));
 			wAlarm.0 := TRUE;
@@ -386,7 +388,7 @@ IF (bMaintKey = FALSE) THEN
 		END_IF
 		IF bFaultWarning THEN
 			GVL_IO.aInterlock[1].1 := TRUE; //Warning Trig
-			P92_Maintenance.nCaseSignalTower := 2; // Signal Tower YELLOW - Warning
+			//P92_Maintenance.nCaseSignalTower := 2; // Signal Tower YELLOW - Warning
 			//팝업 표시
 			wAlarm := ROR(GVL_IO.aInterlock[4], (i+7));
 			wAlarm.0 := TRUE;
@@ -397,17 +399,17 @@ IF (bMaintKey = FALSE) THEN
 	IF GVL_IO.aInterlockEnable[1].0 THEN //알람 리셋 버턴을 눌렀을 때
 		GVL_IO.aInterlock[1].0 := FALSE; //Alarm Trig Reset
 		GVL_IO.aInterlockEnable[1].0 := FALSE; //버턴 초기화
-		P92_Maintenance.nCaseSignalTower := 4; // Signal Tower Blue - Idle
+		//P92_Maintenance.nCaseSignalTower := 4; // Signal Tower Blue - Idle
 	END_IF
 	IF GVL_IO.aInterlockEnable[1].1 THEN //주의 리셋 버턴을 눌렀을 때
 		GVL_IO.aInterlock[1].1 := FALSE; //Warmomg Trig Reset
 		GVL_IO.aInterlockEnable[1].1 := FALSE; //버턴 초기화
-		P92_Maintenance.nCaseSignalTower := 4; // Signal Tower Blue - Idle
+		//P92_Maintenance.nCaseSignalTower := 4; // Signal Tower Blue - Idle
 	END_IF	
 ELSE
 	//매인터넌스 키가 ON 되었을 때 MC(Induction, Bath, Pump, L_Heater) 조작 허용
-	P92_Maintenance.nCaseSignalTower := 4; // Signal Tower Blue - Idle
-	GVL_IO.aDigitalOutputIO[3].0 := bInductionHeaterMC;
+	//P92_Maintenance.nCaseSignalTower := 4; // Signal Tower Blue - Idle
+	//GVL_IO.aDigitalOutputIO[3].0 := bInductionHeaterMC;
 	GVL_IO.aDigitalOutputIO[3].1 := bThermalBathMC;
 	GVL_IO.aDigitalOutputIO[3].2 := bVacuumPumpMC;
 	GVL_IO.aDigitalOutputIO[3].3 := bLineHeaterMC;
@@ -491,7 +493,9 @@ GVL_IO.aDigitalOutputIO[2].4 := bUPSMode;
       <LineId Id="296" Count="0" />
       <LineId Id="298" Count="0" />
       <LineId Id="295" Count="0" />
+      <LineId Id="1383" Count="0" />
       <LineId Id="301" Count="1" />
+      <LineId Id="1384" Count="0" />
       <LineId Id="299" Count="0" />
       <LineId Id="353" Count="1" />
       <LineId Id="322" Count="0" />

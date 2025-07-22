@@ -31,8 +31,6 @@ VAR_GLOBAL
 	aInterlockSet			: ARRAY[1..16] OF REAL; // UI Interlokc Setting Value
 	aInterlockEnable		: ARRAY[1..6] OF DWORD; // UI Interlock Enable Setting
 	
-	aInterlockSetTest		: ARRAY[1..11] OF REAL; // 테스트용 변수
-	aMonitoring_PV_Test		: ARRAY[1..17] OF REAL; // 테스트용 변수
 END_VAR
 
 VAR_GLOBAL CONSTANT

@@ -42,8 +42,8 @@ END_VAR
 rTrigAlarm(CLK:=P90_Interlock.AlarmTrig);
 	IF rTrigAlarm.Q THEN
 		//bOperationMode := FALSE; //알람 발생시 매뉴얼 모드로 전환
-		//RCP.cmd_RcpOperation := 40; //레시피 종료
-		rTrigAlarm(CLK:=FALSE); //트리거 초기화
+		RCP.cmd_RcpOperation := 40; //레시피 종료
+		//rTrigAlarm(CLK:=FALSE); //트리거 초기화
 	END_IF
 	
 CASE RCP.cmd_RcpOperation OF
@@ -62,7 +62,6 @@ CASE RCP.cmd_RcpOperation OF
 		FOR i :=1 TO 6 DO 
 			Rcp.aLoop[i] := -1;
 		END_FOR
-		P92_Maintenance.nCaseSignalTower := 3; // Blue - Idle
 
 	10: //RUN
 		IF nRcpIndex = 0 THEN
@@ -70,7 +69,6 @@ CASE RCP.cmd_RcpOperation OF
 			eRecipeRun := E_RecipeRun.Ramp; // 레시피 첫 Column 실행
 		ELSIF nRcpIndex > Rcp.iRcpTotalStep THEN
 			RCP.cmd_RcpOperation := 50;
-			P92_Maintenance.nCaseSignalTower := 3; // Blue - Idle
 		END_IF
 		
 		Rcp.userState := 10;
@@ -79,7 +77,7 @@ CASE RCP.cmd_RcpOperation OF
 			Ramp_TIME := INT_TO_TIME(RCP.aRecipe[nRcpIndex].iRecipe[2]*1000); // second -> milisecond time
 			Hold_TIME := INT_TO_TIME(RCP.aRecipe[nRcpIndex].iRecipe[3]*1000);
 			fbRecipeSequencer(nRcpIndex := nRcpIndex);
-						
+		
 			// CASE 문을 이용한 상태 머신 구현
 			CASE eRecipeRun OF
 				E_RecipeRun.Idle:
@@ -156,7 +154,6 @@ CASE RCP.cmd_RcpOperation OF
 				RCP.aLoop[i] := -1;
 			END_FOR
 			RCP.cmd_RcpOperation := 50;
-			P92_Maintenance.nCaseSignalTower := 4;
 		END_IF
 		
 	20: //PAUSE
@@ -183,7 +180,6 @@ CASE RCP.cmd_RcpOperation OF
 		END_IF	
 		Pause_Step := nRcpIndex;
 		Rcp.userState := 20;
-		P92_Maintenance.nCaseSignalTower := 4;
 		
 	30: //RESTART
 		Rcp.state_RcpOperation := 30;	
@@ -228,7 +224,6 @@ CASE RCP.cmd_RcpOperation OF
 				ReStart_TON(IN:=FALSE);
 			END_IF
 		END_IF
-		P92_Maintenance.nCaseSignalTower := 3;
 		fbRecipeSequencer();
 		
 	40: //STOP
@@ -236,14 +231,12 @@ CASE RCP.cmd_RcpOperation OF
 		Pause_TON(IN:=FALSE);
 		ReStart_TON(IN:=FALSE);
 		Rcp.userState := 40;
-		P92_Maintenance.nCaseSignalTower := 4;
 		fbRecipeSequencer();
 		
 	50: //END
 		Rcp.state_RcpOperation := 50;
 		Rcp.userState := 50;
 		fbRecipeSequencer(nRcpIndex := nRcpIndex);
-		P92_Maintenance.nCaseSignalTower := 4;
 		fbRecipeSequencer();
 		
 	60: //SKIP
@@ -265,6 +258,17 @@ CASE RCP.cmd_RcpOperation OF
 		RCP.cmd_RcpOperation := 10;
 		fbRecipeSequencer();
 END_CASE
+
+// Signal Tower Setting
+IF P90_Interlock.AlarmTrig THEN
+	P92_Maintenance.eTowerLamp := E_TowerLamp.RED; //Signal Tower - Alarm
+ELSE
+	IF RCP.cmd_RcpOperation = 10 OR RCP.cmd_RcpOperation = 20 OR RCP.cmd_RcpOperation = 30 OR RCP.cmd_RcpOperation = 60 THEN
+		P92_Maintenance.eTowerLamp := E_TowerLamp.GREEN; //Signal Tower - Recipe Run
+	ELSIF RCP.cmd_RcpOperation = 40 OR RCP.cmd_RcpOperation = 50 THEN
+		P92_Maintenance.eTowerLamp := E_TowerLamp.WHITE; //Signal Tower - Idle
+	END_IF
+END_IF
 ]]></ST>
     </Implementation>
     <LineIds Name="P50_RecipeControl">
@@ -274,9 +278,11 @@ END_CASE
       <LineId Id="542" Count="0" />
       <LineId Id="1" Count="9" />
       <LineId Id="454" Count="1" />
-      <LineId Id="12" Count="8" />
+      <LineId Id="12" Count="3" />
+      <LineId Id="17" Count="3" />
       <LineId Id="410" Count="0" />
-      <LineId Id="21" Count="3" />
+      <LineId Id="21" Count="1" />
+      <LineId Id="24" Count="0" />
       <LineId Id="372" Count="0" />
       <LineId Id="26" Count="4" />
       <LineId Id="509" Count="0" />
@@ -334,7 +340,12 @@ END_CASE
       <LineId Id="517" Count="1" />
       <LineId Id="496" Count="0" />
       <LineId Id="371" Count="0" />
-      <LineId Id="104" Count="100" />
+      <LineId Id="104" Count="5" />
+      <LineId Id="111" Count="25" />
+      <LineId Id="138" Count="43" />
+      <LineId Id="183" Count="6" />
+      <LineId Id="191" Count="5" />
+      <LineId Id="198" Count="6" />
       <LineId Id="272" Count="0" />
       <LineId Id="281" Count="0" />
       <LineId Id="290" Count="0" />
@@ -346,7 +357,15 @@ END_CASE
       <LineId Id="289" Count="0" />
       <LineId Id="279" Count="0" />
       <LineId Id="278" Count="0" />
-      <LineId Id="206" Count="3" />
+      <LineId Id="206" Count="2" />
+      <LineId Id="562" Count="0" />
+      <LineId Id="561" Count="0" />
+      <LineId Id="552" Count="1" />
+      <LineId Id="555" Count="0" />
+      <LineId Id="557" Count="3" />
+      <LineId Id="556" Count="0" />
+      <LineId Id="554" Count="0" />
+      <LineId Id="209" Count="0" />
     </LineIds>
   </POU>
 </TcPlcObject>

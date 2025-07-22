@@ -1,9 +1,10 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4026.12">
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4026.11">
   <POU Name="P92_Maintenance" Id="{17478ea4-373a-4676-aa4e-f86e85a19514}" SpecialFunc="None">
     <Declaration><![CDATA[PROGRAM P92_Maintenance
 VAR_INPUT
-	nCaseSignalTower		: INT;
+	eTowerLamp				: E_TowerLamp := E_TowerLamp.OFF; // 대기상태
+	rTrigSignalRamp			: R_TRIG; // Signal Ramp Trig
 END_VAR
 VAR_OUTPUT
 
@@ -76,24 +77,25 @@ ELSIF fTrigGasCabinetMagnet.Q THEN
 ELSIF rTrigGasCabinetMagnet.Q THEN
 	bGasCabinetLamp := FALSE;
 END_IF
+
 // Power Distribute Unit Lamp
 bPowerDistributeLamp := NOT(bPowerDistributeMagnet); //Magnet Switch
 
-(* Blink Signal Tower *)
-
-bBuzzerStop := GVL_IO.aInputState[4].5;
-CASE nCaseSignalTower OF
-	1: //RED 
+(* Blink Tower Lamp *)
+CASE eTowerLamp OF
+	E_TowerLamp.OFF: // Idle 상태
+		bSignalTower := 0;
+	E_TowerLamp.RED: //Alarm
 		TimerSignalTower(IN:=TRUE, PT:=T#500MS);
 		IF TimerSignalTower.Q THEN
 			TimerSignalTower(IN:=FALSE);
 			IF bSignalTower = 0 THEN
-				bSignalTower := 2#0010_0001; // RED & BUZZER
+				bSignalTower := 2#0000_0001; // RED
 			ELSE
 				bSignalTower := 0;
 			END_IF
 		END_IF
-	2: //YELLOW 
+	E_TowerLamp.YELLOW: //Warning
 		TimerSignalTower(IN:=TRUE, PT:=T#1S);
 		IF TimerSignalTower.Q THEN
 			TimerSignalTower(IN:=FALSE);
@@ -103,7 +105,7 @@ CASE nCaseSignalTower OF
 				bSignalTower := 0;
 			END_IF
 		END_IF
-	3: //GREEN
+	E_TowerLamp.GREEN: //Rcipe Running
 		TimerSignalTower(IN:=TRUE, PT:=T#1S);
 		IF TimerSignalTower.Q THEN
 			TimerSignalTower(IN:=FALSE);
@@ -112,31 +114,77 @@ CASE nCaseSignalTower OF
 			ELSE
 				bSignalTower := 0;
 			END_IF
-		END_IF		
-	4: //BLUE
-		bSignalTower := 2#0000_1000;
-	5: //WHITE
-		bSignalTower := 2#0001_0000;
-	6: //BUZZER
-		bSignalTower := 2#0010_0001;
-		IF bBuzzerStop THEN
-			bSignalTower := 2#0000_0001;  // RED
-		END_IF
+		END_IF	
+	E_TowerLamp.BLUE: //Maintenance
+		bSignalTower := 2#0000_1000; // BLUE
+	E_TowerLamp.WHITE: //Idle
+		bSignalTower := 2#0001_0000; // White
 	ELSE
-		bSignalTower := 0;
+		bSignalTower := 0;		
 END_CASE
+
+(* Buzzer On/Off *)
+// IF E_TowerLamp.BUZZER <> GVL_IO.aInterlockEnable[1].2 THEN
+// 	E_TowerLamp.BUZZER := GVL_IO.aInterlockEnable[1].2;
+// END_IF
+
+(* Blink Signal Tower *)
+//bBuzzerStop := GVL_IO.aInputState[4].5;
+// CASE eSignalTower OF
+// 	E_SignalTower.OFF:
+// Signal Tower OFF 상태
+// 		bSignalTower := 0;
+// 		;
+// 	E_SignalTower.RED: //Alarm 
+// 		TimerSignalTower(IN:=TRUE, PT:=T#500MS);
+// 		IF TimerSignalTower.Q THEN
+// 			TimerSignalTower(IN:=FALSE);
+// 			IF bSignalTower = 0 THEN
+// 				bSignalTower := 2#0000_0001; // RED
+// 			ELSE
+// 				bSignalTower := 0;
+// 			END_IF
+// 		END_IF
+
+// 	E_SignalTower.YELLOW: //Warning
+// 		TimerSignalTower(IN:=TRUE, PT:=T#1S);
+// 		IF TimerSignalTower.Q THEN
+// 			TimerSignalTower(IN:=FALSE);
+// 			IF bSignalTower = 0 THEN
+// 				bSignalTower := 2#0000_0010; // YELLOW
+// 			ELSE
+// 				bSignalTower := 0;
+// 			END_IF
+// 		END_IF
+// 	E_SignalTower.GREEN: //Recipe Run
+// 		TimerSignalTower(IN:=TRUE, PT:=T#1S);
+// 		IF TimerSignalTower.Q THEN
+// 			TimerSignalTower(IN:=FALSE);
+// 			IF bSignalTower = 0 THEN
+// 				bSignalTower := 2#0000_0100; // GREEN
+// 			ELSE
+// 				bSignalTower := 0;
+// 			END_IF
+// 		END_IF	
+// 	E_SignalTower.BLUE: //Maint Mode
+// 		bSignalTower := 2#0000_1000;	
+// 	E_SignalTower.WHITE: //Idle
+// 		bSignalTower := 2#0001_0000;	
+// 	ELSE
+// 		bSignalTower := 0;
+// END_CASE
 
 (* Write to Device Value *)
 GVL_IO.aDigitalOutputIO[2].5 	:= bReactorCabinetLamp;
 GVL_IO.aDigitalOutputIO[2].6 	:= bGasCabinetLamp;
 GVL_IO.aDigitalOutputIO[2].7 	:= bPowerDistributeLamp;
 
-//SignalTower
+// Tower Lamp
 GVL_IO.aDigitalOutputIO[1].0 		:= bSignalTower.0; //0:RED-Alarm,
 GVL_IO.aDigitalOutputIO[1].1 		:= bSignalTower.1; //1:YELLOW,-Warning 
 GVL_IO.aDigitalOutputIO[1].2 		:= bSignalTower.2; //2:GREEN-Running
-GVL_IO.aDigitalOutputIO[1].3 		:= bSignalTower.3; //3:BLUE-Idle
-GVL_IO.aDigitalOutputIO[1].4 		:= bSignalTower.4; //4:WHITE-Maint
+GVL_IO.aDigitalOutputIO[1].3 		:= bSignalTower.3; //3:BLUE-Maint
+GVL_IO.aDigitalOutputIO[1].4 		:= bSignalTower.4; //4:WHITE-Idle
 GVL_IO.aDigitalOutputIO[1].5 		:= bSignalTower.5; //5:BUZZER-Alarm
 ]]></ST>
     </Implementation>
@@ -160,35 +208,60 @@ GVL_IO.aDigitalOutputIO[1].5 		:= bSignalTower.5; //5:BUZZER-Alarm
       <LineId Id="299" Count="0" />
       <LineId Id="301" Count="2" />
       <LineId Id="42" Count="0" />
+      <LineId Id="448" Count="0" />
       <LineId Id="38" Count="0" />
       <LineId Id="381" Count="0" />
+      <LineId Id="447" Count="0" />
+      <LineId Id="449" Count="0" />
+      <LineId Id="443" Count="1" />
+      <LineId Id="446" Count="0" />
+      <LineId Id="450" Count="0" />
+      <LineId Id="453" Count="7" />
+      <LineId Id="451" Count="0" />
+      <LineId Id="461" Count="0" />
+      <LineId Id="464" Count="7" />
+      <LineId Id="463" Count="0" />
+      <LineId Id="462" Count="0" />
+      <LineId Id="473" Count="7" />
+      <LineId Id="472" Count="0" />
+      <LineId Id="481" Count="1" />
+      <LineId Id="484" Count="0" />
+      <LineId Id="483" Count="0" />
+      <LineId Id="486" Count="0" />
+      <LineId Id="485" Count="0" />
+      <LineId Id="445" Count="0" />
+      <LineId Id="494" Count="0" />
+      <LineId Id="491" Count="2" />
+      <LineId Id="487" Count="0" />
       <LineId Id="397" Count="0" />
       <LineId Id="146" Count="0" />
-      <LineId Id="409" Count="0" />
       <LineId Id="408" Count="0" />
       <LineId Id="156" Count="0" />
+      <LineId Id="439" Count="1" />
+      <LineId Id="442" Count="0" />
+      <LineId Id="441" Count="0" />
       <LineId Id="147" Count="0" />
       <LineId Id="160" Count="0" />
       <LineId Id="148" Count="1" />
-      <LineId Id="257" Count="4" />
+      <LineId Id="257" Count="0" />
+      <LineId Id="260" Count="0" />
+      <LineId Id="437" Count="1" />
+      <LineId Id="261" Count="0" />
       <LineId Id="143" Count="0" />
+      <LineId Id="409" Count="0" />
       <LineId Id="164" Count="3" />
       <LineId Id="262" Count="3" />
       <LineId Id="223" Count="0" />
-      <LineId Id="163" Count="0" />
+      <LineId Id="412" Count="0" />
       <LineId Id="170" Count="0" />
       <LineId Id="399" Count="2" />
       <LineId Id="403" Count="1" />
       <LineId Id="406" Count="1" />
       <LineId Id="405" Count="0" />
       <LineId Id="402" Count="0" />
-      <LineId Id="175" Count="1" />
+      <LineId Id="424" Count="0" />
+      <LineId Id="176" Count="0" />
       <LineId Id="178" Count="1" />
-      <LineId Id="169" Count="0" />
-      <LineId Id="183" Count="0" />
-      <LineId Id="180" Count="0" />
-      <LineId Id="177" Count="0" />
-      <LineId Id="184" Count="0" />
       <LineId Id="161" Count="1" />
       <LineId Id="159" Count="0" />
       <LineId Id="144" Count="0" />

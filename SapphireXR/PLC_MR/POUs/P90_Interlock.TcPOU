@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4026.11">
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4026.12">
   <POU Name="P90_Interlock" Id="{c8b81d81-de46-4c7a-a894-4387b2cd9bf7}" SpecialFunc="None">
     <Declaration><![CDATA[PROGRAM P90_Interlock
 VAR_INPUT
@@ -73,6 +73,7 @@ VAR
 	
 	i	: INT;
 	j 	: INT;
+
 END_VAR
 ]]></Declaration>
     <Implementation>
@@ -99,21 +100,20 @@ GVL_IO.aInterlock[1].11 := bReactorOpenEnable;
 GVL_IO.aInterlock[1].12 := bHeaterOnEnable;
 GVL_IO.aInterlock[1].13 := bPumpOnEnable;
 
-//Sinal Tower Set
-IF (bMaintKey = TRUE) THEN //bMaintKey 변경
-	//P92_Maintenance.nCaseSignalTower		:= 4; //Signal Tower Blue - Maintenance
-	P92_Maintenance.eTowerLamp := E_TowerLamp.BLUE; //Tower Lamp - Maint
-//ELSIF (bMaintKey = FALSE) AND MAIN.bOperationMode = FALSE THEN
-	//P92_Maintenance.nCaseSignalTower		:= 5; //Signal Tower White - Idle
-	//P92_Maintenance.eTowerLamp := E_TowerLamp.WHITE; //Tower Lamp - Idle
-END_IF
-
 //알람 지연 시간 변환
 tAlarmDelay_A := REAL_TO_TIME(GVL_IO.aInterlockSet[3]*1000); // UI Setting Analog Delay Time Value(Miliseconde)
 tAlarmDelay_D := REAL_TO_TIME(GVL_IO.aInterlockSet[4]*1000);
 
+//Sinal Tower Set
 //Controller Deviation Monitoring - MFC/EPC
-IF (bMaintKey = FALSE) THEN
+IF bMaintKey THEN //bMaintKey 변경
+	//매인터넌스 키가 ON 되었을 때 MC(Induction, Bath, Pump, L_Heater) 조작 허용
+	GVL_IO.nCaseSignalTower	:= 5; //Signal Tower White - Maintenance
+	GVL_IO.aDigitalOutputIO[3].0 := bInductionHeaterMC;
+	GVL_IO.aDigitalOutputIO[3].1 := bThermalBathMC;
+	GVL_IO.aDigitalOutputIO[3].2 := bVacuumPumpMC;
+	GVL_IO.aDigitalOutputIO[3].3 := bLineHeaterMC;
+ELSE
 	FOR i := 1 TO 26 DO
 		wDeviceAlarmEnable := SHR(GVL_IO.aInterlockEnable[2], (i+2)); //오늘쪽 쉬프트 연산
 		wDeviceWarningEnable := SHR(GVL_IO.aInterlockEnable[3], (i+2));
@@ -129,9 +129,9 @@ IF (bMaintKey = FALSE) THEN
 			bDeviationAlarm => bDeviationAlarm, //알람 출력
 			bDeviationWarning => bDeviationWarning // 주의(Warning) 출력
 			);
-		IF bDeviationAlarm THEN		
+		IF bDeviationAlarm THEN
 			GVL_IO.aInterlock[1].0 := TRUE; //Alarm Trig
-			//P92_Maintenance.nCaseSignalTower := 1; // Signal Tower RED - Alarm
+			GVL_IO.nCaseSignalTower := 1; // Signal Tower RED - Alarm
 			wDeviationAlarm := ROR(GVL_IO.aInterlock[3], (i+2));
 			wDeviationAlarm.0 := TRUE;
 			GVL_IO.aInterlock[3] := ROL(wDeviationAlarm, (i+2));
@@ -143,7 +143,7 @@ IF (bMaintKey = FALSE) THEN
 		
 		IF bDeviationWarning THEN
 			GVL_IO.aInterlock[1].1 := TRUE; // Warning Trig
-			//P92_Maintenance.nCaseSignalTower := 2; // Signal Tower Yellow - Warning
+			GVL_IO.nCaseSignalTower := 2; // Signal Tower Yellow - Warning
 			wDeviationWarning := ROR(GVL_IO.aInterlock[5], (i+2));
 			wDeviationWarning.0 := TRUE;
 			GVL_IO.aInterlock[5] := ROL(wDeviationWarning, (i+2));
@@ -169,9 +169,9 @@ IF (bMaintKey = FALSE) THEN
 			bDeviationAlarm => bDeviationAlarm, //알람 출력
 			bDeviationWarning => bDeviationWarning // 주의(Warning) 출력
 			);
-		IF bDeviationAlarm THEN		
+		IF bDeviationAlarm THEN
 			GVL_IO.aInterlock[1].0 := TRUE; //Alarm Trig
-			//P92_Maintenance.nCaseSignalTower := 1; // Signal Tower RED - Alarm
+			GVL_IO.nCaseSignalTower := 1; // Signal Tower RED - Alarm
 			wDeviationAlarm := ROR(GVL_IO.aInterlock[3], (i-27));
 			wDeviationAlarm.0 := TRUE;
 			GVL_IO.aInterlock[3] := ROL(wDeviationAlarm, (i-27));
@@ -180,10 +180,9 @@ IF (bMaintKey = FALSE) THEN
 			wDeviationAlarm.0 := FALSE;
 			GVL_IO.aInterlock[3] := ROL(wDeviationAlarm, (i-27));
 		END_IF
-		
 		IF bDeviationWarning THEN
 			GVL_IO.aInterlock[1].1 := TRUE; // Warning Trig
-			//P92_Maintenance.nCaseSignalTower := 2; // Signal Tower Yellow - Warning
+			GVL_IO.nCaseSignalTower := 2; // Signal Tower Yellow - Warning
 			wDeviationWarning := ROR(GVL_IO.aInterlock[5], (i-27));
 			wDeviationWarning.0 := TRUE;
 			GVL_IO.aInterlock[5] := ROL(wDeviationWarning, (i-27));
@@ -209,7 +208,7 @@ IF (bMaintKey = FALSE) THEN
 			);	
 		IF bLimitAlarm THEN		
 			GVL_IO.aInterlock[1].0 := TRUE; //Alarm Trig
-			//P92_Maintenance.nCaseSignalTower := 1; // Signal Tower RED - Alarm
+			GVL_IO.nCaseSignalTower := 1; // Signal Tower RED - Alarm
 			//팝업 표시
 			wLimitAlarm := ROR(GVL_IO.aInterlock[2], (i-1));
 			wLimitAlarm.0 := TRUE;
@@ -231,7 +230,7 @@ IF (bMaintKey = FALSE) THEN
 		
 		IF bLimitWarning THEN		
 			GVL_IO.aInterlock[1].1 := TRUE; //Warning Trig
-			//P92_Maintenance.nCaseSignalTower := 2; // Signal Tower YELLOW - Warning
+			GVL_IO.nCaseSignalTower := 2; // Signal Tower YELLOW - Warning
 			//팝업 표시
 			wLimitWarning := ROR(GVL_IO.aInterlock[4], (i-1));
 			wLimitWarning.0 := TRUE;
@@ -292,7 +291,7 @@ IF (bMaintKey = FALSE) THEN
 			);
 		IF bLimitAlarm THEN		
 			GVL_IO.aInterlock[1].0 := TRUE; //Alarm Trig
-			//P92_Maintenance.nCaseSignalTower := 1; // Signal Tower RED - Alarm
+			GVL_IO.nCaseSignalTower := 1; // Signal Tower RED - Alarm
 			wDeviationAlarm := ROR(GVL_IO.aInterlock[2], (i+3));
 			wDeviationAlarm.0 := TRUE;
 			GVL_IO.aInterlock[2] := ROL(wDeviationAlarm, (i+3));
@@ -304,7 +303,7 @@ IF (bMaintKey = FALSE) THEN
 		
 		IF bDeviationWarning THEN
 			GVL_IO.aInterlock[1].1 := TRUE; // Warning Trig
-			//P92_Maintenance.nCaseSignalTower := 2; // Signal Tower Yellow - Warning
+			GVL_IO.nCaseSignalTower := 2; // Signal Tower Yellow - Warning
 			wDeviationWarning := ROR(GVL_IO.aInterlock[4], (i+3));
 			wDeviationWarning.0 := TRUE;
 			GVL_IO.aInterlock[4] := ROL(wDeviationWarning, (i+3));
@@ -380,7 +379,7 @@ IF (bMaintKey = FALSE) THEN
 			
 		IF bFaultAlarm THEN
 			GVL_IO.aInterlock[1].0 := TRUE; //Alarm Trig
-			//P92_Maintenance.nCaseSignalTower := 1; // Signal Tower RED - Alarm
+			GVL_IO.nCaseSignalTower := 1; // Signal Tower RED - Alarm
 			//팝업 표시
 			wAlarm := ROR(GVL_IO.aInterlock[2], (i+7));
 			wAlarm.0 := TRUE;
@@ -388,7 +387,7 @@ IF (bMaintKey = FALSE) THEN
 		END_IF
 		IF bFaultWarning THEN
 			GVL_IO.aInterlock[1].1 := TRUE; //Warning Trig
-			//P92_Maintenance.nCaseSignalTower := 2; // Signal Tower YELLOW - Warning
+			GVL_IO.nCaseSignalTower := 2; // Signal Tower YELLOW - Warning
 			//팝업 표시
 			wAlarm := ROR(GVL_IO.aInterlock[4], (i+7));
 			wAlarm.0 := TRUE;
@@ -399,20 +398,13 @@ IF (bMaintKey = FALSE) THEN
 	IF GVL_IO.aInterlockEnable[1].0 THEN //알람 리셋 버턴을 눌렀을 때
 		GVL_IO.aInterlock[1].0 := FALSE; //Alarm Trig Reset
 		GVL_IO.aInterlockEnable[1].0 := FALSE; //버턴 초기화
-		//P92_Maintenance.nCaseSignalTower := 4; // Signal Tower Blue - Idle
+		GVL_IO.nCaseSignalTower := 4; // Signal Tower Blue - Idle
 	END_IF
 	IF GVL_IO.aInterlockEnable[1].1 THEN //주의 리셋 버턴을 눌렀을 때
 		GVL_IO.aInterlock[1].1 := FALSE; //Warmomg Trig Reset
 		GVL_IO.aInterlockEnable[1].1 := FALSE; //버턴 초기화
-		//P92_Maintenance.nCaseSignalTower := 4; // Signal Tower Blue - Idle
+		GVL_IO.nCaseSignalTower := 4; // Signal Tower Blue - Idle
 	END_IF	
-ELSE
-	//매인터넌스 키가 ON 되었을 때 MC(Induction, Bath, Pump, L_Heater) 조작 허용
-	//P92_Maintenance.nCaseSignalTower := 4; // Signal Tower Blue - Idle
-	//GVL_IO.aDigitalOutputIO[3].0 := bInductionHeaterMC;
-	GVL_IO.aDigitalOutputIO[3].1 := bThermalBathMC;
-	GVL_IO.aDigitalOutputIO[3].2 := bVacuumPumpMC;
-	GVL_IO.aDigitalOutputIO[3].3 := bLineHeaterMC;
 END_IF
 
 // bRecipeStartAvailable := //레시피 가능한 상태이면 TRUE
@@ -444,13 +436,11 @@ IF  GVL_IO.aController_PV[27] < GVL_IO.aInterlockSet[13] THEN
 ELSE
 	bOpenEnableTemp := FALSE;
 END_IF
-
 IF  GVL_IO.aController_PV[28] < GVL_IO.aInterlockSet[14] THEN
 	bOpenEnablePress := TRUE;
 ELSE
 	bOpenEnablePress := FALSE;
 END_IF
-
 bDorOffEnable :=
 	NOT(AlarmTrig) AND
 	NOT(P17_DOROperation.isDOROnState) AND
@@ -465,9 +455,6 @@ bDorOffEnable :=
 	;
 bReactorOpenEnable := bDorOffEnable;
 
-AlarmTrig := P50_RecipeControl.bAlarmTest; //테스트용 변수
-
-GVL_IO.aInterlock[1].0 := AlarmTrig; //알람트리거 변경
 (* Out to Device*)
 GVL_IO.aDigitalOutputIO[3].7 := bPowerResetLED;
 GVL_IO.aDigitalOutputIO[2].4 := bUPSMode;
@@ -489,29 +476,35 @@ GVL_IO.aDigitalOutputIO[2].4 := bUPSMode;
       <LineId Id="1272" Count="0" />
       <LineId Id="1338" Count="0" />
       <LineId Id="1358" Count="0" />
-      <LineId Id="1339" Count="0" />
       <LineId Id="296" Count="0" />
-      <LineId Id="298" Count="0" />
-      <LineId Id="295" Count="0" />
-      <LineId Id="1383" Count="0" />
-      <LineId Id="301" Count="1" />
-      <LineId Id="1384" Count="0" />
-      <LineId Id="299" Count="0" />
-      <LineId Id="353" Count="1" />
+      <LineId Id="354" Count="0" />
       <LineId Id="322" Count="0" />
       <LineId Id="479" Count="0" />
+      <LineId Id="1388" Count="0" />
       <LineId Id="478" Count="0" />
       <LineId Id="438" Count="0" />
+      <LineId Id="1379" Count="0" />
+      <LineId Id="1387" Count="0" />
+      <LineId Id="1380" Count="0" />
+      <LineId Id="1384" Count="2" />
+      <LineId Id="1383" Count="0" />
       <LineId Id="653" Count="0" />
-      <LineId Id="656" Count="38" />
-      <LineId Id="705" Count="38" />
+      <LineId Id="656" Count="16" />
+      <LineId Id="1420" Count="0" />
+      <LineId Id="674" Count="10" />
+      <LineId Id="1422" Count="0" />
+      <LineId Id="686" Count="8" />
+      <LineId Id="705" Count="26" />
+      <LineId Id="733" Count="10" />
       <LineId Id="654" Count="0" />
-      <LineId Id="906" Count="25" />
+      <LineId Id="906" Count="15" />
+      <LineId Id="1396" Count="0" />
+      <LineId Id="923" Count="8" />
       <LineId Id="951" Count="2" />
       <LineId Id="950" Count="0" />
       <LineId Id="954" Count="0" />
       <LineId Id="932" Count="3" />
-      <LineId Id="1018" Count="0" />
+      <LineId Id="1393" Count="0" />
       <LineId Id="936" Count="2" />
       <LineId Id="955" Count="0" />
       <LineId Id="958" Count="1" />
@@ -597,10 +590,6 @@ GVL_IO.aDigitalOutputIO[2].4 := bUPSMode;
       <LineId Id="1064" Count="0" />
       <LineId Id="1027" Count="8" />
       <LineId Id="1026" Count="0" />
-      <LineId Id="753" Count="0" />
-      <LineId Id="759" Count="0" />
-      <LineId Id="755" Count="3" />
-      <LineId Id="754" Count="0" />
       <LineId Id="655" Count="0" />
       <LineId Id="138" Count="0" />
       <LineId Id="1212" Count="0" />
@@ -620,11 +609,8 @@ GVL_IO.aDigitalOutputIO[2].4 := bUPSMode;
       <LineId Id="1278" Count="0" />
       <LineId Id="1357" Count="0" />
       <LineId Id="1345" Count="0" />
-      <LineId Id="1347" Count="5" />
-      <LineId Id="1378" Count="0" />
-      <LineId Id="1353" Count="3" />
+      <LineId Id="1347" Count="9" />
       <LineId Id="1346" Count="0" />
-      <LineId Id="1379" Count="0" />
       <LineId Id="1284" Count="0" />
       <LineId Id="1287" Count="0" />
       <LineId Id="1293" Count="0" />
@@ -634,10 +620,7 @@ GVL_IO.aDigitalOutputIO[2].4 := bUPSMode;
       <LineId Id="1294" Count="0" />
       <LineId Id="1292" Count="0" />
       <LineId Id="1337" Count="0" />
-      <LineId Id="1382" Count="0" />
       <LineId Id="276" Count="0" />
-      <LineId Id="1381" Count="0" />
-      <LineId Id="1380" Count="0" />
       <LineId Id="135" Count="0" />
       <LineId Id="179" Count="0" />
       <LineId Id="210" Count="0" />

@@ -1,5 +1,6 @@
 ﻿using SapphireXR_App.Common;
 using SapphireXR_App.ViewModels;
+using System.ComponentModel;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -56,7 +57,12 @@ namespace SapphireXR_App.Views
 
         private void OnClose(object sender, RoutedEventArgs e)
         {
-            Close();
+            CancelEventArgs cancelEventArgs = new CancelEventArgs();
+            ((ManualBatchViewModel)DataContext).OnClosingCommand.Execute(cancelEventArgs);
+            if (cancelEventArgs.Cancel == false)
+            {
+                Close();
+            }
         }
     }
 }

@@ -43,6 +43,11 @@ namespace SapphireXR_App.ViewModels
 
         public partial class Batch: ObservableObject
         {
+            public bool valid()
+            {
+                return RampingTime != null && 0 < RampingTime;
+            }
+
             [ObservableProperty]
             private string _name = "";
 
@@ -86,7 +91,24 @@ namespace SapphireXR_App.ViewModels
 
         public ManualBatchViewModel()
         {
-            NotifyCollectionChangedEventHandler batchCollectionChanged = (object? sender, NotifyCollectionChangedEventArgs e) => MinusCommand.NotifyCanExecuteChanged();
+            NotifyCollectionChangedEventHandler batchCollectionChanged = (object? sender, NotifyCollectionChangedEventArgs e) =>
+            {
+                if (e.Action == NotifyCollectionChangedAction.Add)
+                {
+                    foreach (Batch batch in e.NewItems!)
+                    {
+                        BatchesSetForEvent.Add(batch);
+                    }
+                }
+                else if (e.Action == NotifyCollectionChangedAction.Remove)
+                {
+                    foreach (Batch batch in e.OldItems!)
+                    {
+                        BatchesSetForEvent.Remove(batch);
+                    }
+                }
+                MinusCommand.NotifyCanExecuteChanged();
+            };
             PropertyChanging += (object? sender, PropertyChangingEventArgs args) => {
                 switch(args.PropertyName)
                 {
@@ -101,10 +123,12 @@ namespace SapphireXR_App.ViewModels
                     case nameof(CurrentBatch):
                         NameEnabled = RampingTimeEnabled = CurrentBatch != null;
                         LoadToPLCCommand.NotifyCanExecuteChanged();
+                        MinusCommand.NotifyCanExecuteChanged();
                         break;
 
                     case nameof(Batches):
                         Batches.CollectionChanged += batchCollectionChanged;
+                        MinusCommand.NotifyCanExecuteChanged();
                         break;
 
                     case nameof(BatchFIlePath):
@@ -126,6 +150,14 @@ namespace SapphireXR_App.ViewModels
                         if(userStatesToken != null)
                         {
                             Batches = JsonConvert.DeserializeObject<ObservableCollection<Batch>>(userStatesToken.ToString()) ?? Batches;
+                            
+                            List<Batch?> batchesForEvent = new List<Batch?>();
+                            batchesForEvent.Add(null);
+                            foreach(Batch batch in Batches)
+                            {
+                                batchesForEvent.Add(batch);
+                            }
+                            BatchesSetForEvent = new ObservableCollection<Batch?>(batchesForEvent);
 
                             var getUserStateOnEvent = (string name) =>
                             {
@@ -156,14 +188,9 @@ namespace SapphireXR_App.ViewModels
             ObservableManager<bool>.Subscribe("AlarmTriggered", alarmTriggeredSubscriber = new AlarmTriggeredSubscriber(this));
         }
 
-        bool batchesEmpty()
-        {
-            return 0 < Batches.Count;
-        }
-
         private bool canLoadToPLCCommand()
         {
-            return PLCService.Connected == Enums.PLCConnection.Connected && CurrentBatch != null && CurrentBatch.RampingTime != null && CurrentBatch.RampingTime != 0;
+            return PLCService.Connected == Enums.PLCConnection.Connected && CurrentBatch != null && CurrentBatch.valid();
         }
 
         [RelayCommand(CanExecute = "canLoadToPLCCommand")]
@@ -200,7 +227,7 @@ namespace SapphireXR_App.ViewModels
 
         public ICommand AddCommand => new RelayCommand(() =>
         {
-            Batch newBatch = new Batch() { Name = "UserState" + (Batches.Count + 1) };
+            Batch newBatch = new Batch() { Name = "UserState" };
             foreach((string flowController, string fullName) in Util.RecipeFlowControlFieldToControllerID)
             {
                 newBatch.AnalogIOUserStates.Add(new AnalogIOUserState() { ID = flowController, MaxValue = (int)SettingViewModel.ReadMaxValue(fullName)!, FullIDName = Util.RecipeFlowControlFieldToControllerID[flowController] });
@@ -221,8 +248,11 @@ namespace SapphireXR_App.ViewModels
             CurrentBatch = newBatch;
         });
 
-       
-        [RelayCommand(CanExecute = "batchesEmpty")]
+        bool canMinusCommandExecute()
+        {
+            return 0 < Batches.Count && CurrentBatch != null;
+        }
+        [RelayCommand(CanExecute = "canMinusCommandExecute")]
         private void Minus()
         {
             if (CurrentBatch != null)
@@ -231,6 +261,38 @@ namespace SapphireXR_App.ViewModels
                 CurrentBatch = null;
             }
         }
+
+        public ICommand OnClosingCommand => new RelayCommand<CancelEventArgs>((args) =>
+        {
+            string message = string.Empty;
+
+            bool recipeEndInvalid = BatchOnRecipeEnd != null && BatchOnRecipeEnd.valid() == false;
+            message += (recipeEndInvalid == true) ? "Recipe 종료 시 Batch (" + BatchOnRecipeEnd!.Name + ")" : string.Empty;
+
+            bool recipeAlarmInvalid = BatchOnAlarmState != null && BatchOnAlarmState.valid() == false;
+            message += (recipeAlarmInvalid == true) ? ((message != string.Empty) ? "와 " : string.Empty) + "Alarm 시 Batch (" + BatchOnAlarmState!.Name + ")" : string.Empty;
+            
+            if(message != string.Empty)
+            {
+                message += "의 Ramp Time 값이 유효한 값이 아닙니다. 값은 1 이상이어야 합니다";
+                MessageBox.Show(message);
+
+                if(recipeEndInvalid == true)
+                {
+                    CurrentBatch = BatchOnRecipeEnd;
+                }
+                if (recipeAlarmInvalid == true)
+                {
+                    CurrentBatch = BatchOnAlarmState;
+                }
+
+                args!.Cancel = true;
+            }
+            else
+            {
+                args!.Cancel = false;
+            }
+        });
 
         public void loadBatchOnRecipeEnd()
         {
@@ -271,6 +333,9 @@ namespace SapphireXR_App.ViewModels
         private ObservableCollection<Batch> _batches = new ObservableCollection<Batch>();
 
         [ObservableProperty]
+        private ObservableCollection<Batch?> batchesSetForEvent = new ObservableCollection<Batch?>();
+
+        [ObservableProperty]
         private Batch? _currentBatch = null;
 
         [ObservableProperty]
@@ -282,10 +347,10 @@ namespace SapphireXR_App.ViewModels
         private string? _batchFIlePath = null;
 
         [ObservableProperty]
-        private Batch? _batchOnAlarmState;
+        private Batch? _batchOnAlarmState = null;
 
         [ObservableProperty]
-        private Batch? _batchOnRecipeEnd;
+        private Batch? _batchOnRecipeEnd = null;
 
         private AlarmTriggeredSubscriber alarmTriggeredSubscriber;
     }

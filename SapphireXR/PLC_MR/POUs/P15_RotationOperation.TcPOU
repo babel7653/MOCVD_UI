@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4026.8">
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4026.12">
   <POU Name="P15_RotationOperation" Id="{7f828812-d1bb-49a4-a03d-f3e347855c39}" SpecialFunc="None">
     <Declaration><![CDATA[PROGRAM P15_RotationOperation
 VAR_INPUT
@@ -38,6 +38,10 @@ isRotationFault := NOT(GVL_IO.aDigitalInputIO[2].5);
 wRotaion_PV := UINT_TO_WORD(GVL_IO.aAnalogInputIO2[1]);
 nConvertedRotation_PV := REAL_TO_INT(wRotaion_PV/(5*ConversionFactor));
 
+// Interface with other PRGs
+GVL_IO.nRotation_Converted_PV := nConvertedRotation_PV;
+rControlValue := GVL_IO.rRotation_ControlValue;
+
 //Write to Motor Driver
 rConvertedCV := rControlValue * ConversionFactor; // Convert from RPM to control value
 
@@ -59,9 +63,12 @@ GVL_IO.aAnalogOutputIO[28] 		:= REAL_TO_INT(rConvertedCV);]]></ST>
       <LineId Id="140" Count="1" />
       <LineId Id="46" Count="1" />
       <LineId Id="49" Count="1" />
+      <LineId Id="159" Count="2" />
       <LineId Id="144" Count="0" />
+      <LineId Id="162" Count="0" />
       <LineId Id="52" Count="1" />
-      <LineId Id="147" Count="2" />
+      <LineId Id="158" Count="0" />
+      <LineId Id="148" Count="1" />
       <LineId Id="151" Count="1" />
       <LineId Id="154" Count="0" />
       <LineId Id="95" Count="0" />

@@ -109,10 +109,10 @@ tAlarmDelay_D := REAL_TO_TIME(GVL_IO.aInterlockSet[4]*1000);
 IF bMaintKey THEN //bMaintKey 변경
 	//매인터넌스 키가 ON 되었을 때 MC(Induction, Bath, Pump, L_Heater) 조작 허용
 	GVL_IO.nCaseSignalTower	:= 5; //Signal Tower White - Maintenance
-	GVL_IO.aDigitalOutputIO[3].0 := bInductionHeaterMC;
-	GVL_IO.aDigitalOutputIO[3].1 := bThermalBathMC;
-	GVL_IO.aDigitalOutputIO[3].2 := bVacuumPumpMC;
-	GVL_IO.aDigitalOutputIO[3].3 := bLineHeaterMC;
+	GVL_IO.aDigitalOutputIO[3].0 := GVL_IO.aOutputCmd[1].0;
+	GVL_IO.aDigitalOutputIO[3].1 := GVL_IO.aOutputCmd[1].1;
+	GVL_IO.aDigitalOutputIO[3].2 := GVL_IO.aOutputCmd[1].2;
+	GVL_IO.aDigitalOutputIO[3].3 := GVL_IO.aOutputCmd[1].3;
 ELSE
 	FOR i := 1 TO 26 DO
 		wDeviceAlarmEnable := SHR(GVL_IO.aInterlockEnable[2], (i+2)); //오늘쪽 쉬프트 연산
@@ -355,12 +355,12 @@ ELSE
 			8: //DOR Fault
 				bAlarmEnable := GVL_IO.aInterlockEnable[4].15;
 				bWarningEnable := GVL_IO.aInterlockEnable[5].15;
-				IF (P17_DOROperation.bError = 1) THEN
+				IF (GVL_IO.nDorOperationError = 1) THEN
 					bDeviceCurrentAlarmState := TRUE;
 				ELSE
 					bDeviceCurrentAlarmState := FALSE;
 				END_IF
-				IF (P17_DOROperation.bError = 2) OR (P17_DOROperation.bError = 3) THEN
+				IF (GVL_IO.nDorOperationError = 2) OR (GVL_IO.nDorOperationError = 3) THEN
 					bDeviceCurrentWarningState := TRUE;
 				ELSE
 					bDeviceCurrentWarningState := FALSE;
@@ -443,7 +443,7 @@ ELSE
 END_IF
 bDorOffEnable :=
 	NOT(AlarmTrig) AND
-	NOT(P17_DOROperation.isDOROnState) AND
+	NOT(GVL_IO.bDORState) AND
 	NOT(RCP.state_RcpOperation = 10) AND //Not Recipe Run State
 	NOT(bGasStateProcess) AND //Safety Process Gas : TRUE
 	NOT(bGasStateSource) AND //Safety Source Gas : TRUE
@@ -458,6 +458,7 @@ bReactorOpenEnable := bDorOffEnable;
 (* Out to Device*)
 GVL_IO.aDigitalOutputIO[3].7 := bPowerResetLED;
 GVL_IO.aDigitalOutputIO[2].4 := bUPSMode;
+GVL_IO.bDorOnEnable := bDorOnEnable;
 ]]></ST>
     </Implementation>
     <LineIds Name="P90_Interlock">
@@ -624,6 +625,7 @@ GVL_IO.aDigitalOutputIO[2].4 := bUPSMode;
       <LineId Id="135" Count="0" />
       <LineId Id="179" Count="0" />
       <LineId Id="210" Count="0" />
+      <LineId Id="1423" Count="0" />
       <LineId Id="415" Count="0" />
     </LineIds>
   </POU>

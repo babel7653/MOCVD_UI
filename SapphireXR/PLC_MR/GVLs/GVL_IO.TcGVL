@@ -31,7 +31,18 @@ VAR_GLOBAL
 	aInterlockSet			: ARRAY[1..16] OF REAL; // UI Interlokc Setting Value
 	aInterlockEnable		: ARRAY[1..6] OF DWORD; // UI Interlock Enable Setting
 	
-	nCaseSignalTower		: int;
+	nCaseSignalTower		: INT;
+	nDorOperationError		: INT;
+	bDorState				: BOOL;
+	bDorOnEnable			: BOOL;
+	bE3508_HeaterOn			: BOOL;
+	wE3508_ControlValue		: WORD;
+	wE3508_PV				: WORD;
+	wIqPlus_ControlValue	: WORD;
+	wIqPlus_CDG1_PV			: WORD;
+	wIqPlus_CDG2_PV			: WORD;
+	nRotation_Converted_PV	: INT;
+	rRotation_ControlValue	: REAL;
 END_VAR
 
 VAR_GLOBAL CONSTANT

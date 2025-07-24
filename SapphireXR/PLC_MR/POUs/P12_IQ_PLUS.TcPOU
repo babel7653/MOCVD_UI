@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4026.11">
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4026.12">
   <POU Name="P12_IQ_PLUS" Id="{e511b755-5d71-4ab9-9c97-639ef910a29b}" SpecialFunc="None">
     <Declaration><![CDATA[PROGRAM P12_IQ_PLUS
 VAR_INPUT
@@ -87,12 +87,16 @@ isPumpRunning		:= GVL_IO.aDigitalInputIO[3].3;
 wByteCDG1_PV 		:= USINT_TO_WORD_Bit(aInputPressurePV_CDG1[1],aInputPressurePV_CDG1[2]);
 wByteCDG2_PV 		:= USINT_TO_WORD_Bit(aInputPressurePV_CDG2[1],aInputPressurePV_CDG2[2]);
 wByteValvePosition_PV 	:= USINT_TO_WORD_Bit(aInputValvePosionPV[1], aInputValvePosionPV[2]);
+wControlValue		:= GVL_IO.wIqPlus_ControlValue;
 
 //From IQ Plus
-wCDG1_PV 			:= REAL_TO_WORD(wByteCDG1_PV/PressureFactor);
-wCDG2_PV 			:= REAL_TO_WORD(wByteCDG2_PV/PressureFactor);
+// wCDG1_PV 			:= REAL_TO_WORD(wByteCDG1_PV/PressureFactor);
+// wCDG2_PV 			:= REAL_TO_WORD(wByteCDG2_PV/PressureFactor);
+GVL_IO.wIqPlus_CDG1_PV 	:= REAL_TO_WORD(wByteCDG1_PV/PressureFactor);
+GVL_IO.wIqPlus_CDG2_PV 	:= REAL_TO_WORD(wByteCDG2_PV/PressureFactor);
 
 //To IQ Plus
+nTValveMode := WORD_TO_USINT(GVL_IO.aOutputCmd[2]); //Throttle Valve Mode Setting 0:Normal 1:Close 2:Open 3:Hold 4:Reset
 IF nTValveMode = 0 AND nSetType = 1 THEN
 	wTypedControlValue := REAL_TO_WORD(wControlValue * SetPointFactor * 0.1); //Pressure Control
 ELSIF nTValveMode = 0 AND nSetType = 2 THEN
@@ -142,7 +146,7 @@ END_CASE
 nOutputMode := nTValveMode;
 
 GVL_IO.aMonitoring_PV[11] := wByteValvePosition_PV/SetPointFactor;
-GVL_IO.aDigitalOutputIO[2].2 := bPumpOn; //Pump On
+GVL_IO.aDigitalOutputIO[2].2 := GVL_IO.aOutputCmd[1].6; //Pump On
 GVL_IO.aDigitalOutputIO[2].3 := bPumpReset; // Pump Reset]]></ST>
     </Implementation>
     <LineIds Name="P12_IQ_PLUS">
@@ -163,12 +167,17 @@ GVL_IO.aDigitalOutputIO[2].3 := bPumpReset; // Pump Reset]]></ST>
       <LineId Id="290" Count="0" />
       <LineId Id="277" Count="0" />
       <LineId Id="158" Count="0" />
-      <LineId Id="52" Count="7" />
+      <LineId Id="52" Count="3" />
+      <LineId Id="378" Count="0" />
+      <LineId Id="56" Count="1" />
+      <LineId Id="379" Count="3" />
       <LineId Id="361" Count="0" />
-      <LineId Id="62" Count="45" />
-      <LineId Id="365" Count="0" />
+      <LineId Id="62" Count="0" />
+      <LineId Id="376" Count="0" />
+      <LineId Id="63" Count="44" />
+      <LineId Id="373" Count="0" />
       <LineId Id="5" Count="0" />
-      <LineId Id="366" Count="0" />
+      <LineId Id="372" Count="0" />
       <LineId Id="364" Count="0" />
       <LineId Id="287" Count="0" />
       <LineId Id="293" Count="0" />

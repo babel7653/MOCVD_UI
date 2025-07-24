@@ -115,7 +115,7 @@
                             <Thickness Left="0" Right="{StaticResource p_2}" Bottom="{StaticResource p_2}" />
                         </ComboBox.Margin>
                     </ComboBox>
-                    <ComboBox Grid.Row="1" Grid.Column="1" ItemsSource="{Binding Batches}" SelectedItem="{Binding BatchOnRecipeEnd}" DisplayMemberPath="Name" Width="176" Style="{StaticResource ManualBatchViewComboBox}">
+                    <ComboBox Grid.Row="1" Grid.Column="1" ItemsSource="{Binding BatchesSetForEvent}" SelectedItem="{Binding BatchOnRecipeEnd}" DisplayMemberPath="Name" Width="176" Style="{StaticResource ManualBatchViewComboBox}">
                         <ComboBox.Margin>
                             <Thickness  Bottom="{StaticResource p_2}" />
                         </ComboBox.Margin>
@@ -135,7 +135,19 @@
                             <Thickness Right="{StaticResource p_2}" Bottom="{StaticResource p_2}" />
                         </TextBox.Margin>
                     </TextBox>
-                    <local:NumberBox Grid.Row="3" Grid.Column="1" Width="176" Height="26" Text="{Binding CurrentBatch.RampingTime, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" IsEnabled="{Binding RampingTimeEnabled}" LostFocus="NumberBox_LostFocus" Style="{StaticResource DefaultTextBox}">
+                    <local:NumberBox Grid.Row="3" x:Name="rampingTime" Grid.Column="1" Width="176" Height="26" Text="{Binding CurrentBatch.RampingTime, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" IsEnabled="{Binding RampingTimeEnabled}" LostFocus="NumberBox_LostFocus">
+                        <local:NumberBox.Style>
+                            <Style TargetType="TextBox" BasedOn="{StaticResource DefaultTextBox}">
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding ElementName=rampingTime, Path=Text}" Value="">
+                                        <Setter Property="Background" Value="Red"/>
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding ElementName=rampingTime, Path=Text}" Value="0">
+                                        <Setter Property="Background" Value="Red"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </local:NumberBox.Style>
                         <TextBox.Margin>
                             <Thickness Bottom="{StaticResource p_2}" />
                         </TextBox.Margin>

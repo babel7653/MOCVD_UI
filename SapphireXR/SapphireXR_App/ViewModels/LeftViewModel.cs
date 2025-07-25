@@ -396,6 +396,13 @@ namespace SapphireXR_App.ViewModels
         private static readonly string BuzzerOnPath = "/Resources/icons/icon=buzzeron.png";
         private static readonly string BuzzerOffPath = "/Resources/icons/icon=buzzeroff.png";
 
+        private static readonly string SignalTowerRedPath = "/Resources/icons/icon=ani_signal_red.gif";
+        private static readonly string SignalTowerBluePath = "/Resources/icons/icon=ani_signal_blue.gif";
+        private static readonly string SignalTowerGreenath = "/Resources/icons/icon=ani_signal_green.gif";
+        private static readonly string SignalTowerYellowPath = "/Resources/icons/icon=ani_signal_yellow.gif";
+        private static readonly string SignalTowerWhitePath = "/Resources/icons/icon=ani_signal_white.gif";
+        private static readonly string SignalTowerDefaultPath = "/Resources/icons/icon=ani_signal_default.gif";
+
         private string Gas1 = Util.GetGasDeviceName("Gas1") ?? "";
         private string Gas2 = Util.GetGasDeviceName("Gas2") ?? "";
 
@@ -486,6 +493,9 @@ namespace SapphireXR_App.ViewModels
 
         [ObservableProperty]
         private SourceStatusViewModel _currentSourceStatusViewModel;
+
+        [ObservableProperty]
+        private string signalTowerImage = SignalTowerDefaultPath;
 
         private readonly CoolingWaterValueSubscriber showerHeaderTempSubscriber;
         private readonly CoolingWaterValueSubscriber inductionCoilTempSubscriber;

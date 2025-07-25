@@ -154,11 +154,22 @@ namespace SapphireXR_App.ViewModels
 
             void IObserver<BitArray>.OnNext(BitArray ioList)
             {
-                Util.SetIfChanged(ioList[(int)PLCService.IOListIndex.SingalTower_RED], ref signalTowerRed, (bool state) => { if (state == true) { leftViewModel.SignalTowerRed = ActiveSignalTowerRed; } else { leftViewModel.SignalTowerRed = InActiveSignalTowerRed; } });
-                Util.SetIfChanged(ioList[(int)PLCService.IOListIndex.SingalTower_YELLOW], ref signalTowerYellow, (bool state) => { if (state == true) { leftViewModel.SignalTowerYellow = ActiveSignalTowerYellow; } else { leftViewModel.SignalTowerYellow = InActiveSignalTowerYellow; } });
-                Util.SetIfChanged(ioList[(int)PLCService.IOListIndex.SingalTower_GREEN], ref signalTowerGreen, (bool state) => { if (state == true) { leftViewModel.SignalTowerGreen = ActiveSignalTowerGreen; } else { leftViewModel.SignalTowerGreen = InActiveSignalTowerGreen; } });
-                Util.SetIfChanged(ioList[(int)PLCService.IOListIndex.SingalTower_BLUE], ref signalTowerBlue, (bool state) => { if (state == true) { leftViewModel.SignalTowerBlue = ActiveSignalTowerBlue; } else { leftViewModel.SignalTowerBlue = InActiveSignalTowerBlue; } });
-                Util.SetIfChanged(ioList[(int)PLCService.IOListIndex.SingalTower_WHITE], ref signalTowerWhite, (bool state) => { if (state == true) { leftViewModel.SignalTowerWhite = ActiveSignalTowerWhite; } else { leftViewModel.SignalTowerWhite = InActiveSignalTowerWhite; } });
+                var checkAllSignalOff = (BitArray ioList) =>
+                {
+                    if( ioList[(int)PLCService.IOListIndex.SingalTower_RED] == false &&
+                           ioList[(int)PLCService.IOListIndex.SingalTower_YELLOW] == false &&
+                           ioList[(int)PLCService.IOListIndex.SingalTower_GREEN] == false &&
+                           ioList[(int)PLCService.IOListIndex.SingalTower_BLUE] == false &&
+                           ioList[(int)PLCService.IOListIndex.SingalTower_WHITE] == false)
+                    {
+                        leftViewModel.SignalTowerImage = SignalTowerDefaultPath;
+                    }
+                };
+                Util.SetIfChanged(ioList[(int)PLCService.IOListIndex.SingalTower_RED], ref signalTowerRed, (bool state) => { if (state == true) { leftViewModel.SignalTowerImage = SignalTowerRedPath; } else { checkAllSignalOff(ioList); } });
+                Util.SetIfChanged(ioList[(int)PLCService.IOListIndex.SingalTower_YELLOW], ref signalTowerYellow, (bool state) => { if (state == true) { leftViewModel.SignalTowerImage = SignalTowerYellowPath; } else { checkAllSignalOff(ioList); } });
+                Util.SetIfChanged(ioList[(int)PLCService.IOListIndex.SingalTower_GREEN], ref signalTowerGreen, (bool state) => { if (state == true) { leftViewModel.SignalTowerImage = SignalTowerGreenath; } else { checkAllSignalOff(ioList); } });
+                Util.SetIfChanged(ioList[(int)PLCService.IOListIndex.SingalTower_BLUE], ref signalTowerBlue, (bool state) => { if (state == true) { leftViewModel.SignalTowerImage = SignalTowerBluePath; } else { checkAllSignalOff(ioList); } });
+                Util.SetIfChanged(ioList[(int)PLCService.IOListIndex.SingalTower_WHITE], ref signalTowerWhite, (bool state) => { if (state == true) { leftViewModel.SignalTowerImage = SignalTowerWhitePath; } else { checkAllSignalOff(ioList); } });
                 Util.SetIfChanged(ioList[(int)PLCService.IOListIndex.DOR_Vaccum_State], ref dorVaccumState, (bool state) => { if (state == true) { leftViewModel.DorVacuumStateLampColor = OnLampColor; } else { leftViewModel.DorVacuumStateLampColor = ReadyLampColor; } });
                 Util.SetIfChanged(ioList[(int)PLCService.IOListIndex.Temp_Controller_Alarm], ref tempControllerAlarm, (bool state) => { if (state == true) { leftViewModel.TempControllerAlarmLampColor = FaultLampColor; } else { leftViewModel.TempControllerAlarmLampColor = OffLampColor; } });
             }

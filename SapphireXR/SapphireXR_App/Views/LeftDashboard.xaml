@@ -87,8 +87,8 @@
                             <ColumnDefinition Width="10"/>
                             <ColumnDefinition Width="Auto" />
                         </Grid.ColumnDefinitions>
-                        <TextBlock Grid.Row="0" Grid.Column="0" FontFamily="Segoe UI" FontSize="12" Foreground="{StaticResource Gray_900}" Margin="0" Padding="0"><Run Text="Machine Nam"/><Run Language="ko-kr" Text="e"/></TextBlock>
-                        <TextBlock Grid.Row="2" Grid.Column="0" FontFamily="Segoe UI" FontSize="12" Foreground="{StaticResource Gray_950}"  Margin="0"  Padding="0" FontWeight="Bold"><Run Text="Machine Nam"/><Run Language="ko-kr" Text="e"/></TextBlock>
+                        <TextBlock Grid.Row="0" Grid.Column="0" FontFamily="Segoe UI" FontSize="12" Foreground="{StaticResource Gray_900}" Margin="0" Padding="0"><Run Text="Machine Name"/></TextBlock>
+                        <TextBlock Grid.Row="2" Grid.Column="0" FontFamily="Segoe UI" FontSize="12" Foreground="{StaticResource Gray_950}"  Margin="0"  Padding="0" FontWeight="Bold"><Run Text="Marvel 120MS"/></TextBlock>
                         <TextBlock FontFamily="Segoe UI" Grid.Row="0" Grid.Column="2" FontSize="12" Foreground="{DynamicResource Gray_900}" Margin="0" Padding="0"><Run Language="ko-kr" Text="System ID"/></TextBlock>
                         <TextBlock FontFamily="Segoe UI" Grid.Row="2" Grid.Column="2"  FontSize="12" Foreground="{DynamicResource Gray_950}" Margin="0" Padding="0" FontWeight="Bold"><Run Language="ko-kr" Text="2024 SKKU2"/></TextBlock>
                         <TextBlock FontFamily="Segoe UI" Grid.Row="4" Grid.Column="0" FontSize="12" Foreground="{DynamicResource Gray_900}" Margin="0" Padding="0" ><Run Language="ko-kr" Text="Application"/></TextBlock>

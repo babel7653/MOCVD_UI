@@ -4,11 +4,8 @@ using SapphireXR_App.Common;
 using SapphireXR_App.Enums;
 using SapphireXR_App.Models;
 using System.Collections;
-using System.Printing;
-using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Input;
-using static SapphireXR_App.ViewModels.SettingViewModel;
 
 namespace SapphireXR_App.ViewModels
 {

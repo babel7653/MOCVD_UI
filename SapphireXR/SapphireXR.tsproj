@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<TcSmProject xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://www.beckhoff.com/schemas/2012/07/TcSmProject" TcSmVersion="1.0" TcVersion="3.1.4026.14">
+<TcSmProject xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://www.beckhoff.com/schemas/2012/07/TcSmProject" TcSmVersion="1.0" TcVersion="3.1.4026.16">
 	<DataTypes>
 		<DataType>
 			<Name GUID="{F13B6D04-11D0-5217-2BF9-7A8308D2316E}" Namespace="Tc2_SerialCom" AutoDeleteType="true">KL6inData22B</Name>
@@ -141,8 +141,8 @@
 	</ImageDatas>
 	<Project ProjectGUID="{3D06573F-FA21-4D81-AB6B-ED6B30724E66}" Target64Bit="true" ShowHideConfigurations="#x3c7">
 		<System>
-			<Settings MaxCpus="12" NonWinCpus="1">
-				<Cpu CpuId="11"/>
+			<Settings MaxCpus="20" NonWinCpus="1" PCoreAffinity="4095" ECoreAffinity="1044480">
+				<Cpu CpuId="19"/>
 			</Settings>
 			<Licenses>
 				<Target>
@@ -382,7 +382,7 @@
 					<Box Id="2" BoxType="9095" BoxFlags="#x00000020">
 						<Name>Term 2 (EL6752)</Name>
 						<ImageId>1001</ImageId>
-						<EtherCAT SlaveType="5" AdsServerAddress="d3e1004402030000" FixedAdsServerNetId="true" PdiType="#x0008" ExecIo="true" MboxDataLinkLayer="true" StateMBoxPolling="true" CycleMBoxPollingTime="0" CoeType="39" FoeType="1" VendorId="#x00000002" ProductCode="#x1a603052" RevisionNo="#x00140000" InfoDataAddr="true" InfoDataNetId="true" RepeatSupport="true" TimeoutMailbox2="3000" GenerateOwnNetId="true" InitializeOwnNetId="true" CheckRevisionNoType="3" PortPhys="51" MaxSlotCount="256" MaxSlotGroupCount="1" SlotPdoIncrement="1" SlotIndexIncrement="16" Type="EL6752 DeviceNet Master" Desc="EL6752" PortABoxInfo="#x01000001">
+						<EtherCAT SlaveType="5" AdsServerAddress="a9fe316d02030000" FixedAdsServerNetId="true" PdiType="#x0008" ExecIo="true" MboxDataLinkLayer="true" StateMBoxPolling="true" CycleMBoxPollingTime="0" CoeType="39" FoeType="1" VendorId="#x00000002" ProductCode="#x1a603052" RevisionNo="#x00140000" InfoDataAddr="true" InfoDataNetId="true" RepeatSupport="true" TimeoutMailbox2="3000" GenerateOwnNetId="true" InitializeOwnNetId="true" CheckRevisionNoType="3" PortPhys="51" MaxSlotCount="256" MaxSlotGroupCount="1" SlotPdoIncrement="1" SlotIndexIncrement="16" Type="EL6752 DeviceNet Master" Desc="EL6752" PortABoxInfo="#x01000001">
 							<SyncMan>001000042600010001000000400000040004001026010000</SyncMan>
 							<SyncMan>001400042200010002000000400000040004001422010000</SyncMan>
 							<SyncMan>001800002400000003000000000000000000001824010000</SyncMan>

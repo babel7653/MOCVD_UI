@@ -5,6 +5,7 @@
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:SapphireXR_App.Views"
       xmlns:model="clr-namespace:SapphireXR_App.Models"
+      xmlns:anim="https://github.com/whistyun/AnimatedImage.Wpf"
       mc:Ignorable="d" 
       d:DesignHeight="1080" d:DesignWidth="300"
       Title="LeftDashboard">
@@ -62,51 +63,48 @@
             <!-- Machine Information -->
             <Grid Margin="8,8,8,0" Grid.Row="0">
                 <Grid>
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto" />
-                        <RowDefinition Height="4" />
-                        <RowDefinition Height="Auto" />
-                    </Grid.RowDefinitions>
-                    <Grid Grid.Row="0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="60" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <Image Height="108" anim:ImageBehavior.AnimatedSource="{Binding SignalTowerImage, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"/>
+                    <Grid Grid.Column="1">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="4" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="4" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="4" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="4" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="4" />
+                            <RowDefinition Height="Auto" />
+                        </Grid.RowDefinitions>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="Auto" />
                             <ColumnDefinition Width="10"/>
                             <ColumnDefinition Width="Auto" />
-                            <ColumnDefinition Width="10" />
-                            <ColumnDefinition Width="*"/>
                         </Grid.ColumnDefinitions>
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="Auto" />
-                            <RowDefinition Height="Auto" />
-                        </Grid.RowDefinitions>
-                        <TextBlock Grid.Row="0" Grid.Column="0" FontFamily="Segoe UI" FontSize="12" Foreground="{StaticResource Gray_900}"><Run Text="Machine Nam"/><Run Language="ko-kr" Text="e"/></TextBlock>
-                        <TextBlock Grid.Row="1" Grid.Column="0" FontFamily="Segoe UI" FontSize="14" Foreground="{StaticResource Gray_950}" FontWeight="Bold"><Run Text="Machine Nam"/><Run Language="ko-kr" Text="e"/></TextBlock>
-                        <TextBlock FontFamily="Segoe UI" Grid.Row="0" Grid.Column="2" FontSize="12" Foreground="{DynamicResource Gray_900}"><Run Language="ko-kr" Text="System ID"/></TextBlock>
-                        <TextBlock FontFamily="Segoe UI" Grid.Row="1" Grid.Column="2"  FontSize="14" Foreground="{DynamicResource Gray_950}" FontWeight="Bold"><Run Language="ko-kr" Text="2024 SKKU2"/></TextBlock>
-                        <TextBlock FontFamily="Segoe UI" Grid.Row="0" Grid.Column="4" FontSize="12" Foreground="{DynamicResource Gray_900}"><Run Language="ko-kr" Text="Application"/></TextBlock>
-                        <TextBlock FontFamily="Segoe UI" Grid.Row="1" Grid.Column="4" FontSize="14" Foreground="{DynamicResource Gray_950}" FontWeight="Bold" RenderTransformOrigin="0.563,1.979"><Run Language="ko-kr" Text="GaN"/></TextBlock>
-                    </Grid>
-                    <Grid Grid.Row="2">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition />
-                            <ColumnDefinition />
-                        </Grid.ColumnDefinitions>
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="Auto" />
-                            <RowDefinition Height="Auto" />
-                        </Grid.RowDefinitions>
-                        <TextBlock FontFamily="Segoe UI" FontSize="12" Grid.Row="0" Grid.Column="0" Foreground="{DynamicResource Gray_900}"><Run Language="ko-kr" Text="PLC Address"/></TextBlock>
-                        <TextBlock Text="{Binding PLCAddressText}" Grid.Row="1" Grid.Column="0" FontFamily="Segoe UI" FontSize="14" Foreground="{DynamicResource Gray_950}" FontWeight="Bold"><Run Text="Machine Nam"/><Run Language="ko-kr" Text="e"/></TextBlock>
-                        <TextBlock FontFamily="Segoe UI" Grid.Row="0" Grid.Column="1"  FontSize="12" Foreground="{DynamicResource Gray_900}"><Run Text="PLC "/><Run Language="ko-kr" Text="C"/><Run Text="onnection"/></TextBlock>
-                        <TextBlock Text="{Binding PLCConnectionStatus}" Grid.Row="1" Grid.Column="12" FontFamily="Segoe UI" FontSize="14" Foreground="{Binding PLCConnectionStatusColor}" FontWeight="Bold"><Run Text="Machine Nam"/><Run Language="ko-kr" Text="e"/></TextBlock>
+                        <TextBlock Grid.Row="0" Grid.Column="0" FontFamily="Segoe UI" FontSize="12" Foreground="{StaticResource Gray_900}" Margin="0" Padding="0"><Run Text="Machine Nam"/><Run Language="ko-kr" Text="e"/></TextBlock>
+                        <TextBlock Grid.Row="2" Grid.Column="0" FontFamily="Segoe UI" FontSize="12" Foreground="{StaticResource Gray_950}"  Margin="0"  Padding="0" FontWeight="Bold"><Run Text="Machine Nam"/><Run Language="ko-kr" Text="e"/></TextBlock>
+                        <TextBlock FontFamily="Segoe UI" Grid.Row="0" Grid.Column="2" FontSize="12" Foreground="{DynamicResource Gray_900}" Margin="0" Padding="0"><Run Language="ko-kr" Text="System ID"/></TextBlock>
+                        <TextBlock FontFamily="Segoe UI" Grid.Row="2" Grid.Column="2"  FontSize="12" Foreground="{DynamicResource Gray_950}" Margin="0" Padding="0" FontWeight="Bold"><Run Language="ko-kr" Text="2024 SKKU2"/></TextBlock>
+                        <TextBlock FontFamily="Segoe UI" Grid.Row="4" Grid.Column="0" FontSize="12" Foreground="{DynamicResource Gray_900}" Margin="0" Padding="0" ><Run Language="ko-kr" Text="Application"/></TextBlock>
+                        <TextBlock FontFamily="Segoe UI" Grid.Row="6" Grid.Column="0" FontSize="12" Foreground="{DynamicResource Gray_950}" Margin="0" Padding="0" FontWeight="Bold" RenderTransformOrigin="0.563,1.979"><Run Language="ko-kr" Text="GaN"/></TextBlock>
+                        <TextBlock FontFamily="Segoe UI" FontSize="12" Grid.Row="4" Grid.Column="2" Foreground="{DynamicResource Gray_900}" Margin="0" Padding="0" ><Run Language="ko-kr" Text="PLC Address"/></TextBlock>
+                        <TextBlock Text="{Binding PLCAddressText}" Grid.Row="6" Grid.Column="2" FontFamily="Segoe UI" FontSize="12" Foreground="{DynamicResource Gray_950}" Margin="0" Padding="0" FontWeight="Bold"><Run Text="Machine Nam"/><Run Language="ko-kr" Text="e"/></TextBlock>
+                        <TextBlock FontFamily="Segoe UI" Grid.Row="8" Grid.Column="0"  FontSize="12" Foreground="{DynamicResource Gray_900}" Margin="0" Padding="0" ><Run Text="PLC "/><Run Language="ko-kr" Text="C"/><Run Text="onnection"/></TextBlock>
+                        <TextBlock Text="{Binding PLCConnectionStatus}" Grid.Row="10" Grid.Column="0" FontFamily="Segoe UI" FontSize="12" Margin="0" Padding="0" Foreground="{Binding PLCConnectionStatusColor}" FontWeight="Bold"><Run Text="Machine Nam"/><Run Language="ko-kr" Text="e"/></TextBlock>
                     </Grid>
                 </Grid>
             </Grid>
-            <Border Grid.Row="1"  BorderBrush="{StaticResource Gray_300}">
+            <!--<Border Grid.Row="1"  BorderBrush="{StaticResource Gray_300}">
                 <Border.BorderThickness>
                     <Thickness Bottom="1" />
                 </Border.BorderThickness>
-                <!-- Signal Tower -->
+                --><!-- Signal Tower --><!--
                 <Grid>
                     <Grid.Margin>
                         <Thickness Left="{StaticResource p_2}" Right="{StaticResource p_2}" Bottom="{StaticResource p_2}" Top="{StaticResource p_1}" />
@@ -120,29 +118,29 @@
                             </Style>
                         </StackPanel.Resources>
                         <Rectangle x:Name="SignalTowerRed" Fill="{Binding SignalTowerRed, UpdateSourceTrigger=PropertyChanged}" Width="40" Height="10" RadiusX="4" RadiusY="4" Margin="4,0,0,0" Stroke="{x:Null}">
-                            <Rectangle.Effect>
+                            --><!--<Rectangle.Effect>
                                 <DropShadowEffect Color="{Binding SignalTowerRed, UpdateSourceTrigger=PropertyChanged}" BlurRadius="10" ShadowDepth="0" Opacity="{Binding GlowOpacity}" />
-                            </Rectangle.Effect>
+                            </Rectangle.Effect>--><!--
                         </Rectangle>
                         <Rectangle x:Name="SignalTowerYellow" Fill="{Binding SignalTowerYellow, UpdateSourceTrigger=PropertyChanged}" Width="40" Height="10" RadiusX="4" RadiusY="4" Margin="4,0,0,0" Stroke="{x:Null}">
-                            <Rectangle.Effect>
+                            --><!--<Rectangle.Effect>
                                 <DropShadowEffect Color="{Binding SignalTowerYellow, UpdateSourceTrigger=PropertyChanged}" BlurRadius="10" ShadowDepth="0" Opacity="{Binding GlowOpacity}" />
-                            </Rectangle.Effect>
+                            </Rectangle.Effect>--><!--
                         </Rectangle>
                         <Rectangle x:Name="SignalTowerGreen" Fill="{Binding SignalTowerGreen, UpdateSourceTrigger=PropertyChanged}" Width="40" Height="10" RadiusX="4" RadiusY="4" Margin="4,0,0,0" Stroke="{x:Null}">
-                            <Rectangle.Effect>
+                            --><!--<Rectangle.Effect>
                                 <DropShadowEffect Color="{Binding SignalTowerGreen, UpdateSourceTrigger=PropertyChanged}" BlurRadius="10" ShadowDepth="0" Opacity="{Binding GlowOpacity}" />
-                            </Rectangle.Effect>
+                            </Rectangle.Effect>--><!--
                         </Rectangle>
                         <Rectangle x:Name="SignalTowerBlue" Fill="{Binding SignalTowerBlue, UpdateSourceTrigger=PropertyChanged}" Width="40" Height="10" RadiusX="4" RadiusY="4" Margin="4,0,0,0" Stroke="{x:Null}">
-                            <Rectangle.Effect>
+                            --><!--<Rectangle.Effect>
                                 <DropShadowEffect Color="{Binding SignalTowerBlue, UpdateSourceTrigger=PropertyChanged}" BlurRadius="10" ShadowDepth="0"  Opacity="{Binding GlowOpacity}" />
-                            </Rectangle.Effect>
+                            </Rectangle.Effect>--><!--
                         </Rectangle>
                         <Rectangle x:Name="SignalTowerWhite" Fill="{Binding SignalTowerWhite, UpdateSourceTrigger=PropertyChanged}" Width="40" Height="10" RadiusX="4" RadiusY="4" Margin="4,0,0,0" Stroke="{x:Null}">
-                            <Rectangle.Effect>
+                            --><!--<Rectangle.Effect>
                                 <DropShadowEffect Color="{Binding SignalTowerWhite, UpdateSourceTrigger=PropertyChanged}" BlurRadius="10" ShadowDepth="0" Opacity="{Binding GlowOpacity}" />
-                            </Rectangle.Effect>
+                            </Rectangle.Effect>--><!--
                         </Rectangle>
                         <Button Width="25" Height="25" Command="{Binding ToggleBuzzerOnOffCommand}">
                             <Button.Style>
@@ -164,7 +162,7 @@
                         </Button>
                     </StackPanel>
                 </Grid>
-            </Border>
+            </Border>-->
             <!-- Source Valve Current Status -->
             <Grid Grid.Row="2" VerticalAlignment="Center">
                 <Border Style="{StaticResource Tab}">

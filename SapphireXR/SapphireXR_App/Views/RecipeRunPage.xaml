@@ -118,7 +118,7 @@
 
                     <Line X1="215" Y1="346" X2="215" Y2="446" Stroke="{StaticResource ProcessLineColor}" StrokeThickness="2" />
                     <Line X1="365" Y1="346" X2="365" Y2="446" Stroke="{StaticResource ProcessLineColor}" StrokeThickness="2" />
-                    <Line X1="519" Y1="346" X2="519" Y2="446" Stroke="{StaticResource ProcessLineColor}" StrokeThickness="2" />
+                    <Line X1="515" Y1="346" X2="515" Y2="446" Stroke="{StaticResource ProcessLineColor}" StrokeThickness="2" />
                     <Line X1="665" Y1="346" X2="665" Y2="446" Stroke="{StaticResource ProcessLineColor}" StrokeThickness="2" />
                     <Line X1="815" Y1="346" X2="815" Y2="446" Stroke="{StaticResource ProcessLineColor}" StrokeThickness="2" />
                     <Line X1="1023" Y1="346" X2="1023" Y2="446" Stroke="{StaticResource ProcessLineColor}" StrokeThickness="2" />

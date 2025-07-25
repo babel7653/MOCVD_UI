@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4026.11">
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4026.12">
   <POU Name="P17_DOROperation" Id="{47a43ac8-2dfa-477f-bf65-90da71792e7e}" SpecialFunc="None">
     <Declaration><![CDATA[PROGRAM P17_DOROperation
 VAR_INPUT
@@ -65,12 +65,13 @@ fTresholdCount 		:= GVL_IO.aInterlockSet[16];
 bPressureEnable 	:= GVL_IO.aInterlockEnable[1].5;
 bCountEnable 		:= GVL_IO.aInterlockEnable[1].6;
 nTresholdCount 		:= REAL_TO_INT(fTresholdCount); //Try One more Vacuum 
+
 (* If Vacuum 'ON' Switch Press, Change DOR Vacuum State *)
 //DOR Operation Signal generation
 TimerVacSwitch(IN:=bVacSwitch OR bDOROn, PT:=T#100MS);
 rTrigSwitch(CLK:=TimerVacSwitch.Q);
 
-IF rTrigSwitch.Q AND P90_Interlock.bDorOnEnable THEN
+IF rTrigSwitch.Q AND GVL_IO.bDorOnEnable THEN
 	nCase 		:= 1;
 	nTryCount 	:= 1; //Try One more Vacuum 
 END_IF
@@ -96,7 +97,7 @@ CASE nCase OF
 			IF rPressurePV_kPa > fTresholdPressure THEN
 				bV_DORVac 		:= FALSE; //V34 Close
 				isDOROnState 	:= TRUE;
-				bVacLED 			:= TRUE; //Switch LED
+				bVacLED 		:= TRUE; //Switch LED
 				bError			:= 0;
 				nCase 			:= 0;
 			ELSIF nTryCount < nTresholdCount THEN
@@ -191,7 +192,11 @@ END_IF
 GVL_IO.aOutputSolValve[2].18 := bV_DORVac; //V34
 GVL_IO.aOutputSolValve[2].19 := bV_DORFill; //V35
 GVL_IO.aDigitalOutputIO[4].0 := bVacLED;
-GVL_IO.aDigitalOutputIO[4].1 := bAtmLED;]]></ST>
+GVL_IO.aDigitalOutputIO[4].1 := bAtmLED;
+
+GVL_IO.nDorOperationError := bError;
+GVL_IO.bDorState := isDOROnState;
+]]></ST>
     </Implementation>
     <LineIds Name="P17_DOROperation">
       <LineId Id="21" Count="5" />
@@ -200,6 +205,7 @@ GVL_IO.aDigitalOutputIO[4].1 := bAtmLED;]]></ST>
       <LineId Id="628" Count="0" />
       <LineId Id="458" Count="0" />
       <LineId Id="629" Count="3" />
+      <LineId Id="643" Count="0" />
       <LineId Id="123" Count="0" />
       <LineId Id="122" Count="0" />
       <LineId Id="119" Count="0" />
@@ -208,7 +214,7 @@ GVL_IO.aDigitalOutputIO[4].1 := bAtmLED;]]></ST>
       <LineId Id="215" Count="0" />
       <LineId Id="377" Count="0" />
       <LineId Id="353" Count="0" />
-      <LineId Id="496" Count="0" />
+      <LineId Id="642" Count="0" />
       <LineId Id="459" Count="2" />
       <LineId Id="463" Count="1" />
       <LineId Id="536" Count="0" />
@@ -250,6 +256,10 @@ GVL_IO.aDigitalOutputIO[4].1 := bAtmLED;]]></ST>
       <LineId Id="51" Count="1" />
       <LineId Id="44" Count="0" />
       <LineId Id="5" Count="0" />
+      <LineId Id="647" Count="0" />
+      <LineId Id="646" Count="0" />
+      <LineId Id="648" Count="0" />
+      <LineId Id="645" Count="0" />
     </LineIds>
   </POU>
 </TcPlcObject>

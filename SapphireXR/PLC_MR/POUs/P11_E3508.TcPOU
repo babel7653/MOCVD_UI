@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4026.11">
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4026.12">
   <POU Name="P11_E3508" Id="{a7e3d6a1-82f0-4607-8ac9-093cb5f931f5}" SpecialFunc="None">
     <Declaration><![CDATA[PROGRAM P11_E3508
 VAR_INPUT
@@ -57,6 +57,8 @@ END_VAR
 
 (* Read from Power Distribution Pannel *)
 bInductionHeaterCB		:= GVL_IO.aDigitalInputIO[4].7;
+nInputAlarmBytes.7 		:= GVL_IO.aInputState[4].7;
+nInputManAutoBytes.7 	:= GVL_IO.aInputState[4].8;
 
 (* Read from E3508 Device Value *)
 wE3508_PV				:= USINT_TO_WORD_Bit(aInputPVBytes[1], aInputPVBytes[2]);
@@ -76,9 +78,15 @@ isHeaterReady 			:= GVL_IO.aDigitalInputIO[2].2;
 isHeaterRun		 		:= GVL_IO.aDigitalInputIO[2].3;
 isHeaterFault 			:= GVL_IO.aDigitalInputIO[2].4;
 
+// Interface with other PRGs
+wControlValue			:= GVL_IO.wE3508_ControlValue;
+bHeaterOn				:= GVL_IO.bE3508_HeaterOn;
+GVL_IO.wE3508_PV		:= wE3508_PV;
+
 (* Write to E3508 Device Value *)
 // Operation Mode
-nOutputManAutoBytes.0 	:= bOutputManAuto; //Command
+// bOutputManAuto := GVL_IO.aOutputCmd[1].11; //Temp Controller Mode Command
+nOutputManAutoBytes.0 	:= GVL_IO.aOutputCmd[1].11; //Command
 
 IF nInputManAutoBytes.7 THEN // Read form E3508 Mode, 0:Man 1:Auto
 	wOutputPowerSVBytes 	:= WORD_TO_USINT_Bit(wControlValue*10); //multiple to 10, Power Reate Set Value
@@ -92,13 +100,16 @@ END_IF
 
 (* Write to Induction Heater Value *)
 GVL_IO.aDigitalOutputIO[2].0 := bHeaterOn;
-GVL_IO.aDigitalOutputIO[2].1 := bHeaterReset;]]></ST>
+GVL_IO.aDigitalOutputIO[2].1 := bHeaterReset;
+]]></ST>
     </Implementation>
     <LineIds Name="P11_E3508">
       <LineId Id="302" Count="2" />
       <LineId Id="300" Count="1" />
       <LineId Id="298" Count="1" />
+      <LineId Id="550" Count="0" />
       <LineId Id="297" Count="0" />
+      <LineId Id="554" Count="0" />
       <LineId Id="279" Count="8" />
       <LineId Id="278" Count="0" />
       <LineId Id="531" Count="0" />
@@ -107,9 +118,11 @@ GVL_IO.aDigitalOutputIO[2].1 := bHeaterReset;]]></ST>
       <LineId Id="294" Count="0" />
       <LineId Id="296" Count="0" />
       <LineId Id="309" Count="1" />
+      <LineId Id="558" Count="4" />
       <LineId Id="254" Count="0" />
       <LineId Id="269" Count="0" />
       <LineId Id="537" Count="0" />
+      <LineId Id="549" Count="0" />
       <LineId Id="536" Count="0" />
       <LineId Id="538" Count="0" />
       <LineId Id="533" Count="0" />
@@ -123,6 +136,7 @@ GVL_IO.aDigitalOutputIO[2].1 := bHeaterReset;]]></ST>
       <LineId Id="289" Count="0" />
       <LineId Id="292" Count="0" />
       <LineId Id="382" Count="0" />
+      <LineId Id="556" Count="0" />
     </LineIds>
   </POU>
 </TcPlcObject>

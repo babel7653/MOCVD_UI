@@ -71,15 +71,15 @@
                     <Grid Grid.Column="1">
                         <Grid.RowDefinitions>
                             <RowDefinition Height="Auto" />
-                            <RowDefinition Height="4" />
+                            <RowDefinition Height="2" />
                             <RowDefinition Height="Auto" />
                             <RowDefinition Height="4" />
                             <RowDefinition Height="Auto" />
-                            <RowDefinition Height="4" />
+                            <RowDefinition Height="2" />
                             <RowDefinition Height="Auto" />
                             <RowDefinition Height="4" />
                             <RowDefinition Height="Auto" />
-                            <RowDefinition Height="4" />
+                            <RowDefinition Height="2" />
                             <RowDefinition Height="Auto" />
                         </Grid.RowDefinitions>
                         <Grid.ColumnDefinitions>
@@ -97,6 +97,24 @@
                         <TextBlock Text="{Binding PLCAddressText}" Grid.Row="6" Grid.Column="2" FontFamily="Segoe UI" FontSize="12" Foreground="{DynamicResource Gray_950}" Margin="0" Padding="0" FontWeight="Bold"><Run Text="Machine Nam"/><Run Language="ko-kr" Text="e"/></TextBlock>
                         <TextBlock FontFamily="Segoe UI" Grid.Row="8" Grid.Column="0"  FontSize="12" Foreground="{DynamicResource Gray_900}" Margin="0" Padding="0" ><Run Text="PLC "/><Run Language="ko-kr" Text="C"/><Run Text="onnection"/></TextBlock>
                         <TextBlock Text="{Binding PLCConnectionStatus}" Grid.Row="10" Grid.Column="0" FontFamily="Segoe UI" FontSize="12" Margin="0" Padding="0" Foreground="{Binding PLCConnectionStatusColor}" FontWeight="Bold"><Run Text="Machine Nam"/><Run Language="ko-kr" Text="e"/></TextBlock>
+                        <Button Grid.Row="6" Grid.Column="2" Grid.RowSpan="5"  Width="25" Height="25" Command="{Binding ToggleBuzzerOnOffCommand}">
+                            <Button.Style>
+                                <Style TargetType="Button" BasedOn="{StaticResource ImageButton}">
+                                    <Setter Property="Margin">
+                                        <Setter.Value>
+                                            <Thickness Left="{StaticResource p_1}" Right="{StaticResource p_3}" />
+                                        </Setter.Value>
+                                    </Setter>
+                                    <Setter Property="BorderThickness" Value="0" />
+                                    <Style.Triggers>
+                                        <Trigger Property="IsMouseOver" Value="True">
+                                            <Setter Property="Background" Value="#FF929281" />
+                                        </Trigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Button.Style>
+                            <Image Source="{Binding BuzzerImage}" Width="25" Height="25" IsEnabled="{Binding Source={x:Static model:PLCConnectionState.Instance}, Path=Online}"/>
+                        </Button>
                     </Grid>
                 </Grid>
             </Grid>

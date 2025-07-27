@@ -42,7 +42,7 @@ namespace SapphireXR_App.ViewModels
                 }
             }
 
-            private string coolingWaterID;
+            private readonly string coolingWaterID;
             private LeftViewModel leftViewModel;
         }
 

@@ -127,6 +127,8 @@ END_VAR
 					ELSE
 						eRecipeRun := E_RecipeRun.CheckRepeatOrNext;
 					END_IF
+					// 					nRcpIndex := nRcpIndex + 1 - (RCP.aRecipe[nRCPIndex].iRecipe[8]) * MIN(RCP.aRecipe[nRCPIndex].iRecipe[9], 1);
+// 					RCP.aRecipe[nRCPIndex].iRecipe[9] := RCP.aRecipe[nRCPIndex].iRecipe[9] - 1;
 
 				
 				E_RecipeRun.CheckRepeatOrNext:
@@ -265,90 +267,7 @@ END_CASE
 ]]></ST>
     </Implementation>
     <LineIds Name="P50_RecipeControl">
-      <LineId Id="1" Count="10" />
-      <LineId Id="454" Count="1" />
-      <LineId Id="12" Count="4" />
-      <LineId Id="493" Count="2" />
-      <LineId Id="17" Count="0" />
-      <LineId Id="534" Count="0" />
-      <LineId Id="537" Count="0" />
-      <LineId Id="19" Count="1" />
-      <LineId Id="410" Count="0" />
-      <LineId Id="21" Count="2" />
-      <LineId Id="539" Count="2" />
-      <LineId Id="27" Count="3" />
-      <LineId Id="531" Count="0" />
-      <LineId Id="509" Count="0" />
-      <LineId Id="385" Count="0" />
-      <LineId Id="403" Count="0" />
-      <LineId Id="32" Count="0" />
-      <LineId Id="373" Count="0" />
-      <LineId Id="370" Count="0" />
-      <LineId Id="375" Count="2" />
-      <LineId Id="380" Count="2" />
-      <LineId Id="408" Count="0" />
-      <LineId Id="396" Count="0" />
-      <LineId Id="383" Count="0" />
-      <LineId Id="407" Count="0" />
-      <LineId Id="384" Count="0" />
-      <LineId Id="521" Count="0" />
-      <LineId Id="528" Count="2" />
-      <LineId Id="522" Count="0" />
-      <LineId Id="524" Count="0" />
-      <LineId Id="523" Count="0" />
-      <LineId Id="404" Count="0" />
-      <LineId Id="386" Count="0" />
-      <LineId Id="378" Count="0" />
-      <LineId Id="390" Count="1" />
-      <LineId Id="421" Count="0" />
-      <LineId Id="428" Count="0" />
-      <LineId Id="424" Count="0" />
-      <LineId Id="423" Count="0" />
-      <LineId Id="399" Count="0" />
-      <LineId Id="433" Count="0" />
-      <LineId Id="432" Count="0" />
-      <LineId Id="426" Count="0" />
-      <LineId Id="425" Count="0" />
-      <LineId Id="395" Count="0" />
-      <LineId Id="444" Count="0" />
-      <LineId Id="437" Count="0" />
-      <LineId Id="443" Count="0" />
-      <LineId Id="446" Count="0" />
-      <LineId Id="445" Count="0" />
-      <LineId Id="447" Count="0" />
-      <LineId Id="510" Count="0" />
-      <LineId Id="452" Count="1" />
-      <LineId Id="389" Count="0" />
-      <LineId Id="470" Count="0" />
-      <LineId Id="468" Count="0" />
-      <LineId Id="471" Count="0" />
-      <LineId Id="474" Count="0" />
-      <LineId Id="499" Count="1" />
-      <LineId Id="498" Count="0" />
-      <LineId Id="486" Count="0" />
-      <LineId Id="501" Count="7" />
-      <LineId Id="492" Count="0" />
-      <LineId Id="469" Count="0" />
-      <LineId Id="489" Count="0" />
-      <LineId Id="481" Count="1" />
-      <LineId Id="497" Count="0" />
-      <LineId Id="484" Count="0" />
-      <LineId Id="526" Count="1" />
-      <LineId Id="496" Count="0" />
-      <LineId Id="371" Count="0" />
-      <LineId Id="111" Count="93" />
-      <LineId Id="272" Count="0" />
-      <LineId Id="281" Count="0" />
-      <LineId Id="290" Count="0" />
-      <LineId Id="285" Count="0" />
-      <LineId Id="274" Count="0" />
-      <LineId Id="286" Count="0" />
-      <LineId Id="270" Count="0" />
-      <LineId Id="287" Count="0" />
-      <LineId Id="289" Count="0" />
-      <LineId Id="279" Count="0" />
-      <LineId Id="278" Count="0" />
-      <LineId Id="206" Count="3" />
+      <LineId Id="1" Count="224" />
     </LineIds>
   </POU>
 </TcPlcObject>

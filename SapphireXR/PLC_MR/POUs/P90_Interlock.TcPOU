@@ -108,7 +108,7 @@ tAlarmDelay_D := REAL_TO_TIME(GVL_IO.aInterlockSet[4]*1000);
 //Controller Deviation Monitoring - MFC/EPC
 IF bMaintKey THEN //bMaintKey 변경
 	//매인터넌스 키가 ON 되었을 때 MC(Induction, Bath, Pump, L_Heater) 조작 허용
-	GVL_IO.nCaseSignalTower	:= 5; //Signal Tower White - Maintenance
+	GVL_IO.nCaseSignalTower	:= 4; //Signal Tower Blue - Maintenance
 	GVL_IO.aDigitalOutputIO[3].0 := GVL_IO.aOutputCmd[1].0;
 	GVL_IO.aDigitalOutputIO[3].1 := GVL_IO.aOutputCmd[1].1;
 	GVL_IO.aDigitalOutputIO[3].2 := GVL_IO.aOutputCmd[1].2;

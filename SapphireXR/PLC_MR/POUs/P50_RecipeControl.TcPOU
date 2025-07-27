@@ -57,7 +57,7 @@ END_VAR
 		FOR i :=1 TO 6 DO 
 			Rcp.aLoop[i] := -1;
 		END_FOR
-		GVL_IO.nCaseSignalTower := 4; // Blue - Idle
+		GVL_IO.nCaseSignalTower := 5; // White - Idle
 		k1 := 0;
 		k2 := 0;
 		k3 := 0;
@@ -69,7 +69,7 @@ END_VAR
 			eRecipeRun := E_RecipeRun.Ramp; // 레시피 첫 Column 실행
 		ELSIF nRcpIndex > Rcp.iRcpTotalStep THEN
 			RCP.cmd_RcpOperation := 50;
-			GVL_IO.nCaseSignalTower := 4; // Blue - Idle
+			GVL_IO.nCaseSignalTower := 5; // White - Idle
 			FOR i :=1 TO 6 DO 
 				RCP.aLoop[i] := -1;
 			END_FOR
@@ -182,7 +182,7 @@ END_VAR
 		END_IF	
 		Pause_Step := nRcpIndex;
 		Rcp.userState := 20;
-		GVL_IO.nCaseSignalTower := 4;
+		GVL_IO.nCaseSignalTower := 5;
 		
 	30: //RESTART
 		Rcp.state_RcpOperation := 30;	
@@ -235,14 +235,14 @@ END_VAR
 		Pause_TON(IN:=FALSE);
 		ReStart_TON(IN:=FALSE);
 		Rcp.userState := 40;
-		GVL_IO.nCaseSignalTower := 4;
+		GVL_IO.nCaseSignalTower := 5;
 		fbRecipeSequencer();
 		
 	50: //END
 		Rcp.state_RcpOperation := 50;
 		Rcp.userState := 50;
 		fbRecipeSequencer(nRcpIndex := nRcpIndex);
-		GVL_IO.nCaseSignalTower := 4;
+		GVL_IO.nCaseSignalTower := 5;
 		fbRecipeSequencer();
 		
 	60: //SKIP

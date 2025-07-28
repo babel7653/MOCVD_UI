@@ -2,6 +2,7 @@
 using SapphireXR_App.Common;
 using SapphireXR_App.Models;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Globalization;
 using System.IO;
 using System.Windows;
@@ -69,7 +70,7 @@ namespace SapphireXR_App.ViewModels
                     if(loopContext != EmptyLoopContext)
                     {
                         Recipes[loopLimit - 1].JumpStride = (short)(loopLimit - recipe.No + 1);
-                        Recipes[loopLimit - 1].LoopCount = (short)(loopCount - 1);
+                        Recipes[loopLimit - 1].LoopCount = (short)loopCount;
                     }
                     totalRecipeTime += (loopTototalRecipeTime * loopCount);
                 }
@@ -114,6 +115,7 @@ namespace SapphireXR_App.ViewModels
                                 Recipes[cur].Background = Recipe.DefaultBackground;
                                 Recipes[cur].Foreground = DisabledRecipeListForeground;
                             }
+                            
                             for (short cur = (short)(index + 1); cur < Recipes.Count; cur++)
                             {
                                 Recipes[cur].Background = Recipe.DefaultBackground;
@@ -287,15 +289,11 @@ namespace SapphireXR_App.ViewModels
 
             public void toLoadedFromFileState()
             {
-                if (currentRecipe != null)
-                {
-                    currentRecipe.Background = Recipe.DefaultBackground;
-                    currentRecipe.Foreground = Recipe.DefaultForeground;
-
-                }
                 foreach(Recipe recipe in Recipes)
                 {
                     recipe.IsEnabled = true;
+                    recipe.Background = Recipe.DefaultBackground;
+                    recipe.Foreground = Recipe.DefaultForeground;
                 }
 
                 currentRecipe = null;

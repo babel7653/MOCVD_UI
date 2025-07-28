@@ -86,8 +86,7 @@ END_VAR
 						//Ramp_On := FALSE;
 						//Hold_On	:= TRUE;
 						eRecipeRun := E_RecipeRun.CheckHoldTemp;
-					END_IF
-					
+					END_IF				
 					
 				E_RecipeRun.CheckHoldTemp: //Hold Temp 확인
 					IF RCP.aRecipe[nRcpIndex].iRecipe[7] = 0 THEN
@@ -205,31 +204,7 @@ END_CASE
 ]]></ST>
     </Implementation>
     <LineIds Name="P50_RecipeControl">
-      <LineId Id="1" Count="10" />
-      <LineId Id="227" Count="3" />
-      <LineId Id="13" Count="1" />
-      <LineId Id="249" Count="0" />
-      <LineId Id="21" Count="5" />
-      <LineId Id="34" Count="0" />
-      <LineId Id="39" Count="6" />
-      <LineId Id="251" Count="1" />
-      <LineId Id="257" Count="2" />
-      <LineId Id="256" Count="0" />
-      <LineId Id="263" Count="0" />
-      <LineId Id="254" Count="0" />
-      <LineId Id="46" Count="7" />
-      <LineId Id="55" Count="0" />
-      <LineId Id="62" Count="14" />
-      <LineId Id="261" Count="0" />
-      <LineId Id="78" Count="1" />
-      <LineId Id="88" Count="0" />
-      <LineId Id="108" Count="0" />
-      <LineId Id="245" Count="1" />
-      <LineId Id="244" Count="0" />
-      <LineId Id="247" Count="0" />
-      <LineId Id="250" Count="0" />
-      <LineId Id="116" Count="88" />
-      <LineId Id="224" Count="1" />
+      <LineId Id="1" Count="163" />
     </LineIds>
   </POU>
 </TcPlcObject>

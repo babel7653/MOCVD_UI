@@ -750,11 +750,12 @@
                                 <Setter.Value>
                                     <Style TargetType="{x:Type DataGridCell}">
                                         <Setter Property="TextBlock.TextAlignment" Value="Center" />
-                                        <Style.Triggers>
+                                        <Setter Property="Foreground" Value="{Binding Foreground}"/>
+                                        <!--<Style.Triggers>
                                             <Trigger Property="IsEnabled" Value="false">
                                                 <Setter Property="Foreground" Value="{Binding Foreground}"/>
                                             </Trigger>
-                                        </Style.Triggers>
+                                        </Style.Triggers>-->
                                     </Style>
                                 </Setter.Value>
                             </Setter>

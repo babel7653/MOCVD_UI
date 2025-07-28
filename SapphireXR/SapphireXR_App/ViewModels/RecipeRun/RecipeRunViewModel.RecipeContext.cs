@@ -43,7 +43,6 @@ namespace SapphireXR_App.ViewModels
                     int loopTototalRecipeTime = 0;
                     int loopLimit = Math.Max(recipe.No, recipe.Jump);
                     int loopCount = Math.Max(1, (int)recipe.Repeat);
-                    short jumpStride;
                     LoopContext loopContext;
                     if (1 < loopCount)
                     {
@@ -54,12 +53,10 @@ namespace SapphireXR_App.ViewModels
                             CurrentLoopCount = 0,
                             TotalLoop = loopCount,
                         };
-                        jumpStride = (short)(loopLimit - recipe.No + 1);
                     }
                     else
                     {
                         loopContext = EmptyLoopContext;
-                        jumpStride = 0;
                     }
                     
                     for (; step < loopLimit; ++step)
@@ -69,8 +66,11 @@ namespace SapphireXR_App.ViewModels
                      
                         loopContexts[step] = loopContext;
                     }
-                    Recipes[loopLimit - 1].JumpStride = jumpStride;
-                    Recipes[loopLimit - 1].LoopCount = (short)(loopCount - 1);
+                    if(loopContext != EmptyLoopContext)
+                    {
+                        Recipes[loopLimit - 1].JumpStride = (short)(loopLimit - recipe.No + 1);
+                        Recipes[loopLimit - 1].LoopCount = (short)(loopCount - 1);
+                    }
                     totalRecipeTime += (loopTototalRecipeTime * loopCount);
                 }
                 TotalRecipeTime = totalRecipeTime;

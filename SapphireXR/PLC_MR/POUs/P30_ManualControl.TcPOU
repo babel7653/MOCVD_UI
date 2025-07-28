@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4026.12">
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4026.11">
   <POU Name="P30_ManualControl" Id="{98ee4f4f-99e9-426e-9dfa-55ddf51d552b}" SpecialFunc="None">
     <Declaration><![CDATA[PROGRAM P30_ManualControl
 VAR_INPUT

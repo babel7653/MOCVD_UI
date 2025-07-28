@@ -58,12 +58,18 @@ namespace SapphireXR_App.ViewModels
                     {
                         loopContext = EmptyLoopContext;
                     }
+                    
                     for (; step < loopLimit; ++step)
                     {
                         loopTototalRecipeTime += Recipes[step].RTime;
                         loopTototalRecipeTime += Recipes[step].HTime;
                      
                         loopContexts[step] = loopContext;
+                    }
+                    if(loopContext != EmptyLoopContext)
+                    {
+                        Recipes[loopLimit - 1].JumpStride = (short)(loopLimit - recipe.No + 1);
+                        Recipes[loopLimit - 1].LoopCount = (short)(loopCount - 1);
                     }
                     totalRecipeTime += (loopTototalRecipeTime * loopCount);
                 }

@@ -1,12 +1,37 @@
 ﻿using SapphireXR_App.Common;
 using SapphireXR_App.ViewModels;
 using System.ComponentModel;
+using System.Globalization;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Data;
 using System.Windows.Input;
 
 namespace SapphireXR_App.Views
 {
+    internal class RampingTimeValueConverter : IValueConverter
+    {
+        object IValueConverter.Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            return value;
+        }
+
+        object? IValueConverter.ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            string? rampingTimeStr = value as string;
+            if (rampingTimeStr == null)
+            {
+                return null;
+            }
+
+            if (rampingTimeStr == "" || rampingTimeStr == "0")
+            {
+                return null;
+            }
+
+            return value;
+        }
+    }
     /// <summary>
     /// ManualBatchView.xaml에 대한 상호 작용 논리
     /// </summary>

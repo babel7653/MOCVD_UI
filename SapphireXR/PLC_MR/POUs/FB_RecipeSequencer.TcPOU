@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4026.12">
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4026.11">
   <POU Name="FB_RecipeSequencer" Id="{eaa1ede0-1851-426e-9c35-61099dc6c976}" SpecialFunc="None">
     <Declaration><![CDATA[FUNCTION_BLOCK FB_RecipeSequencer
 VAR_INPUT
@@ -21,7 +21,7 @@ FOR i:= 1 TO 26 DO
 		GVL_IO.aAnalogOutputIO[i] := LREAL_TO_INT(GVL_IO.aController[i].rControlValue);
 		
 		GVL_IO.aController_PV[i] := GVL_IO.aAnalogInputIO[i] / (GVL_IO.KL3464MaxValueH * GVL_IO.aMaxValueController[i]);
-		GVL_IO.aController_CV[i] := LREAL_TO_REAL((GVL_IO.aController[i].rControlValue / GVL_IO.KL3464MaxValueH)*GVL_IO.aMaxValueController[i]);
+		GVL_IO.aController_TV[i] := GVL_IO.aController_CV[i] := LREAL_TO_REAL((GVL_IO.aController[i].rControlValue / GVL_IO.KL3464MaxValueH)*GVL_IO.aMaxValueController[i]);
 		GVL_IO.aController[i]();	
 	END_IF
 END_FOR

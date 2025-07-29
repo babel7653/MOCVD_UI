@@ -6,6 +6,7 @@ using SapphireXR_App.Common;
 using SapphireXR_App.Enums;
 using SapphireXR_App.Models;
 using SapphireXR_App.ViewModels.BottomDashBoard;
+using SapphireXR_App.Views;
 using SapphireXR_App.WindowServices;
 using System.Collections;
 using System.Collections.Specialized;
@@ -124,15 +125,26 @@ namespace SapphireXR_App.ViewModels
                 (bool result, string? recipeFilePath, List<Recipe>? recipes) = RecipeService.OpenRecipe(Config, AppSetting.RecipeRunRecipeInitialPath);
                 if (result == true)
                 {
-                    if (0 < recipes!.Count)
-                    {
-                        CurrentRecipe = new RecipeContext(recipeFilePath!, recipes!);
-                        AppSetting.RecipeRunRecipeInitialPath = Path.GetDirectoryName(recipeFilePath);
-                    }
-                    else
+                    if(recipes!.Count <= 0)
                     {
                         MessageBox.Show(recipeFilePath + "은 빈 파일입니다.");
+                        return;
                     }
+                    else if (AppSetting.MaxNumberOfRecipeSteps < recipes!.Count)
+                    {
+                        if(ConfirmMessage.Show("", recipeFilePath + "의 Recipe 갯수가 허용가능한 최대갯수인 " + AppSetting.MaxNumberOfRecipeSteps + "을 초과하였습니다." +
+                            "확인을 누르면 " + (AppSetting.MaxNumberOfRecipeSteps + 1) + "번 이상의 step들은 삭제된 채 로드됩니다.", WindowStartupLocation.CenterOwner) == DialogResult.Ok)
+                        {
+                            recipes = recipes!.Take((int)AppSetting.MaxNumberOfRecipeSteps).ToList();
+                        }
+                        else
+                        {
+                            return;
+                        }
+                    }
+
+                    CurrentRecipe = new RecipeContext(recipeFilePath!, recipes!);
+                    AppSetting.RecipeRunRecipeInitialPath = Path.GetDirectoryName(recipeFilePath);
                 }
             }
             catch(Exception exception)

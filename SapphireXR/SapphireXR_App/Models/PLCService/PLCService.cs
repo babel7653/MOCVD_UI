@@ -175,7 +175,6 @@ namespace SapphireXR_App.Models
             hRcp = Ads.CreateVariableHandle("RCP.aRecipe");
             hRcpTotalStep = Ads.CreateVariableHandle("RCP.iRcpTotalStep");
             hCmd_RcpOperation = Ads.CreateVariableHandle("RCP.cmd_RcpOperation");
-            hState_RcpOperation = Ads.CreateVariableHandle("RCP.state_RcpOperation");
             hRcpStepN = Ads.CreateVariableHandle("P50_RecipeControl.nRcpIndex");
             hTemperaturePV = Ads.CreateVariableHandle("P13_LineHeater.rTemperaturePV");
             hOperationMode = Ads.CreateVariableHandle("MAIN.bOperationMode");

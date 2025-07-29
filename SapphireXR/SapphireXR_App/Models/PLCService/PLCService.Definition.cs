@@ -252,7 +252,6 @@ namespace SapphireXR_App.Models
         private static uint hMonitoring_PV;
         private static uint hInputState;
         private static uint hInputState4;
-        private static uint hState_RcpOperation;
         private static uint hTemperaturePV;
         private static uint hOperationMode;
         private static uint hUserState;

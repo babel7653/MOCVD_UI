@@ -41,11 +41,6 @@ namespace SapphireXR_App.Models
             }
         }
 
-        public static short ReadRCPOperationState()
-        {
-            return Ads.ReadAny<short>(hState_RcpOperation);
-        }
-
         public static short ReadUserState()
         {
             return Ads.ReadAny<short>(hUserState);

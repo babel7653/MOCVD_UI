@@ -96,7 +96,7 @@
                         <TextBlock FontFamily="Segoe UI" FontSize="12" Grid.Row="4" Grid.Column="2" Foreground="{DynamicResource Gray_900}" Margin="0" Padding="0" ><Run Language="ko-kr" Text="PLC Address"/></TextBlock>
                         <TextBlock Text="{Binding PLCAddressText}" Grid.Row="6" Grid.Column="2" FontFamily="Segoe UI" FontSize="12" Foreground="{DynamicResource Gray_950}" Margin="0" Padding="0" FontWeight="Bold"><Run Text="Machine Nam"/><Run Language="ko-kr" Text="e"/></TextBlock>
                         <TextBlock FontFamily="Segoe UI" Grid.Row="8" Grid.Column="0"  FontSize="12" Foreground="{DynamicResource Gray_900}" Margin="0" Padding="0" ><Run Text="PLC "/><Run Language="ko-kr" Text="C"/><Run Text="onnection"/></TextBlock>
-                        <TextBlock Text="{Binding PLCConnectionStatus}" Grid.Row="10" Grid.Column="0" FontFamily="Segoe UI" FontSize="12" Margin="0" Padding="0" Foreground="{Binding PLCConnectionStatusColor}" FontWeight="Bold"><Run Text="Machine Nam"/><Run Language="ko-kr" Text="e"/></TextBlock>
+                        <TextBlock Text="{Binding PLCConnectionStatus}" Grid.Row="10" Grid.Column="0" FontFamily="Segoe UI" FontSize="12" Margin="0" Padding="0" Foreground="{Binding PLCConnectionStatusColor}" FontWeight="Bold" />
                         <Button Grid.Row="6" Grid.Column="2" Grid.RowSpan="5"  Width="25" Height="25" Command="{Binding ToggleBuzzerOnOffCommand}">
                             <Button.Style>
                                 <Style TargetType="Button" BasedOn="{StaticResource ImageButton}">

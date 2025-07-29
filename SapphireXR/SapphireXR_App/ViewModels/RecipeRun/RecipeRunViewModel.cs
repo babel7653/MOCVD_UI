@@ -99,6 +99,8 @@ namespace SapphireXR_App.ViewModels
                         }
                         RecipeStartCommand.NotifyCanExecuteChanged();
                         break;
+
+                 
                 }
             };
 
@@ -242,12 +244,14 @@ namespace SapphireXR_App.ViewModels
 
         bool canSkipCommandExecute()
         {
-            return PLCService.Connected == PLCConnection.Connected && CurrentRecipeUserState == RecipeUserState.Run;
+            return PLCService.Connected == PLCConnection.Connected && CurrentRecipeUserState == RecipeUserState.Run && SkipEnable == true;
         }
         [RelayCommand(CanExecute = nameof(canSkipCommandExecute))]
         void RecipeSkip()
         {
             PLCService.WriteRCPOperationCommand(60);
+            SkipEnable = false;
+            Task.Delay(TimeSpan.FromSeconds(1)).ContinueWith(task => SkipEnable = true, TaskScheduler.FromCurrentSynchronizationContext());
         }
      
         bool canRefreshCommandExecute()
@@ -472,6 +476,18 @@ namespace SapphireXR_App.ViewModels
         private OperationModeChangingSubscriber operationModeChangingSubscriber;
         private AlarmTriggeredSubscriber alarmTriggeredSubscriber;
         private bool recipeMode = false;
+
+        private bool skipEnable = true;
+        private bool SkipEnable
+        {
+            get => skipEnable;
+            set
+            {
+                skipEnable = value;
+                RecipeSkipCommand.NotifyCanExecuteChanged();
+            }
+        }
+      
 
         [ObservableProperty]
         private bool recipeStartAvailableInterlock = false;

@@ -444,7 +444,7 @@ END_IF
 bDorOffEnable :=
 	NOT(AlarmTrig) AND
 	NOT(GVL_IO.bDORState) AND
-	NOT(RCP.state_RcpOperation = 10) AND //Not Recipe Run State
+	NOT(Rcp.userState = 10) AND //Not Recipe Run State
 	NOT(bGasStateProcess) AND //Safety Process Gas : TRUE
 	NOT(bGasStateSource) AND //Safety Source Gas : TRUE
 	bGasStateVent AND //Vent Valve는 펌프 뒤쪽 Open

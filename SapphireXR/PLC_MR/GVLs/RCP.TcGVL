@@ -8,8 +8,7 @@ VAR_GLOBAL
 	
 	iRcpStepN				: INT;
 	cmd_RcpOperation		: INT; // 0:Inital State, 10:RUN, 20:PAUSE, 30:RESTART, 40:STOP, 60:SKIP, 90:ManualOperation
-	state_RcpOperation		: INT; // 0:Inital State, 10:RUN, 20:PAUSE, 30:RESTART, 40:STOP, 50:END
-	userState				: INT;	
+	userState				: INT;	// 0:Inital State, 10:RUN, 20:PAUSE, 30:RESTART, 40:STOP, 50:END, 60:SKIP
 END_VAR]]></Declaration>
   </GVL>
 </TcPlcObject>

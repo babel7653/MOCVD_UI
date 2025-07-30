@@ -181,7 +181,8 @@ namespace SapphireXR_App.Models
         private static BitArray? bOutputCmd1 = null;
         private static short[]? aDeviceRampTimes = new short[dIndexController.Count];
         private static float[]? aDeviceTargetValues = new float[dIndexController.Count];
-        private static int[] InterlockEnables = Enumerable.Repeat<int>(0, (int)NumAlarmWarningArraySize).ToArray(); 
+        private static int[] InterlockEnables = Enumerable.Repeat<int>(0, (int)NumAlarmWarningArraySize).ToArray();
+        private static Memory<byte> userStateBuffer = new Memory<byte>([ 0x00, 0x00 ]);
 
         private static Dictionary<string, ObservableManager<float>.Publisher>? dCurrentValueIssuers;
         private static Dictionary<string, ObservableManager<float>.Publisher>? dControlValueIssuers;
@@ -209,6 +210,8 @@ namespace SapphireXR_App.Models
         private static ObservableManager<bool>.Publisher? dOperationModeChangingPublisher;
 
         private static LeakTestModeSubscriber? leakTestModeSubscriber = null;
+
+        static Task<bool>? TryConnectAsync = null;
 
         public static PLCConnection Connected 
         { 
@@ -252,7 +255,6 @@ namespace SapphireXR_App.Models
         private static uint hMonitoring_PV;
         private static uint hInputState;
         private static uint hInputState4;
-        private static uint hState_RcpOperation;
         private static uint hTemperaturePV;
         private static uint hOperationMode;
         private static uint hUserState;

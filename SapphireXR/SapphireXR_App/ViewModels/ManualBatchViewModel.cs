@@ -128,6 +128,16 @@ namespace SapphireXR_App.ViewModels
 
                     case nameof(Batches):
                         Batches.CollectionChanged += batchCollectionChanged;
+                        foreach(Batch batch in Batches)
+                        {
+                            batch.PropertyChanged += (sender, e) =>
+                            {
+                                if(e.PropertyName == nameof(Batch.RampingTime))
+                                {
+                                    RampingTimeErrorThickness = (batch.RampingTime != null ? RampingTimeThicknessNoError : RampingTimeThicknessError);
+                                }
+                            };
+                        }
                         MinusCommand.NotifyCanExecuteChanged();
                         break;
 
@@ -329,6 +339,9 @@ namespace SapphireXR_App.ViewModels
             Save();
         }
 
+        private static readonly Thickness RampingTimeThicknessNoError = new Thickness(0, 0, 0, 0);
+        private static readonly Thickness RampingTimeThicknessError = new Thickness(2, 2, 2, 2);
+
         [ObservableProperty]
         private ObservableCollection<Batch> _batches = new ObservableCollection<Batch>();
 
@@ -351,6 +364,9 @@ namespace SapphireXR_App.ViewModels
 
         [ObservableProperty]
         private Batch? _batchOnRecipeEnd = null;
+
+        [ObservableProperty]
+        private Thickness rampingTimeErrorThickness = RampingTimeThicknessNoError;
 
         private AlarmTriggeredSubscriber alarmTriggeredSubscriber;
     }

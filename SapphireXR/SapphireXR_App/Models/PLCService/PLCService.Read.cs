@@ -41,14 +41,11 @@ namespace SapphireXR_App.Models
             }
         }
 
-        public static short ReadRCPOperationState()
-        {
-            return Ads.ReadAny<short>(hState_RcpOperation);
-        }
-
         public static short ReadUserState()
         {
-            return Ads.ReadAny<short>(hUserState);
+            int length = userStateBuffer.Length;
+            Ads.Read(hUserState, userStateBuffer);
+            return BitConverter.ToInt16(userStateBuffer.Span);
         }
 
         public static BitArray ReadOutputCmd1()

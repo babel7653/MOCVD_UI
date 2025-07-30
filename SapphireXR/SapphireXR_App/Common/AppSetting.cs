@@ -25,6 +25,7 @@ namespace SapphireXR_App.Common
                 RecipeEditRecipeInitialPath = (string?)Util.GetSettingValue(appSettingRootToken, "RecipeEditRecipeInitialPath");
                 RecipeLog1InitialPath = (string?)Util.GetSettingValue(appSettingRootToken, "RecipeLog1InitialPath");
                 RecipeLog2InitialPath = (string?)Util.GetSettingValue(appSettingRootToken, "RecipeLog2InitialPath");
+                MaxNumberOfRecipeSteps = (uint?)(Int64?)Util.GetSettingValue(appSettingRootToken, "MaxNumberOfRecipeSteps") ?? MaxNumberOfRecipeSteps;
 
                 JToken? token = appSettingRootToken["PrecursorSourceMonitorLabel"];
                 if (token != null)
@@ -52,7 +53,8 @@ namespace SapphireXR_App.Common
                     new JProperty("PLCPort", JsonConvert.SerializeObject(PLCPort)), new JProperty("ConfigMode", JsonConvert.SerializeObject(ConfigMode)), 
                     new JProperty("PrecursorSourceMonitorLabel", JsonConvert.SerializeObject(PrecursorSourceMonitorLabel)), new JProperty("ConnectionRetryMilleseconds", JsonConvert.SerializeObject(ConnectionRetryMilleseconds)),
                     new JProperty("RecipeRunRecipeInitialPath", JsonConvert.SerializeObject(RecipeRunRecipeInitialPath)), new JProperty("RecipeEditRecipeInitialPath", JsonConvert.SerializeObject(RecipeEditRecipeInitialPath)),
-                    new JProperty("RecipeLog1InitialPath", JsonConvert.SerializeObject(RecipeLog1InitialPath)), new JProperty("RecipeLog2InitialPath", JsonConvert.SerializeObject(RecipeLog2InitialPath))).ToString());
+                    new JProperty("RecipeLog1InitialPath", JsonConvert.SerializeObject(RecipeLog1InitialPath)), new JProperty("RecipeLog2InitialPath", JsonConvert.SerializeObject(RecipeLog2InitialPath)),
+                    new JProperty("MaxNumberOfRecipeSteps", JsonConvert.SerializeObject(MaxNumberOfRecipeSteps))).ToString());
             }
             catch(Exception exception)
             {
@@ -79,6 +81,7 @@ namespace SapphireXR_App.Common
         private static readonly int UnderFlowControlFallbackRatePercentage = 1;
         public static readonly float UnderFlowControlFallbackRate;
         public static uint ConnectionRetryMilleseconds = 1000;
+        public static uint MaxNumberOfRecipeSteps = 100;
         public static string? RecipeRunRecipeInitialPath;
         public static string? RecipeEditRecipeInitialPath;
         public static string? RecipeLog1InitialPath ;

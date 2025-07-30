@@ -258,8 +258,8 @@ namespace SapphireXR_App.Models
             aRecipeShort[6] = rhs.cTemp;
             aRecipeShort[7] = rhs.Repeat;
             aRecipeShort[8] = rhs.Jump;
-            //aRecipeShort[7] = rhs.JumpStride;
-            //aRecipeShort[8] = rhs.LoopCount;
+            aRecipeShort[7] = rhs.JumpStride;
+            aRecipeShort[8] = rhs.LoopCount;
             //Float Type Array
             aRecipeFloat[0] = rhs.M01;
             aRecipeFloat[1] = rhs.M02;

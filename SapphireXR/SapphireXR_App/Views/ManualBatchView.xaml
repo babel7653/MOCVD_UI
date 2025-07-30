@@ -90,6 +90,9 @@
                     </Button>
                 </Grid>
                 <Grid>
+                    <Grid.Resources>
+                        <local:RampingTimeValueConverter x:Key="rampingTimeValueConverter" />
+                    </Grid.Resources>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto" />
                         <RowDefinition Height="Auto" />
@@ -135,17 +138,42 @@
                             <Thickness Right="{StaticResource p_2}" Bottom="{StaticResource p_2}" />
                         </TextBox.Margin>
                     </TextBox>
-                    <local:NumberBox Grid.Row="3" x:Name="rampingTime" Grid.Column="1" Width="176" Height="26" Text="{Binding CurrentBatch.RampingTime, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" IsEnabled="{Binding RampingTimeEnabled}" LostFocus="NumberBox_LostFocus">
+                    <local:NumberBox Grid.Row="3" x:Name="rampingTime" Grid.Column="1" Width="176" Height="26" Text="{Binding CurrentBatch.RampingTime, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource rampingTimeValueConverter}}" IsEnabled="{Binding RampingTimeEnabled}" LostFocus="NumberBox_LostFocus">
                         <local:NumberBox.Style>
-                            <Style TargetType="TextBox" BasedOn="{StaticResource DefaultTextBox}">
-                                <Style.Triggers>
-                                    <DataTrigger Binding="{Binding ElementName=rampingTime, Path=Text}" Value="">
-                                        <Setter Property="Background" Value="Red"/>
-                                    </DataTrigger>
-                                    <DataTrigger Binding="{Binding ElementName=rampingTime, Path=Text}" Value="0">
-                                        <Setter Property="Background" Value="Red"/>
-                                    </DataTrigger>
-                                </Style.Triggers>
+                            <Style TargetType="local:NumberBox" BasedOn="{StaticResource DefaultTextBox}">
+                                <Setter Property="Template">
+                                    <Setter.Value>
+                                        <ControlTemplate TargetType="TextBox">
+                                            <Border Background="{StaticResource Gray_400}" BorderBrush="{StaticResource Gray_300}" BorderThickness="1" x:Name="innerBorder">
+                                                <Border.CornerRadius>
+                                                    <CornerRadius TopLeft="{StaticResource r_1}" TopRight="{StaticResource r_1}" BottomLeft="{StaticResource r_1}" BottomRight="{StaticResource r_1}" />
+                                                </Border.CornerRadius>
+                                                <ScrollViewer x:Name="PART_ContentHost" Margin="0" />
+                                            </Border>
+                                            <ControlTemplate.Triggers>
+                                                <Trigger Property="IsEnabled" Value="false">
+                                                    <Setter Property="Foreground" Value="{StaticResource Gray_800}" />
+                                                    <Setter TargetName="innerBorder" Property="Background" Value="{StaticResource Gray_600}" />
+                                                    <Setter TargetName="innerBorder" Property="BorderBrush" Value="{StaticResource Gray_500}" />
+                                                </Trigger>
+                                                <Trigger Property="IsMouseOver" Value="True">
+                                                    <Setter TargetName="innerBorder" Property="BorderBrush" Value="{StaticResource Gray_200}" />
+                                                </Trigger>
+                                                <Trigger Property="IsFocused" Value="True">
+                                                    <Setter TargetName="innerBorder" Property="BorderBrush" Value="{StaticResource Sapphire_Blue}" />
+                                                </Trigger>
+                                                <Trigger Property="Text" Value="0">
+                                                    <Setter TargetName="innerBorder" Property="BorderThickness" Value="1" />
+                                                    <Setter TargetName="innerBorder" Property="BorderBrush" Value="Red" />
+                                                </Trigger>
+                                                <Trigger Property="Text" Value="">
+                                                    <Setter TargetName="innerBorder" Property="BorderThickness" Value="1" />
+                                                    <Setter TargetName="innerBorder" Property="BorderBrush" Value="Red" />
+                                                </Trigger>
+                                            </ControlTemplate.Triggers>
+                                        </ControlTemplate>
+                                    </Setter.Value>
+                                </Setter>
                             </Style>
                         </local:NumberBox.Style>
                         <TextBox.Margin>

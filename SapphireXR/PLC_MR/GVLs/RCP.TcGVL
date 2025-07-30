@@ -3,16 +3,12 @@
   <GVL Name="RCP" Id="{f007839c-f4b4-44cc-b006-21ad8dc161e6}">
     <Declaration><![CDATA[{attribute 'qualified_only'}
 VAR_GLOBAL
-	
 	aRecipe		: ARRAY[1..100] OF RecipeStep; //Recipe Structure
 	iRcpTotalStep			: INT; //Recip Total Number
 	
 	iRcpStepN				: INT;
 	cmd_RcpOperation		: INT; // 0:Inital State, 10:RUN, 20:PAUSE, 30:RESTART, 40:STOP, 60:SKIP, 90:ManualOperation
-	state_RcpOperation		: INT; // 0:Inital State, 10:RUN, 20:PAUSE, 30:RESTART, 40:STOP, 50:END
-	userState				: INT;	
-
-	aLoop					: ARRAY[1..6] OF INT; // LoopOperation [1]:Number, [2]:Count, [3]:Start, [4]:End, [5]:WaitTemp
+	userState				: INT;	// 0:Inital State, 10:RUN, 20:PAUSE, 30:RESTART, 40:STOP, 50:END, 60:SKIP
 END_VAR]]></Declaration>
   </GVL>
 </TcPlcObject>

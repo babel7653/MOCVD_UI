@@ -2,16 +2,9 @@
 <TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4026.12">
   <POU Name="P92_Maintenance" Id="{17478ea4-373a-4676-aa4e-f86e85a19514}" SpecialFunc="None">
     <Declaration><![CDATA[PROGRAM P92_Maintenance
-VAR_INPUT
-// 	nCaseSignalTower		: INT;
-END_VAR
-VAR_OUTPUT
-
-END_VAR
 VAR
 	(* Input *)
 	//Light
-	bLightCP				: BOOL;
 	rTrigReactorCabinetSwitch	: R_TRIG;
 	rTrigReactorCabinetMagnet 	: R_TRIG;
 	fTrigReactorCabinetMagnet 	: F_TRIG;
@@ -36,7 +29,6 @@ VAR
 	bSMPS24V72WFault		: BOOL;
 	bSMPS15VPlusFault		: BOOL;
 	bSMPS15VMinusFault		: BOOL;
-	bSMPS15CP				: BOOL;
 	// Signal Tower
 	bSignalTower			: BYTE;
 	TimerSignalTower		: TON;
@@ -46,12 +38,10 @@ END_VAR
     <Implementation>
       <ST><![CDATA[(* Read from Device Value *)
 //Lamp
-bLightCP 				:= GVL_IO.aDigitalInputIO[5].6;
 bReactorCabientMagnet 	:= GVL_IO.aDigitalInputIO[3].6;
 bGasCabinetMagnet 		:= GVL_IO.aDigitalInputIO[3].7;
 bPowerDistributeMagnet	:= GVL_IO.aDigitalInputIO[4].0;
 
-bSMPS15CP				:= GVL_IO.aDigitalInputIO[5].7;
 //SMPS
 bSMPS24V480WFault	:= NOT(GVL_IO.aDigitalInputIO[4].3);
 bSMPS24V72WFault	:= NOT(GVL_IO.aDigitalInputIO[4].4);
@@ -129,21 +119,19 @@ GVL_IO.aDigitalOutputIO[2].6 	:= bGasCabinetLamp;
 GVL_IO.aDigitalOutputIO[2].7 	:= bPowerDistributeLamp;
 
 //SignalTower
-GVL_IO.aDigitalOutputIO[1].0 		:= bSignalTower.0; //0:RED-Alarm,
-GVL_IO.aDigitalOutputIO[1].1 		:= bSignalTower.1; //1:YELLOW,-Warning 
-GVL_IO.aDigitalOutputIO[1].2 		:= bSignalTower.2; //2:GREEN-Running
-GVL_IO.aDigitalOutputIO[1].3 		:= bSignalTower.3; //3:BLUE-Idle
-GVL_IO.aDigitalOutputIO[1].4 		:= bSignalTower.4; //4:WHITE-Maint
-GVL_IO.aDigitalOutputIO[1].5 		:= bBuzzer; //5:BUZZER-Alarm
+GVL_IO.aDigitalOutputIO[1].0 	:= bSignalTower.0; //0:RED-Alarm,
+GVL_IO.aDigitalOutputIO[1].1 	:= bSignalTower.1; //1:YELLOW,-Warning 
+GVL_IO.aDigitalOutputIO[1].2 	:= bSignalTower.2; //2:GREEN-Running
+GVL_IO.aDigitalOutputIO[1].3 	:= bSignalTower.3; //3:BLUE-Idle
+GVL_IO.aDigitalOutputIO[1].4 	:= bSignalTower.4; //4:WHITE-Maint
+GVL_IO.aDigitalOutputIO[1].5 	:= bBuzzer; //5:BUZZER-Alarm
 ]]></ST>
     </Implementation>
     <LineIds Name="P92_Maintenance">
       <LineId Id="5" Count="0" />
       <LineId Id="10" Count="0" />
-      <LineId Id="7" Count="0" />
       <LineId Id="65" Count="2" />
       <LineId Id="395" Count="0" />
-      <LineId Id="388" Count="0" />
       <LineId Id="391" Count="3" />
       <LineId Id="389" Count="0" />
       <LineId Id="55" Count="1" />

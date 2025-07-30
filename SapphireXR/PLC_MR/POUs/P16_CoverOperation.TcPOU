@@ -1,11 +1,10 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4026.11">
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4026.12">
   <POU Name="P16_CoverOperation" Id="{413bd09a-4287-4ca5-a610-3ab16d733b75}" SpecialFunc="None">
     <Declaration><![CDATA[PROGRAM P16_CoverOperation
-VAR_OUTPUT
-	isCoverClosed 	: BOOL;
-END_VAR	
 VAR
+// 	isCoverClosed 	: BOOL;
+
 	bCoverCP	: BOOL;
 	bLowerLimit	: BOOL;
 	bUpperLimit	: BOOL;
@@ -51,7 +50,7 @@ TimerDownLED_X(IN:=TimerDownLED.Q, PT:=T#300MS);
 bDownLED := (TimerDownLED.Q AND bOnDownRelay) OR bLowerLimit;
 
 //Status Output
-isCoverClosed := bLowerLimit;
+GVL_IO.isCoverClosed := bLowerLimit;
 
 (* Write to Device Value *)
 // Cover Operation Switch Lamp

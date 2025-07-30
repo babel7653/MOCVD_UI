@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4026.11">
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4026.12">
   <POU Name="FB_RecipeSequencer" Id="{eaa1ede0-1851-426e-9c35-61099dc6c976}" SpecialFunc="None">
     <Declaration><![CDATA[FUNCTION_BLOCK FB_RecipeSequencer
 VAR_INPUT
@@ -7,8 +7,7 @@ VAR_INPUT
 END_VAR
 
 VAR
-	i 	: INT;
-	k	: int; //레시피 Wait Temp 테스트용 변수
+	i 			: INT;
 END_VAR
 ]]></Declaration>
     <Implementation>
@@ -21,7 +20,7 @@ FOR i:= 1 TO 26 DO
 		GVL_IO.aAnalogOutputIO[i] := LREAL_TO_INT(GVL_IO.aController[i].rControlValue);
 		
 		GVL_IO.aController_PV[i] := GVL_IO.aAnalogInputIO[i] / (GVL_IO.KL3464MaxValueH * GVL_IO.aMaxValueController[i]);
-		GVL_IO.aController_TV[i] := GVL_IO.aController_CV[i] := LREAL_TO_REAL((GVL_IO.aController[i].rControlValue / GVL_IO.KL3464MaxValueH)*GVL_IO.aMaxValueController[i]);
+		GVL_IO.aController_CV[i] := LREAL_TO_REAL((GVL_IO.aController[i].rControlValue / GVL_IO.KL3464MaxValueH)*GVL_IO.aMaxValueController[i]);
 		GVL_IO.aController[i]();	
 	END_IF
 END_FOR
@@ -29,27 +28,26 @@ END_FOR
 (* Reactor Susceptor Temperature *)
 GVL_IO.aController[27].nState := 10; //START
 IF ( GVL_IO.aController_CV[27] > 10 ) THEN
-	GVL_IO.bE3508_HeaterOn := TRUE;
+	GVL_IO.aDigitalOutputIO[2].0 := TRUE;
 ELSE
-	GVL_IO.bE3508_HeaterOn := FALSE;
+	GVL_IO.aDigitalOutputIO[2].0 := FALSE;
 END_IF
 
 GVL_IO.aController[27].nRampTime := RCP.aRecipe[nRcpIndex].iRecipe[2];
 GVL_IO.aController[27].rTargetValue := RCP.aRecipe[nRcpIndex].iRecipe[4];
-GVL_IO.wE3508_ControlValue := LREAL_TO_WORD(GVL_IO.aController[27].rControlValue); //Write to Temperature Controller
-//GVL_IO.aController_PV[27] := WORD_TO_REAL(P11_E3508.wE3508_PV);
-GVL_IO.aController_PV[27] := k ; //Test;
-GVL_IO.aController_CV[27] := WORD_TO_REAL(GVL_IO.wE3508_ControlValue);
+GVL_IO.wE3508_CV := LREAL_TO_WORD(GVL_IO.aController[27].rControlValue); //Write to Temperature Controller
+GVL_IO.aController_PV[27] := WORD_TO_REAL(GVL_IO.wE3508_PV);
+GVL_IO.aController_CV[27] := WORD_TO_REAL(GVL_IO.wE3508_CV);
 GVL_IO.aController[27]();
 
 (* Reactor Pressure Control *)
 GVL_IO.aController[28].nState := 10; //START
 GVL_IO.aController[28].nRampTime := RCP.aRecipe[nRcpIndex].iRecipe[2];
 GVL_IO.aController[28].rTargetValue := RCP.aRecipe[nRcpIndex].iRecipe[5];
-GVL_IO.wIqPlus_ControlValue := LREAL_TO_WORD(GVL_IO.aController[28].rControlValue); //Write to Pressure Controller
+GVL_IO.wIqPlus_CV := LREAL_TO_WORD(GVL_IO.aController[28].rControlValue); //Write to Pressure Controller
 
 GVL_IO.aController_PV[28] := WORD_TO_REAL(GVL_IO.wIqPlus_CDG2_PV);
-GVL_IO.aController_CV[28] := WORD_TO_REAL(GVL_IO.wIqPlus_ControlValue);
+GVL_IO.aController_CV[28] := WORD_TO_REAL(GVL_IO.wIqPlus_CV);
 GVL_IO.aController[28]();
 
 (* Suceptor Rotation Control *)
@@ -100,9 +98,7 @@ GVL_IO.aOutputSolValve[2].15 := RCP.aRecipe[nRcpIndex].dRecipe.25; //V32]]></ST>
       <LineId Id="245" Count="0" />
       <LineId Id="292" Count="0" />
       <LineId Id="250" Count="8" />
-      <LineId Id="260" Count="0" />
-      <LineId Id="298" Count="0" />
-      <LineId Id="261" Count="0" />
+      <LineId Id="260" Count="1" />
       <LineId Id="243" Count="0" />
       <LineId Id="291" Count="0" />
       <LineId Id="265" Count="0" />

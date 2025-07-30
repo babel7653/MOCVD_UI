@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4026.11">
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4026.12">
   <POU Name="P50_RecipeControl" Id="{e332a806-fd31-4290-a7c3-27f42c11d38e}" SpecialFunc="None">
     <Declaration><![CDATA[PROGRAM P50_RecipeControl
 VAR
@@ -39,49 +39,48 @@ END_VAR
 	10: //RUN
 		IF nRcpIndex = 0 THEN
 			nRcpIndex := 1;
-		ELSE
-			fbRecipeSequencer(nRcpIndex := nRcpIndex);
+		END_IF
+		fbRecipeSequencer(nRcpIndex := nRcpIndex);
 						
-			// CASE 문을 이용한 상태 머신 구현
-			CASE eRecipeRun OF
-				E_RecipeRun.Initial:
-					Rcp.userState := 10;// Recipe Running
-					Ramp_ET := T#0S;
-					Hold_ET := T#0S;
-					Pause_ET := T#0S;
-					GVL_IO.nCaseSignalTower := 3;
-					eRecipeRun := E_RecipeRun.Ramp;
-					
-				E_RecipeRun.Ramp: // Ramp 수행
-					Ramp_TON(IN:=TRUE, PT:=INT_TO_TIME(RCP.aRecipe[nRcpIndex].iRecipe[2]*1000), ET=>Ramp_ET, PAUSE:=FALSE);
-					IF Ramp_TON.Q THEN
-						Ramp_TON(IN:=FALSE);
-						eRecipeRun := E_RecipeRun.CheckHoldTemp;
-					END_IF				
-					
-				E_RecipeRun.CheckHoldTemp: //Hold Temp 확인
-					IF RCP.aRecipe[nRcpIndex].iRecipe[7] = 0 THEN
-						Hold_TON(IN:=TRUE, PT:=INT_TO_TIME(RCP.aRecipe[nRcpIndex].iRecipe[3]*1000), ET=>Hold_ET);
-						IF Hold_TON.Q THEN
-							Hold_TON(IN:=FALSE);
-							eRecipeRun := E_RecipeRun.End; // 레시피 첫 Column 실행
-						END_IF
-					ELSIF GVL_IO.aController_PV[27] < RCP.aRecipe[nRcpIndex].iRecipe[7] THEN //서셉터 온도가 Wait 온도보다 낮을 때
+		// CASE 문을 이용한 상태 머신 구현
+		CASE eRecipeRun OF
+			E_RecipeRun.Initial:
+				Rcp.userState := 10;// Recipe Running
+				Ramp_ET := T#0S;
+				Hold_ET := T#0S;
+				Pause_ET := T#0S;
+				GVL_IO.nCaseSignalTower := 3;
+				eRecipeRun := E_RecipeRun.Ramp;
+				
+			E_RecipeRun.Ramp: // Ramp 수행
+				Ramp_TON(IN:=TRUE, PT:=INT_TO_TIME(RCP.aRecipe[nRcpIndex].iRecipe[2]*1000), ET=>Ramp_ET, PAUSE:=FALSE);
+				IF Ramp_TON.Q THEN
+					Ramp_TON(IN:=FALSE);
+					eRecipeRun := E_RecipeRun.CheckHoldTemp;
+				END_IF				
+				
+			E_RecipeRun.CheckHoldTemp: //Hold Temp 확인
+				IF RCP.aRecipe[nRcpIndex].iRecipe[7] = 0 THEN
+					Hold_TON(IN:=TRUE, PT:=INT_TO_TIME(RCP.aRecipe[nRcpIndex].iRecipe[3]*1000), ET=>Hold_ET);
+					IF Hold_TON.Q THEN
 						Hold_TON(IN:=FALSE);
 						eRecipeRun := E_RecipeRun.End; // 레시피 첫 Column 실행
-					ELSE // 서셉터 온도가 Wait 온도보다 높을 때
-						;// 떨어질 때까지 기다림
 					END_IF
-					
-				E_RecipeRun.End: // 다음 Step 이동 (루프 마지막 단계일 경우, 다음 Step 이동 또는 루프 처음단계로 점프)
-					loopCount[nRcpIndex] := loopCount[nRcpIndex] - 1;
-					nRcpIndex := nRcpIndex + 1 - (RCP.aRecipe[nRcpIndex].iRecipe[8]) * MIN(loopCount[nRcpIndex], 1);
-					IF nRcpIndex > Rcp.iRcpTotalStep THEN
-						RCP.cmd_RcpOperation := 50;
-					END_IF
-					eRecipeRun := E_RecipeRun.Initial;
-			END_CASE
-		END_IF
+				ELSIF GVL_IO.aController_PV[27] < RCP.aRecipe[nRcpIndex].iRecipe[7] THEN //서셉터 온도가 Wait 온도보다 낮을 때
+					Hold_TON(IN:=FALSE);
+					eRecipeRun := E_RecipeRun.End; // 레시피 첫 Column 실행
+				ELSE // 서셉터 온도가 Wait 온도보다 높을 때
+					;// 떨어질 때까지 기다림
+				END_IF
+				
+			E_RecipeRun.End: // 다음 Step 이동 (루프 마지막 단계일 경우, 다음 Step 이동 또는 루프 처음단계로 점프)
+				loopCount[nRcpIndex] := loopCount[nRcpIndex] - 1;
+				nRcpIndex := nRcpIndex + 1 - (RCP.aRecipe[nRcpIndex].iRecipe[8]) * MIN(loopCount[nRcpIndex], 1);
+				IF nRcpIndex > Rcp.iRcpTotalStep THEN
+					RCP.cmd_RcpOperation := 50;
+				END_IF
+				eRecipeRun := E_RecipeRun.Initial;
+		END_CASE
 		
 	20: //PAUSE
 		CASE eRecipeRun OF
@@ -140,14 +139,18 @@ END_CASE
     <LineIds Name="P50_RecipeControl">
       <LineId Id="1" Count="1" />
       <LineId Id="4" Count="1" />
-      <LineId Id="13" Count="18" />
+      <LineId Id="13" Count="13" />
+      <LineId Id="202" Count="0" />
+      <LineId Id="27" Count="0" />
+      <LineId Id="29" Count="2" />
       <LineId Id="35" Count="1" />
       <LineId Id="199" Count="0" />
       <LineId Id="197" Count="1" />
       <LineId Id="40" Count="4" />
       <LineId Id="46" Count="1" />
       <LineId Id="50" Count="5" />
-      <LineId Id="57" Count="21" />
+      <LineId Id="57" Count="18" />
+      <LineId Id="77" Count="1" />
       <LineId Id="92" Count="2" />
       <LineId Id="96" Count="4" />
       <LineId Id="102" Count="0" />

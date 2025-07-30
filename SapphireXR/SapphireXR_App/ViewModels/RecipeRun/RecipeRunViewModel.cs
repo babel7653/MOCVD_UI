@@ -6,7 +6,6 @@ using SapphireXR_App.Common;
 using SapphireXR_App.Enums;
 using SapphireXR_App.Models;
 using SapphireXR_App.ViewModels.BottomDashBoard;
-using SapphireXR_App.Views;
 using SapphireXR_App.WindowServices;
 using System.Collections;
 using System.Collections.Specialized;
@@ -417,15 +416,25 @@ namespace SapphireXR_App.ViewModels
             {
                 PLCService.WriteRCPOperationCommand((short)command);
                 RecipeUserState stateToWait = (command != RecipeCommand.Restart) ? (RecipeUserState)(short)command : RecipeUserState.Run;
-                while((RecipeUserState)PLCService.ReadUserState() != stateToWait);
+                
+                DateTime startTime = DateTime.Now;
+                while ((RecipeUserState)PLCService.ReadUserState() != stateToWait)
+                {
+                    if(10 < (DateTime.Now - startTime).Seconds)
+                    {
+                        throw new TimeoutException("레시피 상태를 PLC로부터 읽기와 관련된 설정 Timeout값 10초가 초과되었습니다. PLC와의 연결을 확인해주세요.");
+                    }
+                }
+
                 if (updateState == true)
                 {
                     switchState(stateToWait);
                 }
             }
-            catch(Exception)
+            catch(Exception e)
             {
-
+                MessageBox.Show("레시피 상태를 PLC로부터 읽어오는 중에 오류가 발생하였습니다.\r\n오류 내용: " + e.Message + "\r\n" + 
+                    "Sapphire 애플리케이션과 PLC를 전부 재시작하는 것을 권장드립니다.", "레시피 상태 동기화 오류");
             }
         }
 

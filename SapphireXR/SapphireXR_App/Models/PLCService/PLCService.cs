@@ -1,6 +1,7 @@
 ﻿using SapphireXR_App.Common;
 using SapphireXR_App.Enums;
 using System.Collections;
+using System.Diagnostics;
 using System.Windows;
 using System.Windows.Threading;
 using TwinCAT.Ads;
@@ -15,21 +16,21 @@ namespace SapphireXR_App.Models
             IntializePubSub();
         }
 
-        public static void Connect()
+        public static bool Connect()
         {
             if (Ads.IsConnected == true && Ads.ReadState().AdsState == AdsState.Run)
             {
-                return;
+                return true;
             }
           
             DateTime startTime = DateTime.Now;
             while (true)
             {
-                try
+                if(TryConnect() == true)
                 {
-                    TryConnect();
+                    return true;
                 }
-                catch (Exception)
+                else
                 {
                     if ((DateTime.Now - startTime).TotalMilliseconds < AppSetting.ConnectionRetryMilleseconds)
                     {
@@ -38,14 +39,13 @@ namespace SapphireXR_App.Models
                     else
                     {
                         Connected = PLCConnection.Disconnected;
-                        throw;
+                        return false;
                     }
                 }
-                break;
             }
         }
 
-        private static void TryConnect()
+        private static bool TryConnect()
         {
             try
             {
@@ -64,21 +64,24 @@ namespace SapphireXR_App.Models
                     ReadInitialStateValueFromPLC();
 
                     Connected = PLCConnection.Connected;
+                    
+                    return true;
                 }
                 else
                 {
-                    throw new Exception(string.Empty);
+                    return false;
                 }
             }
-            catch (Exception e)
+            catch (Exception)
             {
-                throw new ConnectionFaiulreException(e.Message);
+                return false;
             }
         }
 
         private static void OnConnected()
         {
             connectionTryTimer?.Stop();
+            TryConnectAsync = null;
 
             if (timer == null)
             {
@@ -116,6 +119,7 @@ namespace SapphireXR_App.Models
             currentActiveRecipeListener.Start();
         }
 
+        
         private static void OnDisconnected()
         {
             timer?.Stop();
@@ -127,11 +131,10 @@ namespace SapphireXR_App.Models
                 connectionTryTimer.Interval = new TimeSpan(TimeSpan.TicksPerMillisecond);
                 connectionTryTimer.Tick += (object? sender, EventArgs e) =>
                 {
-                    try
+                    if(TryConnectAsync == null || (TryConnectAsync.IsCompleted == true && TryConnectAsync.Result == false))
                     {
-                        TryConnect();
+                        TryConnectAsync = Task.Delay(1000).ContinueWith((task) => TryConnect(), TaskScheduler.FromCurrentSynchronizationContext());
                     }
-                    catch { }
                 };
             }
             connectionTryTimer.Start();

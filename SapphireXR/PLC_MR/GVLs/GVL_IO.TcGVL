@@ -35,14 +35,23 @@ VAR_GLOBAL
 	nDorOperationError		: INT;
 	bDorState				: BOOL;
 	bDorOnEnable			: BOOL;
-	bE3508_HeaterOn			: BOOL;
-	wE3508_ControlValue		: WORD;
+// 	bE3508_HeaterOn			: BOOL;
+	wE3508_CV				: WORD;
 	wE3508_PV				: WORD;
-	wIqPlus_ControlValue	: WORD;
+	wIqPlus_CV				: WORD;
 	wIqPlus_CDG1_PV			: WORD;
 	wIqPlus_CDG2_PV			: WORD;
 	nRotation_Converted_PV	: INT;
 	rRotation_ControlValue	: REAL;
+	nIQPLUS_SetType 		: INT;
+	nIQPLUS_Mode			: INT;
+	tRecipeControl_Ramp_ET	: TIME;
+	tRecipeControl_Hold_ET	: TIME;
+	tRecipeControl_Pause_ET	: TIME;
+	aLineHeater_rTemperaturePV : ARRAY[1..8]OF REAL;
+	nE3508_nInputManAutoBytes : USINT;
+	isCoverClosed 			: BOOL;
+	isPumpRunning 			: BOOL;
 END_VAR
 
 VAR_GLOBAL CONSTANT

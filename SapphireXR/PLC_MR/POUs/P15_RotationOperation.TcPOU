@@ -2,22 +2,19 @@
 <TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4026.12">
   <POU Name="P15_RotationOperation" Id="{7f828812-d1bb-49a4-a03d-f3e347855c39}" SpecialFunc="None">
     <Declaration><![CDATA[PROGRAM P15_RotationOperation
-VAR_INPUT
+VAR
 	rControlValue			: REAL; //rpm
 	bStart_Stop				: BOOL := TRUE;
 	bAlarmReset				: BOOL; //Motor Driver Alarm
-END_VAR
-VAR_OUTPUT
 
-	bRotationCP			: BOOL;
+	bRotationCP				: BOOL;
 	nConvertedRotation_PV	: INT; //PV 0~100 rpm
-END_VAR
-VAR
+
 	rConvertedCV			:REAL;
 	(* Motor Driver *)
 	bBrake_Run				: BOOL;
 	(* Rotation Operation Parameter*)
-	wRotaion_PV				:WORD;
+	wRotaion_PV				: WORD;
 	isRotationFault			: BOOL; //Motor Driver
 END_VAR
 
@@ -31,7 +28,7 @@ END_VAR
       <ST><![CDATA[// Oriental Motor Driver : BLHM230K-GFS, 0~4V
 
 (* Read from Power Distribution Pannel *)
-bRotationCP :=  GVL_IO.aDigitalInputIO[5].3;
+bRotationCP := GVL_IO.aDigitalInputIO[5].3;
 
 //from Device Value
 isRotationFault := NOT(GVL_IO.aDigitalInputIO[2].5);
@@ -51,16 +48,16 @@ ELSIF (GVL_IO.aController_TV[29] = 0) AND (wRotaion_PV = 0) THEN
 	bBrake_Run := FALSE;
 END_IF
 
-GVL_IO.aDigitalOutputIO[3].4 	:= bStart_Stop;
 GVL_IO.aDigitalOutputIO[3].5 	:= bBrake_Run;
-GVL_IO.aDigitalOutputIO[3].6 	:= bAlarmReset;
-GVL_IO.aAnalogOutputIO[28] 		:= REAL_TO_INT(rConvertedCV);]]></ST>
+GVL_IO.aAnalogOutputIO[28] 		:= REAL_TO_INT(rConvertedCV);
+GVL_IO.aInputState[1].11		:= isRotationFault;]]></ST>
     </Implementation>
     <LineIds Name="P15_RotationOperation">
       <LineId Id="44" Count="0" />
       <LineId Id="142" Count="0" />
       <LineId Id="45" Count="0" />
-      <LineId Id="140" Count="1" />
+      <LineId Id="140" Count="0" />
+      <LineId Id="170" Count="0" />
       <LineId Id="46" Count="1" />
       <LineId Id="49" Count="1" />
       <LineId Id="159" Count="2" />
@@ -72,8 +69,9 @@ GVL_IO.aAnalogOutputIO[28] 		:= REAL_TO_INT(rConvertedCV);]]></ST>
       <LineId Id="151" Count="1" />
       <LineId Id="154" Count="0" />
       <LineId Id="95" Count="0" />
-      <LineId Id="97" Count="2" />
+      <LineId Id="98" Count="0" />
       <LineId Id="5" Count="0" />
+      <LineId Id="163" Count="0" />
     </LineIds>
   </POU>
 </TcPlcObject>

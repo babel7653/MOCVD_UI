@@ -1,18 +1,16 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4026.11">
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4026.12">
   <POU Name="P13_LineHeater" Id="{39a0ad06-755a-4fd9-b8ed-65d02fe2261a}" SpecialFunc="None">
     <Declaration><![CDATA[PROGRAM P13_LineHeater
-VAR_INPUT
+VAR
 	rTemperatureSV 		: ARRAY[1..8]OF REAL;
 	bAutoTuneSV 		: ARRAY[1..8]OF BOOL;
-END_VAR
-VAR_OUTPUT
+
 	rTemperaturePV 		: ARRAY[1..8]OF REAL;
 	isLineHeater_Run	: ARRAY[1..8]OF BOOL;
 	isLineHeater_ATune	: ARRAY[1..8]OF BOOL;
 	isLineHeater_Err	: ARRAY[1..8]OF BOOL;
-END_VAR
-VAR
+
 	TimeOnDelay			: TON; //Time delay after Power ON of Thermal Bath
 	TimeCycle			: TON;
 	nComMode 			: INT; // //1 = PV Req, 2 = STATUS Req, 3 = SV Write, 4 = AutoTune On/Off
@@ -198,7 +196,7 @@ IF TimeOnDelay.Q THEN
 		bSendingEnable := FALSE;
 	END_IF
 END_IF
-]]></ST>
+GVL_IO.aLineHeater_rTemperaturePV := rTemperaturePV;]]></ST>
     </Implementation>
     <LineIds Name="P13_LineHeater">
       <LineId Id="61" Count="5" />

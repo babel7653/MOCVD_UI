@@ -1,11 +1,10 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4026.8">
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4026.12">
   <POU Name="P14_ThermalBath" Id="{2c2b0e51-5635-46ea-83dc-d55165a0b5b4}" SpecialFunc="None">
     <Declaration><![CDATA[PROGRAM P14_ThermalBath
-VAR_INPUT
+VAR
 	rTemperatureSV 		: ARRAY[1..6]OF REAL;
-END_VAR
-VAR_OUTPUT
+
 	(* Input from Device *)
 	bTempDeviationAlarm	: ARRAY[1..6] OF BOOL;
 	bCutOffAlarm		: ARRAY[1..6] OF BOOL;
@@ -13,8 +12,7 @@ VAR_OUTPUT
 	rTemperature_PV 		: ARRAY[1..6]OF REAL;
 	isBath_Err 			: ARRAY[1..6]OF BOOL;
 	isBath_TC_Broken 	: ARRAY[1..6]OF BOOL ; 
-END_VAR
-VAR
+
 	//for send variable
 	TimeOnDelay	: TON; //Time delay after Power ON of Thermal Bath
 	TimeCycle			: TON;

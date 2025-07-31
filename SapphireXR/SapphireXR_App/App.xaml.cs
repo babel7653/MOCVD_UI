@@ -17,15 +17,7 @@ namespace SapphireXR_App
         private void App_Startup(object sender, StartupEventArgs e)
         {
             // 생성자 주입 구문을 사용하면 매개변수를 입력하지 않아도 객체가 만들어 지고 호출이 가능
-            bool connectedToPLC = true;
-            try
-            {
-                PLCService.Connect();
-            }
-            catch(Exception)
-            {
-                connectedToPLC = false;
-            }
+            bool connectedToPLC = PLCService.Connect();
 
             try
             {

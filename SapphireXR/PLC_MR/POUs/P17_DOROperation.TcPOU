@@ -2,20 +2,18 @@
 <TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4026.12">
   <POU Name="P17_DOROperation" Id="{47a43ac8-2dfa-477f-bf65-90da71792e7e}" SpecialFunc="None">
     <Declaration><![CDATA[PROGRAM P17_DOROperation
-VAR_INPUT
+VAR
 	bDOROn				: BOOL; //UI Input Button
 	bDOROff				: BOOL; //UI Input Button
 	fTresholdPressure	: REAL;
 	fTresholdCount		: REAL;
 	bPressureEnable 	: BOOL;
 	bCountEnable		: BOOL;
-END_VAR
-VAR_OUTPUT
+
 	isDOROnState		: BOOL := FALSE; //DOR ON State
 	bError				: INT; //0: No Err, 1: Vacuum Fail, 2: Vacuum Release, 3: Try out
 	nWaitCounter		: INT;
-END_VAR
-VAR
+
 	(* Input *)
 	bVacSwitch			: BOOL; //Push Switch
 	bAtmSwitch			: BOOL; //Push Switch

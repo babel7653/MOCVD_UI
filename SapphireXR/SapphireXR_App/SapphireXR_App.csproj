@@ -14,6 +14,7 @@
     <None Remove="Resources\icons\icon=alert_red.png" />
     <None Remove="Resources\icons\icon=alert_yellow.png" />
     <None Remove="Resources\icons\icon=analog.png" />
+    <None Remove="Resources\icons\icon=ani_signal_blue.gif" />
     <None Remove="Resources\icons\icon=app.png" />
     <None Remove="Resources\icons\icon=buzzeroff.png" />
     <None Remove="Resources\icons\icon=buzzeron.png" />

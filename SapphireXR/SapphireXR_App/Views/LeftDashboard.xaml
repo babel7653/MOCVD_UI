@@ -113,74 +113,11 @@
                                     </Style.Triggers>
                                 </Style>
                             </Button.Style>
-                            <Image Source="{Binding BuzzerImage}" Width="25" Height="25" IsEnabled="{Binding Source={x:Static model:PLCConnectionState.Instance}, Path=Online}"/>
+                            <Image Source="{Binding BuzzerImage}" Width="25" Height="25" IsEnabled="{Binding Online, Source={x:Static model:PLCConnectionState.Instance}, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"/>
                         </Button>
                     </Grid>
                 </Grid>
             </Grid>
-            <!--<Border Grid.Row="1"  BorderBrush="{StaticResource Gray_300}">
-                <Border.BorderThickness>
-                    <Thickness Bottom="1" />
-                </Border.BorderThickness>
-                --><!-- Signal Tower --><!--
-                <Grid>
-                    <Grid.Margin>
-                        <Thickness Left="{StaticResource p_2}" Right="{StaticResource p_2}" Bottom="{StaticResource p_2}" Top="{StaticResource p_1}" />
-                    </Grid.Margin>
-                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
-                        <StackPanel.Resources>
-                            <Style TargetType="{x:Type Rectangle}">
-                                <Setter Property="Width" Value="40"/>
-                                <Setter Property="Height" Value="10"/>
-                                <Setter Property="Stroke" Value="LightSlateGray"/>
-                            </Style>
-                        </StackPanel.Resources>
-                        <Rectangle x:Name="SignalTowerRed" Fill="{Binding SignalTowerRed, UpdateSourceTrigger=PropertyChanged}" Width="40" Height="10" RadiusX="4" RadiusY="4" Margin="4,0,0,0" Stroke="{x:Null}">
-                            --><!--<Rectangle.Effect>
-                                <DropShadowEffect Color="{Binding SignalTowerRed, UpdateSourceTrigger=PropertyChanged}" BlurRadius="10" ShadowDepth="0" Opacity="{Binding GlowOpacity}" />
-                            </Rectangle.Effect>--><!--
-                        </Rectangle>
-                        <Rectangle x:Name="SignalTowerYellow" Fill="{Binding SignalTowerYellow, UpdateSourceTrigger=PropertyChanged}" Width="40" Height="10" RadiusX="4" RadiusY="4" Margin="4,0,0,0" Stroke="{x:Null}">
-                            --><!--<Rectangle.Effect>
-                                <DropShadowEffect Color="{Binding SignalTowerYellow, UpdateSourceTrigger=PropertyChanged}" BlurRadius="10" ShadowDepth="0" Opacity="{Binding GlowOpacity}" />
-                            </Rectangle.Effect>--><!--
-                        </Rectangle>
-                        <Rectangle x:Name="SignalTowerGreen" Fill="{Binding SignalTowerGreen, UpdateSourceTrigger=PropertyChanged}" Width="40" Height="10" RadiusX="4" RadiusY="4" Margin="4,0,0,0" Stroke="{x:Null}">
-                            --><!--<Rectangle.Effect>
-                                <DropShadowEffect Color="{Binding SignalTowerGreen, UpdateSourceTrigger=PropertyChanged}" BlurRadius="10" ShadowDepth="0" Opacity="{Binding GlowOpacity}" />
-                            </Rectangle.Effect>--><!--
-                        </Rectangle>
-                        <Rectangle x:Name="SignalTowerBlue" Fill="{Binding SignalTowerBlue, UpdateSourceTrigger=PropertyChanged}" Width="40" Height="10" RadiusX="4" RadiusY="4" Margin="4,0,0,0" Stroke="{x:Null}">
-                            --><!--<Rectangle.Effect>
-                                <DropShadowEffect Color="{Binding SignalTowerBlue, UpdateSourceTrigger=PropertyChanged}" BlurRadius="10" ShadowDepth="0"  Opacity="{Binding GlowOpacity}" />
-                            </Rectangle.Effect>--><!--
-                        </Rectangle>
-                        <Rectangle x:Name="SignalTowerWhite" Fill="{Binding SignalTowerWhite, UpdateSourceTrigger=PropertyChanged}" Width="40" Height="10" RadiusX="4" RadiusY="4" Margin="4,0,0,0" Stroke="{x:Null}">
-                            --><!--<Rectangle.Effect>
-                                <DropShadowEffect Color="{Binding SignalTowerWhite, UpdateSourceTrigger=PropertyChanged}" BlurRadius="10" ShadowDepth="0" Opacity="{Binding GlowOpacity}" />
-                            </Rectangle.Effect>--><!--
-                        </Rectangle>
-                        <Button Width="25" Height="25" Command="{Binding ToggleBuzzerOnOffCommand}">
-                            <Button.Style>
-                                <Style TargetType="Button" BasedOn="{StaticResource ImageButton}">
-                                    <Setter Property="Margin">
-                                        <Setter.Value>
-                                            <Thickness Left="{StaticResource p_1}" Right="{StaticResource p_3}" />
-                                        </Setter.Value>
-                                    </Setter>
-                                    <Setter Property="BorderThickness" Value="0" />
-                                    <Style.Triggers>
-                                        <Trigger Property="IsMouseOver" Value="True">
-                                            <Setter Property="Background" Value="#FF929281" />
-                                        </Trigger>
-                                    </Style.Triggers>
-                                </Style>
-                            </Button.Style>
-                            <Image Source="{Binding BuzzerImage}" Width="25" Height="25" IsEnabled="{Binding Source={x:Static model:PLCConnectionState.Instance}, Path=Online}"/>
-                        </Button>
-                    </StackPanel>
-                </Grid>
-            </Border>-->
             <!-- Source Valve Current Status -->
             <Grid Grid.Row="2" VerticalAlignment="Center">
                 <Border Style="{StaticResource Tab}">

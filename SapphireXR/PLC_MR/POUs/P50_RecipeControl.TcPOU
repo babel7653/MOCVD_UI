@@ -5,6 +5,7 @@
 VAR
 	nRcpIndex		: INT;
 	eRecipeRun		: E_RecipeRun ; //레시피 상태
+	fbRecipeSequencer : FB_RecipeSequencer;
 	
 	Pause_ET		: TIME;
 	Pause_MAX		: TIME := T#1800S;
@@ -12,7 +13,6 @@ VAR
 	Hold_ET			: TIME;
 
 	Pause_TON		: TON;
-	fbRecipeSequencer : FB_RecipeSequencer;
 	Ramp_TON: FB_TON_Pausable;
 	Hold_TON: FB_TON_Pausable;
 	

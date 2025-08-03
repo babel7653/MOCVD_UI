@@ -10,16 +10,16 @@ VAR
 END_VAR]]></Declaration>
     <Implementation>
       <ST><![CDATA[FOR i:=1 TO 26 DO
-IF GVL_IO.aMaxValueController[i] <> 0 THEN
-	GVL_IO.aController[i].nState := state_Control;
-	GVL_IO.aController[i].nRampTime := GVL_IO.aController_RampTime[i];
-	GVL_IO.aController[i].rTargetValue := GVL_IO.aController_TV[i] / GVL_IO.aMaxValueController[i] * GVL_IO.KL3464MaxValueH; //Input Set Value
-	GVL_IO.aAnalogOutputIO[i] := LREAL_TO_INT(GVL_IO.aController[i].rControlValue); //Write to Device
-	
-	GVL_IO.aController_PV[i] := GVL_IO.aAnalogInputIO[i] / (GVL_IO.KL3464MaxValueH * GVL_IO.aMaxValueController[i]);
-	GVL_IO.aController_CV[i] := LREAL_TO_REAL((GVL_IO.aController[i].rControlValue / GVL_IO.KL3464MaxValueH)*GVL_IO.aMaxValueController[i]);
-	GVL_IO.aController[i]();
-END_IF
+	IF GVL_IO.aMaxValueController[i] <> 0 THEN
+		GVL_IO.aController[i].nState := state_Control;
+		GVL_IO.aController[i].nRampTime := GVL_IO.aController_RampTime[i];
+		GVL_IO.aController[i].rTargetValue := GVL_IO.aController_TV[i] / GVL_IO.aMaxValueController[i] * GVL_IO.KL3464MaxValueH; //Input Set Value
+		GVL_IO.aAnalogOutputIO[i] := LREAL_TO_INT(GVL_IO.aController[i].rControlValue); //Write to Device
+		
+		GVL_IO.aController_PV[i] := GVL_IO.aAnalogInputIO[i] / (GVL_IO.KL3464MaxValueH * GVL_IO.aMaxValueController[i]);
+		GVL_IO.aController_CV[i] := LREAL_TO_REAL((GVL_IO.aController[i].rControlValue / GVL_IO.KL3464MaxValueH)*GVL_IO.aMaxValueController[i]);
+		GVL_IO.aController[i]();
+	END_IF
 END_FOR
 
 (* Reactor Susceptor Temperature *)
@@ -70,7 +70,9 @@ GVL_IO.aController_CV[29] := GVL_IO.rRotation_ControlValue;
 GVL_IO.aController[29]();	]]></ST>
     </Implementation>
     <LineIds Name="P30_ManualControl">
-      <LineId Id="200" Count="19" />
+      <LineId Id="200" Count="10" />
+      <LineId Id="261" Count="0" />
+      <LineId Id="212" Count="7" />
       <LineId Id="258" Count="0" />
       <LineId Id="220" Count="1" />
       <LineId Id="260" Count="0" />

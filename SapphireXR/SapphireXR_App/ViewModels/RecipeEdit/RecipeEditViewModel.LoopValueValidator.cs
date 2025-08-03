@@ -18,15 +18,15 @@ namespace SapphireXR_App.ViewModels.RecipeEdit
                     {
                         switch(args.PropertyName)
                         {
-                            case nameof(Recipe.Jump):
-                                short jumpIndex = (short)(recipe.Jump - 1);
+                            case nameof(Recipe.LoopEndStep):
+                                short jumpIndex = (short)(recipe.LoopEndStep - 1);
                                 short curIndex = (short)recipes.IndexOf(recipe);
                                 bool validJumpValue = true;
                                 if (curIndex < jumpIndex && jumpIndex < recipes.Count)
                                 {
                                     for (short rIndex = (short)(curIndex + 1); rIndex <= jumpIndex; ++rIndex)
                                     {
-                                        if (recipes[rIndex].Jump != 0)
+                                        if (recipes[rIndex].LoopEndStep != 0)
                                         {
                                             validJumpValue = false;
                                             break;

@@ -1,7 +1,6 @@
 ﻿using SapphireXR_App.Common;
 using SapphireXR_App.Enums;
 using System.Collections;
-using System.Diagnostics;
 using System.Windows;
 using System.Windows.Threading;
 using TwinCAT.Ads;

@@ -1,21 +1,22 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4026.12">
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4026.11">
   <POU Name="P50_RecipeControl" Id="{e332a806-fd31-4290-a7c3-27f42c11d38e}" SpecialFunc="None">
     <Declaration><![CDATA[PROGRAM P50_RecipeControl
 VAR
 	nRcpIndex		: INT;
+	eRecipeRun		: E_RecipeRun ; //레시피 상태
 	fbRecipeSequencer : FB_RecipeSequencer;
+	
 	Pause_ET		: TIME;
 	Pause_MAX		: TIME := T#1800S;
-	Pause_TON		: TON;
 	Ramp_ET			: TIME;
 	Hold_ET			: TIME;
 
+	Pause_TON		: TON;
 	Ramp_TON: FB_TON_Pausable;
 	Hold_TON: FB_TON_Pausable;
 	
 	loopCount	: ARRAY[1..100] OF INT;
-	eRecipeRun		: E_RecipeRun ; //레시피 상태
 	i				: INT;
 
 END_VAR
@@ -23,7 +24,6 @@ END_VAR
     <Implementation>
       <ST><![CDATA[CASE RCP.cmd_RcpOperation OF
 	0: //Init State
-		nRcpIndex := 0;
  		Pause_TON(IN:=FALSE);
 		Ramp_TON(IN:=FALSE);
 		Hold_TON(IN:=FALSE);
@@ -32,6 +32,7 @@ END_VAR
 			loopCount[i] := Rcp.aRecipe[i].iRecipe[9];
 		END_FOR
 		
+		nRcpIndex := 0;
 		Rcp.userState := 0;
 		eRecipeRun := E_RecipeRun.Initial;
 		GVL_IO.nCaseSignalTower := 5; // White - Idle
@@ -45,10 +46,10 @@ END_VAR
 		// CASE 문을 이용한 상태 머신 구현
 		CASE eRecipeRun OF
 			E_RecipeRun.Initial:
-				Rcp.userState := 10;// Recipe Running
 				Ramp_ET := T#0S;
 				Hold_ET := T#0S;
 				Pause_ET := T#0S;
+				Rcp.userState := 10;// Recipe Running
 				GVL_IO.nCaseSignalTower := 3;
 				eRecipeRun := E_RecipeRun.Ramp;
 				
@@ -137,37 +138,7 @@ END_CASE
 RCP.iRcpStepN := nRcpIndex;]]></ST>
     </Implementation>
     <LineIds Name="P50_RecipeControl">
-      <LineId Id="1" Count="1" />
-      <LineId Id="4" Count="1" />
-      <LineId Id="13" Count="13" />
-      <LineId Id="202" Count="0" />
-      <LineId Id="27" Count="0" />
-      <LineId Id="29" Count="2" />
-      <LineId Id="35" Count="1" />
-      <LineId Id="199" Count="0" />
-      <LineId Id="197" Count="1" />
-      <LineId Id="40" Count="4" />
-      <LineId Id="46" Count="1" />
-      <LineId Id="50" Count="5" />
-      <LineId Id="57" Count="18" />
-      <LineId Id="77" Count="1" />
-      <LineId Id="92" Count="2" />
-      <LineId Id="96" Count="4" />
-      <LineId Id="102" Count="0" />
-      <LineId Id="104" Count="0" />
-      <LineId Id="200" Count="0" />
-      <LineId Id="105" Count="0" />
-      <LineId Id="107" Count="1" />
-      <LineId Id="110" Count="11" />
-      <LineId Id="123" Count="0" />
-      <LineId Id="195" Count="0" />
-      <LineId Id="164" Count="0" />
-      <LineId Id="166" Count="4" />
-      <LineId Id="201" Count="0" />
-      <LineId Id="174" Count="0" />
-      <LineId Id="176" Count="4" />
-      <LineId Id="182" Count="2" />
-      <LineId Id="186" Count="7" />
+      <LineId Id="1" Count="113" />
     </LineIds>
   </POU>
 </TcPlcObject>

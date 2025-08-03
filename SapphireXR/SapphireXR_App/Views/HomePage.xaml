@@ -920,7 +920,7 @@
                                                     <ColumnDefinition />
                                                 </Grid.ColumnDefinitions>
                                                 <ToggleButton Style="{StaticResource ToggleSwitch}" PreviewMouseLeftButtonDown="ConfirmBeforeToggle" Grid.Column="0" x:Name="btHeaterOn" 
-                                                              IsChecked="{Binding IsInductionHeaterOn, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" IsEnabled="{Binding PLCConnected, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}" 
+                                                              IsChecked="{Binding IsInductionHeaterOn, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" IsEnabled="{Binding Online, Source={x:Static model:PLCConnectionState.Instance}, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}" 
                                                               VerticalAlignment="Center" HorizontalAlignment="Center">
                                                     <ToggleButton.LayoutTransform>
                                                         <ScaleTransform ScaleX="0.9" ScaleY="0.9"/>
@@ -1035,7 +1035,7 @@
                                                     <Thickness Top="{StaticResource p_2}" Left="0" Right="0" Bottom="{StaticResource p_1}" />
                                                 </Label.Padding>
                                             </Label>
-                                            <ComboBox HorizontalContentAlignment="Center" Style="{StaticResource theComboBox}" IsEnabled="{Binding Source={x:Static model:PLCConnectionState.Instance}, Path=Online}" Height="26" ItemsSource="{Binding ThrottleValveControlModes, Mode=OneTime}" SelectedItem="{Binding CurrentThrottleValveControlMode, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                                            <ComboBox HorizontalContentAlignment="Center" Style="{StaticResource theComboBox}" IsEnabled="{Binding Online, Source={x:Static model:PLCConnectionState.Instance}, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}" Height="26" ItemsSource="{Binding ThrottleValveControlModes, Mode=OneTime}" SelectedItem="{Binding CurrentThrottleValveControlMode, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
                                                 <i:Interaction.Triggers>
                                                     <i:EventTrigger EventName="SelectionChanged">
                                                         <i:InvokeCommandAction Command="{Binding OnThrottleValveModeChangedCommand}" PassEventArgsToCommand="True"/>
@@ -1070,7 +1070,7 @@
                                                     <ColumnDefinition />
                                                 </Grid.ColumnDefinitions>
                                                 <ToggleButton Style="{StaticResource ToggleSwitch}" PreviewMouseLeftButtonDown="ConfirmBeforeToggle" Grid.Column="0" x:Name="btPumpOn" 
-                                                              IsChecked="{Binding IsVaccumPumpOn, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" IsEnabled="{Binding PLCConnected, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}" 
+                                                              IsChecked="{Binding IsVaccumPumpOn, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" IsEnabled="{Binding Online, Source={x:Static model:PLCConnectionState.Instance}, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}" 
                                                               VerticalAlignment="Center" HorizontalAlignment="Center">
                                                     <ToggleButton.LayoutTransform>
                                                         <ScaleTransform ScaleX="0.9" ScaleY="0.9"/>

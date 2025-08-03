@@ -1,7 +1,6 @@
 ﻿using SapphireXR_App.Common;
 using SapphireXR_App.Enums;
 using System.Collections;
-using System.Diagnostics;
 using System.Windows;
 using System.Windows.Threading;
 using TwinCAT.Ads;
@@ -182,9 +181,9 @@ namespace SapphireXR_App.Models
             hTemperaturePV = Ads.CreateVariableHandle("GVL_IO.aLineHeater_rTemperaturePV");
             hOperationMode = Ads.CreateVariableHandle("MAIN.bOperationMode");
             hUserState = Ads.CreateVariableHandle("RCP.userState");
-            hRecipeControlHoldTime = Ads.CreateVariableHandle("GVL_IO.tRecipeControl_Hold_ET");
-            hRecipeControlRampTime = Ads.CreateVariableHandle("GVL_IO.tRecipeControl_Ramp_ET");
-            hRecipeControlPauseTime = Ads.CreateVariableHandle("GVL_IO.tRecipeControl_Pause_ET");
+            hRecipeControlHoldTime = Ads.CreateVariableHandle("RCP.tRecipeControl_Hold_ET");
+            hRecipeControlRampTime = Ads.CreateVariableHandle("RCP.tRecipeControl_Ramp_ET");
+            hRecipeControlPauseTime = Ads.CreateVariableHandle("RCP.tRecipeControl_Pause_ET");
             hE3508InputManAuto = Ads.CreateVariableHandle("GVL_IO.nE3508_nInputManAutoBytes");
             hOutputSetType = Ads.CreateVariableHandle("GVL_IO.nIQPLUS_SetType");
             hOutputMode = Ads.CreateVariableHandle("GVL_IO.nIQPLUS_Mode");

@@ -55,6 +55,7 @@ END_VAR
 				
 			E_RecipeRun.Ramp: // Ramp 수행
 				Ramp_TON(IN:=TRUE, PT:=INT_TO_TIME(RCP.aRecipe[nRcpIndex].iRecipe[2]*1000), ET=>Ramp_ET, PAUSE:=FALSE);
+				RCP.tRecipeControl_Ramp_ET := Ramp_ET;
 				IF Ramp_TON.Q THEN
 					Ramp_TON(IN:=FALSE);
 					eRecipeRun := E_RecipeRun.CheckHoldTemp;
@@ -63,6 +64,7 @@ END_VAR
 			E_RecipeRun.CheckHoldTemp: //Hold Temp 확인
 				IF RCP.aRecipe[nRcpIndex].iRecipe[7] = 0 THEN
 					Hold_TON(IN:=TRUE, PT:=INT_TO_TIME(RCP.aRecipe[nRcpIndex].iRecipe[3]*1000), ET=>Hold_ET);
+					RCP.tRecipeControl_Hold_ET := Hold_ET;
 					IF Hold_TON.Q THEN
 						Hold_TON(IN:=FALSE);
 						eRecipeRun := E_RecipeRun.End; // 레시피 첫 Column 실행
@@ -92,6 +94,7 @@ END_VAR
 		END_CASE
 		
 		Pause_TON(IN:=TRUE, PT:= Pause_MAX, ET=> Pause_ET); //최대 홀드 시간이 지나면 다음 스텝으로 넘거감
+		RCP.tRecipeControl_Pause_ET := Pause_ET;
 		IF Pause_TON.Q THEN
 			Pause_TON(IN:=FALSE);
 			eRecipeRun := E_RecipeRun.End; // 레시피 첫 Column 실행
@@ -138,7 +141,13 @@ END_CASE
 RCP.iRcpStepN := nRcpIndex;]]></ST>
     </Implementation>
     <LineIds Name="P50_RecipeControl">
-      <LineId Id="1" Count="113" />
+      <LineId Id="1" Count="32" />
+      <LineId Id="116" Count="0" />
+      <LineId Id="34" Count="7" />
+      <LineId Id="117" Count="0" />
+      <LineId Id="42" Count="28" />
+      <LineId Id="118" Count="0" />
+      <LineId Id="71" Count="43" />
     </LineIds>
   </POU>
 </TcPlcObject>

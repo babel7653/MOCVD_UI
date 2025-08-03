@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4026.12">
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4026.11">
   <POU Name="MAIN" Id="{c65bb020-a024-43e6-87d0-b2b9cfee7c16}" SpecialFunc="None">
     <Declaration><![CDATA[PROGRAM MAIN
 VAR
@@ -26,7 +26,7 @@ P22_Background_ThermalBath();
 P22_Background_ThermalBath();
 
 IF NOT(bOperationMode) THEN
-	P30_ManualControl(state_Control := 10); //매뉴얼 콘트롤
+	P30_ManualControl(); //매뉴얼 콘트롤
 ELSE
 	P50_RecipeControl(); //레시피 콘트론
 END_IF

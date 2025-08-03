@@ -2,16 +2,12 @@
 <TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4026.11">
   <POU Name="P30_ManualControl" Id="{98ee4f4f-99e9-426e-9dfa-55ddf51d552b}" SpecialFunc="None">
     <Declaration><![CDATA[PROGRAM P30_ManualControl
-VAR_INPUT
-	state_Control	: INT; // 10:EnableControl
-END_VAR
 VAR
 	i 	: INT;
 END_VAR]]></Declaration>
     <Implementation>
       <ST><![CDATA[FOR i:=1 TO 26 DO
 	IF GVL_IO.aMaxValueController[i] <> 0 THEN
-		GVL_IO.aController[i].nState := state_Control;
 		GVL_IO.aController[i].nRampTime := GVL_IO.aController_RampTime[i];
 		GVL_IO.aController[i].rTargetValue := GVL_IO.aController_TV[i] / GVL_IO.aMaxValueController[i] * GVL_IO.KL3464MaxValueH; //Input Set Value
 		GVL_IO.aAnalogOutputIO[i] := LREAL_TO_INT(GVL_IO.aController[i].rControlValue); //Write to Device
@@ -22,10 +18,6 @@ END_VAR]]></Declaration>
 	END_IF
 END_FOR
 
-(* Reactor Susceptor Temperature *)
-IF GVL_IO.aMaxValueController[27]<> 0 THEN
-	GVL_IO.aController[27].nState := state_Control;
-END_IF	
 
 IF ( GVL_IO.aController_CV[27] > 10 ) THEN
 // 		P11_E3508.bHeaterOn := TRUE;
@@ -45,39 +37,32 @@ GVL_IO.aController[27]();
 				
 (* Reactor Pressure Control *)
 IF (GVL_IO.aController_TV[28] >= 0 ) THEN
-	GVL_IO.aController[28].nState := state_Control; //START
+	GVL_IO.aController[28].nRampTime := GVL_IO.aController_RampTime[28];
+	GVL_IO.aController[28].rTargetValue := GVL_IO.aController_TV[28];
+	GVL_IO.wIqPlus_CV := LREAL_TO_WORD(GVL_IO.aController[28].rControlValue); //Write to Pressure Controller
+	
+	GVL_IO.aController_PV[28] := WORD_TO_REAL(GVL_IO.wIqPlus_CDG2_PV);
+	GVL_IO.aController_CV[28] := WORD_TO_REAL(GVL_IO.wIqPlus_CV);
+	GVL_IO.aController[28]();
 END_IF
 
-GVL_IO.aController[28].nRampTime := GVL_IO.aController_RampTime[28];
-GVL_IO.aController[28].rTargetValue := GVL_IO.aController_TV[28];
-GVL_IO.wIqPlus_CV := LREAL_TO_WORD(GVL_IO.aController[28].rControlValue); //Write to Pressure Controller
 
-GVL_IO.aController_PV[28] := WORD_TO_REAL(GVL_IO.wIqPlus_CDG2_PV);
-GVL_IO.aController_CV[28] := WORD_TO_REAL(GVL_IO.wIqPlus_CV);
-GVL_IO.aController[28]();
 
 (* Suceptor Rotation Control *)				
 IF (GVL_IO.aController_TV[29] >= 0 ) THEN
-	GVL_IO.aController[29].nState := state_Control; //START
+	GVL_IO.aController[29].nRampTime := GVL_IO.aController_RampTime[29];
+	GVL_IO.aController[29].rTargetValue := GVL_IO.aController_TV[29];
+	GVL_IO.rRotation_ControlValue := LREAL_TO_REAL(GVL_IO.aController[29].rControlValue); //Write to Rotation Controller (rpm)
+	
+	GVL_IO.aController_PV[29] := GVL_IO.nRotation_Converted_PV;
+	GVL_IO.aController_CV[29] := GVL_IO.rRotation_ControlValue;
+	GVL_IO.aController[29]();	
 END_IF
 
-GVL_IO.aController[29].nRampTime := GVL_IO.aController_RampTime[29];
-GVL_IO.aController[29].rTargetValue := GVL_IO.aController_TV[29];
-GVL_IO.rRotation_ControlValue := LREAL_TO_REAL(GVL_IO.aController[29].rControlValue); //Write to Rotation Controller (rpm)
-
-GVL_IO.aController_PV[29] := GVL_IO.nRotation_Converted_PV;
-GVL_IO.aController_CV[29] := GVL_IO.rRotation_ControlValue;
-GVL_IO.aController[29]();	]]></ST>
+]]></ST>
     </Implementation>
     <LineIds Name="P30_ManualControl">
-      <LineId Id="200" Count="10" />
-      <LineId Id="261" Count="0" />
-      <LineId Id="212" Count="7" />
-      <LineId Id="258" Count="0" />
-      <LineId Id="220" Count="1" />
-      <LineId Id="260" Count="0" />
-      <LineId Id="222" Count="33" />
-      <LineId Id="198" Count="0" />
+      <LineId Id="1" Count="53" />
     </LineIds>
   </POU>
 </TcPlcObject>

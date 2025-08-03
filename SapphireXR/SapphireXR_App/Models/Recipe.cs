@@ -17,10 +17,10 @@ namespace SapphireXR_App.Models
             cTemp = rhs.cTemp;
             No = rhs.No;
             HTime = rhs.HTime;
-            Jump = rhs.Jump;
+            LoopEndStep = rhs.LoopEndStep;
             RPress = rhs.RPress;
             SRotation = rhs.SRotation;
-            Repeat = rhs.Repeat;
+            LoopRepeat = rhs.LoopRepeat;
             RTime = rhs.RTime;
             STemp = rhs.STemp;
             E01 = rhs.E01;
@@ -92,8 +92,8 @@ namespace SapphireXR_App.Models
         [ObservableProperty]
         public short _sRotation;
         public short cTemp { get; set; }
-        public short Repeat { get; set; }
-        public short Jump { get; set; }
+        public short LoopRepeat { get; set; }
+        public short LoopEndStep { get; set; }
         //RecipeFloat Array
         [ObservableProperty]
         private float _m01;

@@ -2,7 +2,6 @@
 using SapphireXR_App.Common;
 using SapphireXR_App.Models;
 using System.ComponentModel;
-using System.Diagnostics;
 using System.Globalization;
 using System.IO;
 using System.Windows;
@@ -42,8 +41,8 @@ namespace SapphireXR_App.ViewModels
                     Recipe recipe = Recipes[step];
 
                     int loopTototalRecipeTime = 0;
-                    int loopLimit = Math.Max(recipe.No, recipe.Jump);
-                    int loopCount = Math.Max(1, (int)recipe.Repeat);
+                    int loopLimit = Math.Max(recipe.No, recipe.LoopEndStep);
+                    int loopCount = Math.Max(1, (int)recipe.LoopRepeat);
                     LoopContext loopContext;
                     if (1 < loopCount)
                     {

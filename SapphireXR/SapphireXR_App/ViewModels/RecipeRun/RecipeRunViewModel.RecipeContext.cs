@@ -6,6 +6,7 @@ using System.Globalization;
 using System.IO;
 using System.Windows;
 using System.Windows.Media;
+using static SapphireXR_App.Models.PLCService;
 
 namespace SapphireXR_App.ViewModels
 {
@@ -85,6 +86,39 @@ namespace SapphireXR_App.ViewModels
                             break;
                     }
                 };
+                PropertyChanged += (sender, args) =>
+                {
+                    switch (args.PropertyName)
+                    {
+                        case nameof(CurrentRampTime):
+                            if (currentRecipe != null)
+                            {
+                                if (CurrentRampTime != null)
+                                {
+                                    TotalRampTime = currentRecipe.RTime;
+                                }
+                                else
+                                {
+                                    TotalRampTime = null;
+                                }
+                            }
+                            break;
+
+                        case nameof(CurrentHoldTime):
+                            if (currentRecipe != null)
+                            {
+                                if (CurrentHoldTime != null)
+                                {
+                                    TotalHoldTime = currentRecipe.HTime;
+                                }
+                                else
+                                {
+                                    TotalHoldTime = null;
+                                }
+                            }
+                            break;
+                    }
+                };
 
                 initialized = true;
             }
@@ -126,19 +160,19 @@ namespace SapphireXR_App.ViewModels
                             currentRecipe.Foreground = HighlitedRecipeListForeground;
                             currentRecipe.IsEnabled = false;
                             
-                            recipeControlHoldTimeSubscriber ??= new RecipeTimeSubscriber((int value) => { CurrentHoldTime = value; });
-                            recipeControlHoldTimeUnsubscriber ??= ObservableManager<int>.Subscribe("RecipeControlTime.Hold", recipeControlHoldTimeSubscriber);
-                            recipeControlPauseTimeSubscriber ??= new RecipeTimeSubscriber((int value) => { PauseTime = value; });
-                            recipeControlPauseTimeUnsubscriber ??= ObservableManager<int>.Subscribe("RecipeControlTime.Pause", recipeControlPauseTimeSubscriber);
-                            recipeControlRampTimeSubscriber ??= new RecipeTimeSubscriber((int value) => { CurrentRampTime = value; });
-                            recipeControlRampTimeUnsubscriber ??= ObservableManager<int>.Subscribe("RecipeControlTime.Ramp", recipeControlRampTimeSubscriber);
+                            recipeRunElapsedTimeSubscriber = new RecipeRunElapsedTimeSubscriber(this);
+                            recipeRunElapsedTimeUnsubscriber ??= ObservableManager<(int, PLCService.RecipeRunETMode)>.Subscribe("RecipeRun.ElapsedTime", recipeRunElapsedTimeSubscriber);
+
                             CurrentRecipeTime ??= 0;
                             CurrentRecipeTime += currentRecipe.RTime;
                             CurrentRecipeTime += currentRecipe.HTime;
                             CurrentStep = currentRecipe.No;
                             StepName = currentRecipe.Name;
-                            TotalRampTime = currentRecipe.RTime;
-                            TotalHoldTime = currentRecipe.HTime;
+                            CurrentRampTime = null;
+                            CurrentHoldTime = null;
+                            TotalRampTime = null;
+                            TotalHoldTime = null;
+                            PauseTime = null;
 
                             if (CurrentLoopContext != loopContexts[index])
                             {
@@ -188,7 +222,34 @@ namespace SapphireXR_App.ViewModels
                 }
             }
 
-            public void startLog()
+            public void onPause()
+            {
+                if (initialized == false)
+                {
+                    return;
+                }
+
+                recipeControlPauseTimeSubscriber ??= new RecipeTimeSubscriber((int value) => { PauseTime = value; });
+                recipeControlPauseTimeUnsubscriber ??= ObservableManager<int>.Subscribe("RecipeControlTime.Pause", recipeControlPauseTimeSubscriber);
+            }
+
+            public void onStart()
+            {
+                if (initialized == false)
+                {
+                    return;
+                }
+
+                recipeControlPauseTimeUnsubscriber?.Dispose();
+                recipeControlPauseTimeUnsubscriber = null;
+                recipeControlPauseTimeSubscriber = null;
+                PauseTime = null;
+
+
+                startLog();
+            }
+
+            private void startLog()
             {
                 if(initialized == false)
                 {
@@ -281,8 +342,7 @@ namespace SapphireXR_App.ViewModels
             private void disposeSubscribe()
             {
                 temperatureControlValueUnsubscriber?.Dispose();
-                recipeControlHoldTimeUnsubscriber?.Dispose();
-                recipeControlRampTimeUnsubscriber?.Dispose();
+                recipeRunElapsedTimeUnsubscriber?.Dispose();
                 recipeControlPauseTimeUnsubscriber?.Dispose();
             }
 
@@ -302,11 +362,9 @@ namespace SapphireXR_App.ViewModels
                 disposeResource();
                 temperatureControlValueUnsubscriber = null;
                 temperatureControlValueSubscriber = null;
-                recipeControlHoldTimeUnsubscriber = null;
-                recipeControlRampTimeUnsubscriber = null;
+                recipeRunElapsedTimeUnsubscriber = null;
                 recipeControlPauseTimeUnsubscriber = null;
-                recipeControlHoldTimeSubscriber = null;
-                recipeControlRampTimeSubscriber = null;
+                recipeRunElapsedTimeSubscriber = null;
                 recipeControlPauseTimeSubscriber = null;
 
                 CurrentRecipeTime = null;
@@ -434,12 +492,10 @@ namespace SapphireXR_App.ViewModels
 
             private TemperatureCurrentValueSubscriber? temperatureControlValueSubscriber;
             private IDisposable? temperatureControlValueUnsubscriber = null;
-            private RecipeTimeSubscriber? recipeControlHoldTimeSubscriber = null;
             private RecipeTimeSubscriber? recipeControlPauseTimeSubscriber = null;
-            private RecipeTimeSubscriber? recipeControlRampTimeSubscriber = null;
-            private IDisposable? recipeControlHoldTimeUnsubscriber = null;
             private IDisposable? recipeControlPauseTimeUnsubscriber = null;
-            private IDisposable? recipeControlRampTimeUnsubscriber = null;
+            private RecipeRunElapsedTimeSubscriber? recipeRunElapsedTimeSubscriber = null;
+            private IDisposable? recipeRunElapsedTimeUnsubscriber = null;
 
             private LoopContext[] loopContexts = [];
             private static LoopContext EmptyLoopContext = new LoopContext();

@@ -163,6 +163,51 @@ namespace SapphireXR_App.ViewModels
 
                 private bool disposedValue = false;
             }
+
+            private class RecipeRunElapsedTimeSubscriber : IObserver<(int, PLCService.RecipeRunETMode)>
+            {
+                internal RecipeRunElapsedTimeSubscriber(RecipeContext rc)
+                {
+                    recipeContext = rc;
+                }
+                void IObserver<(int, PLCService.RecipeRunETMode)>.OnCompleted()
+                {
+                    throw new NotImplementedException();
+                }
+
+                void IObserver<(int, PLCService.RecipeRunETMode)>.OnError(Exception error)
+                {
+                    throw new NotImplementedException();
+                }
+
+                void IObserver<(int, PLCService.RecipeRunETMode)>.OnNext((int, PLCService.RecipeRunETMode) value)
+                {
+                    if(prevValue != value)
+                    {
+                        switch (value.Item2)
+                        {
+                            case PLCService.RecipeRunETMode.None:
+                                recipeContext.CurrentRampTime = null;
+                                recipeContext.CurrentHoldTime = null;
+                                break;
+
+                            case PLCService.RecipeRunETMode.Ramp:
+                                recipeContext.CurrentRampTime = value.Item1;
+                                recipeContext.CurrentHoldTime = null;
+                                break;
+
+                            case PLCService.RecipeRunETMode.Hold:
+                                recipeContext.CurrentRampTime = null;
+                                recipeContext.CurrentHoldTime = value.Item1;
+                                break;
+                        }
+                        prevValue = value;
+                    }
+                }
+
+                (int, PLCService.RecipeRunETMode)? prevValue = null;
+                private RecipeContext recipeContext;
+            }
         }
     }
 }

@@ -1,0 +1,12 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4026.11">
+  <DUT Name="RecipeRunET" Id="{e510fcbb-bb90-4f68-805b-898c1a3149fe}">
+    <Declaration><![CDATA[TYPE RecipeRunET :
+STRUCT
+	ET : TIME := T#0S;
+	Mode: E_RecipeRunETMode := E_RecipeRunETMode.None;
+END_STRUCT
+END_TYPE
+]]></Declaration>
+  </DUT>
+</TcPlcObject>

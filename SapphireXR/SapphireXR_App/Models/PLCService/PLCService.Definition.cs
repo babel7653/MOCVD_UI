@@ -4,6 +4,7 @@ using System.Windows.Threading;
 using TwinCAT.Ads;
 using System.Windows;
 using SapphireXR_App.Enums;
+using System.Runtime.InteropServices;
 
 namespace SapphireXR_App.Models
 {
@@ -61,6 +62,19 @@ namespace SapphireXR_App.Models
                 }
             }
         }
+
+
+        [StructLayout(LayoutKind.Sequential, Pack = 1)]
+        private struct RecipeRunET
+        {
+            public int ElapsedTime;
+            public RecipeRunETMode Mode;
+        }
+
+        internal enum RecipeRunETMode : short
+        {
+            None = 0, Ramp = 1, Hold = 2
+        };
 
         internal enum HardWiringInterlockStateIndex
         {
@@ -195,9 +209,8 @@ namespace SapphireXR_App.Models
         private static ObservableManager<bool>.Publisher? dRecipeEndedPublisher;
         private static ObservableManager<short>.Publisher? dCurrentActiveRecipeIssue;
         private static ObservableManager<float[]>.Publisher? dLineHeaterTemperatureIssuers;
-        private static ObservableManager<int>.Publisher? dRecipeControlHoldTimeIssuer;
-        private static ObservableManager<int>.Publisher? dRecipeControlRampTimeIssuer;
         private static ObservableManager<int>.Publisher? dRecipeControlPauseTimeIssuer;
+        private static ObservableManager<(int, RecipeRunETMode)>.Publisher? dRecipeRunElapsedTimeIssuer;
         private static ObservableManager<BitArray>.Publisher? dDigitalOutput2;
         private static ObservableManager<BitArray>.Publisher? dDigitalOutput3;
         private static ObservableManager<BitArray>.Publisher? dOutputCmd1;
@@ -258,8 +271,6 @@ namespace SapphireXR_App.Models
         private static uint hTemperaturePV;
         private static uint hOperationMode;
         private static uint hUserState;
-        private static uint hRecipeControlHoldTime;
-        private static uint hRecipeControlRampTime;
         private static uint hRecipeControlPauseTime;
         private static uint hDigitalOutput;
         private static uint hDigitalOutput2;
@@ -269,6 +280,7 @@ namespace SapphireXR_App.Models
         private static uint hOutputCmd2;
         private static uint hOutputSetType;
         private static uint hOutputMode;
+        private static uint hRecipeRunET;
         private static uint[] hInterlockEnable = new uint[NumAlarmWarningArraySize];
         private static uint[] hInterlockset = new uint[NumInterlockSet];
         private static uint[] hInterlock = new uint[NumInterlock];

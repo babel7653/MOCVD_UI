@@ -178,7 +178,8 @@ namespace SapphireXR_App.ViewModels
                     break;
 
                 case RecipeUserState.Run:
-                    CurrentRecipe.startLog();
+                    CurrentRecipe.onStart();
+                    CurrentRecipe.PauseTime = null;
                     if (Start == RecipeCommand.Run)
                     {
                         EventLogs.Instance.EventLogList.Add(new EventLog() { Message = "레시피가 시작되었습니다", Name = "Recipe Run", Type = EventLog.LogType.Information });
@@ -189,6 +190,7 @@ namespace SapphireXR_App.ViewModels
 
                 case RecipeUserState.Pause:
                     StartOrPause = true;
+                    CurrentRecipe.onPause();
                     Start = RecipeCommand.Restart;
                     CurrentRecipe.pauseLog();
                     break;

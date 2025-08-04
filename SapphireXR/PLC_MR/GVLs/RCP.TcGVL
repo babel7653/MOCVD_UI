@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4026.12">
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4026.11">
   <GVL Name="RCP" Id="{f007839c-f4b4-44cc-b006-21ad8dc161e6}">
     <Declaration><![CDATA[{attribute 'qualified_only'}
 VAR_GLOBAL
@@ -9,6 +9,9 @@ VAR_GLOBAL
 	iRcpStepN				: INT;
 	cmd_RcpOperation		: INT; // 0:Inital State, 10:RUN, 20:PAUSE, 30:RESTART, 40:STOP, 60:SKIP, 90:ManualOperation
 	userState				: INT;	// 0:Inital State, 10:RUN, 20:PAUSE, 30:RESTART, 40:STOP, 50:END, 60:SKIP
+	
+	Pause_ET				: TIME := T#0S;
+	RecipeRunET 			: RecipeRunET; 
 END_VAR]]></Declaration>
   </GVL>
 </TcPlcObject>

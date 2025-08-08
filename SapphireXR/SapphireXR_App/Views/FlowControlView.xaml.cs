@@ -1,6 +1,4 @@
-﻿using SapphireXR_App.Common;
-using System.Net;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 
@@ -44,7 +42,7 @@ namespace SapphireXR_App.Views
 
                     case "txtInput1":
                         rampTime ??= textBox;
-                        IsConfirmButtonEnabled = !string.IsNullOrEmpty(targetValue?.Text) && !string.IsNullOrEmpty(rampTime.Text);
+                        IsConfirmButtonEnabled = !string.IsNullOrEmpty(targetValue?.Text) && !string.IsNullOrEmpty(rampTime.Text) && 0 < int.Parse(rampTime.Text);
                         break;
                 }
             }

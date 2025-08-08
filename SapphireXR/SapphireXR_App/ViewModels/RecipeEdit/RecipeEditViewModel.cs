@@ -11,7 +11,6 @@ using System.ComponentModel;
 using System.Globalization;
 using System.IO;
 using System.Windows;
-using System.Windows.Media;
 
 namespace SapphireXR_App.ViewModels
 {
@@ -35,11 +34,10 @@ namespace SapphireXR_App.ViewModels
 
             RecipePLCLoadCommand = new RelayCommand(() =>
             {
-                loadToRecipeRunPublisher.Issue(("", new RecipeObservableCollection(Recipes)));
-                switchTabToDataRunPublisher.Issue(1);
+                loadToRecipeRunPublisher.Publish((RecipeFilePath ?? "", new RecipeObservableCollection(Recipes.Select(recipe => new Recipe(recipe)))));
+                switchTabToDataRunPublisher.Publish(1);
             },
-             () => Recipes != null && 0 < Recipes.Count
-             );
+            () => Recipes != null && 0 < Recipes.Count);
             var recipeSave = (string filePath) =>
             {
                 if (Recipes != null)
@@ -48,8 +46,15 @@ namespace SapphireXR_App.ViewModels
                     {
                         using (CsvWriter csvWriter = new CsvWriter(streamWriter, Config))
                         {
-                            csvWriter.WriteRecords<Recipe>(Recipes);
-                            MessageBox.Show(filePath + "로의 저장이 완료되었습니다.");
+                            try
+                            {
+                                csvWriter.WriteRecords<Recipe>(Recipes);
+                                MessageBox.Show(filePath + "로의 저장이 완료되었습니다.");
+                            }
+                            catch (Exception exception)
+                            {
+                                MessageBox.Show("Recipe를 저장하는데 실패하였습니다. 원인은 다음과 같습니다.\r\n" + exception.Message);
+                            }
                         }
                     }
                 }
@@ -67,7 +72,7 @@ namespace SapphireXR_App.ViewModels
                 SaveFileDialog saveFileDialog = new SaveFileDialog();
                 saveFileDialog.Filter = "csv 파일(*.csv)|*.csv";
                 RecipeFilePath = saveFileDialog.FileName = DateTime.Today.ToString("yyyyMMdd_");
-                saveFileDialog.InitialDirectory = AppDomain.CurrentDomain.BaseDirectory.Substring(0, AppDomain.CurrentDomain.BaseDirectory.Length - 25) + "Data\\Recipes\\";
+                saveFileDialog.InitialDirectory = AppSetting.RecipeEditRecipeInitialPath;
                 if (saveFileDialog.ShowDialog() == true)
                 {
                     recipeSave(saveFileDialog.FileName);
@@ -124,10 +129,11 @@ namespace SapphireXR_App.ViewModels
         {
             try
             {
-                (bool result, string? recipeFilePath, List<Recipe>? recipes) = RecipeService.OpenRecipe(Config);
+                (bool result, string? recipeFilePath, List<Recipe>? recipes) = RecipeService.OpenRecipe(Config, AppSetting.RecipeEditRecipeInitialPath);
                 if (result == true)
                 {
                     RecipeFilePath = recipeFilePath!;
+                    AppSetting.RecipeEditRecipeInitialPath = Path.GetDirectoryName(recipeFilePath);
                     Recipes = new RecipeObservableCollection(recipes!);
                 }
             }
@@ -151,7 +157,7 @@ namespace SapphireXR_App.ViewModels
         {
             foreach (var recipe in newlyAddedForMarking)
             {
-                recipe.Background = Brushes.White;
+                recipe.Foreground = Recipe.DefaultForeground;
             }
             newlyAddedForMarking.Clear();
         }
@@ -167,7 +173,7 @@ namespace SapphireXR_App.ViewModels
                 }
                 recipeStateUpdater.setSelectedRecipeStep(recipe);
             }
-           else
+            else
             {
                 ControlUIEnabled = false;
                 recipeStateUpdater?.clean();
@@ -232,8 +238,8 @@ namespace SapphireXR_App.ViewModels
 
         public List<Recipe> newlyAddedForMarking = new List<Recipe>();
         private RecipeStateUpader? recipeStateUpdater;
-        private ObservableManager<(string, IList<Recipe>)>.DataIssuer loadToRecipeRunPublisher;
-        private ObservableManager<int>.DataIssuer switchTabToDataRunPublisher;
+        private ObservableManager<(string, IList<Recipe>)>.Publisher loadToRecipeRunPublisher;
+        private ObservableManager<int>.Publisher switchTabToDataRunPublisher;
 
 
         [ObservableProperty]

@@ -13,19 +13,19 @@ namespace SapphireXR_App.ViewModels
         [ObservableProperty]
         private string _message = string.Empty;
 
-        public ValveOperationExResult ValveOperationExResult { get; internal set; } = ValveOperationExResult.Cancel;
+        public DialogResult ValveOperationExResult { get; internal set; } = DialogResult.Cancel;
 
         [RelayCommand]
         private void Ok(Window window)
         {
-            ValveOperationExResult = ValveOperationExResult.Ok;
+            ValveOperationExResult = DialogResult.Ok;
             window.DialogResult = true;
         }
 
         [RelayCommand]
         private void Cancel(Window window)
         {
-            ValveOperationExResult = ValveOperationExResult.Cancel;
+            ValveOperationExResult = DialogResult.Cancel;
             window.DialogResult = false;
         }
         public ValveOperationViewModel(string title, string message)

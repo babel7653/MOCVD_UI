@@ -1,0 +1,70 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4026.11">
+  <POU Name="FB_FaultCheck" Id="{02d04909-7f64-4aaa-8b5e-37f907f48f31}" SpecialFunc="None">
+    <Declaration><![CDATA[//*********************************************************************
+// Function Block: FB_FaultCheck
+// Description: 각 디바이스의 Fault 발생시 알람을 처리합니다.
+// bEnable이 TRUE일 때만 알람 로직이 활성화됩니다.
+//*********************************************************************
+FUNCTION_BLOCK FB_FaultCheck
+VAR_INPUT
+	bAlarmEnable		: BOOL; //디바이스 활성화/비활성화 (TRUE = 활성화)
+	bWarningEnable		: BOOL;
+	bCurrentAlarmState	: BOOL;
+	bCurrentWarningState	: BOOL;
+	tAlarmDelay			: TIME; //지연 시간
+END_VAR
+VAR_OUTPUT
+	bAlarm		: BOOL; //허용 값 초과 경고 발생
+	bWarning	: BOOL; //허용 값 초과 주의 발생
+END_VAR
+VAR
+	// 내부 변수 (인스턴스별로 독립적)
+	fbAlarmTimer 		: TON;
+	fbWarningTimer 		: TON;
+	bAlarmCondition 	: BOOL;
+	bWarningCondition 	: BOOL; 
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[// bAlarmEnable이 TRUE일 때만 알람 로직 실행
+IF bAlarmEnable THEN
+	//허용값 알람 로직(지연 시간 적용)
+	IF bCurrentAlarmState THEN
+		bAlarmCondition := TRUE;
+	ELSE
+		bAlarmCondition := FALSE;
+	END_IF
+	fbAlarmTimer(IN:=bAlarmCondition, PT:=tAlarmDelay);
+	bAlarm := fbAlarmTimer.Q;
+ELSE
+	// bEnable이 FALSE일 경우, 모든 알람 및 타이머를 비활성화/리셋
+    // Q 출력을 FALSE로 강제하고, IN 입력을 FALSE로 설정하여 타이머를 리셋합니다.
+	bAlarm := FALSE;
+	fbAlarmTimer(IN:=FALSE, PT:= tAlarmDelay); // 타이머 리셋
+	bAlarmCondition := FALSE; // 조건 플래그도 리셋
+END_IF
+
+// bWarningEnable이 TRUE일 때만 알람 로직 실행
+IF bWarningEnable THEN
+	//허용값 알람 로직(지연 시간 적용)
+	IF bCurrentWarningState THEN
+		bWarningCondition := TRUE;
+	ELSE
+		bWarningCondition := FALSE;
+	END_IF
+	fbWarningTimer(IN:=bWarningCondition, PT:=tAlarmDelay);
+	bWarning := fbWarningTimer.Q;
+ELSE
+	// bEnable이 FALSE일 경우, 모든 알람 및 타이머를 비활성화/리셋
+    // Q 출력을 FALSE로 강제하고, IN 입력을 FALSE로 설정하여 타이머를 리셋합니다.
+	bWarning := FALSE;
+	fbWarningTimer(IN:=FALSE, PT:= tAlarmDelay); // 타이머 리셋
+	bWarningCondition := FALSE; // 조건 플래그도 리셋
+END_IF]]></ST>
+    </Implementation>
+    <LineIds Name="FB_FaultCheck">
+      <LineId Id="1" Count="34" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

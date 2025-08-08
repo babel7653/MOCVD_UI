@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.IO;
 using CsvHelper;
 using Microsoft.Win32;
 using SapphireXR_App.Models;
@@ -17,16 +12,23 @@ namespace SapphireXR_App.Common
             internal OpenRecipeFileException(string message) : base(message) { }
         }
 
-        public static (bool, string?, List<Recipe>?) OpenRecipe(CsvHelper.Configuration.CsvConfiguration config)
+        public static (bool, string?, List<Recipe>?) OpenRecipe(CsvHelper.Configuration.CsvConfiguration config, string? initialDirectory)
         {
             try
             {
                 OpenFileDialog openFile = new();
                 openFile.Multiselect = false;
                 openFile.Filter = "csv 파일(*.csv)|*.csv";
-                string appBasePath = AppDomain.CurrentDomain.BaseDirectory;
-                int path_length = appBasePath.Length;
-                openFile.InitialDirectory = appBasePath.Substring(0, path_length - 25) + "Data\\Recipes\\";
+
+                if(Path.Exists(initialDirectory) == false)
+                {
+                    initialDirectory = AppDomain.CurrentDomain.BaseDirectory + "Recipe";
+                    if (Path.Exists(initialDirectory) == false)
+                    {
+                        Directory.CreateDirectory(initialDirectory);
+                    }
+                }
+                openFile.InitialDirectory = initialDirectory;
 
                 if (openFile.ShowDialog() != true) return (false, null, null);
                 string recipeFilePath = openFile.FileName;

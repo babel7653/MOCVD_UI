@@ -4,284 +4,140 @@
     <Declaration><![CDATA[PROGRAM P50_RecipeControl
 VAR
 	nRcpIndex		: INT;
-	nRcpStepTime 	: INT;
+	eRecipeRun		: E_RecipeRun ; //레시피 상태
 	fbRecipeSequencer : FB_RecipeSequencer;
-	Pause_TIME		: TIME;
-	Pause_ET		: TIME;
-	Pause_MAX		: TIME := T#1800S;
-	Pause_Step		: INT;
+	
 	Pause_TON		: TON;
-	Pause_rTrig		: R_TRIG;
-	Pause_Ramp		: BOOL;
-	Pause_Hold		: BOOL;
-	ReStart_TON		: TON;
-	Ramp_TON		: TON;
-	Hold_TON		: TON;
-	Ramp_TIME		: TIME;
-	Hold_TIME		: TIME;
-	Ramp_ET			: TIME;
-	Hold_ET			: TIME;
-	rTrigRamp		: R_TRIG;
-	rTrigHold		: R_TRIG;
-	Ramp_On			: BOOL;
-	Hold_On			: BOOL;
-
+	Ramp_TON		: FB_TON_Pausable;
+	Hold_TON		: FB_TON_Pausable;
+	
+	loopCount		: ARRAY[1..100] OF INT;
+	i				: INT;
+END_VAR
+VAR CONSTANT
+	Pause_MAX		: TIME := T#1800S;
 END_VAR
 ]]></Declaration>
     <Implementation>
       <ST><![CDATA[CASE RCP.cmd_RcpOperation OF
 	0: //Init State
-		Rcp.state_RcpOperation := 0;
+ 		f_ResetTimersAndRCPTimes(fbPause_TON := Pause_TON, fbRamp_TON := Ramp_TON, fbHold_TON := Hold_TON);
+		
+		FOR i:=1 TO Rcp.iRcpTotalStep DO
+			loopCount[i] := Rcp.aRecipe[i].iRecipe[9];
+		END_FOR
+		
 		nRcpIndex := 0;
-		Pause_TON(IN:=FALSE);
-		ReStart_TON(IN:=FALSE);
-		Ramp_TON(IN:=FALSE);
-		Hold_TON(IN:=FALSE);
-		Ramp_On := TRUE;
-		Hold_On	:= FALSE;
 		Rcp.userState := 0;
-		P92_Maintenance.nCaseSignalTower := 4;
-		//fbRecipeSequencer(nRcpIndex := nRcpIndex);
+		eRecipeRun := E_RecipeRun.Initial;
+		GVL_IO.nCaseSignalTower := 5; // White - Idle
+
 	10: //RUN
 		IF nRcpIndex = 0 THEN
 			nRcpIndex := 1;
 		END_IF
-		Rcp.userState := 10;
-		IF nRcpIndex <= Rcp.iRcpTotalStep THEN
-			Rcp.state_RcpOperation := 10; // Recipe Running
-			Ramp_TIME := INT_TO_TIME(RCP.aRecipe[nRcpIndex].iRecipe[2]*1000); // second -> milisecond time
-			Hold_TIME := INT_TO_TIME(RCP.aRecipe[nRcpIndex].iRecipe[3]*1000);
-			fbRecipeSequencer(nRcpIndex := nRcpIndex);
-			
-			Ramp_TON(IN:=Ramp_On, PT:=Ramp_TIME, ET=>Ramp_ET);
-			rTrigRamp(CLK:=Ramp_TON.Q);
-			IF rTrigRamp.Q THEN
-				Ramp_TON(IN:=FALSE);
-				Ramp_On := FALSE;
-				Hold_On := TRUE;
-			END_IF
-			
-			Hold_TON(IN:=Hold_On, PT:=Hold_TIME, ET=>Hold_ET);
-			rTrigHold(CLK:=Hold_TON.Q);
-			IF rTrigHold.Q THEN
-				Hold_TON(IN:=FALSE);
-				Hold_On := FALSE;
-				Ramp_On := TRUE;
-				IF nRcpIndex < Rcp.iRcpTotalStep THEN
-					nRcpIndex := nRcpIndex + 1;
-				ELSE 
+		fbRecipeSequencer(nRcpIndex := nRcpIndex);
+						
+		// CASE 문을 이용한 상태 머신 구현
+		CASE eRecipeRun OF
+			E_RecipeRun.Initial:
+				f_ResetTimersAndRCPTimes(fbPause_TON := Pause_TON, fbRamp_TON := Ramp_TON, fbHold_TON := Hold_TON);
+				Rcp.userState := 10;// Recipe Running
+				GVL_IO.nCaseSignalTower := 3;
+				eRecipeRun := E_RecipeRun.Ramp;
+				
+			E_RecipeRun.Ramp: // Ramp 수행
+				Ramp_TON(IN:=TRUE, PT:=INT_TO_TIME(RCP.aRecipe[nRcpIndex].iRecipe[2]*1000), ET=>RCP.RecipeRunET.ET);
+				RCP.RecipeRunET.Mode := E_RecipeRunETMode.Ramp;
+				IF Ramp_TON.Q THEN
+					Ramp_TON(IN:=FALSE);
+					eRecipeRun := E_RecipeRun.CheckHoldTemp;
+				END_IF				
+				
+			E_RecipeRun.CheckHoldTemp: //Hold Temp 확인
+				IF RCP.aRecipe[nRcpIndex].iRecipe[7] = 0 THEN
+					Hold_TON(IN:=TRUE, PT:=INT_TO_TIME(RCP.aRecipe[nRcpIndex].iRecipe[3]*1000), ET=>RCP.RecipeRunET.ET);
+					RCP.RecipeRunET.Mode := E_RecipeRunETMode.Hold;
+					IF Hold_TON.Q THEN
+						Hold_TON(IN:=FALSE);
+						eRecipeRun := E_RecipeRun.End; // 레시피 첫 Column 실행
+					END_IF
+				ELSIF GVL_IO.aController_PV[27] < RCP.aRecipe[nRcpIndex].iRecipe[7] THEN //서셉터 온도가 Wait 온도보다 낮을 때
+					Hold_TON(IN:=FALSE);
+					eRecipeRun := E_RecipeRun.End; // 레시피 첫 Column 실행
+				ELSE // 서셉터 온도가 Wait 온도보다 높을 때
+					;// 떨어질 때까지 기다림
+				END_IF
+				
+			E_RecipeRun.End: // 다음 Step 이동 (루프 마지막 단계일 경우, 다음 Step 이동 또는 루프 처음단계로 점프)
+				loopCount[nRcpIndex] := loopCount[nRcpIndex] - 1;
+				nRcpIndex := nRcpIndex + 1 - (RCP.aRecipe[nRcpIndex].iRecipe[8]) * MIN(loopCount[nRcpIndex], 1);
+				IF nRcpIndex > Rcp.iRcpTotalStep THEN
 					RCP.cmd_RcpOperation := 50;
 				END_IF
-			END_IF
-			P92_Maintenance.nCaseSignalTower := 3;
-		ELSE
-			RCP.cmd_RcpOperation := 50;
-			P92_Maintenance.nCaseSignalTower := 4;
-		END_IF
+				eRecipeRun := E_RecipeRun.Initial;
+		END_CASE
 		
 	20: //PAUSE
-		Rcp.state_RcpOperation := 20;
+		CASE eRecipeRun OF
+			E_RecipeRun.Ramp:
+				Ramp_TON(PAUSE:=TRUE);		
+			E_RecipeRun.CheckHoldTemp:
+				Hold_TON(PAUSE:=TRUE);
+		END_CASE
 		
-		IF Ramp_On THEN
- 			Pause_TIME := Ramp_ET;
-			Pause_Ramp := TRUE;
-			Pause_Hold := FALSE;
-		ELSE
-			Pause_TIME := Hold_ET;
-			Pause_Ramp := FALSE;
-			Pause_Hold := TRUE;
- 		END_IF
-		
-		Ramp_TON(IN:=FALSE);
-		Hold_TON(IN:=FALSE);
-		
-		Pause_TON(IN:=TRUE, PT:= Pause_MAX, ET=> Pause_ET);
-		Pause_rTrig(CLK:=Pause_TON.Q);
-		IF Pause_rTrig.Q THEN
-			Rcp.state_RcpOperation := 90; // Recipe_Alarm
+		Pause_TON(IN:=TRUE, PT:= Pause_MAX, ET=>RCP.Pause_ET); //최대 홀드 시간이 지나면 다음 스텝으로 넘거감
+		IF Pause_TON.Q THEN
 			Pause_TON(IN:=FALSE);
-		END_IF	
-		Pause_Step := nRcpIndex;
+			eRecipeRun := E_RecipeRun.End; // 레시피 첫 Column 실행
+		END_IF
+
 		Rcp.userState := 20;
-		P92_Maintenance.nCaseSignalTower := 4;
+		GVL_IO.nCaseSignalTower := 5;
 		
 	30: //RESTART
-		Rcp.state_RcpOperation := 30;	
 		Pause_TON(IN:=FALSE);
+		CASE eRecipeRun OF
+			E_RecipeRun.Ramp:
+				Ramp_TON(PAUSE:=FALSE);
+			
+			E_RecipeRun.CheckHoldTemp:
+				Hold_TON(PAUSE:=FALSE);
+		END_CASE
+
+		RCP.Pause_ET := T#0S;
 		Rcp.userState := 10;
-		IF Pause_Ramp THEN
-			ReStart_TON(IN:=TRUE, PT:=Ramp_TIME - Pause_TIME, ET=>Ramp_ET);
-			rTrigRamp(CLK:=ReStart_TON.Q);
-			IF rTrigRamp.Q THEN
-				Ramp_TON(IN:=FALSE);
-				Ramp_On := FALSE;
-				Hold_On := TRUE;
-			END_IF
-			
-			Hold_TON(IN:=Hold_On, PT:=Hold_TIME, ET=>Hold_ET);
-			rTrigHold(CLK:=Hold_TON.Q);
-			IF rTrigHold.Q THEN
-				Hold_TON(IN:=FALSE);
-				Hold_On := FALSE;
-				Ramp_On := TRUE;
-				IF nRcpIndex < Rcp.iRcpTotalStep THEN
-					nRcpIndex := nRcpIndex + 1;
-					RCP.cmd_RcpOperation := 10;
-				ELSE 
-					RCP.cmd_RcpOperation := 50;
-				END_IF
-			END_IF
-			
-		ELSIF Pause_Hold THEN
-			ReStart_TON(IN:=TRUE, PT:=Hold_TIME - Pause_TIME, ET=>Hold_ET);
-			rTrigHold(CLK:=ReStart_TON.Q);
-			IF rTrigHold.Q THEN
-				Hold_TON(IN:=FALSE);
-				Hold_On := FALSE;
-				Ramp_On := TRUE;
-				IF nRcpIndex < Rcp.iRcpTotalStep THEN
-					nRcpIndex := nRcpIndex + 1;
-					RCP.cmd_RcpOperation := 10;
-				ELSE 
-					RCP.cmd_RcpOperation := 50;
-				END_IF
-				ReStart_TON(IN:=FALSE);
-			END_IF
-		END_IF
-		P92_Maintenance.nCaseSignalTower := 3;
-		fbRecipeSequencer();
+		RCP.cmd_RcpOperation := 10;	
+		GVL_IO.nCaseSignalTower := 3;
 		
 	40: //STOP
-		Rcp.state_RcpOperation := 40;
-		Pause_TON(IN:=FALSE);
-		ReStart_TON(IN:=FALSE);
+		f_ResetTimersAndRCPTimes(fbPause_TON := Pause_TON, fbRamp_TON := Ramp_TON, fbHold_TON := Hold_TON);
 		Rcp.userState := 40;
-		//nRcpIndex := 1;
-		P92_Maintenance.nCaseSignalTower := 4;
-		fbRecipeSequencer();
+		GVL_IO.nCaseSignalTower := 5;
 		
 	50: //END
-		Rcp.state_RcpOperation := 50;
+		f_ResetTimersAndRCPTimes(fbPause_TON := Pause_TON, fbRamp_TON := Ramp_TON, fbHold_TON := Hold_TON);
 		Rcp.userState := 50;
 		fbRecipeSequencer(nRcpIndex := nRcpIndex);
-		//nRcpIndex := 1;
-		P92_Maintenance.nCaseSignalTower := 4;
-		fbRecipeSequencer();
+		GVL_IO.nCaseSignalTower := 5;
 		
 	60: //SKIP
-		Ramp_TON(IN:=FALSE);
-		Hold_TON(IN:=FALSE);
-		Ramp_On := TRUE;
-		Hold_On := FALSE;
-		nRcpIndex := nRcpIndex + 1;
-		RCP.cmd_RcpOperation := 10;
-		fbRecipeSequencer();
+		IF E_RecipeRun.Ramp <= eRecipeRun  AND  eRecipeRun <= E_RecipeRun.CheckHoldTemp THEN
+			eRecipeRun := E_RecipeRun.End;
+		END_IF
+		Rcp.cmd_RcpOperation := 10;
+		RCP.Pause_ET := T#0S;
 END_CASE
-]]></ST>
+RCP.iRcpStepN := nRcpIndex;]]></ST>
     </Implementation>
     <LineIds Name="P50_RecipeControl">
-      <LineId Id="1" Count="1" />
-      <LineId Id="393" Count="0" />
-      <LineId Id="209" Count="0" />
-      <LineId Id="211" Count="1" />
-      <LineId Id="248" Count="1" />
-      <LineId Id="251" Count="1" />
-      <LineId Id="422" Count="0" />
-      <LineId Id="430" Count="0" />
-      <LineId Id="394" Count="0" />
-      <LineId Id="6" Count="0" />
-      <LineId Id="391" Count="1" />
-      <LineId Id="154" Count="0" />
-      <LineId Id="38" Count="0" />
-      <LineId Id="230" Count="1" />
-      <LineId Id="233" Count="0" />
-      <LineId Id="236" Count="0" />
-      <LineId Id="234" Count="0" />
-      <LineId Id="266" Count="0" />
-      <LineId Id="235" Count="0" />
-      <LineId Id="238" Count="1" />
-      <LineId Id="250" Count="0" />
-      <LineId Id="253" Count="0" />
-      <LineId Id="257" Count="0" />
-      <LineId Id="241" Count="0" />
-      <LineId Id="267" Count="0" />
-      <LineId Id="259" Count="5" />
-      <LineId Id="276" Count="1" />
-      <LineId Id="280" Count="1" />
-      <LineId Id="278" Count="0" />
-      <LineId Id="258" Count="0" />
-      <LineId Id="428" Count="0" />
-      <LineId Id="285" Count="0" />
-      <LineId Id="287" Count="0" />
-      <LineId Id="429" Count="0" />
-      <LineId Id="232" Count="0" />
-      <LineId Id="142" Count="0" />
-      <LineId Id="7" Count="0" />
-      <LineId Id="170" Count="0" />
-      <LineId Id="288" Count="1" />
-      <LineId Id="292" Count="0" />
-      <LineId Id="310" Count="0" />
-      <LineId Id="363" Count="0" />
-      <LineId Id="295" Count="0" />
-      <LineId Id="298" Count="0" />
-      <LineId Id="312" Count="0" />
-      <LineId Id="364" Count="0" />
-      <LineId Id="293" Count="0" />
-      <LineId Id="375" Count="0" />
-      <LineId Id="371" Count="0" />
-      <LineId Id="374" Count="0" />
-      <LineId Id="372" Count="0" />
-      <LineId Id="290" Count="0" />
-      <LineId Id="300" Count="3" />
-      <LineId Id="299" Count="0" />
-      <LineId Id="179" Count="0" />
-      <LineId Id="425" Count="0" />
-      <LineId Id="197" Count="0" />
-      <LineId Id="435" Count="0" />
-      <LineId Id="387" Count="1" />
-      <LineId Id="202" Count="0" />
-      <LineId Id="424" Count="0" />
-      <LineId Id="315" Count="1" />
-      <LineId Id="327" Count="4" />
-      <LineId Id="326" Count="0" />
-      <LineId Id="332" Count="0" />
-      <LineId Id="334" Count="7" />
-      <LineId Id="359" Count="0" />
-      <LineId Id="342" Count="2" />
-      <LineId Id="333" Count="0" />
-      <LineId Id="365" Count="0" />
-      <LineId Id="345" Count="0" />
-      <LineId Id="347" Count="7" />
-      <LineId Id="358" Count="0" />
-      <LineId Id="355" Count="2" />
-      <LineId Id="361" Count="0" />
-      <LineId Id="346" Count="0" />
-      <LineId Id="317" Count="0" />
-      <LineId Id="436" Count="0" />
-      <LineId Id="201" Count="0" />
-      <LineId Id="437" Count="0" />
-      <LineId Id="9" Count="0" />
-      <LineId Id="386" Count="0" />
-      <LineId Id="203" Count="1" />
-      <LineId Id="427" Count="0" />
-      <LineId Id="89" Count="0" />
-      <LineId Id="434" Count="0" />
-      <LineId Id="199" Count="0" />
-      <LineId Id="438" Count="0" />
-      <LineId Id="10" Count="0" />
-      <LineId Id="385" Count="0" />
-      <LineId Id="426" Count="0" />
-      <LineId Id="390" Count="0" />
-      <LineId Id="194" Count="0" />
-      <LineId Id="433" Count="0" />
-      <LineId Id="200" Count="0" />
-      <LineId Id="439" Count="0" />
-      <LineId Id="175" Count="0" />
-      <LineId Id="376" Count="3" />
-      <LineId Id="223" Count="1" />
-      <LineId Id="389" Count="0" />
-      <LineId Id="135" Count="0" />
-      <LineId Id="15" Count="0" />
+      <LineId Id="1" Count="28" />
+      <LineId Id="110" Count="0" />
+      <LineId Id="30" Count="7" />
+      <LineId Id="112" Count="0" />
+      <LineId Id="38" Count="4" />
+      <LineId Id="117" Count="0" />
+      <LineId Id="44" Count="64" />
     </LineIds>
   </POU>
 </TcPlcObject>

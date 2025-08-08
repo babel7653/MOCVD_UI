@@ -1,10 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.15">
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4026.12">
   <POU Name="P91_Monitoring" Id="{4f91223e-09c8-40bc-a729-040528b0179c}" SpecialFunc="None">
     <Declaration><![CDATA[PROGRAM P91_Monitoring
-VAR_OUTPUT
-	
-END_VAR
 VAR
 	TimeCycle			: TON;
 	i 					: INT;
@@ -41,8 +38,7 @@ IF TimeCycle.Q THEN
 	GVL_IO.aMonitoring_PV[8] := GVL_IO.aAnalogInputIO[37] * 0.1; // PT100, Shower Head, Cal. 0.1
 	GVL_IO.aMonitoring_PV[9] := GVL_IO.aAnalogInputIO[38] * 0.1; // PT100, Shower Head, Cal. 0.1
 	
-END_IF
-]]></ST>
+END_IF]]></ST>
     </Implementation>
     <LineIds Name="P91_Monitoring">
       <LineId Id="184" Count="0" />
@@ -65,7 +61,6 @@ END_IF
       <LineId Id="60" Count="0" />
       <LineId Id="128" Count="0" />
       <LineId Id="5" Count="0" />
-      <LineId Id="73" Count="0" />
     </LineIds>
   </POU>
 </TcPlcObject>

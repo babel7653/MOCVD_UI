@@ -9,67 +9,52 @@
         Background="Transparent"
         AllowsTransparency="True"
         SizeToContent="WidthAndHeight"
-        MinWidth="400"
-        MinHeight="150"
+        MinHeight="160"
         WindowStartupLocation="CenterScreen"
         x:Name="valveDialog"
-        Title="ValveOperationPopup" Height="150" Width="400">
-    
+        Title="ValveOperationPopup" Height="160" Width="400">
     <Window.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="../Themes/Generic.xaml"/>
             </ResourceDictionary.MergedDictionaries>
-            <Style TargetType="{x:Type TextBlock}">
-                <Setter Property="FontSize" Value="15"/>
-                <Setter Property="Margin" Value="10"/>
-            </Style>
-
-            <Style TargetType="{x:Type Label}">
-                <Setter Property="Foreground" Value="White"/>
-                <Setter Property="Margin" Value="5"/>
-                <Setter Property="FontWeight" Value="Bold"/>
-            </Style>
         </ResourceDictionary>
     </Window.Resources>
-        
-    <Border CornerRadius="5" Background="White">
-        <Grid Background="Transparent">
+    <Border CornerRadius="{StaticResource r_3_sqrt}" Background="{StaticResource Gray_100}" Padding="{StaticResource p_5_sqrt}">
+        <Grid>
             <Grid.RowDefinitions>
-                <RowDefinition Height="40"/>
-                <RowDefinition/>
-                <RowDefinition Height="40"/>
+                <RowDefinition Height="63" />
+                <RowDefinition Height="19" />
+                <RowDefinition Height="38" />
             </Grid.RowDefinitions>
-
-            <Border CornerRadius="5 5 0 0" Background="RoyalBlue">
-                <Label Grid.Row="0"
-         Content="{Binding Title}"/>
-            </Border>
-            <TextBlock Grid.Row="1" Height="40" Text="{Binding Message}"/>
-            <Grid Grid.Row="2" HorizontalAlignment="Center">
+        <Grid Grid.Row="0" Background="Transparent">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="24" />
+                <RowDefinition Height="15" />
+                <RowDefinition Height="22" />
+            </Grid.RowDefinitions>
+            <Grid Grid.Row="0">
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="Auto"/>
-                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="24"/>
+                        <ColumnDefinition Width="4" />
+                        <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
+                <Image Grid.Column="0" Height="24" Source="/Resources/icons/icon=valveoperation.png"/>
+                <Label Grid.Column="2" Grid.Row="0"  Content="{Binding Title}" FontFamily="Segoe UI" FontWeight="Bold" HorizontalAlignment="Left" Padding="0" FontSize="14" VerticalAlignment="Center" Foreground="{StaticResource Gray_950}" />
+            </Grid>
+                <TextBlock Grid.Row="2" Text="{Binding Message}" FontSize="16" FontFamily="Segoe UI" Padding="0" Margin="0"  VerticalAlignment="Center"  Foreground="{StaticResource Gray_950}" HorizontalAlignment="Left" />
+            </Grid>
 
-                <Button Grid.Column="0"
-                    FontSize="15"
-                    Margin="5" 
-                    Width="120"
-                    Style="{StaticResource MetroBlueButtonStyle}" 
-                    IsDefault="True"
-                    Content="확인"
-                    Command="{Binding OkCommand}"
-                    CommandParameter="{Binding ElementName=valveDialog}"/>
-                <Button Grid.Column="1"
-                    FontSize="15"
-                    Margin="5" 
-                    Width="120"
-                    Style="{StaticResource MetroOrangeButtonStyle}" 
-                    IsCancel="True"
-                    Content="취소"
-                    Command="{Binding CancelCommand}"
-                    CommandParameter="{Binding ElementName=valveDialog}"/>
+            <Grid Grid.Row="2" HorizontalAlignment="Stretch">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="8" />
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <Button Grid.Column="0" FontSize="14" Style="{StaticResource PrimaryButton}" HorizontalAlignment="Stretch" IsDefault="True" Content="확인" Command="{Binding OkCommand}"
+                        CommandParameter="{Binding ElementName=valveDialog}" Background="{StaticResource Sapphire_Blue}" FontFamily="Segoe UI" Foreground="{StaticResource Gray_50}"/>
+                <Button Grid.Column="2" FontSize="14" Style="{StaticResource DefaultButton}" IsCancel="True" Content="취소" Command="{Binding CancelCommand}" HorizontalAlignment="Stretch"
+                    CommandParameter="{Binding ElementName=valveDialog}" FontFamily="Segoe UI" Background="{StaticResource Gray_300}" Foreground="{StaticResource Gray_900}"/>
             </Grid>
         </Grid>
     </Border>

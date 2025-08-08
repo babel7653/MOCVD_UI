@@ -4,36 +4,35 @@
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:SapphireXR_App.Views"
+      xmlns:model="clr-namespace:SapphireXR_App.Models"
+      xmlns:behavior="clr-namespace:SapphireXR_App.Behavior"
       mc:Ignorable="d" 
-      d:DesignHeight="1037" d:DesignWidth="1300"
-      Title="SettingPage">
+      d:DesignWidth="1620" d:DesignHeight="1020"
+      Title="SettingPage" Background="{StaticResource Gray_300}">
     <Page.Resources>
-        <Style x:Key="BaseStyle" TargetType="{x:Type Control}">
-            <Setter Property="FontSize" Value="11"/>
-            <Setter Property="FontFamily" Value="NanumGothic"/>
+        <Style TargetType="DataGridColumnHeader" x:Key="ioListColumnHeader" BasedOn="{StaticResource EventLogColumnHeader}">
+            <Setter Property="Height" Value="28" />
         </Style>
-        <Style x:Key="SettingOperationButton" TargetType="{x:Type Button}">
-            <Setter Property="Cursor" Value="Hand"/>
-            <Setter Property="Height" Value="30"/>
-            <Setter Property="Width" Value="64"/>
-            <Setter Property="Margin" Value="4"/>
-            <Setter Property="HorizontalContentAlignment" Value="Center"/>
-            <Style.Resources>
-                <Style TargetType="{x:Type Border}">
-                    <Setter Property="CornerRadius" Value="4"/>
-                </Style>
-            </Style.Resources>
+        <Style TargetType="DataGridColumnHeader" x:Key="checkAllColumnHeader" BasedOn="{StaticResource ioListColumnHeader}">
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Foreground" Value="{StaticResource Sapphire_Blue}" />
+                    <Setter Property="Cursor" Value="Hand" />
+                </Trigger>
+            </Style.Triggers>
         </Style>
-        <Style TargetType="{x:Type DataGrid}">
+        <Style TargetType="{x:Type DataGrid}" x:Key="SettingDataGrid" BasedOn="{StaticResource EventLog}">
             <Setter Property="AutoGenerateColumns" Value="False"/>
-            <Setter Property="Padding" Value="5"/>
             <Setter Property="CanUserSortColumns" Value="False"/>
             <Setter Property="CanUserAddRows" Value="False"/>
+            <Setter Property="VerticalScrollBarVisibility" Value="Auto" />
+            <Setter Property="FontSize" Value="12" />
+            <Setter Property="ColumnHeaderStyle" Value="{StaticResource ioListColumnHeader}" />
         </Style>
-        <Style TargetType="{x:Type DataGridColumnHeader}">
-            <Setter Property="HorizontalContentAlignment" Value="Center"/>
+        <Style x:Key="SettingTabControl" TargetType="TabControl" BasedOn="{StaticResource DefaultVerticalTabControl}">
+            <Setter Property="Background" Value="{StaticResource Gray_300}" />
         </Style>
-        <Style TargetType="{x:Type TabItem}">
+        <Style x:Key="SetingTabItem" TargetType="TabItem" BasedOn="{StaticResource DefaultVerticalTabItem}">
             <Setter Property="HeaderTemplate">
                 <Setter.Value>
                     <DataTemplate>
@@ -45,203 +44,279 @@
                     </DataTemplate>
                 </Setter.Value>
             </Setter>
-            <Setter Property="Width" Value="20"/>
-            <Setter Property="Height" Value="90"/>
-            <Setter Property="Padding" Value="3"/>
+            <Setter Property="Width" Value="30" />
+            <Setter Property="Height" Value="150" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="TabItem">
+                        <Border  Name="Panel">
+                            <ContentPresenter x:Name="ContentSite" VerticalAlignment="Center" HorizontalAlignment="Center" ContentSource="Header" />
+                            <Border.CornerRadius>
+                                <CornerRadius TopLeft="{StaticResource r_2}" BottomLeft="{StaticResource r_2}"/>
+                            </Border.CornerRadius>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsSelected" Value="True">
+                                <Setter TargetName="Panel" Property="Background" Value="{StaticResource Gray_50}" />
+                            </Trigger>
+                            <Trigger Property="IsSelected" Value="False">
+                                <Setter TargetName="Panel" Property="Background" Value="{StaticResource Gray_300}" />
+                            </Trigger>
+                            <MultiTrigger>
+                                <MultiTrigger.Conditions>
+                                    <Condition Property="IsSelected" Value="False" />
+                                    <Condition Property="IsMouseOver" Value="True" />
+                                </MultiTrigger.Conditions>
+                                <Setter TargetName="Panel" Property="Background" Value="{StaticResource Gray_200}" />
+                                <Setter Property="Foreground" Value="{StaticResource Gray_800}" />
+                                <Setter TargetName="Panel" Property="Cursor" Value="Hand" />
+                            </MultiTrigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
         </Style>
-        <Style TargetType="{x:Type Button}">
-            <Setter Property="Width" Value="70"/>
-            <Setter Property="Height" Value="20"/>
-            <Setter Property="FontSize" Value="11"/>
+        <Style TargetType="CheckBox" BasedOn="{StaticResource DefaultCheckBox}" x:Key="DataGridCheckBox">
+            <Setter Property="HorizontalAlignment" Value="Center" />
         </Style>
-
     </Page.Resources>
-
     <Grid>
-        <TabControl TabStripPlacement="Left">
+        <TabControl TabStripPlacement="Left" Style="{StaticResource SettingTabControl}" Margin="{StaticResource p_5_sqrt}" Padding="0">
+            <TabControl.Resources>
+                <Style TargetType="TabItem" BasedOn="{StaticResource SetingTabItem}" />
+            </TabControl.Resources>
             <!--Tab for Alarm Setting -->
             <TabItem Name="AlarmSetting" Header="Alarm">
+                <TabItem.Margin>
+                    <Thickness Top="{StaticResource p_5}" Bottom="-20" />
+                </TabItem.Margin>
                 <TabItem.Content>
-                    <Grid Width="1270">
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="30"/>
-                            <RowDefinition Height="*"/>
-                        </Grid.RowDefinitions>
-                        <Grid Grid.Row="0" Background="Orange">
-                            <TextBlock FontSize="14" Text="Alarm / Warning Setting" FontWeight="Bold" Foreground="White"
-                                           VerticalAlignment="Center" HorizontalAlignment="Center"/>
-                        </Grid>
-                        <Grid Grid.Row="1">
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="120*"/>
-                                <RowDefinition Height="881*"/>
-                            </Grid.RowDefinitions>
-                            <StackPanel Orientation="Horizontal" Grid.RowSpan="2">
-                                <!-- 알람(Analog) 설정  -->
-                                <GroupBox Header="Alarm Setting (Analog)" Width="420"
-                                          BorderBrush="LightSteelBlue" BorderThickness="2" Margin="2,10,2,0"
-                                              FontSize="14">
-                                    <Grid>
-                                        <Grid.RowDefinitions>
-                                            <RowDefinition Height="25"/>
-                                            <RowDefinition Height="25"/>
-                                            <RowDefinition/>
-                                        </Grid.RowDefinitions>
-                                        <StackPanel Grid.Row="0" Orientation="Horizontal">
-                                            <TextBlock FontSize="12" Height="25" Width="120" Text="Delay Time(s)"/>
-                                            <TextBox x:Name="tbAlarmDelayTimeA" Text="{Binding Path=dPreSet[AlarmDelayTimeA]}" Width="70" Height="20"/>
-                                            <Button x:Name="btnAlarmSettingLoad" Content="Load" Width="70" HorizontalAlignment="Right"
-															Margin="10,0,0,0" Command="{Binding AlarmSettingLoadCommand}">
-                                                <Button.Resources>
-                                                    <Style TargetType="Border">
-                                                        <Setter Property="CornerRadius" Value="6"/>
-                                                    </Style>
-                                                </Button.Resources>
-                                            </Button>
-                                            <Button x:Name="btnAlarmSettingSave" Content="Save" Width="70" HorizontalAlignment="Right"
-															Margin="10,0,0,0" Command="{Binding AlarmSettingSaveCommand}">
-                                                <Button.Resources>
-                                                    <Style TargetType="Border">
-                                                        <Setter Property="CornerRadius" Value="6"/>
-                                                    </Style>
-                                                </Button.Resources>
-                                            </Button>
-                                        </StackPanel>
+                    <Grid>
+                        <Rectangle RadiusX="{StaticResource r_5}" RadiusY="{StaticResource r_5}" Fill="{StaticResource Gray_50}"/>
+                        <Grid>
+                            <Grid Margin="{StaticResource p_5_sqrt}">
+                                <Grid.Resources>
+                                    <Style TargetType="TextBox" BasedOn="{StaticResource DefaultTextBox}">
+                                        <Setter Property="FontSize" Value="12"/>
+                                        <Setter Property="Height" Value="36" />
+                                    </Style>
+                                </Grid.Resources>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="495"/>
+                                    <ColumnDefinition Width="495"/>
+                                    <ColumnDefinition Width="471"/>
+                                </Grid.ColumnDefinitions>
+                                <Grid Grid.Column="0">
+                                    <Grid.Margin>
+                                        <Thickness Right="{StaticResource p_6}" />
+                                    </Grid.Margin>
+                                    <Rectangle RadiusX="{StaticResource r_5}" RadiusY="{StaticResource r_5}" Stroke="{StaticResource Gray_300}"></Rectangle>
+                                    <StackPanel Orientation="Vertical" Margin="{StaticResource p_5_sqrt}">
+                                        <Label Style="{StaticResource SectionTitle}"  Content="Alarm Setting (Analog)" />
                                         <StackPanel Grid.Row="1" Orientation="Horizontal">
-                                            <TextBlock FontSize="12" Height="25" Width="120" Text="Alarm Deviation(%)" />
-                                            <TextBox x:Name="tbAlarmDeviatin" Text="{Binding Path=dPreSet[AlarmDeviation]}" Width="70" Height="20"/>
-                                            <TextBlock FontSize="12" Height="25" Width="120" Margin="10,0,5,0"
-                                                           Text="Warning Deviation(%)" />
-                                            <TextBox x:Name="tbWarningDeviation" Text="{Binding Path=dPreSet[WarningDeviation]}" Width="70" Height="20"/>
+                                            <StackPanel.Margin>
+                                                <Thickness Bottom="{StaticResource p_2}" />
+                                            </StackPanel.Margin>
+                                            <TextBlock Text="Alarm Deviation(%)" Style="{StaticResource infoTextBlockLeft}" />
+                                            <TextBox x:Name="tbAlarmDeviatin" Text="{Binding AlarmDeviation, UpdateSourceTrigger=PropertyChanged}" Width="90">
+                                                <TextBox.Margin>
+                                                    <Thickness Left="{StaticResource p_2}" Right="{StaticResource p_4}" />
+                                                </TextBox.Margin>
+                                            </TextBox>
+                                            <TextBlock FontSize="12" Text="Warning Deviation(%)" Style="{StaticResource infoTextBlockLeft}" />
+                                            <TextBox x:Name="tbWarningDeviation" Text="{Binding WarningDeviation, UpdateSourceTrigger=PropertyChanged}" Width="90">
+                                                <TextBox.Margin>
+                                                    <Thickness Left="{StaticResource p_2}" />
+                                                </TextBox.Margin>
+                                            </TextBox>
                                         </StackPanel>
-                                        <StackPanel Grid.Row="2">
-                                            <DataGrid x:Name="dgAlarmSettingA" AutoGenerateColumns="False" Margin="5,0,5,0"
-																VerticalScrollBarVisibility="Auto" ItemsSource="{Binding lAnalogDeviceIO}" CanUserAddRows="False">
+                                        <StackPanel Orientation="Horizontal">
+                                            <StackPanel.Margin>
+                                                <Thickness Bottom="{StaticResource p_2}" />
+                                            </StackPanel.Margin>
+                                            <TextBlock FontSize="12" Text="Delay Time(s)" Style="{StaticResource infoTextBlockLeft}" />
+                                            <TextBox x:Name="tbAlarmDelayTimeA" Text="{Binding AnalogDeviceDelayTime, UpdateSourceTrigger=PropertyChanged}" Width="135.5">
+                                                <TextBox.Margin>
+                                                    <Thickness Left="{StaticResource p_2}" Right="{StaticResource p_2}"/>
+                                                </TextBox.Margin>
+                                            </TextBox>
+                                            <Button x:Name="btnAlarmSettingSave" Content="Save" Width="209.5" Height="28" Command="{Binding AnalogDeviceSettingSaveCommand}" HorizontalContentAlignment="Right" Style="{StaticResource PrimaryButton}"/>
+                                        </StackPanel>
+                                        <StackPanel>
+                                            <DataGrid x:Name="dgAlarmSettingA" Height="780" ItemsSource="{Binding lAnalogDeviceIO}" Style="{StaticResource SettingDataGrid}">
                                                 <DataGrid.Resources>
-                                                    <Style TargetType="{x:Type DataGridColumnHeader}">
-                                                        <Setter Property="HorizontalAlignment" Value="Center"/>
-                                                        <Setter Property="Background" Value="Transparent"/>
-                                                    </Style>
-                                                    <Style TargetType="{x:Type DataGrid}">
-                                                        <Setter Property="BorderBrush" Value="Black"/>
-                                                        <Setter Property="BorderThickness" Value="1"/>
-                                                    </Style>
+                                                    <Style TargetType="ScrollBar" BasedOn="{StaticResource DefaultScrollbar}" />
                                                 </DataGrid.Resources>
                                                 <DataGrid.Columns>
-                                                    <DataGridTextColumn Header="ID" CanUserSort="False" CanUserResize="False" Width="50"
-																							Binding="{Binding Path=ID}"/>
-                                                    <DataGridTextColumn Header="Device Name" CanUserSort="False" CanUserResize="False" Width="*"
-																							Binding="{Binding Path=Name}"/>
-                                                    <DataGridCheckBoxColumn Header="Alarm" Width="50"	CanUserSort="False"
-																									Binding="{Binding Path=AlarmSet}"/>
-                                                    <DataGridCheckBoxColumn Header="Warning" Width="50"	CanUserSort="False"
-																									Binding="{Binding Path=WarningSet}"/>
-
+                                                    <DataGridTextColumn Header="ID" CanUserSort="False" CanUserResize="False" IsReadOnly="True" Width="50" Binding="{Binding Path=ID, UpdateSourceTrigger=PropertyChanged}" ElementStyle="{StaticResource EventLogElement}" />
+                                                    <DataGridTextColumn Header="Device Name" CanUserSort="False" CanUserResize="False" Width="*" IsReadOnly="True"  Binding="{Binding Path=Name, UpdateSourceTrigger=PropertyChanged}" ElementStyle="{StaticResource EventLogElement}" />
+                                                    <DataGridTemplateColumn Header="Alarm" Width="50" CanUserSort="False">
+                                                        <DataGridTemplateColumn.HeaderStyle>
+                                                            <Style TargetType="DataGridColumnHeader" BasedOn="{StaticResource checkAllColumnHeader}">
+                                                                <Setter Property="behavior:DataGridColumnHeaderBehavior.ClickCommand" Value="{Binding Path=DataContext.AnalogAlarmCheckAllColumnViewModel.ToggleCheckCommand, RelativeSource={RelativeSource AncestorType=DataGrid}}" />
+                                                                <Setter Property="behavior:DataGridColumnHeaderBehavior.MouseEnterCommand" Value="{Binding Path=DataContext.AnalogAlarmCheckAllColumnViewModel.ShowGuidePlaceHolderCommand, RelativeSource={RelativeSource AncestorType=DataGrid}}" />
+                                                                <Setter Property="behavior:DataGridColumnHeaderBehavior.MouseLeaveCommand" Value="{Binding Path=DataContext.AnalogAlarmCheckAllColumnViewModel.HideGuidePlaceHolderCommand, RelativeSource={RelativeSource AncestorType=DataGrid}}" />
+                                                            </Style>
+                                                        </DataGridTemplateColumn.HeaderStyle>
+                                                        <DataGridTemplateColumn.CellTemplate>
+                                                            <DataTemplate>
+                                                                <Grid>
+                                                                    <CheckBox IsChecked="{Binding Path=DataContext.AnalogAlarmCheckAllColumnViewModel.IsPlaceHolderCheck, RelativeSource={RelativeSource AncestorType=DataGrid}}" Style="{StaticResource DataGridCheckBox}" Opacity="0.2" HorizontalAlignment="Center" VerticalAlignment="Center"
+                                                                        Visibility="{Binding Path=DataContext.AnalogAlarmCheckAllColumnViewModel.ShowGuidePlaceHolderCheckBox, RelativeSource={RelativeSource AncestorType=DataGrid}}" />
+                                                                    <CheckBox IsChecked="{Binding AlarmSet, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Style="{StaticResource DataGridCheckBox}" HorizontalAlignment="Center" VerticalAlignment="Center" 
+                                                                        Visibility="{Binding Path=DataContext.AnalogAlarmCheckAllColumnViewModel.ShowCheckBox, RelativeSource={RelativeSource AncestorType=DataGrid}}"  />
+                                                                </Grid>
+                                                            </DataTemplate>
+                                                        </DataGridTemplateColumn.CellTemplate>
+                                                    </DataGridTemplateColumn>
+                                                    <DataGridTemplateColumn Header="Warning" Width="60"	CanUserSort="False">
+                                                        <DataGridTemplateColumn.HeaderStyle>
+                                                            <Style TargetType="DataGridColumnHeader" BasedOn="{StaticResource checkAllColumnHeader}">
+                                                                <Setter Property="behavior:DataGridColumnHeaderBehavior.ClickCommand" Value="{Binding Path=DataContext.AnalogWarningCheckAllColumnViewModel .ToggleCheckCommand, RelativeSource={RelativeSource AncestorType=DataGrid}}" />
+                                                                <Setter Property="behavior:DataGridColumnHeaderBehavior.MouseEnterCommand" Value="{Binding Path=DataContext.AnalogWarningCheckAllColumnViewModel .ShowGuidePlaceHolderCommand, RelativeSource={RelativeSource AncestorType=DataGrid}}" />
+                                                                <Setter Property="behavior:DataGridColumnHeaderBehavior.MouseLeaveCommand" Value="{Binding Path=DataContext.AnalogWarningCheckAllColumnViewModel .HideGuidePlaceHolderCommand, RelativeSource={RelativeSource AncestorType=DataGrid}}" />
+                                                            </Style>
+                                                        </DataGridTemplateColumn.HeaderStyle>
+                                                        <DataGridTemplateColumn.CellTemplate>
+                                                            <DataTemplate>
+                                                                <Grid>
+                                                                    <CheckBox IsChecked="{Binding Path=DataContext.AnalogWarningCheckAllColumnViewModel.IsPlaceHolderCheck, RelativeSource={RelativeSource AncestorType=DataGrid}}" Style="{StaticResource DataGridCheckBox}" Opacity="0.2" HorizontalAlignment="Center" VerticalAlignment="Center"
+                                                                        Visibility="{Binding Path=DataContext.AnalogWarningCheckAllColumnViewModel.ShowGuidePlaceHolderCheckBox, RelativeSource={RelativeSource AncestorType=DataGrid}}" />
+                                                                    <CheckBox IsChecked="{Binding WarningSet, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Style="{StaticResource DataGridCheckBox}" HorizontalAlignment="Center" VerticalAlignment="Center" 
+                                                                        Visibility="{Binding Path=DataContext.AnalogWarningCheckAllColumnViewModel.ShowCheckBox, RelativeSource={RelativeSource AncestorType=DataGrid}}" />
+                                                                </Grid>
+                                                            </DataTemplate>
+                                                        </DataGridTemplateColumn.CellTemplate>
+                                                    </DataGridTemplateColumn>
                                                 </DataGrid.Columns>
                                             </DataGrid>
                                         </StackPanel>
-                                    </Grid>
-                                </GroupBox>
+                                    </StackPanel>
+                                </Grid>
                                 <!-- 알람(Digital) 설정 -->
-                                <GroupBox Header="Alarm Setting (Digital)" Width="420"
-                                          BorderBrush="LightSteelBlue" BorderThickness="2" Margin="2,10,2,0"
-                                          FontSize="14">
-                                    <Grid>
-                                        <Grid.RowDefinitions>
-                                            <RowDefinition Height="25"/>
-                                            <RowDefinition Height="25"/>
-                                            <RowDefinition/>
-                                        </Grid.RowDefinitions>
-                                        <StackPanel Grid.Row="0" Orientation="Horizontal">
-                                            <TextBlock FontSize="12" Height="25" Width="120" Text="Delay Time(s)"/>
-                                            <TextBox x:Name="tbAlarmDelayTimeD" Text="{Binding Path=dPreSet[AlarmDelayTimeD]}" Width="70" Height="20"/>
-                                            <Button x:Name="btnEventSettingSave" Content="Save" Width="70" HorizontalAlignment="Right"
-															Margin="10,0,0,0" Command="{Binding  AlarmSettingSaveCommand}">
-                                                <Button.Resources>
-                                                    <Style TargetType="Border">
-                                                        <Setter Property="CornerRadius" Value="6"/>
-                                                    </Style>
-                                                </Button.Resources>
-                                            </Button>
+                                <Grid Grid.Column="1">
+                                    <Grid.Margin>
+                                        <Thickness Right="{StaticResource p_6}" />
+                                    </Grid.Margin>
+                                    <Rectangle RadiusX="{StaticResource r_5}" RadiusY="{StaticResource r_5}" Stroke="{StaticResource Gray_300}" />
+                                    <StackPanel Orientation="Vertical" Margin="{StaticResource p_5_sqrt}">
+                                        <Label Style="{StaticResource SectionTitle}" Content="Alarm Setting (Digital)" />
+                                        <StackPanel Orientation="Horizontal">
+                                            <StackPanel.Margin>
+                                                <Thickness Bottom="{StaticResource p_3}" />
+                                            </StackPanel.Margin>
+                                            <TextBlock Text="Delay Time(s)" Style="{StaticResource infoTextBlockLeft}">
+                                                <TextBlock.Margin>
+                                                    <Thickness Right="{StaticResource p_2}" />
+                                                </TextBlock.Margin>
+                                            </TextBlock>
+                                            <TextBox x:Name="tbAlarmDelayTimeD" Text="{Binding DigitalDeviceDelayTime, UpdateSourceTrigger=PropertyChanged}" Width="135.5">
+                                                <TextBox.Margin>
+                                                    <Thickness Right="{StaticResource p_4}" />
+                                                </TextBox.Margin>
+                                            </TextBox>
+                                            <Button x:Name="btnEventSettingSave" Content="Save" Width="200" Height="28" Command="{Binding DigitalDeviceSettingSaveCommand}" Style="{StaticResource PrimaryButton}" />
                                         </StackPanel>
-                                        <StackPanel Grid.Row="2">
-                                            <DataGrid x:Name="dgAlarmSettingD" AutoGenerateColumns="False" Margin="5,0,5,0"
-                                                     VerticalScrollBarVisibility="Auto" ItemsSource="{Binding lSwitchDI}" CanUserAddRows="False">
-                                                <DataGrid.Resources>
-                                                    <Style TargetType="{x:Type DataGridColumnHeader}">
-                                                        <Setter Property="HorizontalAlignment" Value="Center"/>
-                                                        <Setter Property="Background" Value="Transparent"/>
-                                                    </Style>
-                                                </DataGrid.Resources>
-
-                                                <DataGrid.Columns>
-                                                    <DataGridTextColumn Header="ID" CanUserSort="False" CanUserResize="False" Width="50"
-                                                                        Binding="{Binding Path=ID}"/>
-                                                    <DataGridTextColumn Header="Device Name" CanUserSort="False" CanUserResize="False" Width="*"
-                                                                        Binding="{Binding Path=Name}"/>
-                                                    <DataGridCheckBoxColumn Header="Alarm" CanUserSort="False" CanUserResize="False" Width="50"
-                                                                        Binding="{Binding Path=AlarmSet}"/>
-                                                    <DataGridCheckBoxColumn Header="Warning" CanUserSort="False"  CanUserResize="False" Width="50"
-                                                                        Binding="{Binding Path=WarningSet}"/>
-                                                </DataGrid.Columns>
-                                            </DataGrid>
-                                        </StackPanel>
-                                    </Grid>
-                                </GroupBox>
-                                <!-- LogBook 테이블 -->
-                                <GroupBox Header="LogBook" Width="420"
-                                          BorderBrush="LightSteelBlue" BorderThickness="2" Margin="2,10,2,0"
-                                          FontSize="14">
-                                    <Grid>
-                                        <Grid.RowDefinitions>
-                                            <RowDefinition Height="25"/>
-                                            <RowDefinition Height="25"/>
-                                            <RowDefinition/>
-                                        </Grid.RowDefinitions>
-                                        <StackPanel Grid.Row="0">
-                                            <StackPanel.Resources>
-                                                <Style TargetType="{x:Type Button}">
-                                                    <Style.Resources>
-                                                        <Style TargetType="{x:Type Border}">
-                                                            <Setter Property="CornerRadius" Value="4"/>
+                                        <DataGrid x:Name="dgAlarmSettingD" ItemsSource="{Binding lSwitchDI}" Style="{StaticResource SettingDataGrid}">
+                                            <DataGrid.Resources>
+                                                <Style TargetType="ScrollBar" BasedOn="{StaticResource DefaultScrollbar}" />
+                                            </DataGrid.Resources>
+                                            <DataGrid.Columns>
+                                                <DataGridTextColumn Header="ID" IsReadOnly="True"  CanUserSort="False" CanUserResize="False" Width="50" Binding="{Binding Path=ID}" ElementStyle="{StaticResource EventLogElement}" />
+                                                <DataGridTextColumn Header="Device Name" IsReadOnly="True"  CanUserSort="False" CanUserResize="False" Width="*" Binding="{Binding Path=Name}" ElementStyle="{StaticResource EventLogElement}" />
+                                                <DataGridTemplateColumn Header="Alarm" CanUserSort="False" CanUserResize="False" Width="50">
+                                                    <DataGridTemplateColumn.HeaderStyle>
+                                                        <Style TargetType="DataGridColumnHeader" BasedOn="{StaticResource checkAllColumnHeader}">
+                                                            <Setter Property="behavior:DataGridColumnHeaderBehavior.ClickCommand" Value="{Binding Path=DataContext.DigitalAlarmCheckAllColumnViewModel.ToggleCheckCommand, RelativeSource={RelativeSource AncestorType=DataGrid}}" />
+                                                            <Setter Property="behavior:DataGridColumnHeaderBehavior.MouseEnterCommand" Value="{Binding Path=DataContext.DigitalAlarmCheckAllColumnViewModel.ShowGuidePlaceHolderCommand, RelativeSource={RelativeSource AncestorType=DataGrid}}" />
+                                                            <Setter Property="behavior:DataGridColumnHeaderBehavior.MouseLeaveCommand" Value="{Binding Path=DataContext.DigitalAlarmCheckAllColumnViewModel.HideGuidePlaceHolderCommand, RelativeSource={RelativeSource AncestorType=DataGrid}}" />
                                                         </Style>
-                                                    </Style.Resources>
+                                                    </DataGridTemplateColumn.HeaderStyle>
+                                                    <DataGridTemplateColumn.CellTemplate>
+                                                        <DataTemplate>
+                                                            <Grid>
+                                                                <CheckBox IsChecked="{Binding Path=DataContext.DigitalAlarmCheckAllColumnViewModel.IsPlaceHolderCheck, RelativeSource={RelativeSource AncestorType=DataGrid}}" Style="{StaticResource DataGridCheckBox}" Opacity="0.2" HorizontalAlignment="Center" VerticalAlignment="Center"
+                                                                    Visibility="{Binding Path=DataContext.DigitalAlarmCheckAllColumnViewModel.ShowGuidePlaceHolderCheckBox, RelativeSource={RelativeSource AncestorType=DataGrid}}" />
+                                                                <CheckBox IsChecked="{Binding AlarmSet, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Style="{StaticResource DataGridCheckBox}" HorizontalAlignment="Center" VerticalAlignment="Center" 
+                                                                    Visibility="{Binding Path=DataContext.DigitalAlarmCheckAllColumnViewModel.ShowCheckBox, RelativeSource={RelativeSource AncestorType=DataGrid}}" />
+                                                            </Grid>
+                                                        </DataTemplate>
+                                                    </DataGridTemplateColumn.CellTemplate>
+                                                </DataGridTemplateColumn>
+                                                <DataGridTemplateColumn Header="Warning" Width="60" CanUserSort="False" CanUserResize="False">
+                                                    <DataGridTemplateColumn.HeaderStyle>
+                                                        <Style TargetType="DataGridColumnHeader" BasedOn="{StaticResource checkAllColumnHeader}">
+                                                            <Setter Property="behavior:DataGridColumnHeaderBehavior.ClickCommand" Value="{Binding Path=DataContext.DigitalWarningCheckAllColumnViewModel.ToggleCheckCommand, RelativeSource={RelativeSource AncestorType=DataGrid}}" />
+                                                            <Setter Property="behavior:DataGridColumnHeaderBehavior.MouseEnterCommand" Value="{Binding Path=DataContext.DigitalWarningCheckAllColumnViewModel.ShowGuidePlaceHolderCommand, RelativeSource={RelativeSource AncestorType=DataGrid}}" />
+                                                            <Setter Property="behavior:DataGridColumnHeaderBehavior.MouseLeaveCommand" Value="{Binding Path=DataContext.DigitalWarningCheckAllColumnViewModel.HideGuidePlaceHolderCommand, RelativeSource={RelativeSource AncestorType=DataGrid}}" />
+                                                        </Style>
+                                                    </DataGridTemplateColumn.HeaderStyle>
+                                                    <DataGridTemplateColumn.CellTemplate>
+                                                        <DataTemplate>
+                                                            <Grid>
+                                                                <CheckBox IsChecked="{Binding Path=DataContext.DigitalWarningCheckAllColumnViewModel.IsPlaceHolderCheck, RelativeSource={RelativeSource AncestorType=DataGrid}}" Style="{StaticResource DataGridCheckBox}" Opacity="0.2" HorizontalAlignment="Center" VerticalAlignment="Center"
+                                                                          Visibility="{Binding Path=DataContext.DigitalWarningCheckAllColumnViewModel.ShowGuidePlaceHolderCheckBox, RelativeSource={RelativeSource AncestorType=DataGrid}}" />
+                                                                <CheckBox IsChecked="{Binding WarningSet, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Style="{StaticResource DataGridCheckBox}" HorizontalAlignment="Center" VerticalAlignment="Center" 
+                                                                          Visibility="{Binding Path=DataContext.DigitalWarningCheckAllColumnViewModel.ShowCheckBox, RelativeSource={RelativeSource AncestorType=DataGrid}}" />
+                                                            </Grid>
+                                                        </DataTemplate>
+                                                    </DataGridTemplateColumn.CellTemplate>
+                                                </DataGridTemplateColumn>
+                                            </DataGrid.Columns>
+                                        </DataGrid>
+                                    </StackPanel>
+                                </Grid>
+                                <!-- LogBook 테이블 -->
+                                <Grid Grid.Column="2">
+                                    <Rectangle RadiusX="{StaticResource r_5}" RadiusY="{StaticResource r_5}" Stroke="{StaticResource Gray_300}" />
+                                    <StackPanel Orientation="Vertical" Margin="{StaticResource p_5_sqrt}">
+                                        <Label Style="{StaticResource SectionTitle}" Content="Log Book" />
+                                        <Button x:Name="LogFileRead" Content="Load" Style="{StaticResource DefaultButton}" Height="29">
+                                            <Button.Margin>
+                                                <Thickness Bottom="{StaticResource p_3}" />
+                                            </Button.Margin>
+                                        </Button>
+                                        <StackPanel Orientation="Horizontal">
+                                            <StackPanel.Margin>
+                                                <Thickness Bottom="{StaticResource p_3}" />
+                                            </StackPanel.Margin>
+                                            <StackPanel.Resources>
+                                                <Style TargetType="Button" BasedOn="{StaticResource DefaultButton}">
+                                                    <Setter Property="Height" Value="30" />
+                                                    <Setter Property="Width" Value="102" />
+                                                    <Setter Property="FontSize" Value="14" />
+                                                    <Setter Property="FontWeight" Value="Bold" />
                                                 </Style>
                                             </StackPanel.Resources>
-                                            <Button x:Name="LogFileRead" Content="Read" Width="70" Margin="25,0,0,0">
+                                            <Button x:Name="LogFilterAlarm" Content="Alarm" Foreground="#FF6063" />
+                                            <Button x:Name="LogFilterWarning" Foreground="#FF8D60" >
+                                                <Button.Margin>
+                                                    <Thickness Left="{StaticResource p_2}" Right="{StaticResource p_2}" />
+                                                </Button.Margin>
+                                                Warning
                                             </Button>
+                                            <Button x:Name="LogFilterInformation" Foreground="#6BFF83">
+                                                <Button.Margin>
+                                                    <Thickness Right="{StaticResource p_2}" />
+                                                </Button.Margin>
+                                                Information
+                                            </Button>
+                                            <Button x:Name="LogFilterClear" Foreground="{StaticResource Gray_700}" Content="Clear" />
                                         </StackPanel>
-
-                                        <StackPanel Grid.Row="1" Orientation="Horizontal" >
-                                            <TextBlock FontSize="12" Height="25" Width="70" Text="Filter"/>
-                                            <Button x:Name="LogFilterAlarm" Content="Alarm" Width="50" Margin="25,0,0,0" Background="red"/>
-                                            <Button x:Name="LogFilterWarning" Content="Warning" Width="50" Margin="25,0,0,0" Background="Orange"/>
-                                            <Button x:Name="LogFilterInformation" Content="Information" Width="50" Margin="25,0,0,0" Background="Green"/>
-                                            <Button x:Name="LogFilterClear" Content="Clear" Width="50" Margin="25,0,0,0" Background="LightGray"/>
-                                        </StackPanel>
-                                        <StackPanel Grid.Row="2">
-                                            <DataGrid x:Name="LogbookTable" AutoGenerateColumns="False" Margin="5,0,5,0">
-                                                <DataGrid.Resources>
-                                                    <Style TargetType="{x:Type DataGridColumnHeader}">
-                                                        <Setter Property="HorizontalAlignment" Value="Center"/>
-                                                        <Setter Property="Background" Value="Transparent"/>
-                                                    </Style>
-                                                </DataGrid.Resources>
-                                                <DataGrid.Columns>
-                                                    <DataGridTextColumn Header="Type" CanUserSort="False" CanUserResize="False" Width="60"
-                                                                        Binding="{Binding}"/>
-                                                    <DataGridTextColumn Header="Massage" CanUserSort="False" CanUserResize="False" Width="*"
-                                                                        Binding="{Binding}"/>
-                                                    <DataGridTextColumn Header="Date" CanUserSort="False" CanUserResize="False" Width="100"
-                                                                        Binding="{Binding Date, StringFormat=d}"/>
-                                                    <DataGridTextColumn Header="Time" CanUserSort="False" CanUserResize="False" Width="100"
-                                                                        Binding="{Binding Time}"/>
-                                                </DataGrid.Columns>
-                                            </DataGrid>
-                                        </StackPanel>
-                                    </Grid>
-                                </GroupBox>
-                            </StackPanel>
+                                        <DataGrid x:Name="LogbookTable" Height="788" Style="{StaticResource SettingDataGrid}">
+                                            <DataGrid.Resources>
+                                                <Style TargetType="ScrollBar" BasedOn="{StaticResource DefaultScrollbar}" />
+                                            </DataGrid.Resources>
+                                            <DataGrid.Columns>
+                                                <DataGridTextColumn Header="Type" IsReadOnly="True" CanUserSort="False" CanUserResize="False" Width="60" Binding="{Binding}" ElementStyle="{StaticResource EventLogElement}" />
+                                                <DataGridTextColumn Header="Massage" IsReadOnly="True" CanUserSort="False" CanUserResize="False" Width="*" Binding="{Binding}" ElementStyle="{StaticResource EventLogElement}" />
+                                                <DataGridTextColumn Header="Date" IsReadOnly="True"  CanUserSort="False" CanUserResize="False" Width="100" Binding="{Binding Date, StringFormat=d}" ElementStyle="{StaticResource EventLogElement}" />
+                                                <DataGridTextColumn Header="Time" IsReadOnly="True"  CanUserSort="False" CanUserResize="False" Width="100" Binding="{Binding Time}" ElementStyle="{StaticResource EventLogElement}" />
+                                            </DataGrid.Columns>
+                                        </DataGrid>
+                                    </StackPanel>
+                                </Grid>
+                            </Grid>
                         </Grid>
                     </Grid>
                 </TabItem.Content>
@@ -249,258 +324,431 @@
             </TabItem>
             <!-- Tab for Device Setting -->
             <TabItem Name="DeviceSetting" Header="Device">
+                <TabItem.Margin>
+                    <Thickness Top="{StaticResource p_5}" Bottom="-20" />
+                </TabItem.Margin>
                 <TabItem.Content>
                     <Grid>
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="30"/>
-                            <RowDefinition Height="*" />
-                        </Grid.RowDefinitions>
-                        <Grid Grid.Row="0" Background="Blue">
-                            <TextBlock FontSize="14" Text="Device Setting" FontWeight="Bold" Foreground="White"
-                                           VerticalAlignment="Center" HorizontalAlignment="Center"/>
-                        </Grid>
-                        <Grid Grid.Row="1">
-                            <StackPanel Orientation="Horizontal">
-
-                                <StackPanel Orientation="Vertical" Width="420">
-                                    <!-- Interlock 설정 테이블-->
-                                    <GroupBox Header="Interlock Setting" BorderBrush="LightSteelBlue" BorderThickness="2" Margin="2,10,2,0"
-                                             FontSize="14">
-                                        <Grid>
-                                            <Grid.ColumnDefinitions>
-                                                <ColumnDefinition/>
-                                                <ColumnDefinition/>
-                                            </Grid.ColumnDefinitions>
-                                            <Grid.RowDefinitions>
-                                                <RowDefinition Height="35"/>
-                                                <RowDefinition Height="30"/>
-                                                <RowDefinition Height="30"/>
-                                                <RowDefinition Height="30"/>
-                                                <RowDefinition Height="30"/>
-                                                <RowDefinition Height="30"/>
-                                                <RowDefinition Height="30"/>
-                                                <RowDefinition Height="30"/>
-                                                <RowDefinition Height="30"/>
-                                                <RowDefinition Height="30"/>
-                                                <RowDefinition Height="30"/>
-                                                <RowDefinition Height="30"/>
-                                                <RowDefinition Height="30"/>
-                                                <RowDefinition Height="30"/>
-                                                <RowDefinition Height="30"/>
-                                            </Grid.RowDefinitions>
-                                            <!-- DOR Release -->
-                                            <TextBlock Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Text="Double O-Ring Release" FontWeight="Bold" VerticalAlignment="Bottom"/>
-                                            <Button Grid.Row="0" Grid.Column="1" x:Name="InterlockSave" Content="Save" Width="70" HorizontalAlignment="Left"
-                                                   Command="{Binding AlarmSettingSaveCommand}">
-                                                <Button.Resources>
-                                                    <Style TargetType="Border">
-                                                        <Setter Property="CornerRadius" Value="6"/>
+                        <Rectangle RadiusX="{StaticResource r_5}" RadiusY="{StaticResource r_5}" Fill="{StaticResource Gray_50}"/>
+                        <Grid>
+                            <Grid Margin="{StaticResource p_5_sqrt}">
+                                <Grid.Resources>
+                                    <Style TargetType="Rectangle" x:Key="subSection">
+                                        <Setter Property="RadiusX" Value="{StaticResource p_3}" />
+                                        <Setter Property="RadiusY" Value="{StaticResource p_3}" />
+                                        <Setter Property="Fill" Value="{StaticResource Gray_50}" />
+                                        <Setter Property="Stroke" Value="{StaticResource Gray_300}" />
+                                        <Setter Property="StrokeThickness" Value="1" />
+                                    </Style>
+                                </Grid.Resources>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="552"/>
+                                    <ColumnDefinition Width="495"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <Grid>
+                                    <Grid.Resources>
+                                        <Style TargetType="Grid" x:Key="subSectionBottomMargin">
+                                            <Setter Property="Margin">
+                                                <Setter.Value>
+                                                    <Thickness Bottom="{StaticResource p_4}" />
+                                                </Setter.Value>
+                                            </Setter>
+                                        </Style>
+                                        <Style TargetType="TextBox" x:Key="sectionTextBox" BasedOn="{StaticResource DefaultTextBox}">
+                                            <Setter Property="Width" Value="135.5" />
+                                            <Setter Property="Height" Value="32" />
+                                            <Setter Property="FontSize" Value="12" />
+                                        </Style>
+                                        <Style TargetType="Line" x:Key="seperatorLine">
+                                            <Setter Property="X1" Value="0" />
+                                            <Setter Property="Y1" Value="0" />
+                                            <Setter Property="X2" Value="1" />
+                                            <Setter Property="Y2" Value="0" />
+                                            <Setter Property="Stretch" Value="Fill" />
+                                            <Setter Property="Stroke" Value="{StaticResource Gray_300}" />
+                                            <Setter Property="StrokeThickness" Value="1" />
+                                            <Setter Property="VerticalAlignment" Value="Center" />
+                                            <Setter Property="Opacity" Value="0.995" />
+                                            <Setter Property="Margin" Value="8, 0" />
+                                        </Style>
+                                        <Style TargetType="Border" x:Key="subSubSectionSeperator">
+                                            <Setter Property="Height" Value="{StaticResource p_3}" />
+                                            <Setter Property="BorderThickness" Value="0, 0, 0, 1" />
+                                            <Setter Property="BorderBrush" Value="{StaticResource Gray_300}" />
+                                            <Setter Property="Margin">
+                                                <Setter.Value>
+                                                    <Thickness Bottom="{StaticResource p_2}" />
+                                                </Setter.Value>
+                                            </Setter>
+                                        </Style>
+                                    </Grid.Resources>
+                                    <Grid.Margin>
+                                        <Thickness Right="{StaticResource p_6}" />
+                                    </Grid.Margin>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="Auto"/>
+                                    </Grid.RowDefinitions>
+                                    <Grid Grid.Row="0" Style="{StaticResource subSectionBottomMargin}">
+                                        <Grid.Resources>
+                                            <Style TargetType="Label">
+                                                <Setter Property="Foreground" Value="{StaticResource Gray_900}" />
+                                                <Setter Property="VerticalAlignment" Value="Center" />
+                                            </Style>
+                                        </Grid.Resources>
+                                        <Rectangle Style="{StaticResource subSection}"/>
+                                        <StackPanel Margin="{StaticResource p_5_sqrt}">
+                                            <Label Content="Interlock Setting" Style="{StaticResource SectionTitle}">
+                                                <Label.Margin>
+                                                    <Thickness Bottom="{StaticResource p_2}" />
+                                                </Label.Margin>
+                                            </Label>
+                                            <Grid>
+                                                <Grid.RowDefinitions>
+                                                    <RowDefinition Height="40" />
+                                                </Grid.RowDefinitions>
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition />
+                                                    <ColumnDefinition Width="*" />
+                                                </Grid.ColumnDefinitions>
+                                                <Label Content="Utility" Style="{StaticResource SectionTitle}" Grid.Column="0" VerticalAlignment="Center"/>
+                                                <Button Grid.Column="1" x:Name="InterlockSave" Content="Save" Width="66" Height="28" HorizontalAlignment="Right" Command="{Binding InterlockSettingSaveCommand}" VerticalAlignment="Top" Style="{StaticResource PrimaryButton}" />
+                                            </Grid>
+                                            <Grid>
+                                                <Grid.Margin>
+                                                    <Thickness Bottom="{StaticResource p_2}" />
+                                                </Grid.Margin>
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="Auto" />
+                                                    <ColumnDefinition Width="*" />
+                                                    <ColumnDefinition Width="Auto" />
+                                                </Grid.ColumnDefinitions>
+                                                <Label Grid.Column="0">Process Gas Pressure Alarm (bar)</Label>
+                                                <Line Grid.Column="1" Style="{StaticResource seperatorLine}" />
+                                                <TextBox x:Name="gasPressureAlarm" Grid.Column="2" Text="{Binding Path=dInterLockA[ProcessGasPressureAlarm].Treshold, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Style="{StaticResource sectionTextBox}"/>
+                                            </Grid>
+                                            <Grid>
+                                                <Grid.Margin>
+                                                    <Thickness Bottom="{StaticResource p_2}" />
+                                                </Grid.Margin>
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="Auto" />
+                                                    <ColumnDefinition Width="*" />
+                                                    <ColumnDefinition Width="Auto" />
+                                                </Grid.ColumnDefinitions>
+                                                <Label Grid.Column="0">Process Gas Pressure Warning (bar)</Label>
+                                                <Line Grid.Column="1" Style="{StaticResource seperatorLine}" />
+                                                <TextBox x:Name="tbReactorPressureLimit" Grid.Column="2" Text="{Binding Path=dInterLockA[ProcessGasPressureWarning].Treshold, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Style="{StaticResource sectionTextBox}"/>
+                                            </Grid>
+                                            <Grid>
+                                                <Grid.Margin>
+                                                    <Thickness Bottom="{StaticResource p_2}" />
+                                                </Grid.Margin>
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="Auto" />
+                                                    <ColumnDefinition Width="*" />
+                                                    <ColumnDefinition Width="Auto" />
+                                                </Grid.ColumnDefinitions>
+                                                <Label Grid.Column="0">CW Temp S/H Alarm (℃)</Label>
+                                                <Line Grid.Column="1" Style="{StaticResource seperatorLine}" ></Line>
+                                                <TextBox x:Name="DORTemperatureSet" Grid.Column="2" Text="{Binding Path=dInterLockA[CWTempSHAlarm].Treshold, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Style="{StaticResource sectionTextBox}"/>
+                                            </Grid>
+                                            <Grid>
+                                                <Grid.Margin>
+                                                    <Thickness Bottom="{StaticResource p_2}" />
+                                                </Grid.Margin>
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="Auto" />
+                                                    <ColumnDefinition Width="*" />
+                                                    <ColumnDefinition Width="Auto" />
+                                                </Grid.ColumnDefinitions>
+                                                <Label Grid.Column="0">CW Temp S/H Warning (℃)</Label>
+                                                <Line Grid.Column="1" Style="{StaticResource seperatorLine}" ></Line>
+                                                <TextBox Grid.Column="2" Text="{Binding Path=dInterLockA[CWTempSHWarning].Treshold, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Style="{StaticResource sectionTextBox}"/>
+                                            </Grid>
+                                            <Grid>
+                                                <Grid.Margin>
+                                                    <Thickness Bottom="{StaticResource p_2}" />
+                                                </Grid.Margin>
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="Auto" />
+                                                    <ColumnDefinition Width="*" />
+                                                    <ColumnDefinition Width="Auto" />
+                                                </Grid.ColumnDefinitions>
+                                                <Label Grid.Column="0">CW Temp Coil Alarm (℃)</Label>
+                                                <Line Grid.Column="1" Style="{StaticResource seperatorLine}" ></Line>
+                                                <TextBox x:Name="coilCoolingWaterTempValue" Grid.Column="2" Text="{Binding Path=dInterLockA[CWTempCoilAlarm].Treshold, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Style="{StaticResource sectionTextBox}"/>
+                                            </Grid>
+                                            <Grid>
+                                                <Grid.Margin>
+                                                    <Thickness Bottom="{StaticResource p_2}" />
+                                                </Grid.Margin>
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="Auto" />
+                                                    <ColumnDefinition Width="*" />
+                                                    <ColumnDefinition Width="Auto" />
+                                                </Grid.ColumnDefinitions>
+                                                <Label Grid.Column="0">CW Temp Coil Warning (℃)</Label>
+                                                <Line Grid.Column="1" Style="{StaticResource seperatorLine}" ></Line>
+                                                <TextBox Grid.Column="2" Text="{Binding Path=dInterLockA[CWTempCoilWarning].Treshold, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Style="{StaticResource sectionTextBox}"/>
+                                            </Grid>
+                                            <Grid>
+                                                <Grid.Margin>
+                                                    <Thickness Bottom="{StaticResource p_2}" />
+                                                </Grid.Margin>
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="Auto" />
+                                                    <ColumnDefinition Width="*" />
+                                                    <ColumnDefinition Width="Auto" />
+                                                </Grid.ColumnDefinitions>
+                                                <Label Grid.Column="0">Reactor Over Pressure (Torr)</Label>
+                                                <Line Grid.Column="1" Style="{StaticResource seperatorLine}" />
+                                                <TextBox x:Name="reactorPressureValue" Grid.Column="2" Text="{Binding Path=dInterLockA[ReactorOverPressure].Treshold, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Style="{StaticResource sectionTextBox}" />
+                                            </Grid>
+                                            <Grid>
+                                                <Grid.Margin>
+                                                    <Thickness Bottom="{StaticResource p_2}" />
+                                                </Grid.Margin>
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="Auto" />
+                                                    <ColumnDefinition Width="*" />
+                                                    <ColumnDefinition Width="Auto" />
+                                                </Grid.ColumnDefinitions>
+                                                <Label Grid.Column="0">Susceptor Over Temperature</Label>
+                                                <Line Grid.Column="1" Style="{StaticResource seperatorLine}" />
+                                                <TextBox Grid.Column="2" Text="{Binding Path=dInterLockA[SusceptorOverTemperature].Treshold, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Style="{StaticResource sectionTextBox}" />
+                                            </Grid>
+                                            <Border Style="{StaticResource subSubSectionSeperator}" />
+                                            <Label Content="Reactor Open Condition" Style="{StaticResource SectionTitle}" Grid.Column="0">
+                                                <Label.Margin>
+                                                    <Thickness Bottom="{StaticResource p_3}" />
+                                                </Label.Margin>
+                                            </Label>
+                                            <Grid>
+                                                <Grid.Margin>
+                                                    <Thickness Bottom="{StaticResource p_2}" />
+                                                </Grid.Margin>
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="Auto" />
+                                                    <ColumnDefinition Width="*" />
+                                                    <ColumnDefinition Width="Auto" />
+                                                </Grid.ColumnDefinitions>
+                                                <CheckBox Grid.Column="0" Content="Reactor Pressure (Torr)" IsChecked="{Binding Path=dInterLockA[CanOpenReactorPressure].IsEnable, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Style="{StaticResource DefaultCheckBox}" />
+                                                <Line Grid.Column="1" Style="{StaticResource seperatorLine}" />
+                                                <TextBox Grid.Column="2" Text="{Binding Path=dInterLockA[CanOpenReactorPressure].Treshold, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Style="{StaticResource sectionTextBox}" />
+                                            </Grid>
+                                            <Grid>
+                                                <Grid.Margin>
+                                                    <Thickness Bottom="{StaticResource p_2}" />
+                                                </Grid.Margin>
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="Auto" />
+                                                    <ColumnDefinition Width="*" />
+                                                    <ColumnDefinition Width="Auto" />
+                                                </Grid.ColumnDefinitions>
+                                                <CheckBox Grid.Column="0" Content="Susceptor Temperature" IsChecked="{Binding Path=dInterLockA[CanOpenSusceptorTemperature].IsEnable, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Style="{StaticResource DefaultCheckBox}" />
+                                                <Line Grid.Column="1" Style="{StaticResource seperatorLine}" />
+                                                <TextBox x:Name="susceptorTempValue" Grid.Column="2" Text="{Binding Path=dInterLockA[CanOpenSusceptorTemperature].Treshold, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Style="{StaticResource sectionTextBox}" />
+                                            </Grid>
+                                            <Border Style="{StaticResource subSubSectionSeperator}" />
+                                            <Label Content="Double O-Ring" Style="{StaticResource SectionTitle}" Grid.Column="0">
+                                                <Label.Margin>
+                                                    <Thickness Bottom="{StaticResource p_3}" />
+                                                </Label.Margin>
+                                            </Label>
+                                            <Grid>
+                                                <Grid.Margin>
+                                                    <Thickness Bottom="{StaticResource p_2}" />
+                                                </Grid.Margin>
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="Auto" />
+                                                    <ColumnDefinition Width="*" />
+                                                    <ColumnDefinition Width="Auto" />
+                                                </Grid.ColumnDefinitions>
+                                                <CheckBox Grid.Column="0" Content="Pressure Limit" IsChecked="{Binding Path=dInterLockA[PressureLimit].IsEnable, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Style="{StaticResource DefaultCheckBox}" />
+                                                <Line Grid.Column="1" Style="{StaticResource seperatorLine}" />
+                                                <TextBox x:Name="DORPressureLimit" Grid.Column="2" Text="{Binding Path=dInterLockA[PressureLimit].Treshold, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Style="{StaticResource sectionTextBox}" />
+                                            </Grid>
+                                            <Grid>
+                                                <Grid.Margin>
+                                                    <Thickness Bottom="{StaticResource p_2}" />
+                                                </Grid.Margin>
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="Auto" />
+                                                    <ColumnDefinition Width="*" />
+                                                    <ColumnDefinition Width="Auto" />
+                                                </Grid.ColumnDefinitions>
+                                                <CheckBox Grid.Column="0" Content="Re-Try Count" Style="{StaticResource DefaultCheckBox}" IsChecked="{Binding Path=dInterLockA[ReTryCount].IsEnable, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
+                                                <Line Grid.Column="1" Style="{StaticResource seperatorLine}" />
+                                                <TextBox x:Name="DORAlarmLimit" Grid.Column="2" Style="{StaticResource sectionTextBox}" Text="{Binding Path=dInterLockA[ReTryCount].Treshold, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
+                                            </Grid>
+                                            <Border Style="{StaticResource subSubSectionSeperator}" />
+                                            <Label Content="Auto Power On" Style="{StaticResource SectionTitle}">
+                                                <Label.Margin>
+                                                    <Thickness Bottom="{StaticResource p_3}" />
+                                                </Label.Margin>
+                                            </Label>
+                                            <CheckBox Grid.Row="9" Content="Induction Power Supply" IsChecked="{Binding Path=dInterLockD[InductionPowerSupply].IsEnable, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"  Style="{StaticResource DefaultCheckBox}">
+                                                <CheckBox.Margin>
+                                                    <Thickness Bottom="{StaticResource p_2}" />
+                                                </CheckBox.Margin>
+                                            </CheckBox>
+                                            <CheckBox Content=" Susceptor Rotation Motor" IsChecked="{Binding Path=dInterLockD[SusceptorRotationMotor].IsEnable, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Style="{StaticResource DefaultCheckBox}">
+                                                <CheckBox.Margin>
+                                                    <Thickness Bottom="{StaticResource p_2}" />
+                                                </CheckBox.Margin>
+                                            </CheckBox>
+                                            <!--<Border Style="{StaticResource subSubSectionSeperator}" />
+                                            <Label Style="{StaticResource SectionTitle}" Content="Misc."/>
+                                            <Grid>
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="Auto" />
+                                                    <ColumnDefinition Width="*" />
+                                                    <ColumnDefinition Width="Auto" />
+                                                </Grid.ColumnDefinitions>
+                                                <TextBlock Grid.Column="0" Text="Log Interval in Recipe Run (Millisecond)" Style="{StaticResource infoTextBlockLeft}"/>
+                                                <Line Grid.Column="1" Style="{StaticResource seperatorLine}" />
+                                                <local:NumberBox Grid.Column="2" Text="{Binding LogIntervalInRecipeRun}" Style="{StaticResource sectionTextBox}"/>
+                                            </Grid>-->
+                                        </StackPanel>
+                                    </Grid>
+                                    <Grid Grid.Row="1">
+                                        <Rectangle Style="{StaticResource subSection}"/>
+                                        <StackPanel Margin="{StaticResource p_5_sqrt}">
+                                            <Label Style="{StaticResource SectionTitle}" Content="Module Power (Magnetic Contact)" />
+                                            <Grid>
+                                                <Grid.Resources>
+                                                    <Style TargetType="ToggleButton" x:Key="toggleButonTopMargin" BasedOn="{StaticResource ToggleSwitch}">
+                                                        <Setter Property="Margin">
+                                                            <Setter.Value>
+                                                                <Thickness Top="6" />
+                                                            </Setter.Value>
+                                                        </Setter>
                                                     </Style>
-                                                </Button.Resources>
-                                            </Button>
-                                            <CheckBox x:Name="cbRecipeNotRunning"  Grid.Row="1" Grid.Column="0" Content="Recipe Not Running" 
-                                                     IsChecked="{Binding Path=dInterLockD[RecipeNotRunning]}" VerticalAlignment="Center" Margin="15,0,0,0"/>
-                                            <CheckBox x:Name="cbReactorPressureLimit" Grid.Row="2" Grid.Column="0" Content="Reactor Pressure(Torr) >="
-                                                     IsChecked="{Binding Path=dInterLockA[DORReactorPressure].IsEnable}" VerticalAlignment="Center" Margin="15,0,0,0"/>
-                                            <TextBox x:Name="tbReactorPressureLimit" Grid.Row="2" Grid.Column="1" Width="150" HorizontalAlignment="Left" Margin="2"
-                                                    Text="{Binding Path=dInterLockA[DORReactorPressure].Treshold}"/>
-                                            <CheckBox x:Name="cbSusceptorTemperature" Grid.Row="3" Grid.Column="0" Content="Susceptor Temperature" 
-                                                     IsChecked="{Binding Path=dInterLockA[DORSusceptorTemperature].IsEnable}" VerticalAlignment="Center" Margin="15,0,0,0"/>
-                                            <TextBox x:Name="DORTemperatureSet" Grid.Row="3" Grid.Column="1" Width="150" HorizontalAlignment="Left" Margin="2"
-                                                    Text="{Binding Path=dInterLockA[DORSusceptorTemperature].Treshold}"/>
-
-                                            <!-- DOR Lock -->
-                                            <TextBlock Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="2" Text="Double O-Ring Lock" FontWeight="Bold" VerticalAlignment="Bottom"/>
-                                            <CheckBox Grid.Row="5" Grid.Column="0" Content=" Vacuum Valve Close"
-                                                     IsChecked="{Binding Path=dInterLockD[VacuumValveClose]}" VerticalAlignment="Center" Margin="15,0,0,0"/>
-                                            <CheckBox Grid.Row="6" Grid.Column="0" Content="Pressure Limit" 
-                                                     IsChecked="{Binding Path=dInterLockA[DORPressureLimit].IsEnable}" VerticalAlignment="Center" Margin="15,0,0,0"/>
-                                            <TextBox x:Name="DORPressureLimit" Grid.Row="6" Grid.Column="1" Width="150" HorizontalAlignment="Left" Margin="2"
-                                                    Text="{Binding Path=dInterLockA[DORSusceptorTemperature].Treshold}"/>
-                                            <CheckBox Grid.Row="7" Grid.Column="0" Content=" Alarm Limit Value" 
-                                                     IsChecked="{Binding Path=dInterLockA[AlarmLimit].IsEnable}" VerticalAlignment="Center" Margin="15,0,0,0"/>
-                                            <TextBox x:Name="DORAlarmLimit" Grid.Row="7" Grid.Column="1" Width="150" HorizontalAlignment="Left" Margin="2"
-                                                    Text="{Binding Path=dInterLockA[AlarmLimit].Treshold}"/>
-                                            <!-- Auto Power ON -->
-                                            <TextBlock Grid.Row="8" Grid.Column="0" Grid.ColumnSpan="2" Text="Auto Power ON" FontWeight="Bold" VerticalAlignment="Bottom"/>
-                                            <CheckBox Grid.Row="9" Grid.Column="0" Content=" Induction Power Supply" 
-                                                    IsChecked="{Binding Path=dInterLockD[InductionPowerSupply]}" VerticalAlignment="Center" Margin="15,0,0,0"/>
-                                            <CheckBox Grid.Row="10" Grid.Column="0" Content=" Susceptor Rotation Motor"
-                                                    IsChecked="{Binding Path=dInterLockD[SusceptorRotationMotor]}" VerticalAlignment="Center" Margin="15,0,0,0"/>
-                                            <CheckBox Grid.Row="11" Grid.Column="0" Content=" Reactor Cabinet Lamp" 
-                                                     IsChecked="{Binding Path=dInterLockD[ReactorCabinetLamp]}" VerticalAlignment="Center" Margin="15,0,0,0"/>
-                                            <CheckBox Grid.Row="12" Grid.Column="0" Content=" Gas Control Cabinet Lamp" 
-                                                     IsChecked="{Binding Path=dInterLockD[GasControlLamp]}" VerticalAlignment="Center" Margin="15,0,0,0"/>
-                                            <TextBlock Grid.Row="13" Grid.Column="0" Grid.ColumnSpan="2" Text="Misc." FontWeight="Bold" VerticalAlignment="Bottom"/>
-                                            <TextBlock Grid.Row="14" Grid.Column="0" Margin="15,0,0,0" Text="Log Interval in Recipe Run (Millisecond)" />
-                                            <local:NumberBox Grid.Row="14" Grid.Column="1" Width="150" HorizontalAlignment="Left" Margin="2" Text="{Binding LogIntervalInRecipeRun}"/>
-                                        </Grid>
-                                    </GroupBox>
-                                    <!-- Preset State 설정 -->
-                                    <GroupBox Header="Preset State" BorderBrush="LightSteelBlue" BorderThickness="2" Margin="2,10,2,0"
-                                              FontSize="14">
+                                                </Grid.Resources>
+                                                <Grid.RowDefinitions>
+                                                    <RowDefinition />
+                                                    <RowDefinition />
+                                                    <RowDefinition />
+                                                </Grid.RowDefinitions>
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition />
+                                                    <ColumnDefinition />
+                                                    <ColumnDefinition />
+                                                    <ColumnDefinition />
+                                                </Grid.ColumnDefinitions>
+                                                <TextBlock Grid.Row="0" Grid.Column="0" Text="Induction Heater" HorizontalAlignment="Center" Style="{StaticResource infoTextBlockLeft}" />
+                                                <TextBlock Grid.Row="1" Grid.Column="0" Text="Power" HorizontalAlignment="Center" Style="{StaticResource infoTextBlockLeft}" />
+                                                <ToggleButton Grid.Row="2" Grid.Column="0" IsChecked="{Binding InductionHeaterPowerOnOff, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" HorizontalAlignment="Center" Style="{StaticResource toggleButonTopMargin}" PreviewMouseLeftButtonDown="ConfirmBeforeToggle" IsEnabled="{Binding Source={x:Static model:PLCConnectionState.Instance}, Path=Online, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}" />  
+                                                <TextBlock Grid.Row="0" Grid.Column="1" Text="Thermal Bath" HorizontalAlignment="Center" Style="{StaticResource infoTextBlockLeft}" />
+                                                <TextBlock Grid.Row="1" Grid.Column="1" Text="Power" HorizontalAlignment="Center" Style="{StaticResource infoTextBlockLeft}" />
+                                                <ToggleButton Grid.Row="2" Grid.Column="1" IsChecked="{Binding ThermalBathPowerOnOff, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" HorizontalAlignment="Center" Style="{StaticResource toggleButonTopMargin}" PreviewMouseLeftButtonDown="ConfirmBeforeToggle" IsEnabled="{Binding Source={x:Static model:PLCConnectionState.Instance}, Path=Online, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}" />
+                                                <TextBlock Grid.Row="0" Grid.Column="2" Text="Vacuum Pump" HorizontalAlignment="Center" Style="{StaticResource infoTextBlockLeft}" />
+                                                <TextBlock Grid.Row="1" Grid.Column="2"  Text="Power" HorizontalAlignment="Center" Style="{StaticResource infoTextBlockLeft}" />
+                                                <ToggleButton  Grid.Row="2" Grid.Column="2" IsChecked="{Binding VaccumPumpPowerOnOff, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" HorizontalAlignment="Center"  Style="{StaticResource toggleButonTopMargin}" PreviewMouseLeftButtonDown="ConfirmBeforeToggle" IsEnabled="{Binding Source={x:Static model:PLCConnectionState.Instance}, Path=Online, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}" />
+                                                <TextBlock Grid.Row="0" Grid.Column="3" Text="Line Heater"  HorizontalAlignment="Center" Style="{StaticResource infoTextBlockLeft}" />
+                                                <TextBlock Grid.Row="1" Grid.Column="3"  Text="Power"  HorizontalAlignment="Center" Style="{StaticResource infoTextBlockLeft}" />
+                                                <ToggleButton Grid.Row="2" Grid.Column="3" IsChecked="{Binding LineHeaterPowerOnOff, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" HorizontalAlignment="Center"  Style="{StaticResource ToggleSwitch}" PreviewMouseLeftButtonDown="ConfirmBeforeToggle" IsEnabled="{Binding Source={x:Static model:PLCConnectionState.Instance}, Path=Online, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}" />
+                                            </Grid>
+                                        </StackPanel>
+                                    </Grid>
+                                </Grid>
+                                <Grid Grid.Column="1">
+                                    <Grid.Margin>
+                                        <Thickness Right="{StaticResource p_6}" />
+                                    </Grid.Margin>
+                                    <Rectangle Style="{StaticResource subSection}"/>
+                                    <StackPanel Margin="{StaticResource p_5_sqrt}">
+                                        <StackPanel.Resources>
+                                            <Style x:Key="DeviceNamingSettingDataGrid" TargetType="DataGrid" BasedOn="{StaticResource SettingDataGrid}">
+                                                <Setter Property="Margin">
+                                                    <Setter.Value>
+                                                        <Thickness Bottom="{StaticResource p_3}" />
+                                                    </Setter.Value>
+                                                </Setter>
+                                                <Style.Triggers>
+                                                    <DataTrigger Binding="{Binding Source={x:Static model:PLCConnectionState.Instance}, Path=Online, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}" Value="True">
+                                                        <Setter Property="IsReadOnly" Value="True" />
+                                                    </DataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </StackPanel.Resources>
                                         <Grid>
+                                            <Grid.Margin>
+                                                <Thickness Bottom="{StaticResource p_3}" />
+                                            </Grid.Margin>
                                             <Grid.RowDefinitions>
-                                                <RowDefinition/>
-                                                <RowDefinition/>
-                                                <RowDefinition/>
-                                                <RowDefinition/>
+                                                <RowDefinition Height="40" />
                                             </Grid.RowDefinitions>
-                                            <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="2">
-                                                <TextBlock Width="200"  Text="System Start State"/>
-                                                <ComboBox x:Name="comboSystemStart" Width="100" IsReadOnly="True"
-                                                          SelectedIndex="{Binding Path=userstate.StartState}"/>
-                                            </StackPanel>
-                                            <StackPanel Grid.Row="1" Orientation="Horizontal" Margin="2">
-                                                <TextBlock Width="200"  Text="Alarm State"/>
-                                                <ComboBox Name="comboAlarmStart" Width="100"  IsReadOnly="True" 
-                                                          SelectedIndex="{Binding Path=userstate.AlarmState}"/>
-                                            </StackPanel>
-                                            <StackPanel Grid.Row="2" Orientation="Horizontal" Margin="2">
-                                                <TextBlock  Width="200" Text="Recipe End"/>
-                                                <ComboBox Name="comboRecipeEnd" Width="100" IsReadOnly="True" 
-                                                          SelectedIndex="{Binding Path=userstate.EndState}" />
-                                            </StackPanel>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="Auto"/>
+                                                <ColumnDefinition />
+                                            </Grid.ColumnDefinitions>
+                                            <Label Grid.Column="0" Style="{StaticResource SectionTitle}" Content="Device Naming" VerticalAlignment="Top"/>
+                                            <Button Grid.Column="1" x:Name="DeviceNameSave" Content="Save" Width="66" Height="28" VerticalAlignment="Top" HorizontalAlignment="Right" Style="{StaticResource PrimaryButton}"/>
                                         </Grid>
-                                    </GroupBox>
-                                    <!--Magnetic Contact-->
-                                    <GroupBox Header="Module Power (Magnetic Contact)" BorderBrush="LightSteelBlue" BorderThickness="2" Margin="2,10,2,0"
-                                              FontSize="14">
-                                        <Grid>
-                                            <Grid.RowDefinitions>
-                                                <RowDefinition/>
-                                                <RowDefinition/>
-                                                <RowDefinition/>
-                                                <RowDefinition/>
-                                            </Grid.RowDefinitions>
-                                            <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="2">
-                                                <TextBlock Width="200" Text="Induction Heater Power"/>
-                                                <Button Content="{Binding InductionHeaterPowerOn}" Command="{Binding ToggleInductionHeaterPowerCommand}" />
-                                            </StackPanel>
-                                            <StackPanel Grid.Row="1" Orientation="Horizontal" Margin="2">
-                                                <TextBlock Width="200" Text="Thermal Bath Power"/>
-                                                <Button Content="{Binding ThermalBathPowerOn}" Command="{Binding ToggleThermalBathPowerCommand}" />
-                                            </StackPanel>
-                                            <StackPanel Grid.Row="2" Orientation="Horizontal" Margin="2">
-                                                <TextBlock Width="200" Text="Vacuum Pump Power"/>
-                                                <Button Content="{Binding VaccumPumpPowerOn}" Command="{Binding ToggleVaccumPumpPowerCommand}" />
-                                            </StackPanel>
-                                            <StackPanel Grid.Row="3" Orientation="Horizontal" Margin="2">
-                                                <TextBlock Width="200" Text="Line Heater Power"/>
-                                                <Button Content="{Binding LineHeaterPowerOn}" Command="{Binding ToggleLineHeaterPowerCommand}" />
-                                            </StackPanel>
-                                        </Grid>
-                                    </GroupBox>
-                                </StackPanel>
-                                <!-- Device Name 설정 테이블-->
-                                <GroupBox Header="Device Naming" Width="420"
-                                          BorderBrush="LightSteelBlue" BorderThickness="2" Margin="2,10,2,0"
-                                          FontSize="14">
-                                    <StackPanel>
-                                        <Button x:Name="DeviceNameSave" Content="Save" Width="70" HorizontalAlignment="Right" Margin="0,0,50,0">
-                                            <Button.Resources>
-                                                <Style TargetType="Border">
-                                                    <Setter Property="CornerRadius" Value="6"/>
-                                                </Style>
-                                            </Button.Resources>
-                                        </Button>
-                                        <Grid Height="950">
-                                            <Grid.RowDefinitions>
-                                                <RowDefinition Height="50*"/>
-                                                <RowDefinition Height="Auto"/>
-                                                <RowDefinition Height="50*"/>
-                                            </Grid.RowDefinitions>
-                                            <!-- Analog Device Name 설정 테이블-->
-                                            <StackPanel Orientation="Vertical">
-                                                <DataGrid x:Name="dgMaxValueSetting" Width="425" Height="460" AutoGenerateColumns="False" Margin="5,0,5,0"
-                                                           ItemsSource="{Binding lAnalogDeviceIO}" CanUserAddRows="False">
-                                                    <DataGrid.Resources>
-                                                        <Style TargetType="{x:Type DataGridColumnHeader}">
-                                                            <Setter Property="HorizontalAlignment" Value="Center"/>
-                                                            <Setter Property="Background" Value="Transparent"/>
-                                                        </Style>
-                                                        <Style TargetType="{x:Type DataGrid}">
-                                                            <Setter Property="BorderBrush" Value="Black"/>
-                                                            <Setter Property="BorderThickness" Value="1"/>
-                                                            <Setter Property="VerticalScrollBarVisibility" Value="Visible"/>
-                                                        </Style>
-                                                    </DataGrid.Resources>
-                                                    <DataGrid.Columns>
-                                                        <DataGridTextColumn Header="ID" CanUserSort="False" CanUserResize="False" Width="60"
-                                                                        Binding="{Binding Path=ID, Mode=TwoWay}"/>
-                                                        <DataGridTextColumn Header="Device Name" CanUserSort="False" CanUserResize="False" Width="*"
-                                                                        Binding="{Binding Path=Name}"/>
-                                                        <DataGridTextColumn Header="Max Value" CanUserSort="False" CanUserResize="False" Width="120"
-                                                                        Binding="{Binding Path=MaxValue}"/>
-                                                    </DataGrid.Columns>
-                                                </DataGrid>
-
-                                            </StackPanel>
-                                            <GridSplitter Grid.Row="1" HorizontalAlignment="Stretch" VerticalAlignment="Center"  Background="LightSteelBlue"
-                                                      ShowsPreview="True" Height="3"/>
-                                            <!-- Digital Device Name 설정 테이블-->
-                                            <StackPanel Grid.Row="2" Orientation="Horizontal">
-                                                <StackPanel>
-                                                    <DataGrid x:Name="DigitalMappingSetting" Width="425" Height="460" AutoGenerateColumns="False" Margin="5,0,5,0">
-                                                        <DataGrid.Resources>
-                                                            <Style TargetType="{x:Type DataGridColumnHeader}">
-                                                                <Setter Property="HorizontalAlignment" Value="Center"/>
-                                                                <Setter Property="Background" Value="Transparent"/>
-                                                            </Style>
-                                                            <Style TargetType="{x:Type DataGrid}">
-                                                                <Setter Property="BorderBrush" Value="Black"/>
-                                                                <Setter Property="BorderThickness" Value="1"/>
-                                                                <Setter Property="VerticalScrollBarVisibility" Value="Visible"/>
-                                                            </Style>
-                                                        </DataGrid.Resources>
-                                                        <DataGrid.Columns>
-                                                            <DataGridTextColumn Header="Device ID" CanUserSort="False" CanUserResize="False" Width="60"
-                                                                                    Binding="{Binding}"/>
-                                                            <DataGridTextColumn Header="Device Name" CanUserSort="False" CanUserResize="False" Width="*"
-                                                                                    Binding="{Binding}"/>
-                                                            <DataGridTextColumn Header="Sol. ID" CanUserSort="False" CanUserResize="False" Width="120"
-                                                                                    Binding="{Binding}"/>
-                                                        </DataGrid.Columns>
-                                                    </DataGrid>
-                                                </StackPanel>
-
-
-                                            </StackPanel>
-                                        </Grid>
-                                    </StackPanel>
-                                </GroupBox>
-                                <!-- Component I/O List 테이블-->
-                                <GroupBox Header="I/O List" Width="420"
-                                          BorderBrush="LightSteelBlue" BorderThickness="2" Margin="2,10,2,0"
-                                          FontSize="14">
-                                    <StackPanel>
-                                        <DataGrid x:Name="IOList" AutoGenerateColumns="False" Margin="5,0,5,0" ItemsSource="{Binding IOList}">
+                                        <DataGrid x:Name="dgMaxValueSetting" ItemsSource="{Binding lAnalogDeviceIO}" Style="{StaticResource DeviceNamingSettingDataGrid}" Height="300">
                                             <DataGrid.Resources>
-                                                <Style TargetType="{x:Type DataGridColumnHeader}">
-                                                    <Setter Property="HorizontalAlignment" Value="Center"/>
-                                                    <Setter Property="Background" Value="Transparent"/>
-                                                </Style>
-                                                <Style TargetType="{x:Type DataGrid}">
-                                                    <Setter Property="BorderBrush" Value="Black"/>
-                                                    <Setter Property="BorderThickness" Value="1"/>
-                                                </Style>
+                                                <Style TargetType="ScrollBar" BasedOn="{StaticResource DefaultScrollbar}" />
                                             </DataGrid.Resources>
                                             <DataGrid.Columns>
-                                                <DataGridTextColumn Header="Name" CanUserSort="False" CanUserResize="False" Width="*"
-                                                                Binding="{Binding Name}"/>
-                                                <DataGridCheckBoxColumn Header="On/Off" CanUserSort="False" CanUserResize="False" Width="60"
-                                                               IsReadOnly="True" Binding="{Binding OnOff, UpdateSourceTrigger=PropertyChanged}" />
+                                                <DataGridTextColumn Header="ID" IsReadOnly="True" CanUserSort="False" CanUserResize="False" Width="60" Binding="{Binding Path=ID, Mode=OneTime, UpdateSourceTrigger=PropertyChanged}" ElementStyle="{StaticResource EventLogElement}" />
+                                                <DataGridTextColumn Header="Device Name" CanUserSort="False" CanUserResize="False" Width="*" Binding="{Binding Path=Name, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"  ElementStyle="{StaticResource EventLogElement}" />
+                                                <DataGridTextColumn Header="Max Value" CanUserSort="False" CanUserResize="False" Width="120" Binding="{Binding Path=MaxValue, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" ElementStyle="{StaticResource EventLogElement}" />
                                             </DataGrid.Columns>
                                         </DataGrid>
-
+                                        <DataGrid x:Name="DigitalMappingSetting" ItemsSource="{Binding ValveDeviceIO}" Style="{StaticResource DeviceNamingSettingDataGrid}" Height="300">
+                                            <DataGrid.Resources>
+                                                <Style TargetType="ScrollBar" BasedOn="{StaticResource DefaultScrollbar}" />
+                                            </DataGrid.Resources>
+                                            <DataGrid.Columns>
+                                                <DataGridTextColumn Header="Device ID" IsReadOnly="True" CanUserSort="False" CanUserResize="False" Width="60" Binding="{Binding ID, UpdateSourceTrigger=PropertyChanged, Mode=OneTime}" ElementStyle="{StaticResource EventLogElement}" />
+                                                <DataGridTextColumn Header="Device Name" CanUserSort="False" CanUserResize="False" Width="*" Binding="{Binding Name, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" ElementStyle="{StaticResource EventLogElement}" />
+                                                <DataGridTextColumn Header="Sol. ID" IsReadOnly="True" CanUserSort="False" CanUserResize="False" Width="120" Binding="{Binding SolValveID, UpdateSourceTrigger=PropertyChanged, Mode=OneTime}" ElementStyle="{StaticResource EventLogElement}" />
+                                            </DataGrid.Columns>
+                                        </DataGrid>
+                                        <DataGrid ItemsSource="{Binding GasIO}" Height="220">
+                                            <DataGrid.Style>
+                                                <Style TargetType="DataGrid" BasedOn="{StaticResource SettingDataGrid}">
+                                                    <Style.Triggers>
+                                                        <DataTrigger Binding="{Binding Source={x:Static model:PLCConnectionState.Instance}, Path=Online, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}" Value="True">
+                                                            <Setter Property="IsReadOnly" Value="True" />
+                                                        </DataTrigger>
+                                                    </Style.Triggers>  
+                                                </Style>
+                                            </DataGrid.Style>
+                                            <DataGrid.Resources>
+                                                <Style TargetType="ScrollBar" BasedOn="{StaticResource DefaultScrollbar}" />
+                                            </DataGrid.Resources>
+                                            <DataGrid.Columns>
+                                                <DataGridTextColumn Header="Device ID" IsReadOnly="True" CanUserSort="False" CanUserResize="False" Width="60" Binding="{Binding ID, UpdateSourceTrigger=PropertyChanged, Mode=OneTime}" ElementStyle="{StaticResource EventLogElement}" />
+                                                <DataGridTextColumn Header="Device Name" CanUserSort="False" CanUserResize="False" Width="*" Binding="{Binding Name, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" ElementStyle="{StaticResource EventLogElement}" />
+                                            </DataGrid.Columns>
+                                        </DataGrid>
                                     </StackPanel>
-                                </GroupBox>
-                            </StackPanel>
+
+                                </Grid>
+                                <Grid Grid.Column="2">
+                                    <Rectangle Style="{StaticResource subSection}"/>
+                                    <StackPanel Margin="{StaticResource p_5_sqrt}">
+                                        <Label Content="I/O List" Style="{StaticResource SectionTitle}" />
+                                        <DataGrid x:Name="IOList" Style="{StaticResource SettingDataGrid}" ItemsSource="{Binding IOList}" Height="872">
+                                            <DataGrid.Resources>
+                                                <Style TargetType="ScrollBar" BasedOn="{StaticResource DefaultScrollbar}" />
+                                            </DataGrid.Resources>
+                                            <DataGrid.Columns>
+                                                <DataGridTextColumn Header="Name" CanUserSort="False" CanUserResize="False" Width="*" Binding="{Binding Name}" ElementStyle="{StaticResource EventLogElement}"/>
+                                                <DataGridCheckBoxColumn Header="On/Off" CanUserSort="False" CanUserResize="False" Width="60" IsReadOnly="True" Binding="{Binding OnOff, UpdateSourceTrigger=PropertyChanged}" ElementStyle="{StaticResource ValveOnOffCheckBox}" EditingElementStyle="{StaticResource DataGridCheckBox}" />
+                                            </DataGrid.Columns>
+                                        </DataGrid>
+                                    </StackPanel>
+                                </Grid>
+                            </Grid>
                         </Grid>
                     </Grid>
                 </TabItem.Content>
             </TabItem>
         </TabControl>
     </Grid>
-
 </Page>

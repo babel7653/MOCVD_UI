@@ -1,12 +1,37 @@
-﻿using System.Windows;
+﻿using SapphireXR_App.Common;
+using SapphireXR_App.ViewModels;
+using System.ComponentModel;
+using System.Globalization;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
-using SapphireXR_App.Common;
-using SapphireXR_App.Models;
-using SapphireXR_App.ViewModels;
+using System.Windows.Input;
 
 namespace SapphireXR_App.Views
 {
+    internal class RampingTimeValueConverter : IValueConverter
+    {
+        object IValueConverter.Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            return value;
+        }
+
+        object? IValueConverter.ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            string? rampingTimeStr = value as string;
+            if (rampingTimeStr == null)
+            {
+                return null;
+            }
+
+            if (rampingTimeStr == "" || rampingTimeStr == "0")
+            {
+                return null;
+            }
+
+            return value;
+        }
+    }
     /// <summary>
     /// ManualBatchView.xaml에 대한 상호 작용 논리
     /// </summary>
@@ -17,6 +42,13 @@ namespace SapphireXR_App.Views
             InitializeComponent();
             DataContext = viewModel;
             flowControllerDataGridTextColumnTextBoxValidaterMaxValue = new FlowControllerDataGridTextColumnTextBoxValidaterMaxValue(viewModel, nameof(viewModel.CurrentBatch));
+            MouseLeftButtonDown += (sender, args) =>
+            {
+                if (args.LeftButton == MouseButtonState.Pressed)
+                {
+                    DragMove();
+                }
+            };
         }
 
         private FlowControllerDataGridTextColumnTextBoxValidaterMaxValue flowControllerDataGridTextColumnTextBoxValidaterMaxValue;
@@ -45,6 +77,16 @@ namespace SapphireXR_App.Views
             if(textBox != null && textBox.Text == "")
             {
                 textBox.Text = "0";
+            }
+        }
+
+        private void OnClose(object sender, RoutedEventArgs e)
+        {
+            CancelEventArgs cancelEventArgs = new CancelEventArgs();
+            ((ManualBatchViewModel)DataContext).OnClosingCommand.Execute(cancelEventArgs);
+            if (cancelEventArgs.Cancel == false)
+            {
+                Close();
             }
         }
     }

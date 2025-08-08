@@ -13,7 +13,7 @@
                         </Grid.RowDefinitions>
                         <Border  BorderBrush="LightGray" BorderThickness="1,1,1,0" CornerRadius="3,3,0,0">
                             <StackPanel Orientation="Horizontal" >
-                                <Label x:Name="flowSet"  Height="16" Width="50" FontSize="12" HorizontalContentAlignment="Right" VerticalAlignment="Center" Padding="0"
+                                <Label x:Name="flowSet"  Height="16" Width="50" FontSize="12" HorizontalContentAlignment="Right" VerticalAlignment="Center" Padding="0" Margin="0, 0, 0, 2"
                                     Content="{Binding TargetValue}" Foreground="Lime" />
                                 <Ellipse x:Name="LampWarning" Width="10" Height="10" Fill="Lime" HorizontalAlignment="Right"  Margin="5,0,0,0"/>
                             </StackPanel>
@@ -46,7 +46,7 @@
         </Setter>
         <Setter Property="Cursor" Value="Hand"/>
     </Style>
-    <Style x:Key="VavleOnOffCheckBox" TargetType="{x:Type CheckBox}">
+    <Style x:Key="ValveOnOffCheckBox" TargetType="{x:Type CheckBox}">
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type CheckBox}">
@@ -64,6 +64,71 @@
                             </Style>
                         </Ellipse.Style>
                     </Ellipse>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style TargetType="{x:Type ToggleButton}" x:Key="ToggleSwitch">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type ToggleButton}">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <Viewbox Grid.Column="0">
+                            <Grid Height="26" Width="52">
+                                <Rectangle x:Name="BackPanel" RadiusX="12" RadiusY="12"  Fill="{StaticResource Gray_300}" Stroke="{StaticResource Gray_700}" StrokeThickness="1"/>
+                                <Ellipse VerticalAlignment="Center" x:Name="Ellipse" Fill="{StaticResource Gray_700}" Stretch="Uniform" Margin="4 1 2 1"  Height="18" Width="18" HorizontalAlignment="Left">
+                                </Ellipse>
+                            </Grid>
+                        </Viewbox>
+                        <ContentPresenter Grid.Column="1" Content="{TemplateBinding Content}" 
+                                      VerticalAlignment="{TemplateBinding VerticalContentAlignment}" 
+                                      HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"  />
+                    </Grid>
+                    <ControlTemplate.Resources>
+                        <Storyboard x:Key="right">
+                            <ThicknessAnimation Storyboard.TargetName="Ellipse" 
+                                Storyboard.TargetProperty="Margin" Duration="0:0:0.2" To="30 1 2 1">
+                                <ThicknessAnimation.EasingFunction>
+                                    <CircleEase EasingMode="EaseOut"/>
+                                </ThicknessAnimation.EasingFunction>
+                            </ThicknessAnimation>
+                        </Storyboard>
+                        <Storyboard x:Key="left">
+                            <ThicknessAnimation Storyboard.TargetName="Ellipse" 
+                                Storyboard.TargetProperty="Margin" Duration="0:0:0.2" To="4 1 2 1">
+                                <ThicknessAnimation.EasingFunction>
+                                    <CircleEase EasingMode="EaseOut"/>
+                                </ThicknessAnimation.EasingFunction>
+                            </ThicknessAnimation>
+                        </Storyboard>
+                    </ControlTemplate.Resources>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="ToggleButton.IsChecked" Value="True">
+                            <Trigger.EnterActions>
+                                <BeginStoryboard Storyboard="{StaticResource right}" x:Name="rightt"/>
+                            </Trigger.EnterActions>
+                            <Trigger.ExitActions>
+                                <BeginStoryboard Storyboard="{StaticResource left}" x:Name="leftt"/>
+                            </Trigger.ExitActions>
+                        </Trigger>
+                        <Trigger Property="IsEnabled" Value="False">
+                            <Setter Property="Opacity" Value="0.35"/>
+                        </Trigger>
+                        <MultiTrigger>
+                            <MultiTrigger.Conditions>
+                                <Condition Property="IsChecked" Value="True"/>
+                                <Condition Property="IsEnabled" Value="True"/>
+                            </MultiTrigger.Conditions>
+                            <Setter TargetName="BackPanel" Property="Fill" Value="{StaticResource Sapphire_Blue}"/>
+                            <Setter TargetName="BackPanel" Property="Stroke" Value="{StaticResource Sapphire_Blue}"/>
+                            <Setter TargetName="Ellipse" Property="Ellipse.Fill" Value="{StaticResource Gray_50}" />
+                        </MultiTrigger>
+                    </ControlTemplate.Triggers>
                 </ControlTemplate>
             </Setter.Value>
         </Setter>

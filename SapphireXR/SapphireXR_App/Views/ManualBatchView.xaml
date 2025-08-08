@@ -6,111 +6,207 @@
         xmlns:local="clr-namespace:SapphireXR_App.Views"
         xmlns:i="clr-namespace:Microsoft.Xaml.Behaviors;assembly=Microsoft.Xaml.Behaviors"
         mc:Ignorable="d"
-        Title="ManualBatchView" Height="Auto" Width="400">
-    <Window.Resources>
-        <Style TargetType="Button">
-            <Style.Resources>
-                <Style TargetType="Border">
-                    <Setter Property="CornerRadius" Value="6"/>
-                </Style>
-            </Style.Resources>
-        </Style>
-    </Window.Resources>
-    <i:Interaction.Triggers>
-        <i:EventTrigger EventName="Closed">
-            <i:InvokeCommandAction Command="{Binding CloseCommand}" />
-        </i:EventTrigger>
-    </i:Interaction.Triggers>
-    <Grid>
-        <StackPanel>
-            <StackPanel.Resources>
-                <Style x:Key="gridColumnTextBox" TargetType="TextBox">
-                    <Style.Setters>
-                        <EventSetter Event="TextChanged"  Handler="TextBox_TextChanged" />
-                    </Style.Setters>
-                </Style>
-            </StackPanel.Resources>
+        WindowStyle="None" Background="Transparent" AllowsTransparency="True" WindowStartupLocation="CenterScreen"
+        Title="ManualBatchView" d:DesignWidth="400" d:DesignHeight="930" Height="930" Width="400" >
+    <Border Background="{StaticResource Gray_100}" CornerRadius="{StaticResource r_3_sqrt}">
+        <Border.Padding>
+            <Thickness Left="{StaticResource p_5}" Right="{StaticResource p_5}" Bottom="{StaticResource p_5}" Top="{StaticResource p_1}" />
+        </Border.Padding>
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="24"/>
+                <RowDefinition />
+            </Grid.RowDefinitions>
             <Grid>
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="25" />
-                    <ColumnDefinition Width="25" />
-                    <ColumnDefinition Width="90"/>
-                    <ColumnDefinition Width="90" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="24" />
                 </Grid.ColumnDefinitions>
-                <ComboBox Grid.Column="0" ItemsSource="{Binding Batches, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" DisplayMemberPath="Name" 
-                          SelectedItem="{Binding CurrentBatch, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-                <Button Grid.Column="1" Width="20" Background="Transparent" BorderBrush="Transparent" Command="{Binding AddCommand}">
-                    <Image Source="/Resources/Images/plus-icon-13071.png" />
+                <Button Grid.Column="1" Width="24" Height="24" Style="{StaticResource CloseMenuButton}" Click="OnClose">
+                    <Image Source="/Resources/icons/icon=close.png"  />
                 </Button>
-                <Button Grid.Column="2" Width="20" Background="Transparent" BorderBrush="Transparent" Command="{Binding MinusCommand}">
-                    <Image Source="/Resources/Images/subtract-icon-png-28153.png" />
-                </Button>
-                <Button x:Name="UserSqtateBatch" Grid.Column="3" Content="Batch" Width="70" Margin="5" Command="{Binding LoadToPLCCommand}" />
-                <Button x:Name="UserStateSave" Grid.Column="4" Content="Save" Width="70" Margin="5" Command="{Binding SaveCommand}" />
             </Grid>
-            <StackPanel Orientation="Horizontal">
-                <TextBlock Text="Alarm State"/>
-                <ComboBox ItemsSource="{Binding Batches}" SelectedItem="{Binding BatchOnAlarmState}" DisplayMemberPath="Name"/>
-                <TextBlock Text="Recipe End"/>
-                <ComboBox ItemsSource="{Binding Batches}" SelectedItem="{Binding BatchOnRecipeEnd}" DisplayMemberPath="Name"/>
+            <StackPanel Grid.Row="1" Background="{DynamicResource Gray_100}">
+                <StackPanel.Margin>
+                    <Thickness Top="{StaticResource p_2}" />
+                </StackPanel.Margin>
+                <StackPanel.Resources>
+                    <Style x:Key="gridColumnTextBox" TargetType="TextBox">
+                        <Style.Setters>
+                            <EventSetter Event="TextChanged"  Handler="TextBox_TextChanged" />
+                        </Style.Setters>
+                    </Style>
+                    <Style x:Key="ManualBatchViewDataGrid" TargetType="DataGrid" BasedOn="{StaticResource EventLog}">
+                        <Setter Property="CanUserAddRows" Value="False" />
+                        <Setter Property="AutoGenerateColumns" Value="False" />
+                        <Setter Property="VerticalScrollBarVisibility" Value="Auto" />
+                        <Setter Property="FontSize" Value="12" />
+                        <Setter Property="ColumnHeaderStyle">
+                            <Setter.Value>
+                                <Style TargetType="DataGridColumnHeader" BasedOn="{StaticResource EventLogColumnHeader}">
+                                    <Setter Property="Height" Value="26" />
+                                </Style>
+                            </Setter.Value>
+                        </Setter>
+                    </Style>
+                    <Style x:Key="ManualBatchViewComboBox" TargetType="ComboBox" BasedOn="{StaticResource theComboBox}">
+                        <Setter Property="FontSize" Value="12" />
+                    </Style>
+                </StackPanel.Resources>
+                <Grid>
+                    <Grid.Margin>
+                        <Thickness Bottom="{StaticResource p_2}" />
+                    </Grid.Margin>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
+                    <ComboBox Grid.Column="0" ItemsSource="{Binding Batches, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" DisplayMemberPath="Name" 
+                      SelectedItem="{Binding CurrentBatch, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"  Style="{StaticResource ManualBatchViewComboBox}" />
+                    <Button Grid.Column="1" Width="28" Height="28" Style="{StaticResource DefaultButton}" Command="{Binding AddCommand}">
+                        <Button.Margin>
+                            <Thickness Left="{StaticResource p_2}" />
+                        </Button.Margin>
+                        <Image Source="/Resources/icons/icon=plus.png" Width="20" Height="20" />
+                    </Button>
+                    <Button Grid.Column="2" Width="28" Height="28" Command="{Binding MinusCommand}" Style="{StaticResource DefaultButton}" Padding="{StaticResource p_2_sqrt}">
+                        <Button.Margin>
+                            <Thickness Left="{StaticResource p_2}" />
+                        </Button.Margin>
+                        <Image Source="/Resources/icons/icon=minus.png"  Width="20" Height="20" />
+                    </Button>
+                    <Button x:Name="UserSqtateBatch" Grid.Column="3" Content="Batch" Width="71" Command="{Binding LoadToPLCCommand}" Style="{StaticResource DefaultButton}">
+                        <Button.Margin>
+                            <Thickness Left="{StaticResource p_2}" />
+                        </Button.Margin>
+                    </Button>
+                    <Button x:Name="UserStateSave" Grid.Column="4" Content="Save" Width="66" Command="{Binding SaveCommand}" Style="{StaticResource PrimaryButton}">
+                        <Button.Margin>
+                            <Thickness Left="{StaticResource p_2}" />
+                        </Button.Margin>
+                    </Button>
+                </Grid>
+                <Grid>
+                    <Grid.Resources>
+                        <local:RampingTimeValueConverter x:Key="rampingTimeValueConverter" />
+                    </Grid.Resources>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Grid.Row="0" Grid.Column="0" Text="Alarm State" Style="{StaticResource infoTextBlockLeft}">
+                        <TextBlock.Margin>
+                            <Thickness Bottom="{StaticResource p_1}" />
+                        </TextBlock.Margin>
+                    </TextBlock>
+                    <TextBlock Grid.Row="0" Grid.Column="1" Text="Recipe End" Style="{StaticResource infoTextBlockLeft}">
+                        <TextBlock.Margin>
+                            <Thickness  Bottom="{StaticResource p_1}" />
+                        </TextBlock.Margin>
+                    </TextBlock>
+                    <ComboBox Grid.Row="1" Grid.Column="0" ItemsSource="{Binding Batches}" SelectedItem="{Binding BatchOnAlarmState}" DisplayMemberPath="Name" Width="176" Style="{StaticResource ManualBatchViewComboBox}" Height="28" HorizontalAlignment="Left">
+                        <ComboBox.Margin>
+                            <Thickness Left="0" Right="{StaticResource p_2}" Bottom="{StaticResource p_2}" />
+                        </ComboBox.Margin>
+                    </ComboBox>
+                    <ComboBox Grid.Row="1" Grid.Column="1" ItemsSource="{Binding BatchesSetForEvent}" SelectedItem="{Binding BatchOnRecipeEnd}" DisplayMemberPath="Name" Width="176" Style="{StaticResource ManualBatchViewComboBox}">
+                        <ComboBox.Margin>
+                            <Thickness  Bottom="{StaticResource p_2}" />
+                        </ComboBox.Margin>
+                    </ComboBox>
+                    <TextBlock Grid.Row="2" Grid.Column="0" Text="Name" Style="{StaticResource infoTextBlockLeft}">
+                        <TextBlock.Margin>
+                            <Thickness Bottom="{StaticResource p_1}" />
+                        </TextBlock.Margin>
+                    </TextBlock>
+                    <TextBlock Grid.Row="2" Grid.Column="1" Text="Ramping Time(s)" Style="{StaticResource infoTextBlockLeft}">
+                        <TextBlock.Margin>
+                            <Thickness  Bottom="{StaticResource p_1}" />
+                        </TextBlock.Margin>
+                    </TextBlock>
+                    <TextBox Grid.Row="3" Grid.Column="0" Height="26" Width="176" Text="{Binding CurrentBatch.Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" IsEnabled="{Binding NameEnabled}" Style="{StaticResource DefaultTextBox}" HorizontalAlignment="Left">
+                        <TextBox.Margin>
+                            <Thickness Right="{StaticResource p_2}" Bottom="{StaticResource p_2}" />
+                        </TextBox.Margin>
+                    </TextBox>
+                    <local:NumberBox Grid.Row="3" x:Name="rampingTime" Grid.Column="1" Width="176" Height="26" Text="{Binding CurrentBatch.RampingTime, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource rampingTimeValueConverter}}" IsEnabled="{Binding RampingTimeEnabled}" LostFocus="NumberBox_LostFocus">
+                        <local:NumberBox.Style>
+                            <Style TargetType="local:NumberBox" BasedOn="{StaticResource DefaultTextBox}">
+                                <Setter Property="Template">
+                                    <Setter.Value>
+                                        <ControlTemplate TargetType="TextBox">
+                                            <Border Background="{StaticResource Gray_400}" BorderBrush="{StaticResource Gray_300}" BorderThickness="1" x:Name="innerBorder">
+                                                <Border.CornerRadius>
+                                                    <CornerRadius TopLeft="{StaticResource r_1}" TopRight="{StaticResource r_1}" BottomLeft="{StaticResource r_1}" BottomRight="{StaticResource r_1}" />
+                                                </Border.CornerRadius>
+                                                <ScrollViewer x:Name="PART_ContentHost" Margin="0" />
+                                            </Border>
+                                            <ControlTemplate.Triggers>
+                                                <Trigger Property="IsEnabled" Value="false">
+                                                    <Setter Property="Foreground" Value="{StaticResource Gray_800}" />
+                                                    <Setter TargetName="innerBorder" Property="Background" Value="{StaticResource Gray_600}" />
+                                                    <Setter TargetName="innerBorder" Property="BorderBrush" Value="{StaticResource Gray_500}" />
+                                                </Trigger>
+                                                <Trigger Property="IsMouseOver" Value="True">
+                                                    <Setter TargetName="innerBorder" Property="BorderBrush" Value="{StaticResource Gray_200}" />
+                                                </Trigger>
+                                                <Trigger Property="IsFocused" Value="True">
+                                                    <Setter TargetName="innerBorder" Property="BorderBrush" Value="{StaticResource Sapphire_Blue}" />
+                                                </Trigger>
+                                                <Trigger Property="Text" Value="0">
+                                                    <Setter TargetName="innerBorder" Property="BorderThickness" Value="1" />
+                                                    <Setter TargetName="innerBorder" Property="BorderBrush" Value="Red" />
+                                                </Trigger>
+                                                <Trigger Property="Text" Value="">
+                                                    <Setter TargetName="innerBorder" Property="BorderThickness" Value="1" />
+                                                    <Setter TargetName="innerBorder" Property="BorderBrush" Value="Red" />
+                                                </Trigger>
+                                            </ControlTemplate.Triggers>
+                                        </ControlTemplate>
+                                    </Setter.Value>
+                                </Setter>
+                            </Style>
+                        </local:NumberBox.Style>
+                        <TextBox.Margin>
+                            <Thickness Bottom="{StaticResource p_2}" />
+                        </TextBox.Margin>
+                    </local:NumberBox>
+                </Grid>
+                <DataGrid x:Name="dgUserSettingA" Height="360" VerticalScrollBarVisibility="Auto" ItemsSource="{Binding CurrentBatch.AnalogIOUserStates}" CellEditEnding="dgUserSettingA_CellEditEnding" Style="{StaticResource ManualBatchViewDataGrid}">
+                    <DataGrid.Margin>
+                        <Thickness Bottom="{StaticResource p_2}" />
+                    </DataGrid.Margin>
+                    <DataGrid.Resources>
+                        <Style TargetType="ScrollBar" BasedOn="{StaticResource DefaultScrollbar}" />
+                    </DataGrid.Resources>
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="Device Id" CanUserSort="False" CanUserResize="False" Width="60" Binding="{Binding Path=ID, Mode=OneWay,UpdateSourceTrigger=PropertyChanged}" IsReadOnly="True" ElementStyle="{StaticResource EventLogElement}" />
+                        <DataGridTextColumn Header="Device Name" CanUserSort="False" CanUserResize="False" Width="*" Binding="{Binding Path=Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" ElementStyle="{StaticResource EventLogElement}" />
+                        <DataGridTextColumn Header="Value" CanUserSort="False" CanUserResize="False" Width="100" Binding="{Binding Path=Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" EditingElementStyle="{StaticResource gridColumnTextBox}" ElementStyle="{StaticResource EventLogElement}" />
+                        <DataGridTextColumn Header="Max Value" CanUserSort="False" CanUserResize="False" Width="100" Binding="{Binding Path=MaxValue, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" IsReadOnly="True" ElementStyle="{StaticResource EventLogElement}" />
+                    </DataGrid.Columns>
+                </DataGrid>
+                <DataGrid x:Name="dgUserSettingD" Height="360" ItemsSource="{Binding CurrentBatch.DigitalIOUserStates}" Style="{StaticResource ManualBatchViewDataGrid}">
+                    <DataGrid.Resources>
+                        <Style TargetType="ScrollBar" BasedOn="{StaticResource DefaultScrollbar}" />
+                    </DataGrid.Resources>
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="Device Id" CanUserSort="False" CanUserResize="False" Width="60" Binding="{Binding Path=ID, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" IsReadOnly="True"  ElementStyle="{StaticResource EventLogElement}" />
+                        <DataGridTextColumn Header="Device Name" CanUserSort="False" CanUserResize="False" Width="*" Binding="{Binding Path=Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"  ElementStyle="{StaticResource EventLogElement}" />
+                        <DataGridCheckBoxColumn Header="State" CanUserSort="False" CanUserResize="False" Width="100" Binding="{Binding Path=On, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                EditingElementStyle="{StaticResource ValveOnOffCheckBox}" ElementStyle="{StaticResource ValveOnOffCheckBox}"/>
+                    </DataGrid.Columns>
+                </DataGrid>
             </StackPanel>
-            <StackPanel Orientation="Horizontal">
-                <Label Content="Name" />
-                <TextBox Width="100" Text="{Binding CurrentBatch.Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" IsEnabled="{Binding NameEnabled}"/>
-                <Label Content="Ramping Time(s)" />
-                <local:NumberBox Width="100" Text="{Binding CurrentBatch.RampingTime, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" IsEnabled="{Binding RampingTimeEnabled}" LostFocus="NumberBox_LostFocus"/>
-            </StackPanel>
-            <Grid Height="Auto">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="50*"/>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="50*"/>
-                </Grid.RowDefinitions>
-                <StackPanel Grid.Row="0">
-                    <DataGrid x:Name="dgUserSettingA" AutoGenerateColumns="False" Margin="5,0,5,0" Height="320" VerticalScrollBarVisibility="Auto" ItemsSource="{Binding CurrentBatch.AnalogIOUserStates}" CanUserAddRows="False" CellEditEnding="dgUserSettingA_CellEditEnding">
-                        <DataGrid.Resources>
-                            <Style TargetType="{x:Type DataGridColumnHeader}">
-                                <Setter Property="HorizontalAlignment" Value="Center"/>
-                                <Setter Property="Background" Value="Transparent"/>
-                            </Style>
-                            <Style TargetType="{x:Type DataGrid}">
-                                <Setter Property="BorderBrush" Value="Black"/>
-                                <Setter Property="BorderThickness" Value="1"/>
-                            </Style>
-                        </DataGrid.Resources>
-                        <DataGrid.Columns>
-                            <DataGridTextColumn Header="Device Id" CanUserSort="False" CanUserResize="False" Width="60" Binding="{Binding Path=ID, Mode=OneWay,UpdateSourceTrigger=PropertyChanged}" IsReadOnly="True"/>
-                            <DataGridTextColumn Header="Device Name" CanUserSort="False" CanUserResize="False" Width="*" Binding="{Binding Path=Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
-                            <DataGridTextColumn Header="Value" CanUserSort="False" CanUserResize="False" Width="100" Binding="{Binding Path=Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" EditingElementStyle="{StaticResource gridColumnTextBox}" />
-                            <DataGridTextColumn Header="Max Value" CanUserSort="False" CanUserResize="False" Width="100" Binding="{Binding Path=MaxValue, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" IsReadOnly="True"/>
-                        </DataGrid.Columns>
-                    </DataGrid>
-                </StackPanel>
-                <StackPanel Grid.Row="1" Height="15">
-                </StackPanel>
-                <StackPanel Grid.Row="2">
-                    <DataGrid x:Name="dgUserSettingD" AutoGenerateColumns="False" Margin="5,0,5,0" Height="320"
-                       VerticalScrollBarVisibility="Auto" ItemsSource="{Binding CurrentBatch.DigitalIOUserStates}" CanUserAddRows="False">
-                        <DataGrid.Resources>
-                            <Style TargetType="{x:Type DataGridColumnHeader}">
-                                <Setter Property="HorizontalAlignment" Value="Center"/>
-                                <Setter Property="Background" Value="Transparent"/>
-                            </Style>
-                            <Style TargetType="{x:Type DataGrid}">
-                                <Setter Property="BorderBrush" Value="Black"/>
-                                <Setter Property="BorderThickness" Value="1"/>
-                            </Style>
-                        </DataGrid.Resources>
-                        <DataGrid.Columns>
-                            <DataGridTextColumn Header="Device Id" CanUserSort="False" CanUserResize="False" Width="60" Binding="{Binding Path=ID, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" IsReadOnly="True" />
-                            <DataGridTextColumn Header="Device Name" CanUserSort="False" CanUserResize="False" Width="*" Binding="{Binding Path=Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-                            <DataGridCheckBoxColumn Header="State" CanUserSort="False" CanUserResize="False" Width="100" Binding="{Binding Path=On, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                                    EditingElementStyle="{StaticResource VavleOnOffCheckBox}" ElementStyle="{StaticResource VavleOnOffCheckBox}"/>
-                        </DataGrid.Columns>
-                    </DataGrid>
-                </StackPanel>
-            </Grid>
-        </StackPanel>
-    </Grid>
+        </Grid>
+    </Border>
 </Window>

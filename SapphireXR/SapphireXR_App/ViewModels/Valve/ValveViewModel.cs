@@ -5,6 +5,7 @@ using System.Windows.Input;
 using CommunityToolkit.Mvvm.Input;
 using SapphireXR_App.Enums;
 using SapphireXR_App.Models;
+using SapphireXR_App.WindowServices;
 
 namespace SapphireXR_App.ViewModels
 {
@@ -46,18 +47,27 @@ namespace SapphireXR_App.ViewModels
                 var result = ValveOperationEx.Show("Valve Operation", valveOperationMessage);
                 switch (result)
                 {
-                    case ValveOperationExResult.Ok:
+                    case DialogResult.Ok:
                         bool isOpen = !(viewModel.IsOpen);
-                        viewModel.IsOpen = isOpen;
                         if (viewModel.ValveID != null)
                         {
-                            PLCService.WriteValveState(viewModel.ValveID, isOpen);
-                            MessageBox.Show(confirmMessage);
+                            try
+                            {
+                                PLCService.WriteValveState(viewModel.ValveID, isOpen);
+                            }
+                            catch (Exception exception)
+                            {
+                                ToastMessage.Show("PLC로 " + viewModel.ValveID + "값을 쓰는데 실패했습니다. 원인은 다음과 같습니다: " + exception.Message, ToastMessage.MessageType.Error);
+                                return;
+                            }
+
+                            viewModel.IsOpen = isOpen;
+                            ToastMessage.Show(confirmMessage, ToastMessage.MessageType.Sucess);
                         }
                         break;
 
-                    case ValveOperationExResult.Cancel:
-                        MessageBox.Show(cancelMessage);
+                    case DialogResult.Cancel:
+                        ToastMessage.Show(cancelMessage, ToastMessage.MessageType.Information);
                         break;
                 }
             }
@@ -121,7 +131,7 @@ namespace SapphireXR_App.ViewModels
             {
                 bool isOpen = !(viewModel.IsOpen);
                 viewModel.IsOpen = isOpen;
-                isOpenChangedPubisher.Issue(isOpen);
+                isOpenChangedPubisher.Publish(isOpen);
             }
 
             void IObserver<bool>.OnCompleted()
@@ -142,18 +152,43 @@ namespace SapphireXR_App.ViewModels
                 }
             }
 
-            ObservableManager<bool>.DataIssuer isOpenChangedPubisher;
+            ObservableManager<bool>.Publisher isOpenChangedPubisher;
             ResetValveStateSubscriber resetValveStateSubscriber;
         }
 
-        static internal ValveStateUpdater? CreateValveStateUpdater(SapphireXR_App.Controls.Valve.UpdateTarget target, ValveViewModel viewModel)
+        private class PLCConnectionStateSubscriber : IObserver<PLCConnection>
+        {
+            public PLCConnectionStateSubscriber(ValveViewModel vm)
+            {
+                valveViewModel = vm;
+            }
+
+            void IObserver<PLCConnection>.OnCompleted()
+            {
+                throw new NotImplementedException();
+            }
+
+            void IObserver<PLCConnection>.OnError(Exception error)
+            {
+                throw new NotImplementedException();
+            }
+
+            void IObserver<PLCConnection>.OnNext(PLCConnection value)
+            {
+                valveViewModel.OnClickCommand.NotifyCanExecuteChanged();
+            }
+
+            private ValveViewModel valveViewModel;
+        }
+
+        static internal ValveStateUpdater? CreateValveStateUpdater(Controls.Valve.UpdateTarget target, ValveViewModel viewModel)
         {
             switch (target)
             {
-                case SapphireXR_App.Controls.Valve.UpdateTarget.CurrentPLCState:
+                case Controls.Valve.UpdateTarget.CurrentPLCState:
                     return new ValveStateUpdaterFromCurrentPLCState(viewModel);
 
-                case SapphireXR_App.Controls.Valve.UpdateTarget.CurrentRecipeStep:
+                case Controls.Valve.UpdateTarget.CurrentRecipeStep:
                     return new ValveStateUpdaterFromCurrentRecipeStep(viewModel);
 
                 default:
@@ -168,15 +203,15 @@ namespace SapphireXR_App.ViewModels
                 if (args != null)
                 {
                     object[] argArray = (object[])args;
-                    if (argArray[0] is string && argArray[1] is SapphireXR_App.Controls.Valve.UpdateTarget)
+                    if (argArray[0] is string && argArray[1] is Controls.Valve.UpdateTarget)
                     {
-                        Init((string)argArray[0], (SapphireXR_App.Controls.Valve.UpdateTarget)argArray[1]);
+                        Init((string)argArray[0], (Controls.Valve.UpdateTarget)argArray[1]);
                     }
                 }
             });
         }
 
-        protected virtual void Init(string valveID, SapphireXR_App.Controls.Valve.UpdateTarget target)
+        protected virtual void Init(string valveID, Controls.Valve.UpdateTarget target)
         {
             ValveID = valveID;
         }
@@ -184,7 +219,7 @@ namespace SapphireXR_App.ViewModels
         public event PropertyChangedEventHandler? PropertyChanged;
 
         public ICommand OnLoadedCommand { get; set; }
-        public ICommand OnClickCommand => new RelayCommand(OnClicked);
+        public RelayCommand OnClickCommand => new RelayCommand(OnClicked, () => PLCService.Connected == PLCConnection.Connected);
 
         protected abstract void OnClicked();
 

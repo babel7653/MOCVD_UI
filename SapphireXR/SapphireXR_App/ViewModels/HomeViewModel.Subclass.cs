@@ -1,8 +1,8 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using SapphireXR_App.Common;
+using SapphireXR_App.Enums;
 using SapphireXR_App.Models;
 using System.Collections;
-using System.Windows.Media.Imaging;
 
 namespace SapphireXR_App.ViewModels
 {
@@ -95,43 +95,60 @@ namespace SapphireXR_App.ViewModels
             private short? prevThrottleValveControlMode = null;
         }
 
-        private class EventLogSubscriber : IObserver<EventLog>
+        private class PLCConnectionStateSubscriber : IObserver<Enums.PLCConnection>
         {
-            internal EventLogSubscriber(HomeViewModel vm)
+            public PLCConnectionStateSubscriber(HomeViewModel vm)
             {
                 homeViewModel = vm;
             }
 
-            void IObserver<EventLog>.OnCompleted()
+            void IObserver<PLCConnection>.OnCompleted()
             {
                 throw new NotImplementedException();
             }
 
-            void IObserver<EventLog>.OnError(Exception error)
+            void IObserver<PLCConnection>.OnError(Exception error)
             {
                 throw new NotImplementedException();
             }
 
-            void IObserver<EventLog>.OnNext(EventLog value)
+            void IObserver<PLCConnection>.OnNext(PLCConnection value)
             {
-                homeViewModel.EventLogs.Add(value);
-                if(value.Type == "Recipe End")
+                if (value == PLCConnection.Connected)
                 {
-                    homeViewModel.loadBatchOnRecipeEnd();
+                    homeViewModel.initRightDashBoard();
                 }
+                homeViewModel.OnThrottleValveModeChangedCommand.NotifyCanExecuteChanged();
+                homeViewModel.TogglePressureControlModeCommand.NotifyCanExecuteChanged();
+                homeViewModel.InductionHeaterResetCommand.NotifyCanExecuteChanged();
+                homeViewModel.ToggleHeaterControlModeCommand.NotifyCanExecuteChanged();
+                homeViewModel.VacuumPumpResetCommand.NotifyCanExecuteChanged();
+                homeViewModel.manualBatchViewModel.LoadToPLCCommand.NotifyCanExecuteChanged();
+                homeViewModel.PLCConnected = PLCService.Connected == PLCConnection.Connected ? true : false;
             }
 
-            private HomeViewModel homeViewModel;
+            HomeViewModel homeViewModel;
         }
 
-        public partial class EventLog: ObservableObject
+        private class RecipeEndedSubscriber : IObserver<bool>
         {
-            [ObservableProperty]
-            private string _type = "";
-            [ObservableProperty]
-            private string _message = "";
-            [ObservableProperty]
-            private string _date = "";
+            internal RecipeEndedSubscriber(HomeViewModel vm)
+            {
+                homeViewModel = vm;
+            }
+            void IObserver<bool>.OnCompleted()
+            {
+                throw new NotImplementedException();
+            }
+            void IObserver<bool>.OnError(Exception error)
+            {
+                throw new NotImplementedException();
+            }
+            void IObserver<bool>.OnNext(bool value)
+            {
+                homeViewModel.loadBatchOnRecipeEnd();
+            }
+            private HomeViewModel homeViewModel;
         }
     }
 }

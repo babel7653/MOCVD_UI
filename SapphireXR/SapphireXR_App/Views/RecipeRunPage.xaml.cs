@@ -1,9 +1,6 @@
-﻿using CommunityToolkit.Mvvm.ComponentModel;
-using SapphireXR_App.Common;
+﻿using SapphireXR_App.Common;
 using SapphireXR_App.ViewModels;
 using System.Windows.Controls;
-using System.Windows.Input;
-using System.Windows.Media;
 
 namespace SapphireXR_App.Views
 {
@@ -35,6 +32,5 @@ namespace SapphireXR_App.Views
 
         FlowControllerDataGridTextColumnTextBoxValidaterMaxValue flowControllerDataGridTextColumnTextBoxValidaterMaxValue;
         FlowControllerDataGridTextColumnTextBoxValidaterOnlyNumber flowControllerDataGridTextColumnTextBoxValidaterOnlyNumber;
-
     }
 }

@@ -1,12 +1,12 @@
-﻿using CommunityToolkit.Mvvm.ComponentModel;
+﻿using System.Windows.Input;
+using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
 using OxyPlot;
 using OxyPlot.Axes;
-using OxyPlot.Series;
-using CommunityToolkit.Mvvm.Input;
-using SapphireXR_App.Models;
-using System.Windows.Input;
-using SapphireXR_App.Common;
 using OxyPlot.Legends;
+using OxyPlot.Series;
+using SapphireXR_App.Common;
+using SapphireXR_App.Models;
 
 namespace SapphireXR_App.ViewModels
 {
@@ -18,16 +18,34 @@ namespace SapphireXR_App.ViewModels
             {
                 plotModel.Title = title;
                 plotModel.TitleFontSize = plotModel.TitleFontSize / 2;
+                plotModel.TextColor = OxyColors.White;
+                plotModel.PlotAreaBorderColor = OxyColors.White;
+                plotModel.SubtitleColor = OxyColors.White;
+                plotModel.TitleColor = OxyColors.White;
                 plotModel.Axes.Add(initializeXAxis());
 
+                int? redMaxValue = SettingViewModel.ReadMaxValue(title);
+                if(redMaxValue == null)
+                {
+                    throw new Exception("Failure happened in creating chart in bottom view. Logic error in ControlTargetValueSeriesUpdater constructor: the value of \"title\", the constructor argument " +
+                        title + " is not valid flow controller ID");
+                }
+                double maxValue = (double)redMaxValue;
+                double padding = maxValue * 0.01;
                 plotModel.Axes.Add(new LinearAxis
                 {
                     Title = "Data Value",
                     Position = AxisPosition.Left,
                     IsPanEnabled = true,
                     IsZoomEnabled = true,
-                    Minimum = 0,
-                    Maximum = PLCService.ReadMaxValue(title)
+                    Minimum = -padding,
+                    AxislineColor = OxyColors.White,
+                    MajorGridlineColor = OxyColors.White,
+                    MinorGridlineColor = OxyColors.White,
+                    TicklineColor = OxyColors.White,
+                    ExtraGridlineColor = OxyColors.White,
+                    MinorTicklineColor = OxyColors.White,
+                    Maximum = maxValue + padding
                 });
 
                 Legend legend = new Legend();
@@ -97,11 +115,6 @@ namespace SapphireXR_App.ViewModels
             private BottomDashBoardViewModel bottomViewModel;
         }
 
-        [ObservableProperty]
-        public PlotModel? flowControlLivePlot;
-        protected readonly ControlTargetValueSeriesUpdater[] plotModels = new ControlTargetValueSeriesUpdater[PLCService.NumControllers];
-        private ControlTargetValueSeriesUpdater? currentSelectedFlowControllerListener;
-
 #pragma warning disable CS8618 // null을 허용하지 않는 필드는 생성자를 종료할 때 null이 아닌 값을 포함해야 합니다. 'required' 한정자를 추가하거나 nullable로 선언하는 것이 좋습니다.
         public BottomDashBoardViewModel(string flowControlSelectedPostFixStr)
 #pragma warning restore CS8618 // null을 허용하지 않는 필드는 생성자를 종료할 때 null이 아닌 값을 포함해야 합니다. 'required' 한정자를 추가하거나 nullable로 선언하는 것이 좋습니다.
@@ -115,7 +128,6 @@ namespace SapphireXR_App.ViewModels
             ControlValueOption = HideControlValueStr;
             TargetValueOption = HideTargetValueStr;
             currentSelectedFlowControllerListener = null;
-            FlowControlLivePlot = null;
         }
 
         public ICommand ShowControlValue => new RelayCommand(() =>
@@ -151,12 +163,16 @@ namespace SapphireXR_App.ViewModels
             }
         });
 
-        private readonly IObserver<string> flowContorllerSelectionChanged;
-
         [ObservableProperty]
         public string controlValueOption;
         [ObservableProperty]
         public string targetValueOption;
+        [ObservableProperty]
+        public PlotModel? flowControlLivePlot;
+
+        protected readonly ControlTargetValueSeriesUpdater[] plotModels = new ControlTargetValueSeriesUpdater[PLCService.NumControllers];
+        private readonly IObserver<string> flowContorllerSelectionChanged;
+        private ControlTargetValueSeriesUpdater? currentSelectedFlowControllerListener;
 
         private static readonly string ShowControlValueStr = "Show Control Value";
         private static readonly string HideControlValueStr = "Hide Control Value";

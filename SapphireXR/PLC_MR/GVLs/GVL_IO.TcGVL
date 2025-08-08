@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4026.11">
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4026.12">
   <GVL Name="GVL_IO" Id="{a5f3292d-798a-4b6c-af88-b59309d83086}">
     <Declaration><![CDATA[{attribute 'qualified_only'}
 VAR_GLOBAL
@@ -27,7 +27,31 @@ VAR_GLOBAL
 	aMonitoring_PV 			: ARRAY[1..17] OF REAL; //Gauge Monitoring Value to UI
 	aInputState				: ARRAY[1..5] OF WORD; // Digital Input from Device (Switch)
 	aOutputCmd				: ARRAY[1..3] OF WORD; // Digital Command from UI
-	aInterlock				: ARRAY[1..5] OF WORD; //Interlock
+	aInterlock				: ARRAY[1..5] OF DWORD; // Interlock
+	aInterlockSet			: ARRAY[1..16] OF REAL; // UI Interlokc Setting Value
+	aInterlockEnable		: ARRAY[1..6] OF DWORD; // UI Interlock Enable Setting
+	
+	nCaseSignalTower		: INT;
+	nDorOperationError		: INT;
+	bDorState				: BOOL;
+	bDorOnEnable			: BOOL;
+// 	bE3508_HeaterOn			: BOOL;
+	wE3508_CV				: WORD;
+	wE3508_PV				: WORD;
+	wIqPlus_CV				: WORD;
+	wIqPlus_CDG1_PV			: WORD;
+	wIqPlus_CDG2_PV			: WORD;
+	nRotation_Converted_PV	: INT;
+	rRotation_ControlValue	: REAL;
+	nIQPLUS_SetType 		: INT;
+	nIQPLUS_Mode			: INT;
+	tRecipeControl_Ramp_ET	: TIME;
+	tRecipeControl_Hold_ET	: TIME;
+	tRecipeControl_Pause_ET	: TIME;
+	aLineHeater_rTemperaturePV : ARRAY[1..8]OF REAL;
+	nE3508_nInputManAutoBytes : USINT;
+	isCoverClosed 			: BOOL;
+	isPumpRunning 			: BOOL;
 END_VAR
 
 VAR_GLOBAL CONSTANT

@@ -1,13 +1,9 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
-using CommunityToolkit.Mvvm.Input;
 using CsvHelper.Configuration.Attributes;
 using System.Collections;
-using System.ComponentModel;
-using System.Diagnostics.CodeAnalysis;
 using System.Runtime.InteropServices;
 using System.Windows;
 using System.Windows.Media;
-using System.Windows.Navigation;
 
 namespace SapphireXR_App.Models
 {
@@ -21,10 +17,10 @@ namespace SapphireXR_App.Models
             cTemp = rhs.cTemp;
             No = rhs.No;
             HTime = rhs.HTime;
-            Jump = rhs.Jump;
+            LoopEndStep = rhs.LoopEndStep;
             RPress = rhs.RPress;
             SRotation = rhs.SRotation;
-            Loop = rhs.Loop;
+            LoopRepeat = rhs.LoopRepeat;
             RTime = rhs.RTime;
             STemp = rhs.STemp;
             E01 = rhs.E01;
@@ -96,8 +92,8 @@ namespace SapphireXR_App.Models
         [ObservableProperty]
         public short _sRotation;
         public short cTemp { get; set; }
-        public short Loop { get; set; }
-        public short Jump { get; set; }
+        public short LoopRepeat { get; set; }
+        public short LoopEndStep { get; set; }
         //RecipeFloat Array
         [ObservableProperty]
         private float _m01;
@@ -205,7 +201,10 @@ namespace SapphireXR_App.Models
         [ObservableProperty]
         private bool _v32; //_vent
 
-        Brush _background = Brushes.White;
+        public static readonly Brush DefaultBackground = Application.Current.FindResource("DefaultRecipeListBackground") as Brush ?? new SolidColorBrush(Color.FromRgb(0x16, 0x16, 0x16));
+        public static readonly Brush DefaultForeground = Application.Current.FindResource("DefaultRecipeListForeground") as Brush ?? new SolidColorBrush(Color.FromRgb(0xC2, 0xC2, 0xC2));
+
+        Brush _background = DefaultBackground;
         [Ignore]
         public Brush Background
         {
@@ -221,13 +220,27 @@ namespace SapphireXR_App.Models
             set { SetProperty(ref _isEnabled, value); }
         }
 
-        Brush _foreGround = Brushes.Black;
+        Brush _foreground = DefaultForeground;
         [Ignore]
         public Brush Foreground
         {
-            get { return _foreGround;  }
-            set { SetProperty(ref _foreGround, value);  }
+            get { return _foreground;  }
+            set { SetProperty(ref _foreground, value);  }
         }
+
+        [Ignore]
+        public short JumpStride
+        {
+            set;
+            get;
+        } = 0;
+
+        [Ignore]
+        public short LoopCount
+        {
+            set;
+            get;
+        } = 0;
     }
 
     [StructLayout(LayoutKind.Sequential, Pack = 0)]
@@ -243,8 +256,8 @@ namespace SapphireXR_App.Models
             aRecipeShort[4] = rhs.RPress;
             aRecipeShort[5] = rhs.SRotation;
             aRecipeShort[6] = rhs.cTemp;
-            aRecipeShort[7] = rhs.Loop;
-            aRecipeShort[8] = rhs.Jump;
+            aRecipeShort[7] = rhs.JumpStride;
+            aRecipeShort[8] = rhs.LoopCount;
             //Float Type Array
             aRecipeFloat[0] = rhs.M01;
             aRecipeFloat[1] = rhs.M02;

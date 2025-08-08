@@ -1,8 +1,8 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
-using SapphireXR_App.Common;
 using SapphireXR_App.Models;
 using SapphireXR_App.ViewModels;
 using SapphireXR_App.Views;
+using SapphireXR_App.WindowServices;
 using System.Windows;
 
 namespace SapphireXR_App
@@ -13,30 +13,32 @@ namespace SapphireXR_App
         {
             Services = ConfigureServices();
             Startup += App_Startup;
-
         }
         private void App_Startup(object sender, StartupEventArgs e)
         {
             // 생성자 주입 구문을 사용하면 매개변수를 입력하지 않아도 객체가 만들어 지고 호출이 가능
-            // 단, 이것도 서비스에 등록이 되어야 함
+            bool connectedToPLC = PLCService.Connect();
+
             try
             {
-                PLCService.ReadInitialStateValueFromPLC(); // 초기 로드시 PLC Valve상태 읽음
-                var mainView = App.Current.Services.GetService<MainWindow>();
+                Window? mainView = Current.Services.GetService<MainWindow>();
                 if (mainView != null)
                 {
                     Application.Current.MainWindow.WindowState = WindowState.Maximized;
                     mainView.Show();
+                    if(connectedToPLC == false)
+                    {
+                        ToastMessage.Show("PLC에 연결되지 않았습니다.", ToastMessage.MessageType.Error);
+                    }
                 }
                 else
                 {
-                    throw new Exception("cannot create MainView from App.Current.Services.GetService<MainWindow>()");
+                    throw new Exception("App.Current.Services.GetService<MainWindow>()로부터 MainView을 생성하는데 실패했습니다.");
                 }
-
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.ToString());
+                MessageBox.Show("애플리케이션 실행에 문제가 발생하여 종료합니다. " + ex.Message);
                 Shutdown();
             }
         }
@@ -65,6 +67,7 @@ namespace SapphireXR_App
             services.AddTransient(typeof(LeftViewModel));
             services.AddTransient(typeof(SettingViewModel));
             services.AddTransient(typeof(RecipeRunViewModel));
+            services.AddTransient(typeof(EventLogViewModel));
 
             return services.BuildServiceProvider();
         }

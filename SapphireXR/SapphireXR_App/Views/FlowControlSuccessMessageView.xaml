@@ -1,0 +1,27 @@
+﻿<Window x:Class="SapphireXR_App.Views.FlowControlSuccessMessageView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:SapphireXR_App.Views"
+        mc:Ignorable="d"
+        WindowStyle="None"
+        Background="Transparent"
+        Title="FlowControlSuccessMessageView" Height="260" Width="400">
+    <Border Padding="{StaticResource p_5_sqrt}" Background="{StaticResource Gray_100}">
+        <Border.CornerRadius>
+            <CornerRadius TopLeft="{StaticResource r_3}" TopRight="{StaticResource r_3}" BottomLeft="{StaticResource r_3}"  BottomRight="{StaticResource r_3}" />
+        </Border.CornerRadius>
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="120" />
+                <RowDefinition Height="20" />
+                <RowDefinition Height="22" />
+                <RowDefinition Height="20" />
+                <RowDefinition Height="38" />
+            </Grid.RowDefinitions>
+            <TextBlock Grid.Row="2" HorizontalAlignment="Center" Text="성공적으로 변경되었습니다" FontSize="16" Style="{StaticResource infoTextBlock}" />
+            <Button Grid.Row="4" Content="확인" Style="{StaticResource PrimaryButton}" />
+        </Grid>
+    </Border>
+</Window>

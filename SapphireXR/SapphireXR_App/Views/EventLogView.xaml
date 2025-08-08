@@ -1,0 +1,118 @@
+﻿<Window x:Class="SapphireXR_App.Views.EventLogView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:SapphireXR_App.Views"
+        xmlns:model="clr-namespace:SapphireXR_App.Models"
+        WindowStyle="None"
+        WindowStartupLocation="CenterScreen"
+        mc:Ignorable="d"
+        Title="EventLogView" Height="Auto" Width="700" Background="Transparent" AllowsTransparency="True">
+    <Grid>
+        <Grid.Resources>
+            <Style TargetType="{x:Type DataGrid}" x:Key="SettingDataGrid" BasedOn="{StaticResource EventLog}">
+                <Setter Property="AutoGenerateColumns" Value="False"/>
+                <Setter Property="CanUserSortColumns" Value="False"/>
+                <Setter Property="CanUserAddRows" Value="False"/>
+                <Setter Property="VerticalScrollBarVisibility" Value="Auto" />
+                <Setter Property="FontSize" Value="12" />
+                <Setter Property="ColumnHeaderStyle">
+                    <Setter.Value>
+                        <Style TargetType="DataGridColumnHeader" BasedOn="{StaticResource EventLogColumnHeader}">
+                            <Setter Property="Height" Value="28" />
+                        </Style>
+                    </Setter.Value>
+                </Setter>
+            </Style>
+        </Grid.Resources>
+        <Border Background="{StaticResource Gray_100}" CornerRadius="{StaticResource r_3_sqrt}">
+        <StackPanel Orientation="Vertical">
+            <StackPanel.Margin>
+                <Thickness Top="{StaticResource p_1}" Left="{StaticResource p_5}" Right="{StaticResource p_5}" Bottom="{StaticResource p_5}" />
+            </StackPanel.Margin>
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="24"/>
+                </Grid.ColumnDefinitions>
+                <Button Grid.Column="1" Width="24" Height="24" Style="{StaticResource CloseMenuButton}" Click="OnHide">
+                    <Image Source="/Resources/icons/icon=close.png"  />
+                </Button>
+            </Grid>
+            <Grid>
+                <Grid.Resources>
+                    <Style TargetType="Button" BasedOn="{StaticResource DefaultButton}" x:Key="MessageToggleButton">
+                        <Setter Property="Height" Value="30" />
+                        <Setter Property="Width" Value="102" />
+                        <Setter Property="FontSize" Value="14" />
+                        <Setter Property="FontWeight" Value="Bold" />
+                    </Style>
+                </Grid.Resources>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+                <Grid.Margin>
+                    <Thickness Bottom="{StaticResource p_3}" />
+                </Grid.Margin>
+                <Button Grid.Column="0" x:Name="LogFilterAlarm" Content="Alarm"  Command="{Binding ToggleShowAlarmMessageCommand}">
+                    <Button.Style>
+                        <Style TargetType="Button" BasedOn="{StaticResource MessageToggleButton}">
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding ShowAlarmMessage}" Value="True">
+                                    <Setter Property="Foreground" Value="#FF6063" />
+                                </DataTrigger>
+                            </Style.Triggers> 
+                        </Style>
+                    </Button.Style>
+                </Button>
+                <Button Grid.Column="1" x:Name="LogFilterWarning" Content="Warning" Command="{Binding ToggleShowWarningMessageCommand}">
+                    <Button.Style>
+                        <Style TargetType="Button" BasedOn="{StaticResource MessageToggleButton}">
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding ShowWarningMessage}" Value="True">
+                                    <Setter Property="Foreground" Value="#FF8D60" />
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Button.Style>
+                    <Button.Margin>
+                        <Thickness Left="{StaticResource p_2}" Right="{StaticResource p_2}" />
+                    </Button.Margin>
+                </Button>
+                <Button Grid.Column="2" x:Name="LogFilterInformation" Command="{Binding ToggleShowInformationMessageCommand}">
+                    <Button.Style>
+                        <Style TargetType="Button" BasedOn="{StaticResource MessageToggleButton}">
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding ShowInformationMessage}" Value="True">
+                                    <Setter Property="Foreground" Value="#6BFF83" />
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Button.Style>
+                    <Button.Margin>
+                        <Thickness Right="{StaticResource p_2}" />
+                    </Button.Margin>
+                    Information
+                </Button>
+                <Button Grid.Column="4" x:Name="LogFilterClear" Foreground="{StaticResource Gray_700}" Content="Clear" Command="{Binding ClearCommand}" Style="{StaticResource MessageToggleButton}"/>
+            </Grid>
+            <DataGrid x:Name="LogbookTable" Height="788" Style="{StaticResource SettingDataGrid}" ItemsSource="{Binding EventLogs}">
+                <DataGrid.Resources>
+                    <Style TargetType="ScrollBar" BasedOn="{StaticResource DefaultScrollbar}" />
+                </DataGrid.Resources>
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="Type" IsReadOnly="True" CanUserSort="True" CanUserResize="True" Width="Auto" Binding="{Binding Type}" ElementStyle="{StaticResource EventLogElement}" />
+                    <DataGridTextColumn Header="Massage" IsReadOnly="True" CanUserSort="True" CanUserResize="True" Width="*" Binding="{Binding Message}" ElementStyle="{StaticResource EventLogElement}" />
+                    <DataGridTextColumn Header="Date" IsReadOnly="True"  CanUserSort="True" CanUserResize="True" Width="Auto" Binding="{Binding Date, StringFormat='{}{0:d}'}" ElementStyle="{StaticResource EventLogElement}" />
+                    <DataGridTextColumn Header="Time" IsReadOnly="True"  CanUserSort="True" CanUserResize="True" Width="Auto" Binding="{Binding Date, StringFormat='{}{0:T}'}" ElementStyle="{StaticResource EventLogElement}" />
+                </DataGrid.Columns>
+            </DataGrid>
+        </StackPanel>
+        </Border>
+    </Grid>
+</Window>

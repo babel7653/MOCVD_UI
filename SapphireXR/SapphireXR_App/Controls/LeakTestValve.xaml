@@ -6,7 +6,7 @@
              xmlns:i="clr-namespace:Microsoft.Xaml.Behaviors;assembly=Microsoft.Xaml.Behaviors"
              xmlns:local="clr-namespace:SapphireXR_App.Controls"
              mc:Ignorable="d"
-             x:Name="leakTestValve" Width="36" Height="24">
+             x:Name="leakTestValve" Width="36" Height="24" ToolTip="{Binding Name, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}">
     <local:Valve.Resources>
         <local:OnLoadedCommandParamConverver x:Key="onLoadedCommandConverter" />
         <SolidColorBrush x:Key="BorderBrushOnMouseEnter" Color="#9dbce8" />

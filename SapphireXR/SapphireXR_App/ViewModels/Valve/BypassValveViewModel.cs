@@ -1,6 +1,5 @@
 ﻿using SapphireXR_App.ViewModels.Valve;
 
-
 namespace SapphireXR_App.ViewModels
 {
     public class BypassViewModel: OnOffValveViewModel

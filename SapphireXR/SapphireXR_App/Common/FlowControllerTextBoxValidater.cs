@@ -1,5 +1,6 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using SapphireXR_App.Models;
+using SapphireXR_App.ViewModels;
 using System.ComponentModel;
 using System.Windows.Controls;
 
@@ -50,7 +51,16 @@ namespace SapphireXR_App.Common
 
         public (string, Result) valdiate(TextBox textBox, string flowControllerID)
         {
-            return valdiate(textBox, (uint)PLCService.ReadMaxValue(flowControllerID));
+            int? maxValue = SettingViewModel.ReadMaxValue(flowControllerID);
+            if (maxValue != null)
+            {
+                return valdiate(textBox, (uint)maxValue);
+            }
+            else
+            {
+                throw new Exception("Failure happend in validating max value in numeric value of the constrained text box. Logic error in FlowControllerTextBoxValidaterMaxValue.validate: " +
+                    "the value of \"flowControllerID\", the second argument of the validate method \"" + flowControllerID + "\" is not valid");
+            }
         }
     }
     

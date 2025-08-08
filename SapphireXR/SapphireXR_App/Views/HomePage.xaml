@@ -4,18 +4,15 @@
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:SapphireXR_App.Views"
+      xmlns:model="clr-namespace:SapphireXR_App.Models"
       xmlns:i="clr-namespace:Microsoft.Xaml.Behaviors;assembly=Microsoft.Xaml.Behaviors"
       mc:Ignorable="d" 
       xmlns:control="clr-namespace:SapphireXR_App.Controls"
       xmlns:oxy="http://oxyplot.org/wpf"
-      d:DesignHeight="1020" d:DesignWidth="1620"
+      d:DesignHeight="1032" d:DesignWidth="1620"
       Title="HomePage"
       x:Name="homePage">
     <Page.Resources>
-        <Style x:Key="BaseStyle" TargetType="{x:Type Control}">
-            <Setter Property="FontSize" Value="11"/>
-            <Setter Property="FontFamily" Value="NanumGothic"/>
-        </Style>
         <Style x:Key="deviceControlButtonStyle" TargetType="{x:Type Button}">
             <Setter Property="Cursor" Value="Hand"/>
             <Setter Property="Background" Value="Lime"/>
@@ -31,9 +28,9 @@
         <Grid Grid.Column="0">
             <Grid.RowDefinitions>
                 <RowDefinition/>
-                <RowDefinition Height="240"/>
+                <RowDefinition Height="250"/>
             </Grid.RowDefinitions>
-            <Canvas Grid.Row="0" Background="{StaticResource HomePageBackground}">
+            <Canvas Grid.Row="0" Background="{DynamicResource Gray_300}">
                 <Canvas.ContextMenu>
                     <ContextMenu>
                         <MenuItem Header="{Binding LeakTestModeStr}" Command="{Binding EnableLeakTestCommand}" CommandParameter="{Binding Header,  RelativeSource={RelativeSource Mode=Self}}" />
@@ -310,18 +307,18 @@
 
                 <!-- #Region 4. 상태 모니터링(가스압력, 항온조, 반응기) -->
                 <!-- 공정가스 압력 모니터링 -->
-                <control:GasMonitor x:Name="gasMonitor_H2" Canvas.Left="30" Canvas.Top="20"  MonitorID="H2"/>
-                <control:GasMonitor x:Name="gasMonitor_N2" Canvas.Left="155" Canvas.Top="20"  MonitorID="N2"/>
-                <control:GasMonitor x:Name="gasMonitor_NH3" Canvas.Left="280" Canvas.Top="20"  MonitorID="NH3"/>
-                <control:GasMonitor x:Name="gasMonitor_SiH4" Canvas.Left="574" Canvas.Top="20"  MonitorID="SiH4"/>
+                <control:GasMonitor x:Name="gasMonitor_H2" Canvas.Left="30" Canvas.Top="20"  MonitorID="Gas1"/>
+                <control:GasMonitor x:Name="gasMonitor_N2" Canvas.Left="155" Canvas.Top="20"  MonitorID="Gas2"/>
+                <control:GasMonitor x:Name="gasMonitor_NH3" Canvas.Left="280" Canvas.Top="20"  MonitorID="Gas3"/>
+                <control:GasMonitor x:Name="gasMonitor_SiH4" Canvas.Left="574" Canvas.Top="20"  MonitorID="Gas4"/>
 
                 <!-- 항온조 온도 모니터링 -->
-                <control:SourceMonitor x:Name="sourceMonitor_1" Canvas.Left="213" Canvas.Top="705" MonitorID="TEB" />
-                <control:SourceMonitor x:Name="sourceMonitor_2" Canvas.Left="353" Canvas.Top="705" MonitorID="TMAl" />
-                <control:SourceMonitor x:Name="sourceMonitor_3" Canvas.Left="493" Canvas.Top="705" MonitorID="TMIn" />
-                <control:SourceMonitor x:Name="sourceMonitor_4" Canvas.Left="633" Canvas.Top="705" MonitorID="TMGa" />
-                <control:SourceMonitor x:Name="sourceMonitor_5" Canvas.Left="773" Canvas.Top="705" MonitorID="DTMGa" />
-                <control:SourceMonitor x:Name="sourceMonitor_6" Canvas.Left="971" Canvas.Top="705" MonitorID="Cp2Mg" />
+                <control:SourceMonitor x:Name="sourceMonitor_1" Canvas.Left="213" Canvas.Top="705" MonitorID="Source1" />
+                <control:SourceMonitor x:Name="sourceMonitor_2" Canvas.Left="353" Canvas.Top="705" MonitorID="Source2" />
+                <control:SourceMonitor x:Name="sourceMonitor_3" Canvas.Left="493" Canvas.Top="705" MonitorID="Source3" />
+                <control:SourceMonitor x:Name="sourceMonitor_4" Canvas.Left="633" Canvas.Top="705" MonitorID="Source4" />
+                <control:SourceMonitor x:Name="sourceMonitor_5" Canvas.Left="773" Canvas.Top="705" MonitorID="Source5" />
+                <control:SourceMonitor x:Name="sourceMonitor_6" Canvas.Left="971" Canvas.Top="705" MonitorID="Source6" />
 
                 <!-- 반응기 콘트롤러 -->
                 <Rectangle Canvas.Left="723" Canvas.Top="2" Width="330" Height="140" Stroke="#3d495a" StrokeThickness="2" />
@@ -750,228 +747,488 @@
 
             </Canvas>
 
-            <Grid DataContext="{Binding DashBoardViewModel}" Grid.Row="1" Background="#3e4a4b">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition />
-                    <ColumnDefinition/>
-                </Grid.ColumnDefinitions>
+            <Grid DataContext="{Binding DashBoardViewModel}" Grid.Row="1" Background="{StaticResource Gray_100}">
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="20"/>
                     <RowDefinition/>
                 </Grid.RowDefinitions>
-                <StackPanel Grid.Column="0" Grid.Row="0" Orientation="Horizontal">
-                    <Button Content="LivePlot"/>
-                </StackPanel>
-                <oxy:PlotView Grid.Row="1" Grid.ColumnSpan="2" x:Name="FlowControlLive" Model="{Binding FlowControlLivePlot}">
-                    <oxy:PlotView.ContextMenu>
-                        <ContextMenu >
-                            <MenuItem Header="{Binding ControlValueOption}" Command="{Binding ShowControlValue}"/>
-                            <MenuItem Header="{Binding TargetValueOption}" Command="{Binding ShowTargetValue}"/>
-                        </ContextMenu>
-                    </oxy:PlotView.ContextMenu>
-                </oxy:PlotView>
+                <Border BorderThickness="1" BorderBrush="{StaticResource Gray_300}" Margin="{StaticResource p_3_sqrt}">
+                    <oxy:PlotView Grid.Row="1" x:Name="FlowControlLive" Model="{Binding FlowControlLivePlot}" Background="{StaticResource Gray_100}" 
+                                  BorderThickness="1" BorderBrush="{StaticResource Gray_300}">
+                        <oxy:PlotView.ContextMenu>
+                            <ContextMenu >
+                                <MenuItem Header="{Binding ControlValueOption}" Command="{Binding ShowControlValue}"/>
+                                <MenuItem Header="{Binding TargetValueOption}" Command="{Binding ShowTargetValue}"/>
+                            </ContextMenu>
+                        </oxy:PlotView.ContextMenu>
+                    </oxy:PlotView>
+                </Border>
             </Grid>
         </Grid>
-        <Grid Grid.Column="1" Background="{StaticResource DashboardBackground}">
-            <Grid.Resources>
-                <Style TargetType="{x:Type Label}">
-                    <Setter Property="Foreground" Value="{StaticResource PrimaryFontColor}"/>
-                    <Setter Property="FontSize" Value="11"/>
-                    <Setter Property="Height" Value="30"/>
-                    <Setter Property="VerticalAlignment" Value="Bottom"/>
-                </Style>
-                <Style TargetType="{x:Type Button}">
-                    <Setter Property="Width" Value="70"/>
-                    <Setter Property="Height" Value="20"/>
-                    <Setter Property="Margin" Value="4"/>
-                    <Setter Property="FontSize" Value="11"/>
-                </Style>
-                <Style TargetType="{x:Type TextBlock}">
-                    <Setter Property="Foreground" Value="{StaticResource PrimaryFontColor}"/>
-                    <Setter Property="FontSize" Value="11"/>
-                    <Setter Property="HorizontalAlignment" Value="Center"/>
-                </Style>
-                <Style TargetType="{x:Type TextBox}">
-                    <Setter Property="Width" Value="64"/>
-                    <Setter Property="Height" Value="22"/>
-                    <Setter Property="Background" Value="LightGray"/>
-                    <Setter Property="Foreground" Value="DarkBlue"/>
-                    <Setter Property="FontSize" Value="11"/>
-                    <Setter Property="HorizontalAlignment" Value="Center"/>
-                    <Setter Property="VerticalAlignment" Value="Center"/>
-                    <Setter Property="TextAlignment" Value="Right"/>
-                </Style>
-                <Style TargetType="{x:Type ComboBox}">
-                    <Setter Property="Width" Value="90"/>
-                    <Setter Property="Height" Value="20"/>
-                </Style>
-            </Grid.Resources>
-            <Grid.RowDefinitions>
-                <RowDefinition Height="100"/>
-                <RowDefinition Height="180"/>
-                <RowDefinition Height="240"/>
-                <RowDefinition Height="180"/>
-                <RowDefinition/>
-            </Grid.RowDefinitions>
-            <!-- User Status-->
-            <Grid Grid.Row="0">
-                <StackPanel Orientation="Vertical">
-                    <Label Foreground="DeepSkyBlue" FontSize="14" HorizontalContentAlignment="Center">
-                        <Bold>User Status </Bold>
-                    </Label>
-                    <Line X1="5" Y1="0" X2="295" Y2="0" Stroke="DeepSkyBlue" StrokeThickness="2" Margin="2,2,2,8"/>
-                    <Button Content="User State" Width="240" Height="24" Margin="4" Command="{Binding ManualBatchCommand}"/>
-                </StackPanel>
-            </Grid>
-            <!-- Susceptor Temperature Control Current Status -->
-            <Grid Grid.Row="1">
-                <StackPanel Orientation="Vertical">
-                    <Label Foreground="DeepSkyBlue" FontSize="14" HorizontalContentAlignment="Center">
-                        <Bold>Heater Controller</Bold>
-                    </Label>
-                    <Line X1="5" Y1="0" X2="295" Y2="0" Stroke="DeepSkyBlue" StrokeThickness="2"/>
-                    <Grid>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition/>
-                            <ColumnDefinition/>
-                            <ColumnDefinition/>
-                            <ColumnDefinition/>
-                        </Grid.ColumnDefinitions>
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="22"/>
-                            <RowDefinition/>
-                        </Grid.RowDefinitions>
-                        <TextBlock Grid.Column="0" Grid.Row="0" Text="Target Val." Margin="0,6,0,0"/>
-                        <TextBlock Grid.Column="1" Grid.Row="0" Text="Control Val." Margin="0,6,0,0"/>
-                        <TextBlock Grid.Column="2" Grid.Row="0" Text="Current Val." Margin="0,6,0,0" />
-                        <TextBlock Grid.Column="3" Grid.Row="0" Text="Power Rate" Margin="0,6,0,0"/>
-                        <TextBox x:Name="tbTargetTemp"  Grid.Column="0" Grid.Row="1"  Text="{Binding TargetTemp}" IsReadOnly="True"/>
-                        <TextBox x:Name="tbControlTemp"  Grid.Column="1" Grid.Row="1" Text="{Binding ControlTemp}" IsReadOnly="True"/>
-                        <TextBox x:Name="tbCurrentTemp"  Grid.Column="2" Grid.Row="1" Text="{Binding CurrentTemp}" IsReadOnly="True"/>
-                        <TextBox x:Name="tbPowerRateTemp" Grid.Column="3" Grid.Row="1" Text="{Binding PowerRateTemp}" IsReadOnly="True"/>
-                    </Grid>
-                    <StackPanel Orientation="Horizontal" Height="30">
-                        <Label Width="140" VerticalContentAlignment="Bottom" Content="Heater Control Mode"/>
-                        <Button Content="{Binding InputManualAuto, Mode=OneWay}" Command="{Binding ToggleHeaterControlModeCommand}"/>
-                    </StackPanel>
-                    <StackPanel Orientation="Horizontal" Height="30">
-                        <Label Width="140" Content="Induction Power Supply" VerticalContentAlignment="Bottom"/>
-                        <Button x:Name="btHeaterOn" Content="{Binding InductionHeaterOn}" Command="{Binding InductionHeaterToggleCommand}"/>
-                        <Button x:Name="btHeaterReset" Content="Reset" Command="{Binding InductionHeaterResetCommand}"/>
-                    </StackPanel>
-                </StackPanel>
-            </Grid>
-            <!-- Reactor Pressure Control Current Status -->
-            <Grid Grid.Row="2">
-                <StackPanel Orientation="Vertical">
-                    <Label Foreground="DeepSkyBlue" FontSize="14" HorizontalContentAlignment="Center">
-                        <Bold>Pressure Controller</Bold>
-                    </Label>
-                    <Line X1="5" Y1="0" X2="295" Y2="0" Stroke="DeepSkyBlue" StrokeThickness="2"/>
-                    <Grid>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition/>
-                            <ColumnDefinition/>
-                            <ColumnDefinition/>
-                            <ColumnDefinition/>
-                        </Grid.ColumnDefinitions>
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="22"/>
-                            <RowDefinition/>
-                        </Grid.RowDefinitions>
-                        <TextBlock Grid.Column="0" Grid.Row="0" Text="Target Val." Margin="0,6,0,0"/>
-                        <TextBlock Grid.Column="1" Grid.Row="0" Text="Control Val." Margin="0,6,0,0"/>
-                        <TextBlock Grid.Column="2" Grid.Row="0" Text="Current Val." Margin="0,6,0,0"/>
-                        <TextBlock Grid.Column="3" Grid.Row="0" Text="Position" Margin="0,6,0,0"/>
-                        <TextBox x:Name="tbTargetPress"  Grid.Column="0" Grid.Row="1"  Text="{Binding TargetPress}" IsReadOnly="True"/>
-                        <TextBox x:Name="tbControlPress"  Grid.Column="1" Grid.Row="1" Text="{Binding ControlPress}" IsReadOnly="True"/>
-                        <TextBox x:Name="tbCurrentPress"  Grid.Column="2" Grid.Row="1" Text="{Binding CurrentPress}" IsReadOnly="True"/>
-                        <TextBox x:Name="tbPosition" Grid.Column="3" Grid.Row="1" Text="{Binding ValvePosition}" IsReadOnly="True"/>
-                    </Grid>
-                    <StackPanel Orientation="Horizontal" Height="30">
-                        <Label Width="140" VerticalContentAlignment="Bottom" Content="Pressure Control Mode" />
-                        <Button Content="{Binding PressureControlMode}" Command="{Binding TogglePressureControlModeCommand}"/>
-                    </StackPanel>
-                    <StackPanel Orientation="Horizontal" Height="30">
-                        <Label  Width="140" VerticalContentAlignment="Bottom" Content="Throttle Valve Mode" />
-                        <ComboBox ItemsSource="{Binding ThrottleValveControlModes, Mode=OneTime}" SelectedItem="{Binding CurrentThrottleValveControlMode, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
-                            <i:Interaction.Triggers>
-                                <i:EventTrigger EventName="SelectionChanged">
-                                    <i:InvokeCommandAction Command="{Binding OnThrottleValveModeChangedCommand}" PassEventArgsToCommand="True"/>
-                                </i:EventTrigger>
-                            </i:Interaction.Triggers>
-                        </ComboBox>
-                    </StackPanel>
+        <Grid Grid.Column="1" Background="{StaticResource Gray_100}" Width="300">
+            <Border BorderBrush="{StaticResource Gray_300}" Padding="{StaticResource p_3_sqrt}">
+                <Border.BorderThickness>
+                    <Thickness Left="1" Top="1" />
+                </Border.BorderThickness>
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
 
-                    <StackPanel Orientation="Horizontal" Height="30">
-                        <Label Width="140" VerticalContentAlignment="Bottom" Content="Throttle Valve Status" />
-                        <TextBox x:Name="btTrottleStatus" IsReadOnly="True" Text="{Binding ThrottleValveStatus}" Width="121" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Style="{StaticResource InfoTextBoxStyle}" Height="19" />
-                    </StackPanel>
-                    <StackPanel Orientation="Horizontal" Height="30">
-                        <Label Width="140" Content="Vacuum Pump" VerticalContentAlignment="Bottom"/>
-                        <Button x:Name="btPumpOn" Content="{Binding VaccumPumpOn}" Command="{Binding VacuumPumpToggleCommand}"/>
-                        <Button x:Name="btPumpReset" Content="Reset" Command="{Binding VacuumPumpResetCommand}"/>
-                    </StackPanel>
-                </StackPanel>
-            </Grid>
-            <!-- Susceptor Rotation Current Status -->
-            <Grid Grid.Row="3">
-                <StackPanel Orientation="Vertical">
-                    <Label Foreground="DeepSkyBlue" FontSize="14" HorizontalContentAlignment="Center">
-                        <Bold>Rotation Controller</Bold>
-                    </Label>
-                    <Line X1="5" Y1="0" X2="295" Y2="0" Stroke="DeepSkyBlue" StrokeThickness="2"/>
-                    <Grid>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition/>
-                            <ColumnDefinition/>
-                            <ColumnDefinition/>
-                            <ColumnDefinition/>
-                        </Grid.ColumnDefinitions>
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="22"/>
-                            <RowDefinition/>
-                        </Grid.RowDefinitions>
-                        <TextBlock Grid.Column="0" Grid.Row="0" Text="Target Val." Margin="0,6,0,0"/>
-                        <TextBlock Grid.Column="1" Grid.Row="0" Text="Control Val." Margin="0,6,0,0"/>
-                        <TextBlock Grid.Column="2" Grid.Row="0" Text="Current Val." Margin="0,6,0,0"/>
-                        <TextBox x:Name="tbTargetRotation"  Grid.Column="0" Grid.Row="1"  Text="{Binding TargetRotation}" IsReadOnly="True"/>
-                        <TextBox x:Name="tbControlRotation"  Grid.Column="1" Grid.Row="1" Text="{Binding ControlRotation}" IsReadOnly="True"/>
-                        <TextBox x:Name="tbCurrentRotation"  Grid.Column="2" Grid.Row="1" Text="{Binding CurrentRotation}" IsReadOnly="True"/>
+                    <!-- User Status-->
+                    <Grid Grid.Row="0">
+                        <Border BorderThickness="0 0 0 1" BorderBrush="{StaticResource Gray_300}">
+                            <Border>
+                                <Border.BorderThickness>
+                                    <Thickness Left="{StaticResource p_2}" Right="{StaticResource p_2}" Bottom="14"/>
+                                </Border.BorderThickness>
+                                <StackPanel Orientation="Vertical" Margin="0, 0, 0, 0">
+                                    <StackPanel Orientation="Horizontal">
+                                        <Image Source="/Resources/icons/icon=user_status.png" Width="24" Height="24"/>
+                                        <Label Foreground="{StaticResource Gray_950}" FontSize="14" HorizontalContentAlignment="Center" FontFamily="Segoe UI">
+                                            <Bold>User Status</Bold>
+                                        </Label>
+                                    </StackPanel>
+                                    <StackPanel Orientation="Vertical">
+                                        <StackPanel.Margin>
+                                            <Thickness Left="{StaticResource p_5}" Bottom="0"/>
+                                        </StackPanel.Margin>
+                                        <TextBlock TextWrapping="WrapWithOverflow" Foreground="{StaticResource Gray_950}" HorizontalAlignment="Stretch" FontFamily="Segoe UI" FontSize="12">
+                                            <TextBlock.Margin>
+                                                <Thickness Bottom="{StaticResource p_1}" />
+                                            </TextBlock.Margin>
+                                            Check the current equipment settings and adjust the values of each device.
+                                        </TextBlock>
+                                        <Button Content="User State" Height="26" Command="{Binding ManualBatchCommand}" Style="{StaticResource DefaultButton}">
+                                            <Button.Margin>
+                                                <Thickness Left="0" Right="0" Top="{StaticResource p_1}" Bottom="0"/>
+                                            </Button.Margin>
+                                        </Button>
+                                    </StackPanel>
+                                </StackPanel>
+                            </Border>
+                        </Border>
                     </Grid>
-                    <StackPanel Orientation="Horizontal" Height="30">
-                        <Label Width="140" Content="Motor Control" VerticalContentAlignment="Bottom"/>
-                        <Button x:Name="btMotorReset" Content="{Binding RotationReset}" HorizontalAlignment="Left"/>
-                    </StackPanel>
+                    <!-- Susceptor Temperature Control Current Status -->
+                    <Grid Grid.Row="1">
+                        <Grid.Margin>
+                            <Thickness Top="{StaticResource p_1}" />
+                        </Grid.Margin>
+                        <Border BorderThickness="0 0 0 1" BorderBrush="{StaticResource Gray_300}">
+                            <StackPanel>
+                                <StackPanel.Margin>
+                                    <Thickness Left="{StaticResource p_2}" Right="{StaticResource p_2}"/>
+                                </StackPanel.Margin>
+                                <StackPanel Orientation="Horizontal">
+                                    <StackPanel.Margin>
+                                        <Thickness Bottom="{StaticResource p_1}" />
+                                    </StackPanel.Margin>
+                                    <Image Source="/Resources/Icons/icon=heater.png" Width="24" Height="24" />
+                                    <Label Foreground="{StaticResource Gray_950}" FontSize="14" HorizontalContentAlignment="Center" FontFamily="Segoe UI">
+                                        <Bold>Heater Controller</Bold>
+                                    </Label>
+                                </StackPanel>
+                                <StackPanel Orientation="Vertical">
+                                    <Border>
+                                        <Border.BorderThickness>
+                                            <Thickness Left="{StaticResource p_5}" />
+                                        </Border.BorderThickness>
+                                        <Border.Margin>
+                                            <Thickness Bottom="{StaticResource p_1}" />
+                                        </Border.Margin>
+                                        <Grid>
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition />
+                                            </Grid.RowDefinitions>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="116"/>
+                                                <ColumnDefinition />
+                                                <ColumnDefinition Width="116"/>
+                                            </Grid.ColumnDefinitions>
+                                            <StackPanel Grid.Row="0" Grid.Column="0" Orientation="Vertical">
+                                                <Label HorizontalAlignment="Center" Content="Target Val." Foreground="{StaticResource Gray_900}" FontSize="12" FontFamily="Segoe UI" Style="{StaticResource labelOverTextBox}"/>
+                                                <TextBox x:Name="tbTargetTemp"  Grid.Column="0" Grid.Row="1"  Text="{Binding TargetTemp}" IsReadOnly="True" HorizontalAlignment="Stretch" Height="18" Style="{StaticResource InfoTextBox}"/>
+                                            </StackPanel>
+                                            <StackPanel Grid.Row="0" Grid.Column="2" Orientation="Vertical">
+                                                <Label HorizontalAlignment="Center" Content="Control Val." Foreground="{StaticResource Gray_900}" FontSize="12" FontFamily="Segoe UI" Style="{StaticResource labelOverTextBox}"/>
+                                                <TextBox x:Name="tbControlTemp"  Grid.Column="2" Grid.Row="1" Text="{Binding ControlTemp}" IsReadOnly="True" HorizontalAlignment="Stretch" Height="18" Style="{StaticResource InfoTextBox}"/>
+                                            </StackPanel>
+                                        </Grid>
+                                    </Border>
+                                    <Border>
+                                        <Border.BorderThickness>
+                                            <Thickness Left="{StaticResource p_5}" />
+                                        </Border.BorderThickness>
+                                        <Border.Margin>
+                                            <Thickness Top="{StaticResource p_1}" Bottom="{StaticResource p_1}" />
+                                        </Border.Margin>
+                                        <Grid>
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition />
+                                            </Grid.RowDefinitions>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="116"/>
+                                                <ColumnDefinition />
+                                                <ColumnDefinition Width="116"/>
+                                            </Grid.ColumnDefinitions>
+                                            <StackPanel Grid.Row="0" Grid.Column="0" Orientation="Vertical">
+                                                <Label HorizontalAlignment="Center" Content="Current Val." Foreground="{StaticResource Gray_900}" FontSize="12" FontFamily="Segoe UI" Style="{StaticResource labelOverTextBox}" />
+                                                <TextBox x:Name="tbCurrentTemp"  Text="{Binding CurrentTemp}" IsReadOnly="True" HorizontalAlignment="Stretch" Height="18" Style="{StaticResource InfoTextBox}"/>
+                                            </StackPanel>
+                                            <StackPanel Grid.Row="0" Grid.Column="2" Orientation="Vertical">
+                                                <Label HorizontalAlignment="Center" Content="Power Rate" Foreground="{StaticResource Gray_900}" FontSize="12" FontFamily="Segoe UI" Style="{StaticResource labelOverTextBox}" />
+                                                <TextBox x:Name="tbPowerRateTemp" Text="{Binding PowerRateTemp}" IsReadOnly="True" HorizontalAlignment="Stretch" Height="18" Style="{StaticResource InfoTextBox}"/>
+                                            </StackPanel>
+                                        </Grid>
+                                    </Border>
+                                    <Border>
+                                        <Border.BorderThickness>
+                                            <Thickness Left="{StaticResource p_5}" />
+                                        </Border.BorderThickness>
+                                        <Border.Margin>
+                                            <Thickness Top="{StaticResource p_1}" Bottom="{StaticResource p_1}" />
+                                        </Border.Margin>
+                                        <StackPanel Orientation="Vertical">
+                                            <Label Content="Heater Control Mode" FontFamily="Segoe UI" Foreground="{StaticResource Gray_900}" FontSize="12" >
+                                                <Label.Padding>
+                                                    <Thickness Top="0" Left="0" Right="0" Bottom="{StaticResource p_1}" />
+                                                </Label.Padding>
+                                            </Label>
+                                            <Button Content="{Binding InputManualAuto, Mode=OneWay}" Command="{Binding ToggleHeaterControlModeCommand}" Style="{StaticResource DefaultButton}" Height="26"/>
+                                        </StackPanel>
+                                    </Border>
+                                    <Border>
+                                        <Border.BorderThickness>
+                                            <Thickness Left="{StaticResource p_5}" />
+                                        </Border.BorderThickness>
+                                        <Border.Margin>
+                                            <Thickness Top="{StaticResource p_1}" Bottom="14" />
+                                        </Border.Margin>
+                                        <StackPanel Orientation="Vertical">
+                                            <Label Content="Induction Power Supply" FontFamily="Segoe UI" Foreground="{StaticResource Gray_900}" FontSize="12">
+                                                <Label.Padding>
+                                                    <Thickness Top="0" Left="0" Right="0" Bottom="{StaticResource p_1}" />
+                                                </Label.Padding>
+                                            </Label>
+                                            <Grid>
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="48"/>
+                                                    <ColumnDefinition Width="8"/>
+                                                    <ColumnDefinition />
+                                                </Grid.ColumnDefinitions>
+                                                <ToggleButton Style="{StaticResource ToggleSwitch}" PreviewMouseLeftButtonDown="ConfirmBeforeToggle" Grid.Column="0" x:Name="btHeaterOn" 
+                                                              IsChecked="{Binding IsInductionHeaterOn, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" IsEnabled="{Binding Online, Source={x:Static model:PLCConnectionState.Instance}, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}" 
+                                                              VerticalAlignment="Center" HorizontalAlignment="Center">
+                                                    <ToggleButton.LayoutTransform>
+                                                        <ScaleTransform ScaleX="0.9" ScaleY="0.9"/>
+                                                    </ToggleButton.LayoutTransform>
+                                                </ToggleButton>
+                                                <Button Grid.Column="2" x:Name="btHeaterReset" Command="{Binding InductionHeaterResetCommand}" Height="28" Style="{StaticResource DefaultButton}">
+                                                    <StackPanel Orientation="Horizontal">
+                                                        <Image Source="/Resources/icons/icon_line_reset.png" Width="12" Height="12"/>
+                                                        <Label FontFamily="Segoe UI" FontSize="12" Content="Reset" Foreground="{StaticResource Gray_900}" />
+                                                    </StackPanel>
+                                                </Button>
+                                            </Grid>
+                                        </StackPanel>
+                                    </Border>
+                                </StackPanel>
+                            </StackPanel>
+                        </Border>
+                    </Grid>
+                    <!-- Reactor Pressure Control Current Status -->
+                    <Grid Grid.Row="2">
+                        <Grid.Margin>
+                            <Thickness Top="{StaticResource p_1}" />
+                        </Grid.Margin>
+                        <Border BorderThickness="0 0 0 1" BorderBrush="{StaticResource Gray_300}">
+                            <StackPanel>
+                                <StackPanel.Margin>
+                                    <Thickness Left="{StaticResource p_2}" Right="{StaticResource p_2}"/>
+                                </StackPanel.Margin>
+                                <StackPanel Orientation="Horizontal">
+                                    <StackPanel.Margin>
+                                        <Thickness Bottom="{StaticResource p_1}" />
+                                    </StackPanel.Margin>
+                                    <Image Source="/Resources/Icons/icon=pressure.png" Width="24" Height="24" />
+                                    <Label Foreground="{StaticResource Gray_950}" FontSize="14" HorizontalContentAlignment="Center" FontFamily="Segoe UI">
+                                        <Bold>Pressure Controller</Bold>
+                                    </Label>
+                                </StackPanel>
+                                <StackPanel Orientation="Vertical">
+                                    <Border>
+                                        <Border.BorderThickness>
+                                            <Thickness Left="{StaticResource p_5}" />
+                                        </Border.BorderThickness>
+                                        <Border.Margin>
+                                            <Thickness Bottom="{StaticResource p_1}" />
+                                        </Border.Margin>
+                                        <Grid>
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition />
+                                            </Grid.RowDefinitions>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="116"/>
+                                                <ColumnDefinition />
+                                                <ColumnDefinition Width="116"/>
+                                            </Grid.ColumnDefinitions>
+                                            <StackPanel Grid.Row="0" Grid.Column="0" Orientation="Vertical">
+                                                <Label HorizontalAlignment="Center" Content="Target Val." Foreground="{StaticResource Gray_900}" FontSize="12" FontFamily="Segoe UI" Style="{StaticResource labelOverTextBox}"/>
+                                                <TextBox x:Name="tbTargetPress"  Grid.Column="0" Grid.Row="1"  Text="{Binding TargetPress}" IsReadOnly="True" HorizontalAlignment="Stretch" Height="18" Style="{StaticResource InfoTextBox}"/>
+                                            </StackPanel>
+                                            <StackPanel Grid.Row="0" Grid.Column="2" Orientation="Vertical">
+                                                <Label HorizontalAlignment="Center" Content="Control Val." Foreground="{StaticResource Gray_900}" FontSize="12" FontFamily="Segoe UI" Style="{StaticResource labelOverTextBox}"/>
+                                                <TextBox x:Name="tbControlPress"  Grid.Column="2" Grid.Row="1" Text="{Binding ControlPress}" IsReadOnly="True" HorizontalAlignment="Stretch" Height="18" Style="{StaticResource InfoTextBox}"/>
+                                            </StackPanel>
+                                        </Grid>
+                                    </Border>
+                                    <Border>
+                                        <Border.BorderThickness>
+                                            <Thickness Left="{StaticResource p_5}" />
+                                        </Border.BorderThickness>
+                                        <Border.Margin>
+                                            <Thickness Top="{StaticResource p_1}" Bottom="{StaticResource p_1}" />
+                                        </Border.Margin>
+                                        <Grid>
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition />
+                                            </Grid.RowDefinitions>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="116"/>
+                                                <ColumnDefinition />
+                                                <ColumnDefinition Width="116"/>
+                                            </Grid.ColumnDefinitions>
+                                            <StackPanel Grid.Row="0" Grid.Column="0" Orientation="Vertical">
+                                                <Label HorizontalAlignment="Center" Content="Current Val." Foreground="{StaticResource Gray_900}" FontSize="12" FontFamily="Segoe UI" Style="{StaticResource labelOverTextBox}" />
+                                                <TextBox x:Name="tbCurrentPress"  Text="{Binding CurrentPress}" IsReadOnly="True" HorizontalAlignment="Stretch" Height="18" Style="{StaticResource InfoTextBox}"/>
+                                            </StackPanel>
+                                            <StackPanel Grid.Row="0" Grid.Column="2" Orientation="Vertical">
+                                                <Label HorizontalAlignment="Center" Content="Position" Foreground="{StaticResource Gray_900}" FontSize="12" FontFamily="Segoe UI" Style="{StaticResource labelOverTextBox}" />
+                                                <TextBox x:Name="tbPosition" Text="{Binding ValvePosition}" IsReadOnly="True" HorizontalAlignment="Stretch" Height="18" Style="{StaticResource InfoTextBox}"/>
+                                            </StackPanel>
+                                        </Grid>
+                                    </Border>
+                                    <Border>
+                                        <Border.BorderThickness>
+                                            <Thickness Left="{StaticResource p_5}" />
+                                        </Border.BorderThickness>
+                                        <Border.Margin>
+                                            <Thickness Top="{StaticResource p_1}" Bottom="{StaticResource p_1}" />
+                                        </Border.Margin>
+                                        <StackPanel Orientation="Vertical">
+                                            <Label Content="Pressure Control Mode" FontFamily="Segoe UI" Foreground="{StaticResource Gray_900}" FontSize="12">
+                                                <Label.Padding>
+                                                    <Thickness Top="0" Left="0" Right="0" Bottom="{StaticResource p_1}" />
+                                                </Label.Padding>
+                                            </Label>
+                                            <Button Command="{Binding TogglePressureControlModeCommand}" Style="{StaticResource DefaultButton}" Height="26">
+                                                <StackPanel Orientation="Horizontal">
+                                                    <Image Source="/Resources/icons/icon=line_pressure.png" Width="12" Height="12"/>
+                                                    <Label FontFamily="Segoe UI" FontSize="12" Content="{Binding PressureControlMode}" Foreground="{StaticResource Gray_900}" />
+                                                </StackPanel>
+                                            </Button>
+                                            <Label Content="Throttle Valve Mode" FontFamily="Segoe UI" Foreground="{StaticResource Gray_900}" FontSize="12">
+                                                <Label.Padding>
+                                                    <Thickness Top="{StaticResource p_2}" Left="0" Right="0" Bottom="{StaticResource p_1}" />
+                                                </Label.Padding>
+                                            </Label>
+                                            <ComboBox HorizontalContentAlignment="Center" Style="{StaticResource theComboBox}" IsEnabled="{Binding Online, Source={x:Static model:PLCConnectionState.Instance}, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}" Height="26" ItemsSource="{Binding ThrottleValveControlModes, Mode=OneTime}" SelectedItem="{Binding CurrentThrottleValveControlMode, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                                                <i:Interaction.Triggers>
+                                                    <i:EventTrigger EventName="SelectionChanged">
+                                                        <i:InvokeCommandAction Command="{Binding OnThrottleValveModeChangedCommand}" PassEventArgsToCommand="True"/>
+                                                    </i:EventTrigger>
+                                                </i:Interaction.Triggers>
+                                            </ComboBox>
+                                            <Label Content="Throttle Valve Status" FontFamily="Segoe UI" Foreground="{StaticResource Gray_900}" FontSize="12">
+                                                <Label.Padding>
+                                                    <Thickness Top="{StaticResource p_2}" Left="0" Right="0" Bottom="{StaticResource p_1}" />
+                                                </Label.Padding>
+                                            </Label>
+                                            <TextBox Text="{Binding ThrottleValveStatus, Mode=OneWay}" IsReadOnly="True" Style="{StaticResource DefaultTextBox}" Height="26"/>
+                                        </StackPanel>
+                                    </Border>
+                                    <Border>
+                                        <Border.BorderThickness>
+                                            <Thickness Left="{StaticResource p_5}" />
+                                        </Border.BorderThickness>
+                                        <Border.Margin>
+                                            <Thickness Top="{StaticResource p_1}" Bottom="14" />
+                                        </Border.Margin>
+                                        <StackPanel Orientation="Vertical">
+                                            <Label Content="Vaccum Pump" FontFamily="Segoe UI" Foreground="{StaticResource Gray_900}" FontSize="12">
+                                                <Label.Padding>
+                                                    <Thickness Top="0" Left="0" Right="0" Bottom="{StaticResource p_1}" />
+                                                </Label.Padding>
+                                            </Label>
+                                            <Grid>
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="48"/>
+                                                    <ColumnDefinition Width="8"/>
+                                                    <ColumnDefinition />
+                                                </Grid.ColumnDefinitions>
+                                                <ToggleButton Style="{StaticResource ToggleSwitch}" PreviewMouseLeftButtonDown="ConfirmBeforeToggle" Grid.Column="0" x:Name="btPumpOn" 
+                                                              IsChecked="{Binding IsVaccumPumpOn, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" IsEnabled="{Binding Online, Source={x:Static model:PLCConnectionState.Instance}, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}" 
+                                                              VerticalAlignment="Center" HorizontalAlignment="Center">
+                                                    <ToggleButton.LayoutTransform>
+                                                        <ScaleTransform ScaleX="0.9" ScaleY="0.9"/>
+                                                    </ToggleButton.LayoutTransform>
+                                                </ToggleButton>
+                                                <Button Grid.Column="2" x:Name="btPumpReset" Command="{Binding VacuumPumpResetCommand}" Height="28" Style="{StaticResource DefaultButton}">
+                                                    <StackPanel Orientation="Horizontal">
+                                                        <Image Source="/Resources/icons/icon_line_reset.png" Width="12" Height="12"/>
+                                                        <Label FontFamily="Segoe UI" FontSize="12" Content="Reset" Foreground="{StaticResource Gray_900}" />
+                                                    </StackPanel>
+                                                </Button>
+                                            </Grid>
+                                        </StackPanel>
+                                    </Border>
+                                </StackPanel>
+                            </StackPanel>
+                        </Border>
+                    </Grid>
+                    <!-- Susceptor Rotation Current Status -->
+                    <Grid Grid.Row="3">
+                        <Grid.Margin>
+                            <Thickness Top="{StaticResource p_1}" />
+                        </Grid.Margin>
+                        <Border BorderThickness="0 0 0 1" BorderBrush="{StaticResource Gray_300}">
+                            <StackPanel>
+                                <StackPanel.Margin>
+                                    <Thickness Bottom="14" Left="{StaticResource p_2}" Right="{StaticResource p_2}"/>
+                                </StackPanel.Margin>
+                                <StackPanel Orientation="Horizontal">
+                                    <StackPanel.Margin>
+                                        <Thickness Bottom="{StaticResource p_1}" />
+                                    </StackPanel.Margin>
+                                    <Image Source="/Resources/Icons/icon=rotation.png" Width="24" Height="24" />
+                                    <Label Foreground="{StaticResource Gray_950}" FontSize="14" HorizontalContentAlignment="Center" FontFamily="Segoe UI">
+                                        <Bold>Rotation Controller</Bold>
+                                    </Label>
+                                </StackPanel>
+                                <StackPanel Orientation="Vertical">
+                                    <Border>
+                                        <Border.BorderThickness>
+                                            <Thickness Left="{StaticResource p_5}" />
+                                        </Border.BorderThickness>
+                                        <Border.Margin>
+                                            <Thickness Bottom="{StaticResource p_1}" />
+                                        </Border.Margin>
+                                        <Grid>
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition />
+                                            </Grid.RowDefinitions>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="74.67"/>
+                                                <ColumnDefinition />
+                                                <ColumnDefinition Width="74.67"/>
+                                                <ColumnDefinition />
+                                                <ColumnDefinition Width="74.67"/>
+                                            </Grid.ColumnDefinitions>
+                                            <StackPanel Grid.Row="0" Grid.Column="0" Orientation="Vertical">
+                                                <Label HorizontalAlignment="Center" Content="Target Val." Foreground="{StaticResource Gray_900}" FontSize="12" FontFamily="Segoe UI" Style="{StaticResource labelOverTextBox}"/>
+                                                <TextBox x:Name="tbTargetRotation"  Grid.Column="0" Grid.Row="1"  Text="{Binding TargetRotation}" IsReadOnly="True" HorizontalAlignment="Stretch" Height="18" Style="{StaticResource InfoTextBox}"/>
+                                            </StackPanel>
+                                            <StackPanel Grid.Row="0" Grid.Column="2" Orientation="Vertical">
+                                                <Label HorizontalAlignment="Center" Content="Control Val." Foreground="{StaticResource Gray_900}" FontSize="12" FontFamily="Segoe UI" Style="{StaticResource labelOverTextBox}"/>
+                                                <TextBox x:Name="tbControlRotation"  Grid.Column="2" Grid.Row="1" Text="{Binding ControlRotation}" IsReadOnly="True" HorizontalAlignment="Stretch" Height="18" Style="{StaticResource InfoTextBox}"/>
+                                            </StackPanel>
+                                            <StackPanel Grid.Row="0" Grid.Column="4" Orientation="Vertical">
+                                                <Label HorizontalAlignment="Center" Content="Current Val." Foreground="{StaticResource Gray_900}" FontSize="12" FontFamily="Segoe UI" Style="{StaticResource labelOverTextBox}"/>
+                                                <TextBox x:Name="tbCurrentRotation"  Grid.Column="2" Grid.Row="1" Text="{Binding CurrentRotation}" IsReadOnly="True" HorizontalAlignment="Stretch" Height="18" Style="{StaticResource InfoTextBox}"/>
+                                            </StackPanel>
+                                        </Grid>
+                                    </Border>
+                                    <Border>
+                                        <Border.BorderThickness>
+                                            <Thickness Left="{StaticResource p_5}" />
+                                        </Border.BorderThickness>
+                                        <Border.Margin>
+                                            <Thickness Top="{StaticResource p_1}" Bottom="{StaticResource p_1}" />
+                                        </Border.Margin>
+                                        <StackPanel Orientation="Vertical">
+                                            <Label Content="Motor Control" FontFamily="Segoe UI" Foreground="{StaticResource Gray_900}" FontSize="12">
+                                                <Label.Padding>
+                                                    <Thickness Top="0" Left="0" Right="0" Bottom="{StaticResource p_1}" />
+                                                </Label.Padding>
+                                            </Label>
+                                            <TextBox x:Name="btMotorReset" Text="{Binding RotationReset, Mode=OneWay}" Style="{StaticResource DefaultTextBox}" Height="26" IsReadOnly="True"/>
+                                        </StackPanel>
+                                    </Border>
+                                  
+                                </StackPanel>
+                            </StackPanel>
+                        </Border>
+                        <!--<StackPanel Orientation="Vertical">
+                            <Label Foreground="DeepSkyBlue" FontSize="14" HorizontalContentAlignment="Center">
+                                <Bold>Rotation Controller</Bold>
+                            </Label>
+                            <Line X1="5" Y1="0" X2="295" Y2="0" Stroke="DeepSkyBlue" StrokeThickness="2"/>
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition/>
+                                    <ColumnDefinition/>
+                                    <ColumnDefinition/>
+                                    <ColumnDefinition/>
+                                </Grid.ColumnDefinitions>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="22"/>
+                                    <RowDefinition/>
+                                </Grid.RowDefinitions>
+                                <TextBlock Grid.Column="0" Grid.Row="0" Text="Target Val." Margin="0,6,0,0"/>
+                                <TextBlock Grid.Column="1" Grid.Row="0" Text="Control Val." Margin="0,6,0,0"/>
+                                <TextBlock Grid.Column="2" Grid.Row="0" Text="Current Val." Margin="0,6,0,0"/>
+                                <TextBox x:Name="tbTargetRotation"  Grid.Column="0" Grid.Row="1"  Text="{Binding TargetRotation}" IsReadOnly="True"/>
+                                <TextBox x:Name="tbControlRotation"  Grid.Column="1" Grid.Row="1" Text="{Binding ControlRotation}" IsReadOnly="True"/>
+                                <TextBox x:Name="tbCurrentRotation"  Grid.Column="2" Grid.Row="1" Text="{Binding CurrentRotation}" IsReadOnly="True"/>
+                            </Grid>
+                            <StackPanel Orientation="Horizontal" Height="30">
+                                <Label Width="140" Content="Motor Control" VerticalContentAlignment="Bottom"/>
+                                <Button x:Name="btMotorReset" Content="{Binding RotationReset}" HorizontalAlignment="Left"/>
+                            </StackPanel>
 
-                </StackPanel>
-            </Grid>
-            <!-- Event Log -->
-            <Grid Grid.Row="4" >
-                <StackPanel Orientation="Vertical">
-                    <StackPanel Orientation="Horizontal">
-                        <Label Foreground="DeepSkyBlue" FontSize="14" HorizontalContentAlignment="Center" Margin="100,0,0,0">
-                            <Bold>Event Log</Bold>
-                        </Label>
-                        <Button Height="20" Width="80" Content="Clear" Command="{Binding ClearEventLogsCommand}"/>
-                    </StackPanel>
-                    <Line X1="5" Y1="0" X2="295" Y2="0" Stroke="DeepSkyBlue" StrokeThickness="2" Margin="2,2,2,8"/>
-                    <DataGrid x:Name="dgEventLog" ItemsSource="{Binding EventLogs}">
-                        <DataGrid.ColumnHeaderStyle>
-                            <Style TargetType="DataGridColumnHeader">
-                                <Setter Property="HorizontalContentAlignment" Value="Center" />
-                            </Style>
-                        </DataGrid.ColumnHeaderStyle>
-                        <DataGrid.Resources>
-                            <Style TargetType="DataGridCell">
-                                <Style.Setters>
-                                    <Setter Property="TextBlock.TextAlignment" Value="Center" />
-                                </Style.Setters>
-                            </Style>
-                        </DataGrid.Resources>
-                    </DataGrid>
-                </StackPanel>
-            </Grid>
+                        </StackPanel>-->
+                    </Grid>
+                    <!-- Event Log -->
+                    <Grid Grid.Row="4" >
+                        <Grid.Margin>
+                            <Thickness Top="{StaticResource p_1}" />
+                        </Grid.Margin>
+                        <StackPanel>
+                            <StackPanel.Margin>
+                                <Thickness Bottom="0" Left="{StaticResource p_2}" Right="{StaticResource p_2}"/>
+                            </StackPanel.Margin>
+                            <DockPanel>
+                                <DockPanel.Margin>
+                                    <Thickness Bottom="{StaticResource p_1}" />
+                                </DockPanel.Margin>
+                                <Image Source="/Resources/Icons/icon=event.png" Width="24" Height="24" />
+                                <Label Foreground="{StaticResource Gray_950}" FontSize="14" HorizontalContentAlignment="Center" FontFamily="Segoe UI">
+                                    <Bold>Event Log</Bold>
+                                </Label>
+                                <Button Width="134" HorizontalAlignment="Right" Style="{StaticResource DefaultButton}" Content="Clear" Command="{Binding ClearEventLogsCommand}"/>
+                            </DockPanel>
+                            <DataGrid x:Name="dgEventLog" ToolTip="상세 윈도우를 뛰우려면 더블클릭 하세요." VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto" AutoGenerateColumns="False" ItemsSource="{Binding Source={x:Static model:EventLogs.Instance}, Path=EventLogList}" Style="{StaticResource EventLog}" Height="114">
+                                <DataGrid.Resources>
+                                    <Style TargetType="ScrollBar" BasedOn="{StaticResource DefaultScrollbar}" />
+                                </DataGrid.Resources>
+                                <i:Interaction.Triggers>
+                                    <i:EventTrigger EventName="MouseDoubleClick">
+                                        <i:InvokeCommandAction Command="{Binding OnDoubleClickedCommand}" />
+                                    </i:EventTrigger>
+                                </i:Interaction.Triggers>
+                                <DataGrid.Columns>
+                                    <DataGridTextColumn Header="Name" Binding="{Binding Name, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"  ElementStyle="{StaticResource EventLogElement}"/>
+                                    <DataGridTextColumn Header="Date" Binding="{Binding Date, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"  ElementStyle="{StaticResource EventLogElement}"/>
+                                    <DataGridTextColumn Header="Message" Binding="{Binding Message, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}" ElementStyle="{StaticResource EventLogElement}" MinWidth="97"/>
+                                </DataGrid.Columns>
+                            </DataGrid>
+                        </StackPanel>
+                    </Grid>
+                </Grid>
+            </Border>
         </Grid>
     </Grid>
 </Page>

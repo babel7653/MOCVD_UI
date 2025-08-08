@@ -21,6 +21,12 @@ namespace SapphireXR_App.ViewModels.BottomDashBoard
                 {
                     Title = "Time Span (Second)",
                     Position = AxisPosition.Bottom,
+                    AxislineColor = OxyColors.White,
+                    MajorGridlineColor = OxyColors.White,
+                    MinorGridlineColor = OxyColors.White,
+                    TicklineColor = OxyColors.White,
+                    ExtraGridlineColor = OxyColors.White,
+                    MinorTicklineColor = OxyColors.White,
                     IntervalLength = 60
                 };
             }
@@ -140,6 +146,7 @@ namespace SapphireXR_App.ViewModels.BottomDashBoard
                     }
                     plotModel.Axes[0].Maximum = TimeSpanAxis.ToDouble(TimeSpan.FromSeconds(accumTime));
                 }
+                plotModel.InvalidatePlot(true);
             }
 
             protected void update(int value)
@@ -164,7 +171,6 @@ namespace SapphireXR_App.ViewModels.BottomDashBoard
                 plotModel.Series.OfType<LineSeries>().ElementAt(1).Points.Clear();
                 firstTime = null;
                 LegendUpdate = false;
-                plotModel.InvalidatePlot(true);
             }
 
             void IObserver<RecipeRunViewModel.RecipeUserState>.OnCompleted()
@@ -201,7 +207,7 @@ namespace SapphireXR_App.ViewModels.BottomDashBoard
             public bool LegendUpdate { get; set; } = false;
         }
 
-        public RecipeRunBottomDashBoardViewModel(): base("CurrentPLCState")
+        public RecipeRunBottomDashBoardViewModel(): base("CurrentPLCState.RecipeRun")
         {
             initSeriesUpdater();
         }

@@ -1,24 +1,15 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.15">
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4026.12">
   <POU Name="P12_IQ_PLUS" Id="{e511b755-5d71-4ab9-9c97-639ef910a29b}" SpecialFunc="None">
     <Declaration><![CDATA[PROGRAM P12_IQ_PLUS
-VAR_INPUT
+VAR
 	wControlValue 		: WORD := 760;//Pressure Set Value
-	//wSetPoint 			: WORD; //Set Point
-	nTValveMode 		: USINT := 0; //Valve Mode
-	bPumpOn				: BOOL;
-	bPumpReset			: BOOL;
-
-END_VAR
-VAR_OUTPUT
 	wCDG1_PV 			: WORD; //CD2 Current Pressure
 	wCDG2_PV 			: WORD; //CD2 Current Pressure
 	bVacuumPumpCB		: BOOL;
 	bThrottleValveCP	: BOOL;
-	wTValve_PV			: WORD; //Currrent Value, Pressure or Position
 
 	//nInputStatus
-	ingNormal				: BOOL;
 	ingPressureControl 		: BOOL;
 	ingPositionControl 		: BOOL;
 	isValveOpen 			: BOOL;
@@ -28,9 +19,17 @@ VAR_OUTPUT
 	ingValveInitializing 	: BOOL;
 	ingHoldState 			: BOOL;
 	
-END_VAR
-VAR
-	//Input from IQ-PLUS Throttle Valve
+	// Vacuum Pump Status
+	isPumpFault				: BOOL;
+	isPumpWarning			: BOOL;
+	isPumpAlarm				: BOOL;
+	isFBRunning				: BOOL;
+// 	isPumpRunning			: BOOL;
+	//wSetPoint 			: WORD; //Set Point
+	nTValveMode 		: USINT := 0; //Valve Mode
+	bPumpOn				: BOOL;
+	bPumpReset			: BOOL;	//Input from IQ-PLUS Throttle Valve
+	
 	nInputStatus AT %I* : USINT; //Input Status Bytes
 	aInputPressurePV_CDG1 AT %I* : ARRAY[1..2]OF USINT; //CDG1 Pressure
 	aInputPressurePV_CDG2 AT %I* : ARRAY[1..2]OF USINT; //CDG2 Pressure
@@ -45,17 +44,11 @@ VAR
 	nOutputMode AT %Q* : USINT;
 	aOutputSVBytes AT %Q* : ARRAY[1..2]OF USINT; //Set Pressure
 	nOutputSetType AT %Q* : USINT; //1:Pressure Control, 2:Valve Position Control
+
 	wByteCDG1_PV 			: WORD; //CDG1 Current Pressure, Not Used
 	wByteCDG2_PV 			: WORD; //CDG2 Current Pressure
 	wByteValvePosition_PV : WORD; //Current Valve Position (0~100%)
 	nInputStatusOld : USINT := 9; //Value Change Monitoring, First Temp value
-			
-	// Vacuum Pump Status
-	isPumpFault				: BOOL;
-	isPumpWarning			: BOOL;
-	isPumpAlarm				: BOOL;
-	isFBRunning				: BOOL;
-	isPumpRunning			: BOOL;
 END_VAR
 
 VAR CONSTANT
@@ -68,11 +61,14 @@ END_VAR
       <ST><![CDATA[//Model : IQ Plus 
 //Pressure Range : 0 ~ 1,000 Torr
 IF GVL_IO.aOutputCmd[1].12 THEN // Pressure Mode Setting
-	nSetType := 2; // Position Control
+	nOutputSetType := 1; // Pressure Control
 ELSE
-	nSetType := 1; // Pressure Control
+	nOutputSetType := 2; // Position Control
 END_IF
 
+(* Command *)
+bPumpOn 			:= GVL_IO.aOutputCmd[1].6;
+bPumpReset 			:= GVL_IO.aOutputCmd[1].7;
 
 (* Read from Power Distribution Pannel *)
 bVacuumPumpCB		:= GVL_IO.aDigitalInputIO[5].1;
@@ -83,32 +79,32 @@ isPumpFault			:= GVL_IO.aDigitalInputIO[2].7;
 isPumpWarning		:= GVL_IO.aDigitalInputIO[3].0;
 isPumpAlarm			:= GVL_IO.aDigitalInputIO[3].1;
 isFBRunning			:= GVL_IO.aDigitalInputIO[3].2;
-isPumpRunning		:= GVL_IO.aDigitalInputIO[3].3;
+// isPumpRunning		:= GVL_IO.aDigitalInputIO[3].3;
 
 (* Read from Device Value *)
 // 2USINT to WORD
 wByteCDG1_PV 		:= USINT_TO_WORD_Bit(aInputPressurePV_CDG1[1],aInputPressurePV_CDG1[2]);
 wByteCDG2_PV 		:= USINT_TO_WORD_Bit(aInputPressurePV_CDG2[1],aInputPressurePV_CDG2[2]);
 wByteValvePosition_PV 	:= USINT_TO_WORD_Bit(aInputValvePosionPV[1], aInputValvePosionPV[2]);
+wControlValue		:= GVL_IO.wIqPlus_CV;
 
 //From IQ Plus
-wCDG1_PV 			:= REAL_TO_WORD(wByteCDG1_PV/PressureFactor);
-wCDG2_PV 			:= REAL_TO_WORD(wByteCDG2_PV/PressureFactor);
+// wCDG1_PV 			:= REAL_TO_WORD(wByteCDG1_PV/PressureFactor);
+// wCDG2_PV 			:= REAL_TO_WORD(wByteCDG2_PV/PressureFactor);
+GVL_IO.wIqPlus_CDG1_PV 	:= REAL_TO_WORD(wByteCDG1_PV/PressureFactor);
+GVL_IO.wIqPlus_CDG2_PV 	:= REAL_TO_WORD(wByteCDG2_PV/PressureFactor);
 
 //To IQ Plus
-IF nTValveMode = 0 AND nSetType = 1 THEN
+nOutputMode := WORD_TO_USINT(GVL_IO.aOutputCmd[2]); //Throttle Valve Mode Setting 0:Normal 1:Close 2:Open 3:Hold 4:Reset
+IF nOutputMode = 0 AND nSetType = 1 THEN
 	wTypedControlValue := REAL_TO_WORD(wControlValue * SetPointFactor * 0.1); //Pressure Control
-	wTValve_PV		:= wCDG2_PV; //Pressure Display
-ELSIF nTValveMode = 0 AND nSetType = 2 THEN
+ELSIF nOutputMode = 0 AND nSetType = 2 THEN
 	wTypedControlValue := REAL_TO_WORD(wControlValue * SetPointFactor); // Position Control
-	wTValve_PV		:= REAL_TO_WORD(wByteValvePosition_PV / 327.67) ; //Position Display
 END_IF
 
 wOutputSVBytes 		:= WORD_TO_USINT_Bit(wTypedControlValue);
 aOutputSVBytes[1] 	:= wOutputSVBytes.Lower;
 aOutputSVBytes[2] 	:= wOutputSVBytes.Upper;
-
-nOutputSetType := nSetType;
 
 //Valve Status Initailize
 IF nInputStatus <> nInputStatusOld THEN
@@ -127,17 +123,15 @@ END_IF
 
 //Update Valve Status
 CASE nInputStatus OF
-	0 : ingNormal := TRUE; //Pressure Control Performing.
+	0 : ingPressureControl := TRUE; //Pressure Control Performing.
 	1 : ingPositionControl := TRUE; //Position Control Performing.	
 	2 : isValveOpen := TRUE; //Valve Open, Stopped, Not Controlling.
 	3 : isValveNotInitialized := TRUE; //Valve not initialized power on or RESET Command.
 	4 : isValveClosed := TRUE; //Valve Closed, Stopped, Not Controlling.
 	5 : isValveFaultState := TRUE; //Has faulted during valve initialization or operation.
 	6 : ingValveInitializing := TRUE; //Initailizing Process.
-	7 : ingPressureControl := TRUE; //Pressure Control Performing.
 	8 : ingHoldState := TRUE; //intermediate position, not at open or close and not controlling pressure.
 END_CASE
-GVL_IO.aInputState[5] := nInputStatus; //Throttle Valve Status
 
 // nOutputMode
 // 0 : uses setpoint and setpoint type to control the valve.
@@ -146,20 +140,25 @@ GVL_IO.aInputState[5] := nInputStatus; //Throttle Valve Status
 // 3 : Holds valve in current position.
 // 4 : Reset the controller.
 
-nOutputMode := nTValveMode;
+GVL_IO.nIQPLUS_SetType 	:= nOutputSetType;
+GVL_IO.nIQPLUS_Mode 	:= nOutputMode;
 
 GVL_IO.aMonitoring_PV[11] := wByteValvePosition_PV/SetPointFactor;
 GVL_IO.aDigitalOutputIO[2].2 := bPumpOn; //Pump On
-GVL_IO.aDigitalOutputIO[2].3 := bPumpReset; // Pump Reset]]></ST>
+GVL_IO.aDigitalOutputIO[2].3 := bPumpReset; // Pump Reset
+GVL_IO.isPumpRunning := GVL_IO.aDigitalInputIO[3].3;
+]]></ST>
     </Implementation>
     <LineIds Name="P12_IQ_PLUS">
       <LineId Id="273" Count="1" />
-      <LineId Id="367" Count="0" />
-      <LineId Id="432" Count="0" />
+      <LineId Id="367" Count="1" />
       <LineId Id="370" Count="1" />
       <LineId Id="369" Count="0" />
-      <LineId Id="275" Count="0" />
-      <LineId Id="362" Count="0" />
+      <LineId Id="389" Count="0" />
+      <LineId Id="384" Count="0" />
+      <LineId Id="392" Count="0" />
+      <LineId Id="390" Count="0" />
+      <LineId Id="393" Count="0" />
       <LineId Id="209" Count="0" />
       <LineId Id="208" Count="0" />
       <LineId Id="210" Count="0" />
@@ -169,25 +168,25 @@ GVL_IO.aDigitalOutputIO[2].3 := bPumpReset; // Pump Reset]]></ST>
       <LineId Id="288" Count="1" />
       <LineId Id="279" Count="0" />
       <LineId Id="290" Count="0" />
-      <LineId Id="277" Count="0" />
+      <LineId Id="388" Count="0" />
       <LineId Id="158" Count="0" />
-      <LineId Id="52" Count="7" />
+      <LineId Id="52" Count="3" />
+      <LineId Id="378" Count="0" />
+      <LineId Id="56" Count="1" />
+      <LineId Id="379" Count="3" />
       <LineId Id="361" Count="0" />
-      <LineId Id="62" Count="2" />
-      <LineId Id="437" Count="0" />
-      <LineId Id="65" Count="1" />
-      <LineId Id="438" Count="0" />
-      <LineId Id="67" Count="31" />
-      <LineId Id="433" Count="0" />
-      <LineId Id="99" Count="1" />
-      <LineId Id="435" Count="0" />
-      <LineId Id="101" Count="6" />
-      <LineId Id="365" Count="0" />
-      <LineId Id="5" Count="0" />
-      <LineId Id="366" Count="0" />
+      <LineId Id="62" Count="0" />
+      <LineId Id="376" Count="0" />
+      <LineId Id="63" Count="9" />
+      <LineId Id="75" Count="32" />
+      <LineId Id="399" Count="1" />
+      <LineId Id="397" Count="0" />
+      <LineId Id="372" Count="0" />
       <LineId Id="364" Count="0" />
       <LineId Id="287" Count="0" />
       <LineId Id="293" Count="0" />
+      <LineId Id="402" Count="0" />
+      <LineId Id="401" Count="0" />
     </LineIds>
   </POU>
 </TcPlcObject>

@@ -1,14 +1,18 @@
 ﻿using System.Windows.Media;
 using System.Windows;
-using System.IO;
-using System.Windows.Resources;
 using System.Windows.Controls;
 using System.Diagnostics;
 using System.Numerics;
-using OxyPlot.Axes;
-using SapphireXR_App.ViewModels;
 using SapphireXR_App.Models;
 using static SapphireXR_App.ViewModels.ManualBatchViewModel;
+using System.Collections;
+using System.Globalization;
+using Newtonsoft.Json.Linq;
+using Newtonsoft.Json;
+using SapphireXR_App.ViewModels;
+using SapphireXR_App.Enums;
+using SapphireXR_App.WindowServices;
+using System.Windows.Controls.Primitives;
 
 namespace SapphireXR_App.Common
 {
@@ -180,37 +184,101 @@ namespace SapphireXR_App.Common
             return dateTime.ToString("yyyy.MM.dd HH:mm:ss");
         }
 
-        public static int NumberDecimalDigits (float value, int maxNumberDigit)
+        public static string FloatingPointStrWithMaxDigit(float value, int maxNumberDigit)
         {
-            int intValue = (int)value;
-            if (0 <= intValue && intValue < 10)
+            var numberDecimalDigits = (float value, int maxNumberDigit) =>
             {
-                return maxNumberDigit - 1;
-            }
-            else if (10 <= intValue && intValue < 100)
+                int intValue = (int)value;
+                if (0 <= intValue && intValue < 10)
+                {
+                    return maxNumberDigit - 1;
+                }
+                else if (10 <= intValue && intValue < 100)
+                {
+                    return maxNumberDigit - 2;
+                }
+                else if (100 <= intValue && intValue < 1000)
+                {
+                    return maxNumberDigit - 3;
+                }
+                else
+                {
+                    return 0;
+                }
+            };
+            return value.ToString("N", new NumberFormatInfo() { NumberDecimalDigits = numberDecimalDigits(value, AppSetting.FloatingPointMaxNumberDigit) });
+        }
+
+        public static void LoadBatchToPLC(Batch batch)
+        {
+            if (batch.RampingTime != null)
             {
-                return maxNumberDigit - 2;
-            }
-            else if (100 <= intValue && intValue < 1000)
-            {
-                return maxNumberDigit - 3;
-            }
-            else
-            {
-                return 0;
+                PLCService.WriteTargetValue(batch.AnalogIOUserStates.Select((AnalogIOUserState analogIOUserState) => (float)analogIOUserState.Value).ToArray());
+                PLCService.WriteRampTime(Enumerable.Repeat((short)batch.RampingTime, batch.AnalogIOUserStates.Count).ToArray());
+
+                int partSize = sizeof(int) * 8;
+                BitArray firstValveStates = new BitArray(partSize);
+                BitArray secondValveStates = new BitArray(partSize);
+                foreach (DigitalIOUserState digitalIOUserState in batch.DigitalIOUserStates)
+                {
+                    int index;
+                    if (PLCService.ValveIDtoOutputSolValveIdx1.TryGetValue(digitalIOUserState.ID, out index) == true)
+                    {
+                        firstValveStates[index] = digitalIOUserState.On;
+                    }
+                    else if (PLCService.ValveIDtoOutputSolValveIdx2.TryGetValue(digitalIOUserState.ID, out index) == true)
+                    {
+                        secondValveStates[index] = digitalIOUserState.On;
+                    }
+                }
+                PLCService.WriteValveState(firstValveStates, secondValveStates);
             }
         }
 
-        public static void LoadBatchToPLC(ManualBatchViewModel.Batch batch)
+        public static object? GetSettingValue(JToken rootToken, string key)
         {
-            foreach (AnalogIOUserState analogDeviceIO in batch.AnalogIOUserStates)
+            if (rootToken != null)
             {
-                PLCService.WriteTargetValue(analogDeviceIO.FullIDName, analogDeviceIO.Value);
-                PLCService.WriteRampTime(analogDeviceIO.FullIDName, (short)batch.RampingTime!);
+                JToken? token = rootToken[key];
+                if (token != null)
+                {
+                    return JsonConvert.DeserializeObject(token.ToString());
+                }
             }
-            foreach (DigitalIOUserState digitalIOUserState in batch.DigitalIOUserStates)
+
+            return null;
+        }
+
+        public static string? GetGasDeviceName(string id)
+        {
+            return SettingViewModel.GasIO.Where((Device device) => device.ID == id).Select((Device device) => device.Name != null ? device.Name : default).FirstOrDefault();
+        }
+
+        public static string? GetFlowControllerName(string id)
+        {
+            return SettingViewModel.dAnalogDeviceIO.Where((KeyValuePair<string, AnalogDeviceIO> device) => device.Key == id).Select((KeyValuePair<string, AnalogDeviceIO> device) => device.Value.Name != null ? device.Value.Name : default).FirstOrDefault();
+        }
+
+        public static string? GetValveName(string id)
+        {
+            return SettingViewModel.ValveDeviceIO.Where((Device device) => device.ID == id).Select((Device device) => device.Name != null ? device.Name : default).FirstOrDefault();
+        }
+
+        public static void ConfirmBeforeToggle(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        {
+            ToggleButton? toggleSwitch = sender as ToggleButton;
+            if (toggleSwitch != null)
             {
-                PLCService.WriteValveState(digitalIOUserState.ID, digitalIOUserState.On);
+                string destState = toggleSwitch.IsChecked == true ? "On" : "Off";
+                if (ValveOperationEx.Show("", destState + " 상태로 변경하시겠습니까?") == DialogResult.Cancel)
+                {
+                    e.Handled = true;
+                }
+                else
+                {
+                    toggleSwitch.IsChecked = !toggleSwitch.IsChecked;
+                    toggleSwitch.RaiseEvent(new RoutedEventArgs(ButtonBase.ClickEvent));
+                }
             }
         }
 

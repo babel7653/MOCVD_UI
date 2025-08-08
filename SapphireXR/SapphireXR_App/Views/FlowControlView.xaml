@@ -13,109 +13,119 @@
         SizeToContent="WidthAndHeight"
         MinWidth="400"
         MinHeight="150"
-        Title="FlowControl" Height="250" Width="400"
+        Title="FlowControl" Height="290" Width="400" 
         x:Name="FlowControlDialog"
-        TextBoxBase.TextChanged="FlowControlDialog_TextChanged"
-        >
-
-    <Window.Resources>
-        <ResourceDictionary>
-            <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="../Themes/Generic.xaml"/>
-            </ResourceDictionary.MergedDictionaries>
-
-            <Style TargetType="{x:Type Label}" BasedOn="{StaticResource BaseFontStyle}">
-                <Setter Property="FontSize" Value="13"/>
-                <Setter Property="VerticalContentAlignment" Value="Center"/>
-            </Style>
-
-            <Style TargetType="{x:Type TextBox}" BasedOn="{StaticResource BaseFontStyle}">
-                <Setter Property="FontSize" Value="13"/>
-                <Setter Property="VerticalContentAlignment" Value="Center"/>
-            </Style>
-        </ResourceDictionary>
-    </Window.Resources>
-
-    <Border CornerRadius="5" Background="White">
-        <Grid Background="Transparent">
+        TextBoxBase.TextChanged="FlowControlDialog_TextChanged">
+    <Border  Background="{StaticResource Gray_100}">
+        <Border.CornerRadius>
+            <CornerRadius TopLeft="{StaticResource r_3}" TopRight="{StaticResource r_3}" BottomLeft="{StaticResource r_3}" BottomRight="{StaticResource r_3}" />
+        </Border.CornerRadius>
+        <Grid Background="Transparent" Margin="{StaticResource p_5_sqrt}">
             <Grid.RowDefinitions>
-                <RowDefinition Height="40"/>
-                <RowDefinition/>
+                <RowDefinition Height="24"/>
+                <RowDefinition Height="8"/>
+                <RowDefinition Height="21.28"/>
+                <RowDefinition Height="16" />
+                <RowDefinition Height="184"/>
             </Grid.RowDefinitions>
             <!-- 머리말 -->
-            <Border CornerRadius="5 5 0 0" Background="RoyalBlue">
-                <Label Grid.Row="0"             
-               Content="{Binding Title}" />
-            </Border>
+            <Grid Grid.Row="0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="24"/>
+                    <ColumnDefinition />
+                </Grid.ColumnDefinitions>
+                <Image Grid.Column="0" Source="/Resources/icons/icon=flow_controller.png" />
+                <Label Grid.Column="1" Content="{Binding Title}" FontFamily="Segoe UI" FontWeight="Bold" FontSize="14" Foreground="{DynamicResource Gray_950}"  Padding="0" />
+            </Grid>
+            <Label Grid.Row="2" Padding="0" Margin="0" Content="{Binding Message}" FontFamily="Segoe UI" FontSize="16" Foreground="{StaticResource Gray_950}" VerticalAlignment="Center" VerticalContentAlignment="Center"/>
             <!-- 내용 -->
-            <Grid Grid.Row="1" Margin="10">
+            <Grid Grid.Row="4">
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="40"/>
-                    <RowDefinition />
+                    <RowDefinition Height="124"/>
+                    <RowDefinition Height="20"/>
                     <RowDefinition Height="40"/>
                 </Grid.RowDefinitions>
-                <TextBlock Grid.Row="0" Height="40"  Text="{Binding Message}" Margin="5 5"/>
-                <Grid Grid.Row="1">
+                
+                <Grid Grid.Row="0">
+                    <Grid.Resources>
+                        <Style x:Key="label" TargetType="TextBlock"  BasedOn="{StaticResource infoTextBlock}">
+                            <Setter Property="HorizontalAlignment" Value="Right" />
+                        </Style>
+                        <Style x:Key="textInput" TargetType="TextBox" BasedOn="{StaticResource DefaultTextBox}">
+                            <Setter Property="HorizontalAlignment" Value="Right" />
+                            <Setter Property="Width" Value="96" />
+                            <Setter Property="Foreground" Value="{StaticResource Gray_900}" />
+                        </Style>
+                        <Style x:Key="readOnlyTextInput" TargetType="Border">
+                            <Setter Property="Background" Value="{StaticResource Gray_400}" />
+                            <Setter Property="Width" Value="96" />
+                            <Setter Property="HorizontalAlignment" Value="Right" />
+                            <Setter Property="CornerRadius">
+                                <Setter.Value>
+                                    <CornerRadius TopLeft="{StaticResource r_1}" TopRight="{StaticResource r_1}" BottomLeft="{StaticResource r_1}" BottomRight="{StaticResource r_1}" />
+                                </Setter.Value>
+                            </Setter>
+                        </Style>
+                        <Style x:Key="valueLabel" TargetType="Label">
+                            <Setter Property="HorizontalAlignment" Value="Center" />
+                            <Setter Property="VerticalAlignment" Value="Center" />
+                            <Setter Property="Foreground" Value="{StaticResource Gray_950}" />
+                        </Style>
+                    </Grid.Resources>
                     <Grid.RowDefinitions>
-                        <RowDefinition/>
-                        <RowDefinition/>
-                        <RowDefinition/>
+                        <RowDefinition Height="36" />
+                        <RowDefinition Height="8" />
+                        <RowDefinition Height="36" />
+                        <RowDefinition Height="8" />
+                        <RowDefinition Height="36" />
                     </Grid.RowDefinitions>
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition/>
-                        <ColumnDefinition/>
-                        <ColumnDefinition/>
-                        <ColumnDefinition/>
+                        <ColumnDefinition Width="72"/>
+                        <ColumnDefinition Width="104"/>
+                        <ColumnDefinition Width="8"/>
+                        <ColumnDefinition Width="72"/>
+                        <ColumnDefinition Width="104"/>
                     </Grid.ColumnDefinitions>
-                    <Label Grid.Row="0" Grid.Column="0">Target Value</Label>
-                    <local:NumberBoxWithMax Grid.Row="0" Grid.Column="1" x:Name="txtInput" Margin="5" Text="{Binding TargetValue}" MaxValue="{Binding MaxValue}"/>
-
-                    <Label Grid.Row="1" Grid.Column="0">Ramp Time(s)</Label>
-                    <local:NumberBox Grid.Row="1" Grid.Column="1" x:Name="txtInput1" Margin="5" Text="{Binding RampTime}"/>
-
-                    <Label Grid.Row="2" Grid.Column="0">Deviation</Label>
-                    <Border Grid.Row="2" Grid.Column="1" Background="LightGray" Margin="5" CornerRadius="2">
-                        <Label  x:Name="txtFlowDeviaion" Content="{Binding Deviation}"/>
+                    <TextBlock Grid.Row="0" Grid.Column="0" Style="{StaticResource label}">Target Value</TextBlock>
+                    <local:NumberBoxWithMax Grid.Row="0" Grid.Column="1" x:Name="txtInput" Text="{Binding TargetValue, UpdateSourceTrigger=PropertyChanged}" MaxValue="{Binding MaxValue}" Style="{StaticResource textInput}"/>
+                    <TextBlock Grid.Row="2" Grid.Column="0" Style="{StaticResource label}">Ramp Time(s)</TextBlock>
+                    <local:NumberBox Grid.Row="2" Grid.Column="1" x:Name="txtInput1" Text="{Binding RampTime, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource textInput}"/>
+                    <TextBlock Grid.Row="4" Grid.Column="0" Style="{StaticResource label}">Deviation</TextBlock>
+                    <Border Grid.Row="4" Grid.Column="1" Style="{StaticResource readOnlyTextInput}">
+                        <Label  x:Name="txtFlowDeviaion" Content="{Binding Deviation}" Style="{StaticResource valueLabel}" />
                     </Border>
-
-                    <Label Grid.Row="0" Grid.Column="2">Current Value</Label>
-                    <Border Grid.Row="0" Grid.Column="3" Background="LightGray" Margin="5" CornerRadius="2">
-                        <Label  x:Name="txtFlowCurrentValue" Content="{Binding CurrentValue}"/>
+                    <TextBlock Grid.Row="0" Grid.Column="3" Style="{StaticResource label}">Current Value</TextBlock>
+                    <Border Grid.Row="0" Grid.Column="4" Style="{StaticResource readOnlyTextInput}">
+                        <Label  x:Name="txtFlowCurrentValue" Content="{Binding CurrentValue}" Style="{StaticResource valueLabel}" />
                     </Border>
-                    
-                    <Label Grid.Row="1" Grid.Column="2">Control Value</Label>
-                    <Border Grid.Row="1" Grid.Column="3" Background="LightGray" Margin="5" CornerRadius="2">
-                        <Label  x:Name="txtFlowControlValue" Content="{Binding ControlValue}"/>
+                    <TextBlock Grid.Row="2" Grid.Column="3" Style="{StaticResource label}" >Control Value</TextBlock>
+                    <Border Grid.Row="2" Grid.Column="4" Style="{StaticResource readOnlyTextInput}">
+                        <Label  x:Name="txtFlowControlValue" Content="{Binding ControlValue}" Style="{StaticResource valueLabel}" />
                     </Border>
-
-                    <Label Grid.Row="2" Grid.Column="2">Max. Value</Label>
-                    <Border Grid.Row="2" Grid.Column="3" Background="LightGray" Margin="5" CornerRadius="2">
-                        <Label  x:Name="txtFlowMaxValue" Content="{Binding MaxValue}"/>
+                    <TextBlock Grid.Row="4" Grid.Column="3" Style="{StaticResource label}">Max. Value</TextBlock>
+                    <Border Grid.Row="4" Grid.Column="4" Style="{StaticResource readOnlyTextInput}">
+                        <Label  x:Name="txtFlowMaxValue" Content="{Binding MaxValue}" Style="{StaticResource valueLabel}" />
                     </Border>
-                    
                 </Grid>
                 <Grid Grid.Row="2">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition/>
                         <ColumnDefinition/>
                     </Grid.ColumnDefinitions>
-                    <Button Grid.Row="2" Grid.Column="0"
+                    <Button
                         Content="확인"
-                        FontSize="15"
                         Margin="5"
                         IsDefault="True"
                         IsEnabled="{Binding IsConfirmButtonEnabled, ElementName=FlowControlDialog}"
-                        Style="{StaticResource MetroBlueButtonStyle}"
                         Command="{Binding ConfirmCommand}"
-                        CommandParameter="{Binding ElementName=FlowControlDialog}"/>
+                        CommandParameter="{Binding ElementName=FlowControlDialog}" Style="{StaticResource PrimaryButton}"/>
                     <Button Grid.Row="2" Grid.Column="1" 
                         Content="닫기"
-                        FontSize="15"
                         Margin="5" 
                         IsCancel="True" 
-                        Style="{StaticResource MetroOrangeButtonStyle}"
+                        Style="{StaticResource DefaultButton}"
                         Command="{Binding CloseCommand}"
-                        CommandParameter="{Binding ElementName=FlowControlDialog}"/>
+                        CommandParameter="{Binding ElementName=FlowControlDialog}" />
                 </Grid>
             </Grid>
         </Grid>

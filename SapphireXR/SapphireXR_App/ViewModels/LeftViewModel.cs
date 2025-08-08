@@ -5,6 +5,10 @@ using System.Windows;
 using System.Collections;
 using System.ComponentModel;
 using TwinCAT.Ads;
+using SapphireXR_App.Enums;
+using SapphireXR_App.Models;
+using CommunityToolkit.Mvvm.Input;
+using SapphireXR_App.WindowServices;
 
 namespace SapphireXR_App.ViewModels
 {
@@ -46,18 +50,18 @@ namespace SapphireXR_App.ViewModels
                 private bool? currentValveState = null; 
             }
 
-            public SourceStatusViewModel(string valveStateSubscsribePostfixStr)
+            public SourceStatusViewModel(LeftViewModel vm, string valveStateSubscsribePostfixStr)
             {
                 valveStateSubscsribePostfix = valveStateSubscsribePostfixStr;
                 valveStateSubscrbers = [
-                    new ValveStateSubscriber(this, (bool nextValveState) => { if (nextValveState == true) { SiH4Carrier = NH3_2Carrier = NH3_1Carrier = "H2"; SiH4CarrierColor = NH3_2CarrierColor = NH3_1CarrierColor = H2Color;  } 
-                        else { SiH4Carrier = NH3_2Carrier = NH3_1Carrier = "N2"; SiH4CarrierColor = NH3_2CarrierColor = NH3_1CarrierColor = DefaultColor; }  }, "V01"),
-                    new ValveStateSubscriber(this, (bool nextValveState) => { if (nextValveState == true) { TEBCarrier = "H2"; TEBCarrierColor = H2Color; } else { TEBCarrier = "N2"; TEBCarrierColor = DefaultColor; }  }, "V05"),
-                    new ValveStateSubscriber(this, (bool nextValveState) => { if (nextValveState == true) { TMAlCarrier = "H2"; TMAlCarrierColor = H2Color; } else { TMAlCarrier = "N2"; TMAlCarrierColor = DefaultColor; } }, "V08"),
-                    new ValveStateSubscriber(this, (bool nextValveState) => { if (nextValveState == true) { TMInCarrier = "H2";  TMInCarrierColor = H2Color;} else { TMInCarrier = "N2";  TMInCarrierColor = DefaultColor;} }, "V11"),
-                    new ValveStateSubscriber(this, (bool nextValveState) => { if (nextValveState == true) { TMGaCarrier = "H2";  TMGaCarrierColor = H2Color;} else { TMGaCarrier = "N2";  TMGaCarrierColor =DefaultColor;} }, "V14"),
-                    new ValveStateSubscriber(this, (bool nextValveState) => { if (nextValveState == true) { DTMGaCarrier = "H2";  DTMGaCarrierColor = H2Color;} else { DTMGaCarrier = "N2";  DTMGaCarrierColor = DefaultColor;}  }, "V17"),
-                    new ValveStateSubscriber(this, (bool nextValveState) => { if (nextValveState == true) { Cp2MgCarrier = "H2";  Cp2MgCarrierColor = H2Color;} else { Cp2MgCarrier = "N2";  Cp2MgCarrierColor = DefaultColor;} }, "V20"),
+                    new ValveStateSubscriber(this, (bool nextValveState) => { if (nextValveState == true) { SiH4Carrier = NH3_2Carrier = NH3_1Carrier = vm.Gas1; SiH4CarrierColor = NH3_2CarrierColor = NH3_1CarrierColor = H2Color;  } 
+                        else { SiH4Carrier = NH3_2Carrier = NH3_1Carrier = vm.Gas2; SiH4CarrierColor = NH3_2CarrierColor = NH3_1CarrierColor = DefaultColor; }  }, "V01"),
+                    new ValveStateSubscriber(this, (bool nextValveState) => { if (nextValveState == true) { TEBCarrier = vm.Gas1; TEBCarrierColor = H2Color; } else { TEBCarrier = vm.Gas2; TEBCarrierColor = DefaultColor; }  }, "V05"),
+                    new ValveStateSubscriber(this, (bool nextValveState) => { if (nextValveState == true) { TMAlCarrier = vm.Gas1; TMAlCarrierColor = H2Color; } else { TMAlCarrier = vm.Gas2; TMAlCarrierColor = DefaultColor; } }, "V08"),
+                    new ValveStateSubscriber(this, (bool nextValveState) => { if (nextValveState == true) { TMInCarrier = vm.Gas1;  TMInCarrierColor = H2Color;} else { TMInCarrier = vm.Gas2;  TMInCarrierColor = DefaultColor;} }, "V11"),
+                    new ValveStateSubscriber(this, (bool nextValveState) => { if (nextValveState == true) { TMGaCarrier = vm.Gas1;  TMGaCarrierColor = H2Color;} else { TMGaCarrier = vm.Gas2;  TMGaCarrierColor =DefaultColor;} }, "V14"),
+                    new ValveStateSubscriber(this, (bool nextValveState) => { if (nextValveState == true) { DTMGaCarrier = vm.Gas1;  DTMGaCarrierColor = H2Color;} else { DTMGaCarrier = vm.Gas2;  DTMGaCarrierColor = DefaultColor;}  }, "V17"),
+                    new ValveStateSubscriber(this, (bool nextValveState) => { if (nextValveState == true) { Cp2MgCarrier = vm.Gas1;  Cp2MgCarrierColor = H2Color;} else { Cp2MgCarrier = vm.Gas2;  Cp2MgCarrierColor = DefaultColor;} }, "V20"),
                     new ValveStateSubscriber(this, (bool nextValveState) => { if (nextValveState == true) { NH3_1Source = NH3_2Source = "On";  NH3_1SourceColor = NH3_2SourceColor = OnColor; } else { NH3_1Source = NH3_2Source = "Off";  NH3_1SourceColor = NH3_2SourceColor = DefaultColor;} }, "V04"),
                     new ValveStateSubscriber(this, (bool nextValveState) => { if (nextValveState == true) { SiH4Source = "On";  SiH4SourceColor = OnColor;} else { SiH4Source = "Off";  SiH4SourceColor =DefaultColor;} }, "V03"),
                     new ValveStateSubscriber(this, (bool nextValveState) => { if (nextValveState == true) { TEBSource = "On";  TEBSourceColor =OnColor;} else { TEBSource = "Off";  TEBSourceColor = DefaultColor;}  }, "V07"),
@@ -100,7 +104,6 @@ namespace SapphireXR_App.ViewModels
                     disposedValue = true;
                 }
             }
-  
 
             void IDisposable.Dispose()
             {
@@ -238,12 +241,12 @@ namespace SapphireXR_App.ViewModels
 
         public class SourceStatusFromCurrentPLCStateViewModel : SourceStatusViewModel
         {
-            public SourceStatusFromCurrentPLCStateViewModel() : base("CurrentPLCState") { }
+            public SourceStatusFromCurrentPLCStateViewModel(LeftViewModel vm) : base(vm, "CurrentPLCState") { }
         }
 
         public class SourceStatusFromCurrentRecipeStepViewModel: SourceStatusViewModel
         {
-            public SourceStatusFromCurrentRecipeStepViewModel() :base("CurrentRecipeStep") {  }
+            public SourceStatusFromCurrentRecipeStepViewModel(LeftViewModel vm) :base(vm, "CurrentRecipeStep") {  }
         }
 
         public LeftViewModel()
@@ -256,8 +259,10 @@ namespace SapphireXR_App.ViewModels
             ObservableManager<float[]>.Subscribe("LineHeaterTemperature", lineHeaterTemperatureSubscriber = new LineHeaterTemperatureSubscriber(this));
             ObservableManager<bool>.Subscribe("Reset.CurrentRecipeStep", resetCurrentRecipeSubscriber = new ResetCurrentRecipeSubscriber(this));
             ObservableManager<BitArray>.Subscribe("LogicalInterlockState", logicalInterlockSubscriber = new LogicalInterlockSubscriber(this));
+            ObservableManager<(string, string)>.Subscribe("GasIOLabelChanged", gasIOLabelSubscriber = new GasIOLabelSubscriber(this));
+            ObservableManager<PLCConnection>.Subscribe("PLCService.Connected", plcConnectionStateSubscriber = new PLCConnectionStateSubscriber(this)); 
           
-            CurrentSourceStatusViewModel = new SourceStatusFromCurrentPLCStateViewModel();
+            CurrentSourceStatusViewModel = new SourceStatusFromCurrentPLCStateViewModel(this);
             PropertyChanging += (object? sender, PropertyChangingEventArgs args) =>
             {
                 switch (args.PropertyName)
@@ -267,24 +272,139 @@ namespace SapphireXR_App.ViewModels
                         break;
                 }
             };
+            PropertyChanged += (object? sender, PropertyChangedEventArgs args) =>
+            {
+                switch (args.PropertyName)
+                {
+                    case nameof(PLCConnectionStatus):
+                        switch(PLCConnectionStatus)
+                        {
+                            case "Connected":
+                                PLCConnectionStatusColor = PLCConnectedFontColor;
+                                break;
+
+                            case "Disconnected":
+                                PLCConnectionStatusColor = PLCDisconnectedFontColor;
+                                break;
+                        }
+                        break;
+                }
+            };
+            setConnectionStatusText(PLCService.Connected);
         }
 
-        private static Brush OnLampColor = Application.Current.Resources.MergedDictionaries[0]["LampOnColor"] as Brush ?? Brushes.Lime;
-        private static Brush OffLampColor = Application.Current.Resources.MergedDictionaries[0]["LampOffColor"] as Brush ?? Brushes.DarkGray;
-        private static Brush ReadyLampColor = Application.Current.Resources.MergedDictionaries[0]["LampReadyColor"] as Brush ?? Brushes.Yellow;
-        private static Brush RunLampColor = Application.Current.Resources.MergedDictionaries[0]["LampRunolor"] as Brush ?? Brushes.Lime;
-        private static Brush FaultLampColor = Application.Current.Resources.MergedDictionaries[0]["LampFaultColor"] as Brush ?? Brushes.Red;
+        public static string GetGas3Label(string? gas3Name, int index)
+        {
+            if (gas3Name != default)
+            {
+                return gas3Name + "#" + index;
+            }
+            else
+            {
+                return "";
+            }
+        }
 
-        private static Brush InActiveSignalTowerRed = Application.Current.Resources.MergedDictionaries[0]["InActiveSignalTowerRed"] as Brush ?? new SolidColorBrush(Color.FromRgb(0xff, 0xa0, 0xa0));
-        private static Brush InActiveSignalTowerYellow = Application.Current.Resources.MergedDictionaries[0]["InActiveSignalTowerYellow"] as Brush ?? new SolidColorBrush(Color.FromRgb(0xff, 0xff, 0xC5));
-        private static Brush InActiveSignalTowerGreen = Application.Current.Resources.MergedDictionaries[0]["InActiveSignalTowerGreen"] as Brush ?? new SolidColorBrush(Color.FromRgb(0xcd, 0xf5, 0xdd));
-        private static Brush InActiveSignalTowerBlue = Application.Current.Resources.MergedDictionaries[0]["InActiveSignalTowerBlue"] as Brush ?? new SolidColorBrush(Color.FromRgb(0x86, 0xCE, 0xFA));
-        private static Brush InActiveSignalTowerWhite = Application.Current.Resources.MergedDictionaries[0]["InActiveSignalTowerWhite"] as Brush ?? Brushes.LightGray;
-        private static Brush ActiveSignalTowerRed = Application.Current.Resources.MergedDictionaries[0]["ActiveSignalTowerRed"] as Brush ?? Brushes.Red;
-        private static Brush ActiveSignalTowerYellow = Application.Current.Resources.MergedDictionaries[0]["ActiveSignalTowerYellow"] as Brush ?? Brushes.Yellow;
-        private static Brush ActiveSignalTowerGreen = Application.Current.Resources.MergedDictionaries[0]["ActiveSignalTowerGreen"] as Brush ?? Brushes.Green;
-        private static Brush ActiveSignalTowerBlue = Application.Current.Resources.MergedDictionaries[0]["ActiveSignalTowerBlue"] as Brush ?? Brushes.Blue;
-        private static Brush ActiveSignalTowerWhite = Application.Current.Resources.MergedDictionaries[0]["ActiveSignalTowerWhite"] as Brush ?? Brushes.White;
+        public static string GetIogicalInterlockLabel(string? gasName)
+        {
+            if (gasName != default)
+            {
+                return "Gas Pressure " + gasName;
+            }
+            else
+            {
+                return "";
+            }
+        }
+
+        private void setConnectionStatusText(PLCConnection connectionStatus)
+        {
+            switch (connectionStatus)
+            {
+                case PLCConnection.Connected:
+                    PLCConnectionStatus = "Connected";
+                    bool onOff = PLCService.ReadBuzzerOnOff();
+                    BuzzerImage = onOff == true ? BuzzerOnPath : BuzzerOffPath;
+                    PLCService.WriteInterlockEnableState(onOff, PLCService.InterlockEnableSetting.Buzzer);
+                    break;
+
+                case PLCConnection.Disconnected:
+                    PLCConnectionStatus = "Disconnected";
+                    break;
+            }
+        }
+
+        [RelayCommand]
+        public void ToggleBuzzerOnOff()
+        {
+            bool onOff = BuzzerImage == BuzzerOffPath;
+            if(ConfirmMessage.Show("Buzzer 상태 변경", "Buzzer" + (onOff == true ? " On" : " Off") + " 상태로 변경하시겠습니까?", WindowStartupLocation.Manual) == DialogResult.Ok)
+            {
+                PLCService.WriteBuzzerOnOff(onOff);
+                BuzzerImage = (onOff == true) ? BuzzerOnPath : BuzzerOffPath;
+            }
+            
+        }
+
+        [ObservableProperty]
+        private static string _gas3_1 = GetGas3Label(Util.GetGasDeviceName("Gas3"), 1);
+        [ObservableProperty]
+        private static string _gas3_2 = GetGas3Label(Util.GetGasDeviceName("Gas3"), 2);
+        [ObservableProperty]
+        private static string _gas4 = Util.GetGasDeviceName("Gas4") ?? "";
+        [ObservableProperty]
+        private static string _source1 = Util.GetGasDeviceName("Source1") ?? "";
+        [ObservableProperty]
+        private static string _source2 = Util.GetGasDeviceName("Source2") ?? "";
+        [ObservableProperty]
+        private static string _source3 = Util.GetGasDeviceName("Source3") ?? "";
+        [ObservableProperty]
+        private static string _source4 = Util.GetGasDeviceName("Source4") ?? "";
+        [ObservableProperty]
+        private static string _source5 = Util.GetGasDeviceName("Source5") ?? "";
+        [ObservableProperty]
+        private static string _source6 = Util.GetGasDeviceName("Source6") ?? "";
+        [ObservableProperty]
+        private static string _logicalInterlockGas1 = GetIogicalInterlockLabel(Util.GetGasDeviceName("Gas1"));
+        [ObservableProperty]
+        private static string _logicalInterlockGas2 = GetIogicalInterlockLabel(Util.GetGasDeviceName("Gas2"));
+        [ObservableProperty]
+        private static string _logicalInterlockGas3 = GetIogicalInterlockLabel(Util.GetGasDeviceName("Gas3"));
+        [ObservableProperty]
+        private static string _logicalInterlockGas4 = GetIogicalInterlockLabel(Util.GetGasDeviceName("Gas4"));
+
+        private static readonly Brush OnLampColor = Application.Current.Resources.MergedDictionaries[0]["LampOnColor"] as Brush ?? Brushes.Lime;
+        private static readonly Brush OffLampColor = Application.Current.Resources.MergedDictionaries[0]["LampOffColor"] as Brush ?? Brushes.DarkGray;
+        private static readonly Brush ReadyLampColor = Application.Current.Resources.MergedDictionaries[0]["LampReadyColor"] as Brush ?? Brushes.Yellow;
+        private static readonly Brush RunLampColor = Application.Current.Resources.MergedDictionaries[0]["LampRunolor"] as Brush ?? Brushes.Lime;
+        private static readonly Brush FaultLampColor = Application.Current.Resources.MergedDictionaries[0]["LampFaultColor"] as Brush ?? Brushes.Red;
+
+        private static readonly Brush InActiveSignalTowerRed = Application.Current.Resources.MergedDictionaries[0]["InActiveSignalTowerRed"] as Brush ?? new SolidColorBrush(Color.FromRgb(0xff, 0xa0, 0xa0));
+        private static readonly Brush InActiveSignalTowerYellow = Application.Current.Resources.MergedDictionaries[0]["InActiveSignalTowerYellow"] as Brush ?? new SolidColorBrush(Color.FromRgb(0xff, 0xff, 0xC5));
+        private static readonly Brush InActiveSignalTowerGreen = Application.Current.Resources.MergedDictionaries[0]["InActiveSignalTowerGreen"] as Brush ?? new SolidColorBrush(Color.FromRgb(0xcd, 0xf5, 0xdd));
+        private static readonly Brush InActiveSignalTowerBlue = Application.Current.Resources.MergedDictionaries[0]["InActiveSignalTowerBlue"] as Brush ?? new SolidColorBrush(Color.FromRgb(0x86, 0xCE, 0xFA));
+        private static readonly Brush InActiveSignalTowerWhite = Application.Current.Resources.MergedDictionaries[0]["InActiveSignalTowerWhite"] as Brush ?? Brushes.LightGray;
+        private static readonly Brush ActiveSignalTowerRed = Application.Current.Resources.MergedDictionaries[0]["ActiveSignalTowerRed"] as Brush ?? Brushes.Red;
+        private static readonly Brush ActiveSignalTowerYellow = Application.Current.Resources.MergedDictionaries[0]["ActiveSignalTowerYellow"] as Brush ?? Brushes.Yellow;
+        private static readonly Brush ActiveSignalTowerGreen = Application.Current.Resources.MergedDictionaries[0]["ActiveSignalTowerGreen"] as Brush ?? Brushes.Green;
+        private static readonly Brush ActiveSignalTowerBlue = Application.Current.Resources.MergedDictionaries[0]["ActiveSignalTowerBlue"] as Brush ?? Brushes.Blue;
+        private static readonly Brush ActiveSignalTowerWhite = Application.Current.Resources.MergedDictionaries[0]["ActiveSignalTowerWhite"] as Brush ?? Brushes.White;
+
+        private static readonly Brush PLCConnectedFontColor = Application.Current.Resources.MergedDictionaries[0]["Sapphire_Blue"] as Brush ?? new SolidColorBrush(Color.FromRgb(0x60, 0xCD, 0xFF));
+        private static readonly Brush PLCDisconnectedFontColor = Application.Current.Resources.MergedDictionaries[0]["Alert_Red_02"] as Brush ?? new SolidColorBrush(Color.FromRgb(0xEC, 0x3D, 0x3F));
+
+        private static readonly string BuzzerOnPath = "/Resources/icons/icon=buzzeron.png";
+        private static readonly string BuzzerOffPath = "/Resources/icons/icon=buzzeroff.png";
+
+        private static readonly string SignalTowerRedPath = "/Resources/icons/icon=ani_signal_red.gif";
+        private static readonly string SignalTowerBluePath = "/Resources/icons/icon=ani_signal_blue.gif";
+        private static readonly string SignalTowerGreenath = "/Resources/icons/icon=ani_signal_green.gif";
+        private static readonly string SignalTowerYellowPath = "/Resources/icons/icon=ani_signal_yellow.gif";
+        private static readonly string SignalTowerWhitePath = "/Resources/icons/icon=ani_signal_white.gif";
+        private static readonly string SignalTowerDefaultPath = "/Resources/icons/icon=ani_signal_default.gif";
+
+        private string Gas1 = Util.GetGasDeviceName("Gas1") ?? "";
+        private string Gas2 = Util.GetGasDeviceName("Gas2") ?? "";
 
         [ObservableProperty]
         private string _showerHeadTemp = "";
@@ -314,26 +434,17 @@ namespace SapphireXR_App.ViewModels
         [ObservableProperty]
         private Brush _tempControllerAlarmLampColor = OnLampColor;
 
+        [ObservableProperty]
+        private double _glowOpacity = 0.0;
 
         [ObservableProperty]
-        private Brush _signalTowerRed = Brushes.Transparent;
+        private Brush _gasPressureGas2StateColor = Brushes.Transparent;
         [ObservableProperty]
-        private Brush _signalTowerYellow = Brushes.Transparent;
+        private Brush _gasPressureGas1StateColor = Brushes.Transparent;
         [ObservableProperty]
-        private Brush _signalTowerGreen = Brushes.Transparent;
+        private Brush _gasPressureGas3StateColor = Brushes.Transparent;
         [ObservableProperty]
-        private Brush _signalTowerBlue = Brushes.Transparent;
-        [ObservableProperty]
-        private Brush _signalTowerWhite = Brushes.Transparent;
-
-        [ObservableProperty]
-        private Brush _gasPressureN2StateColor = Brushes.Transparent;
-        [ObservableProperty]
-        private Brush _gasPressureH2StateColor = Brushes.Transparent;
-        [ObservableProperty]
-        private Brush _gasPressureNH3StateColor = Brushes.Transparent;
-        [ObservableProperty]
-        private Brush _gasPressureSiH4StateColor = Brushes.Transparent;
+        private Brush _gasPressureGas4StateColor = Brushes.Transparent;
         [ObservableProperty]
         private Brush _recipeStartStateColor = Brushes.Transparent;
         [ObservableProperty]
@@ -361,12 +472,19 @@ namespace SapphireXR_App.ViewModels
         private int _lineHeater8;
 
         [ObservableProperty]
-        private string _pLCAddressText = "PLC Address : " + AmsNetId.Local.ToString();
+        private string _pLCAddressText = AmsNetId.Local.ToString();
         [ObservableProperty]
-        private string _pLCConnectionStatus = "PLC Connection: Connected";
+        private string _pLCConnectionStatus = "Diconnected";
+        [ObservableProperty]
+        private Brush _pLCConnectionStatusColor = PLCDisconnectedFontColor;
+        [ObservableProperty]
+        private string _buzzerImage = BuzzerOffPath;
 
         [ObservableProperty]
         private SourceStatusViewModel _currentSourceStatusViewModel;
+
+        [ObservableProperty]
+        private string signalTowerImage = SignalTowerDefaultPath;
 
         private readonly CoolingWaterValueSubscriber showerHeaderTempSubscriber;
         private readonly CoolingWaterValueSubscriber inductionCoilTempSubscriber;
@@ -376,5 +494,7 @@ namespace SapphireXR_App.ViewModels
         private readonly LineHeaterTemperatureSubscriber lineHeaterTemperatureSubscriber;
         private readonly ResetCurrentRecipeSubscriber resetCurrentRecipeSubscriber;
         private readonly LogicalInterlockSubscriber logicalInterlockSubscriber;
+        private readonly GasIOLabelSubscriber gasIOLabelSubscriber;
+        private readonly PLCConnectionStateSubscriber plcConnectionStateSubscriber;
     }
 }

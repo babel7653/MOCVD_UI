@@ -1,13 +1,6 @@
-﻿using CommunityToolkit.Mvvm.ComponentModel;
-using SapphireXR_App.Common;
-using SapphireXR_App.Models;
+﻿using SapphireXR_App.Common;
 using SapphireXR_App.ViewModels;
-using SapphireXR_App.ViewModels.FlowController;
-using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Input;
-using System.Xml.Linq;
 
 namespace SapphireXR_App.Views
 {

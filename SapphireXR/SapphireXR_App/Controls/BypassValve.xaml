@@ -7,7 +7,7 @@
              xmlns:i="clr-namespace:Microsoft.Xaml.Behaviors;assembly=Microsoft.Xaml.Behaviors"
              mc:Ignorable="d" 
              x:Name="bypassValve"
-             d:DesignHeight="36" Width="52">
+             d:DesignHeight="36" Width="52" ToolTip="{Binding Name, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}">
     <local:Valve.Resources>
         <local:OnLoadedCommandParamConverver x:Key="onLoadedCommandConverter" />
         <SolidColorBrush x:Key="BorderBrushOnMouseEnter" Color="#9dbce8" />

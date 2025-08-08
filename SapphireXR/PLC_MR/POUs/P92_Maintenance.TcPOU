@@ -1,18 +1,10 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4026.11">
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4026.12">
   <POU Name="P92_Maintenance" Id="{17478ea4-373a-4676-aa4e-f86e85a19514}" SpecialFunc="None">
     <Declaration><![CDATA[PROGRAM P92_Maintenance
-VAR_INPUT
-	bBuzzerStop				: BOOL;
-	nCaseSignalTower		: INT;
-END_VAR
-VAR_OUTPUT
-
-END_VAR
 VAR
 	(* Input *)
 	//Light
-	bLightCP				: BOOL;
 	rTrigReactorCabinetSwitch	: R_TRIG;
 	rTrigReactorCabinetMagnet 	: R_TRIG;
 	fTrigReactorCabinetMagnet 	: F_TRIG;
@@ -37,21 +29,19 @@ VAR
 	bSMPS24V72WFault		: BOOL;
 	bSMPS15VPlusFault		: BOOL;
 	bSMPS15VMinusFault		: BOOL;
-	bSMPS15CP				: BOOL;
 	// Signal Tower
 	bSignalTower			: BYTE;
 	TimerSignalTower		: TON;
+	bBuzzer					: BOOL;
 END_VAR
 ]]></Declaration>
     <Implementation>
       <ST><![CDATA[(* Read from Device Value *)
 //Lamp
-bLightCP 				:= GVL_IO.aDigitalInputIO[5].6;
 bReactorCabientMagnet 	:= GVL_IO.aDigitalInputIO[3].6;
 bGasCabinetMagnet 		:= GVL_IO.aDigitalInputIO[3].7;
 bPowerDistributeMagnet	:= GVL_IO.aDigitalInputIO[4].0;
 
-bSMPS15CP				:= GVL_IO.aDigitalInputIO[5].7;
 //SMPS
 bSMPS24V480WFault	:= NOT(GVL_IO.aDigitalInputIO[4].3);
 bSMPS24V72WFault	:= NOT(GVL_IO.aDigitalInputIO[4].4);
@@ -79,8 +69,13 @@ END_IF
 // Power Distribute Unit Lamp
 bPowerDistributeLamp := NOT(bPowerDistributeMagnet); //Magnet Switch
 
+(* Buzzer On/Off *)
+IF bBuzzer <> GVL_IO.aInterlockEnable[1].2 THEN
+	bBuzzer := GVL_IO.aInterlockEnable[1].2;
+END_IF
+
 (* Blink Signal Tower *)
-CASE nCaseSignalTower OF
+CASE GVL_IO.nCaseSignalTower OF
 	1: //RED 
 		TimerSignalTower(IN:=TRUE, PT:=T#500MS);
 		IF TimerSignalTower.Q THEN
@@ -91,6 +86,7 @@ CASE nCaseSignalTower OF
 				bSignalTower := 0;
 			END_IF
 		END_IF
+
 	2: //YELLOW 
 		TimerSignalTower(IN:=TRUE, PT:=T#1S);
 		IF TimerSignalTower.Q THEN
@@ -110,18 +106,11 @@ CASE nCaseSignalTower OF
 			ELSE
 				bSignalTower := 0;
 			END_IF
-		END_IF		
+		END_IF
 	4: //BLUE
 		bSignalTower := 2#0000_1000;
 	5: //WHITE
 		bSignalTower := 2#0001_0000;
-	6: //BUZZER
-		bSignalTower := 2#0010_0001;
-		IF bBuzzerStop THEN
-			bSignalTower := 2#0000_0001;
-		END_IF
-	ELSE
-		bSignalTower := 0;
 END_CASE
 
 (* Write to Device Value *)
@@ -130,21 +119,19 @@ GVL_IO.aDigitalOutputIO[2].6 	:= bGasCabinetLamp;
 GVL_IO.aDigitalOutputIO[2].7 	:= bPowerDistributeLamp;
 
 //SignalTower
-GVL_IO.aDigitalOutputIO[1].0 		:= bSignalTower.0; //0:RED-Alarm,
-GVL_IO.aDigitalOutputIO[1].1 		:= bSignalTower.1; //1:YELLOW,-Warning 
-GVL_IO.aDigitalOutputIO[1].2 		:= bSignalTower.2; //2:GREEN-Running
-GVL_IO.aDigitalOutputIO[1].3 		:= bSignalTower.3; //3:BLUE-Idle
-GVL_IO.aDigitalOutputIO[1].4 		:= bSignalTower.4; //4:WHITE-Maint
-GVL_IO.aDigitalOutputIO[1].5 		:= bSignalTower.5; //5:BUZZER-Alarm
+GVL_IO.aDigitalOutputIO[1].0 	:= bSignalTower.0; //0:RED-Alarm,
+GVL_IO.aDigitalOutputIO[1].1 	:= bSignalTower.1; //1:YELLOW,-Warning 
+GVL_IO.aDigitalOutputIO[1].2 	:= bSignalTower.2; //2:GREEN-Running
+GVL_IO.aDigitalOutputIO[1].3 	:= bSignalTower.3; //3:BLUE-Idle
+GVL_IO.aDigitalOutputIO[1].4 	:= bSignalTower.4; //4:WHITE-Maint
+GVL_IO.aDigitalOutputIO[1].5 	:= bBuzzer; //5:BUZZER-Alarm
 ]]></ST>
     </Implementation>
     <LineIds Name="P92_Maintenance">
       <LineId Id="5" Count="0" />
       <LineId Id="10" Count="0" />
-      <LineId Id="7" Count="0" />
       <LineId Id="65" Count="2" />
       <LineId Id="395" Count="0" />
-      <LineId Id="388" Count="0" />
       <LineId Id="391" Count="3" />
       <LineId Id="389" Count="0" />
       <LineId Id="55" Count="1" />
@@ -160,15 +147,22 @@ GVL_IO.aDigitalOutputIO[1].5 		:= bSignalTower.5; //5:BUZZER-Alarm
       <LineId Id="42" Count="0" />
       <LineId Id="38" Count="0" />
       <LineId Id="381" Count="0" />
-      <LineId Id="397" Count="0" />
-      <LineId Id="146" Count="0" />
+      <LineId Id="489" Count="0" />
+      <LineId Id="441" Count="0" />
+      <LineId Id="443" Count="0" />
+      <LineId Id="503" Count="1" />
+      <LineId Id="499" Count="0" />
+      <LineId Id="459" Count="0" />
       <LineId Id="156" Count="0" />
-      <LineId Id="147" Count="0" />
+      <LineId Id="487" Count="0" />
       <LineId Id="160" Count="0" />
       <LineId Id="148" Count="1" />
-      <LineId Id="257" Count="4" />
+      <LineId Id="257" Count="0" />
+      <LineId Id="416" Count="0" />
+      <LineId Id="259" Count="2" />
       <LineId Id="143" Count="0" />
-      <LineId Id="164" Count="3" />
+      <LineId Id="468" Count="1" />
+      <LineId Id="165" Count="2" />
       <LineId Id="262" Count="3" />
       <LineId Id="223" Count="0" />
       <LineId Id="163" Count="0" />
@@ -180,12 +174,6 @@ GVL_IO.aDigitalOutputIO[1].5 		:= bSignalTower.5; //5:BUZZER-Alarm
       <LineId Id="402" Count="0" />
       <LineId Id="175" Count="1" />
       <LineId Id="178" Count="1" />
-      <LineId Id="169" Count="0" />
-      <LineId Id="183" Count="0" />
-      <LineId Id="180" Count="0" />
-      <LineId Id="177" Count="0" />
-      <LineId Id="184" Count="0" />
-      <LineId Id="161" Count="1" />
       <LineId Id="159" Count="0" />
       <LineId Id="144" Count="0" />
       <LineId Id="23" Count="1" />

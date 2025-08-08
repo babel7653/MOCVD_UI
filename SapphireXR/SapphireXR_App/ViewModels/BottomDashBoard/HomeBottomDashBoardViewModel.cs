@@ -22,6 +22,12 @@ namespace SapphireXR_App.ViewModels.BottomDashBoard
                     IntervalLength = 60,
                     IsPanEnabled = true,
                     IsZoomEnabled = true,
+                    AxislineColor = OxyColors.White,
+                    MajorGridlineColor = OxyColors.White,
+                    MinorGridlineColor = OxyColors.White,
+                    TicklineColor = OxyColors.White,
+                    ExtraGridlineColor = OxyColors.White,
+                    MinorTicklineColor = OxyColors.White,
                     IntervalType = DateTimeIntervalType.Seconds,
                     MajorGridlineStyle = LineStyle.Solid,
                     MinorGridlineStyle = LineStyle.Solid,
@@ -72,7 +78,7 @@ namespace SapphireXR_App.ViewModels.BottomDashBoard
             public static readonly int MaxSecondsToLiveShow = 30;
         }
 
-        public HomeBottomDashBoardViewModel(): base("CurrentPLCState")
+        public HomeBottomDashBoardViewModel(): base("CurrentPLCState.Home")
         {
             seriesUpdaterSetting();
         }

@@ -8,6 +8,7 @@ namespace SapphireXR_App.Models
     {
         public RecipeObservableCollection() { }
 
+        public RecipeObservableCollection(IEnumerable<Recipe> rhs) : base(rhs) { }
         public RecipeObservableCollection(RecipeObservableCollection rhs): base(rhs) { }
 
         public RecipeObservableCollection(List<Recipe> items) : base(items) { }

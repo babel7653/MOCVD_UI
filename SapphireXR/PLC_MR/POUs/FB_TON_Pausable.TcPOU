@@ -1,0 +1,68 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4026.11">
+  <POU Name="FB_TON_Pausable" Id="{bd38858b-b039-4273-aa36-133753d85ffd}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK FB_TON_Pausable
+VAR_INPUT
+	IN      : BOOL;     (* Start/Stop the timer *)
+    PT      : TIME;     (* Preset time *)
+    PAUSE   : BOOL;     (* Pause the timer *)
+END_VAR
+VAR_OUTPUT
+	Q       : BOOL;     (* Output: TRUE when PT is reached *)
+    ET      : TIME;     (* Elapsed time *)
+END_VAR
+VAR
+	// Internal variables
+    fbTON   : TON;      (* Standard TON to do the actual timing when not paused *)
+    tElapsedAtPause : TIME; (* Stores ET when paused *)
+    bWasPaused      : BOOL; (* Helps detect the rising edge of PAUSE *)
+    bOldIn          : BOOL; (* Stores previous IN state for rising/falling edge detection *)
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[IF NOT IN THEN
+    // Reset condition: IN is FALSE
+    tElapsedAtPause := T#0S;
+    ET := T#0S;
+    Q := FALSE;
+    fbTON(IN := FALSE); // Ensure internal TON is also reset
+    bWasPaused := FALSE; // Reset pause state
+ELSIF IN THEN
+    // Timer is active
+    IF PAUSE THEN
+        // PAUSE is active
+        IF NOT bWasPaused THEN
+            // Rising edge of PAUSE: Capture current elapsed time from TON
+            tElapsedAtPause := tElapsedAtPause + fbTON.ET;
+            bWasPaused := TRUE;
+        END_IF
+        // Timer is paused: ET does not advance
+        ET := tElapsedAtPause;
+        Q := (ET >= PT); // Q remains based on the paused ET
+        fbTON(IN := FALSE); // Stop the internal TON from running
+    ELSE (* NOT PAUSE *)
+        // PAUSE is not active, run the timer
+        bWasPaused := FALSE; // Clear paused state
+
+        // Adjust PT for the internal TON to account for time spent paused
+        // Only call TON if IN is TRUE and NOT PAUSE
+        fbTON(
+            IN := TRUE,
+            PT := PT - tElapsedAtPause (* Subtract time already elapsed/paused *)
+        );
+
+        // Calculate actual ET for output
+        // It's the time accumulated before pause + time accumulated after resume
+        ET := tElapsedAtPause + fbTON.ET;
+        Q := fbTON.Q;
+    END_IF
+END_IF
+
+// Store current IN state for next cycle's edge detection
+bOldIn := IN;]]></ST>
+    </Implementation>
+    <LineIds Name="FB_TON_Pausable">
+      <LineId Id="1" Count="39" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

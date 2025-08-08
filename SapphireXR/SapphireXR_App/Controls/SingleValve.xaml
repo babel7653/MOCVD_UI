@@ -7,7 +7,7 @@
              xmlns:local="clr-namespace:SapphireXR_App.Controls"
              mc:Ignorable="d"
              x:Name="singleValve"
-             d:DesignHeight="24" d:DesignWidth="24">
+             d:DesignHeight="24" d:DesignWidth="24" ToolTip="{Binding Name, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}">
     <local:Valve.Resources>
         <SolidColorBrush x:Key="BorderBrushOnMouseEnter" Color="#9dbce8" />
         <SolidColorBrush x:Key="BorderBrushOnMouseLeave" Color="#475569" />

@@ -7,14 +7,14 @@ namespace SapphireXR_App.ViewModels.FlowController
         protected override void onLoaded(string type, string controllerID)
         {
             base.onLoaded(type, controllerID);
-            selectedThis = ObservableManager<string>.Get("FlowControl.Selected.CurrentPLCState");
+            selectedThis = ObservableManager<string>.Get("FlowControl.Selected.CurrentPLCState.RecipeRun");
         }
 
         protected override void onClicked(object[]? args)
         {
-            selectedThis?.Issue(ControllerID);
+            selectedThis?.Publish(ControllerID);
         }
 
-        private ObservableManager<string>.DataIssuer? selectedThis;
+        private ObservableManager<string>.Publisher? selectedThis;
     }
 }

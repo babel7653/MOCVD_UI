@@ -1,8 +1,10 @@
 ﻿using SapphireXR_App.Common;
-using SapphireXR_App.Enums;
 using System.Collections;
 using System.Windows.Threading;
 using TwinCAT.Ads;
+using System.Windows;
+using SapphireXR_App.Enums;
+using System.Runtime.InteropServices;
 
 namespace SapphireXR_App.Models
 {
@@ -11,6 +13,17 @@ namespace SapphireXR_App.Models
         internal class ReadValveStateException : Exception
         {
             public ReadValveStateException(string message) : base(message) { }
+        }
+
+        internal class ConnectionFaiulreException : Exception
+        {
+            public ConnectionFaiulreException(string internalMessage) : base("PLC로의 연결이 실패했습니다. 물리적 연결이나 서비스가 실행 중인지 확인해 보십시요." +
+                (internalMessage != string.Empty ? "문제의 원인은 다음과 같습니다: " + internalMessage : internalMessage)) { }
+        }
+
+        private class ReadBufferException : Exception
+        {
+            public ReadBufferException(string message) : base(message) { }
         }
 
         internal class LeakTestModeSubscriber : IObserver<bool>
@@ -28,16 +41,40 @@ namespace SapphireXR_App.Models
             void IObserver<bool>.OnNext(bool value)
             {
                 LeakTestMode = value;
-                if(value == false)
+                if (value == false)
                 {
-                    foreach((string valveID, string coupled) in LeftCoupled)
+                    foreach ((string valveID, string coupled) in LeftCoupled)
                     {
-                        DoWriteValveState(valveID, false);
-                        DoWriteValveState(coupled, false);
+                        try
+                        {
+                            DoWriteValveState(valveID, false);
+                            DoWriteValveState(coupled, false);
+                        }
+                        catch (Exception exception)
+                        {
+                            if (ShowMessageOnLeakTestModeSubscriberWriteValveState == true)
+                            {
+                                ShowMessageOnLeakTestModeSubscriberWriteValveState = MessageBox.Show("PLC로부터 Valve 상태를 읽어오는데 실패했습니다. 이 메시지를 다시 표시하지 않으려면 Yes를 클릭하세요. 원인은 다음과 같습니다: " + exception.Message, "",
+                                    MessageBoxButton.YesNo, MessageBoxImage.Error) == MessageBoxResult.Yes ? false : true;
+                            }
+                        }
                     }
                 }
             }
         }
+
+
+        [StructLayout(LayoutKind.Sequential, Pack = 1)]
+        private struct RecipeRunET
+        {
+            public int ElapsedTime;
+            public RecipeRunETMode Mode;
+        }
+
+        internal enum RecipeRunETMode : short
+        {
+            None = 0, Ramp = 1, Hold = 2
+        };
 
         internal enum HardWiringInterlockStateIndex
         {
@@ -49,19 +86,19 @@ namespace SapphireXR_App.Models
         const int NumShortBits = sizeof(short) * 8;
         internal enum IOListIndex
         {
-            PowerResetSwitch = 2, Cover_UpperLimit = 3, Cover_LowerLimit = 4, SMPS_24V480 = 5, SMPS_24V72 = 6, SMPS_15VPlus= 7, SMPS_15VMinus = 8, CP_InudctionHeater = 9, 
-            CP_ThermalBath = 10,  CP_VaccumPump = 11, CP_LineHeater = 12, CP_RotationMotor = 13, CP_CoverMotor = 14, CP_ThrottleValve = 15, CP_Lamp = NumShortBits * 1, 
-            CP_SM515CP = NumShortBits * 1 + 1, LineHeader1 = NumShortBits * 1 + 2, LineHeader2 = NumShortBits * 1 + 3, LineHeader3 = NumShortBits * 1 + 4,  LineHeader4 = NumShortBits * 1 + 5, 
-            LineHeader5 = NumShortBits * 1 + 6, LineHeader6 = NumShortBits * 1 + 7, LineHeader7 = NumShortBits * 1 + 8, LineHeader8 = NumShortBits * 1 + 9, 
-            Bath_DeviationAlaram1 = NumShortBits * 1 + 10, Bath_DeviationAlaram2 = NumShortBits * 1 + 11, Bath_DeviationAlaram3 = NumShortBits * 1 + 12, 
-            Bath_DeviationAlaram4 = NumShortBits * 1 + 13,  Bath_DeviationAlaram5 = NumShortBits * 1 + 14, Bath_DeviationAlaram6 = NumShortBits * 1 + 15, 
-            SingalTower_RED = NumShortBits * 2, SingalTower_YELLOW = NumShortBits * 2 + 1, SingalTower_GREEN = NumShortBits * 2 + 2, SingalTower_BLUE = NumShortBits * 2 + 3, 
-            SingalTower_WHITE = NumShortBits * 2 + 4, SingalTower_BUZZWER = NumShortBits * 2 + 5, DOR_Vaccum_State = NumShortBits * 2 + 6, Temp_Controller_Alarm = NumShortBits * 2 + 7
+            PowerResetSwitch = 2, Cover_UpperLimit = 3, Cover_LowerLimit = 4, SMPS_24V480 = 5, SMPS_24V72 = 6, SMPS_15VPlus = 7, SMPS_15VMinus = 8, CP_InudctionHeater = 9,
+            CP_ThermalBath = 10, CP_VaccumPump = 11, CP_LineHeater = 12, CP_RotationMotor = 13, CP_CoverMotor = 14, CP_ThrottleValve = 15, CP_Lamp = NumShortBits * 1,
+            CP_SM515CP = NumShortBits * 1 + 1, LineHeader1 = NumShortBits * 1 + 2, LineHeader2 = NumShortBits * 1 + 3, LineHeader3 = NumShortBits * 1 + 4, LineHeader4 = NumShortBits * 1 + 5,
+            LineHeader5 = NumShortBits * 1 + 6, LineHeader6 = NumShortBits * 1 + 7, LineHeader7 = NumShortBits * 1 + 8, LineHeader8 = NumShortBits * 1 + 9,
+            Bath_DeviationAlaram1 = NumShortBits * 1 + 10, Bath_DeviationAlaram2 = NumShortBits * 1 + 11, Bath_DeviationAlaram3 = NumShortBits * 1 + 12,
+            Bath_DeviationAlaram4 = NumShortBits * 1 + 13, Bath_DeviationAlaram5 = NumShortBits * 1 + 14, Bath_DeviationAlaram6 = NumShortBits * 1 + 15,
+            SingalTower_RED = NumShortBits * 2, SingalTower_YELLOW = NumShortBits * 2 + 1, SingalTower_GREEN = NumShortBits * 2 + 2, SingalTower_BLUE = NumShortBits * 2 + 3,
+            SingalTower_WHITE = NumShortBits * 2 + 4, SingalTower_BUZZER = NumShortBits * 2 + 5, DOR_Vaccum_State = NumShortBits * 2 + 6, Temp_Controller_Alarm = NumShortBits * 2 + 7
         };
 
         internal enum DigitalOutput2Index
         {
-            InductionHeaterOn = 0, InductionHeaterReset, VaccumPumpOn, VaccumPumpReset, 
+            InductionHeaterOn = 0, InductionHeaterReset, VaccumPumpOn, VaccumPumpReset,
         }
 
         public enum DigitalOutput3Index
@@ -74,92 +111,23 @@ namespace SapphireXR_App.Models
             InductionHeaterPower = 0, ThermalBathPower, VaccumPumpPower, LineHeaterPower, InductionHeaterControl, InductionHeaterReset, VaccumPumpControl, VaccumPumpReset, TempControllerManAuto = 11, PressureControlMode = 12
         }
 
-        public enum OutputSetType: ushort
+        public enum OutputSetType : ushort
         {
             Pressure = 1, Position = 2
         }
 
-        // Connect to PLC
-        public static string AddressPLC { get; set; } = "PLC Address : ";
-        public static string ModePLC { get; set; } = "System Mode : ";
+        public enum InterlockEnableSetting
+        {
+            Buzzer = 2, CanOpenSusceptorTemperature, CanOpenReactorPressure, PressureLimit, RetryCount, InductionPowerSupply, SusceptorRotationMotor
+        };
 
-        // Variable handles to be connected plc variables
-        private static BitArray? baReadValveStatePLC1 = null;
-        private static BitArray? baReadValveStatePLC2 = null;
-        private static float[]? aDeviceMaxValue = null;
-        private static float[]? aDeviceTargetValues = null;
-        private static float[]? aDeviceCurrentValues = null;
-        private static float[]? aDeviceControlValues = null;
-        private static short[]? aDeviceRampTimes = null;
-        private static float[]? aMonitoring_PVs = null;
-        private static short[]? aInputState = null;
-        private static BitArray? bOutputCmd1 = null;
+        public enum InterlockValueSetting
+        {
+            ProcessGasPressureAlarm = 5, ProcessGasPressureWarning, CWTempSHAlarm, CWTempSHWarning, CWTempCoilAlarm, CWTempCoilWarning, SusceptorOverTemperature, ReactorOverPressure,
+            CanOpenSusceptorTemperature, CanOpenReactorPressure, PressureLimit, RetryCount
+        };
 
-        private static ObservableManager<PLCConnection>.DataIssuer ConnectedNotifier;
-        private static Dictionary<string, ObservableManager<float>.DataIssuer>? dCurrentValueIssuers;
-        private static Dictionary<string, ObservableManager<float>.DataIssuer>? dControlValueIssuers;
-        private static Dictionary<string, ObservableManager<float>.DataIssuer>? dTargetValueIssuers;
-        private static Dictionary<string, ObservableManager<(float, float)>.DataIssuer>? dControlCurrentValueIssuers;
-        private static Dictionary<string, ObservableManager<float>.DataIssuer>? aMonitoringCurrentValueIssuers;
-        private static ObservableManager<BitArray>.DataIssuer? baHardWiringInterlockStateIssuers;
-        private static ObservableManager<BitArray>.DataIssuer? dIOStateList;
-        private static Dictionary<string, ObservableManager<bool>.DataIssuer>? dValveStateIssuers;
-        private static ObservableManager<bool>.DataIssuer? dRecipeEndedPublisher;
-        private static ObservableManager<short>.DataIssuer? dCurrentActiveRecipeIssue;
-        private static ObservableManager<float[]>.DataIssuer? dLineHeaterTemperatureIssuers;
-        private static ObservableManager<int>.DataIssuer? dRecipeControlHoldTimeIssuer;
-        private static ObservableManager<int>.DataIssuer? dRecipeControlRampTimeIssuer;
-        private static ObservableManager<int>.DataIssuer? dRecipeControlPauseTimeIssuer;
-        private static ObservableManager<BitArray>.DataIssuer? dDigitalOutput2;
-        private static ObservableManager<BitArray>.DataIssuer? dDigitalOutput3;
-        private static ObservableManager<BitArray>.DataIssuer? dOutputCmd1;
-        private static ObservableManager<BitArray>.DataIssuer? dInputManAuto;
-        private static ObservableManager<short>.DataIssuer? dThrottleValveControlMode;
-        private static ObservableManager<ushort>.DataIssuer? dPressureControlModeIssuer;
-        private static ObservableManager<short>.DataIssuer? dThrottleValveStatusIssuer;
-        private static ObservableManager<BitArray>.DataIssuer? dLogicalInterlockStateIssuer;
-
-        private static LeakTestModeSubscriber? leakTestModeSubscriber = null;
-
-        //Create an instance of the TcAdsClient()
-        public static AdsClient Ads { get; set; }
-        private static DispatcherTimer? timer;
-        private static DispatcherTimer? currentActiveRecipeListener;
-
-        // Read from PLC State
-        private static uint hReadValveStatePLC1;
-        private static uint hReadValveStatePLC2;
-        private static uint hDeviceMaxValuePLC;
-        private static uint hDeviceControlValuePLC;
-        private static uint hDeviceCurrentValuePLC;
-        private static uint hWriteDeviceTargetValuePLC;
-        private static uint hWriteDeviceRampTimePLC;
-        private static uint hRcp;
-        private static uint hRcpTotalStep;
-        private static uint hCmd_RcpOperation;
-        private static uint hRcpStepN;
-        private static uint hMonitoring_PV;
-        private static uint hInputState;
-        private static uint hInputState4;
-        private static uint hState_RcpOperation;
-        private static uint hTemperaturePV;
-        private static uint hOperationMode;
-        private static uint hUserState;
-        private static uint hRecipeControlHoldTime;
-        private static uint hRecipeControlRampTime;
-        private static uint hRecipeControlPauseTime;
-        private static uint hDigitalOutput;
-        private static uint hDigitalOutput2;
-        private static uint hOutputCmd;
-        private static uint hE3508InputManAuto;
-        private static uint hOutputCmd1;
-        private static uint hOutputCmd2;
-        private static uint hOutputSetType;
-        private static uint hOutputMode;
-        private static uint hInterlock1;
-
-        private static bool RecipeRunEndNotified = false;
-        private static bool LeakTestMode = true;
+        public enum TriggerType { Alarm = 0, Warning };
 
         public static readonly Dictionary<string, int> ValveIDtoOutputSolValveIdx1 = new Dictionary<string, int>
         {
@@ -193,14 +161,143 @@ namespace SapphireXR_App.Models
 
         public static readonly Dictionary<string, int> dMonitoringMeterIndex = new Dictionary<string, int>
         {
-            { "UltimatePressure", 0 },  { "ExtPressure", 1},  { "DorPressure", 2}, { "N2", 3}, { "H2", 4}, { "NH3", 5},
-            { "SiH4", 6}, { "ShowerHeadTemp", 7}, { "InductionCoilTemp", 8}, { "HeaterPowerRate", 9 }, { "ValvePosition", 10 }, { "TEB", 11},
-             { "TMAl", 12},  { "TMIn", 13},  { "TMGa", 14},  { "DTMGa", 15},  { "Cp2Mg", 16}
+            { "UltimatePressure", 0 },  { "ExtPressure", 1},  { "DorPressure", 2}, { "Gas1", 3}, { "Gas2", 4}, { "Gas3", 5}, { "Gas4", 6}, { "ShowerHeadTemp", 7}, { "InductionCoilTemp", 8},
+            { "HeaterPowerRate", 9 }, { "ValvePosition", 10 }, { "Source1", 11}, { "Source2", 12},  { "Source3", 13},  { "Source4", 14},  { "Source5", 15},  { "Source6", 16}
         };
 
-        public static readonly uint LineHeaterTemperature = 8;
+        private static readonly Dictionary<string, int> dAnalogDeviceAlarmWarningBit = new Dictionary<string, int>
+        {
+            { "R01", 0 }, { "R02", 1 }, { "R03", 2 },  { "M01", 3 }, { "M02", 4 }, { "M03", 5 },  { "M04", 6 }, { "M05", 7 }, { "M06", 8 }, { "M07", 9 }, { "M08", 10 }, { "M09", 11 },  
+            { "M10", 12 }, { "M11", 13 }, { "M12", 14 },  { "M13", 15 }, { "M14", 16 }, { "M15",17 }, { "M16", 18 }, { "M17", 19 }, { "M18", 20 },  { "M19", 21 }, { "E01", 22 }, { "E02", 23 }, 
+            { "E03", 24 }, { "E04", 25 }, { "E05", 26 }, { "E06", 27 }, { "E07", 28 }
+        };
+
+        private static readonly Dictionary<string, int> dDigitalDeviceAlarmWarningBit = new Dictionary<string, int>
+        {
+            { "A01", 0 }, { "A02", 1 }, { "A03", 2 },  { "A04", 3 }, { "A05", 4 }, { "A06", 5 },  { "A07", 6 }, { "A08", 7 }, { "A09", 8 }, { "A10", 9 }, { "A11", 10 }, { "A12", 11 },
+            { "A13", 12 }, { "A14", 13 }, { "A15", 14 }
+        };
+
+        public const uint LineHeaterTemperature = 8;
+        private const uint NumAlarmWarningArraySize = 6;
+        private const uint NumInterlockSet = 16;
+        private const uint NumInterlock = 5;
+        public const uint NumDigitalDevice = 14;
+        public const uint NumAnalogDevice = 29;
+
+        // Variable handles to be connected plc variables
+        private static BitArray? baReadValveStatePLC1 = null;
+        private static BitArray? baReadValveStatePLC2 = null;
+        private static float[]? aDeviceCurrentValues = null;
+        private static float[]? aDeviceControlValues = null;
+        private static float[]? aMonitoring_PVs = null;
+        private static short[]? aInputState = null;
+        private static BitArray? bOutputCmd1 = null;
+        private static short[]? aDeviceRampTimes = new short[dIndexController.Count];
+        private static float[]? aDeviceTargetValues = new float[dIndexController.Count];
+        private static int[] InterlockEnables = Enumerable.Repeat<int>(0, (int)NumAlarmWarningArraySize).ToArray();
+        private static Memory<byte> userStateBuffer = new Memory<byte>([ 0x00, 0x00 ]);
+
+        private static Dictionary<string, ObservableManager<float>.Publisher>? dCurrentValueIssuers;
+        private static Dictionary<string, ObservableManager<float>.Publisher>? dControlValueIssuers;
+        private static Dictionary<string, ObservableManager<float>.Publisher>? dTargetValueIssuers;
+        private static Dictionary<string, ObservableManager<(float, float)>.Publisher>? dControlCurrentValueIssuers;
+        private static Dictionary<string, ObservableManager<float>.Publisher>? aMonitoringCurrentValueIssuers;
+        private static ObservableManager<BitArray>.Publisher? baHardWiringInterlockStateIssuers;
+        private static ObservableManager<BitArray>.Publisher? dIOStateList;
+        private static Dictionary<string, ObservableManager<bool>.Publisher>? dValveStateIssuers;
+        private static ObservableManager<bool>.Publisher? dRecipeEndedPublisher;
+        private static ObservableManager<short>.Publisher? dCurrentActiveRecipeIssue;
+        private static ObservableManager<float[]>.Publisher? dLineHeaterTemperatureIssuers;
+        private static ObservableManager<int>.Publisher? dRecipeControlPauseTimeIssuer;
+        private static ObservableManager<(int, RecipeRunETMode)>.Publisher? dRecipeRunElapsedTimeIssuer;
+        private static ObservableManager<BitArray>.Publisher? dDigitalOutput2;
+        private static ObservableManager<BitArray>.Publisher? dDigitalOutput3;
+        private static ObservableManager<BitArray>.Publisher? dOutputCmd1;
+        private static ObservableManager<BitArray>.Publisher? dInputManAuto;
+        private static ObservableManager<short>.Publisher? dThrottleValveControlMode;
+        private static ObservableManager<ushort>.Publisher? dPressureControlModeIssuer;
+        private static ObservableManager<short>.Publisher? dThrottleValveStatusIssuer;
+        private static ObservableManager<BitArray>.Publisher? dLogicalInterlockStateIssuer;
+        private static ObservableManager<PLCConnection>.Publisher? dPLCConnectionPublisher;
+        private static ObservableManager<bool>.Publisher? dOperationModeChangingPublisher;
+
+        private static LeakTestModeSubscriber? leakTestModeSubscriber = null;
+
+        static Task<bool>? TryConnectAsync = null;
+
+        public static PLCConnection Connected 
+        { 
+            get { return connected;  } 
+            private set 
+            { 
+                connected = value;
+                switch(connected)
+                {
+                    case PLCConnection.Connected:
+                        OnConnected();
+                        break;
+
+                    case PLCConnection.Disconnected:
+                        OnDisconnected();
+                        break;
+                }
+                dPLCConnectionPublisher?.Publish(value);
+            } 
+        }
+        private static PLCConnection connected = PLCConnection.Disconnected;
+
+        //Create an instance of the TcAdsClient()
+        public static AdsClient Ads { get; set; } = new AdsClient();
+        private static DispatcherTimer? timer = null;
+        private static DispatcherTimer? currentActiveRecipeListener = null;
+        private static DispatcherTimer? connectionTryTimer = null;
+
+        // Read from PLC State
+        private static uint hReadValveStatePLC1;
+        private static uint hReadValveStatePLC2;
+        private static uint hDeviceMaxValuePLC;
+        private static uint hDeviceControlValuePLC;
+        private static uint hDeviceCurrentValuePLC;
+        private static uint hWriteDeviceTargetValuePLC;
+        private static uint hWriteDeviceRampTimePLC;
+        private static uint hRcp;
+        private static uint hRcpTotalStep;
+        private static uint hCmd_RcpOperation;
+        private static uint hRcpStepN;
+        private static uint hMonitoring_PV;
+        private static uint hInputState;
+        private static uint hInputState4;
+        private static uint hTemperaturePV;
+        private static uint hOperationMode;
+        private static uint hUserState;
+        private static uint hRecipeControlPauseTime;
+        private static uint hDigitalOutput;
+        private static uint hDigitalOutput2;
+        private static uint hOutputCmd;
+        private static uint hE3508InputManAuto;
+        private static uint hOutputCmd1;
+        private static uint hOutputCmd2;
+        private static uint hOutputSetType;
+        private static uint hOutputMode;
+        private static uint hRecipeRunET;
+        private static uint[] hInterlockEnable = new uint[NumAlarmWarningArraySize];
+        private static uint[] hInterlockset = new uint[NumInterlockSet];
+        private static uint[] hInterlock = new uint[NumInterlock];
+
+        private static bool RecipeRunEndNotified = false;
+        private static bool LeakTestMode = true;
+
+        private static bool ShowMessageOnLeakTestModeSubscriberWriteValveState = true;
+        private static bool ShowMessageOnOnTick = true;
 
         private static Dictionary<string, string> LeftCoupled = new Dictionary<string, string>();
         private static Dictionary<string, string> RightCoupled = new Dictionary<string, string>();
+
+        private static HashSet<int> InterlockEnableUpperIndiceToCommit = new HashSet<int>();
+        private static HashSet<int> InterlockEnableLowerIndiceToCommit = new HashSet<int>();
+        private static Dictionary<int, float> AnalogDeviceInterlockSetIndiceToCommit = new Dictionary<int, float>();
+        private static (bool, float) DigitalDevicelnterlockSetToCommit = (false, 0.0f);
+        private static Dictionary<int, float> InterlockSetIndiceToCommit = new Dictionary<int, float>();
     }
 }

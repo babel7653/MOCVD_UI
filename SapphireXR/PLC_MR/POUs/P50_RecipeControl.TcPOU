@@ -7,26 +7,21 @@ VAR
 	eRecipeRun		: E_RecipeRun ; //레시피 상태
 	fbRecipeSequencer : FB_RecipeSequencer;
 	
-	Pause_ET		: TIME;
-	Pause_MAX		: TIME := T#1800S;
-	Ramp_ET			: TIME;
-	Hold_ET			: TIME;
-
 	Pause_TON		: TON;
-	Ramp_TON: FB_TON_Pausable;
-	Hold_TON: FB_TON_Pausable;
+	Ramp_TON		: FB_TON_Pausable;
+	Hold_TON		: FB_TON_Pausable;
 	
-	loopCount	: ARRAY[1..100] OF INT;
+	loopCount		: ARRAY[1..100] OF INT;
 	i				: INT;
-
+END_VAR
+VAR CONSTANT
+	Pause_MAX		: TIME := T#1800S;
 END_VAR
 ]]></Declaration>
     <Implementation>
       <ST><![CDATA[CASE RCP.cmd_RcpOperation OF
 	0: //Init State
- 		Pause_TON(IN:=FALSE);
-		Ramp_TON(IN:=FALSE);
-		Hold_TON(IN:=FALSE);
+ 		f_ResetTimersAndRCPTimes(fbPause_TON := Pause_TON, fbRamp_TON := Ramp_TON, fbHold_TON := Hold_TON);
 		
 		FOR i:=1 TO Rcp.iRcpTotalStep DO
 			loopCount[i] := Rcp.aRecipe[i].iRecipe[9];
@@ -46,15 +41,14 @@ END_VAR
 		// CASE 문을 이용한 상태 머신 구현
 		CASE eRecipeRun OF
 			E_RecipeRun.Initial:
-				Ramp_ET := T#0S;
-				Hold_ET := T#0S;
-				Pause_ET := T#0S;
+				f_ResetTimersAndRCPTimes(fbPause_TON := Pause_TON, fbRamp_TON := Ramp_TON, fbHold_TON := Hold_TON);
 				Rcp.userState := 10;// Recipe Running
 				GVL_IO.nCaseSignalTower := 3;
 				eRecipeRun := E_RecipeRun.Ramp;
 				
 			E_RecipeRun.Ramp: // Ramp 수행
-				Ramp_TON(IN:=TRUE, PT:=INT_TO_TIME(RCP.aRecipe[nRcpIndex].iRecipe[2]*1000), ET=>Ramp_ET, PAUSE:=FALSE);
+				Ramp_TON(IN:=TRUE, PT:=INT_TO_TIME(RCP.aRecipe[nRcpIndex].iRecipe[2]*1000), ET=>RCP.RecipeRunET.ET);
+				RCP.RecipeRunET.Mode := E_RecipeRunETMode.Ramp;
 				IF Ramp_TON.Q THEN
 					Ramp_TON(IN:=FALSE);
 					eRecipeRun := E_RecipeRun.CheckHoldTemp;
@@ -62,7 +56,8 @@ END_VAR
 				
 			E_RecipeRun.CheckHoldTemp: //Hold Temp 확인
 				IF RCP.aRecipe[nRcpIndex].iRecipe[7] = 0 THEN
-					Hold_TON(IN:=TRUE, PT:=INT_TO_TIME(RCP.aRecipe[nRcpIndex].iRecipe[3]*1000), ET=>Hold_ET);
+					Hold_TON(IN:=TRUE, PT:=INT_TO_TIME(RCP.aRecipe[nRcpIndex].iRecipe[3]*1000), ET=>RCP.RecipeRunET.ET);
+					RCP.RecipeRunET.Mode := E_RecipeRunETMode.Hold;
 					IF Hold_TON.Q THEN
 						Hold_TON(IN:=FALSE);
 						eRecipeRun := E_RecipeRun.End; // 레시피 첫 Column 실행
@@ -91,7 +86,7 @@ END_VAR
 				Hold_TON(PAUSE:=TRUE);
 		END_CASE
 		
-		Pause_TON(IN:=TRUE, PT:= Pause_MAX, ET=> Pause_ET); //최대 홀드 시간이 지나면 다음 스텝으로 넘거감
+		Pause_TON(IN:=TRUE, PT:= Pause_MAX, ET=>RCP.Pause_ET); //최대 홀드 시간이 지나면 다음 스텝으로 넘거감
 		IF Pause_TON.Q THEN
 			Pause_TON(IN:=FALSE);
 			eRecipeRun := E_RecipeRun.End; // 레시피 첫 Column 실행
@@ -110,21 +105,18 @@ END_VAR
 				Hold_TON(PAUSE:=FALSE);
 		END_CASE
 
+		RCP.Pause_ET := T#0S;
 		Rcp.userState := 10;
 		RCP.cmd_RcpOperation := 10;	
 		GVL_IO.nCaseSignalTower := 3;
 		
 	40: //STOP
-		Pause_TON(IN:=FALSE);
-		Ramp_TON(IN:=FALSE);
-		Hold_TON(IN:=FALSE);
+		f_ResetTimersAndRCPTimes(fbPause_TON := Pause_TON, fbRamp_TON := Ramp_TON, fbHold_TON := Hold_TON);
 		Rcp.userState := 40;
 		GVL_IO.nCaseSignalTower := 5;
 		
 	50: //END
-		Pause_TON(IN:=FALSE);
-		Ramp_TON(IN:=FALSE);
-		Hold_TON(IN:=FALSE);
+		f_ResetTimersAndRCPTimes(fbPause_TON := Pause_TON, fbRamp_TON := Ramp_TON, fbHold_TON := Hold_TON);
 		Rcp.userState := 50;
 		fbRecipeSequencer(nRcpIndex := nRcpIndex);
 		GVL_IO.nCaseSignalTower := 5;
@@ -134,11 +126,18 @@ END_VAR
 			eRecipeRun := E_RecipeRun.End;
 		END_IF
 		Rcp.cmd_RcpOperation := 10;
+		RCP.Pause_ET := T#0S;
 END_CASE
 RCP.iRcpStepN := nRcpIndex;]]></ST>
     </Implementation>
     <LineIds Name="P50_RecipeControl">
-      <LineId Id="1" Count="113" />
+      <LineId Id="1" Count="28" />
+      <LineId Id="110" Count="0" />
+      <LineId Id="30" Count="7" />
+      <LineId Id="112" Count="0" />
+      <LineId Id="38" Count="4" />
+      <LineId Id="117" Count="0" />
+      <LineId Id="44" Count="64" />
     </LineIds>
   </POU>
 </TcPlcObject>

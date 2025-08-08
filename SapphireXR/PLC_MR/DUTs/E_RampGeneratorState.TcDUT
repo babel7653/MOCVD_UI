@@ -1,0 +1,16 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4026.11">
+  <DUT Name="E_RampGeneratorState" Id="{cbcc8ee2-9d79-4925-a980-51bfef25e4a7}">
+    <Declaration><![CDATA[{attribute 'qualified_only'}
+{attribute 'strict'}
+{attribute 'to_string'}
+TYPE E_RampGeneratorState :
+(
+	Init := 0,
+	Run := 1,
+	End := 2
+);
+END_TYPE
+]]></Declaration>
+  </DUT>
+</TcPlcObject>

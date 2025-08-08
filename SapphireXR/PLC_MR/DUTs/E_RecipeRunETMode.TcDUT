@@ -1,0 +1,16 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4026.11">
+  <DUT Name="E_RecipeRunETMode" Id="{88628f77-d0bd-459d-a557-53750e6e0c09}">
+    <Declaration><![CDATA[{attribute 'qualified_only'}
+{attribute 'strict'}
+{attribute 'to_string'}
+TYPE E_RecipeRunETMode :
+(
+	None := 0,
+	Ramp := 1,
+	Hold := 2
+);
+END_TYPE
+]]></Declaration>
+  </DUT>
+</TcPlcObject>

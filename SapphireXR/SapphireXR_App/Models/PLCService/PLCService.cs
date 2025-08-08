@@ -98,6 +98,9 @@ namespace SapphireXR_App.Models
                     try
                     {
                         dCurrentActiveRecipeIssue?.Publish(Ads.ReadAny<short>(hRcpStepN));
+                        dRecipeControlPauseTimeIssuer?.Publish(Ads.ReadAny<TIME>(hRecipeControlPauseTime).Time.Seconds);
+                        RecipeRunET recipeRunET = Ads.ReadAny<RecipeRunET>(hRecipeRunET);
+                        dRecipeRunElapsedTimeIssuer?.Publish((recipeRunET.ElapsedTime / 1000, recipeRunET.Mode));
                         if (RecipeRunEndNotified == false && Ads.ReadAny<short>(hCmd_RcpOperation) == 50)
                         {
                             dRecipeEndedPublisher?.Publish(true);
@@ -181,9 +184,8 @@ namespace SapphireXR_App.Models
             hTemperaturePV = Ads.CreateVariableHandle("GVL_IO.aLineHeater_rTemperaturePV");
             hOperationMode = Ads.CreateVariableHandle("MAIN.bOperationMode");
             hUserState = Ads.CreateVariableHandle("RCP.userState");
-            hRecipeControlHoldTime = Ads.CreateVariableHandle("GVL_IO.tRecipeControl_Hold_ET");
-            hRecipeControlRampTime = Ads.CreateVariableHandle("GVL_IO.tRecipeControl_Ramp_ET");
-            hRecipeControlPauseTime = Ads.CreateVariableHandle("GVL_IO.tRecipeControl_Pause_ET");
+            hRecipeControlPauseTime = Ads.CreateVariableHandle("RCP.Pause_ET");
+            hRecipeRunET = Ads.CreateVariableHandle("RCP.RecipeRunET");
             hE3508InputManAuto = Ads.CreateVariableHandle("GVL_IO.nE3508_nInputManAutoBytes");
             hOutputSetType = Ads.CreateVariableHandle("GVL_IO.nIQPLUS_SetType");
             hOutputMode = Ads.CreateVariableHandle("GVL_IO.nIQPLUS_Mode");
@@ -230,9 +232,8 @@ namespace SapphireXR_App.Models
             dIOStateList = ObservableManager<BitArray>.Get("DeviceIOList");
             dRecipeEndedPublisher = ObservableManager<bool>.Get("RecipeEnded");
             dLineHeaterTemperatureIssuers = ObservableManager<float[]>.Get("LineHeaterTemperature");
-            dRecipeControlHoldTimeIssuer = ObservableManager<int>.Get("RecipeControlTime.Hold");
             dRecipeControlPauseTimeIssuer = ObservableManager<int>.Get("RecipeControlTime.Pause");
-            dRecipeControlRampTimeIssuer = ObservableManager<int>.Get("RecipeControlTime.Ramp");
+            dRecipeRunElapsedTimeIssuer = ObservableManager<(int, RecipeRunETMode)>.Get("RecipeRun.ElapsedTime");
             dDigitalOutput2 = ObservableManager<BitArray>.Get("DigitalOutput2");
             dDigitalOutput3 = ObservableManager<BitArray>.Get("DigitalOutput3");
             dOutputCmd1 = ObservableManager<BitArray>.Get("OutputCmd1");
@@ -328,10 +329,7 @@ namespace SapphireXR_App.Models
                 ushort inputManAuto = Ads.ReadAny<ushort>(hE3508InputManAuto);
                 dInputManAuto?.Publish(new BitArray(BitConverter.IsLittleEndian == true ? BitConverter.GetBytes(inputManAuto) : BitConverter.GetBytes(inputManAuto).Reverse().ToArray()));
                 dPressureControlModeIssuer?.Publish(Ads.ReadAny<ushort>(hOutputSetType));
-                dRecipeControlHoldTimeIssuer?.Publish(Ads.ReadAny<TIME>(hRecipeControlHoldTime).Time.Seconds);
-                dRecipeControlRampTimeIssuer?.Publish(Ads.ReadAny<TIME>(hRecipeControlRampTime).Time.Seconds);
-                dRecipeControlPauseTimeIssuer?.Publish(Ads.ReadAny<TIME>(hRecipeControlPauseTime).Time.Seconds);
-                
+
                 int iterlock1 = Ads.ReadAny<int>(hInterlock[0]);
                 dLogicalInterlockStateIssuer?.Publish(new BitArray(BitConverter.IsLittleEndian == true ? BitConverter.GetBytes(iterlock1) : BitConverter.GetBytes(iterlock1).Reverse().ToArray()));
             

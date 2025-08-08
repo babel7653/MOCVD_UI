@@ -1,0 +1,30 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4026.11">
+  <POU Name="F_ResetTimersAndRCPTimes" Id="{cad1d9c5-016c-4366-ba0d-91e43630a276}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION F_ResetTimersAndRCPTimes : BOOL
+VAR_IN_OUT // These are references to the actual TON instances and the RCP structure
+    fbPause_TON : TON;
+    fbRamp_TON  : FB_TON_Pausable;
+    fbHold_TON  : FB_TON_Pausable;
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[// Reset the timers by setting IN to FALSE
+fbPause_TON(IN:=FALSE); // Calling the TON FB instances
+fbRamp_TON(IN:=FALSE);
+fbHold_TON(IN:=FALSE);
+
+// Reset the elapsed times in the RCP structure
+RCP.Pause_ET := T#0S;
+RCP.RecipeRunET.ET := T#0S;
+RCP.RecipeRunET.Mode := E_RecipeRunETMode.None;
+
+F_ResetTimersAndRCPTimes := TRUE; // Indicate successful execution (optional)]]></ST>
+    </Implementation>
+    <LineIds Name="F_ResetTimersAndRCPTimes">
+      <LineId Id="1" Count="7" />
+      <LineId Id="13" Count="0" />
+      <LineId Id="10" Count="1" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

@@ -33,7 +33,7 @@ ELSIF IN THEN
         // PAUSE is active
         IF NOT bWasPaused THEN
             // Rising edge of PAUSE: Capture current elapsed time from TON
-            tElapsedAtPause := fbTON.ET;
+            tElapsedAtPause := tElapsedAtPause + fbTON.ET;
             bWasPaused := TRUE;
         END_IF
         // Timer is paused: ET does not advance

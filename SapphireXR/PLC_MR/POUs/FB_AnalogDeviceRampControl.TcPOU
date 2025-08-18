@@ -1,25 +1,22 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4026.11">
-  <POU Name="P30_ManualControl" Id="{98ee4f4f-99e9-426e-9dfa-55ddf51d552b}" SpecialFunc="None">
-    <Declaration><![CDATA[PROGRAM P30_ManualControl
-VAR_INPUT
-	state_Control	: INT; // 10:EnableControl
-END_VAR
+  <POU Name="FB_AnalogDeviceRampControl" Id="{901ef948-d319-4e50-9c34-c06b07342954}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK FB_AnalogDeviceRampControl
 VAR
-	i 	: INT;
-END_VAR]]></Declaration>
+	i : INT;
+END_VAR
+]]></Declaration>
     <Implementation>
       <ST><![CDATA[FOR i:=1 TO 26 DO
 	IF GVL_IO.aMaxValueController[i] <> 0 THEN
 		GVL_IO.aAnalogOutputIO[i] := LREAL_TO_INT(GVL_IO.aController[i].rControlValue); //Write to Device
 		
-		GVL_IO.aController_PV[i] := (GVL_IO.aAnalogInputIO[i] / GVL_IO.KL3464MaxValueH) * GVL_IO.aMaxValueController[i]);
+		GVL_IO.aController_PV[i] := GVL_IO.aAnalogInputIO[i] / (GVL_IO.KL3464MaxValueH * GVL_IO.aMaxValueController[i]);
 		GVL_IO.aController_CV[i] := LREAL_TO_REAL((GVL_IO.aController[i].rControlValue / GVL_IO.KL3464MaxValueH)*GVL_IO.aMaxValueController[i]);
 		GVL_IO.aController[i]();
 	END_IF
 END_FOR
 
-(* Reactor Susceptor Temperature *)
 IF ( GVL_IO.aController_CV[27] > 10 ) THEN
 	GVL_IO.aDigitalOutputIO[2].0 := TRUE;
 ELSE
@@ -32,34 +29,20 @@ GVL_IO.aController_PV[27] := WORD_TO_REAL(GVL_IO.wE3508_PV);
 GVL_IO.aController_CV[27] := WORD_TO_REAL(GVL_IO.wE3508_CV);
 GVL_IO.aController[27]();
 				
-(* Reactor Pressure Control *)
 GVL_IO.wIqPlus_CV := LREAL_TO_WORD(GVL_IO.aController[28].rControlValue); //Write to Pressure Controller
 
 GVL_IO.aController_PV[28] := WORD_TO_REAL(GVL_IO.wIqPlus_CDG2_PV);
 GVL_IO.aController_CV[28] := WORD_TO_REAL(GVL_IO.wIqPlus_CV);
 GVL_IO.aController[28]();
 
-(* Suceptor Rotation Control *)				
 GVL_IO.rRotation_ControlValue := LREAL_TO_REAL(GVL_IO.aController[29].rControlValue); //Write to Rotation Controller (rpm)
 
 GVL_IO.aController_PV[29] := GVL_IO.nRotation_Converted_PV;
 GVL_IO.aController_CV[29] := GVL_IO.rRotation_ControlValue;
 GVL_IO.aController[29]();	]]></ST>
     </Implementation>
-    <LineIds Name="P30_ManualControl">
-      <LineId Id="200" Count="1" />
-      <LineId Id="205" Count="5" />
-      <LineId Id="261" Count="0" />
-      <LineId Id="212" Count="1" />
-      <LineId Id="218" Count="0" />
-      <LineId Id="258" Count="0" />
-      <LineId Id="220" Count="0" />
-      <LineId Id="260" Count="0" />
-      <LineId Id="222" Count="0" />
-      <LineId Id="225" Count="7" />
-      <LineId Id="239" Count="6" />
-      <LineId Id="252" Count="3" />
-      <LineId Id="198" Count="0" />
+    <LineIds Name="FB_AnalogDeviceRampControl">
+      <LineId Id="1" Count="32" />
     </LineIds>
   </POU>
 </TcPlcObject>

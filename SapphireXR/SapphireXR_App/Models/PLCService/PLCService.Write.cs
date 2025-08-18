@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using SapphireXR_App.Common;
+using System.Collections;
 using System.Windows;
 
 namespace SapphireXR_App.Models
@@ -95,41 +96,18 @@ namespace SapphireXR_App.Models
                     index++;
                 }
                 Ads.WriteAny(hDeviceMaxValuePLC, maxValue, [dIndexController.Count]);
-                
+
+                float KL3464MaxValueH = Ads.ReadAny<float>(Ads.CreateVariableHandle("GVL_IO.KL3464MaxValueH"));
+                for(uint mapping = 0; mapping < aTargetValueMappingFactor.Length; ++mapping)
+                {
+                    aTargetValueMappingFactor[mapping] = KL3464MaxValueH / maxValue[mapping];
+                }
+
                 // List Analog Device Input / Output
             }
             catch (Exception ex)
             {
                 MessageBox.Show(ex.Message);
-            }
-        }
-
-        public static void WriteTargetValue(string flowControllerID, int targetValue)
-        {
-            aDeviceTargetValues![dIndexController[flowControllerID]] = (float)targetValue;
-            Ads.WriteAny(hWriteDeviceTargetValuePLC, aDeviceTargetValues!, [aDeviceTargetValues!.Length]);
-        }
-
-        public static void WriteTargetValue(float[] targetValues)
-        {
-            if(targetValues.Length == NumControllers)
-            {
-                Ads.WriteAny(hWriteDeviceTargetValuePLC, targetValues, [targetValues.Length]);
-            }
-            
-        }
-
-        public static void WriteRampTime(string flowControllerID, short currentValue)
-        {
-            aDeviceRampTimes![dIndexController[flowControllerID]] = currentValue;
-            Ads.WriteAny(hWriteDeviceRampTimePLC, aDeviceRampTimes!, [aDeviceRampTimes!.Length]);
-        }
-
-        public static void WriteRampTime(short[] rampTimes)
-        {
-            if (rampTimes.Length == NumControllers)
-            {
-                Ads.WriteAny(hWriteDeviceRampTimePLC, rampTimes, [rampTimes.Length]);
             }
         }
 
@@ -156,10 +134,10 @@ namespace SapphireXR_App.Models
             Ads.WriteAny(hCmd_RcpOperation, operationState);
         }
 
-        public static void WriteOperationMode(bool operatonMode)
+        public static void WriteControlModeCmd(ControlMode controlMode)
         {
-            dOperationModeChangingPublisher?.Publish(operatonMode);
-            Ads.WriteAny(hOperationMode, operatonMode);
+            dControlModeChangingPublisher?.Publish(controlMode);
+            Ads.WriteAny(hControlModeCmd, (short)controlMode);
         }
 
         public static void WriteOutputCmd1(OutputCmd1Index index, bool powerOn)
@@ -184,7 +162,7 @@ namespace SapphireXR_App.Models
             bitField &= invMask;
             bitField |= (bitValue ? 1 : 0) << bit;
 
-            return bitField; 
+            return bitField;
         }
 
         private static bool WriteDeviceAlarmWarningSettingState(string deviceID, int index, bool bitValue, Dictionary<string, int> deviceIDToBit)
@@ -257,7 +235,7 @@ namespace SapphireXR_App.Models
                 }
             };
 
-            foreach(AnalogDeviceIO analogDeviceIO in analogDeviceIOs)
+            foreach (AnalogDeviceIO analogDeviceIO in analogDeviceIOs)
             {
                 if (analogDeviceIO.ID != null)
                 {
@@ -274,7 +252,7 @@ namespace SapphireXR_App.Models
                 }
             }
 
-            for (uint alarmWarningSettingIndex = 1; alarmWarningSettingIndex < (NumAlarmWarningArraySize- 1); alarmWarningSettingIndex++)
+            for (uint alarmWarningSettingIndex = 1; alarmWarningSettingIndex < (NumAlarmWarningArraySize - 1); alarmWarningSettingIndex++)
             {
                 Ads.WriteAny(hInterlockEnable[alarmWarningSettingIndex], InterlockEnables[alarmWarningSettingIndex]);
             }
@@ -362,6 +340,26 @@ namespace SapphireXR_App.Models
         public static void WriteWarningReset()
         {
             WriteFirstInterlockSetting(true, 1);
+        }
+
+        public static void WriteFlowControllerTargetValue((string, int)[] aControllerIdTargetValues, short rampTime)
+        {
+            foreach((string id, int targetValue) in aControllerIdTargetValues)
+            {
+                WriteFlowControllerTargetValue(Util.RecipeFlowControlFieldToControllerID[id], targetValue, rampTime);
+            }
+        }
+
+        public static void WriteFlowControllerTargetValue(string controllerID, int targetValue, short rampTime)
+        {
+            int controllerIDIndex = dIndexController[controllerID];
+            float? targetValueMappingFactor = aTargetValueMappingFactor[controllerIDIndex];
+            if (targetValueMappingFactor == null)
+            {
+                throw new Exception("KL3464MaxValueH is null in WriteFlowControllerTargetValue");
+            }
+           
+            Ads.WriteAny(hAControllerInput[controllerIDIndex], new RampGeneratorInput { restart = true, rampTime = (ushort)rampTime, targetValue = targetValue * targetValueMappingFactor.Value });
         }
     }
 }

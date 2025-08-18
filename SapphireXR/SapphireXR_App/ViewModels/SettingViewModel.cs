@@ -9,7 +9,6 @@ using System.ComponentModel;
 using System.Collections;
 using SapphireXR_App.Enums;
 using System.Windows;
-using System.Net;
 
 namespace SapphireXR_App.ViewModels
 {
@@ -242,7 +241,6 @@ namespace SapphireXR_App.ViewModels
 
             ObservableManager<BitArray>.Subscribe("DeviceIOList", iOStateListSubscriber = new IOStateListSubscriber(this));
             ObservableManager<bool>.Subscribe("App.Closing", appClosingSubscriber = new AppClosingSubscriber(this));
-            ObservableManager<PLCConnection>.Subscribe("PLCService.Connected", plcConnectionStateSubscriber = new PLCConnectionStateSubscriber(this));
 
             AnalogWarningCheckAllColumnViewModel = new CheckAllColumnViewModel<AnalogDeviceIO>(lAnalogDeviceIO, PLCService.TriggerType.Warning);
             AnalogAlarmCheckAllColumnViewModel = new CheckAllColumnViewModel<AnalogDeviceIO>(lAnalogDeviceIO, PLCService.TriggerType.Alarm);
@@ -298,6 +296,16 @@ namespace SapphireXR_App.ViewModels
                                 PLCService.WriteOutputCmd1(PLCService.OutputCmd1Index.LineHeaterPower, LineHeaterPowerOnOff.Value);
                             }
                             break;
+                    }
+                }
+            };
+            PLCConnectionState.Instance.PropertyChanged += (sender, args) =>
+            {
+                if(args.PropertyName == nameof(PLCConnectionState.Online))
+                {
+                    if(PLCConnectionState.Instance.Online == true)
+                    {
+                        initializeSettingToPLC();
                     }
                 }
             };
@@ -563,73 +571,68 @@ namespace SapphireXR_App.ViewModels
 
         public void initializeSettingToPLC()
         {
-            if (settingToPLCInitialized == false)
-            {
-                PLCService.WriteDeviceMaxValue(lAnalogDeviceIO);
-                PLCService.WriteAlarmWarningSetting(lAnalogDeviceIO ?? [], lSwitchDI ?? []);
+            PLCService.WriteDeviceMaxValue(lAnalogDeviceIO);
+            PLCService.WriteAlarmWarningSetting(lAnalogDeviceIO ?? [], lSwitchDI ?? []);
                 
-                PLCService.WriteAlarmDeviationState(AlarmDeviation);
-                PLCService.WriteWarningDeviationState(WarningDeviation);
-                PLCService.WriteAnalogDeviceDelayTime(AnalogDeviceDelayTime);
-                PLCService.CommitAnalogDeviceInterlockSettingToPLC();
-                PLCService.WriteDigitalDeviceDelayTime(DigitalDeviceDelayTime);
-                PLCService.CommitDigitalDeviceInterlockSettingToPLC();
+            PLCService.WriteAlarmDeviationState(AlarmDeviation);
+            PLCService.WriteWarningDeviationState(WarningDeviation);
+            PLCService.WriteAnalogDeviceDelayTime(AnalogDeviceDelayTime);
+            PLCService.CommitAnalogDeviceInterlockSettingToPLC();
+            PLCService.WriteDigitalDeviceDelayTime(DigitalDeviceDelayTime);
+            PLCService.CommitDigitalDeviceInterlockSettingToPLC();
 
-                BitArray outputCmd1 = PLCService.ReadOutputCmd1();
-                InductionHeaterPowerOnOff = outputCmd1[(int)PLCService.OutputCmd1Index.InductionHeaterPower];
-                ThermalBathPowerOnOff = outputCmd1[(int)PLCService.OutputCmd1Index.ThermalBathPower];
-                VaccumPumpPowerOnOff = outputCmd1[(int)PLCService.OutputCmd1Index.VaccumPumpPower];
-                LineHeaterPowerOnOff = outputCmd1[(int)PLCService.OutputCmd1Index.LineHeaterPower];
+            BitArray outputCmd1 = PLCService.ReadOutputCmd1();
+            InductionHeaterPowerOnOff = outputCmd1[(int)PLCService.OutputCmd1Index.InductionHeaterPower];
+            ThermalBathPowerOnOff = outputCmd1[(int)PLCService.OutputCmd1Index.ThermalBathPower];
+            VaccumPumpPowerOnOff = outputCmd1[(int)PLCService.OutputCmd1Index.VaccumPumpPower];
+            LineHeaterPowerOnOff = outputCmd1[(int)PLCService.OutputCmd1Index.LineHeaterPower];
 
-                if (dInterLockA != null)
+            if (dInterLockA != null)
+            {
+                foreach ((string name, InterLockA interlockA) in dInterLockA)
                 {
-                    foreach ((string name, InterLockA interlockA) in dInterLockA)
+                    PLCService.InterlockEnableSetting interlockEnableSetting;
+                    if (InterlockSettingNameToPLCInterlockEnableSettingEnum.TryGetValue(name, out interlockEnableSetting) == true)
                     {
-                        PLCService.InterlockEnableSetting interlockEnableSetting;
-                        if (InterlockSettingNameToPLCInterlockEnableSettingEnum.TryGetValue(name, out interlockEnableSetting) == true)
-                        {
-                            PLCService.WriteInterlockEnableState(interlockA.IsEnable, interlockEnableSetting);
+                        PLCService.WriteInterlockEnableState(interlockA.IsEnable, interlockEnableSetting);
                           
-                        }
-                        PLCService.InterlockValueSetting interlockValueSetting;
-                        if(InterlockSettingNameToPLCInterlockValueSettingEnum.TryGetValue(name, out interlockValueSetting) == true)
-                        {
-                            try
-                            {
-                                PLCService.WriteInterlockValueState(float.Parse(interlockA.Treshold), interlockValueSetting);
-                            }
-                            catch (ArgumentNullException) { }
-                            catch (FormatException) { }
-                            catch (OverflowException) { }
-                        }
                     }
-                }
-                if(dInterLockD != null)
-                {
-                    foreach((string name, InterLockD interlockD) in dInterLockD)
+                    PLCService.InterlockValueSetting interlockValueSetting;
+                    if(InterlockSettingNameToPLCInterlockValueSettingEnum.TryGetValue(name, out interlockValueSetting) == true)
                     {
-                        PLCService.InterlockEnableSetting? plcArg = null;
-                        switch (name)
+                        try
                         {
-                            case "InductionPowerSupply":
-                                plcArg = PLCService.InterlockEnableSetting.InductionPowerSupply;
-                                break;
-
-                            case "SusceptorRotationMotor":
-                                plcArg = PLCService.InterlockEnableSetting.SusceptorRotationMotor;
-                                break;
+                            PLCService.WriteInterlockValueState(float.Parse(interlockA.Treshold), interlockValueSetting);
                         }
-                        if(plcArg != null)
-                        {
-                            PLCService.WriteInterlockEnableState(interlockD.IsEnable, plcArg.Value);
-                        }
+                        catch (ArgumentNullException) { }
+                        catch (FormatException) { }
+                        catch (OverflowException) { }
                     }
                 }
-                PLCService.CommitInterlockEnableToPLC();
-                PLCService.CommitInterlockValueToPLC();
-
-                settingToPLCInitialized = true;
             }
+            if(dInterLockD != null)
+            {
+                foreach((string name, InterLockD interlockD) in dInterLockD)
+                {
+                    PLCService.InterlockEnableSetting? plcArg = null;
+                    switch (name)
+                    {
+                        case "InductionPowerSupply":
+                            plcArg = PLCService.InterlockEnableSetting.InductionPowerSupply;
+                            break;
+
+                        case "SusceptorRotationMotor":
+                            plcArg = PLCService.InterlockEnableSetting.SusceptorRotationMotor;
+                            break;
+                    }
+                    if(plcArg != null)
+                    {
+                        PLCService.WriteInterlockEnableState(interlockD.IsEnable, plcArg.Value);
+                    }
+                }
+            }
+            PLCService.CommitInterlockEnableToPLC();
+            PLCService.CommitInterlockValueToPLC();
         }
 
         private static List<ValveDeviceIO> CreateDefaultValveDeviceIO()

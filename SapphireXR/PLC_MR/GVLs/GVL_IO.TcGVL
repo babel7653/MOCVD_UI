@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4026.12">
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4026.11">
   <GVL Name="GVL_IO" Id="{a5f3292d-798a-4b6c-af88-b59309d83086}">
     <Declaration><![CDATA[{attribute 'qualified_only'}
 VAR_GLOBAL
@@ -9,19 +9,17 @@ VAR_GLOBAL
 	
 	(* Analog Input to INT*)
 	aAnalogInputIO AT %I* 	: ARRAY[1..40]OF INT;
-	aAnalogOutputIO AT %Q* 	: ARRAY[1..29]OF INT;
+	aAnalogOutputIO AT %Q* 	: ARRAY[1..NumAnalogController ] OF INT;
 	aAnalogInputIO2 AT %I*	: ARRAY[1..2]OF UINT;
 	
 	(*Solenoid Valve*)
 	aOutputSolValve AT %Q* 	: ARRAY[1..3]OF DWORD; //Solenoid Valve
 	
 	(* Read and Write of Device Control Value*)
-	aMaxValueController		: ARRAY[1..29]OF REAL ; //Device Max Value from UI
-	aController 			: ARRAY[1..29] OF FB_RampGenerator; //MFC, EPC 0 ~ 5V
-	aController_TV 			: ARRAY[1..29] OF REAL; //Target Value from UI
-	aController_RampTime 	: ARRAY[1..29] OF INT;
-	aController_PV 			: ARRAY[1..29] OF REAL; //Present Value from Device
-	aController_CV 			: ARRAY[1..29] OF REAL; //Current Value from RampingController
+	aMaxValueController		: ARRAY[1..NumAnalogController] OF REAL ; //Device Max Value from UI
+	aController 			: ARRAY[1..NumAnalogController] OF FB_ControlRampGenerator; //MFC, EPC 0 ~ 5V
+	aController_PV 			: ARRAY[1..NumAnalogController] OF REAL; //Present Value from Device
+	aController_CV 			: ARRAY[1..NumAnalogController] OF REAL; //Current Value from RampingController
 	
 	(* Present Value Meter Display*)
 	aMonitoring_PV 			: ARRAY[1..17] OF REAL; //Gauge Monitoring Value to UI
@@ -61,6 +59,7 @@ VAR_GLOBAL CONSTANT
 	KL3054MaxValue 	: REAL := 32767; //4~20mA
 	KL3152MaxValue	: REAL := 65535; //4~20mA
 	KL3204MaxValue 	: REAL := 32767; //4~20mA
+	NumAnalogController : UINT := 29;
 END_VAR]]></Declaration>
   </GVL>
 </TcPlcObject>

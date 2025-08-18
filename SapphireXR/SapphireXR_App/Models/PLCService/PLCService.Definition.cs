@@ -71,9 +71,21 @@ namespace SapphireXR_App.Models
             public RecipeRunETMode Mode;
         }
 
+        public struct RampGeneratorInput
+        {
+            public bool restart;
+            public float targetValue; // REAL in PLC is a 32-bit floating point, which is 'float' in C#
+            public ushort rampTime;     // UINT in PLC is a 16-bit unsigned integer, which is 'ushort' in C#
+        }
+
         internal enum RecipeRunETMode : short
         {
             None = 0, Ramp = 1, Hold = 2
+        };
+
+        public enum ControlMode : short
+        {
+            Manual = 0, Recipe = 1, Priority = 2
         };
 
         internal enum HardWiringInterlockStateIndex
@@ -197,6 +209,7 @@ namespace SapphireXR_App.Models
         private static float[]? aDeviceTargetValues = new float[dIndexController.Count];
         private static int[] InterlockEnables = Enumerable.Repeat<int>(0, (int)NumAlarmWarningArraySize).ToArray();
         private static Memory<byte> userStateBuffer = new Memory<byte>([ 0x00, 0x00 ]);
+        private static float?[] aTargetValueMappingFactor = new float?[dIndexController.Count];
 
         private static Dictionary<string, ObservableManager<float>.Publisher>? dCurrentValueIssuers;
         private static Dictionary<string, ObservableManager<float>.Publisher>? dControlValueIssuers;
@@ -220,7 +233,7 @@ namespace SapphireXR_App.Models
         private static ObservableManager<short>.Publisher? dThrottleValveStatusIssuer;
         private static ObservableManager<BitArray>.Publisher? dLogicalInterlockStateIssuer;
         private static ObservableManager<PLCConnection>.Publisher? dPLCConnectionPublisher;
-        private static ObservableManager<bool>.Publisher? dOperationModeChangingPublisher;
+        private static ObservableManager<ControlMode>.Publisher? dControlModeChangingPublisher;
 
         private static LeakTestModeSubscriber? leakTestModeSubscriber = null;
 
@@ -259,8 +272,6 @@ namespace SapphireXR_App.Models
         private static uint hDeviceMaxValuePLC;
         private static uint hDeviceControlValuePLC;
         private static uint hDeviceCurrentValuePLC;
-        private static uint hWriteDeviceTargetValuePLC;
-        private static uint hWriteDeviceRampTimePLC;
         private static uint hRcp;
         private static uint hRcpTotalStep;
         private static uint hCmd_RcpOperation;
@@ -269,7 +280,8 @@ namespace SapphireXR_App.Models
         private static uint hInputState;
         private static uint hInputState4;
         private static uint hTemperaturePV;
-        private static uint hOperationMode;
+        private static uint hControlModeCmd;
+        private static uint hControlMode;
         private static uint hUserState;
         private static uint hRecipeControlPauseTime;
         private static uint hDigitalOutput;
@@ -284,6 +296,7 @@ namespace SapphireXR_App.Models
         private static uint[] hInterlockEnable = new uint[NumAlarmWarningArraySize];
         private static uint[] hInterlockset = new uint[NumInterlockSet];
         private static uint[] hInterlock = new uint[NumInterlock];
+        private static uint[] hAControllerInput = new uint[NumControllers];
 
         private static bool RecipeRunEndNotified = false;
         private static bool LeakTestMode = true;
@@ -299,5 +312,7 @@ namespace SapphireXR_App.Models
         private static Dictionary<int, float> AnalogDeviceInterlockSetIndiceToCommit = new Dictionary<int, float>();
         private static (bool, float) DigitalDevicelnterlockSetToCommit = (false, 0.0f);
         private static Dictionary<int, float> InterlockSetIndiceToCommit = new Dictionary<int, float>();
+
+        private static List<Action> AddOnPLCStateUpdateTask = new List<Action>();
     }
 }

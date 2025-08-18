@@ -143,53 +143,30 @@ namespace SapphireXR_App.ViewModels
             RecipeRunViewModel recipeRunViewModel;
         }
 
-        private class OperationModeChangingSubscriber : IObserver<bool>
+        private class ControlModeChangingSubscriber : IObserver<PLCService.ControlMode>
         {
-            public OperationModeChangingSubscriber(RecipeRunViewModel vm)
+            public ControlModeChangingSubscriber(RecipeRunViewModel vm)
             {
                 recipeRunViewModel = vm;
             }
-            void IObserver<bool>.OnCompleted()
+            void IObserver<PLCService.ControlMode>.OnCompleted()
             {
                 throw new NotImplementedException();
             }
-            void IObserver<bool>.OnError(Exception error)
+            void IObserver<PLCService.ControlMode>.OnError(Exception error)
             {
                 throw new NotImplementedException();
             }
-            void IObserver<bool>.OnNext(bool value)
+            void IObserver<PLCService.ControlMode>.OnNext(PLCService.ControlMode value)
             {
-                if (value == false)
+                if (value != PLCService.ControlMode.Recipe)
                 {
                     if (recipeRunViewModel.recipeRunning() == true)
                     {
                         recipeRunViewModel.RecipeStop();
                     }
                 }
-                recipeRunViewModel.recipeMode = value;
             }
-            private RecipeRunViewModel recipeRunViewModel;
-        }
-
-        private class AlarmTriggeredSubscriber : IObserver<bool>
-        {
-            public AlarmTriggeredSubscriber(RecipeRunViewModel vm)
-            {
-                recipeRunViewModel = vm;
-            }
-            void IObserver<bool>.OnCompleted()
-            {
-                throw new NotImplementedException();
-            }
-            void IObserver<bool>.OnError(Exception error)
-            {
-                throw new NotImplementedException();
-            }
-            void IObserver<bool>.OnNext(bool value)
-            {
-                recipeRunViewModel.AlarmTriggered = value;
-            }
-
             private RecipeRunViewModel recipeRunViewModel;
         }
     }

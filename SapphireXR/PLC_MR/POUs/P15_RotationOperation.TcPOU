@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4026.12">
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4026.11">
   <POU Name="P15_RotationOperation" Id="{7f828812-d1bb-49a4-a03d-f3e347855c39}" SpecialFunc="None">
     <Declaration><![CDATA[PROGRAM P15_RotationOperation
 VAR
@@ -42,9 +42,9 @@ rControlValue := GVL_IO.rRotation_ControlValue;
 //Write to Motor Driver
 rConvertedCV := rControlValue * ConversionFactor; // Convert from RPM to control value
 
-IF (GVL_IO.aController_TV[29] > 0) OR (wRotaion_PV > 0) THEN // Motor Driver RUN
+IF (GVL_IO.aController[29].input.targetValue > 0) OR (wRotaion_PV > 0) THEN // Motor Driver RUN
 	bBrake_Run := TRUE;
-ELSIF (GVL_IO.aController_TV[29] = 0) AND (wRotaion_PV = 0) THEN
+ELSIF (GVL_IO.aController[29].input.targetValue = 0) AND (wRotaion_PV = 0) THEN
 	bBrake_Run := FALSE;
 END_IF
 

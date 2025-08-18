@@ -93,8 +93,7 @@ namespace SapphireXR_App.ViewModels.FlowController
                     {
                         if (controlValues.targetValue != null && controlValues.rampTime != null)
                         {
-                            PLCService.WriteTargetValue(ControllerID, (int)controlValues.targetValue);
-                            PLCService.WriteRampTime(ControllerID, (short)controlValues.rampTime);
+                            PLCService.WriteFlowControllerTargetValue(ControllerID, controlValues.targetValue.Value, controlValues.rampTime.Value);
                             ToastMessage.Show(ControllerID + " Target Value, Ramp Time 설정 완료", ToastMessage.MessageType.Sucess);
                         }
                     }

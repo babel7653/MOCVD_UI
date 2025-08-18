@@ -1,0 +1,49 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4026.11">
+  <POU Name="FB_ControlRampGenerator" Id="{a35b422b-580f-4aa7-bd81-602c2a7800da}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK FB_ControlRampGenerator
+VAR_INPUT
+	input : RampGeneratorInput;
+END_VAR
+VAR
+	state : E_RampGeneratorState := E_RampGeneratorState.End;
+	rampGenerator : FB_CTRL_RAMP_GENERATOR;
+	rampGeneratorParams	: ST_CTRL_RAMP_GENERATOR_PARAMS := (tTaskCycleTime := T#100MS, tCtrlCycleTime := T#100MS, fVeloPos := 0, fVeloNeg := 0);
+END_VAR
+VAR_OUTPUT
+	rControlValue	: LREAL := 0;
+	targetValueReached : BOOL := FALSE;
+	isError : BOOL;
+	eErrorID : E_CTRL_ERRORCODES;
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[IF input.restart = TRUE AND 0 < input.rampTime AND rControlValue <> input.targetValue THEN
+	state := E_RampGeneratorState.Init;
+	input.restart := FALSE;
+END_IF
+	
+CASE state OF
+	E_RampGeneratorState.Init:
+		rampGeneratorParams.fVeloPos			:= ABS(input.targetValue - rControlValue) / input.rampTime * 0.1; (* in units per second *)
+		rampGeneratorParams.fVeloNeg			:= rampGeneratorParams.fVeloPos; (* in units per second *)
+		rampGenerator(bEnable := TRUE, fStart := rControlValue, fTarget:= input.targetValue, fOut => rControlValue, bValueReached => targetValueReached, bError => isError, eErrorID => eErrorID, stParams := rampGeneratorParams);
+		state := E_RampGeneratorState.Run;
+	
+	E_RampGeneratorState.Run:
+		rampGenerator(bEnable := TRUE, stParams := rampGeneratorParams, fOut => rControlValue, bValueReached => targetValueReached, bError => isError, eErrorID => eErrorID, stParams := rampGeneratorParams);
+		IF targetValueReached = TRUE THEN
+			state := E_RampGeneratorState.End;
+		END_IF
+		
+	E_RampGeneratorState.End:
+		rampGenerator(bEnable := FALSE, stParams := rampGeneratorParams, fOut => rControlValue);
+END_CASE
+]]></ST>
+    </Implementation>
+    <LineIds Name="FB_ControlRampGenerator">
+      <LineId Id="1" Count="6" />
+      <LineId Id="9" Count="14" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

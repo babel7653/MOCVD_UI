@@ -18,6 +18,9 @@
     <LibraryReferences>{aac5e59b-9f97-4b76-a932-1e3a4f03ab13}</LibraryReferences>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="DUTs\E_ControlMode.TcDUT">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="DUTs\E_RampGeneratorState.TcDUT">
       <SubType>Code</SubType>
     </Compile>
@@ -90,6 +93,9 @@
     <Compile Include="PlcTask_Standard.TcTTO">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="POUs\FB_AnalogDeviceRampControl.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="POUs\FB_ControlRampGenerator.TcPOU">
       <SubType>Code</SubType>
     </Compile>
@@ -102,16 +108,16 @@
     <Compile Include="POUs\FB_OverLimitCheck.TcPOU">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="POUs\FB_RampGenerator.TcPOU">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="POUs\FB_RecipeSequencer.TcPOU">
+    <Compile Include="POUs\FB_RecipeAnalogControlInputSequencer.TcPOU">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="POUs\FB_SensorLimitCheck.TcPOU">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="POUs\FB_TON_Pausable.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="POUs\FB_ValveControl.TcPOU">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="POUs\F_ResetTimersAndRCPTimes.TcPOU">
@@ -150,7 +156,7 @@
     <Compile Include="POUs\P22_Background_ThermalBath.TcPOU">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="POUs\P30_ManualControl.TcPOU">
+    <Compile Include="POUs\P30_ManualControlExt.TcPOU">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="POUs\P50_RecipeControl.TcPOU">
@@ -166,6 +172,9 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="POUs\P92_Maintenance.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="POUs\P31_PriorityControl.TcPOU">
       <SubType>Code</SubType>
     </Compile>
   </ItemGroup>

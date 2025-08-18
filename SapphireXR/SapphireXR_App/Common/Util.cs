@@ -213,9 +213,8 @@ namespace SapphireXR_App.Common
         {
             if (batch.RampingTime != null)
             {
-                PLCService.WriteTargetValue(batch.AnalogIOUserStates.Select((AnalogIOUserState analogIOUserState) => (float)analogIOUserState.Value).ToArray());
-                PLCService.WriteRampTime(Enumerable.Repeat((short)batch.RampingTime, batch.AnalogIOUserStates.Count).ToArray());
-
+                PLCService.WriteFlowControllerTargetValue(batch.AnalogIOUserStates.Select((AnalogIOUserState analogIOUserState) => (analogIOUserState.ID, analogIOUserState.Value)).ToArray(),
+                    (short)batch.RampingTime);
                 int partSize = sizeof(int) * 8;
                 BitArray firstValveStates = new BitArray(partSize);
                 BitArray secondValveStates = new BitArray(partSize);

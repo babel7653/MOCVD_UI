@@ -17,8 +17,8 @@
             <ColumnDefinition Width="300"/>
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
-        <Frame Source="/Views/LeftDashboard.xaml" Grid.Column="0" NavigationUIVisibility="Hidden"/>
-        <Grid Grid.Column="1">
+        <Frame Source="/Views/LeftDashboard.xaml" Grid.Column="0" NavigationUIVisibility="Hidden" IsEnabled="{Binding NotPriorityState}" />
+        <Grid Grid.Column="1" IsEnabled="{Binding NotPriorityState}">
             <Border>
                 <Border.Padding>
                     <Thickness Top="{StaticResource p_3}" />

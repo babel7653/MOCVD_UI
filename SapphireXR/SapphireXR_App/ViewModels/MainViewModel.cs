@@ -13,7 +13,7 @@ using System.Windows.Input;
 
 namespace SapphireXR_App.ViewModels
 {
-    public partial class MainViewModel : ViewModelBase, IObserver<RecipeRunViewModel.RecipeUserState>, IObserver<int>, IObserver<string>, IObserver<PLCConnection>, IObserver<BitArray>
+    public partial class MainViewModel : ViewModelBase, IObserver<RecipeRunViewModel.RecipeUserState>, IObserver<int>, IObserver<PLCConnection>, IObserver<BitArray>, IObserver<PLCService.ControlMode>
     {
         [ObservableProperty]
         private string? navigationSource;
@@ -32,6 +32,18 @@ namespace SapphireXR_App.ViewModels
                 changeOperationMode(SelectedTab);
             }
 
+            var updateByPLCState = () =>
+            {
+                if (RecipeRunInactive == true && NotPriorityState == true)
+                {
+                    onClosing = confirmClose;
+                }
+                else
+                {
+                    onClosing = informNotClosable;
+                }
+            };
+
             PropertyChanged += (object? sender, PropertyChangedEventArgs args) =>
             {
                 switch (args.PropertyName)
@@ -45,23 +57,20 @@ namespace SapphireXR_App.ViewModels
                         break;
 
                     case nameof(RecipeRunInactive):
-                        if (RecipeRunInactive == true)
-                        {
-                            onClosing = onRecipeInactive;
-                        }
-                        else
-                        {
-                            onClosing = onRecipeActive;
-                        }
+                        updateByPLCState();
+                        break;
+
+                    case nameof(NotPriorityState):
+                        updateByPLCState();
                         break;
                 }
             };
-            onClosing = onRecipeInactive;
+            onClosing = confirmClose;
             ObservableManager<RecipeRunViewModel.RecipeUserState>.Subscribe("RecipeRun.State", this);
             ObservableManager<int>.Subscribe("SwitchTab", this);
-            ObservableManager<string>.Subscribe("ViewModelCreated", this);
             ObservableManager<PLCConnection>.Subscribe("PLCService.Connected", this);
             ObservableManager<BitArray>.Subscribe("LogicalInterlockState", this);
+            ObservableManager<PLCService.ControlMode>.Subscribe("ControlModeChanging", this);
             EventLogs.Instance.EventLogList.Add(new EventLog() { Message = "SapphireXR이 시작되었습니다", Name = "Application", Type = EventLog.LogType.Information });
             //EventLogs.Instance.EventLogList.Add(new EventLog() { Message = "M01 Deviation!", Name = "Alarm", Type = EventLog.LogType.Alarm });
             //EventLogs.Instance.EventLogList.Add(new EventLog() { Message = "Time Expire", Name = "Alarm", Type = EventLog.LogType.Alarm });
@@ -71,6 +80,15 @@ namespace SapphireXR_App.ViewModels
             //EventLogs.Instance.EventLogList.Add(new EventLog() { Message = "H2 Low", Name = "Warning", Type = EventLog.LogType.Warning });
             //EventLogs.Instance.EventLogList.Add(new EventLog() { Message = "Setting값 저장이 완료되었습니다.", Name = "Application", Type = EventLog.LogType.Information });
             //EventLogs.Instance.EventLogList.Add(new EventLog() { Message = "Setting값 로드가 완료되었습니다.", Name = "Application", Type = EventLog.LogType.Information });
+
+            updatePriorityState = () =>
+            {
+                NotPriorityState = (PLCService.ReadControlMode() != PLCService.ControlMode.Priority);
+                if (NotPriorityState == true)
+                {
+                    Task.Run(() => PLCService.RemovePLCStateUpdateTask(updatePriorityState!));
+                }
+            };
         }
 
         private void changeOperationMode(int tab)
@@ -78,11 +96,11 @@ namespace SapphireXR_App.ViewModels
             switch (tab)
             {
                 case 0:
-                    PLCService.WriteOperationMode(false);
+                    PLCService.WriteControlModeCmd(PLCService.ControlMode.Manual);
                     break;
 
                 case 1:
-                    PLCService.WriteOperationMode(true);
+                    PLCService.WriteControlModeCmd(PLCService.ControlMode.Recipe);
                     break;
             }
         }
@@ -109,7 +127,7 @@ namespace SapphireXR_App.ViewModels
 
         });
 
-        private void onRecipeInactive(CancelEventArgs args)
+        private void confirmClose(CancelEventArgs args)
         {
             if (ConfirmMessage.Show("프로그램 종료", "프로그램을 종료하시겠습니까?", WindowStartupLocation.CenterScreen) == DialogResult.Ok)
             {
@@ -122,7 +140,7 @@ namespace SapphireXR_App.ViewModels
             }
         }
 
-        private void onRecipeActive(CancelEventArgs args)
+        private void informNotClosable(CancelEventArgs args)
         {
             MessageBox.Show("Recipe가 실행 중인 상태에서는 애플리케이션을 종료할 수 없습니다. 현재 실행 중인 Recipe를 중지하거나 Recipe가 실행완료 될 때까지 기다리시기 바랍니다.");
             args.Cancel = true;
@@ -158,27 +176,6 @@ namespace SapphireXR_App.ViewModels
             if (value < 5 && SelectedTab != value)
             {
                 SelectedTab = value;
-            }
-        }
-
-        void IObserver<string>.OnCompleted()
-        {
-            throw new NotImplementedException();
-        }
-
-        void IObserver<string>.OnError(Exception error)
-        {
-            throw new NotImplementedException();
-        }
-
-        void IObserver<string>.OnNext(string value)
-        {
-            if(value == "RecipeRunViewModel" || value == "HomeViewModel")
-            {
-                ++viewmodelInterestedCreatedCount;
-                if (viewmodelInterestedCreatedCount == 2)
-                {
-                }
             }
         }
 
@@ -238,6 +235,25 @@ namespace SapphireXR_App.ViewModels
             }
         }
 
+        void IObserver<PLCService.ControlMode>.OnCompleted()
+        {
+            throw new NotImplementedException();
+        }
+
+        void IObserver<PLCService.ControlMode>.OnError(Exception error)
+        {
+            throw new NotImplementedException();
+        }
+
+        void IObserver<PLCService.ControlMode>.OnNext(PLCService.ControlMode value)
+        {
+            NotPriorityState = (value != PLCService.ControlMode.Priority);
+            if (NotPriorityState == false)
+            {
+                PLCService.AddPLCStateUpdateTask(updatePriorityState);
+            }
+        }
+
         private bool showAlarm = true;
         private bool showWarning = true;
 
@@ -246,13 +262,16 @@ namespace SapphireXR_App.ViewModels
         [ObservableProperty]
         private int _selectedTab;
         [ObservableProperty]
-        private bool _recipeRunInactive = true;
+        private bool recipeRunInactive = true;
+        [ObservableProperty]
+        private bool notPriorityState = true;
 
         private Action<CancelEventArgs> onClosing;
-        private uint viewmodelInterestedCreatedCount = 0;
 
         private ObservableManager<int>.Publisher selectedTabPublisher = ObservableManager<int>.Get("MainView.SelectedTabIndex");
         private ObservableManager<bool>.Publisher closingPublisher = ObservableManager<bool>.Get("App.Closing");
         private ObservableManager<bool>.Publisher alarmTriggeredPublisher = ObservableManager<bool>.Get("AlarmTriggered");
+
+        Action updatePriorityState;
     }
 }

@@ -1,0 +1,37 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4026.11">
+  <POU Name="FB_RecipeAnalogControlInputSequencer" Id="{baa4a425-4968-4360-81b7-f83562b782ba}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK FB_RecipeAnalogControlInputSequencer
+VAR_INPUT
+	tempRecipe: REAL;
+	pressRecipe: REAL;
+	rotRecipe: REAL;
+	rampTime: UINT;
+END_VAR
+VAR_IN_OUT
+	rRecipe: ARRAY[1..26] OF REAL;
+END_VAR
+VAR
+	i: UINT;
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[FOR i:= 1 TO 26 DO
+	GVL_IO.aController[i].input.restart := TRUE;
+	GVL_IO.aController[i].input.rampTime := rampTime; 
+	GVL_IO.aController[i].input.targetValue := rRecipe[i] / GVL_IO.aMaxValueController[i] * GVL_IO.KL3464MaxValueH;;
+END_FOR
+
+GVL_IO.aController[27].input.rampTime := rampTime;
+GVL_IO.aController[27].input.targetValue := tempRecipe;
+GVL_IO.aController[28].input.rampTime := rampTime;
+GVL_IO.aController[28].input.targetValue := pressRecipe;
+GVL_IO.aController[29].input.rampTime := rampTime;
+GVL_IO.aController[29].input.targetValue := rotRecipe;]]></ST>
+    </Implementation>
+    <LineIds Name="FB_RecipeAnalogControlInputSequencer">
+      <LineId Id="53" Count="10" />
+      <LineId Id="11" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

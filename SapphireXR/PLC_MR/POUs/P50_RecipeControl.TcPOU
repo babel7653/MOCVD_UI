@@ -5,7 +5,9 @@
 VAR
 	nRcpIndex		: INT;
 	eRecipeRun		: E_RecipeRun ; //레시피 상태
-	fbRecipeSequencer : FB_RecipeSequencer;
+	fbAnalogDeviceRampControl : FB_AnalogDeviceRampControl;
+	fbRecipeAnalogInputControlSequencer: FB_RecipeAnalogControlInputSequencer;
+	fbValveControl: FB_ValveControl;
 	
 	Pause_TON		: TON;
 	Ramp_TON		: FB_TON_Pausable;
@@ -36,18 +38,21 @@ END_VAR
 		IF nRcpIndex = 0 THEN
 			nRcpIndex := 1;
 		END_IF
-		fbRecipeSequencer(nRcpIndex := nRcpIndex);
+		fbAnalogDeviceRampControl();
 						
 		// CASE 문을 이용한 상태 머신 구현
 		CASE eRecipeRun OF
 			E_RecipeRun.Initial:
 				f_ResetTimersAndRCPTimes(fbPause_TON := Pause_TON, fbRamp_TON := Ramp_TON, fbHold_TON := Hold_TON);
+				fbRecipeAnalogInputControlSequencer(rRecipe := RCP.aRecipe[nRcpIndex].rRecipe, rampTime:= TO_UINT(RCP.aRecipe[nRcpIndex].iRecipe[2]), tempRecipe := TO_REAL(RCP.aRecipe[nRcpIndex].iRecipe[4]),
+					pressRecipe := TO_REAL(RCP.aRecipe[nRcpIndex].iRecipe[5]), rotRecipe := TO_REAL(RCP.aRecipe[nRcpIndex].iRecipe[6]));
+				fbValveControl(valveSetting:= RCP.aRecipe[nRcpIndex].dRecipe);
 				Rcp.userState := 10;// Recipe Running
 				GVL_IO.nCaseSignalTower := 3;
 				eRecipeRun := E_RecipeRun.Ramp;
 				
 			E_RecipeRun.Ramp: // Ramp 수행
-				Ramp_TON(IN:=TRUE, PT:=INT_TO_TIME(RCP.aRecipe[nRcpIndex].iRecipe[2]*1000), ET=>RCP.RecipeRunET.ET);
+				Ramp_TON(IN:=TRUE, PT:= RCP.aRecipe[nRcpIndex].iRecipe[2] * T#1S, ET=>RCP.RecipeRunET.ET);
 				RCP.RecipeRunET.Mode := E_RecipeRunETMode.Ramp;
 				IF Ramp_TON.Q THEN
 					Ramp_TON(IN:=FALSE);
@@ -56,7 +61,7 @@ END_VAR
 				
 			E_RecipeRun.CheckHoldTemp: //Hold Temp 확인
 				IF RCP.aRecipe[nRcpIndex].iRecipe[7] = 0 THEN
-					Hold_TON(IN:=TRUE, PT:=INT_TO_TIME(RCP.aRecipe[nRcpIndex].iRecipe[3]*1000), ET=>RCP.RecipeRunET.ET);
+					Hold_TON(IN:=TRUE, PT:= RCP.aRecipe[nRcpIndex].iRecipe[3] * T#1S, ET=>RCP.RecipeRunET.ET);
 					RCP.RecipeRunET.Mode := E_RecipeRunETMode.Hold;
 					IF Hold_TON.Q THEN
 						Hold_TON(IN:=FALSE);
@@ -118,7 +123,7 @@ END_VAR
 	50: //END
 		f_ResetTimersAndRCPTimes(fbPause_TON := Pause_TON, fbRamp_TON := Ramp_TON, fbHold_TON := Hold_TON);
 		Rcp.userState := 50;
-		fbRecipeSequencer(nRcpIndex := nRcpIndex);
+		fbAnalogDeviceRampControl();
 		GVL_IO.nCaseSignalTower := 5;
 		
 	60: //SKIP
@@ -131,7 +136,9 @@ END_CASE
 RCP.iRcpStepN := nRcpIndex;]]></ST>
     </Implementation>
     <LineIds Name="P50_RecipeControl">
-      <LineId Id="1" Count="28" />
+      <LineId Id="1" Count="22" />
+      <LineId Id="118" Count="2" />
+      <LineId Id="24" Count="5" />
       <LineId Id="110" Count="0" />
       <LineId Id="30" Count="7" />
       <LineId Id="112" Count="0" />

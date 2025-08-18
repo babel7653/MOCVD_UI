@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4026.12">
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4026.11">
   <POU Name="FB_RecipeSequencer" Id="{eaa1ede0-1851-426e-9c35-61099dc6c976}" SpecialFunc="None">
     <Declaration><![CDATA[FUNCTION_BLOCK FB_RecipeSequencer
 VAR_INPUT
@@ -14,9 +14,6 @@ END_VAR
       <ST><![CDATA[(* Write a Controller MFC / EPC *)
 FOR i:= 1 TO 26 DO
 	IF GVL_IO.aMaxValueController[i] <> 0 THEN
-		GVL_IO.aController[i].nState := 10;
-		GVL_IO.aController[i].nRampTime := RCP.aRecipe[nRcpIndex].iRecipe[2]; //Current Recipe Step Ramp Time
-		GVL_IO.aController[i].rTargetValue := RCP.aRecipe[nRcpIndex].rRecipe[i] / GVL_IO.aMaxValueController[i] * GVL_IO.KL3464MaxValueH; //Input Set Value
 		GVL_IO.aAnalogOutputIO[i] := LREAL_TO_INT(GVL_IO.aController[i].rControlValue);
 		
 		GVL_IO.aController_PV[i] := GVL_IO.aAnalogInputIO[i] / (GVL_IO.KL3464MaxValueH * GVL_IO.aMaxValueController[i]);
@@ -26,24 +23,18 @@ FOR i:= 1 TO 26 DO
 END_FOR
 
 (* Reactor Susceptor Temperature *)
-GVL_IO.aController[27].nState := 10; //START
 IF ( GVL_IO.aController_CV[27] > 10 ) THEN
 	GVL_IO.aDigitalOutputIO[2].0 := TRUE;
 ELSE
 	GVL_IO.aDigitalOutputIO[2].0 := FALSE;
 END_IF
 
-GVL_IO.aController[27].nRampTime := RCP.aRecipe[nRcpIndex].iRecipe[2];
-GVL_IO.aController[27].rTargetValue := RCP.aRecipe[nRcpIndex].iRecipe[4];
 GVL_IO.wE3508_CV := LREAL_TO_WORD(GVL_IO.aController[27].rControlValue); //Write to Temperature Controller
 GVL_IO.aController_PV[27] := WORD_TO_REAL(GVL_IO.wE3508_PV);
 GVL_IO.aController_CV[27] := WORD_TO_REAL(GVL_IO.wE3508_CV);
 GVL_IO.aController[27]();
 
 (* Reactor Pressure Control *)
-GVL_IO.aController[28].nState := 10; //START
-GVL_IO.aController[28].nRampTime := RCP.aRecipe[nRcpIndex].iRecipe[2];
-GVL_IO.aController[28].rTargetValue := RCP.aRecipe[nRcpIndex].iRecipe[5];
 GVL_IO.wIqPlus_CV := LREAL_TO_WORD(GVL_IO.aController[28].rControlValue); //Write to Pressure Controller
 
 GVL_IO.aController_PV[28] := WORD_TO_REAL(GVL_IO.wIqPlus_CDG2_PV);
@@ -51,9 +42,6 @@ GVL_IO.aController_CV[28] := WORD_TO_REAL(GVL_IO.wIqPlus_CV);
 GVL_IO.aController[28]();
 
 (* Suceptor Rotation Control *)
-GVL_IO.aController[29].nState := 10; //START
-GVL_IO.aController[29].nRampTime := RCP.aRecipe[nRcpIndex].iRecipe[2];
-GVL_IO.aController[29].rTargetValue := RCP.aRecipe[nRcpIndex].iRecipe[6];
 GVL_IO.rRotation_ControlValue := LREAL_TO_REAL(GVL_IO.aController[29].rControlValue); //Write to Rotation Controller (rpm)
 
 GVL_IO.aController_PV[29] := GVL_IO.nRotation_Converted_PV;
@@ -89,24 +77,24 @@ GVL_IO.aOutputSolValve[2].14 := RCP.aRecipe[nRcpIndex].dRecipe.24; //V31
 GVL_IO.aOutputSolValve[2].15 := RCP.aRecipe[nRcpIndex].dRecipe.25; //V32]]></ST>
     </Implementation>
     <LineIds Name="FB_RecipeSequencer">
-      <LineId Id="30" Count="4" />
-      <LineId Id="129" Count="0" />
+      <LineId Id="30" Count="1" />
+      <LineId Id="302" Count="0" />
       <LineId Id="36" Count="2" />
       <LineId Id="296" Count="0" />
       <LineId Id="39" Count="2" />
       <LineId Id="264" Count="0" />
       <LineId Id="245" Count="0" />
-      <LineId Id="292" Count="0" />
-      <LineId Id="250" Count="8" />
+      <LineId Id="250" Count="4" />
+      <LineId Id="257" Count="1" />
       <LineId Id="260" Count="1" />
       <LineId Id="243" Count="0" />
       <LineId Id="291" Count="0" />
-      <LineId Id="265" Count="0" />
-      <LineId Id="269" Count="6" />
+      <LineId Id="297" Count="0" />
+      <LineId Id="272" Count="3" />
       <LineId Id="263" Count="0" />
       <LineId Id="290" Count="0" />
       <LineId Id="278" Count="0" />
-      <LineId Id="283" Count="6" />
+      <LineId Id="286" Count="3" />
       <LineId Id="279" Count="0" />
       <LineId Id="132" Count="26" />
       <LineId Id="131" Count="0" />

@@ -1,10 +1,10 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4026.11">
-  <DUT Name="OperationMode" Id="{c75456ad-80d1-4040-acf7-93eb29e90b92}">
+  <DUT Name="E_ControlMode" Id="{043536e2-aedf-4c82-8eab-ab0e4bdacad6}">
     <Declaration><![CDATA[{attribute 'qualified_only'}
 {attribute 'strict'}
 {attribute 'to_string'}
-TYPE OperationMode :
+TYPE E_ControlMode :
 (
 	Manual := 0,
 	Recipe := 1,

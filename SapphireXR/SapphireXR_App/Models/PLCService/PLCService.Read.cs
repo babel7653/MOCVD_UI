@@ -23,7 +23,6 @@ namespace SapphireXR_App.Models
         {
             aDeviceCurrentValues = Ads.ReadAny<float[]>(hDeviceCurrentValuePLC, [NumControllers]);
             aDeviceControlValues = Ads.ReadAny<float[]>(hDeviceControlValuePLC, [NumControllers]);
-            aDeviceTargetValues = Ads.ReadAny<float[]>(hWriteDeviceTargetValuePLC, [NumControllers]);
             aMonitoring_PVs = Ads.ReadAny<float[]>(hMonitoring_PV, [18]);
             aInputState = Ads.ReadAny<short[]>(hInputState, [5]);
             ReadValveStateFromPLC();
@@ -119,6 +118,11 @@ namespace SapphireXR_App.Models
         public static bool ReadAlarmTriggered()
         {
             return ReadBit(Ads.ReadAny<int>(hInterlock[0]), 0);
+        }
+
+        public static ControlMode ReadControlMode()
+        {
+            return (ControlMode)(Ads.ReadAny<short>(hControlMode));
         }
     }
 }

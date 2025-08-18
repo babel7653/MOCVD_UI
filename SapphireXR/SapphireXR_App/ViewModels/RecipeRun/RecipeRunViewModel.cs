@@ -91,25 +91,13 @@ namespace SapphireXR_App.ViewModels
                         }
                         RecipeStartCommand.NotifyCanExecuteChanged();
                         break;
-
-                    case nameof(AlarmTriggered):
-                        if(AlarmTriggered == true && recipeRunning() == true)
-                        {
-                            RecipeStop();
-                        }
-                        RecipeStartCommand.NotifyCanExecuteChanged();
-                        break;
-
-                 
                 }
             };
 
             EventLogs.Instance.EventLogList.CollectionChanged += (object? sender, NotifyCollectionChangedEventArgs args) => ClearEventLogCommand.NotifyCanExecuteChanged();
             onPLCConnectionStateChanged(PLCService.Connected);
-            ObservableManager<string>.Get("ViewModelCreated").Publish("RecipeRunViewModel");
             ObservableManager<PLCConnection>.Subscribe("PLCService.Connected", plcConnectionStateSubscriber = new PLCConnectionStateSubscriber(this));
-            ObservableManager<bool>.Subscribe("OperationModeChanging", operationModeChangingSubscriber = new OperationModeChangingSubscriber(this));
-            ObservableManager<bool>.Subscribe("AlarmTriggered", alarmTriggeredSubscriber = new AlarmTriggeredSubscriber(this));
+            ObservableManager<PLCService.ControlMode>.Subscribe("ControlModeChanging", controlModeChangingSubscriber = new ControlModeChangingSubscriber(this));
         }
 
         bool canRecipeOpenExecute()
@@ -227,10 +215,6 @@ namespace SapphireXR_App.ViewModels
 
         private void startCommand()
         {
-            if (recipeMode == false)
-            {
-                PLCService.WriteOperationMode(true);
-            }
             SyncPLCState(Start);
         }
 
@@ -241,7 +225,7 @@ namespace SapphireXR_App.ViewModels
 
         private bool canStartStopCommadExecute()
         {
-            return PLCService.Connected == PLCConnection.Connected && CurrentRecipeUserState != RecipeUserState.Uninitialized && RecipeStartAvailableInterlock == true && AlarmTriggered == false;
+            return PLCService.Connected == PLCConnection.Connected && CurrentRecipeUserState != RecipeUserState.Uninitialized && RecipeStartAvailableInterlock == true;
         }
 
         [RelayCommand(CanExecute = nameof(canStartStopCommadExecute))]
@@ -408,7 +392,6 @@ namespace SapphireXR_App.ViewModels
             if(connection == PLCConnection.Connected)
             {
                 RecipeStartAvailableInterlock = PLCService.ReadRecipeStartAvailable();
-                AlarmTriggered = PLCService.ReadAlarmTriggered();
             }
         }
 
@@ -496,9 +479,7 @@ namespace SapphireXR_App.ViewModels
         private PLCConnectionStateSubscriber plcConnectionStateSubscriber;
         private LogicalInterlockStateSubscriber logicalInterlockStateSubscriber;
         private ObservableManager<bool>.Publisher recipeEndedPOnClientSidePublisher;
-        private OperationModeChangingSubscriber operationModeChangingSubscriber;
-        private AlarmTriggeredSubscriber alarmTriggeredSubscriber;
-        private bool recipeMode = false;
+        private ControlModeChangingSubscriber controlModeChangingSubscriber;
 
         private bool skipEnable = true;
         private bool SkipEnable
@@ -514,8 +495,6 @@ namespace SapphireXR_App.ViewModels
 
         [ObservableProperty]
         private bool recipeStartAvailableInterlock = false;
-        [ObservableProperty]
-        private bool alarmTriggered = false;
 
         [ObservableProperty]
         private RecipeUserState _currentRecipeUserState = RecipeUserState.Uninitialized;

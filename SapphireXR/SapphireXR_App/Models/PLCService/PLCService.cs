@@ -153,8 +153,6 @@ namespace SapphireXR_App.Models
 
             hReadValveStatePLC1 = Ads.CreateVariableHandle("GVL_IO.aOutputSolValve[1]");
             hReadValveStatePLC2 = Ads.CreateVariableHandle("GVL_IO.aOutputSolValve[2]");
-            hWriteDeviceTargetValuePLC = Ads.CreateVariableHandle("GVL_IO.aController_TV");
-            hWriteDeviceRampTimePLC = Ads.CreateVariableHandle("GVL_IO.aController_RampTime");
 
             hMonitoring_PV = Ads.CreateVariableHandle("GVL_IO.aMonitoring_PV");
             hInputState = Ads.CreateVariableHandle("GVL_IO.aInputState");
@@ -182,13 +180,18 @@ namespace SapphireXR_App.Models
             hCmd_RcpOperation = Ads.CreateVariableHandle("RCP.cmd_RcpOperation");
             hRcpStepN = Ads.CreateVariableHandle("RCP.iRcpStepN");
             hTemperaturePV = Ads.CreateVariableHandle("GVL_IO.aLineHeater_rTemperaturePV");
-            hOperationMode = Ads.CreateVariableHandle("MAIN.bOperationMode");
+            hControlModeCmd = Ads.CreateVariableHandle("MAIN.controlModeCmd");
+            hControlMode = Ads.CreateVariableHandle("MAIN.controlMode");
             hUserState = Ads.CreateVariableHandle("RCP.userState");
             hRecipeControlPauseTime = Ads.CreateVariableHandle("RCP.Pause_ET");
             hRecipeRunET = Ads.CreateVariableHandle("RCP.RecipeRunET");
             hE3508InputManAuto = Ads.CreateVariableHandle("GVL_IO.nE3508_nInputManAutoBytes");
             hOutputSetType = Ads.CreateVariableHandle("GVL_IO.nIQPLUS_SetType");
             hOutputMode = Ads.CreateVariableHandle("GVL_IO.nIQPLUS_Mode");
+            for (uint analogDevice = 0; analogDevice < NumControllers; ++analogDevice)
+            {
+                hAControllerInput[analogDevice] = Ads.CreateVariableHandle("GVL_IO.aController[" + (analogDevice + 1)+ "].input");
+            }
         }
 
         private static void IntializePubSub()
@@ -243,7 +246,7 @@ namespace SapphireXR_App.Models
             dThrottleValveStatusIssuer = ObservableManager<short>.Get("ThrottleValveStatus");
             dLogicalInterlockStateIssuer = ObservableManager<BitArray>.Get("LogicalInterlockState");
             dPLCConnectionPublisher = ObservableManager<PLCConnection>.Get("PLCService.Connected");
-            dOperationModeChangingPublisher = ObservableManager<bool>.Get("OperationModeChanging");
+            dControlModeChangingPublisher = ObservableManager<ControlMode>.Get("ControlModeChanging");
 
             ObservableManager<bool>.Subscribe("Leak Test Mode", leakTestModeSubscriber = new LeakTestModeSubscriber());
         }
@@ -332,7 +335,12 @@ namespace SapphireXR_App.Models
 
                 int iterlock1 = Ads.ReadAny<int>(hInterlock[0]);
                 dLogicalInterlockStateIssuer?.Publish(new BitArray(BitConverter.IsLittleEndian == true ? BitConverter.GetBytes(iterlock1) : BitConverter.GetBytes(iterlock1).Reverse().ToArray()));
-            
+
+                foreach(Action task in AddOnPLCStateUpdateTask)
+                {
+                    task();
+                }
+
                 string exceptionStr = string.Empty;
                 if (aDeviceControlValues == null)
                 {
@@ -427,6 +435,16 @@ namespace SapphireXR_App.Models
             {
                 throw new ReadValveStateException("PLC Service: non-exsiting valve ID entered to GetReadValveStateBuffer()");
             }
+        }
+
+        public static void AddPLCStateUpdateTask(Action task)
+        {
+            AddOnPLCStateUpdateTask.Add(task);
+        }
+
+        public static void RemovePLCStateUpdateTask(Action task)
+        {
+            AddOnPLCStateUpdateTask.Remove(task);
         }
     }
 }

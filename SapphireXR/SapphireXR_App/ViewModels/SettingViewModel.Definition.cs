@@ -60,35 +60,7 @@ namespace SapphireXR_App.ViewModels
 
             private SettingViewModel settingViewModel;
         }
-
-        private class PLCConnectionStateSubscriber : IObserver<PLCConnection>
-        {
-            public PLCConnectionStateSubscriber(SettingViewModel vm)
-            {
-                settingViewModel = vm;
-            }
-
-            void IObserver<PLCConnection>.OnCompleted()
-            {
-                throw new NotImplementedException();
-            }
-
-            void IObserver<PLCConnection>.OnError(Exception error)
-            {
-                throw new NotImplementedException();
-            }
-
-            void IObserver<PLCConnection>.OnNext(PLCConnection value)
-            {
-                if (value == PLCConnection.Connected)
-                {
-                    settingViewModel.initializeSettingToPLC();
-                }
-            }
-
-            private SettingViewModel settingViewModel;
-        }
-
+       
         public partial class CheckAllColumnViewModel<T>: ObservableObject where T : WarningAlarmDevice
         {
             public CheckAllColumnViewModel(List<T>? list, PLCService.TriggerType alarmOrWarning)
@@ -244,9 +216,6 @@ namespace SapphireXR_App.ViewModels
 
         private AppClosingSubscriber appClosingSubscriber;
         private IOStateListSubscriber iOStateListSubscriber;
-        private PLCConnectionStateSubscriber plcConnectionStateSubscriber;
-
-        private bool settingToPLCInitialized = false;
 
         private static ObservableManager<(string, string)>.Publisher GasIOLabelChangedPublisher = ObservableManager<(string, string)>.Get("GasIOLabelChanged");
         private static ObservableManager<(string, string)>.Publisher ValveIOLabelChangedPublisher = ObservableManager<(string, string)>.Get("ValveIOLabelChanged");

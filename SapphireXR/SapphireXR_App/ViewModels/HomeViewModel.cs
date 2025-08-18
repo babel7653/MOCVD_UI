@@ -123,7 +123,6 @@ namespace SapphireXR_App.ViewModels
             };
 
             EventLogs.Instance.EventLogList.CollectionChanged += (object? sender, NotifyCollectionChangedEventArgs args) => ClearEventLogsCommand.NotifyCanExecuteChanged();
-            ObservableManager<string>.Get("ViewModelCreated").Publish("HomeViewModel");
         }
 
         private void initRightDashBoard()

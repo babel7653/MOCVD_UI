@@ -1,0 +1,43 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4026.11">
+  <POU Name="FB_ValveControl" Id="{0640b194-c2ff-4b3b-897a-4f387a202362}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK FB_ValveControl
+VAR_INPUT
+	valveSetting: DWORD; 
+END_VAR
+
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[(* Solenoid Valve Mapping *)
+GVL_IO.aOutputSolValve[1].0 := valveSetting.0; //V01 Hyd. Carrier
+GVL_IO.aOutputSolValve[1].1 := valveSetting.1; //V02
+GVL_IO.aOutputSolValve[1].2 := valveSetting.2; //V03
+GVL_IO.aOutputSolValve[1].3 := valveSetting.3; //V04
+GVL_IO.aOutputSolValve[1].4 := valveSetting.4; //V05
+GVL_IO.aOutputSolValve[1].6 := valveSetting.5; //V07
+GVL_IO.aOutputSolValve[1].7 := valveSetting.6; //V08
+GVL_IO.aOutputSolValve[1].9 := valveSetting.7; //V10
+GVL_IO.aOutputSolValve[1].10 := valveSetting.8; //V11
+GVL_IO.aOutputSolValve[1].12 := valveSetting.9; //V13
+GVL_IO.aOutputSolValve[1].13 := valveSetting.10; //V14
+GVL_IO.aOutputSolValve[1].15 := valveSetting.11; //V16
+GVL_IO.aOutputSolValve[2].0 := valveSetting.12; //V17
+GVL_IO.aOutputSolValve[2].2 := valveSetting.13; //V19
+GVL_IO.aOutputSolValve[2].3 := valveSetting.14; //V20
+GVL_IO.aOutputSolValve[2].5 := valveSetting.15; //V22
+GVL_IO.aOutputSolValve[2].6 := valveSetting.16; //V23
+GVL_IO.aOutputSolValve[2].7 := valveSetting.17; //V24
+GVL_IO.aOutputSolValve[2].8 := valveSetting.18; //V25
+GVL_IO.aOutputSolValve[2].9 := valveSetting.19; //V26
+GVL_IO.aOutputSolValve[2].10 := valveSetting.20; //V27
+GVL_IO.aOutputSolValve[2].11 := valveSetting.21; //V28
+GVL_IO.aOutputSolValve[2].12 := valveSetting.22; //V29
+GVL_IO.aOutputSolValve[2].13 := valveSetting.23; //V30
+GVL_IO.aOutputSolValve[2].14 := valveSetting.24; //V31
+GVL_IO.aOutputSolValve[2].15 := valveSetting.25; //V32]]></ST>
+    </Implementation>
+    <LineIds Name="FB_ValveControl">
+      <LineId Id="1" Count="26" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

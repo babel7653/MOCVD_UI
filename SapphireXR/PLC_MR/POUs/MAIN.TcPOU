@@ -41,7 +41,6 @@ END_IF
 
 CASE controlMode OF
 	E_ControlMode.Manual:
-		// 	P30_ManualControl(state_Control := 10); //매뉴얼 콘트롤
 		P30_ManualControlExt();
 	
 	E_ControlMode.Recipe:
@@ -70,7 +69,8 @@ bTest3 := GVL_IO.aInputState[1].14;
     <LineIds Name="MAIN">
       <LineId Id="535" Count="17" />
       <LineId Id="584" Count="1" />
-      <LineId Id="553" Count="15" />
+      <LineId Id="553" Count="5" />
+      <LineId Id="560" Count="8" />
       <LineId Id="583" Count="0" />
       <LineId Id="569" Count="12" />
       <LineId Id="220" Count="0" />

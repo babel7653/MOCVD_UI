@@ -491,7 +491,6 @@ namespace SapphireXR_App.ViewModels
                 RecipeSkipCommand.NotifyCanExecuteChanged();
             }
         }
-      
 
         [ObservableProperty]
         private bool recipeStartAvailableInterlock = false;

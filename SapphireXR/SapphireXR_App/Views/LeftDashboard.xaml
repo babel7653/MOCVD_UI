@@ -26,13 +26,13 @@
     </Page.Resources>
     <Grid Background="{StaticResource Gray_100}">
         <Grid.RowDefinitions>
-            <RowDefinition Height="51" />
+            <RowDefinition Height="48" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
         <Border Grid.Row="0" BorderBrush="{StaticResource Gray_300}" BorderThickness="0, 0, 0, 1">
             <Grid>
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="15"/>
+                    <RowDefinition Height="12"/>
                     <RowDefinition Height="20"/>
                     <RowDefinition Height="16"/>
                 </Grid.RowDefinitions>
@@ -61,63 +61,61 @@
             </Grid.RowDefinitions>
 
             <!-- Machine Information -->
-            <Grid Margin="8,8,8,0" Grid.Row="0">
-                <Grid>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="60" />
-                        <ColumnDefinition Width="*" />
-                    </Grid.ColumnDefinitions>
-                    <Image Height="108" anim:ImageBehavior.AnimatedSource="{Binding SignalTowerImage, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"/>
-                    <Grid Grid.Column="1">
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="Auto" />
-                            <RowDefinition Height="2" />
-                            <RowDefinition Height="Auto" />
-                            <RowDefinition Height="4" />
-                            <RowDefinition Height="Auto" />
-                            <RowDefinition Height="2" />
-                            <RowDefinition Height="Auto" />
-                            <RowDefinition Height="4" />
-                            <RowDefinition Height="Auto" />
-                            <RowDefinition Height="2" />
-                            <RowDefinition Height="Auto" />
-                        </Grid.RowDefinitions>
+            <Border Grid.Row="0" Style="{StaticResource Tab}">
+                <Grid Margin="8,0,8,8" >
+                    <Grid>
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="Auto" />
-                            <ColumnDefinition Width="10"/>
-                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="60" />
+                            <ColumnDefinition Width="*" />
                         </Grid.ColumnDefinitions>
-                        <TextBlock Grid.Row="0" Grid.Column="0" FontFamily="Segoe UI" FontSize="12" Foreground="{StaticResource Gray_900}" Margin="0" Padding="0"><Run Text="Machine Name"/></TextBlock>
-                        <TextBlock Grid.Row="2" Grid.Column="0" FontFamily="Segoe UI" FontSize="12" Foreground="{StaticResource Gray_950}"  Margin="0"  Padding="0" FontWeight="Bold"><Run Text="Marvel 120MS"/></TextBlock>
-                        <TextBlock FontFamily="Segoe UI" Grid.Row="0" Grid.Column="2" FontSize="12" Foreground="{DynamicResource Gray_900}" Margin="0" Padding="0"><Run Language="ko-kr" Text="System ID"/></TextBlock>
-                        <TextBlock FontFamily="Segoe UI" Grid.Row="2" Grid.Column="2"  FontSize="12" Foreground="{DynamicResource Gray_950}" Margin="0" Padding="0" FontWeight="Bold"><Run Language="ko-kr" Text="2024 SKKU2"/></TextBlock>
-                        <TextBlock FontFamily="Segoe UI" Grid.Row="4" Grid.Column="0" FontSize="12" Foreground="{DynamicResource Gray_900}" Margin="0" Padding="0" ><Run Language="ko-kr" Text="Application"/></TextBlock>
-                        <TextBlock FontFamily="Segoe UI" Grid.Row="6" Grid.Column="0" FontSize="12" Foreground="{DynamicResource Gray_950}" Margin="0" Padding="0" FontWeight="Bold" RenderTransformOrigin="0.563,1.979"><Run Language="ko-kr" Text="GaN"/></TextBlock>
-                        <TextBlock FontFamily="Segoe UI" FontSize="12" Grid.Row="4" Grid.Column="2" Foreground="{DynamicResource Gray_900}" Margin="0" Padding="0" ><Run Language="ko-kr" Text="PLC Address"/></TextBlock>
-                        <TextBlock Text="{Binding PLCAddressText}" Grid.Row="6" Grid.Column="2" FontFamily="Segoe UI" FontSize="12" Foreground="{DynamicResource Gray_950}" Margin="0" Padding="0" FontWeight="Bold"><Run Text="Machine Nam"/><Run Language="ko-kr" Text="e"/></TextBlock>
-                        <TextBlock FontFamily="Segoe UI" Grid.Row="8" Grid.Column="0"  FontSize="12" Foreground="{DynamicResource Gray_900}" Margin="0" Padding="0" ><Run Text="PLC "/><Run Language="ko-kr" Text="C"/><Run Text="onnection"/></TextBlock>
-                        <TextBlock Text="{Binding PLCConnectionStatus}" Grid.Row="10" Grid.Column="0" FontFamily="Segoe UI" FontSize="12" Margin="0" Padding="0" Foreground="{Binding PLCConnectionStatusColor}" FontWeight="Bold" />
-                        <Button Grid.Row="6" Grid.Column="2" Grid.RowSpan="5"  Width="25" Height="25" Command="{Binding ToggleBuzzerOnOffCommand}">
-                            <Button.Style>
-                                <Style TargetType="Button" BasedOn="{StaticResource ImageButton}">
-                                    <Setter Property="Margin">
-                                        <Setter.Value>
-                                            <Thickness Left="{StaticResource p_1}" Right="{StaticResource p_3}" />
-                                        </Setter.Value>
-                                    </Setter>
-                                    <Setter Property="BorderThickness" Value="0" />
-                                    <Style.Triggers>
-                                        <Trigger Property="IsMouseOver" Value="True">
-                                            <Setter Property="Background" Value="#FF929281" />
-                                        </Trigger>
-                                    </Style.Triggers>
-                                </Style>
-                            </Button.Style>
-                            <Image Source="{Binding BuzzerImage}" Width="25" Height="25" IsEnabled="{Binding Online, Source={x:Static model:PLCConnectionState.Instance}, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"/>
-                        </Button>
+                        <Image Height="108" anim:ImageBehavior.AnimatedSource="{Binding SignalTowerImage, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"/>
+                        <Grid Grid.Column="1">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="2" />
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="4" />
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="2" />
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="4" />
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="2" />
+                                <RowDefinition Height="Auto" />
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="10"/>
+                                <ColumnDefinition Width="Auto" />
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Grid.Row="0" Grid.Column="0" FontFamily="Segoe UI" FontSize="12" Foreground="{StaticResource Gray_900}" Margin="0" Padding="0"><Run Text="Machine Name"/></TextBlock>
+                            <TextBlock Grid.Row="2" Grid.Column="0" FontFamily="Segoe UI" FontSize="12" Foreground="{StaticResource Gray_950}"  Margin="0"  Padding="0" FontWeight="Bold"><Run Text="Marvel 120MS"/></TextBlock>
+                            <TextBlock FontFamily="Segoe UI" Grid.Row="0" Grid.Column="2" FontSize="12" Foreground="{DynamicResource Gray_900}" Margin="0" Padding="0"><Run Language="ko-kr" Text="System ID"/></TextBlock>
+                            <TextBlock FontFamily="Segoe UI" Grid.Row="2" Grid.Column="2"  FontSize="12" Foreground="{DynamicResource Gray_950}" Margin="0" Padding="0" FontWeight="Bold"><Run Language="ko-kr" Text="2024 SKKU2"/></TextBlock>
+                            <TextBlock FontFamily="Segoe UI" Grid.Row="4" Grid.Column="0" FontSize="12" Foreground="{DynamicResource Gray_900}" Margin="0" Padding="0" ><Run Language="ko-kr" Text="Application"/></TextBlock>
+                            <TextBlock FontFamily="Segoe UI" Grid.Row="6" Grid.Column="0" FontSize="12" Foreground="{DynamicResource Gray_950}" Margin="0" Padding="0" FontWeight="Bold" RenderTransformOrigin="0.563,1.979"><Run Language="ko-kr" Text="GaN"/></TextBlock>
+                            <TextBlock FontFamily="Segoe UI" FontSize="12" Grid.Row="4" Grid.Column="2" Foreground="{DynamicResource Gray_900}" Margin="0" Padding="0" ><Run Language="ko-kr" Text="PLC Address"/></TextBlock>
+                            <TextBlock Text="{Binding PLCAddressText}" Grid.Row="6" Grid.Column="2" FontFamily="Segoe UI" FontSize="12" Foreground="{DynamicResource Gray_950}" Margin="0" Padding="0" FontWeight="Bold"><Run Text="Machine Nam"/><Run Language="ko-kr" Text="e"/></TextBlock>
+                            <TextBlock FontFamily="Segoe UI" Grid.Row="8" Grid.Column="0"  FontSize="12" Foreground="{DynamicResource Gray_900}" Margin="0" Padding="0" ><Run Text="PLC "/><Run Language="ko-kr" Text="C"/><Run Text="onnection"/></TextBlock>
+                            <TextBlock Text="{Binding PLCConnectionStatus}" Grid.Row="10" Grid.Column="0" FontFamily="Segoe UI" FontSize="12" Margin="0" Padding="0" Foreground="{Binding PLCConnectionStatusColor}" FontWeight="Bold" />
+                            <Button Grid.Row="8" Grid.Column="2" Grid.RowSpan="5"  Width="25" Height="25" Command="{Binding ToggleBuzzerOnOffCommand}" HorizontalAlignment="Center" VerticalAlignment="Center">
+                                <Button.Style>
+                                    <Style TargetType="Button" BasedOn="{StaticResource ImageButton}">
+
+                                        <Setter Property="BorderThickness" Value="0" />
+                                        <Style.Triggers>
+                                            <Trigger Property="IsMouseOver" Value="True">
+                                                <Setter Property="Background" Value="#FF929281" />
+                                            </Trigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </Button.Style>
+                                <Image Source="{Binding BuzzerImage}" Width="25" Height="25" IsEnabled="{Binding Online, Source={x:Static model:PLCConnectionState.Instance}, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"/>
+                            </Button>
+                        </Grid>
                     </Grid>
                 </Grid>
-            </Grid>
+            </Border>
             <!-- Source Valve Current Status -->
             <Grid Grid.Row="2" VerticalAlignment="Center">
                 <Border Style="{StaticResource Tab}">

@@ -11,8 +11,8 @@ END_VAR
     <Implementation>
       <ST><![CDATA[// Reset the timers by setting IN to FALSE
 fbPause_TON(IN:=FALSE); // Calling the TON FB instances
-fbRamp_TON(IN:=FALSE);
-fbHold_TON(IN:=FALSE);
+fbRamp_TON(IN:=FALSE, Pause:=FALSE);
+fbHold_TON(IN:=FALSE, Pause:=FALSE);
 
 // Reset the elapsed times in the RCP structure
 RCP.Pause_ET := T#0S;

@@ -219,7 +219,7 @@ namespace SapphireXR_App.ViewModels
         public event PropertyChangedEventHandler? PropertyChanged;
 
         public ICommand OnLoadedCommand { get; set; }
-        public RelayCommand OnClickCommand => new RelayCommand(OnClicked, () => PLCService.Connected == PLCConnection.Connected);
+        public RelayCommand OnClickCommand => new RelayCommand(OnClicked, () => PLCConnectionState.Instance.Online == true);
 
         protected abstract void OnClicked();
 

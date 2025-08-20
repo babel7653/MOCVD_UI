@@ -13,7 +13,7 @@ using System.Windows.Input;
 
 namespace SapphireXR_App.ViewModels
 {
-    public partial class MainViewModel : ViewModelBase, IObserver<RecipeRunViewModel.RecipeUserState>, IObserver<int>, IObserver<PLCConnection>, IObserver<BitArray>, IObserver<PLCService.ControlMode>
+    public partial class MainViewModel : ViewModelBase, IObserver<RecipeRunViewModel.RecipeUserState>, IObserver<int>, IObserver<BitArray>, IObserver<PLCService.ControlMode>
     {
         [ObservableProperty]
         private string? navigationSource;
@@ -27,7 +27,7 @@ namespace SapphireXR_App.ViewModels
             //네비게이션 메시지 수신 등록
             WeakReferenceMessenger.Default.Register<NavigationMessage>(this, OnNavigationMessage);
 
-            if (PLCService.Connected == PLCConnection.Connected)
+            if (PLCConnectionState.Instance.Online == true)
             {
                 changeOperationMode(SelectedTab);
             }
@@ -49,7 +49,7 @@ namespace SapphireXR_App.ViewModels
                 switch (args.PropertyName)
                 {
                     case nameof(SelectedTab):
-                        if (PLCService.Connected == PLCConnection.Connected)
+                        if (PLCConnectionState.Instance.Online)
                         {
                             changeOperationMode(SelectedTab);
                         }
@@ -68,7 +68,6 @@ namespace SapphireXR_App.ViewModels
             onClosing = confirmClose;
             ObservableManager<RecipeRunViewModel.RecipeUserState>.Subscribe("RecipeRun.State", this);
             ObservableManager<int>.Subscribe("SwitchTab", this);
-            ObservableManager<PLCConnection>.Subscribe("PLCService.Connected", this);
             ObservableManager<BitArray>.Subscribe("LogicalInterlockState", this);
             ObservableManager<PLCService.ControlMode>.Subscribe("ControlModeChanging", this);
             EventLogs.Instance.EventLogList.Add(new EventLog() { Message = "SapphireXR이 시작되었습니다", Name = "Application", Type = EventLog.LogType.Information });
@@ -81,6 +80,20 @@ namespace SapphireXR_App.ViewModels
             //EventLogs.Instance.EventLogList.Add(new EventLog() { Message = "Setting값 저장이 완료되었습니다.", Name = "Application", Type = EventLog.LogType.Information });
             //EventLogs.Instance.EventLogList.Add(new EventLog() { Message = "Setting값 로드가 완료되었습니다.", Name = "Application", Type = EventLog.LogType.Information });
 
+            PLCConnectionState.Instance.PropertyChanged += (sender, args) =>
+            {
+                switch (PLCConnectionState.Instance.Online)
+                {
+                    case true:
+                        changeOperationMode(SelectedTab);
+                        ToastMessage.Show("PLC로 연결되었습니다", ToastMessage.MessageType.Sucess);
+                        break;
+
+                    case false:
+                        ToastMessage.Show("PLC로 연결이 끊겼습니다.", ToastMessage.MessageType.Error);
+                        break;
+                }
+            };
             updatePriorityState = () =>
             {
                 NotPriorityState = (PLCService.ReadControlMode() != PLCService.ControlMode.Priority);
@@ -93,15 +106,21 @@ namespace SapphireXR_App.ViewModels
 
         private void changeOperationMode(int tab)
         {
-            switch (tab)
+            try
             {
-                case 0:
-                    PLCService.WriteControlModeCmd(PLCService.ControlMode.Manual);
-                    break;
+                switch (tab)
+                {
+                    case 0:
+                        PLCService.WriteControlModeCmd(PLCService.ControlMode.Manual);
+                        break;
 
-                case 1:
-                    PLCService.WriteControlModeCmd(PLCService.ControlMode.Recipe);
-                    break;
+                    case 1:
+                        PLCService.WriteControlModeCmd(PLCService.ControlMode.Recipe);
+                        break;
+                }
+            }
+            catch(Exception)
+            {
             }
         }
 
@@ -176,31 +195,6 @@ namespace SapphireXR_App.ViewModels
             if (value < 5 && SelectedTab != value)
             {
                 SelectedTab = value;
-            }
-        }
-
-        void IObserver<PLCConnection>.OnCompleted()
-        {
-            throw new NotImplementedException();
-        }
-
-        void IObserver<PLCConnection>.OnError(Exception error)
-        {
-            throw new NotImplementedException();
-        }
-
-        void IObserver<PLCConnection>.OnNext(PLCConnection value)
-        {
-            switch(value)
-            {
-                case PLCConnection.Connected:
-                    changeOperationMode(SelectedTab);
-                    ToastMessage.Show("PLC로 연결되었습니다", ToastMessage.MessageType.Sucess);
-                    break;
-
-                case PLCConnection.Disconnected:
-                    ToastMessage.Show("PLC로 연결이 끊겼습니다.", ToastMessage.MessageType.Error);
-                    break;
             }
         }
 

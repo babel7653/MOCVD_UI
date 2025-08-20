@@ -249,7 +249,7 @@ namespace SapphireXR_App.ViewModels
 
             PropertyChanged += (object? sender, PropertyChangedEventArgs args) =>
             {
-                if (PLCService.Connected == PLCConnection.Connected)
+                if (PLCConnectionState.Instance.Online == true)
                 {
                     switch (args.PropertyName)
                     {
@@ -409,7 +409,7 @@ namespace SapphireXR_App.ViewModels
             }
             lGasDO = dGasDO?.Values.ToList();
 
-            if (PLCService.Connected == PLCConnection.Connected)
+            if (PLCConnectionState.Instance.Online == true)
             {
                 initializeSettingToPLC();
             }

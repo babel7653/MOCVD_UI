@@ -6,7 +6,6 @@ using System.Globalization;
 using System.IO;
 using System.Windows;
 using System.Windows.Media;
-using static SapphireXR_App.Models.PLCService;
 
 namespace SapphireXR_App.ViewModels
 {

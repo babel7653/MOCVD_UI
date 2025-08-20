@@ -94,15 +94,30 @@ namespace SapphireXR_App.ViewModels
        
             ObservableManager<BitArray>.Subscribe("DigitalOutput3", digitalOutput3Subscriber = new DigitalOutput3Subscriber(this));
             ObservableManager<short>.Subscribe("ThrottleValveStatus", throttleValveStatusSubscriber = new ThrottleValveStatusSubscriber(this));
-            ObservableManager<PLCConnection>.Subscribe("PLCService.Connected", plcConnectionStateSubscriber = new PLCConnectionStateSubscriber(this));
             ObservableManager<bool>.Subscribe("RecipeRunViewModel.RecipeEnded", recipeEndedSubscriber = new RecipeEndedSubscriber(this));
 
             ThrottleValveControlModes = ["Control", "Open", "Close", "Hold", "Reset"];
 
-            if (PLCService.Connected == PLCConnection.Connected)
+            if (PLCConnectionState.Instance.Online == true)
             {
                 initRightDashBoard();
             }
+            PLCConnectionState.Instance.PropertyChanged += (sender, args) =>
+            {
+                if(args.PropertyName == nameof(PLCConnectionState.Online))
+                {
+                    if (PLCConnectionState.Instance.Online == true)
+                    {
+                        initRightDashBoard();
+                    }
+                    OnThrottleValveModeChangedCommand.NotifyCanExecuteChanged();
+                    TogglePressureControlModeCommand.NotifyCanExecuteChanged();
+                    InductionHeaterResetCommand.NotifyCanExecuteChanged();
+                    ToggleHeaterControlModeCommand.NotifyCanExecuteChanged();
+                    VacuumPumpResetCommand.NotifyCanExecuteChanged();
+                    manualBatchViewModel.LoadToPLCCommand.NotifyCanExecuteChanged();
+                }
+            };
 
             PropertyChanged += (object? sender, PropertyChangedEventArgs args) =>
             {
@@ -127,28 +142,23 @@ namespace SapphireXR_App.ViewModels
 
         private void initRightDashBoard()
         {
-            if (rightDashboardInitiated == false)
+            try
             {
-                try
+                onPressureControlModeUpdated(PLCService.ReadPressureControlMode());
+                ushort throttleValveMode = PLCService.ReadThrottleValveMode();
+                if (throttleValveMode < ThrottleValveModeCmdToString.Length)
                 {
-                    onPressureControlModeUpdated(PLCService.ReadPressureControlMode());
-                    ushort throttleValveMode = PLCService.ReadThrottleValveMode();
-                    if (throttleValveMode < ThrottleValveModeCmdToString.Length)
-                    {
-                        CurrentThrottleValveControlMode = ThrottleValveModeCmdToString[throttleValveMode];
-                        prevThrottleValveControlMode = CurrentThrottleValveControlMode;
-                    }
-                    BitArray outputCmd1 = PLCService.ReadOutputCmd1();
-                    IsInductionHeaterOn = outputCmd1[(int)PLCService.OutputCmd1Index.InductionHeaterControl];
-                    IsVaccumPumpOn = outputCmd1[(int)PLCService.OutputCmd1Index.VaccumPumpControl];
-                    InputManualAuto = PLCService.ReadInputManAuto(7) == false ? "Auto" : "Manual";
-
-                    rightDashboardInitiated = true;
+                    CurrentThrottleValveControlMode = ThrottleValveModeCmdToString[throttleValveMode];
+                    prevThrottleValveControlMode = CurrentThrottleValveControlMode;
                 }
-                catch (Exception ex)
-                {
-                    MessageBox.Show("Exception in HomeViewModel constructor. PLC로 부터 값을 읽어와 UI 상태를 초기화 하는데 실패했습니다. 원인은 다음과 같습니다: " + ex.Message);
-                }
+                BitArray outputCmd1 = PLCService.ReadOutputCmd1();
+                IsInductionHeaterOn = outputCmd1[(int)PLCService.OutputCmd1Index.InductionHeaterControl];
+                IsVaccumPumpOn = outputCmd1[(int)PLCService.OutputCmd1Index.VaccumPumpControl];
+                InputManualAuto = PLCService.ReadInputManAuto(7) == false ? "Auto" : "Manual";
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Exception in HomeViewModel constructor. PLC로 부터 값을 읽어와 UI 상태를 초기화 하는데 실패했습니다. 원인은 다음과 같습니다: " + ex.Message);
             }
         }
      
@@ -170,7 +180,7 @@ namespace SapphireXR_App.ViewModels
 
         private bool canVacuumPumpResetExecute()
         {
-            return PLCService.Connected == PLCConnection.Connected && ThrottleValveStatus == "Valve Fault";
+            return PLCConnectionState.Instance.Online == true && ThrottleValveStatus == "Valve Fault";
         }
 
         [RelayCommand(CanExecute = "canVacuumPumpResetExecute")]
@@ -195,7 +205,7 @@ namespace SapphireXR_App.ViewModels
 
         private bool canToggleHeaterControlModeExecute()
         {
-            return PLCService.Connected == PLCConnection.Connected;
+            return PLCConnectionState.Instance.Online == true;
         }
 
         [RelayCommand(CanExecute = "canToggleHeaterControlModeExecute")]
@@ -462,8 +472,6 @@ namespace SapphireXR_App.ViewModels
         private bool _isVaccumPumpOn;
         [ObservableProperty]
         private bool _isInductionHeaterOn;
-        [ObservableProperty]
-        private bool _pLCConnected = PLCService.Connected == PLCConnection.Connected ? true: false;
 
         private string? prevThrottleValveControlMode = null;
 
@@ -482,7 +490,6 @@ namespace SapphireXR_App.ViewModels
         private DigitalOutput3Subscriber digitalOutput3Subscriber;
         private ThrottleValveStatusSubscriber throttleValveStatusSubscriber;
         private ObservableManager<bool>.Publisher leakTestModePublisher;
-        private PLCConnectionStateSubscriber plcConnectionStateSubscriber;
         private RecipeEndedSubscriber recipeEndedSubscriber;
 
         private bool showMsgOnVacuumPumpToggleEx = true;
@@ -493,8 +500,6 @@ namespace SapphireXR_App.ViewModels
         private bool showMsgOnTogglePressureControlModeEx = true;
         private bool showMsgOnThrottleValveModeChangedCommandEx = true;
         private bool showMsgOnLoadBatchOnRecipeEnd = true;
-
-        private bool rightDashboardInitiated = false;
     }
 }
 

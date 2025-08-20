@@ -95,41 +95,6 @@ namespace SapphireXR_App.ViewModels
             private short? prevThrottleValveControlMode = null;
         }
 
-        private class PLCConnectionStateSubscriber : IObserver<Enums.PLCConnection>
-        {
-            public PLCConnectionStateSubscriber(HomeViewModel vm)
-            {
-                homeViewModel = vm;
-            }
-
-            void IObserver<PLCConnection>.OnCompleted()
-            {
-                throw new NotImplementedException();
-            }
-
-            void IObserver<PLCConnection>.OnError(Exception error)
-            {
-                throw new NotImplementedException();
-            }
-
-            void IObserver<PLCConnection>.OnNext(PLCConnection value)
-            {
-                if (value == PLCConnection.Connected)
-                {
-                    homeViewModel.initRightDashBoard();
-                }
-                homeViewModel.OnThrottleValveModeChangedCommand.NotifyCanExecuteChanged();
-                homeViewModel.TogglePressureControlModeCommand.NotifyCanExecuteChanged();
-                homeViewModel.InductionHeaterResetCommand.NotifyCanExecuteChanged();
-                homeViewModel.ToggleHeaterControlModeCommand.NotifyCanExecuteChanged();
-                homeViewModel.VacuumPumpResetCommand.NotifyCanExecuteChanged();
-                homeViewModel.manualBatchViewModel.LoadToPLCCommand.NotifyCanExecuteChanged();
-                homeViewModel.PLCConnected = PLCService.Connected == PLCConnection.Connected ? true : false;
-            }
-
-            HomeViewModel homeViewModel;
-        }
-
         private class RecipeEndedSubscriber : IObserver<bool>
         {
             internal RecipeEndedSubscriber(HomeViewModel vm)

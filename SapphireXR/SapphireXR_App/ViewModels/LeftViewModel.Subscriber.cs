@@ -442,30 +442,5 @@ namespace SapphireXR_App.ViewModels
 
             private LeftViewModel leftViewModel;
         }
-
-        private class PLCConnectionStateSubscriber : IObserver<PLCConnection>
-        {
-            public PLCConnectionStateSubscriber(LeftViewModel vm)
-            {
-                leftViewModel = vm;
-            }
-
-            void IObserver<PLCConnection>.OnCompleted()
-            {
-                throw new NotImplementedException();
-            }
-
-            void IObserver<PLCConnection>.OnError(Exception error)
-            {
-                throw new NotImplementedException();
-            }
-
-            void IObserver<PLCConnection>.OnNext(PLCConnection value)
-            {
-                leftViewModel.setConnectionStatusText(value);
-            }
-
-            private LeftViewModel leftViewModel;
-        }
     }
 }

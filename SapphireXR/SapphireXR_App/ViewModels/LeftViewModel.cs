@@ -260,7 +260,6 @@ namespace SapphireXR_App.ViewModels
             ObservableManager<bool>.Subscribe("Reset.CurrentRecipeStep", resetCurrentRecipeSubscriber = new ResetCurrentRecipeSubscriber(this));
             ObservableManager<BitArray>.Subscribe("LogicalInterlockState", logicalInterlockSubscriber = new LogicalInterlockSubscriber(this));
             ObservableManager<(string, string)>.Subscribe("GasIOLabelChanged", gasIOLabelSubscriber = new GasIOLabelSubscriber(this));
-            ObservableManager<PLCConnection>.Subscribe("PLCService.Connected", plcConnectionStateSubscriber = new PLCConnectionStateSubscriber(this)); 
           
             CurrentSourceStatusViewModel = new SourceStatusFromCurrentPLCStateViewModel(this);
             PropertyChanging += (object? sender, PropertyChangingEventArgs args) =>
@@ -290,7 +289,14 @@ namespace SapphireXR_App.ViewModels
                         break;
                 }
             };
-            setConnectionStatusText(PLCService.Connected);
+            setConnectionStatusText(PLCConnectionState.Instance.Online);
+            PLCConnectionState.Instance.PropertyChanged += (sender, args) =>
+            {
+                if (args.PropertyName == nameof(PLCConnectionState.Online))
+                {
+                    setConnectionStatusText(PLCConnectionState.Instance.Online);
+                }
+            };
         }
 
         public static string GetGas3Label(string? gas3Name, int index)
@@ -317,18 +323,24 @@ namespace SapphireXR_App.ViewModels
             }
         }
 
-        private void setConnectionStatusText(PLCConnection connectionStatus)
+        private void setConnectionStatusText(bool online)
         {
-            switch (connectionStatus)
+            switch (online)
             {
-                case PLCConnection.Connected:
+                case true:
                     PLCConnectionStatus = "Connected";
-                    bool onOff = PLCService.ReadBuzzerOnOff();
-                    BuzzerImage = onOff == true ? BuzzerOnPath : BuzzerOffPath;
-                    PLCService.WriteInterlockEnableState(onOff, PLCService.InterlockEnableSetting.Buzzer);
+                    try
+                    {
+                        bool onOff = PLCService.ReadBuzzerOnOff();
+                        BuzzerImage = onOff == true ? BuzzerOnPath : BuzzerOffPath;
+                        PLCService.WriteInterlockEnableState(onOff, PLCService.InterlockEnableSetting.Buzzer);
+                    }
+                    catch(Exception)
+                    {
+                    }
                     break;
 
-                case PLCConnection.Disconnected:
+                case false:
                     PLCConnectionStatus = "Disconnected";
                     break;
             }
@@ -495,6 +507,5 @@ namespace SapphireXR_App.ViewModels
         private readonly ResetCurrentRecipeSubscriber resetCurrentRecipeSubscriber;
         private readonly LogicalInterlockSubscriber logicalInterlockSubscriber;
         private readonly GasIOLabelSubscriber gasIOLabelSubscriber;
-        private readonly PLCConnectionStateSubscriber plcConnectionStateSubscriber;
     }
 }

@@ -167,7 +167,6 @@ namespace SapphireXR_App.ViewModels
 
         public static Dictionary<string, AnalogDeviceIO> dAnalogDeviceIO = [];
         public static Dictionary<string, SwitchDI>? dSwitchDI = [];
-        public static Dictionary<string, GasDO>? dGasDO = [];
         public static List<Device> GasIO { get; set; } = CreateDefaultGasIO();
         public static List<Device> ValveDeviceIO { get; set; } = [];
         public static Dictionary<string, string>? dPreSet { get; set; } = [];
@@ -181,7 +180,6 @@ namespace SapphireXR_App.ViewModels
 
         public List<AnalogDeviceIO>? lAnalogDeviceIO { get; set; } = [];
         public List<SwitchDI>? lSwitchDI { get; set; } = [];
-        public List<GasDO>? lGasDO { get; set; } = [];
 
         [ObservableProperty]
         public IList<IOSetting> _iOList;

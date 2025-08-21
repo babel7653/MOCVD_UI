@@ -49,11 +49,6 @@ namespace SapphireXR_App.ViewModels
             {
                 dSwitchDI = JsonConvert.DeserializeObject<Dictionary<string, SwitchDI>>(jSwitchDI.ToString());
             }
-            JToken? jGasDO = jDeviceInit["GasDO"];
-            if (jGasDO != null)
-            {
-                dGasDO = JsonConvert.DeserializeObject<Dictionary<string, GasDO>>(jGasDO.ToString());
-            }
             JToken? jAlarmDeviation = jDeviceInit["AlarmDeviation"];
             if (jAlarmDeviation != null)
             {
@@ -407,7 +402,6 @@ namespace SapphireXR_App.ViewModels
                     };
                 }
             }
-            lGasDO = dGasDO?.Values.ToList();
 
             if (PLCConnectionState.Instance.Online == true)
             {
@@ -501,7 +495,6 @@ namespace SapphireXR_App.ViewModels
             JToken jValveDeviceIO = JsonConvert.SerializeObject(ValveDeviceIO);
             JToken jGasIO = JsonConvert.SerializeObject(GasIO);
             JToken jsonSwitchDI = JsonConvert.SerializeObject(dSwitchDI);
-            JToken jsonGasDO = JsonConvert.SerializeObject(dGasDO);
             JToken jInterLockD = JsonConvert.SerializeObject(dInterLockD);
             JToken jInterLockA = JsonConvert.SerializeObject(dInterLockA);
             JToken jAlarmDeviation = JsonConvert.SerializeObject(AlarmDeviationValue);
@@ -519,7 +512,6 @@ namespace SapphireXR_App.ViewModels
                 new JProperty("ValveDeviceIO", jValveDeviceIO),
                 new JProperty("GasIO", jGasIO),
                 new JProperty("SwitchDI", jsonSwitchDI),
-                new JProperty("GasDO", jsonGasDO),
                 new JProperty("InterLockD", jInterLockD),
                 new JProperty("InterLockA", jInterLockA)
             );

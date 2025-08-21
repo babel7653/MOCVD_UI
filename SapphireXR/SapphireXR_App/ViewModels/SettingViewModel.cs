@@ -181,7 +181,7 @@ namespace SapphireXR_App.ViewModels
             JToken? jValveDeviceIO = jDeviceInit["ValveDeviceIO"];
             if (jValveDeviceIO != null)
             {
-                var deserialized = JsonConvert.DeserializeObject<List<ValveDeviceIO>>(jValveDeviceIO.ToString());
+                var deserialized = JsonConvert.DeserializeObject<List<Device>>(jValveDeviceIO.ToString());
                 if(deserialized != null)
                 {
                     ValveDeviceIO = deserialized;
@@ -635,17 +635,17 @@ namespace SapphireXR_App.ViewModels
             PLCService.CommitInterlockValueToPLC();
         }
 
-        private static List<ValveDeviceIO> CreateDefaultValveDeviceIO()
+        private static List<Device> CreateDefaultValveDeviceIO()
         {
-            List<ValveDeviceIO> valveDeviceIO = new List<ValveDeviceIO>();
+            List<Device> valveDeviceIO = new List<Device>();
 
             foreach(string valveID in PLCService.ValveIDtoOutputSolValveIdx1.Keys)
             {
-                valveDeviceIO.Add(new () { ID = valveID, Name = valveID, SolValveID = valveID });
+                valveDeviceIO.Add(new () { ID = valveID, Name = valveID });
             }
             foreach (string valveID in PLCService.ValveIDtoOutputSolValveIdx2.Keys)
             {
-                valveDeviceIO.Add(new() { ID = valveID, Name = valveID, SolValveID = valveID });
+                valveDeviceIO.Add(new() { ID = valveID, Name = valveID });
             }
 
             return valveDeviceIO;

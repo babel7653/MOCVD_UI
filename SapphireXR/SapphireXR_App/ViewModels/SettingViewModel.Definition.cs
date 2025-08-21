@@ -169,7 +169,7 @@ namespace SapphireXR_App.ViewModels
         public static Dictionary<string, SwitchDI>? dSwitchDI = [];
         public static Dictionary<string, GasDO>? dGasDO = [];
         public static List<Device> GasIO { get; set; } = CreateDefaultGasIO();
-        public static List<ValveDeviceIO> ValveDeviceIO { get; set; } = [];
+        public static List<Device> ValveDeviceIO { get; set; } = [];
         public static Dictionary<string, string>? dPreSet { get; set; } = [];
         public static Dictionary<string, InterLockA>? dInterLockA { get; set; } = [];
         public static Dictionary<string, InterLockD>? dInterLockD { get; set; } = [];

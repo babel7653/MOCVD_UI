@@ -705,7 +705,6 @@
                                             <DataGrid.Columns>
                                                 <DataGridTextColumn Header="Device ID" IsReadOnly="True" CanUserSort="False" CanUserResize="False" Width="60" Binding="{Binding ID, UpdateSourceTrigger=PropertyChanged, Mode=OneTime}" ElementStyle="{StaticResource EventLogElement}" />
                                                 <DataGridTextColumn Header="Device Name" CanUserSort="False" CanUserResize="False" Width="*" Binding="{Binding Name, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" ElementStyle="{StaticResource EventLogElement}" />
-                                                <DataGridTextColumn Header="Sol. ID" IsReadOnly="True" CanUserSort="False" CanUserResize="False" Width="120" Binding="{Binding SolValveID, UpdateSourceTrigger=PropertyChanged, Mode=OneTime}" ElementStyle="{StaticResource EventLogElement}" />
                                             </DataGrid.Columns>
                                         </DataGrid>
                                         <DataGrid ItemsSource="{Binding GasIO}" Height="220" Style="{StaticResource SettingDataGrid}">

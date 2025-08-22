@@ -44,5 +44,12 @@ namespace SapphireXR_App.Models
             Items.Insert(index, recipe);
             OnCollectionChanged(new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Add, recipe, index));
         }
+        public void RefreshNo()
+        {
+            for (int index = 0; index < Count; ++index)
+            {
+                Items[index].No = (short)(index + 1);
+            }
+        }
     }
 }

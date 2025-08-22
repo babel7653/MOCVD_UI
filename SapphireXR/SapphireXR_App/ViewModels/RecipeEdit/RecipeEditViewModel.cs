@@ -112,6 +112,7 @@ namespace SapphireXR_App.ViewModels
                     Recipes.CollectionChanged += (object? sender, NotifyCollectionChangedEventArgs args) =>
                     {
                         RecipePLCLoadCommand.NotifyCanExecuteChanged();
+                        Recipes.RefreshNo();
                     };
                     recipeStateUpdater?.clean();
                     recipeStateUpdater = null;

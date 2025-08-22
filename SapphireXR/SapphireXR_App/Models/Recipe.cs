@@ -15,7 +15,6 @@ namespace SapphireXR_App.Models
         {
             Name = rhs.Name;
             cTemp = rhs.cTemp;
-            No = rhs.No;
             HTime = rhs.HTime;
             LoopEndStep = rhs.LoopEndStep;
             RPress = rhs.RPress;
@@ -80,7 +79,8 @@ namespace SapphireXR_App.Models
 
         public string Name { get; set; } = "";
         // RecipeInt Array
-        public short No { get; set; }
+        [ObservableProperty]
+        public short no;
         [ObservableProperty]
         private short _rTime;
         [ObservableProperty]

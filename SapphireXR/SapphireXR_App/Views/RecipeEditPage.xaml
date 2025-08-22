@@ -749,7 +749,7 @@
                                         </b:EventTrigger>
                                     </b:Interaction.Triggers>
                                     <DataGrid.Columns>
-                                        <DataGridTextColumn Header="No" Width="30" Binding="{Binding No, UpdateSourceTrigger=PropertyChanged}"  IsReadOnly="True" ElementStyle="{StaticResource EventLogElement}" />
+                                        <DataGridTextColumn Header="No" Width="30" Binding="{Binding No}"  IsReadOnly="True" ElementStyle="{StaticResource EventLogElement}" />
                                         <DataGridTextColumn Header="Name" Width="200" Binding="{Binding Name, UpdateSourceTrigger=LostFocus}" ElementStyle="{StaticResource EventLogElement}" />
                                         <DataGridTextColumn Header="Ramp" Width="100" Binding="{Binding RTime, UpdateSourceTrigger=PropertyChanged}" EditingElementStyle="{StaticResource gridColumnTextBoxOnlyNumber}" ElementStyle="{StaticResource EventLogElement}" />
                                         <DataGridTextColumn Header="Hold" Width="100" Binding="{Binding HTime, UpdateSourceTrigger=PropertyChanged}" EditingElementStyle="{StaticResource gridColumnTextBoxOnlyNumber}" ElementStyle="{StaticResource EventLogElement}" />
@@ -780,7 +780,7 @@
                                         </b:EventTrigger>
                                     </b:Interaction.Triggers>
                                     <DataGrid.Columns>
-                                        <DataGridTextColumn Header="No" Width="30" Binding="{Binding No, UpdateSourceTrigger=PropertyChanged}"  IsReadOnly="True" ElementStyle="{StaticResource EventLogElement}" />
+                                        <DataGridTextColumn Header="No" Width="30" Binding="{Binding No}"  IsReadOnly="True" ElementStyle="{StaticResource EventLogElement}" />
                                         <DataGridTextColumn Header="Name" Width="200" Binding="{Binding Name, UpdateSourceTrigger=LostFocus}" ElementStyle="{StaticResource EventLogElement}" />
                                         <DataGridTextColumn Header="Ramp" Width="100" Binding="{Binding RTime, UpdateSourceTrigger=PropertyChanged}" EditingElementStyle="{StaticResource gridColumnTextBoxOnlyNumber}" ElementStyle="{StaticResource EventLogElement}" />
                                         <DataGridTextColumn Header="Hold" Width="100" Binding="{Binding HTime, UpdateSourceTrigger=PropertyChanged}" EditingElementStyle="{StaticResource gridColumnTextBoxOnlyNumber}" ElementStyle="{StaticResource EventLogElement}" />
@@ -823,7 +823,7 @@
                                         </b:EventTrigger>
                                     </b:Interaction.Triggers>
                                     <DataGrid.Columns>
-                                        <DataGridTextColumn Header="No" Width="30" Binding="{Binding No, UpdateSourceTrigger=PropertyChanged}"  IsReadOnly="True" ElementStyle="{StaticResource EventLogElement}" />
+                                        <DataGridTextColumn Header="No" Width="30" Binding="{Binding No}"  IsReadOnly="True" ElementStyle="{StaticResource EventLogElement}" />
                                         <DataGridTextColumn Header="Name" Width="200" Binding="{Binding Name}" ElementStyle="{StaticResource EventLogElement}" />
                                         <DataGridCheckBoxColumn Header="V01" Width="50" Binding="{Binding V01, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" EditingElementStyle="{StaticResource ValveOnOffCheckBox}" ElementStyle="{StaticResource ValveOnOffCheckBox}" />
                                         <DataGridCheckBoxColumn Header="V02" Width="50" Binding="{Binding V02, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" EditingElementStyle="{StaticResource ValveOnOffCheckBox}" ElementStyle="{StaticResource ValveOnOffCheckBox}" />

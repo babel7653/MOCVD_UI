@@ -30,7 +30,7 @@ GVL_IO.aController[28].input.restart := TRUE;
 GVL_IO.aController[28].input.rampTime := rampTime;
 GVL_IO.aController[28].input.targetValue := pressRecipe;
 
-GVL_IO.aController[29].input.restart := true;
+GVL_IO.aController[29].input.restart := TRUE;
 GVL_IO.aController[29].input.rampTime := rampTime;
 GVL_IO.aController[29].input.targetValue := rotRecipe;]]></ST>
     </Implementation>

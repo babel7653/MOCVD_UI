@@ -232,6 +232,9 @@ namespace SapphireXR_App.Models
         private static ObservableManager<BitArray>.Publisher? dLogicalInterlockStateIssuer;
         private static ObservableManager<PLCConnection>.Publisher? dPLCConnectionPublisher;
         private static ObservableManager<ControlMode>.Publisher? dControlModeChangingPublisher;
+        private static ObservableManager<short>.Publisher? temperatureTVPublisher;
+        private static ObservableManager<short>.Publisher? pressureTVPublisher;
+        private static ObservableManager<short>.Publisher? rotationTVPublisher;
 
         private static LeakTestModeSubscriber? leakTestModeSubscriber = null;
 
@@ -291,6 +294,9 @@ namespace SapphireXR_App.Models
         private static uint hOutputSetType;
         private static uint hOutputMode;
         private static uint hRecipeRunET;
+        private static uint hTemperatureTV;
+        private static uint hPressureTV;
+        private static uint hRotationTV;
         private static uint[] hInterlockEnable = new uint[NumAlarmWarningArraySize];
         private static uint[] hInterlockset = new uint[NumInterlockSet];
         private static uint[] hInterlock = new uint[NumInterlock];

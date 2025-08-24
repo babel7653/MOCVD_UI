@@ -23,26 +23,35 @@ ELSE
 	GVL_IO.aDigitalOutputIO[2].0 := FALSE;
 END_IF
 
+GVL_IO.temperatureTV := REAL_TO_INT(GVL_IO.aController[27].input.targetValue);
 GVL_IO.wE3508_CV := LREAL_TO_WORD(GVL_IO.aController[27].rControlValue); //Write to Temperature Controller
-
 GVL_IO.aController_PV[27] := WORD_TO_REAL(GVL_IO.wE3508_PV);
 GVL_IO.aController_CV[27] := WORD_TO_REAL(GVL_IO.wE3508_CV);
 GVL_IO.aController[27]();
 				
+GVL_IO.pressureTV := REAL_TO_INT(GVL_IO.aController[28].input.targetValue);	
 GVL_IO.wIqPlus_CV := LREAL_TO_WORD(GVL_IO.aController[28].rControlValue); //Write to Pressure Controller
-
 GVL_IO.aController_PV[28] := WORD_TO_REAL(GVL_IO.wIqPlus_CDG2_PV);
 GVL_IO.aController_CV[28] := WORD_TO_REAL(GVL_IO.wIqPlus_CV);
 GVL_IO.aController[28]();
 
+GVL_IO.rotationTV := REAL_TO_INT(GVL_IO.aController[29].input.targetValue);
 GVL_IO.rRotation_ControlValue := LREAL_TO_REAL(GVL_IO.aController[29].rControlValue); //Write to Rotation Controller (rpm)
-
 GVL_IO.aController_PV[29] := GVL_IO.nRotation_Converted_PV;
 GVL_IO.aController_CV[29] := GVL_IO.rRotation_ControlValue;
 GVL_IO.aController[29]();	]]></ST>
     </Implementation>
     <LineIds Name="FB_AnalogDeviceRampControl">
-      <LineId Id="1" Count="32" />
+      <LineId Id="1" Count="14" />
+      <LineId Id="35" Count="0" />
+      <LineId Id="16" Count="1" />
+      <LineId Id="19" Count="3" />
+      <LineId Id="36" Count="0" />
+      <LineId Id="23" Count="0" />
+      <LineId Id="25" Count="2" />
+      <LineId Id="37" Count="0" />
+      <LineId Id="28" Count="1" />
+      <LineId Id="31" Count="2" />
     </LineIds>
   </POU>
 </TcPlcObject>

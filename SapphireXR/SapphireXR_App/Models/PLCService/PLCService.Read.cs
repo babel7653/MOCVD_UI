@@ -84,6 +84,10 @@ namespace SapphireXR_App.Models
                 int iterlock1 = Ads.ReadAny<int>(hInterlock[0]);
                 dLogicalInterlockStateIssuer?.Publish(new BitArray(BitConverter.IsLittleEndian == true ? BitConverter.GetBytes(iterlock1) : BitConverter.GetBytes(iterlock1).Reverse().ToArray()));
 
+                temperatureTVPublisher?.Publish(Ads.ReadAny<short>(hTemperatureTV));
+                pressureTVPublisher?.Publish(Ads.ReadAny<short>(hPressureTV));
+                rotationTVPublisher?.Publish(Ads.ReadAny<short>(hRotationTV));
+
                 foreach (Action task in AddOnPLCStateUpdateTask)
                 {
                     task();

@@ -98,9 +98,13 @@ namespace SapphireXR_App.Models
                 Ads.WriteAny(hDeviceMaxValuePLC, maxValue, [dIndexController.Count]);
 
                 float KL3464MaxValueH = Ads.ReadAny<float>(Ads.CreateVariableHandle("GVL_IO.KL3464MaxValueH"));
-                for(uint mapping = 0; mapping < aTargetValueMappingFactor.Length; ++mapping)
+                for (uint mapping = 0; mapping < (aTargetValueMappingFactor.Length - 3); ++mapping)
                 {
                     aTargetValueMappingFactor[mapping] = KL3464MaxValueH / maxValue[mapping];
+                }
+                for (uint mapping = (uint)(aTargetValueMappingFactor.Length - 3); mapping < aTargetValueMappingFactor.Length; ++mapping)
+                {
+                    aTargetValueMappingFactor[mapping] = 1.0f;
                 }
 
                 // List Analog Device Input / Output

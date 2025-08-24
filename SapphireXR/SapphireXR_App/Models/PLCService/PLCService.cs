@@ -188,6 +188,9 @@ namespace SapphireXR_App.Models
             {
                 hAControllerInput[analogDevice] = Ads.CreateVariableHandle("GVL_IO.aController[" + (analogDevice + 1)+ "].input");
             }
+            hTemperatureTV = Ads.CreateVariableHandle("GVL_IO.temperatureTV");
+            hPressureTV = Ads.CreateVariableHandle("GVL_IO.pressureTV");
+            hRotationTV = Ads.CreateVariableHandle("GVL_IO.rotationTV");
         }
 
         private static void IntializePubSub()
@@ -243,8 +246,10 @@ namespace SapphireXR_App.Models
             dLogicalInterlockStateIssuer = ObservableManager<BitArray>.Get("LogicalInterlockState");
             dPLCConnectionPublisher = ObservableManager<PLCConnection>.Get("PLCService.Connected");
             dControlModeChangingPublisher = ObservableManager<ControlMode>.Get("ControlModeChanging");
-
             ObservableManager<bool>.Subscribe("Leak Test Mode", leakTestModeSubscriber = new LeakTestModeSubscriber());
+            temperatureTVPublisher = ObservableManager<short>.Get("TemperatureTV");
+            pressureTVPublisher = ObservableManager<short>.Get("PressureTV");
+            rotationTVPublisher = ObservableManager<short>.Get("RotationTV");
         }
 
         private static (BitArray, int, uint) GetBuffer(string valveID)

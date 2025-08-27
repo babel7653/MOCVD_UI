@@ -240,15 +240,16 @@ namespace SapphireXR_App.ViewModels
             Batch newBatch = new Batch() { Name = "UserState" };
             foreach((string flowController, string fullName) in Util.RecipeFlowControlFieldToControllerID)
             {
-                newBatch.AnalogIOUserStates.Add(new AnalogIOUserState() { ID = flowController, MaxValue = (int)SettingViewModel.ReadMaxValue(fullName)!, FullIDName = Util.RecipeFlowControlFieldToControllerID[flowController] });
+                newBatch.AnalogIOUserStates.Add(new AnalogIOUserState() { ID = flowController, MaxValue = (int)SettingViewModel.ReadMaxValue(fullName)!, FullIDName = Util.RecipeFlowControlFieldToControllerID[flowController],
+                    Name = SettingViewModel.ReadFlowControllerDeviceName(fullName)! });
             }
             foreach((string valve, int idx) in PLCService.ValveIDtoOutputSolValveIdx1)
             {
-                newBatch.DigitalIOUserStates.Add(new DigitalIOUserState() { ID = valve });
+                newBatch.DigitalIOUserStates.Add(new DigitalIOUserState() { ID = valve, Name = SettingViewModel.ReadValveDeviceName(valve)! });
             }
             foreach ((string valve, int idx) in PLCService.ValveIDtoOutputSolValveIdx2)
             {
-                newBatch.DigitalIOUserStates.Add(new DigitalIOUserState() { ID = valve });
+                newBatch.DigitalIOUserStates.Add(new DigitalIOUserState() { ID = valve, Name = SettingViewModel.ReadValveDeviceName(valve)! });
             }
             Batches.Add(newBatch);
             newBatch.PropertyChanged += (sender, e) =>

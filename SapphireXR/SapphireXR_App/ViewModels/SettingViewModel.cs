@@ -338,6 +338,39 @@ namespace SapphireXR_App.ViewModels
             }
         }
 
+        public static string? ReadFlowControllerDeviceName(string id)
+        {
+            if (AnalogDeviceIDShortNameMap.TryGetValue(id, out var shortName) == true)
+            {
+                var found = dAnalogDeviceIO.Where((KeyValuePair<string, AnalogDeviceIO> analogDeviceIO) => shortName == analogDeviceIO.Key).Select((KeyValuePair<string, AnalogDeviceIO> analogDeviceIO) => analogDeviceIO.Value.Name);
+                if (0 < found.Count())
+                {
+                    return found.First();
+                }
+                else
+                {
+                    return null;
+                }
+            }
+            else
+            {
+                return null;
+            }
+        }
+
+        public static string? ReadValveDeviceName(string id)
+        {
+            var found = ValveDeviceIO.Where((Device device) => id == device.ID).Select((Device device) => device.Name);
+            if (0 < found.Count())
+            {
+                return found.First();
+            }
+            else
+            {
+                return null;
+            }
+        }
+
         public void AlarmSettingLoad()
         {
             PropertyChanged += (object? sender, PropertyChangedEventArgs args) =>

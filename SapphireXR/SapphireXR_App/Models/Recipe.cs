@@ -1,5 +1,7 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CsvHelper.Configuration.Attributes;
+using SapphireXR_App.Common;
+using SapphireXR_App.ViewModels;
 using System.Collections;
 using System.Runtime.InteropServices;
 using System.Windows;
@@ -9,10 +11,15 @@ namespace SapphireXR_App.Models
 {
     public partial class Recipe : ObservableObject
     {
-        public Recipe() { }
+        public Recipe() 
+        {
+            initialize();
+        }
 
         public Recipe(Recipe rhs)
         {
+            initialize();
+
             No = rhs.No;
             Name = rhs.Name;
             cTemp = rhs.cTemp;
@@ -75,7 +82,144 @@ namespace SapphireXR_App.Models
             V30 = rhs.V30;
             V31 = rhs.V31;
             V32 = rhs.V32;
-            Background = rhs.Background;
+        }
+
+        private void initialize()
+        {
+            PropertyChanged += (sender, args) =>
+            {
+                var constraintValue = (string fullName, float curValue) =>
+                {
+                    int? maxValue = SettingViewModel.ReadMaxValue(fullName) ?? 0;
+                    if (maxValue < curValue)
+                    {
+                        maxValueExceedPublihser.Publish(fullName);
+                        return (float)maxValue;
+                    }
+                    else
+                    {
+                        return curValue;
+                    }
+                };
+                switch (args.PropertyName)
+                {
+                    case nameof(M01):
+                        M01 = constraintValue("MFC01", M01);
+                        break;
+
+                    case nameof(M02):
+                        M02 = constraintValue("MFC02", M02);
+                        break;
+
+                    case nameof(M03):
+                        M03 = constraintValue("MFC03", M03);
+                        break;
+
+                    case nameof(M04):
+                        M04 = constraintValue("MFC04", M04);
+                        break;
+
+                    case nameof(M05):
+                        M05 = constraintValue("MFC05", M05);
+                        break;
+
+                    case nameof(M06):
+                        M06 = constraintValue("MFC06", M06);
+                        break;
+
+                    case nameof(M07):
+                        M07 = constraintValue("MFC07", M07);
+                        break;
+
+                    case nameof(M08):
+                        M08 = constraintValue("MFC08", M08);
+                        break;
+
+                    case nameof(M09):
+                        M09 = constraintValue("MFC09", M09);
+                        break;
+
+                    case nameof(M10):
+                        M10 = constraintValue("MFC10", M10);
+                        break;
+
+                    case nameof(M11):
+                        M11 = constraintValue("MFC11", M11);
+                        break;
+
+                    case nameof(M12):
+                        M12 = constraintValue("MFC12", M12);
+                        break;
+
+                    case nameof(M13):
+                        M13 = constraintValue("MFC13", M13);
+                        break;
+
+                    case nameof(M14):
+                        M12 = constraintValue("MFC14", M14);
+                        break;
+
+                    case nameof(M15):
+                        M12 = constraintValue("MFC15", M15);
+                        break;
+
+                    case nameof(M16):
+                        M16 = constraintValue("MFC16", M16);
+                        break;
+
+                    case nameof(M17):
+                        M17 = constraintValue("MFC17", M17);
+                        break;
+
+                    case nameof(M18):
+                        M18 = constraintValue("MFC18", M18);
+                        break;
+
+                    case nameof(M19):
+                        M19 = constraintValue("MFC19", M19);
+                        break;
+
+                    case nameof(E01):
+                        E01 = constraintValue("EPC01", E01);
+                        break;
+
+                    case nameof(E02):
+                        E02 = constraintValue("EPC02", E02);
+                        break;
+
+                    case nameof(E03):
+                        E03 = constraintValue("EPC03", E03);
+                        break;
+
+                    case nameof(E04):
+                        E04 = constraintValue("EPC04", E04);
+                        break;
+
+                    case nameof(E05):
+                        E05 = constraintValue("EPC05", E05);
+                        break;
+
+                    case nameof(E06):
+                        E06 = constraintValue("EPC06", E06);
+                        break;
+
+                    case nameof(E07):
+                        E07 = constraintValue("EPC07", E07);
+                        break;
+
+                    case nameof(STemp):
+                        STemp = (short)constraintValue("Temperature", STemp);
+                        break;
+
+                    case nameof(RPress):
+                        RPress = (short)constraintValue("Pressure", RPress);
+                        break;
+
+                    case nameof(SRotation):
+                        SRotation = (short)constraintValue("Rotation", SRotation);
+                        break;
+                }
+            };
         }
 
         public string Name { get; set; } = "";
@@ -242,6 +386,9 @@ namespace SapphireXR_App.Models
             set;
             get;
         } = 0;
+
+        [Ignore]
+        private static readonly ObservableManager<string>.Publisher maxValueExceedPublihser = ObservableManager<string>.Get("Recipe.MaxValueExceed");
     }
 
     [StructLayout(LayoutKind.Sequential, Pack = 0)]

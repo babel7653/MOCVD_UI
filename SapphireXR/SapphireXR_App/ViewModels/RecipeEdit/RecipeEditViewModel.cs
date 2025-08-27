@@ -130,12 +130,13 @@ namespace SapphireXR_App.ViewModels
         {
             try
             {
-                (bool result, string? recipeFilePath, List<Recipe>? recipes) = RecipeService.OpenRecipe(Config, AppSetting.RecipeEditRecipeInitialPath);
+                (bool result, string? recipeFilePath, List<Recipe>? recipes, HashSet<string>? fcsMaxValueExceeded) = RecipeService.OpenRecipe(Config, AppSetting.RecipeEditRecipeInitialPath);
                 if (result == true)
                 {
                     RecipeFilePath = recipeFilePath!;
                     AppSetting.RecipeEditRecipeInitialPath = Path.GetDirectoryName(recipeFilePath);
                     Recipes = new RecipeObservableCollection(recipes!);
+                    Util.ShowFlowControllersMaxValueExceededIfExist(fcsMaxValueExceeded);
                 }
             }
             catch(Exception exception)

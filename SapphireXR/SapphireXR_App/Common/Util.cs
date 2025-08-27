@@ -281,6 +281,20 @@ namespace SapphireXR_App.Common
             }
         }
 
+        public static void ShowFlowControllersMaxValueExceededIfExist(HashSet<string>? fcMaxValueExceeded)
+        {
+            if (fcMaxValueExceeded != null && 0 < fcMaxValueExceeded.Count)
+            {
+                string message = "Recipe를 읽어오는 중 최대값을 초과한 Flow Controller 값들이 발견되었습니다. 이 값들은 최대값으로 강제됩니다:\r\n";
+                foreach (string flowController in fcMaxValueExceeded)
+                {
+                    message += flowController + " = " + SettingViewModel.ReadMaxValue(flowController) + "\r\n";
+                }
+
+                MessageBox.Show(message);
+            }
+        }
+
         public static void ConstraintEmptyToZeroOnDataGridCellCommitForRecipeRunEdit(object sender, DataGridCellEditEndingEventArgs e)
         {
             ConstraintEmptyToZeroOnDataGridCellCommit(sender, e, ["Ramp", "Hold", "M01", "M02", "M03", "M04", "M05", "M06", "M07", "M08", "M09", "M10", "M11", "M12", "M13", "M14", "M15", "M16",

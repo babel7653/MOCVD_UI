@@ -115,7 +115,7 @@ namespace SapphireXR_App.ViewModels
         {
             try
             {
-                (bool result, string? recipeFilePath, List<Recipe>? recipes) = RecipeService.OpenRecipe(Config, AppSetting.RecipeRunRecipeInitialPath);
+                (bool result, string? recipeFilePath, List<Recipe>? recipes, HashSet<string>? fcsMaxValueExceeded) = RecipeService.OpenRecipe(Config, AppSetting.RecipeRunRecipeInitialPath);
                 if (result == true)
                 {
                     if(recipes!.Count <= 0)
@@ -138,6 +138,7 @@ namespace SapphireXR_App.ViewModels
 
                     CurrentRecipe = new RecipeContext(recipeFilePath!, recipes!);
                     AppSetting.RecipeRunRecipeInitialPath = Path.GetDirectoryName(recipeFilePath);
+                    Util.ShowFlowControllersMaxValueExceededIfExist(fcsMaxValueExceeded);
                 }
             }
             catch(Exception exception)

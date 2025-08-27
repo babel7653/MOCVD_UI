@@ -7,12 +7,32 @@ namespace SapphireXR_App.Common
 {
     public static class RecipeService
     {
+        internal class MaxValueExceedSubscriber : IObserver<string>
+        {
+            void IObserver<string>.OnCompleted()
+            {
+                throw new NotImplementedException();
+            }
+
+            void IObserver<string>.OnError(Exception error)
+            {
+                throw new NotImplementedException();
+            }
+
+            void IObserver<string>.OnNext(string value)
+            {
+                fcMaxValueExceeded.Add(value);
+            }
+
+            public HashSet<string> fcMaxValueExceeded { get; private set; } = new HashSet<string>();
+        }
+
         internal class OpenRecipeFileException : Exception
         {
             internal OpenRecipeFileException(string message) : base(message) { }
         }
 
-        public static (bool, string?, List<Recipe>?) OpenRecipe(CsvHelper.Configuration.CsvConfiguration config, string? initialDirectory)
+        public static (bool, string?, List<Recipe>?, HashSet<string>?) OpenRecipe(CsvHelper.Configuration.CsvConfiguration config, string? initialDirectory)
         {
             try
             {
@@ -30,14 +50,17 @@ namespace SapphireXR_App.Common
                 }
                 openFile.InitialDirectory = initialDirectory;
 
-                if (openFile.ShowDialog() != true) return (false, null, null);
+                if (openFile.ShowDialog() != true) return (false, null, null, null);
                 string recipeFilePath = openFile.FileName;
 
                 using (StreamReader streamReader = new StreamReader(recipeFilePath))
                 {
+                    MaxValueExceedSubscriber maxValueExceedSubscriber;
                     using (var csvReader = new CsvReader(streamReader, config))
+                    using (var unsubscriber = ObservableManager<string>.Subscribe("Recipe.MaxValueExceed", maxValueExceedSubscriber = new MaxValueExceedSubscriber()))
                     {
-                        return (true, recipeFilePath, csvReader.GetRecords<Recipe>().ToList());
+                        List<Recipe> recipe = csvReader.GetRecords<Recipe>().ToList();
+                        return (true, recipeFilePath, recipe, maxValueExceedSubscriber.fcMaxValueExceeded);
                     }
                 }
             }

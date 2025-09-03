@@ -187,11 +187,12 @@
                     </DataGrid.Margin>
                     <DataGrid.Resources>
                         <Style TargetType="ScrollBar" BasedOn="{StaticResource DefaultScrollbar}" />
+                        <local:TargetValueConverter x:Key="targetValueConverter" />
                     </DataGrid.Resources>
                     <DataGrid.Columns>
                         <DataGridTextColumn Header="Device Id" CanUserSort="False" CanUserResize="False" Width="60" Binding="{Binding Path=ID, Mode=OneWay,UpdateSourceTrigger=PropertyChanged}" IsReadOnly="True" ElementStyle="{StaticResource EventLogElement}" />
                         <DataGridTextColumn Header="Device Name" CanUserSort="False" CanUserResize="True" Width="*" Binding="{Binding Path=Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" IsReadOnly="True" ElementStyle="{StaticResource EventLogElement}" />
-                        <DataGridTextColumn Header="Value" CanUserSort="False" CanUserResize="True" Width="80" Binding="{Binding Path=Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" EditingElementStyle="{StaticResource gridColumnTextBox}" ElementStyle="{StaticResource EventLogElement}" />
+                        <DataGridTextColumn Header="Value" CanUserSort="False" CanUserResize="True" Width="80" Binding="{Binding Path=Value, Mode=TwoWay, UpdateSourceTrigger=LostFocus, Converter={StaticResource targetValueConverter}}" EditingElementStyle="{StaticResource gridColumnTextBox}" ElementStyle="{StaticResource EventLogElement}" />
                         <DataGridTextColumn Header="Max Value" CanUserSort="False" CanUserResize="True" Width="80" Binding="{Binding Path=MaxValue, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" IsReadOnly="True" ElementStyle="{StaticResource EventLogElement}" />
                     </DataGrid.Columns>
                 </DataGrid>

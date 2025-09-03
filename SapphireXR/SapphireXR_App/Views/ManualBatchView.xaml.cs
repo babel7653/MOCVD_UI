@@ -32,6 +32,35 @@ namespace SapphireXR_App.Views
             return value;
         }
     }
+
+    internal class TargetValueConverter : IValueConverter
+    {
+        object IValueConverter.Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            return value;
+        }
+
+        object? IValueConverter.ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            string? targetValue = value as string;
+            if (targetValue != null)
+            {
+                if (targetValue == string.Empty)
+                {
+                    return null;
+                }
+                else
+                {
+                    return value;
+                }
+            }
+            else
+            {
+                return Binding.DoNothing;
+            }
+        }
+    }
+
     /// <summary>
     /// ManualBatchView.xaml에 대한 상호 작용 논리
     /// </summary>
@@ -68,7 +97,7 @@ namespace SapphireXR_App.Views
 
         private void dgUserSettingA_CellEditEnding(object sender, DataGridCellEditEndingEventArgs e)
         {
-            Util.ConstraintEmptyToZeroOnDataGridCellCommit(sender, e, ["Value"]);
+            //Util.ConstraintEmptyToZeroOnDataGridCellCommit(sender, e, ["Value"]);
         }
 
         private void NumberBox_LostFocus(object sender, RoutedEventArgs e)

@@ -358,6 +358,18 @@ namespace SapphireXR_App.ViewModels
             
         }
 
+        [RelayCommand]
+        private void ShowBuzzerOnOfRect()
+        {
+            BuzzerOnOffRectOpacity = 0.6;
+        }
+
+        [RelayCommand]
+        private void HideBuzzerOnOfRect()
+        {
+            BuzzerOnOffRectOpacity = 0.0;
+        }
+
         [ObservableProperty]
         private static string _gas3_1 = GetGas3Label(Util.GetGasDeviceName("Gas3"), 1);
         [ObservableProperty]
@@ -447,7 +459,7 @@ namespace SapphireXR_App.ViewModels
         private Brush _tempControllerAlarmLampColor = OnLampColor;
 
         [ObservableProperty]
-        private double _glowOpacity = 0.0;
+        private double buzzerOnOffRectOpacity = 0.0;
 
         [ObservableProperty]
         private Brush _gasPressureGas2StateColor = Brushes.Transparent;

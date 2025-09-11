@@ -5,6 +5,7 @@
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:SapphireXR_App.Views"
       xmlns:model="clr-namespace:SapphireXR_App.Models"
+       xmlns:i="clr-namespace:Microsoft.Xaml.Behaviors;assembly=Microsoft.Xaml.Behaviors"
       xmlns:anim="https://github.com/whistyun/AnimatedImage.Wpf"
       mc:Ignorable="d" 
       d:DesignHeight="1080" d:DesignWidth="300"
@@ -68,7 +69,26 @@
                             <ColumnDefinition Width="60" />
                             <ColumnDefinition Width="*" />
                         </Grid.ColumnDefinitions>
-                        <Image Height="108" anim:ImageBehavior.AnimatedSource="{Binding SignalTowerImage, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"/>
+                        <Image Grid.Column="0" Height="108" anim:ImageBehavior.AnimatedSource="{Binding SignalTowerImage, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}" />
+                        <Rectangle Grid.Column="0" RadiusX="{StaticResource p_2}" RadiusY="{StaticResource p_2}" Fill="Black" Opacity="{Binding BuzzerOnOffRectOpacity}">
+                            <i:Interaction.Triggers>
+                                <i:EventTrigger EventName="MouseEnter">
+                                    <i:InvokeCommandAction Command="{Binding Path=ShowBuzzerOnOfRectCommand}" />
+                                </i:EventTrigger>
+                                <i:EventTrigger EventName="MouseLeave">
+                                    <i:InvokeCommandAction Command="{Binding Path=HideBuzzerOnOfRectCommand}" />
+                                </i:EventTrigger>
+                                <i:EventTrigger EventName="MouseLeftButtonDown">
+                                    <i:InvokeCommandAction Command="{Binding Path=ToggleBuzzerOnOffCommand}" />
+                                </i:EventTrigger>
+                            </i:Interaction.Triggers>
+                        </Rectangle>
+
+                        <Image Grid.Column="0" Source="{Binding BuzzerImage}" Width="12" Height="12" HorizontalAlignment="Left" VerticalAlignment="Top">
+                            <Image.Margin>
+                                <Thickness Left="{StaticResource p_1}" Top="{StaticResource p_1}" />
+                            </Image.Margin>
+                        </Image>
                         <Grid Grid.Column="1">
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="Auto" />
@@ -98,20 +118,6 @@
                             <TextBlock Text="{Binding PLCAddressText}" Grid.Row="6" Grid.Column="2" FontFamily="Segoe UI" FontSize="12" Foreground="{DynamicResource Gray_950}" Margin="0" Padding="0" FontWeight="Bold"><Run Text="Machine Nam"/><Run Language="ko-kr" Text="e"/></TextBlock>
                             <TextBlock FontFamily="Segoe UI" Grid.Row="8" Grid.Column="0"  FontSize="12" Foreground="{DynamicResource Gray_900}" Margin="0" Padding="0" ><Run Text="PLC "/><Run Language="ko-kr" Text="C"/><Run Text="onnection"/></TextBlock>
                             <TextBlock Text="{Binding PLCConnectionStatus}" Grid.Row="10" Grid.Column="0" FontFamily="Segoe UI" FontSize="12" Margin="0" Padding="0" Foreground="{Binding PLCConnectionStatusColor}" FontWeight="Bold" />
-                            <Button Grid.Row="8" Grid.Column="2" Grid.RowSpan="5"  Width="25" Height="25" Command="{Binding ToggleBuzzerOnOffCommand}" HorizontalAlignment="Center" VerticalAlignment="Center">
-                                <Button.Style>
-                                    <Style TargetType="Button" BasedOn="{StaticResource ImageButton}">
-
-                                        <Setter Property="BorderThickness" Value="0" />
-                                        <Style.Triggers>
-                                            <Trigger Property="IsMouseOver" Value="True">
-                                                <Setter Property="Background" Value="#FF929281" />
-                                            </Trigger>
-                                        </Style.Triggers>
-                                    </Style>
-                                </Button.Style>
-                                <Image Source="{Binding BuzzerImage}" Width="25" Height="25" IsEnabled="{Binding Online, Source={x:Static model:PLCConnectionState.Instance}, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"/>
-                            </Button>
                         </Grid>
                     </Grid>
                 </Grid>

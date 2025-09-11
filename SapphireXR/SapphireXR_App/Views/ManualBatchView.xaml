@@ -5,6 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:SapphireXR_App.Views"
         xmlns:i="clr-namespace:Microsoft.Xaml.Behaviors;assembly=Microsoft.Xaml.Behaviors"
+        xmlns:vc="clr-namespace:SapphireXR_App.ValueConverter"
         mc:Ignorable="d"
         WindowStyle="None" Background="Transparent" AllowsTransparency="True" WindowStartupLocation="CenterScreen"
         Title="ManualBatchView" d:DesignWidth="400" d:DesignHeight="930" Height="930" Width="400" >
@@ -187,7 +188,7 @@
                     </DataGrid.Margin>
                     <DataGrid.Resources>
                         <Style TargetType="ScrollBar" BasedOn="{StaticResource DefaultScrollbar}" />
-                        <local:TargetValueConverter x:Key="targetValueConverter" />
+                        <vc:TargetValueConverter x:Key="targetValueConverter" />
                     </DataGrid.Resources>
                     <DataGrid.Columns>
                         <DataGridTextColumn Header="Device Id" CanUserSort="False" CanUserResize="False" Width="60" Binding="{Binding Path=ID, Mode=OneWay,UpdateSourceTrigger=PropertyChanged}" IsReadOnly="True" ElementStyle="{StaticResource EventLogElement}" />

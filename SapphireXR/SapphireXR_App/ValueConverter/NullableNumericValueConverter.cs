@@ -3,7 +3,7 @@ using System.Windows.Data;
 
 namespace SapphireXR_App.ValueConverter
 {
-    internal class TargetValueConverter : IValueConverter
+    internal class NullableNumericValueConverter : IValueConverter
     {
         object IValueConverter.Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {

@@ -1,10 +1,11 @@
-﻿using SapphireXR_App.Common;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
+using SapphireXR_App.Common;
 using System.ComponentModel;
-using CommunityToolkit.Mvvm.ComponentModel;
+using System.Reactive.Linq;
 
 namespace SapphireXR_App.ViewModels.FlowController
 {
-    internal partial class RecipeEditFlowControllerViewModel: FlowControllerViewModelBase, IObserver<float>
+    internal partial class RecipeEditFlowControllerViewModel: FlowControllerViewModelBase, IObserver<float?>
     {
         class ControlValueResetSubscriber : IObserver<bool>
         {
@@ -35,8 +36,8 @@ namespace SapphireXR_App.ViewModels.FlowController
         {
             base.onLoaded(type, controllerID);
             string controlValuePubilshSubscribeTopic = "FlowControl." + controllerID + ".CurrentValue.CurrentRecipeStep";
-            ObservableManager<float>.Subscribe(controlValuePubilshSubscribeTopic, this);
-            controlValuePublisher = ObservableManager<float>.Get(controlValuePubilshSubscribeTopic);
+            ObservableManager<float?>.Subscribe(controlValuePubilshSubscribeTopic, this);
+            controlValuePublisher = ObservableManager<float?>.Get(controlValuePubilshSubscribeTopic);
             ObservableManager<bool>.Subscribe("Reset.CurrentRecipeStep", controlValueResetSubscriber = new ControlValueResetSubscriber(this));
             PropertyChanged += (object? sender, PropertyChangedEventArgs args) =>
             {
@@ -45,9 +46,13 @@ namespace SapphireXR_App.ViewModels.FlowController
                     case nameof(ControlValue):
                         try
                         {
-                            if (ControlValue != "")
+                            if (ControlValue != string.Empty)
                             {
                                 controlValuePublisher.Publish(float.Parse(ControlValue));
+                            }
+                            else
+                            {
+                                controlValuePublisher.Publish(null);
                             }
                         }
                         catch(ArgumentNullException)
@@ -80,19 +85,19 @@ namespace SapphireXR_App.ViewModels.FlowController
         {
         }
 
-        void IObserver<float>.OnCompleted()
+        void IObserver<float?>.OnCompleted()
         {
             throw new NotImplementedException();
         }
 
-        void IObserver<float>.OnError(Exception error)
+        void IObserver<float?>.OnError(Exception error)
         {
             throw new NotImplementedException();
         }
 
-        void IObserver<float>.OnNext(float value)
+        void IObserver<float?>.OnNext(float? value)
         {
-            string controlValueStr = ((int)value).ToString();
+            string controlValueStr = (value != null ? ((int)(value.Value)).ToString() : "");
             if (controlValueStr != ControlValue)
             {
                 ControlValue = controlValueStr;
@@ -102,7 +107,7 @@ namespace SapphireXR_App.ViewModels.FlowController
         [ObservableProperty]
         int _maxValue;
 
-        private ObservableManager<float>.Publisher? controlValuePublisher;
+        private ObservableManager<float?>.Publisher? controlValuePublisher;
         private ControlValueResetSubscriber? controlValueResetSubscriber;
     }
 }

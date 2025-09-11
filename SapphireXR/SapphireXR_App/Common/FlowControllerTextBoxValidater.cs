@@ -1,5 +1,4 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
-using SapphireXR_App.Models;
 using SapphireXR_App.ViewModels;
 using System.ComponentModel;
 using System.Windows.Controls;
@@ -29,20 +28,27 @@ namespace SapphireXR_App.Common
 
         public (string, Result) valdiate(TextBox textBox, uint maxValue)
         {
-            if(textBox.Text == "")
+            try
             {
-                prevText = textBox.Text;
-                return (prevText, Result.Valid);
-            }
+                if (textBox.Text == "")
+                {
+                    prevText = textBox.Text;
+                    return (prevText, Result.Valid);
+                }
 
-            if(Util.IsTextNumeric(textBox.Text) == false)
+                if (Util.IsTextNumeric(textBox.Text) == false)
+                {
+                    return (prevText, Result.NotNumber);
+                }
+
+                if (maxValue < uint.Parse(textBox.Text))
+                {
+                    return (prevText, Result.ExceedMax);
+                }
+            }
+            catch (Exception)
             {
                 return (prevText, Result.NotNumber);
-            }
-
-            if(maxValue < uint.Parse(textBox.Text))
-            {
-                return (prevText, Result.ExceedMax);
             }
 
             prevText = textBox.Text;
@@ -134,7 +140,7 @@ namespace SapphireXR_App.Common
                 if (flowControlField != null)
                 {
                     string? flowControllerID = null;
-                    if (Util.RecipeFlowControlFieldToControllerID.TryGetValue(flowControlField, out flowControllerID) == true)
+                    if (Util.RecipeColumnHeaderToControllerID.TryGetValue(flowControlField, out flowControllerID) == true)
                     {
                         return validate(textBox, flowControllerID);
                     }

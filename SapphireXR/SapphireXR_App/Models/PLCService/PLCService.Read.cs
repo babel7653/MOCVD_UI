@@ -269,5 +269,15 @@ namespace SapphireXR_App.Models
         {
             return (ControlMode)(Ads.ReadAny<short>(hControlMode));
         }
+
+        public static float ReadFlowControllerTargetValue(string controllerID)
+        {
+            return Ads.ReadAny<RampGeneratorInput>(hAControllerInput[dIndexController[controllerID]]).targetValue;
+        }
+
+        public static short ReadCurrentStep()
+        {
+            return Ads.ReadAny<short>(hRcpStepN);
+        }
     }
 }

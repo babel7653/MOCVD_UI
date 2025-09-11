@@ -41,8 +41,8 @@ namespace SapphireXR_App.ViewModels
                     Recipe recipe = Recipes[step];
 
                     int loopTototalRecipeTime = 0;
-                    int loopLimit = Math.Max(recipe.No, recipe.LoopEndStep);
-                    int loopCount = Math.Max(1, (int)recipe.LoopRepeat);
+                    int loopLimit = Math.Max(recipe.No, recipe.LoopEndStep ?? 0);
+                    int loopCount = Math.Max(1, (int)(recipe.LoopRepeat ?? 0));
                     LoopContext loopContext;
                     if (1 < loopCount)
                     {
@@ -183,9 +183,9 @@ namespace SapphireXR_App.ViewModels
                                 ++(CurrentLoopContext.CurrentLoopCount);
                             }
 
-                            if (0 < currentRecipe.cTemp)
+                            if (0 < currentRecipe.CTemp)
                             {
-                                TotalWaitTemp = currentRecipe.cTemp;
+                                TotalWaitTemp = currentRecipe.CTemp;
                                 temperatureControlValueSubscriber ??= new TemperatureCurrentValueSubscriber(this);
                                 temperatureControlValueUnsubscriber ??= ObservableManager<float>.Subscribe("FlowControl.Temperature.CurrentValue", temperatureControlValueSubscriber!);
                             }
@@ -315,7 +315,8 @@ namespace SapphireXR_App.ViewModels
 
                 if (currentRecipe != null)
                 {
-                    PlcRecipe[] plcRecipes = modifiedRecipeIndice.Where((int recipeIndex) => currentRecipeIndex < recipeIndex).Select((int recipeIndex) => new PlcRecipe(Recipes[recipeIndex])).ToArray();
+                    PlcRecipe[] plcRecipes = RecipeService.ToPLCRecipe(Recipes);
+                    plcRecipes = modifiedRecipeIndice.Where((int recipeIndex) => currentRecipeIndex < recipeIndex).Select((int recipeIndex) => plcRecipes[recipeIndex]).ToArray();
                     if (0 < plcRecipes.Length)
                     {
                         PLCService.RefreshRecipe(plcRecipes);

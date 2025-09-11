@@ -147,6 +147,11 @@ namespace SapphireXR_App.Common
 
         public static void ConstraintEmptyToZeroOnDataGridCellCommit(object sender, DataGridCellEditEndingEventArgs e, IList<string> headers)
         {
+            ConstraintEmptyToDefaultValueOnDataGridCellCommit(sender, e, headers, "0");
+        }
+
+        public static void ConstraintEmptyToDefaultValueOnDataGridCellCommit(object sender, DataGridCellEditEndingEventArgs e, IList<string> headers, string defaultValue)
+        {
             if (e.EditAction == DataGridEditAction.Commit)
             {
                 string? columnHeader = e.Column.Header as string;
@@ -155,7 +160,23 @@ namespace SapphireXR_App.Common
                     TextBox? editingElement = e.EditingElement as TextBox;
                     if (editingElement != null && editingElement.Text == "")
                     {
-                        editingElement.Text = "0";
+                        editingElement.Text = defaultValue;
+                    }
+                }
+            }
+        }
+
+        public static void ConstraintEmptyToDefaultValueOnDataGridCellCommit(object sender, DataGridCellEditEndingEventArgs e, Dictionary<string, string> headerDefaultValuePair)
+        {
+            if (e.EditAction == DataGridEditAction.Commit)
+            {
+                string? columnHeader = e.Column.Header as string;
+                if (columnHeader != null && headerDefaultValuePair.TryGetValue(columnHeader, out string? defaultValue) == true)
+                {
+                    TextBox? editingElement = e.EditingElement as TextBox;
+                    if (editingElement != null && editingElement.Text == "")
+                    {
+                        editingElement.Text = defaultValue;
                     }
                 }
             }
@@ -309,6 +330,13 @@ namespace SapphireXR_App.Common
             { "M16", "MFC16" }, { "M17", "MFC17" }, { "M18", "MFC18" }, {"M19", "MFC19"  },
             { "E01", "EPC01" },  { "E02", "EPC02" }, { "E03", "EPC03" }, { "E04", "EPC04" }, { "E05", "EPC05" },
             { "E06", "EPC06" }, { "E07", "EPC07" }, { "STemp", "Temperature" }, { "RPress", "Pressure" }, { "SRotation", "Rotation" }
+        };
+
+        public static readonly Dictionary<string, string> RecipeColumnHeaderToControllerID = new Dictionary<string, string>
+        {
+            { "M01", "MFC01" }, { "M02", "MFC02" }, { "M03", "MFC03" }, { "M04", "MFC04" }, { "M05", "MFC05" }, { "M06", "MFC06" }, { "M07", "MFC07" }, { "M08", "MFC08" },
+            { "M09", "MFC09" }, { "M10", "MFC10" }, { "M11", "MFC11" }, { "M12", "MFC12" }, { "E01", "EPC01" },  { "E02", "EPC02" }, { "E03", "EPC03" }, { "E04", "EPC04" },
+            { "Susceptor Temp.", "Temperature" }, { "Reactor Press.", "Pressure" }, { "Sus. Rotation", "Rotation" },
         };
     }
 }

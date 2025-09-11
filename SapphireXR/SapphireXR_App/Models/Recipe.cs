@@ -88,8 +88,13 @@ namespace SapphireXR_App.Models
         {
             PropertyChanged += (sender, args) =>
             {
-                var constraintValue = (string fullName, float curValue) =>
+                var constraintValue = (string fullName, float? curValue) =>
                 {
+                    if (curValue == null)
+                    {
+                        return curValue;
+                    }
+
                     int? maxValue = SettingViewModel.ReadMaxValue(fullName) ?? 0;
                     if (maxValue < curValue)
                     {
@@ -208,15 +213,29 @@ namespace SapphireXR_App.Models
                         break;
 
                     case nameof(STemp):
-                        STemp = (short)constraintValue("Temperature", STemp);
+                        STemp = (short?)constraintValue("Temperature", STemp);
                         break;
 
                     case nameof(RPress):
-                        RPress = (short)constraintValue("Pressure", RPress);
+                        RPress = (short?)constraintValue("Pressure", RPress);
                         break;
 
                     case nameof(SRotation):
-                        SRotation = (short)constraintValue("Rotation", SRotation);
+                        SRotation = (short?)constraintValue("Rotation", SRotation);
+                        break;
+
+                    case nameof(LoopRepeat):
+                        if (LoopRepeat == null)
+                        {
+                            LoopEndStep = null;
+                        }
+                        break;
+
+                    case nameof(LoopEndStep):
+                        if (LoopEndStep == null)
+                        {
+                            LoopRepeat = null;
+                        }
                         break;
                 }
             };
@@ -231,67 +250,70 @@ namespace SapphireXR_App.Models
         [ObservableProperty]
         public short _hTime;
         [ObservableProperty]
-        public short _sTemp;
+        public short? _sTemp;
         [ObservableProperty]
-        public short _rPress;
+        public short? _rPress;
         [ObservableProperty]
-        public short _sRotation;
-        public short cTemp { get; set; }
-        public short LoopRepeat { get; set; }
-        public short LoopEndStep { get; set; }
+        public short? _sRotation;
+        [ObservableProperty]
+        public short? cTemp;
+        [ObservableProperty]
+        public short? loopRepeat;
+        [ObservableProperty]
+        public short? loopEndStep;
         //RecipeFloat Array
         [ObservableProperty]
-        private float _m01;
+        private float? _m01;
         [ObservableProperty]
-        private float _m02;
+        private float? _m02;
         [ObservableProperty]
-        private float _m03;
+        private float? _m03;
         [ObservableProperty]
-        private float _m04;
+        private float? _m04;
         [ObservableProperty]
-        private float _m05;
+        private float? _m05;
         [ObservableProperty]
-        private float _m06;
+        private float? _m06;
         [ObservableProperty]
-        private float _m07;
+        private float? _m07;
         [ObservableProperty]
-        private float _m08;
+        private float? _m08;
         [ObservableProperty]
-        private float _m09;
+        private float? _m09;
         [ObservableProperty]
-        private float _m10;
+        private float? _m10;
         [ObservableProperty]
-        private float _m11;
+        private float? _m11;
         [ObservableProperty]
-        private float _m12;
+        private float? _m12;
         [ObservableProperty]
-        private float _m13;
+        private float? _m13;
         [ObservableProperty]
-        private float _m14;
+        private float? _m14;
         [ObservableProperty]
-        private float _m15;
+        private float? _m15;
         [ObservableProperty]
-        private float _m16;
+        private float? _m16;
         [ObservableProperty]
-        private float _m17;
+        private float? _m17;
         [ObservableProperty]
-        private float _m18;
+        private float? _m18;
         [ObservableProperty]
-        private float _m19;
+        private float? _m19;
         [ObservableProperty]
-        private float _e01;
+        private float? _e01;
         [ObservableProperty]
-        private float _e02;
+        private float? _e02;
         [ObservableProperty]
-        private float _e03;
+        private float? _e03;
         [ObservableProperty]
-        private float _e04;
+        private float? _e04;
         [ObservableProperty]
-        private float _e05;
+        private float? _e05;
         [ObservableProperty]
-        private float _e06;
+        private float? _e06;
         [ObservableProperty]
-        private float _e07;
+        private float? _e07;
         //RecipeDouble Array
         [ObservableProperty]
         private bool _v01;
@@ -394,45 +416,45 @@ namespace SapphireXR_App.Models
     [StructLayout(LayoutKind.Sequential, Pack = 0)]
     public class PlcRecipe
     {
-        public PlcRecipe(Recipe rhs)
+        public PlcRecipe(Recipe rhs, AnalogRecipe alternative)
         {
             //Short Type Array
             aRecipeShort[0] = rhs.No;
             aRecipeShort[1] = rhs.RTime;
             aRecipeShort[2] = rhs.HTime;
-            aRecipeShort[3] = rhs.STemp;
-            aRecipeShort[4] = rhs.RPress;
-            aRecipeShort[5] = rhs.SRotation;
-            aRecipeShort[6] = rhs.cTemp;
+            aRecipeShort[3] = rhs.STemp ?? alternative.STemp;
+            aRecipeShort[4] = rhs.RPress ?? alternative.RPress;
+            aRecipeShort[5] = rhs.SRotation ?? alternative.SRotation;
+            aRecipeShort[6] = rhs.CTemp ?? alternative.CTemp;
             aRecipeShort[7] = rhs.JumpStride;
             aRecipeShort[8] = rhs.LoopCount;
             //Float Type Array
-            aRecipeFloat[0] = rhs.M01;
-            aRecipeFloat[1] = rhs.M02;
-            aRecipeFloat[2] = rhs.M03;
-            aRecipeFloat[3] = rhs.M04;
-            aRecipeFloat[4] = rhs.M05;
-            aRecipeFloat[5] = rhs.M06;
-            aRecipeFloat[6] = rhs.M07;
-            aRecipeFloat[7] = rhs.M08;
-            aRecipeFloat[8] = rhs.M09;
-            aRecipeFloat[9] = rhs.M10;
-            aRecipeFloat[10] = rhs.M11;
-            aRecipeFloat[11] = rhs.M12;
-            aRecipeFloat[12] = rhs.M13;
-            aRecipeFloat[13] = rhs.M14;
-            aRecipeFloat[14] = rhs.M15;
-            aRecipeFloat[15] = rhs.M16;
-            aRecipeFloat[16] = rhs.M17;
-            aRecipeFloat[17] = rhs.M18;
-            aRecipeFloat[18] = rhs.M19;
-            aRecipeFloat[19] = rhs.E01;
-            aRecipeFloat[20] = rhs.E02;
-            aRecipeFloat[21] = rhs.E03;
-            aRecipeFloat[22] = rhs.E04;
-            aRecipeFloat[23] = rhs.E05;
-            aRecipeFloat[24] = rhs.E06;
-            aRecipeFloat[25] = rhs.E07;
+            aRecipeFloat[0] = rhs.M01 ?? alternative.M01;
+            aRecipeFloat[1] = rhs.M02 ?? alternative.M02;
+            aRecipeFloat[2] = rhs.M03 ?? alternative.M03;
+            aRecipeFloat[3] = rhs.M04 ?? alternative.M04;
+            aRecipeFloat[4] = rhs.M05 ?? alternative.M05;
+            aRecipeFloat[5] = rhs.M06 ?? alternative.M06;
+            aRecipeFloat[6] = rhs.M07 ?? alternative.M07;
+            aRecipeFloat[7] = rhs.M08 ?? alternative.M08;
+            aRecipeFloat[8] = rhs.M09 ?? alternative.M09;
+            aRecipeFloat[9] = rhs.M10 ?? alternative.M10;
+            aRecipeFloat[10] = rhs.M11 ?? alternative.M11;
+            aRecipeFloat[11] = rhs.M12 ?? alternative.M12;
+            aRecipeFloat[12] = rhs.M13 ?? alternative.M13;
+            aRecipeFloat[13] = rhs.M14 ?? alternative.M14;
+            aRecipeFloat[14] = rhs.M15 ?? alternative.M15;
+            aRecipeFloat[15] = rhs.M16 ?? alternative.M16;
+            aRecipeFloat[16] = rhs.M17 ?? alternative.M17;
+            aRecipeFloat[17] = rhs.M18 ?? alternative.M18;
+            aRecipeFloat[18] = rhs.M19 ?? alternative.M19;
+            aRecipeFloat[19] = rhs.E01 ?? alternative.E01;
+            aRecipeFloat[20] = rhs.E02 ?? alternative.E02;
+            aRecipeFloat[21] = rhs.E03 ?? alternative.E03;
+            aRecipeFloat[22] = rhs.E04 ?? alternative.E04;
+            aRecipeFloat[23] = rhs.E05 ?? alternative.E05;
+            aRecipeFloat[24] = rhs.E06 ?? alternative.E06;
+            aRecipeFloat[25] = rhs.E07 ?? alternative.E07;
             //BitArray from Valve Data
             BitArray aRecipeBit = new BitArray(32);
             aRecipeBit[0] = rhs.V01 ? true : false;
@@ -481,5 +503,73 @@ namespace SapphireXR_App.Models
         public float[] aRecipeFloat = new float[26];
 
         public int iValve;
+    }
+
+    public class AnalogRecipe
+    {
+        public void update(PlcRecipe recipe)
+        {
+            M01 = recipe.aRecipeFloat[0];
+            M02 = recipe.aRecipeFloat[1];
+            M03 = recipe.aRecipeFloat[2];
+            M04 = recipe.aRecipeFloat[3];
+            M05 = recipe.aRecipeFloat[4];
+            M06 = recipe.aRecipeFloat[5];
+            M07 = recipe.aRecipeFloat[6];
+            M08 = recipe.aRecipeFloat[7];
+            M09 = recipe.aRecipeFloat[8];
+            M10 = recipe.aRecipeFloat[9];
+            M11 = recipe.aRecipeFloat[10];
+            M12 = recipe.aRecipeFloat[11];
+            M13 = recipe.aRecipeFloat[12];
+            M14 = recipe.aRecipeFloat[13];
+            M15 = recipe.aRecipeFloat[14];
+            M16 = recipe.aRecipeFloat[15];
+            M17 = recipe.aRecipeFloat[16];
+            M18 = recipe.aRecipeFloat[17];
+            M19 = recipe.aRecipeFloat[18];
+            E01 = recipe.aRecipeFloat[19];
+            E02 = recipe.aRecipeFloat[20];
+            E03 = recipe.aRecipeFloat[21];
+            E04 = recipe.aRecipeFloat[22];
+            E05 = recipe.aRecipeFloat[23];
+            E06 = recipe.aRecipeFloat[24];
+            E07 = recipe.aRecipeFloat[25];
+            STemp = recipe.aRecipeShort[3];
+            RPress = recipe.aRecipeShort[4];
+            SRotation = recipe.aRecipeShort[5];
+            CTemp = recipe.aRecipeShort[6];
+        }
+
+        public float M01 { get; set; }
+        public float M02 { get; set; }
+        public float M03 { get; set; }
+        public float M04 { get; set; }
+        public float M05 { get; set; }
+        public float M06 { get; set; }
+        public float M07 { get; set; }
+        public float M08 { get; set; }
+        public float M09 { get; set; }
+        public float M10 { get; set; }
+        public float M11 { get; set; }
+        public float M12 { get; set; }
+        public float M13 { get; set; }
+        public float M14 { get; set; }
+        public float M15 { get; set; }
+        public float M16 { get; set; }
+        public float M17 { get; set; }
+        public float M18 { get; set; }
+        public float M19 { get; set; }
+        public float E01 { get; set; }
+        public float E02 { get; set; }
+        public float E03 { get; set; }
+        public float E04 { get; set; }
+        public float E05 { get; set; }
+        public float E06 { get; set; }
+        public float E07 { get; set; }
+        public short STemp { get; set; }
+        public short RPress { get; set; }
+        public short SRotation { get; set; }
+        public short CTemp { get; set; }
     }
 }

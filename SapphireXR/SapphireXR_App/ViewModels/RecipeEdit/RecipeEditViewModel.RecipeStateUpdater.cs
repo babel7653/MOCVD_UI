@@ -39,7 +39,7 @@ namespace SapphireXR_App.ViewModels
                 private RecipeStateUpader stateUpdater;
             }
 
-            internal class ControlValueSubscriber : IObserver<float>
+            internal class ControlValueSubscriber : IObserver<float?>
             {
                 internal ControlValueSubscriber(RecipeStateUpader recipeStateUpdater, string flowControllerIDAssociated)
                 {
@@ -47,17 +47,17 @@ namespace SapphireXR_App.ViewModels
                     flowControllerID = flowControllerIDAssociated;
                 }
 
-                void IObserver<float>.OnCompleted()
+                void IObserver<float?>.OnCompleted()
                 {
                     throw new NotImplementedException();
                 }
 
-                void IObserver<float>.OnError(Exception error)
+                void IObserver<float?>.OnError(Exception error)
                 {
                     throw new NotImplementedException();
                 }
 
-                void IObserver<float>.OnNext(float value)
+                void IObserver<float?>.OnNext(float? value)
                 {
                     if (stateUpdater.getControlValue(flowControllerID) != value)
                     {
@@ -94,10 +94,10 @@ namespace SapphireXR_App.ViewModels
                 foreach ((string flowControllerID, int index) in PLCService.dIndexController)
                 {
                     string topicName = "FlowControl." + flowControllerID + ".CurrentValue.CurrentRecipeStep";
-                    flowValuePublishers[flowControllerID] = ObservableManager<float>.Get(topicName);
+                    flowValuePublishers[flowControllerID] = ObservableManager<float?>.Get(topicName);
 
                     ControlValueSubscriber controlValueSubscriber = new ControlValueSubscriber(this, flowControllerID);
-                    unsubscribers.Add(ObservableManager<float>.Subscribe(topicName, controlValueSubscriber));
+                    unsubscribers.Add(ObservableManager<float?>.Subscribe(topicName, controlValueSubscriber));
                     controlStateSubscribers.Add(controlValueSubscriber);
                 }
             }
@@ -202,7 +202,7 @@ namespace SapphireXR_App.ViewModels
                 valveStatePublishers[valveID].Publish(isOpen);
             }
 
-            private void propagateControlValue(string flowControllerID, float value)
+            private void propagateControlValue(string flowControllerID, float? value)
             {
                 if (flowControllerID != string.Empty)
                 {
@@ -522,7 +522,7 @@ namespace SapphireXR_App.ViewModels
                 }
             }
 
-            private void updateControlValue(string flowControllerID, float value)
+            private void updateControlValue(string flowControllerID, float? value)
             {
                 if (currentSelected == null)
                 {
@@ -636,15 +636,15 @@ namespace SapphireXR_App.ViewModels
                         break;
 
                     case "Temperature":
-                        currentSelected.STemp = (short)value;
+                        currentSelected.STemp = (short?)value;
                         break;
 
                     case "Pressure":
-                        currentSelected.RPress = (short)value;
+                        currentSelected.RPress = (short?)value;
                         break;
 
                     case "Rotation":
-                        currentSelected.SRotation = (short)value;
+                        currentSelected.SRotation = (short?)value;
                         break;
 
                     default:
@@ -652,7 +652,7 @@ namespace SapphireXR_App.ViewModels
                 }
             }
 
-            private float getControlValue(string flowControllerID)
+            private float? getControlValue(string flowControllerID)
             {
                 if (currentSelected == null)
                 {
@@ -757,9 +757,9 @@ namespace SapphireXR_App.ViewModels
             }
 
             private Dictionary<string, ObservableManager<bool>.Publisher> valveStatePublishers = new Dictionary<string, ObservableManager<bool>.Publisher>();
-            private Dictionary<string, ObservableManager<float>.Publisher> flowValuePublishers = new Dictionary<string, ObservableManager<float>.Publisher>();
+            private Dictionary<string, ObservableManager<float?>.Publisher> flowValuePublishers = new Dictionary<string, ObservableManager<float?>.Publisher>();
             private IList<IObserver<bool>> valveStateSubscribers = new List<IObserver<bool>>();
-            private IList<IObserver<float>> controlStateSubscribers = new List<IObserver<float>>();
+            private IList<IObserver<float?>> controlStateSubscribers = new List<IObserver<float?>>();
             private IList<IDisposable> unsubscribers = new List<IDisposable>();
 
             public Recipe? currentSelected = null;

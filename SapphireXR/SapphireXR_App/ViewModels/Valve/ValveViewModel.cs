@@ -62,7 +62,7 @@ namespace SapphireXR_App.ViewModels
                             }
 
                             viewModel.IsOpen = isOpen;
-                            ToastMessage.Show(confirmMessage, ToastMessage.MessageType.Sucess);
+                            ToastMessage.Show(confirmMessage, ToastMessage.MessageType.Success);
                         }
                         break;
 

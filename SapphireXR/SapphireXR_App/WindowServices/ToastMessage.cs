@@ -8,7 +8,7 @@ namespace SapphireXR_App.WindowServices
 {
     static class ToastMessage
     {
-        public enum MessageType { Information = 0, Sucess, Warning, Error };
+        public enum MessageType { Information = 0, Success, Warning, Error };
         public static void Show(string message, MessageType messageType)
         {
             
@@ -26,7 +26,7 @@ namespace SapphireXR_App.WindowServices
                     notifier.ShowError(message);
                     break;
 
-                case MessageType.Sucess:
+                case MessageType.Success:
                     notifier.ShowSuccess(message);
                     break;
             }

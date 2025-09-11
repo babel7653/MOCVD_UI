@@ -889,22 +889,6 @@
                                             <Thickness Left="{StaticResource p_5}" />
                                         </Border.BorderThickness>
                                         <Border.Margin>
-                                            <Thickness Top="{StaticResource p_1}" Bottom="{StaticResource p_1}" />
-                                        </Border.Margin>
-                                        <StackPanel Orientation="Vertical">
-                                            <Label Content="Heater Control Mode" FontFamily="Segoe UI" Foreground="{StaticResource Gray_900}" FontSize="12" >
-                                                <Label.Padding>
-                                                    <Thickness Top="0" Left="0" Right="0" Bottom="{StaticResource p_1}" />
-                                                </Label.Padding>
-                                            </Label>
-                                            <Button Content="{Binding InputManualAuto, Mode=OneWay}" Command="{Binding ToggleHeaterControlModeCommand}" Style="{StaticResource DefaultButton}" Height="26"/>
-                                        </StackPanel>
-                                    </Border>
-                                    <Border>
-                                        <Border.BorderThickness>
-                                            <Thickness Left="{StaticResource p_5}" />
-                                        </Border.BorderThickness>
-                                        <Border.Margin>
                                             <Thickness Top="{StaticResource p_1}" Bottom="14" />
                                         </Border.Margin>
                                         <StackPanel Orientation="Vertical">
@@ -1016,23 +1000,12 @@
                                             <Thickness Left="{StaticResource p_5}" />
                                         </Border.BorderThickness>
                                         <Border.Margin>
-                                            <Thickness Top="{StaticResource p_1}" Bottom="{StaticResource p_1}" />
+                                            <Thickness Bottom="{StaticResource p_1}" />
                                         </Border.Margin>
                                         <StackPanel Orientation="Vertical">
-                                            <Label Content="Pressure Control Mode" FontFamily="Segoe UI" Foreground="{StaticResource Gray_900}" FontSize="12">
-                                                <Label.Padding>
-                                                    <Thickness Top="0" Left="0" Right="0" Bottom="{StaticResource p_1}" />
-                                                </Label.Padding>
-                                            </Label>
-                                            <Button Command="{Binding TogglePressureControlModeCommand}" Style="{StaticResource DefaultButton}" Height="26">
-                                                <StackPanel Orientation="Horizontal">
-                                                    <Image Source="/Resources/icons/icon=line_pressure.png" Width="12" Height="12"/>
-                                                    <Label FontFamily="Segoe UI" FontSize="12" Content="{Binding PressureControlMode}" Foreground="{StaticResource Gray_900}" />
-                                                </StackPanel>
-                                            </Button>
                                             <Label Content="Throttle Valve Mode" FontFamily="Segoe UI" Foreground="{StaticResource Gray_900}" FontSize="12">
                                                 <Label.Padding>
-                                                    <Thickness Top="{StaticResource p_2}" Left="0" Right="0" Bottom="{StaticResource p_1}" />
+                                                    <Thickness Top="{StaticResource p_1}" Left="0" Right="0" Bottom="{StaticResource p_1}" />
                                                 </Label.Padding>
                                             </Label>
                                             <ComboBox HorizontalContentAlignment="Center" Style="{StaticResource theComboBox}" IsEnabled="{Binding Online, Source={x:Static model:PLCConnectionState.Instance}, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}" Height="26" ItemsSource="{Binding ThrottleValveControlModes, Mode=OneTime}" SelectedItem="{Binding CurrentThrottleValveControlMode, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
@@ -1210,7 +1183,7 @@
                                 </Label>
                                 <Button Width="134" HorizontalAlignment="Right" Style="{StaticResource DefaultButton}" Content="Clear" Command="{Binding ClearEventLogsCommand}"/>
                             </DockPanel>
-                            <DataGrid x:Name="dgEventLog" ToolTip="상세 윈도우를 뛰우려면 더블클릭 하세요." VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto" AutoGenerateColumns="False" ItemsSource="{Binding Source={x:Static model:EventLogs.Instance}, Path=EventLogList}" Style="{StaticResource EventLog}" Height="114">
+                            <DataGrid x:Name="dgEventLog" ToolTip="상세 윈도우를 뛰우려면 더블클릭 하세요." VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto" AutoGenerateColumns="False" ItemsSource="{Binding Source={x:Static model:EventLogs.Instance}, Path=EventLogList}" Style="{StaticResource EventLog}" Height="220">
                                 <DataGrid.Resources>
                                     <Style TargetType="ScrollBar" BasedOn="{StaticResource DefaultScrollbar}" />
                                 </DataGrid.Resources>

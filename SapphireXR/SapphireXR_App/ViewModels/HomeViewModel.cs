@@ -114,9 +114,7 @@ namespace SapphireXR_App.ViewModels
                         initRightDashBoard();
                     }
                     OnThrottleValveModeChangedCommand.NotifyCanExecuteChanged();
-                    TogglePressureControlModeCommand.NotifyCanExecuteChanged();
                     InductionHeaterResetCommand.NotifyCanExecuteChanged();
-                    ToggleHeaterControlModeCommand.NotifyCanExecuteChanged();
                     VacuumPumpResetCommand.NotifyCanExecuteChanged();
                     manualBatchViewModel.LoadToPLCCommand.NotifyCanExecuteChanged();
                 }
@@ -147,7 +145,6 @@ namespace SapphireXR_App.ViewModels
         {
             try
             {
-                onPressureControlModeUpdated(PLCService.ReadPressureControlMode());
                 ushort throttleValveMode = PLCService.ReadThrottleValveMode();
                 if (throttleValveMode < ThrottleValveModeCmdToString.Length)
                 {
@@ -157,7 +154,6 @@ namespace SapphireXR_App.ViewModels
                 BitArray outputCmd1 = PLCService.ReadOutputCmd1();
                 IsInductionHeaterOn = outputCmd1[(int)PLCService.OutputCmd1Index.InductionHeaterControl];
                 IsVaccumPumpOn = outputCmd1[(int)PLCService.OutputCmd1Index.VaccumPumpControl];
-                InputManualAuto = PLCService.ReadInputManAuto(7) == false ? "Auto" : "Manual";
             }
             catch (Exception ex)
             {
@@ -205,34 +201,7 @@ namespace SapphireXR_App.ViewModels
                 }
             }
         }
-
-        private bool canToggleHeaterControlModeExecute()
-        {
-            return PLCConnectionState.Instance.Online == true;
-        }
-
-        [RelayCommand(CanExecute = "canToggleHeaterControlModeExecute")]
-        private void ToggleHeaterControlMode()
-        {
-            try
-            {
-                string nextState = InputManualAuto == "Auto" ? "Manual" : "Auto";
-                if (OutputCmd1ToggleConfirmService.Toggle(PLCService.OutputCmd1Index.TempControllerManAuto, "Induction Power Supply Manual/Auto", nextState + " 상태로 바꾸시겠습니까?", InputManualAuto,
-                    "Manual", "Auto") == true)
-                {
-                    SynchronizeExpected(InputManualAuto == "Auto" ? 1 : 0, () => (PLCService.ReadInputManAuto(7) == true ? 1 : 0), (int manualAuto) => InputManualAuto = (manualAuto == 0 ? "Auto" : "Manual"),
-                        null, 3000, "장비의 Input Heater Control Mode가 " + nextState + "로 설정되지 않았습니다. 프로그램과 장비 간에 Heater Control Mode 상태 동기화가 되지 않았습니다.");
-                }
-            }
-            catch(Exception exception)
-            {
-                if (showMsgOnToggleHeaterControlModeEx == true)
-                {
-                    showMsgOnToggleHeaterControlModeEx = MessageBox.Show("PLC로 Heater Control Mode 값을 쓰는데 실패했습니다. 이 메시지를 다시 표시하지 않으려면 Yes를 클릭하세요. 원인은 다음과 같습니다: "
-                                + exception.Message, "", MessageBoxButton.YesNo, MessageBoxImage.Error) == MessageBoxResult.Yes ? false : true;
-                }
-            }
-        }
+  
 
         [RelayCommand]
         private void toggleInductionHeater(bool on)
@@ -290,44 +259,6 @@ namespace SapphireXR_App.ViewModels
             return 0 < EventLogs.Instance.EventLogList.Count;
         }
 
-        private bool canTogglePressureControlModeExecute()
-        {
-            return PLCService.Connected == PLCConnection.Connected;
-        }
-
-        [RelayCommand(CanExecute = "canTogglePressureControlModeExecute")]
-        private void TogglePressureControlMode()
-        {
-            try
-            {
-                if (ValveOperationEx.Show("Pressure Control Mode 변경", (PressureControlMode == PressureControlModePressure ? PressureControlModePosition : PressureControlModePressure) + "로 변경하시겠습니까?") == Enums.DialogResult.Ok)
-                {
-                    if (PressureControlMode == PressureControlModePressure)
-                    {
-                        PLCService.WriteOutputCmd1(PLCService.OutputCmd1Index.PressureControlMode, true);
-                        SynchronizeExpected<ushort>(2, PLCService.ReadPressureControlMode, onPressureControlModeUpdated, null, 3000,
-                            "장비의 Pressure Control Mode가 " + PressureControlModePosition + "값으로 설정되지 않았습니다. 프로그램과 장비 간에 Pressure Control Mode 상태 동기화가 되지 않았습니다.");
-
-                    }
-                    else
-                        if (PressureControlMode == PressureControlModePosition)
-                    {
-                        PLCService.WriteOutputCmd1(PLCService.OutputCmd1Index.PressureControlMode, false);
-                        SynchronizeExpected<ushort>(1, PLCService.ReadPressureControlMode, onPressureControlModeUpdated, null, 3000,
-                            "장비의 Pressure Control Mode가 " + PressureControlModePressure + "값으로 설정되지 않았습니다. 프로그램과 장비 간에 Pressure Control Mode 상태 동기화가 되지 않았습니다.");
-                    }
-                }
-            }
-            catch(Exception exception)
-            {
-                if(showMsgOnTogglePressureControlModeEx == true)
-                {
-                    showMsgOnTogglePressureControlModeEx = MessageBox.Show("PLC로 Pressure Control Mode 값을 쓰는데 실패했습니다. 이 메시지를 다시 표시하지 않으려면 Yes를 클릭하세요. 원인은 다음과 같습니다: "
-                                + exception.Message, "", MessageBoxButton.YesNo, MessageBoxImage.Error) == MessageBoxResult.Yes ? false : true;
-                }
-            }
-        }
-
         public RelayCommand<object?> OnThrottleValveModeChangedCommand => new RelayCommand<object?>((object? args) =>
         {
             SelectionChangedEventArgs? selectionChangedEventArgs = args as SelectionChangedEventArgs;
@@ -372,19 +303,6 @@ namespace SapphireXR_App.ViewModels
             {
                 onFailed?.Invoke(expected);
                 MessageBox.Show(messageOnTimeout);
-            }
-        }
-
-        private void onPressureControlModeUpdated(ushort mode)
-        {
-            switch(mode)
-            {
-                case 1:
-                    PressureControlMode = PressureControlModePressure;
-                    break;
-                case 2:
-                    PressureControlMode = PressureControlModePosition;
-                    break;
             }
         }
 
@@ -457,13 +375,9 @@ namespace SapphireXR_App.ViewModels
         private string _ultimatePressure = "";
 
         [ObservableProperty]
-        private string _pressureControlMode = "";
-        [ObservableProperty]
         private string _vaccumPumpReset = "";
         [ObservableProperty]
         private string _rotationReset = "";
-        [ObservableProperty]
-        private string _inputManualAuto = "";
         [ObservableProperty]
         private List<string> _throttleValveControlModes;
         [ObservableProperty]
@@ -479,9 +393,6 @@ namespace SapphireXR_App.ViewModels
         private string? prevThrottleValveControlMode = null;
 
         private ManualBatchViewModel manualBatchViewModel = new ManualBatchViewModel();
-
-        private static readonly string PressureControlModePressure = "Pressure";
-        private static readonly string PressureControlModePosition = "Position";
 
         private static readonly Dictionary<string, ushort> ThrottleValveModeStringToCmdOutputMode = new Dictionary<string, ushort>() { { "Control", 0 }, { "Close", 1 }, { "Open", 2 }, { "Hold", 3 }, { "Reset", 4 } };
         private static readonly string[] ThrottleValveModeCmdToString = [ "Control", "Close", "Open", "Hold", "Reset"];
@@ -500,10 +411,8 @@ namespace SapphireXR_App.ViewModels
 
         private bool showMsgOnVacuumPumpToggleEx = true;
         private bool showMsgOnVacuumPumpResetEx = true;
-        private bool showMsgOnToggleHeaterControlModeEx = true;
         private bool showMsgOnInductionHeaterToggleEx = true;
         private bool showMsgOnInductionHeaterResetEx = true;
-        private bool showMsgOnTogglePressureControlModeEx = true;
         private bool showMsgOnThrottleValveModeChangedCommandEx = true;
         private bool showMsgOnLoadBatchOnRecipeEnd = true;
     }

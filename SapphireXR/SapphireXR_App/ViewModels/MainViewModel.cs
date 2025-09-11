@@ -86,7 +86,7 @@ namespace SapphireXR_App.ViewModels
                 {
                     case true:
                         changeOperationMode(SelectedTab);
-                        ToastMessage.Show("PLC로 연결되었습니다", ToastMessage.MessageType.Sucess);
+                        ToastMessage.Show("PLC로 연결되었습니다", ToastMessage.MessageType.Success);
                         break;
 
                     case false:

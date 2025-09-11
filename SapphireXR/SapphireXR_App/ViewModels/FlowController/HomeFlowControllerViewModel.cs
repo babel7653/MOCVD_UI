@@ -65,54 +65,6 @@ namespace SapphireXR_App.ViewModels.FlowController
             private float maxValue;
         }
 
-        public bool OnFlowControllerConfirmed(PopupExResult result, ControlValues controlValues)
-        {
-            string message = string.Empty;
-            if (controlValues.targetValue != null)
-            {
-                message += "Target Value " + controlValues.targetValue;
-            }
-            if (controlValues.rampTime != null)
-            {
-                if (message != string.Empty)
-                {
-                    message += ", ";
-                }
-                message += "Ramp Time Value " + controlValues.rampTime;
-            }
-            if (message != string.Empty)
-            {
-                message += "으로 설정하시겠습니까?";
-            }
-
-            if (message != string.Empty)
-            {
-                if (FlowControlConfirmEx.Show("변경 확인", message) == DialogResult.Ok)
-                {
-                    try
-                    {
-                        if (controlValues.targetValue != null && controlValues.rampTime != null)
-                        {
-                            PLCService.WriteFlowControllerTargetValue(ControllerID, controlValues.targetValue.Value, controlValues.rampTime.Value);
-                            ToastMessage.Show(ControllerID + " Target Value, Ramp Time 설정 완료", ToastMessage.MessageType.Sucess);
-                        }
-                    }
-                    catch (Exception ex)
-                    {
-                        ToastMessage.Show("PLC로 값을 쓰는데 문제가 발생하였습니다. 자세한 원인은 다음과 같습니다: " + ex.Message, ToastMessage.MessageType.Error);
-                        return false;
-                    }
-
-                    return true;
-                }
-            }
-
-            return false;
-        }
-        public void OnFlowControllerCanceled(PopupExResult result)
-        {
-        }
-
         protected override void onLoaded(string type, string controllerID)
         {
             base.onLoaded(type, controllerID);

@@ -2,6 +2,8 @@
 using CommunityToolkit.Mvvm.Input;
 using SapphireXR_App.Common;
 using SapphireXR_App.Enums;
+using SapphireXR_App.Models;
+using SapphireXR_App.WindowServices;
 using System.ComponentModel;
 using System.Windows;
 using System.Windows.Media;
@@ -49,7 +51,7 @@ namespace SapphireXR_App.ViewModels
 
             void IObserver<float>.OnNext(float value)
             {
-               
+
                 flowControlViewModel.ControlValue = Util.FloatingPointStrWithMaxDigit(value, AppSetting.FloatingPointMaxNumberDigit);
             }
 
@@ -80,11 +82,16 @@ namespace SapphireXR_App.ViewModels
             private FlowControlViewModel flowControlViewModel;
         }
 
-        [RelayCommand]
-        private void Confirm(Window window)
+        private bool canConfirmExecute()
+        {
+            return TargetValue != string.Empty && RampTime != string.Empty && 0 < short.Parse(RampTime);
+        }
+
+        [RelayCommand(CanExecute = "canConfirmExecute")]
+        protected virtual void Confirm(Window window)
         {
             PopupExResult = PopupExResult.Confirm;
-            if (Confirmed!(PopupExResult.Confirm, new ControlValues
+            if (confirmed(new ControlValues
             {
                 targetValue = (string.IsNullOrEmpty(TargetValue) ? null : int.Parse(TargetValue)),
                 rampTime = (string.IsNullOrEmpty(RampTime) ? null : short.Parse(RampTime))
@@ -99,7 +106,6 @@ namespace SapphireXR_App.ViewModels
         private void Close(Window window)
         {
             PopupExResult = PopupExResult.Close;
-            Canceled!(PopupExResult.Close);
             dispose();
             window.Close();
         }
@@ -129,30 +135,46 @@ namespace SapphireXR_App.ViewModels
         {
             Title = title;
             Message = message;
+            controllerID = fcID;
             TargetValue = string.Empty;
             RampTime = string.Empty;
             Deviation = string.Empty;
             CurrentValue = string.Empty;
             ControlValue = string.Empty;
-            int? redMaxValue = SettingViewModel.ReadMaxValue(fcID);
-            if (redMaxValue != null)
+            int? redMaxValue = null;
+            if (fcID != "Pressure" || PLCService.ReadPressureControlMode() == 1)
             {
-                MaxValue = (int)redMaxValue;
+                redMaxValue = SettingViewModel.ReadMaxValue(fcID);
+            }
+            else
+            {
+                redMaxValue = 100;
+            }
+            if (redMaxValue != null && redMaxValue != 0)
+            {
+                MaxValue = redMaxValue.Value;
             }
             else
             {
                 throw new Exception("Faiure happend in reading max value for flow control view window. Logic error in FlowControlViewModel constructor: "
-                       + "the value of \"fcID\", the third argument of the constructor \"" + fcID + "\" is not valid flow controller ID");
+                       + "the value of \"fcID\", the third argument of the constructor \"" + fcID + "\" is not valid flow controller ID:" + redMaxValue == null ? "Null" : redMaxValue.ToString());
             }
             FontColor = OnNormal;
             PropertyChanged += (object? sender, PropertyChangedEventArgs e) =>
             {
-                if(e.PropertyName == "CurrentValue" || e.PropertyName == "ControlValue")
+                if (e.PropertyName == "CurrentValue" || e.PropertyName == "ControlValue")
                 {
-                    if (CurrentValue != string.Empty && ControlValue != string.Empty && 0 != MaxValue)
+                    if (CurrentValue != string.Empty && ControlValue != string.Empty)
                     {
                         Deviation = Util.FloatingPointStrWithMaxDigit((((float)(Math.Abs(float.Parse(CurrentValue) - float.Parse(ControlValue))) / ((float)MaxValue)) * 100.0f), AppSetting.FloatingPointMaxNumberDigit);
                     }
+                }
+                switch (e.PropertyName)
+                {
+                    case nameof(TargetValue):
+                    case nameof(RampTime):
+                        ConfirmCommand.NotifyCanExecuteChanged();
+                        break;
                 }
             };
             controlValueSubscriber = new ControlValueSubscriber(this);
@@ -161,16 +183,56 @@ namespace SapphireXR_App.ViewModels
             controlValueSubscriberDisposable = ObservableManager<float>.Subscribe("FlowControl." + fcID + ".ControlValue", controlValueSubscriber);
         }
 
+        protected virtual bool confirmed(ControlValues controlValues)
+        {
+            string message = string.Empty;
+            if (controlValues.targetValue != null)
+            {
+                message += "Target Value " + controlValues.targetValue;
+            }
+            if (controlValues.rampTime != null)
+            {
+                if (message != string.Empty)
+                {
+                    message += ", ";
+                }
+                message += "Ramp Time Value " + controlValues.rampTime;
+            }
+            if (message != string.Empty)
+            {
+                message += "으로 설정하시겠습니까?";
+            }
+
+            if (message != string.Empty)
+            {
+                if (FlowControlConfirmEx.Show("변경 확인", message) == DialogResult.Ok)
+                {
+                    try
+                    {
+                        if (controlValues.targetValue != null && controlValues.rampTime != null)
+                        {
+                            PLCService.WriteFlowControllerTargetValue(controllerID, controlValues.targetValue.Value, controlValues.rampTime.Value);
+                            App.Current.MainWindow.Dispatcher.InvokeAsync(() => ToastMessage.Show("PLC로 목표 유량과 램프 시간이 성공적으로 전송되었습니다.", ToastMessage.MessageType.Success));
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        App.Current.MainWindow.Dispatcher.InvokeAsync(() => ToastMessage.Show("PLC로 값을 쓰는데 문제가 발생하였습니다. 자세한 원인은 다음과 같습니다: " + ex.Message, ToastMessage.MessageType.Error));
+                        return false;
+                    }
+
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
         public struct ControlValues
         {
             public int? targetValue;
             public short? rampTime;
         }
-
-        public delegate bool ConfirmedEventHandler(PopupExResult result, ControlValues controlValues);
-        public event ConfirmedEventHandler? Confirmed;
-        public delegate void CanceledEventHandler(PopupExResult result);
-        public event CanceledEventHandler? Canceled;
 
         private static readonly SolidColorBrush OnNormal = new SolidColorBrush(Colors.Red);
 
@@ -178,5 +240,6 @@ namespace SapphireXR_App.ViewModels
         private CurrentValueSubscriber currentValueSubscriber;
         private IDisposable currentValueSubscriberDisposable;
         private IDisposable controlValueSubscriberDisposable;
+        protected string controllerID;
     }
 }

@@ -7,7 +7,6 @@ using SapphireXR_App.Common;
 using SapphireXR_App.Enums;
 using SapphireXR_App.WindowServices;
 using SapphireXR_App.Models;
-using SapphireXR_App.ViewModels;
 using SapphireXR_App.Views;
 using SapphireXR_App.ViewModels.FlowController;
 
@@ -98,12 +97,7 @@ namespace SapphireXR_App.Controls
                             homeFlowController = (HomeFlowController)((Button)sender).Parent;
                             if (homeFlowController != null)
                             {
-                                flowControlView = FlowControllerEx.Show("Flow Controller", $"{ControllerID} 유량을 변경하시겠습니까?", ControllerID, (PopupExResult result, FlowControlViewModel.ControlValues controlValues) => {
-                                    return ((HomeFlowControllerViewModel)DataContext).OnFlowControllerConfirmed(result, controlValues);
-                                },
-                                (PopupExResult result) => {
-                                    ((HomeFlowControllerViewModel)DataContext).OnFlowControllerCanceled(result);
-                                });
+                                flowControlView = FlowControllerEx.Show("Flow Controller", $"{ControllerID} 유량을 변경하시겠습니까?", ControllerID);
                                 Point p = TransformToAncestor(Util.FindParent<Window>(this, "mainWindow")).Transform(new Point(0, 0));
                                 flowControlView.Left = p.X;
                                 flowControlView.Top = p.Y;
@@ -132,9 +126,7 @@ namespace SapphireXR_App.Controls
             onFlowControllerClicked?.Invoke(sender, e);
         }
 
-        private FlowControlView? flowControlView = null;
-        private ICommand? OnFlowControllerConfirmed { get; set; }
-        private ICommand? OnFlowControllerCanceled { get; set; }
+        private Window? flowControlView = null;
         private AppClosingSubscriber onAppClosingSubscriber;
         private PLCConnectionStateSubscriber plcConnectionStateSubscriber;
         private Action<object, RoutedEventArgs>? onFlowControllerClicked = null;

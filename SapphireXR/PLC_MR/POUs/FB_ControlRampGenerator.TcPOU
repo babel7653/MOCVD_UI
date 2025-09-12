@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4026.11">
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4026.12">
   <POU Name="FB_ControlRampGenerator" Id="{a35b422b-580f-4aa7-bd81-602c2a7800da}" SpecialFunc="None">
     <Declaration><![CDATA[FUNCTION_BLOCK FB_ControlRampGenerator
 VAR_INPUT
@@ -18,16 +18,23 @@ VAR_OUTPUT
 END_VAR
 ]]></Declaration>
     <Implementation>
-      <ST><![CDATA[IF input.restart = TRUE AND 0 < input.rampTime AND rControlValue <> input.targetValue THEN
+      <ST><![CDATA[IF input.restart = TRUE AND 0 <= input.rampTime AND rControlValue <> input.targetValue THEN
 	state := E_RampGeneratorState.Init;
 	input.restart := FALSE;
 END_IF
 	
 CASE state OF
 	E_RampGeneratorState.Init:
-		rampGeneratorParams.fVeloPos			:= ABS(input.targetValue - rControlValue) / input.rampTime * 0.1; (* in units per second *)
-		rampGeneratorParams.fVeloNeg			:= rampGeneratorParams.fVeloPos; (* in units per second *)
-		rampGenerator(bEnable := TRUE, fStart := rControlValue, fTarget:= input.targetValue, fOut => rControlValue, bValueReached => targetValueReached, bError => isError, eErrorID => eErrorID, stParams := rampGeneratorParams);
+		IF 0 < input.rampTime THEN
+			rampGeneratorParams.fVeloPos			:= ABS(input.targetValue - rControlValue) / input.rampTime * 0.1; (* in units per second *)
+			rampGeneratorParams.fVeloNeg			:= rampGeneratorParams.fVeloPos; (* in units per second *)
+			rampGenerator(bEnable := TRUE, fStart := rControlValue, fTarget:= input.targetValue, fOut => rControlValue, bValueReached => targetValueReached, bError => isError, eErrorID => eErrorID, stParams := rampGeneratorParams);
+		ELSIF input.rampTime = 0 THEN
+			rampGenerator(bEnable := FALSE, stParams := rampGeneratorParams);
+			rampGeneratorParams.fVeloPos			:= input.targetValue; (* in units per second *)
+			rampGeneratorParams.fVeloNeg			:= rampGeneratorParams.fVeloPos; (* in units per second *)
+			rampGenerator(bEnable := TRUE, fStart := input.targetValue, fTarget:= input.targetValue, fOut => rControlValue, bValueReached => targetValueReached, bError => isError, eErrorID => eErrorID, stParams := rampGeneratorParams);
+		END_IF
 		state := E_RampGeneratorState.Run;
 	
 	E_RampGeneratorState.Run:
@@ -42,8 +49,10 @@ END_CASE
 ]]></ST>
     </Implementation>
     <LineIds Name="FB_ControlRampGenerator">
-      <LineId Id="1" Count="6" />
-      <LineId Id="9" Count="14" />
+      <LineId Id="1" Count="5" />
+      <LineId Id="24" Count="0" />
+      <LineId Id="27" Count="8" />
+      <LineId Id="11" Count="12" />
     </LineIds>
   </POU>
 </TcPlcObject>

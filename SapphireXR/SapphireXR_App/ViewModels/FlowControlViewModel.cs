@@ -82,7 +82,7 @@ namespace SapphireXR_App.ViewModels
             private FlowControlViewModel flowControlViewModel;
         }
 
-        private bool canConfirmExecute()
+        protected virtual bool canConfirmExecute()
         {
             return TargetValue != string.Empty && RampTime != string.Empty && 0 < short.Parse(RampTime);
         }
@@ -212,12 +212,14 @@ namespace SapphireXR_App.ViewModels
                         if (controlValues.targetValue != null && controlValues.rampTime != null)
                         {
                             PLCService.WriteFlowControllerTargetValue(controllerID, controlValues.targetValue.Value, controlValues.rampTime.Value);
-                            App.Current.MainWindow.Dispatcher.InvokeAsync(() => ToastMessage.Show("PLC로 목표 유량과 램프 시간이 성공적으로 전송되었습니다.", ToastMessage.MessageType.Success));
+                            //App.Current.MainWindow.Dispatcher.InvokeAsync(() => ToastMessage.Show("PLC로 목표 유량과 램프 시간이 성공적으로 전송되었습니다.", ToastMessage.MessageType.Success));
+                            ToastMessage.Show("PLC로 목표 유량과 램프 시간이 성공적으로 전송되었습니다.", ToastMessage.MessageType.Success);
                         }
                     }
                     catch (Exception ex)
                     {
-                        App.Current.MainWindow.Dispatcher.InvokeAsync(() => ToastMessage.Show("PLC로 값을 쓰는데 문제가 발생하였습니다. 자세한 원인은 다음과 같습니다: " + ex.Message, ToastMessage.MessageType.Error));
+                        //App.Current.MainWindow.Dispatcher.InvokeAsync(() => ToastMessage.Show("PLC로 값을 쓰는데 문제가 발생하였습니다. 자세한 원인은 다음과 같습니다: " + ex.Message, ToastMessage.MessageType.Error));
+                        ToastMessage.Show("PLC로 값을 쓰는데 문제가 발생하였습니다. 자세한 원인은 다음과 같습니다: " + ex.Message, ToastMessage.MessageType.Error);
                         return false;
                     }
 

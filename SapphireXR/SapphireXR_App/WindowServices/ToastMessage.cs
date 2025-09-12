@@ -11,26 +11,29 @@ namespace SapphireXR_App.WindowServices
         public enum MessageType { Information = 0, Success, Warning, Error };
         public static void Show(string message, MessageType messageType)
         {
-            
-            switch(messageType)
+
+            App.Current.MainWindow.Dispatcher.InvokeAsync(() =>
             {
-                case MessageType.Information:
-                    notifier.ShowInformation(message);
-                    break;
+                switch (messageType)
+                {
+                    case MessageType.Information:
+                        notifier.ShowInformation(message);
+                        break;
 
-                case MessageType.Warning:
-                    notifier.ShowWarning(message);
-                    break;
+                    case MessageType.Warning:
+                        notifier.ShowWarning(message);
+                        break;
 
-                case MessageType.Error:
-                    notifier.ShowError(message);
-                    break;
+                    case MessageType.Error:
+                        notifier.ShowError(message);
+                        break;
 
-                case MessageType.Success:
-                    notifier.ShowSuccess(message);
-                    break;
-            }
-            
+                    case MessageType.Success:
+                        notifier.ShowSuccess(message);
+                        break;
+                }
+            });
+
         }
 
         static Notifier notifier = new Notifier(cfg =>

@@ -16,8 +16,6 @@
     <None Remove="Resources\icons\icon=analog.png" />
     <None Remove="Resources\icons\icon=ani_signal_blue.gif" />
     <None Remove="Resources\icons\icon=app.png" />
-    <None Remove="Resources\icons\icon=buzzeroff.png" />
-    <None Remove="Resources\icons\icon=buzzeron.png" />
     <None Remove="Resources\icons\icon=chevron.png" />
     <None Remove="Resources\icons\icon=close.png" />
     <None Remove="Resources\icons\icon=controller.png" />
@@ -113,12 +111,6 @@
     </Resource>
     <Resource Include="Resources\icons\icon=app.png">
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
-    </Resource>
-    <Resource Include="Resources\icons\icon=buzzeroff.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Resource>
-    <Resource Include="Resources\icons\icon=buzzeron.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
     <Resource Include="Resources\icons\icon=chart_decreasing.png">
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>

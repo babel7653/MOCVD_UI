@@ -1,0 +1,20 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <Canvas Name="svg6" Width="12" Height="12" x:Key="buzzer_off">
+        <Canvas.RenderTransform>
+            <TranslateTransform X="0" Y="0"/>
+        </Canvas.RenderTransform>
+        <Canvas.Resources/>
+        <!--Unknown tag: sodipodi:namedview-->
+        <Path xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" Name="path2" Stroke="#FFEC3D3F" StrokeLineJoin="Round" StrokeStartLineCap="Round" StrokeEndLineCap="Round">
+            <Path.Data>
+                <PathGeometry Figures="M8.625 4.875L9.75 6M9.75 6L10.875 7.125M9.75 6L10.875 4.875M9.75 6L8.625 7.125" FillRule="NonZero"/>
+            </Path.Data>
+        </Path>
+        <Path xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" Name="path4" Stroke="#FFE0E0E0" StrokeLineJoin="Round" StrokeStartLineCap="Round" StrokeEndLineCap="Round">
+            <Path.Data>
+                <PathGeometry Figures="M5.73484 1.76516L3.375 4.12499H2.25453C1.81486 4.12499 1.40295 4.37823 1.28619 4.80211C1.18112 5.18351 1.125 5.5852 1.125 5.99999C1.125 6.41479 1.18112 6.81648 1.28619 7.19788C1.40295 7.62176 1.81486 7.87499 2.25453 7.87499H3.375L5.73484 10.2348C5.97107 10.4711 6.375 10.3038 6.375 9.96966V2.03032C6.375 1.69623 5.97107 1.52892 5.73484 1.76516Z" FillRule="NonZero"/>
+            </Path.Data>
+        </Path>
+    </Canvas>
+</ResourceDictionary>

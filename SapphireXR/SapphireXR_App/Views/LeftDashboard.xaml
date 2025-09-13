@@ -5,7 +5,7 @@
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:SapphireXR_App.Views"
       xmlns:model="clr-namespace:SapphireXR_App.Models"
-       xmlns:i="clr-namespace:Microsoft.Xaml.Behaviors;assembly=Microsoft.Xaml.Behaviors"
+      xmlns:i="clr-namespace:Microsoft.Xaml.Behaviors;assembly=Microsoft.Xaml.Behaviors"
       xmlns:anim="https://github.com/whistyun/AnimatedImage.Wpf"
       mc:Ignorable="d" 
       d:DesignHeight="1080" d:DesignWidth="300"
@@ -70,7 +70,7 @@
                             <ColumnDefinition Width="*" />
                         </Grid.ColumnDefinitions>
                         <Image Grid.Column="0" Height="108" anim:ImageBehavior.AnimatedSource="{Binding SignalTowerImage, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}" />
-                        <Rectangle Grid.Column="0" RadiusX="{StaticResource p_2}" RadiusY="{StaticResource p_2}" Fill="Black" Opacity="{Binding BuzzerOnOffRectOpacity}">
+                        <Rectangle Grid.Column="0" RadiusX="{StaticResource p_2}" RadiusY="{StaticResource p_2}" Fill="Black" Opacity="{Binding BuzzerOnOffRectOpacity}" IsEnabled="{Binding Online, Source={x:Static model:PLCConnectionState.Instance}, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}">
                             <i:Interaction.Triggers>
                                 <i:EventTrigger EventName="MouseEnter">
                                     <i:InvokeCommandAction Command="{Binding Path=ShowBuzzerOnOfRectCommand}" />
@@ -83,12 +83,12 @@
                                 </i:EventTrigger>
                             </i:Interaction.Triggers>
                         </Rectangle>
-
-                        <Image Grid.Column="0" Source="{Binding BuzzerImage}" Width="12" Height="12" HorizontalAlignment="Left" VerticalAlignment="Top">
-                            <Image.Margin>
+                        <Border Grid.Column="0" VerticalAlignment="Top" HorizontalAlignment="Left">
+                            <Border.Margin>
                                 <Thickness Left="{StaticResource p_1}" Top="{StaticResource p_1}" />
-                            </Image.Margin>
-                        </Image>
+                            </Border.Margin>
+                            <ContentControl Content="{Binding BuzzerIcon}" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" />
+                        </Border>
                         <Grid Grid.Column="1">
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="Auto" />

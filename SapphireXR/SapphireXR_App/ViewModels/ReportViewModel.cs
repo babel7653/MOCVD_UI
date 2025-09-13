@@ -63,7 +63,12 @@ namespace SapphireXR_App.ViewModels
                     {
                         using (CsvReader csvReader = new CsvReader(streamReder, Config))
                         {
-                            return (csvReader.GetRecords<RecipeLog>().ToList(), openFileDialog.FileName);
+                            List<RecipeLog> logs = csvReader.GetRecords<RecipeLog>().ToList();
+                            if (logs.Count < 1)
+                            {
+                                throw new Exception("빈 로그파일입니다");
+                            }
+                            return (logs, openFileDialog.FileName);
                         }
                     }
                 }

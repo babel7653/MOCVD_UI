@@ -293,5 +293,17 @@ namespace SapphireXR_App.Models
         {
             AddOnPLCStateUpdateTask.Remove(task);
         }
+
+        private static float GetTargetValueMappingFactor(string controllerID)
+        {
+            int controllerIDIndex = dIndexController[controllerID];
+            float? targetValueMappingFactor = aTargetValueMappingFactor[controllerIDIndex];
+            if (targetValueMappingFactor == null)
+            {
+                throw new Exception("KL3464MaxValueH is null in WriteFlowControllerTargetValue");
+            }
+
+            return targetValueMappingFactor.Value;
+        }
     }
 }

@@ -104,7 +104,7 @@ namespace SapphireXR_App.ViewModels
                 {
                     if (recipeContext != null && recipeContext.currentRecipe != null)
                     {
-                        csvWriter!.WriteRecord(new RecipeLog((recipeContext.Recipes as List<Recipe>)!));
+                        csvWriter!.WriteRecord(new RecipeLog(recipeContext.Recipes));
                         csvWriter!.NextRecord();
                     }
                 }

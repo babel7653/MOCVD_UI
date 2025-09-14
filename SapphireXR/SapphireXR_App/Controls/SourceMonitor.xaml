@@ -18,11 +18,25 @@
                    FontSize="12" TextAlignment="Center"
                    VerticalAlignment="Center" Padding="0" />
         <Border Grid.Row="1" BorderBrush="{StaticResource SourceMonitorColor1}" BorderThickness="1,0,1,1">
-            <StackPanel Orientation="Horizontal" >
+            <StackPanel Orientation="Horizontal">
+                <StackPanel.Style>
+                    <Style TargetType="StackPanel">
+                        <Style.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Background" Value="{Binding OnMouseOverBackground}" />
+                            </Trigger>
+                        </Style.Triggers>
+                    </Style>
+                </StackPanel.Style>
                 <Label x:Name="G" Height="20" Width="50" FontSize="14" HorizontalContentAlignment="Right" 
                    VerticalAlignment="Center" Padding="0" Content="{Binding PresentValue}" Foreground="Lime" />
                 <Ellipse Width="10" Height="10" Fill="Lime" HorizontalAlignment="Right"  Margin="5,0,0,0"/>
             </StackPanel>
         </Border>
+        <i:Interaction.Triggers>
+            <i:EventTrigger EventName="MouseLeftButtonDown">
+                <i:InvokeCommandAction Command="{Binding MouseLeftButtonDownCommand}" />
+            </i:EventTrigger>
+        </i:Interaction.Triggers> 
     </Grid>
 </UserControl>

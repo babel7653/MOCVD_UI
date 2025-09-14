@@ -37,6 +37,7 @@
     
     <SolidColorBrush x:Key="SourceMonitorColor1" Color="#239B56"/>
     <SolidColorBrush x:Key="SourceMonitorColor2" Color="#F7D5CD"/>
+    <SolidColorBrush x:Key="SourceMonitorColorOnMouseOver" Color="#9dbce8"/>
 
     <SolidColorBrush x:Key="ReactorMonitorColor1" Color="#A02B93"/>
     <SolidColorBrush x:Key="ReactorMonitorColor2" Color="#DFCDDC"/>

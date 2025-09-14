@@ -1,0 +1,34 @@
+﻿<Window x:Class="SapphireXR_App.Views.MOSourceSettingView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:SapphireXR_App.Views"
+        xmlns:i="clr-namespace:Microsoft.Xaml.Behaviors;assembly=Microsoft.Xaml.Behaviors"
+        mc:Ignorable="d"
+        Title="MO Setting" Height="450" Width="800" WindowStyle="None" AllowsTransparency="True" Background="Transparent" WindowStartupLocation="CenterScreen">
+    <Grid>
+        <Rectangle Grid.Row="0" RadiusX="{StaticResource r_3}" RadiusY="{StaticResource r_3}" Fill="{StaticResource Gray_100}" />
+        <Grid Grid.Row="0">
+            <Grid.Margin>
+                <Thickness Top="{StaticResource p_1}" Left="{StaticResource p_5}" Right="{StaticResource p_5}" Bottom="{StaticResource p_5}" />
+            </Grid.Margin>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="24" />
+                <RowDefinition Height="8" />
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            <Grid Grid.Row="0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="24" />
+                </Grid.ColumnDefinitions>
+                <Button Grid.Column="1" Width="24" Height="24" Style="{StaticResource CloseMenuButton}">
+                    <Image Source="/Resources/icons/icon=close.png"  />
+                </Button>
+            </Grid>
+            <Grid Grid.Row="2">
+            </Grid>
+        </Grid>
+    </Grid>
+</Window>

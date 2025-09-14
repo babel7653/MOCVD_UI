@@ -196,6 +196,8 @@ namespace SapphireXR_App.Models
         private const uint NumInterlock = 5;
         public const uint NumDigitalDevice = 14;
         public const uint NumAnalogDevice = 29;
+        public const int NumRecipeEnableSubConditions = 12;
+        public const int NumReactorEnableSubConditions = 10;
 
         // Variable handles to be connected plc variables
         private static BitArray? baReadValveStatePLC1 = null;
@@ -211,7 +213,6 @@ namespace SapphireXR_App.Models
 
         private static Dictionary<string, ObservableManager<float>.Publisher>? dCurrentValueIssuers;
         private static Dictionary<string, ObservableManager<float>.Publisher>? dControlValueIssuers;
-        private static Dictionary<string, ObservableManager<float>.Publisher>? dTargetValueIssuers;
         private static Dictionary<string, ObservableManager<(float, float)>.Publisher>? dControlCurrentValueIssuers;
         private static Dictionary<string, ObservableManager<float>.Publisher>? aMonitoringCurrentValueIssuers;
         private static ObservableManager<BitArray>.Publisher? baHardWiringInterlockStateIssuers;
@@ -235,6 +236,8 @@ namespace SapphireXR_App.Models
         private static ObservableManager<short>.Publisher? temperatureTVPublisher;
         private static ObservableManager<short>.Publisher? pressureTVPublisher;
         private static ObservableManager<short>.Publisher? rotationTVPublisher;
+        private static ObservableManager<BitArray>.Publisher? recipeEnableSubConditionPublisher;
+        private static ObservableManager<BitArray>.Publisher? reactorEnableSubConditionPublisher;
 
         private static LeakTestModeSubscriber? leakTestModeSubscriber = null;
 
@@ -294,9 +297,8 @@ namespace SapphireXR_App.Models
         private static uint hOutputSetType;
         private static uint hOutputMode;
         private static uint hRecipeRunET;
-        private static uint hTemperatureTV;
-        private static uint hPressureTV;
-        private static uint hRotationTV;
+        private static uint hUIInterockCheckRecipeEnable;
+        private static uint hUIInterockCheckOpenReactor;
         private static uint[] hInterlockEnable = new uint[NumAlarmWarningArraySize];
         private static uint[] hInterlockset = new uint[NumInterlockSet];
         private static uint[] hInterlock = new uint[NumInterlock];

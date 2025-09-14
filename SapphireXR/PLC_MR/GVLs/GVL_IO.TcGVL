@@ -20,9 +20,6 @@ VAR_GLOBAL
 	aController 			: ARRAY[1..NumAnalogController] OF FB_ControlRampGenerator; //MFC, EPC 0 ~ 5V
 	aController_PV 			: ARRAY[1..NumAnalogController] OF REAL; //Present Value from Device
 	aController_CV 			: ARRAY[1..NumAnalogController] OF REAL; //Current Value from RampingController
-	temperatureTV : INT := -1;
-	pressureTV : INT := -1;
-	rotationTV : INT := -1;
 	
 	(* Present Value Meter Display*)
 	aMonitoring_PV 			: ARRAY[1..17] OF REAL; //Gauge Monitoring Value to UI
@@ -53,6 +50,9 @@ VAR_GLOBAL
 	nE3508_nInputManAutoBytes : USINT;
 	isCoverClosed 			: BOOL;
 	isPumpRunning 			: BOOL;
+	
+	nUIInterockCheckOpenReactor : WORD;
+	nUIInterockCheckRecipeEnable : WORD;
 END_VAR
 
 VAR_GLOBAL CONSTANT

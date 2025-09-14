@@ -188,9 +188,8 @@ namespace SapphireXR_App.Models
             {
                 hAControllerInput[analogDevice] = Ads.CreateVariableHandle("GVL_IO.aController[" + (analogDevice + 1)+ "].input");
             }
-            hTemperatureTV = Ads.CreateVariableHandle("GVL_IO.temperatureTV");
-            hPressureTV = Ads.CreateVariableHandle("GVL_IO.pressureTV");
-            hRotationTV = Ads.CreateVariableHandle("GVL_IO.rotationTV");
+            hUIInterockCheckRecipeEnable = Ads.CreateVariableHandle("GVL_IO.nUIInterockCheckRecipeEnable");
+            hUIInterockCheckOpenReactor = Ads.CreateVariableHandle("GVL_IO.nUIInterockCheckOpenReactor");
         }
 
         private static void IntializePubSub()
@@ -204,11 +203,6 @@ namespace SapphireXR_App.Models
             foreach (KeyValuePair<string, int> kv in dIndexController)
             {
                 dControlValueIssuers.Add(kv.Key, ObservableManager<float>.Get("FlowControl." + kv.Key + ".ControlValue"));
-            }
-            dTargetValueIssuers = new Dictionary<string, ObservableManager<float>.Publisher>();
-            foreach (KeyValuePair<string, int> kv in dIndexController)
-            {
-                dTargetValueIssuers.Add(kv.Key, ObservableManager<float>.Get("FlowControl." + kv.Key + ".TargetValue"));
             }
             dControlCurrentValueIssuers = new Dictionary<string, ObservableManager<(float, float)>.Publisher>();
             foreach (KeyValuePair<string, int> kv in dIndexController)
@@ -250,6 +244,8 @@ namespace SapphireXR_App.Models
             temperatureTVPublisher = ObservableManager<short>.Get("TemperatureTV");
             pressureTVPublisher = ObservableManager<short>.Get("PressureTV");
             rotationTVPublisher = ObservableManager<short>.Get("RotationTV");
+            recipeEnableSubConditionPublisher = ObservableManager<BitArray>.Get("RecipeEnableSubCondition");
+            reactorEnableSubConditionPublisher = ObservableManager<BitArray>.Get("ReactorEnableSubCondition");
         }
 
         private static (BitArray, int, uint) GetBuffer(string valveID)

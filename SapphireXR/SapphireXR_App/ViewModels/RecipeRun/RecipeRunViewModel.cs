@@ -85,10 +85,6 @@ namespace SapphireXR_App.ViewModels
                         break;
 
                     case nameof(RecipeStartAvailableInterlock):
-                        if (RecipeStartAvailableInterlock == false && recipeRunning() == true)
-                        {
-                            RecipeStop();
-                        }
                         RecipeStartCommand.NotifyCanExecuteChanged();
                         break;
                 }

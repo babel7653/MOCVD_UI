@@ -250,6 +250,20 @@ namespace SapphireXR_App.ViewModels
             public SourceStatusFromCurrentRecipeStepViewModel(LeftViewModel vm) :base(vm, "CurrentRecipeStep") {  }
         }
 
+        public partial class SubConditionViewModel : ObservableObject
+        {
+            public SubConditionViewModel(string condition, Brush stateColor)
+            {
+                Condition = condition;
+                StateColor = stateColor;
+            }
+
+            [ObservableProperty]
+            private Brush stateColor;
+
+            public string Condition { get; private set; }
+        }
+
         public LeftViewModel()
         {
             ObservableManager<float>.Subscribe("MonitoringPresentValue.ShowerHeadTemp.CurrentValue", showerHeaderTempSubscriber = new CoolingWaterValueSubscriber("ShowerHeadTemp", this));
@@ -261,8 +275,19 @@ namespace SapphireXR_App.ViewModels
             ObservableManager<bool>.Subscribe("Reset.CurrentRecipeStep", resetCurrentRecipeSubscriber = new ResetCurrentRecipeSubscriber(this));
             ObservableManager<BitArray>.Subscribe("LogicalInterlockState", logicalInterlockSubscriber = new LogicalInterlockSubscriber(this));
             ObservableManager<(string, string)>.Subscribe("GasIOLabelChanged", gasIOLabelSubscriber = new GasIOLabelSubscriber(this));
-          
+            ObservableManager<BitArray>.Subscribe("RecipeEnableSubCondition", recipeEnableSubStateSubscriber = new RecipeEnableSubStateSubscriber(this));
+            ObservableManager<BitArray>.Subscribe("ReactorEnableSubCondition", reactorEnableSubStateSubscriber = new ReactorEnableSubStateSubscriber(this));
+
             CurrentSourceStatusViewModel = new SourceStatusFromCurrentPLCStateViewModel(this);
+            RecipeEnableConditions = [ new SubConditionViewModel("Not Alarm Triggered", OffLampColor), new SubConditionViewModel("Not Warning Triggered", OffLampColor),new SubConditionViewModel("Not Main Key", OffLampColor),
+                new SubConditionViewModel("DOR On", OffLampColor), new SubConditionViewModel("Chamber Close", OffLampColor), new SubConditionViewModel("Gas Valve Close", OffLampColor),
+                new SubConditionViewModel("Source Valve Close", OffLampColor), new SubConditionViewModel("Vent Valve Close", OffLampColor), new SubConditionViewModel("Valve 21 Open", OffLampColor),
+                new SubConditionViewModel("Temp Auto Mode", OffLampColor), new SubConditionViewModel("Pressure Mode", OffLampColor), new SubConditionViewModel(" Chamber Clamp Close", OffLampColor) ];
+            ReactorEnableConditions = [ new SubConditionViewModel("Not Alarm Triggered", OffLampColor), new SubConditionViewModel("Open Temp", OffLampColor),new SubConditionViewModel("Open Pressure", OffLampColor),
+                new SubConditionViewModel("DOR Off", OffLampColor), new SubConditionViewModel("Recipe Not Running", OffLampColor), new SubConditionViewModel("Gas Valve Close", OffLampColor),
+                new SubConditionViewModel("Source Valve Close", OffLampColor), new SubConditionViewModel("Vent Valve Close", OffLampColor), new SubConditionViewModel("Can Open Temperature(℃)", OffLampColor),
+                new SubConditionViewModel("Can Open Reactor Pressure(Torr)", OffLampColor) ];
+
             PropertyChanging += (object? sender, PropertyChangingEventArgs args) =>
             {
                 switch (args.PropertyName)
@@ -321,6 +346,27 @@ namespace SapphireXR_App.ViewModels
             else
             {
                 return "";
+            }
+        }
+
+        private static Brush UpdateStateColor(bool state)
+        {
+            return state == true ? OnLampColor : OffLampColor;
+        }
+
+        public void updateRecipeAvailbleSubstate(BitArray recipeAvaibleSubstate)
+        {
+            for (int substate = 0; substate < PLCService.NumRecipeEnableSubConditions; substate++)
+            {
+                RecipeEnableConditions[substate].StateColor = UpdateStateColor(recipeAvaibleSubstate[substate]);
+            }
+        }
+
+        public void updateReactorAvailbleSubstate(BitArray reactorAvaibleSubstate)
+        {
+            for (int substate = 0; substate < PLCService.NumReactorEnableSubConditions; substate++)
+            {
+                ReactorEnableConditions[substate].StateColor = UpdateStateColor(reactorAvaibleSubstate[substate]);
             }
         }
 
@@ -432,6 +478,9 @@ namespace SapphireXR_App.ViewModels
         private string Gas1 = Util.GetGasDeviceName("Gas1") ?? "";
         private string Gas2 = Util.GetGasDeviceName("Gas2") ?? "";
 
+        public IList<SubConditionViewModel> RecipeEnableConditions { get; private set; }
+        public IList<SubConditionViewModel> ReactorEnableConditions { get; private set; }
+
         [ObservableProperty]
         private string _showerHeadTemp = "";
         [ObservableProperty]
@@ -522,5 +571,7 @@ namespace SapphireXR_App.ViewModels
         private readonly ResetCurrentRecipeSubscriber resetCurrentRecipeSubscriber;
         private readonly LogicalInterlockSubscriber logicalInterlockSubscriber;
         private readonly GasIOLabelSubscriber gasIOLabelSubscriber;
+        private readonly RecipeEnableSubStateSubscriber recipeEnableSubStateSubscriber;
+        private readonly ReactorEnableSubStateSubscriber reactorEnableSubStateSubscriber;
     }
 }

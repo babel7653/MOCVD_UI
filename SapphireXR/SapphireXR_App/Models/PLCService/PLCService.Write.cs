@@ -365,8 +365,22 @@ namespace SapphireXR_App.Models
             {
                 throw new Exception("KL3464MaxValueH is null in WriteFlowControllerTargetValue");
             }
-           
-            Ads.WriteAny(hAControllerInput[controllerIDIndex], new RampGeneratorInput { restart = true, rampTime = (ushort)rampTime, targetValue = targetValue * targetValueMappingFactor.Value });
+            short actualTargetValue = (short)(targetValue * targetValueMappingFactor.Value);
+            Ads.WriteAny(hAControllerInput[controllerIDIndex], new RampGeneratorInput { restart = true, rampTime = (ushort)rampTime, targetValue = actualTargetValue });
+            switch (controllerIDIndex)
+            {
+                case 26:
+                    temperatureTVPublisher?.Publish(actualTargetValue);
+                    break;
+
+                case 27:
+                    pressureTVPublisher?.Publish(actualTargetValue);
+                    break;
+
+                case 28:
+                    rotationTVPublisher?.Publish(actualTargetValue);
+                    break;
+            }
         }
     }
 }

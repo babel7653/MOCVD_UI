@@ -367,7 +367,27 @@
                             </Grid.ColumnDefinitions>
                             <TextBlock Grid.Column="0" Text="Recipe Start Available" FontFamily="Segoe UI" Foreground="{DynamicResource Gray_900}" FontSize="12" Margin="20,0,0,0"/>
                             <Line Grid.Column="1" X1="0" Y1="0" X2="1" Y2="0" Stretch="Fill" Stroke="{DynamicResource Gray_300}" StrokeThickness="1" VerticalAlignment="Center" Opacity="0.995" Margin="8,0"/>
-                            <Rectangle Grid.Column="2" Fill="{Binding RecipeStartStateColor}" Width="10" Height="10" RadiusX="99" RadiusY="96" Margin="0"/>
+                            <Rectangle Grid.Column="2" Fill="{Binding RecipeStartStateColor}" Width="10" Height="10" RadiusX="99" RadiusY="96" Margin="0" ToolTipService.InitialShowDelay="0">
+                                <Rectangle.ToolTip>
+                                    <ToolTip Background="{StaticResource Gray_100}">
+                                        <ListView ItemsSource="{Binding RecipeEnableConditions, Mode=OneTime}" Background="{Binding Background, RelativeSource={RelativeSource Mode=TemplatedParent}}" BorderThickness="0">
+                                            <ListView.ItemTemplate>
+                                                <DataTemplate>
+                                                    <Grid>
+                                                        <Grid.ColumnDefinitions>
+                                                            <ColumnDefinition />
+                                                            <ColumnDefinition Width="4" />
+                                                            <ColumnDefinition />
+                                                        </Grid.ColumnDefinitions>
+                                                        <Rectangle Grid.Column="0" Fill="{Binding StateColor}" Width="10" Height="10" RadiusX="99" RadiusY="96" Margin="0" />
+                                                        <TextBlock Grid.Column="2" Text="{Binding Condition}" Foreground="{StaticResource Gray_900}" />
+                                                    </Grid>
+                                                </DataTemplate>
+                                            </ListView.ItemTemplate>
+                                        </ListView>
+                                    </ToolTip>
+                                </Rectangle.ToolTip>
+                            </Rectangle>
                         </Grid>
 
                         <!-- Reactor Open Available -->
@@ -379,7 +399,27 @@
                             </Grid.ColumnDefinitions>
                             <TextBlock Grid.Column="0" Text="Reactor Open Available" FontFamily="Segoe UI" Foreground="{DynamicResource Gray_900}" FontSize="12" Margin="20,0,0,0"/>
                             <Line Grid.Column="1" X1="0" Y1="0" X2="1" Y2="0" Stretch="Fill" Stroke="{DynamicResource Gray_300}" StrokeThickness="1" VerticalAlignment="Center" Opacity="0.995" Margin="8,0"/>
-                            <Rectangle Grid.Column="2" Fill="{Binding ReactorOpenStateColor}" Width="10" Height="10" RadiusX="99" RadiusY="97" Margin="0"/>
+                            <Rectangle Grid.Column="2" Fill="{Binding ReactorOpenStateColor}" Width="10" Height="10" RadiusX="99" RadiusY="97" Margin="0" ToolTipService.InitialShowDelay="0">
+                                <Rectangle.ToolTip>
+                                    <ToolTip Background="{StaticResource Gray_100}">
+                                        <ListView ItemsSource="{Binding ReactorEnableConditions, Mode=OneTime}" Background="{Binding Background, RelativeSource={RelativeSource Mode=TemplatedParent}}" BorderThickness="0">
+                                            <ListView.ItemTemplate>
+                                                <DataTemplate>
+                                                    <Grid>
+                                                        <Grid.ColumnDefinitions>
+                                                            <ColumnDefinition />
+                                                            <ColumnDefinition Width="4" />
+                                                            <ColumnDefinition />
+                                                        </Grid.ColumnDefinitions>
+                                                        <Rectangle Grid.Column="0" Fill="{Binding StateColor}" Width="10" Height="10" RadiusX="99" RadiusY="96" Margin="0" />
+                                                        <TextBlock Grid.Column="2" Text="{Binding Condition}" Foreground="{StaticResource Gray_900}" />
+                                                    </Grid>
+                                                </DataTemplate>
+                                            </ListView.ItemTemplate>
+                                        </ListView>
+                                    </ToolTip>
+                                </Rectangle.ToolTip>
+                            </Rectangle>
                         </Grid>
 
                         <!-- Heater can be Turn On -->

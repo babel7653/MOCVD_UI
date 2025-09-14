@@ -80,19 +80,19 @@ END_VAR
 bMaintKey := GVL_IO.aDigitalInputIO[1].0;
 bPowerResetSwitch := GVL_IO.aDigitalInputIO[1].1;
 bMainPowerMonitor := GVL_IO.aDigitalInputIO[7].5;
-bGasStateProcess := GVL_IO.aOutputSolValve[1].0 AND //HYD Carrier Change Valve
-	GVL_IO.aOutputSolValve[1].1 AND //Main Carrier Change Valve
-	GVL_IO.aOutputSolValve[1].2 AND //SiH4 Source Change Valve
-	GVL_IO.aOutputSolValve[1].3 //NH3 Source Change Valve
+bGasStateProcess := NOT(GVL_IO.aOutputSolValve[1].0) AND //HYD Carrier Change Valve
+	NOT(GVL_IO.aOutputSolValve[1].1) AND //Main Carrier Change Valve
+	NOT(GVL_IO.aOutputSolValve[1].2) AND //SiH4 Source Change Valve
+	NOT(GVL_IO.aOutputSolValve[1].3) //NH3 Source Change Valve
 	; //All False이면 Safety State
-bGasStateSource := GVL_IO.aOutputSolValve[1].4 AND GVL_IO.aOutputSolValve[1].5 AND GVL_IO.aOutputSolValve[1].6 AND //Source #1
-	GVL_IO.aOutputSolValve[1].7 AND GVL_IO.aOutputSolValve[1].8 AND GVL_IO.aOutputSolValve[1].9 AND //Source #2
-	GVL_IO.aOutputSolValve[1].10 AND GVL_IO.aOutputSolValve[1].11 AND GVL_IO.aOutputSolValve[1].12 AND //Source #3
-	GVL_IO.aOutputSolValve[1].13 AND GVL_IO.aOutputSolValve[1].14 AND GVL_IO.aOutputSolValve[1].15 AND //Source #4
-	GVL_IO.aOutputSolValve[2].0 AND GVL_IO.aOutputSolValve[2].1 AND GVL_IO.aOutputSolValve[2].2 AND //Source #5
-	GVL_IO.aOutputSolValve[2].3 AND GVL_IO.aOutputSolValve[2].4 AND GVL_IO.aOutputSolValve[2].6 //Source #6
+bGasStateSource := NOT(GVL_IO.aOutputSolValve[1].4) AND NOT(GVL_IO.aOutputSolValve[1].5) AND NOT(GVL_IO.aOutputSolValve[1].6) AND //Source #1
+	NOT(GVL_IO.aOutputSolValve[1].7) AND NOT(GVL_IO.aOutputSolValve[1].8) AND NOT(GVL_IO.aOutputSolValve[1].9) AND //Source #2
+	NOT(GVL_IO.aOutputSolValve[1].10) AND NOT(GVL_IO.aOutputSolValve[1].11) AND NOT(GVL_IO.aOutputSolValve[1].12) AND //Source #3
+	NOT(GVL_IO.aOutputSolValve[1].13) AND NOT(GVL_IO.aOutputSolValve[1].14) AND NOT(GVL_IO.aOutputSolValve[1].15) AND //Source #4
+	NOT(GVL_IO.aOutputSolValve[2].0) AND NOT(GVL_IO.aOutputSolValve[2].1) AND NOT(GVL_IO.aOutputSolValve[2].2) AND //Source #5
+	NOT(GVL_IO.aOutputSolValve[2].3) AND NOT(GVL_IO.aOutputSolValve[2].4) AND NOT(GVL_IO.aOutputSolValve[2].6) //Source #6
 	; //All False이면 Safety State
-bGasStateVent := GVL_IO.aOutputSolValve[2].15;
+bGasStateVent := NOT(GVL_IO.aOutputSolValve[2].15);
 GVL_IO.aInterlock[1].10 := bRecipeStartAvailable;
 GVL_IO.aInterlock[1].11 := bReactorOpenEnable;
 GVL_IO.aInterlock[1].12 := bHeaterOnEnable;
@@ -442,15 +442,24 @@ END_IF
 bDorOffEnable :=
 	NOT(AlarmTrig) AND
 	NOT(GVL_IO.bDORState) AND
-	NOT(RCP.userState = 10) AND //Not Recipe Run State
-	NOT(bGasStateProcess) AND //Safety Process Gas : TRUE
-	NOT(bGasStateSource) AND //Safety Source Gas : TRUE
+	RCP.userState <> 10 AND //Not Recipe Run State
+	bGasStateProcess AND //Safety Process Gas : TRUE
+	bGasStateSource AND //Safety Source Gas : TRUE
 	bGasStateVent AND //Vent Valve는 펌프 뒤쪽 Open
-	NOT(GVL_IO.aInterlockEnable[6].4) AND //Can Open Temperature Check
+	GVL_IO.aInterlockEnable[6].4 AND //Can Open Temperature Check
 	bOpenEnableTemp AND
-	NOT(GVL_IO.aInterlockEnable[6].5) AND //Can Open Pressure Check
+	GVL_IO.aInterlockEnable[6].5 AND //Can Open Pressure Check
 	bOpenEnablePress ;
-	;
+GVL_IO.nUIInterockCheckOpenReactor.0 := NOT(AlarmTrig);
+GVL_IO.nUIInterockCheckOpenReactor.1 := bOpenEnableTemp;
+GVL_IO.nUIInterockCheckOpenReactor.2 := bOpenEnablePress;
+GVL_IO.nUIInterockCheckOpenReactor.3 := NOT(GVL_IO.bDORState);
+GVL_IO.nUIInterockCheckOpenReactor.4 := RCP.userState <> 10;
+GVL_IO.nUIInterockCheckOpenReactor.5 := bGasStateProcess;
+GVL_IO.nUIInterockCheckOpenReactor.6 := bGasStateSource;
+GVL_IO.nUIInterockCheckOpenReactor.7 := bGasStateVent;
+GVL_IO.nUIInterockCheckOpenReactor.8 := GVL_IO.aInterlockEnable[6].4;
+GVL_IO.nUIInterockCheckOpenReactor.9 := GVL_IO.aInterlockEnable[6].5;
 bReactorOpenEnable := bDorOffEnable;
 
 (* Out to Device*)
@@ -618,6 +627,10 @@ GVL_IO.bDorOnEnable := bDorOnEnable;
       <LineId Id="1341" Count="2" />
       <LineId Id="1294" Count="0" />
       <LineId Id="1292" Count="0" />
+      <LineId Id="1424" Count="0" />
+      <LineId Id="1426" Count="0" />
+      <LineId Id="1428" Count="1" />
+      <LineId Id="1431" Count="4" />
       <LineId Id="1337" Count="0" />
       <LineId Id="276" Count="0" />
       <LineId Id="135" Count="0" />

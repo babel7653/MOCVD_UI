@@ -442,5 +442,55 @@ namespace SapphireXR_App.ViewModels
 
             private LeftViewModel leftViewModel;
         }
+
+        internal class RecipeEnableSubStateSubscriber : IObserver<BitArray>
+        {
+            internal RecipeEnableSubStateSubscriber(LeftViewModel vm)
+            {
+                viewModel = vm;
+            }
+
+            void IObserver<BitArray>.OnCompleted()
+            {
+                throw new NotImplementedException();
+            }
+
+            void IObserver<BitArray>.OnError(Exception error)
+            {
+                throw new NotImplementedException();
+            }
+
+            void IObserver<BitArray>.OnNext(BitArray recipeEnableSubstate)
+            {
+                viewModel.updateRecipeAvailbleSubstate(recipeEnableSubstate);
+            }
+
+            private LeftViewModel viewModel;
+        }
+
+        internal class ReactorEnableSubStateSubscriber : IObserver<BitArray>
+        {
+            internal ReactorEnableSubStateSubscriber(LeftViewModel vm)
+            {
+                viewModel = vm;
+            }
+
+            void IObserver<BitArray>.OnCompleted()
+            {
+                throw new NotImplementedException();
+            }
+
+            void IObserver<BitArray>.OnError(Exception error)
+            {
+                throw new NotImplementedException();
+            }
+
+            void IObserver<BitArray>.OnNext(BitArray recipeEnableSubstate)
+            {
+                viewModel.updateReactorAvailbleSubstate(recipeEnableSubstate);
+            }
+
+            private LeftViewModel viewModel;
+        }
     }
 }

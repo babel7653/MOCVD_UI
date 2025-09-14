@@ -84,9 +84,11 @@ namespace SapphireXR_App.Models
                 int iterlock1 = Ads.ReadAny<int>(hInterlock[0]);
                 dLogicalInterlockStateIssuer?.Publish(new BitArray(BitConverter.IsLittleEndian == true ? BitConverter.GetBytes(iterlock1) : BitConverter.GetBytes(iterlock1).Reverse().ToArray()));
 
-                temperatureTVPublisher?.Publish(Ads.ReadAny<short>(hTemperatureTV));
-                pressureTVPublisher?.Publish(Ads.ReadAny<short>(hPressureTV));
-                rotationTVPublisher?.Publish(Ads.ReadAny<short>(hRotationTV));
+                short recipeEnableSubconditions = Ads.ReadAny<short>(hUIInterockCheckRecipeEnable);
+                recipeEnableSubConditionPublisher?.Publish(new BitArray(BitConverter.IsLittleEndian == true ? BitConverter.GetBytes(recipeEnableSubconditions) : BitConverter.GetBytes(recipeEnableSubconditions).Reverse().ToArray()));
+
+                short reactorEnableSubconditions = Ads.ReadAny<short>(hUIInterockCheckOpenReactor);
+                reactorEnableSubConditionPublisher?.Publish(new BitArray(BitConverter.IsLittleEndian == true ? BitConverter.GetBytes(reactorEnableSubconditions) : BitConverter.GetBytes(reactorEnableSubconditions).Reverse().ToArray()));
 
                 foreach (Action task in AddOnPLCStateUpdateTask)
                 {

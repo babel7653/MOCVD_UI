@@ -224,49 +224,56 @@ namespace SapphireXR_App.ViewModels
                     }
                 };
 
-                float totalFlowRate = 0;
-                totalFlowRate += getTargetValue(recipe => recipe.M01, "M01");
-                totalFlowRate += getTargetValue(recipe => recipe.M02, "M02");
-                if(currentStep.V30 == true)
+                try
                 {
-                    totalFlowRate += getTargetValue(recipe => recipe.M03, "M03");
-                }
-                if (currentStep.V29 == true)
-                {
-                    totalFlowRate += getTargetValue(recipe => recipe.M04, "M04");
-                }
-                if (currentStep.V31 == true)
-                {
-                    totalFlowRate += getTargetValue(recipe => recipe.M07, "M07");
-                }
-                if (currentStep.V23 == true)
-                {
-                    totalFlowRate += getTargetValue(recipe => recipe.M08, "M08");
-                }
-                if (currentStep.V24 == true)
-                {
-                    totalFlowRate += getTargetValue(recipe => recipe.M09, "M09");
-                }
-                if (currentStep.V25 == true)
-                {
-                    totalFlowRate += getTargetValue(recipe => recipe.M10, "M10");
-                }
-                if (currentStep.V26 == true)
-                {
-                    totalFlowRate += getTargetValue(recipe => recipe.M11, "M11");
-                }
-                if (currentStep.V27 == true)
-                {
-                    totalFlowRate += getTargetValue(recipe => recipe.M14, "M14");
-                }
-                if (currentStep.V28 == true)
-                {
-                    totalFlowRate += getTargetValue(recipe => recipe.M15, "M15");
-                }
-                totalFlowRate += getTargetValue(recipe => recipe.M16, "M16");
-                totalFlowRate += getTargetValue(recipe => recipe.M17, "M17"); ;
+                    float totalFlowRate = 0;
+                    totalFlowRate += getTargetValue(recipe => recipe.M01, "M01");
+                    totalFlowRate += getTargetValue(recipe => recipe.M02, "M02");
+                    if (currentStep.V30 == true)
+                    {
+                        totalFlowRate += getTargetValue(recipe => recipe.M03, "M03");
+                    }
+                    if (currentStep.V29 == true)
+                    {
+                        totalFlowRate += getTargetValue(recipe => recipe.M04, "M04");
+                    }
+                    if (currentStep.V31 == true)
+                    {
+                        totalFlowRate += getTargetValue(recipe => recipe.M07, "M07");
+                    }
+                    if (currentStep.V23 == true)
+                    {
+                        totalFlowRate += getTargetValue(recipe => recipe.M08, "M08");
+                    }
+                    if (currentStep.V24 == true)
+                    {
+                        totalFlowRate += getTargetValue(recipe => recipe.M09, "M09");
+                    }
+                    if (currentStep.V25 == true)
+                    {
+                        totalFlowRate += getTargetValue(recipe => recipe.M10, "M10");
+                    }
+                    if (currentStep.V26 == true)
+                    {
+                        totalFlowRate += getTargetValue(recipe => recipe.M11, "M11");
+                    }
+                    if (currentStep.V27 == true)
+                    {
+                        totalFlowRate += getTargetValue(recipe => recipe.M14, "M14");
+                    }
+                    if (currentStep.V28 == true)
+                    {
+                        totalFlowRate += getTargetValue(recipe => recipe.M15, "M15");
+                    }
+                    totalFlowRate += getTargetValue(recipe => recipe.M16, "M16");
+                    totalFlowRate += getTargetValue(recipe => recipe.M17, "M17"); ;
 
-                TotalFlowRate = (int)totalFlowRate;
+                    TotalFlowRate = (int)totalFlowRate;
+                }
+                catch (Exception)
+                {
+                    TotalFlowRate = null;
+                }
             }
 
             public void setCurrentRecipe(Recipe? recipe)

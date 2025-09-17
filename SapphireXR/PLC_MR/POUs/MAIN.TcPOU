@@ -8,10 +8,6 @@ END_VAR
 VAR
 	controlMode	: E_ControlMode := controlModeCmd;
 	prevControlMode : E_ControlMode := controlMode;
-
-	bTest1 : BOOL;
-	bTest2 : BOOL;
-	bTest3 : BOOL;
 END_VAR
 ]]></Declaration>
     <Implementation>
@@ -54,14 +50,11 @@ CASE controlMode OF
 		END_IF
 END_CASE
 
+P60_UpdatePV();
 P70_Interface();
 P90_Interlock();
 P91_Monitoring();
 P92_Maintenance();
-
-bTest1 := GVL_IO.aInputState[1].12;
-bTest2 := GVL_IO.aInputState[1].13;
-bTest3 := GVL_IO.aInputState[1].14;
 (* Interlock Condtion *)
 // DOR Operation Condition
 ]]></ST>
@@ -72,7 +65,10 @@ bTest3 := GVL_IO.aInputState[1].14;
       <LineId Id="553" Count="5" />
       <LineId Id="560" Count="8" />
       <LineId Id="583" Count="0" />
-      <LineId Id="569" Count="12" />
+      <LineId Id="569" Count="1" />
+      <LineId Id="586" Count="0" />
+      <LineId Id="571" Count="4" />
+      <LineId Id="580" Count="1" />
       <LineId Id="220" Count="0" />
     </LineIds>
   </POU>

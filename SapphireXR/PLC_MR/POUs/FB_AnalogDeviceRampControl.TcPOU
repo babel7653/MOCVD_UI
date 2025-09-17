@@ -3,15 +3,13 @@
   <POU Name="FB_AnalogDeviceRampControl" Id="{901ef948-d319-4e50-9c34-c06b07342954}" SpecialFunc="None">
     <Declaration><![CDATA[FUNCTION_BLOCK FB_AnalogDeviceRampControl
 VAR
-	i : INT;
+	i : UINT;
 END_VAR
 ]]></Declaration>
     <Implementation>
-      <ST><![CDATA[FOR i:=1 TO 26 DO
+      <ST><![CDATA[FOR i:=1 TO GVL_IO.NumFlowController DO
 	IF GVL_IO.aMaxValueController[i] <> 0 THEN
 		GVL_IO.aAnalogOutputIO[i] := LREAL_TO_INT(GVL_IO.aController[i].rControlValue); //Write to Device
-		
-		GVL_IO.aController_PV[i] := GVL_IO.aAnalogInputIO[i] / (GVL_IO.KL3464MaxValueH * GVL_IO.aMaxValueController[i]);
 		GVL_IO.aController_CV[i] := LREAL_TO_REAL((GVL_IO.aController[i].rControlValue / GVL_IO.KL3464MaxValueH)*GVL_IO.aMaxValueController[i]);
 		GVL_IO.aController[i]();
 	END_IF
@@ -24,28 +22,26 @@ ELSE
 END_IF
 
 GVL_IO.wE3508_CV := LREAL_TO_WORD(GVL_IO.aController[27].rControlValue); //Write to Temperature Controller
-GVL_IO.aController_PV[27] := WORD_TO_REAL(GVL_IO.wE3508_PV);
 GVL_IO.aController_CV[27] := WORD_TO_REAL(GVL_IO.wE3508_CV);
 GVL_IO.aController[27]();
 				
 GVL_IO.wIqPlus_CV := LREAL_TO_WORD(GVL_IO.aController[28].rControlValue); //Write to Pressure Controller
-GVL_IO.aController_PV[28] := WORD_TO_REAL(GVL_IO.wIqPlus_CDG2_PV);
 GVL_IO.aController_CV[28] := WORD_TO_REAL(GVL_IO.wIqPlus_CV);
 GVL_IO.aController[28]();
 
 GVL_IO.rRotation_ControlValue := LREAL_TO_REAL(GVL_IO.aController[29].rControlValue); //Write to Rotation Controller (rpm)
-GVL_IO.aController_PV[29] := GVL_IO.nRotation_Converted_PV;
 GVL_IO.aController_CV[29] := GVL_IO.rRotation_ControlValue;
 GVL_IO.aController[29]();	]]></ST>
     </Implementation>
     <LineIds Name="FB_AnalogDeviceRampControl">
-      <LineId Id="1" Count="13" />
+      <LineId Id="1" Count="1" />
+      <LineId Id="5" Count="9" />
       <LineId Id="39" Count="0" />
       <LineId Id="15" Count="0" />
       <LineId Id="17" Count="0" />
-      <LineId Id="19" Count="4" />
-      <LineId Id="25" Count="4" />
-      <LineId Id="31" Count="2" />
+      <LineId Id="20" Count="3" />
+      <LineId Id="26" Count="3" />
+      <LineId Id="32" Count="1" />
     </LineIds>
   </POU>
 </TcPlcObject>

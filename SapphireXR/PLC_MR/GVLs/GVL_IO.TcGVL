@@ -63,6 +63,7 @@ VAR_GLOBAL CONSTANT
 	KL3152MaxValue	: REAL := 65535; //4~20mA
 	KL3204MaxValue 	: REAL := 32767; //4~20mA
 	NumAnalogController : UINT := 29;
+	NumFlowController : UINT := 26;
 END_VAR]]></Declaration>
   </GVL>
 </TcPlcObject>

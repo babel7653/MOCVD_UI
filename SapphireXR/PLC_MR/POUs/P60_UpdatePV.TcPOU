@@ -1,0 +1,24 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4026.11">
+  <POU Name="P60_UpdatePV" Id="{f8956921-3779-4dbc-8078-a6d7c5df8142}" SpecialFunc="None">
+    <Declaration><![CDATA[PROGRAM P60_UpdatePV
+VAR
+	i: UINT;
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[FOR i:=1 TO GVL_IO.NumFlowController DO
+	IF 0.0 < GVL_IO.aMaxValueController[i]  THEN		
+		GVL_IO.aController_PV[i] := GVL_IO.aAnalogInputIO[i] / (GVL_IO.KL3464MaxValueH * GVL_IO.aMaxValueController[i]);
+	END_IF
+END_FOR
+
+GVL_IO.aController_PV[27] := WORD_TO_REAL(GVL_IO.wE3508_PV);
+GVL_IO.aController_PV[28] := WORD_TO_REAL(GVL_IO.wIqPlus_CDG2_PV);
+GVL_IO.aController_PV[29] := GVL_IO.nRotation_Converted_PV;]]></ST>
+    </Implementation>
+    <LineIds Name="P60_UpdatePV">
+      <LineId Id="1" Count="8" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

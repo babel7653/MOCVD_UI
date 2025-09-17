@@ -162,6 +162,9 @@
     <Compile Include="POUs\P50_RecipeControl.TcPOU">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="POUs\P60_UpdatePV.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="POUs\P70_Interface.TcPOU">
       <SubType>Code</SubType>
     </Compile>

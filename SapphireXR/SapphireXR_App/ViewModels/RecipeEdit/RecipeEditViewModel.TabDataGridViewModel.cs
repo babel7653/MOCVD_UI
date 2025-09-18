@@ -80,7 +80,7 @@ namespace SapphireXR_App.ViewModels
 
             private Recipe insert(int index)
             {
-                Recipe added = new Recipe();
+                Recipe added = new Recipe() { RTime = 1, HTime = 1 };
                 RecipeViewModel.Recipes!.Insert(index, added);
                 recipeAddedPublishser.Publish(new List<Recipe>() { added });
                 added.Foreground = Brushes.LightPink;

@@ -113,6 +113,7 @@ namespace SapphireXR_App.ViewModels
                     {
                         RecipePLCLoadCommand.NotifyCanExecuteChanged();
                         Recipes.RefreshNo();
+                        
                     };
                     recipeStateUpdater?.clean();
                     recipeStateUpdater = null;

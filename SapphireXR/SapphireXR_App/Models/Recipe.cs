@@ -6,10 +6,12 @@ using System.Collections;
 using System.Runtime.InteropServices;
 using System.Windows;
 using System.Windows.Media;
+using System.ComponentModel;
+using System.Printing;
 
 namespace SapphireXR_App.Models
 {
-    public partial class Recipe : ObservableObject
+    public partial class Recipe : ObservableObject, IDataErrorInfo
     {
         public Recipe() 
         {
@@ -410,7 +412,275 @@ namespace SapphireXR_App.Models
         } = 0;
 
         [Ignore]
+        string IDataErrorInfo.Error => string.Empty;
+
+        string IDataErrorInfo.this[string columnName]
+        {
+            get
+            {
+                if(1 < No)
+                {
+                    return string.Empty;
+                }
+
+                string errorMessage = "첫번째 Step의 값은 빈값일 수 없습니다";
+                switch (columnName)
+                {
+                    case nameof(M01):
+                        if (M01 == null)
+                        {
+                            Valid = false;
+                            return errorMessage;
+                        }
+                        break;
+
+                    case nameof(M02):
+                        if (M02 == null)
+                        {
+                            Valid = false;
+                            return errorMessage;
+                        }
+                        break;
+
+                    case nameof(M03):
+                        if (M03 == null)
+                        {
+                            Valid = false;
+                            return errorMessage;
+                        }
+                        break;
+
+                    case nameof(M04):
+                        if (M04 == null)
+                        {
+                            Valid = false;
+                            return errorMessage;
+                        }
+                        break;
+
+                    case nameof(M05):
+                        if (M05 == null)
+                        {
+                            Valid = false;
+                            return errorMessage;
+                        }
+                        break;
+
+                    case nameof(M06):
+                        if (M06 == null)
+                        {
+                            Valid = false;
+                            return errorMessage;
+                        }
+                        break;
+
+                    case nameof(M07):
+                        if (M07 == null)
+                        {
+                            Valid = false;
+                            return errorMessage;
+                        }
+                        break;
+
+                    case nameof(M08):
+                        if (M08 == null)
+                        {
+                            Valid = false;
+                            return errorMessage;
+                        }
+                        break;
+
+                    case nameof(M09):
+                        if (M09 == null)
+                        {
+                            Valid = false;
+                            return errorMessage;
+                        }
+                        break;
+
+                    case nameof(M10):
+                        if (M10 == null)
+                        {
+                            Valid = false;
+                            return errorMessage;
+                        }
+                        break;
+
+                    case nameof(M11):
+                        if (M11 == null)
+                        {
+                            Valid = false;
+                            return errorMessage;
+                        }
+                        break;
+
+                    case nameof(M12):
+                        if (M12 == null)
+                        {
+                            Valid = false;
+                            return errorMessage;
+                        }
+                        break;
+
+                    case nameof(M13):
+                        if (M13 == null)
+                        {
+                            Valid = false;
+                            return errorMessage;
+                        }
+                        break;
+
+                    case nameof(M14):
+                        if (M14 == null)
+                        {
+                            Valid = false;
+                            return errorMessage;
+                        }
+                        break;
+
+                    case nameof(M15):
+                        if (M15 == null)
+                        {
+                            Valid = false;
+                            return errorMessage;
+                        }
+                        break;
+
+                    case nameof(M16):
+                        if (M16 == null)
+                        {
+                            Valid = false;
+                            return errorMessage;
+                        }
+                        break;
+
+                    case nameof(M17):
+                        if (M17 == null)
+                        {
+                            Valid = false;
+                            return errorMessage;
+                        }
+                        break;
+
+                    case nameof(M18):
+                        if (M18 == null)
+                        {
+                            Valid = false;
+                            return errorMessage;
+                        }
+                        break;
+
+                    case nameof(M19):
+                        if (M19 == null)
+                        {
+                            Valid = false;
+                            return errorMessage;
+                        }
+                        break;
+
+                    case nameof(E01):
+                        if (E01 == null)
+                        {
+                            Valid = false;
+                            return errorMessage;
+                        }
+                        break;
+
+                    case nameof(E02):
+                        if (E02 == null)
+                        {
+                            Valid = false;
+                            return errorMessage;
+                        }
+                        break;
+
+                    case nameof(E03):
+                        if (E03 == null)
+                        {
+                            Valid = false;
+                            return errorMessage;
+                        }
+                        break;
+
+                    case nameof(E04):
+                        if (E04 == null)
+                        {
+                            Valid = false;
+                            return errorMessage;
+                        }
+                        break;
+
+                    case nameof(E05):
+                        if (E05 == null)
+                        {
+                            Valid = false;
+                            return errorMessage;
+                        }
+                        break;
+
+                    case nameof(E06):
+                        if (E06 == null)
+                        {
+                            Valid = false;
+                            return errorMessage;
+                        }
+                        break;
+
+                    case nameof(E07):
+                        if (E07 == null)
+                        {
+                            Valid = false;
+                            return errorMessage;
+                        }
+                        break;
+
+                    case nameof(STemp):
+                        if (STemp == null)
+                        {
+                            Valid = false;
+                            return errorMessage;
+                        }
+                        break;
+
+                    case nameof(CTemp):
+                        if (CTemp == null)
+                        {
+                            Valid = false;
+                            return errorMessage;
+                        }
+                        break;
+
+                    case nameof(RPress):
+                        if (RPress == null)
+                        {
+                            Valid = false;
+                            return errorMessage;
+                        }
+                        break;
+
+                    case nameof(SRotation):
+                        if (SRotation == null)
+                        {
+                            Valid = false;
+                            return errorMessage;
+                        }
+                        break;
+                }
+                return string.Empty;
+            }
+        }
+
+        [Ignore]
         private static readonly ObservableManager<string>.Publisher maxValueExceedPublihser = ObservableManager<string>.Get("Recipe.MaxValueExceed");
+
+        private bool valid = true;
+        [Ignore]
+        public bool Valid
+        {
+            get { return valid; }
+            set { SetProperty(ref valid, value); }
+        }
+
     }
 
     [StructLayout(LayoutKind.Sequential, Pack = 0)]

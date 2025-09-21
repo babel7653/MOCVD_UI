@@ -67,7 +67,7 @@
             PV_PRES = PLCService.ReadCurrentValue("Pressure");
             PV_ROT = PLCService.ReadCurrentValue("Rotation");
 
-            Step = recipes[PLCService.ReadCurrentStep() - 1].Name;
+            Step = recipes[Math.Min(PLCService.ReadCurrentStep() - 1, recipes.Count - 1)].Name;
 
             LogTime = DateTime.Now;
         }

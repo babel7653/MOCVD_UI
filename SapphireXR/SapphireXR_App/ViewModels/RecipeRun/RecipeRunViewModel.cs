@@ -75,8 +75,20 @@ namespace SapphireXR_App.ViewModels
                     case nameof(CurrentRecipe):
                         if (CurrentRecipe != EmptyRecipeContext)
                         {
-                            SyncPLCState(RecipeCommand.Initiate);
-                            RecipeService.PLCLoad(CurrentRecipe.Recipes);
+                            try
+                            {
+                                RecipeService.PLCLoad(CurrentRecipe.Recipes);
+                                RecipeService.SetRecipeStepValidator(CurrentRecipe.Recipes, () =>
+                                {
+                                    RecipeRefreshCommand.NotifyCanExecuteChanged();
+                                    RecipeStartCommand.NotifyCanExecuteChanged();
+                                });
+                                SyncPLCState(RecipeCommand.Initiate);
+                            }
+                            catch (Exception ex)
+                            {
+                                MessageBox.Show("Recipe를 PLC로 로드하는데 실패했습니다. 원인은 다음과 같습니다: " + ex.Message);
+                            }
                         }
                         else
                         {
@@ -116,10 +128,16 @@ namespace SapphireXR_App.ViewModels
                 {
                     if(recipes!.Count <= 0)
                     {
-                        MessageBox.Show(recipeFilePath + "은 빈 파일입니다.");
+                        MessageBox.Show("Recipe를 여는데 실패했습니다. 원인은 다음과 같습니다: " + recipeFilePath + "은 빈 파일입니다.");
                         return;
                     }
-                    else if (AppSetting.MaxNumberOfRecipeSteps < recipes!.Count)
+                    (bool validationResult, string errorMessage) = RecipeValidator.ValidOnLoadedFromDisk(recipes!);
+                    if(validationResult == false)
+                    {
+                        MessageBox.Show("Recipe를 여는데 실패했습니다. 원인은 다음과 같습니다: " + errorMessage);
+                        return;
+                    }
+                    if (AppSetting.MaxNumberOfRecipeSteps < recipes!.Count)
                     {
                         if(ConfirmMessage.Show("", recipeFilePath + "의 Recipe 갯수가 허용가능한 최대갯수인 " + AppSetting.MaxNumberOfRecipeSteps + "을 초과하였습니다." +
                             "확인을 누르면 " + (AppSetting.MaxNumberOfRecipeSteps + 1) + "번 이상의 step들은 삭제된 채 로드됩니다.", WindowStartupLocation.CenterOwner) == DialogResult.Ok)
@@ -228,7 +246,21 @@ namespace SapphireXR_App.ViewModels
 
         private bool canStartStopCommadExecute()
         {
-            return PLCConnectionState.Instance.Online == true && CurrentRecipeUserState != RecipeUserState.Uninitialized && RecipeStartAvailableInterlock == true;
+            if (PLCConnectionState.Instance.Online == true && CurrentRecipeUserState != RecipeUserState.Uninitialized && RecipeStartAvailableInterlock == true)
+            {
+                if(0 < CurrentRecipe.Recipes.Count)
+                {
+                    return RecipeValidator.Valid(CurrentRecipe.Recipes);
+                }
+                else
+                {
+                    return false;
+                }
+            }
+            else
+            {
+                return false;
+            }
         }
 
         [RelayCommand(CanExecute = nameof(canStartStopCommadExecute))]
@@ -256,7 +288,21 @@ namespace SapphireXR_App.ViewModels
      
         bool canRefreshCommandExecute()
         {
-            return PLCConnectionState.Instance.Online == true && CurrentRecipeUserState == RecipeUserState.Pause;
+            if(PLCConnectionState.Instance.Online == true && CurrentRecipeUserState != RecipeUserState.Run)
+            {
+                if(0 < CurrentRecipe.Recipes.Count)
+                {
+                    return RecipeValidator.Valid(CurrentRecipe.Recipes);
+                }
+                else
+                {
+                    return false;
+                }
+            }
+            else
+            {
+                return false;
+            }
         }
         [RelayCommand(CanExecute = nameof(canRefreshCommandExecute))]
         void RecipeRefresh()

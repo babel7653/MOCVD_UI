@@ -16,9 +16,7 @@ namespace SapphireXR_App.ViewModels
 {
     public partial class RecipeEditViewModel : ViewModelBase
     {
-#pragma warning disable CS8618 // null을 허용하지 않는 필드는 생성자를 종료할 때 null이 아닌 값을 포함해야 합니다. 'required' 한정자를 추가하거나 nullable로 선언하는 것이 좋습니다.
         public RecipeEditViewModel()
-#pragma warning restore CS8618 // null을 허용하지 않는 필드는 생성자를 종료할 때 null이 아닌 값을 포함해야 합니다. 'required' 한정자를 추가하거나 nullable로 선언하는 것이 좋습니다.
         {
             //시작 페이지 설정
             NavigationSource = "Views/RecipeRunPage.xaml";
@@ -37,7 +35,17 @@ namespace SapphireXR_App.ViewModels
                 loadToRecipeRunPublisher.Publish((RecipeFilePath ?? "", new RecipeObservableCollection(Recipes.Select(recipe => new Recipe(recipe)))));
                 switchTabToDataRunPublisher.Publish(1);
             },
-            () => Recipes != null && 0 < Recipes.Count);
+            () =>
+            {
+                if (0 < Recipes.Count)
+                {
+                    return RecipeValidator.Valid(Recipes);
+                }
+                else
+                {
+                    return false;
+                }
+            });
             var recipeSave = (string filePath) =>
             {
                 if (Recipes != null)
@@ -102,8 +110,15 @@ namespace SapphireXR_App.ViewModels
             switch (e.PropertyName)
             {
                 case nameof(Recipes):
+                    var refreshOnRecipeChangedAndRecpiceCollectionChanaged = () =>
+                    {
+                        Recipes.RefreshNo();
+                        RecipeService.SetRecipeStepValidator(Recipes, () => RecipePLCLoadCommand.NotifyCanExecuteChanged());
+                        RecipePLCLoadCommand.NotifyCanExecuteChanged();
+                    };
+
+                    refreshOnRecipeChangedAndRecpiceCollectionChanaged();
                     RecipeOpenCommand.NotifyCanExecuteChanged();
-                    RecipePLCLoadCommand.NotifyCanExecuteChanged();
                     RecipeSaveAsCommand.NotifyCanExecuteChanged();
                     cleanupNewlyAdded();
                     ReactorDataGridContext.reset();
@@ -111,9 +126,7 @@ namespace SapphireXR_App.ViewModels
                     ValveDataGridContext.reset();
                     Recipes.CollectionChanged += (object? sender, NotifyCollectionChangedEventArgs args) =>
                     {
-                        RecipePLCLoadCommand.NotifyCanExecuteChanged();
-                        Recipes.RefreshNo();
-                        
+                        refreshOnRecipeChangedAndRecpiceCollectionChanaged();
                     };
                     recipeStateUpdater?.clean();
                     recipeStateUpdater = null;
@@ -192,7 +205,7 @@ namespace SapphireXR_App.ViewModels
             HasHeaderRecord = true
         };
 
-        private RecipeObservableCollection _recipes;
+        private RecipeObservableCollection _recipes = new RecipeObservableCollection();
         public RecipeObservableCollection Recipes
         {
             get { return _recipes; }

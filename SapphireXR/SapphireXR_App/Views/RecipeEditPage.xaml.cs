@@ -1,5 +1,4 @@
 ﻿using SapphireXR_App.Common;
-using SapphireXR_App.Models;
 using SapphireXR_App.ViewModels;
 using System.Windows.Controls;
 

@@ -743,7 +743,7 @@
                         </TabControl.Resources>
                         <TabItem Header="Reactor Data">
                             <TabItem.Content>
-                                <DataGrid x:Name="reactorDataGrid" CanUserSortColumns="False" DataContext="{Binding ReactorDataGridContext}" ItemsSource="{Binding RecipeViewModel.Recipes}" CellEditEnding="flowDataGrid_CellEditEnding">
+                                <DataGrid x:Name="reactorDataGrid" CanUserSortColumns="False"  DataContext="{Binding ReactorDataGridContext}" ItemsSource="{Binding RecipeViewModel.Recipes}" CellEditEnding="flowDataGrid_CellEditEnding">
                                     <DataGrid.Resources>
                                         <Style TargetType="ScrollBar" BasedOn="{StaticResource DefaultScrollbar}" />
                                     </DataGrid.Resources>

@@ -101,7 +101,7 @@
                         <Frame Source="/Views/RecipeRunPage.xaml" NavigationUIVisibility="Hidden"/>
                     </TabItem>
 
-                    <TabItem IsEnabled="{Binding RecipeRunInactive}">
+                    <TabItem>
                         <TabItem.Header>
                             <StackPanel Orientation="Horizontal">
                                 <Rectangle Fill="#15182B" />

@@ -14,7 +14,7 @@ using System.Windows;
 
 namespace SapphireXR_App.ViewModels
 {
-    public partial class RecipeEditViewModel : ViewModelBase
+    public partial class RecipeEditViewModel : ViewModelBase, IObserver<RecipeRunViewModel.RecipeUserState>
     {
         public RecipeEditViewModel()
         {
@@ -29,6 +29,7 @@ namespace SapphireXR_App.ViewModels
 
             loadToRecipeRunPublisher = ObservableManager<(string, IList<Recipe>)>.Get("RecipeEdit.LoadToRecipeRun");
             switchTabToDataRunPublisher = ObservableManager<int>.Get("SwitchTab");
+            ObservableManager<RecipeRunViewModel.RecipeUserState>.Subscribe("RecipeRun.State", this);
 
             RecipePLCLoadCommand = new RelayCommand(() =>
             {
@@ -37,7 +38,7 @@ namespace SapphireXR_App.ViewModels
             },
             () =>
             {
-                if (0 < Recipes.Count)
+                if (!RecipeRunning && 0 < Recipes.Count)
                 {
                     return RecipeValidator.Valid(Recipes);
                 }
@@ -137,6 +138,10 @@ namespace SapphireXR_App.ViewModels
                 case nameof(RecipeFilePath):
                     RecipeSaveCommand.NotifyCanExecuteChanged();
                     break;
+
+                case nameof(RecipeRunning):
+                    RecipePLCLoadCommand.NotifyCanExecuteChanged();
+                    break;
             }
         }
 
@@ -199,6 +204,21 @@ namespace SapphireXR_App.ViewModels
 
         }
 
+        void IObserver<RecipeRunViewModel.RecipeUserState>.OnCompleted()
+        {
+            throw new NotImplementedException();
+        }
+
+        void IObserver<RecipeRunViewModel.RecipeUserState>.OnError(Exception error)
+        {
+            throw new NotImplementedException();
+        }
+
+        void IObserver<RecipeRunViewModel.RecipeUserState>.OnNext(RecipeRunViewModel.RecipeUserState value)
+        {
+            RecipeRunning = (RecipeRunViewModel.RecipeUserState.Run <= value) && (value <= RecipeRunViewModel.RecipeUserState.Pause);
+        }
+
         private static readonly CsvHelper.Configuration.CsvConfiguration Config = new CsvHelper.Configuration.CsvConfiguration(CultureInfo.InvariantCulture)
         {
             Delimiter = ",",
@@ -239,6 +259,8 @@ namespace SapphireXR_App.ViewModels
         private Visibility _showPasteMenu;
         [ObservableProperty]
         private bool _controlUIEnabled = false;
+        [ObservableProperty]
+        private bool recipeRunning = false;
 
         public TabDataGridViewModel ReactorDataGridContext { get; set; }
         public TabDataGridViewModel FlowDataGridContext { get; set; }

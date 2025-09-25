@@ -173,128 +173,130 @@ namespace SapphireXR_App.ViewModels
 
             private void refreshTotalFlowRate()
             {
-                if(currentStep == null)
+                if (currentStep != null)
                 {
-                    return;
-                }
-
-                var update = (Func<Recipe, float?> selector, string mfcName, float? totalFlowRate) =>
-                {
-                    float? currentValue = selector(currentStep);
-                    if (currentValue != null)
+                    var update = (Func<Recipe, float?> selector, string mfcName, float? totalFlowRate) =>
                     {
-                        return currentValue + totalFlowRate;
-                    }
-                    else
-                    {
-                        float? defaultValue = findDefaultValue(currentStep, selector);
-                        if (defaultValue != null)
+                        float? currentValue = selector(currentStep);
+                        if (currentValue != null)
                         {
-                            return defaultValue + totalFlowRate;
-
+                            return currentValue + totalFlowRate;
                         }
                         else
                         {
-                            return null;
+                            float? defaultValue = findDefaultValue(currentStep, selector);
+                            if (defaultValue != null)
+                            {
+                                return defaultValue + totalFlowRate;
+
+                            }
+                            else
+                            {
+                                return null;
+                            }
+                        }
+                    };
+
+                    float? totalFlowRate = 0;
+                    if ((totalFlowRate = update(recipe => recipe.M01, "M01", totalFlowRate)) == null)
+                    {
+                        TotalFlowRate = null;
+                        return;
+                    }
+                    if ((totalFlowRate = update(recipe => recipe.M02, "M02", totalFlowRate)) == null)
+                    {
+                        TotalFlowRate = null;
+                        return;
+                    }
+                    if (currentStep.V30 == true)
+                    {
+                        if ((totalFlowRate = update(recipe => recipe.M03, "M03", totalFlowRate)) == null)
+                        {
+                            TotalFlowRate = null;
+                            return;
                         }
                     }
-                };
+                    if (currentStep.V29 == true)
+                    {
+                        if ((totalFlowRate = update(recipe => recipe.M04, "M04", totalFlowRate)) == null)
+                        {
+                            TotalFlowRate = null;
+                            return;
+                        }
+                    }
+                    if (currentStep.V31 == true)
+                    {
+                        if ((totalFlowRate = update(recipe => recipe.M07, "M07", totalFlowRate)) == null)
+                        {
+                            TotalFlowRate = null;
+                            return;
+                        }
+                    }
+                    if (currentStep.V23 == true)
+                    {
+                        if ((totalFlowRate = update(recipe => recipe.M08, "M08", totalFlowRate)) == null)
+                        {
+                            TotalFlowRate = null;
+                            return;
+                        }
+                    }
+                    if (currentStep.V24 == true)
+                    {
+                        if ((totalFlowRate = update(recipe => recipe.M09, "M09", totalFlowRate)) == null)
+                        {
+                            TotalFlowRate = null;
+                            return;
+                        }
+                    }
+                    if (currentStep.V25 == true)
+                    {
+                        if ((totalFlowRate = update(recipe => recipe.M10, "M10", totalFlowRate)) == null)
+                        {
+                            TotalFlowRate = null;
+                            return;
+                        }
+                    }
+                    if (currentStep.V26 == true)
+                    {
+                        if ((totalFlowRate = update(recipe => recipe.M11, "M11", totalFlowRate)) == null)
+                        {
+                            TotalFlowRate = null;
+                            return;
+                        }
+                    }
+                    if (currentStep.V27 == true)
+                    {
+                        if ((totalFlowRate = update(recipe => recipe.M14, "M14", totalFlowRate)) == null)
+                        {
+                            TotalFlowRate = null;
+                            return;
+                        }
+                    }
+                    if (currentStep.V28 == true)
+                    {
+                        if ((totalFlowRate = update(recipe => recipe.M15, "M15", totalFlowRate)) == null)
+                        {
+                            TotalFlowRate = null;
+                            return;
+                        }
+                    }
+                    if ((totalFlowRate = update(recipe => recipe.M16, "M16", totalFlowRate)) == null)
+                    {
+                        TotalFlowRate = null;
+                        return;
+                    }
+                    if ((totalFlowRate = update(recipe => recipe.M17, "M17", totalFlowRate)) == null)
+                    {
+                        TotalFlowRate = null;
+                        return;
+                    }
 
-                float? totalFlowRate = 0;
-                if ((totalFlowRate = update(recipe => recipe.M01, "M01", totalFlowRate)) == null)
+                    TotalFlowRate = (int?)totalFlowRate;
+                }
+                else
                 {
                     TotalFlowRate = null;
-                    return;
                 }
-                if ((totalFlowRate = update(recipe => recipe.M02, "M02", totalFlowRate)) == null)
-                {
-                    TotalFlowRate = null;
-                    return;
-                }
-                if (currentStep.V30 == true)
-                {
-                    if ((totalFlowRate = update(recipe => recipe.M03, "M03", totalFlowRate)) == null)
-                    {
-                        TotalFlowRate = null;
-                        return;
-                    }
-                }
-                if (currentStep.V29 == true)
-                {
-                    if ((totalFlowRate = update(recipe => recipe.M04, "M04", totalFlowRate)) == null)
-                    {
-                        TotalFlowRate = null;
-                        return;
-                    }
-                }
-                if (currentStep.V31 == true)
-                {
-                    if ((totalFlowRate = update(recipe => recipe.M07, "M07", totalFlowRate)) == null)
-                    {
-                        TotalFlowRate = null;
-                        return;
-                    }
-                }
-                if (currentStep.V23 == true)
-                {
-                    if ((totalFlowRate = update(recipe => recipe.M08, "M08", totalFlowRate)) == null)
-                    {
-                        TotalFlowRate = null;
-                        return;
-                    }
-                }
-                if (currentStep.V24 == true)
-                {
-                    if ((totalFlowRate = update(recipe => recipe.M09, "M09", totalFlowRate)) == null)
-                    {
-                        TotalFlowRate = null;
-                        return;
-                    }
-                }
-                if (currentStep.V25 == true)
-                {
-                    if ((totalFlowRate = update(recipe => recipe.M10, "M10", totalFlowRate)) == null)
-                    {
-                        TotalFlowRate = null;
-                        return;
-                    }
-                }
-                if (currentStep.V26 == true)
-                {
-                    if ((totalFlowRate = update(recipe => recipe.M11, "M11", totalFlowRate)) == null)
-                    {
-                        TotalFlowRate = null;
-                        return;
-                    }
-                }
-                if (currentStep.V27 == true)
-                {
-                    if ((totalFlowRate = update(recipe => recipe.M14, "M14", totalFlowRate)) == null)
-                    {
-                        TotalFlowRate = null;
-                        return;
-                    }
-                }
-                if (currentStep.V28 == true)
-                {
-                    if ((totalFlowRate = update(recipe => recipe.M15, "M15", totalFlowRate)) == null)
-                    {
-                        TotalFlowRate = null;
-                        return;
-                    }
-                }
-                if ((totalFlowRate = update(recipe => recipe.M16, "M16", totalFlowRate)) == null)
-                {
-                    TotalFlowRate = null;
-                    return;
-                }
-                if ((totalFlowRate = update(recipe => recipe.M17, "M17", totalFlowRate)) == null)
-                {
-                    TotalFlowRate = null;
-                    return;
-                }
-
-                TotalFlowRate = (int?)totalFlowRate;
             }
 
             public void setCurrentRecipe(Recipe? recipe)

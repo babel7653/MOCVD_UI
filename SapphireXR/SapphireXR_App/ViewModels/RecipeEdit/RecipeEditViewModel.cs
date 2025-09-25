@@ -16,7 +16,9 @@ namespace SapphireXR_App.ViewModels
 {
     public partial class RecipeEditViewModel : ViewModelBase, IObserver<RecipeRunViewModel.RecipeUserState>
     {
+#pragma warning disable CS8618 // null을 허용하지 않는 필드는 생성자를 종료할 때 null이 아닌 값을 포함해야 합니다. 'required' 한정자를 추가하거나 nullable로 선언하는 것이 좋습니다.
         public RecipeEditViewModel()
+#pragma warning restore CS8618 // null을 허용하지 않는 필드는 생성자를 종료할 때 null이 아닌 값을 포함해야 합니다. 'required' 한정자를 추가하거나 nullable로 선언하는 것이 좋습니다.
         {
             //시작 페이지 설정
             NavigationSource = "Views/RecipeRunPage.xaml";
@@ -94,7 +96,6 @@ namespace SapphireXR_App.ViewModels
             WeakReferenceMessenger.Default.Register<NavigationMessage>(this, OnNavigationMessage);
 
             PropertyChanged += RecipeViewModel_PropertyChanged;
-            Recipes = new RecipeObservableCollection();
             PropertyChanging += (object? sender, PropertyChangingEventArgs args) =>
             {
                 switch(args.PropertyName)
@@ -104,6 +105,8 @@ namespace SapphireXR_App.ViewModels
                         break;
                 }
             };
+
+            Recipes = new RecipeObservableCollection();
         }
 
         private void RecipeViewModel_PropertyChanged(object? sender, PropertyChangedEventArgs e)
@@ -225,7 +228,7 @@ namespace SapphireXR_App.ViewModels
             HasHeaderRecord = true
         };
 
-        private RecipeObservableCollection _recipes = new RecipeObservableCollection();
+        private RecipeObservableCollection _recipes;
         public RecipeObservableCollection Recipes
         {
             get { return _recipes; }

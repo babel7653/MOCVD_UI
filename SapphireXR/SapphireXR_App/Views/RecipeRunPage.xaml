@@ -9,6 +9,7 @@
       xmlns:model="clr-namespace:SapphireXR_App.Models"
       xmlns:i="clr-namespace:Microsoft.Xaml.Behaviors;assembly=Microsoft.Xaml.Behaviors"
       xmlns:vc="clr-namespace:SapphireXR_App.ValueConverter"
+      xmlns:ub="clr-namespace:SapphireXR_App.Behavior"
       xmlns:oxy="http://oxyplot.org/wpf"
       mc:Ignorable="d"
       d:DesignHeight="1032" d:DesignWidth="1620"
@@ -804,6 +805,7 @@
                             <DataGrid CanUserSortColumns="False" ItemsSource="{Binding CurrentRecipe.Recipes}" CellEditEnding="DataGrid_CellEditEnding" CanUserAddRows="False">
                                 <DataGrid.Resources>
                                     <Style TargetType="ScrollBar" BasedOn="{StaticResource DefaultScrollbar}" />
+                                    <local:RecipeLoopReadOnlyBindingProxy x:Key="recipeLoopReadOnlyBindingProxy" DataContext="{Binding}" />
                                 </DataGrid.Resources>
                                 <b:Interaction.Triggers>
                                     <b:EventTrigger EventName="Loaded">
@@ -818,8 +820,8 @@
                                     <DataGridTextColumn Header="Name" MinWidth="200" Binding="{Binding Name, UpdateSourceTrigger=LostFocus}" ElementStyle="{StaticResource EventLogElement}" />
                                     <DataGridTextColumn Header="Ramp" MinWidth="100" Binding="{Binding RTime, UpdateSourceTrigger=LostFocus}" EditingElementStyle="{StaticResource gridColumnTextBoxOnlyNumber}" ElementStyle="{StaticResource EventLogElement}" />
                                     <DataGridTextColumn Header="Hold" MinWidth="100" Binding="{Binding HTime, UpdateSourceTrigger=LostFocus}" EditingElementStyle="{StaticResource gridColumnTextBoxOnlyNumber}" ElementStyle="{StaticResource EventLogElement}" />
-                                    <DataGridTextColumn Header="LoopRepeat" MinWidth="100" Binding="{Binding LoopRepeat, UpdateSourceTrigger=LostFocus, Converter={StaticResource nullableNumericValueConverter}}" EditingElementStyle="{StaticResource gridColumnTextBoxOnlyNumber}" ElementStyle="{StaticResource EventLogElement}" />
-                                    <DataGridTextColumn Header="LoopEndStep" MinWidth="100" Binding="{Binding LoopEndStep, UpdateSourceTrigger=LostFocus, Converter={StaticResource nullableNumericValueConverter}}" EditingElementStyle="{StaticResource gridColumnTextBoxOnlyNumber}" ElementStyle="{StaticResource EventLogElement}" />
+                                    <DataGridTextColumn Header="LoopRepeat" MinWidth="100" Binding="{Binding LoopRepeat, UpdateSourceTrigger=LostFocus, Converter={StaticResource nullableNumericValueConverter}}" EditingElementStyle="{StaticResource gridColumnTextBoxOnlyNumber}" ElementStyle="{StaticResource EventLogElement}" IsReadOnly="{Binding DataContext.RecipeLoopReadOnly, Source={StaticResource recipeLoopReadOnlyBindingProxy}}" />
+                                    <DataGridTextColumn Header="LoopEndStep" MinWidth="100" Binding="{Binding LoopEndStep, UpdateSourceTrigger=LostFocus, Converter={StaticResource nullableNumericValueConverter}}" EditingElementStyle="{StaticResource gridColumnTextBoxOnlyNumber}" ElementStyle="{StaticResource EventLogElement}" IsReadOnly="{Binding DataContext.RecipeLoopReadOnly, Source={StaticResource recipeLoopReadOnlyBindingProxy}}" />
                                     <DataGridTextColumn Header="Susceptor Temp." MinWidth="100" Binding="{Binding STemp, UpdateSourceTrigger=LostFocus, Converter={StaticResource nullableNumericValueConverter}, ValidatesOnDataErrors=True}" EditingElementStyle="{StaticResource gridColumnTextBoxMaxNumber}" ElementStyle="{StaticResource EventLogElement}" />
                                     <DataGridTextColumn Header="Reactor Press." MinWidth="100" Binding="{Binding RPress, UpdateSourceTrigger=LostFocus, Converter={StaticResource nullableNumericValueConverter}, ValidatesOnDataErrors=True}" EditingElementStyle="{StaticResource gridColumnTextBoxMaxNumber}" ElementStyle="{StaticResource EventLogElement}" />
                                     <DataGridTextColumn Header="Sus. Rotation" MinWidth="100" Binding="{Binding SRotation, UpdateSourceTrigger=LostFocus, Converter={StaticResource nullableNumericValueConverter}, ValidatesOnDataErrors=True}" EditingElementStyle="{StaticResource gridColumnTextBoxMaxNumber}" ElementStyle="{StaticResource EventLogElement}" />

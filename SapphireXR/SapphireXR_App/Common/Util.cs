@@ -335,8 +335,9 @@ namespace SapphireXR_App.Common
         public static readonly Dictionary<string, string> RecipeColumnHeaderToControllerID = new Dictionary<string, string>
         {
             { "M01", "MFC01" }, { "M02", "MFC02" }, { "M03", "MFC03" }, { "M04", "MFC04" }, { "M05", "MFC05" }, { "M06", "MFC06" }, { "M07", "MFC07" }, { "M08", "MFC08" },
-            { "M09", "MFC09" }, { "M10", "MFC10" }, { "M11", "MFC11" }, { "M12", "MFC12" }, { "E01", "EPC01" },  { "E02", "EPC02" }, { "E03", "EPC03" }, { "E04", "EPC04" },
-            { "Susceptor Temp.", "Temperature" }, { "Reactor Press.", "Pressure" }, { "Sus. Rotation", "Rotation" },
+            { "M09", "MFC09" }, { "M10", "MFC10" }, { "M11", "MFC11" }, { "M12", "MFC12" }, { "M13", "MFC13" }, { "M14", "MFC14" }, { "M15",  "MFC15" }, { "M16", "MFC16" }, 
+            { "M17", "MFC17" }, { "M18", "MFC18" }, {"M19", "MFC19"  }, { "E01", "EPC01" },  { "E02", "EPC02" }, { "E03", "EPC03" }, { "E04", "EPC04" }, { "E05", "EPC05" }, 
+            { "E06", "EPC06" }, { "E07", "EPC07" }, { "Susceptor Temp.", "Temperature" }, { "Reactor Press.", "Pressure" }, { "Sus. Rotation", "Rotation" },
         };
     }
 }

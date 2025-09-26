@@ -743,7 +743,7 @@
                         </TabControl.Resources>
                         <TabItem Header="Reactor Data">
                             <TabItem.Content>
-                                <DataGrid x:Name="reactorDataGrid" CanUserSortColumns="False" DataContext="{Binding ReactorDataGridContext}" ItemsSource="{Binding RecipeViewModel.Recipes}" CellEditEnding="flowDataGrid_CellEditEnding">
+                                <DataGrid x:Name="reactorDataGrid" CanUserSortColumns="False" DataContext="{Binding ReactorDataGridContext}" ItemsSource="{Binding RecipeViewModel.Recipes}" CellEditEnding="flowDataGrid_CellEditEnding" CanUserAddRows="False">
                                     <DataGrid.Resources>
                                         <Style TargetType="ScrollBar" BasedOn="{StaticResource DefaultScrollbar}" />
                                     </DataGrid.Resources>
@@ -777,7 +777,7 @@
 
                         <TabItem Header="FlowData">
                             <TabItem.Content>
-                                <DataGrid x:Name="flowDataGrid" DataContext="{Binding FlowDataGridContext}" CanUserSortColumns="False" ItemsSource="{Binding RecipeViewModel.Recipes}" CellEditEnding="flowDataGrid_CellEditEnding">
+                                <DataGrid x:Name="flowDataGrid" DataContext="{Binding FlowDataGridContext}" CanUserSortColumns="False" ItemsSource="{Binding RecipeViewModel.Recipes}" CellEditEnding="flowDataGrid_CellEditEnding" CanUserAddRows="False">
                                     <DataGrid.Resources>
                                         <Style TargetType="ScrollBar" BasedOn="{StaticResource DefaultScrollbar}" />
                                     </DataGrid.Resources>
@@ -827,7 +827,7 @@
                         </TabItem>
                         <TabItem Header="ValveData">
                             <TabItem.Content>
-                                <DataGrid  x:Name="valveDataGrid" DataContext="{Binding ValveDataGridContext}" CanUserSortColumns="False" ItemsSource="{Binding RecipeViewModel.Recipes}">
+                                <DataGrid  x:Name="valveDataGrid" DataContext="{Binding ValveDataGridContext}" CanUserSortColumns="False" ItemsSource="{Binding RecipeViewModel.Recipes}" CanUserAddRows="False">
                                     <DataGrid.Resources>
                                         <Style TargetType="ScrollBar" BasedOn="{StaticResource DefaultScrollbar}" />
                                     </DataGrid.Resources>

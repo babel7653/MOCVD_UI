@@ -34,47 +34,25 @@ namespace SapphireXR_App.ViewModels
                 RecipeFilePath = recipeFilePath;
                 Recipes = recipes;
 
-                loopContexts = new LoopContext[Recipes.Count];
-                int totalRecipeTime = 0;
-                for (int step = 0; step < Recipes.Count;)
-                {
-                    Recipe recipe = Recipes[step];
+                updateLoop();
 
-                    int loopTototalRecipeTime = 0;
-                    int loopLimit = Math.Max(recipe.No, recipe.LoopEndStep ?? 0);
-                    int loopCount = Math.Max(1, (int)(recipe.LoopRepeat ?? 0));
-                    LoopContext loopContext;
-                    if (1 < loopCount)
+                foreach(Recipe recipe in Recipes)
+                {
+                    recipe.PropertyChanged += (sender, args) =>
                     {
-                        loopContext = new LoopContext()
+                        switch(args.PropertyName)
                         {
-                            LoopStartStep = step + 1,
-                            LoopEndStep = loopLimit,
-                            CurrentLoopCount = 0,
-                            TotalLoop = loopCount,
-                        };
-                    }
-                    else
-                    {
-                        loopContext = EmptyLoopContext;
-                    }
-                    
-                    for (; step < loopLimit; ++step)
-                    {
-                        loopTototalRecipeTime += Recipes[step].RTime;
-                        loopTototalRecipeTime += Recipes[step].HTime;
-                     
-                        loopContexts[step] = loopContext;
-                    }
-                    if(loopContext != EmptyLoopContext)
-                    {
-                        Recipes[loopLimit - 1].JumpStride = (short)(loopLimit - recipe.No + 1);
-                        Recipes[loopLimit - 1].LoopCount = (short)loopCount;
-                    }
-                    totalRecipeTime += (loopTototalRecipeTime * loopCount);
+                            case nameof(Recipe.LoopRepeat):
+                            case nameof(Recipe.LoopEndStep):
+                                if (((recipe.LoopRepeat is not null) && (recipe.LoopEndStep is not null)) || ((recipe.LoopRepeat is null) && (recipe.LoopEndStep is null)))
+                                {
+                                    updateLoop();
+                                }
+                                modifiedRecipeIndice.Add(Recipes.IndexOf(recipe));
+                                break;
+                        }
+                    };
                 }
-                TotalRecipeTime = totalRecipeTime;
-                TotalStep = Recipes.Count;
 
                 PropertyChanging += (object? sender, PropertyChangingEventArgs args) =>
                 {
@@ -125,6 +103,57 @@ namespace SapphireXR_App.ViewModels
             ~RecipeContext()
             {
                 Dispose(disposing: false);
+            }
+
+            private void updateLoop()
+            {
+                foreach(Recipe recipe in Recipes)
+                {
+                    recipe.JumpStride = 0;
+                    recipe.LoopCount = 0;
+                }
+
+                loopContexts = new LoopContext[Recipes.Count];
+                int totalRecipeTime = 0;
+                for (int step = 0; step < Recipes.Count;)
+                {
+                    Recipe recipe = Recipes[step];
+
+                    int loopTototalRecipeTime = 0;
+                    int loopLimit = Math.Max(recipe.No, recipe.LoopEndStep ?? 0);
+                    int loopCount = Math.Max(1, (int)(recipe.LoopRepeat ?? 0));
+                    LoopContext loopContext;
+                    if (1 < loopCount)
+                    {
+                        loopContext = new LoopContext()
+                        {
+                            LoopStartStep = step + 1,
+                            LoopEndStep = loopLimit,
+                            CurrentLoopCount = 0,
+                            TotalLoop = loopCount,
+                        };
+                    }
+                    else
+                    {
+                        loopContext = EmptyLoopContext;
+                    }
+
+                    for (; step < loopLimit; ++step)
+                    {
+                        loopTototalRecipeTime += Recipes[step].RTime;
+                        loopTototalRecipeTime += Recipes[step].HTime;
+
+                        loopContexts[step] = loopContext;
+                    }
+                    if (loopContext != EmptyLoopContext)
+                    {
+                        Recipes[loopLimit - 1].JumpStride = (short)(loopLimit - recipe.No + 1);
+                        Recipes[loopLimit - 1].LoopCount = (short)loopCount;
+                    }
+                    totalRecipeTime += (loopTototalRecipeTime * loopCount);
+                }
+                TotalRecipeTime = totalRecipeTime;
+                TotalStep = Recipes.Count;
             }
 
             public Recipe? markCurrent(short index)
@@ -316,11 +345,17 @@ namespace SapphireXR_App.ViewModels
                 try
                 {
                     PlcRecipe[] plcRecipes = RecipeService.ToPLCRecipe(Recipes);
-                    plcRecipes = modifiedRecipeIndice.Where((int recipeIndex) => currentRecipeIndex < recipeIndex).Select((int recipeIndex) => plcRecipes[recipeIndex]).ToArray();
-                    if (0 < plcRecipes.Length)
+                    //plcRecipes = modifiedRecipeIndice.Where((int recipeIndex) => currentRecipeIndex < recipeIndex).Select((int recipeIndex) => plcRecipes[recipeIndex]).ToArray();
+                    var modifiables = modifiedRecipeIndice.Where((int recipeIndex) => currentRecipeIndex < recipeIndex);
+                    if (0 < modifiables.Count())
                     {
-                        PLCService.RefreshRecipe(plcRecipes);
-                        modifiedRecipeIndice.Clear();
+                        int min = modifiables.Min();
+                        plcRecipes = plcRecipes[min..plcRecipes.Length];
+                        if (0 < plcRecipes.Length)
+                        {
+                            PLCService.RefreshRecipe(plcRecipes);
+                            modifiedRecipeIndice.Clear();
+                        }
                     }
                 }
                 catch (Exception exception)

@@ -7,7 +7,6 @@ using System.Runtime.InteropServices;
 using System.Windows;
 using System.Windows.Media;
 using System.ComponentModel;
-using System.Printing;
 
 namespace SapphireXR_App.Models
 {

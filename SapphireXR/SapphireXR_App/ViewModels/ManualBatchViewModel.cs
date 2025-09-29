@@ -164,7 +164,7 @@ namespace SapphireXR_App.ViewModels
                             Batches = JsonConvert.DeserializeObject<ObservableCollection<Batch>>(userStatesToken.ToString()) ?? Batches;
                             
                             List<Batch?> batchesForEvent = new List<Batch?>();
-                            batchesForEvent.Add(null);
+                            batchesForEvent.Add(EmptyBatch);
                             foreach(Batch batch in Batches)
                             {
                                 batchesForEvent.Add(batch);
@@ -181,7 +181,7 @@ namespace SapphireXR_App.ViewModels
 
                                 return null;
                             };
-                            BatchOnRecipeEnd = getUserStateOnEvent("BatchOnRecipeEnd");
+                            BatchOnRecipeEnd = getUserStateOnEvent("BatchOnRecipeEnd") ?? EmptyBatch;
                             BatchOnAlarmState = getUserStateOnEvent("BatchOnAlarmState");
                         }
                     }
@@ -225,7 +225,7 @@ namespace SapphireXR_App.ViewModels
             {
                 using (StreamWriter streamWriter = new StreamWriter(BatchFIlePath!))
                 {
-                    streamWriter.Write(new JObject(new JProperty("UserStates", JsonConvert.SerializeObject(Batches)), new JProperty("BatchOnRecipeEnd", JsonConvert.SerializeObject(BatchOnRecipeEnd != null ? BatchOnRecipeEnd.Name : null)), 
+                    streamWriter.Write(new JObject(new JProperty("UserStates", JsonConvert.SerializeObject(Batches)), new JProperty("BatchOnRecipeEnd", JsonConvert.SerializeObject(BatchOnRecipeEnd != EmptyBatch ? BatchOnRecipeEnd.Name : null)), 
                         new JProperty("BatchOnAlarmState", JsonConvert.SerializeObject(BatchOnAlarmState != null ? BatchOnAlarmState.Name : null))).ToString());
                     streamWriter.Flush();
                 }
@@ -279,7 +279,7 @@ namespace SapphireXR_App.ViewModels
         {
             string message = string.Empty;
 
-            bool recipeEndInvalid = BatchOnRecipeEnd != null && BatchOnRecipeEnd.valid() == false;
+            bool recipeEndInvalid = BatchOnRecipeEnd != EmptyBatch && BatchOnRecipeEnd.valid() == false;
             message += (recipeEndInvalid == true) ? "Recipe 종료 시 Batch (" + BatchOnRecipeEnd!.Name + ")" : string.Empty;
 
             bool recipeAlarmInvalid = BatchOnAlarmState != null && BatchOnAlarmState.valid() == false;
@@ -309,7 +309,7 @@ namespace SapphireXR_App.ViewModels
 
         public void loadBatchOnRecipeEnd()
         {
-            if (BatchOnRecipeEnd != null)
+            if (BatchOnRecipeEnd != EmptyBatch)
             {
                 PLCService.WriteControlModeCmd(PLCService.ControlMode.Priority);
                 Util.LoadBatchToPLC(BatchOnRecipeEnd);
@@ -366,11 +366,13 @@ namespace SapphireXR_App.ViewModels
         private Batch? _batchOnAlarmState = null;
 
         [ObservableProperty]
-        private Batch? _batchOnRecipeEnd = null;
+        private Batch _batchOnRecipeEnd = EmptyBatch;
 
         [ObservableProperty]
         private Thickness rampingTimeErrorThickness = RampingTimeThicknessNoError;
 
         private AlarmTriggeredSubscriber alarmTriggeredSubscriber;
+
+        private static readonly Batch EmptyBatch = new Batch();
     }
 }

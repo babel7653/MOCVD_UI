@@ -188,18 +188,14 @@ namespace SapphireXR_App.ViewModels
 
         public void onRecipeSelected(Recipe? recipe)
         {
-            if(recipe != null)
+            ControlUIEnabled = recipe is not null;
+            if (recipe is not null)
             {
-                ControlUIEnabled = true;
-                if (recipeStateUpdater == null)
-                {
-                    recipeStateUpdater = new RecipeStateUpader();
-                }
+                recipeStateUpdater ??= new RecipeStateUpader();
                 recipeStateUpdater.setSelectedRecipeStep(recipe);
             }
             else
             {
-                ControlUIEnabled = false;
                 recipeStateUpdater?.clean();
                 recipeStateUpdater = null;
             }

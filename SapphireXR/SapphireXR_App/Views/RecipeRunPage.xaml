@@ -9,7 +9,6 @@
       xmlns:model="clr-namespace:SapphireXR_App.Models"
       xmlns:i="clr-namespace:Microsoft.Xaml.Behaviors;assembly=Microsoft.Xaml.Behaviors"
       xmlns:vc="clr-namespace:SapphireXR_App.ValueConverter"
-      xmlns:ub="clr-namespace:SapphireXR_App.Behavior"
       xmlns:oxy="http://oxyplot.org/wpf"
       mc:Ignorable="d"
       d:DesignHeight="1032" d:DesignWidth="1620"

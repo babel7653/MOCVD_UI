@@ -4,7 +4,6 @@ using SapphireXR_App.Common;
 using SapphireXR_App.Models;
 using System.Collections.Specialized;
 using System.ComponentModel;
-using System.Windows.Controls.Primitives;
 
 namespace SapphireXR_App.ViewModels
 {
@@ -31,6 +30,12 @@ namespace SapphireXR_App.ViewModels
 
             private void recipePropertyChanged(object? sender, PropertyChangedEventArgs args)
             {
+                Recipe? recipe = sender as Recipe;
+                if(recipe == null)
+                {
+                    return;
+                }
+
                 switch (args.PropertyName)
                 {
                     case nameof(Recipe.RTime):
@@ -84,6 +89,14 @@ namespace SapphireXR_App.ViewModels
                     case nameof(Recipe.V28):
                         refreshTotalFlowRate();
                         break;
+
+                    case nameof(Recipe.LoopEndStep):
+                    case nameof(Recipe.LoopRepeat):
+                        if (((recipe.LoopRepeat is not null) && (recipe.LoopEndStep is not null)) || ((recipe.LoopRepeat is null) && (recipe.LoopEndStep is null)))
+                        {
+                            TotalRecipeTime = RefreshTotalRecipeTime(recipes);
+                        }
+                        break;
                 }
             }
 
@@ -96,7 +109,7 @@ namespace SapphireXR_App.ViewModels
                     {
                         totalTime += (recipe.RTime + recipe.HTime);
                     }
-                    TotalRecipeTime = totalTime;
+                    TotalRecipeTime = RefreshTotalRecipeTime(recipes);
                     TotalStepNumber = recipes.Count;
                 }
                 else
@@ -104,6 +117,28 @@ namespace SapphireXR_App.ViewModels
                     TotalRecipeTime = null;
                     TotalStepNumber = null;
                 }
+            }
+
+            public static int RefreshTotalRecipeTime(IList<Recipe> recipes)
+            {
+                int totalRecipeTime = 0;
+                for (int step = 0; step < recipes.Count;)
+                {
+                    Recipe recipe = recipes[step];
+
+                    int loopTototalRecipeTime = 0;
+                    int loopLimit = Math.Max(recipe.No, recipe.LoopEndStep ?? 0);
+                    int loopCount = Math.Max(1, (int)(recipe.LoopRepeat ?? 0));
+                  
+
+                    for (; step < loopLimit; ++step)
+                    {
+                        loopTototalRecipeTime += recipes[step].RTime;
+                        loopTototalRecipeTime += recipes[step].HTime;
+                    }
+                    totalRecipeTime += (loopTototalRecipeTime * loopCount);
+                }
+                return totalRecipeTime;
             }
 
             private T? findDefaultValue<T>(Recipe current, Func<Recipe, T?> selector) where T : struct

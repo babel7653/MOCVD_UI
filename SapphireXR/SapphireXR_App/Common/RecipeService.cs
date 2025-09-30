@@ -1,7 +1,7 @@
-﻿using System.IO;
-using CsvHelper;
+﻿using CsvHelper;
 using Microsoft.Win32;
 using SapphireXR_App.Models;
+using System.IO;
 
 namespace SapphireXR_App.Common
 {

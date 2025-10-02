@@ -248,6 +248,37 @@ namespace SapphireXR_App.ViewModels
         public class SourceStatusFromCurrentRecipeStepViewModel: SourceStatusViewModel
         {
             public SourceStatusFromCurrentRecipeStepViewModel(LeftViewModel vm) :base(vm, "CurrentRecipeStep") {  }
+
+            public void reset()
+            {
+                NH3_1Carrier = string.Empty;
+                NH3_1Source = string.Empty;
+                NH3_1Vent = string.Empty;
+                NH3_2Carrier = string.Empty;
+                NH3_2Source = string.Empty;
+                NH3_2Vent = string.Empty;
+                SiH4Carrier = string.Empty;
+                SiH4Source = string.Empty;
+                SiH4Vent = string.Empty;
+                TEBCarrier = string.Empty;
+                TEBSource = string.Empty;
+                TEBVent = string.Empty;
+                TMAlCarrier = string.Empty;
+                TMAlSource = string.Empty;
+                TMAlVent = string.Empty;
+                TMInCarrier = string.Empty;
+                TMInSource = string.Empty;
+                TMInVent = string.Empty;
+                TMGaCarrier = string.Empty;
+                TMGaSource = string.Empty;
+                TMGaVent = string.Empty;
+                DTMGaCarrier = string.Empty;
+                DTMGaSource = string.Empty;
+                DTMGaVent = string.Empty;
+                Cp2MgCarrier = string.Empty;
+                Cp2MgSource = string.Empty;
+                Cp2MgVent = string.Empty;
+            }
         }
 
         public partial class SubConditionViewModel : ObservableObject
@@ -278,7 +309,7 @@ namespace SapphireXR_App.ViewModels
             ObservableManager<BitArray>.Subscribe("RecipeEnableSubCondition", recipeEnableSubStateSubscriber = new RecipeEnableSubStateSubscriber(this));
             ObservableManager<BitArray>.Subscribe("ReactorEnableSubCondition", reactorEnableSubStateSubscriber = new ReactorEnableSubStateSubscriber(this));
 
-            CurrentSourceStatusViewModel = new SourceStatusFromCurrentPLCStateViewModel(this);
+            CurrentSourceStatusViewModel = SourceStatusFromCurrentPLCStateViewModelProp;
             RecipeEnableConditions = [ new SubConditionViewModel("Not Alarm Triggered", OffLampColor), new SubConditionViewModel("Not Warning Triggered", OffLampColor),new SubConditionViewModel("Not Main Key", OffLampColor),
                 new SubConditionViewModel("DOR On", OffLampColor), new SubConditionViewModel("Chamber Close", OffLampColor), new SubConditionViewModel("Gas Valve Close", OffLampColor),
                 new SubConditionViewModel("Source Valve Close", OffLampColor), new SubConditionViewModel("Vent Valve Close", OffLampColor), new SubConditionViewModel("Valve 21 Open", OffLampColor),
@@ -288,15 +319,6 @@ namespace SapphireXR_App.ViewModels
                 new SubConditionViewModel("Source Valve Close", OffLampColor), new SubConditionViewModel("Vent Valve Close", OffLampColor), new SubConditionViewModel("Can Open Temperature(℃)", OffLampColor),
                 new SubConditionViewModel("Can Open Reactor Pressure(Torr)", OffLampColor) ];
 
-            PropertyChanging += (object? sender, PropertyChangingEventArgs args) =>
-            {
-                switch (args.PropertyName)
-                {
-                    case nameof(CurrentSourceStatusViewModel):
-                        CurrentSourceStatusViewModel.dispose();
-                        break;
-                }
-            };
             PropertyChanged += (object? sender, PropertyChangedEventArgs args) =>
             {
                 switch (args.PropertyName)
@@ -417,6 +439,12 @@ namespace SapphireXR_App.ViewModels
         {
             BuzzerOnOffRectOpacity = 0.0;
         }
+
+        public SourceStatusFromCurrentPLCStateViewModel SourceStatusFromCurrentPLCStateViewModelProp { get { return (sourceStatusFromCurrentPLCStateViewModel ??= new SourceStatusFromCurrentPLCStateViewModel(this)); } }
+        public SourceStatusFromCurrentRecipeStepViewModel SourceStatusFromCurrentRecipeStepViewModelProp { get { return (sourceStatusFromCurrentRecipeStepViewModel ??= new SourceStatusFromCurrentRecipeStepViewModel(this)); } }
+
+        private SourceStatusFromCurrentPLCStateViewModel? sourceStatusFromCurrentPLCStateViewModel = null;
+        private SourceStatusFromCurrentRecipeStepViewModel? sourceStatusFromCurrentRecipeStepViewModel = null;
 
         [ObservableProperty]
         private static string _gas3_1 = GetGas3Label(Util.GetGasDeviceName("Gas3"), 1);

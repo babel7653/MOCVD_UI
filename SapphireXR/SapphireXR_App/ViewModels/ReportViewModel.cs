@@ -19,6 +19,25 @@ using OxyPlot.Wpf;
 
 namespace SapphireXR_App.ViewModels
 {
+    internal static class ElementCollectionExt
+    {
+        public static void RemoveAll<T>(this ElementCollection<T> elementCollection, Predicate<T> predicate) where T : Element
+        {
+            IList<T> toRemove = new List<T>();
+            foreach (T annotation in elementCollection)
+            {
+                if (predicate(annotation) == true)
+                {
+                    toRemove.Add(annotation);
+                }
+            }
+            foreach (T annotation in toRemove)
+            {
+                elementCollection.Remove(annotation);
+            }
+        }
+    }
+
     public partial class ReportViewModel : ObservableObject, IObserver<(ReportSeriesSelectionViewModel.SelectionToShowChanged, IList<string>)>
     {
         public enum LogNumber { One = 0, Two };
@@ -348,34 +367,76 @@ namespace SapphireXR_App.ViewModels
 
         private void zoomToFit(Mode mode, PlotModelByType plotModelByType)
         {
-            if (mode == Mode.DataValue)
+            try
             {
-                if (0 < plotModelByType.plotModel.Series.Count)
+                if (mode == Mode.DataValue)
                 {
-                    plotModelByType.plotModel.Axes[0].Zoom(-10.0 + (double)plotModelByType.plotModel.Series.Min(series => 0 < ((LineSeries)series).Points.Count ? ((LineSeries)series).Points.Min(dataPoint => dataPoint.Y) : 0), 
-                    (double)plotModelByType.plotModel.Series.Max(series =>
+                    if (0 < plotModelByType.plotModel.Series.Count)
                     {
-                        float? maxValue = LogReportSeries.GetMaxValue((string)series.Tag);
-                        return maxValue != null ? maxValue.Value : 0;
-                    }) + 10.0);
+                        plotModelByType.plotModel.Axes[0].Zoom(-10.0 + (double)plotModelByType.plotModel.Series.Min(series => 0 < ((LineSeries)series).Points.Count ? ((LineSeries)series).Points.Min(dataPoint => dataPoint.Y) : 0),
+                        (double)plotModelByType.plotModel.Series.Max(series =>
+                        {
+                            float? maxValue = LogReportSeries.GetMaxValue((string)series.Tag);
+                            return maxValue != null ? maxValue.Value : 0;
+                        }) + 10.0);
+                    }
+                    else
+                    {
+                        plotModelByType.plotModel.Axes[0].Zoom(-10.0, 100.0);
+                    }
                 }
                 else
                 {
-                    plotModelByType.plotModel.Axes[0].Zoom(-10.0, 100.0);
+                    plotModelByType.plotModel.Axes[0].Zoom(-0.1, 100.1);
+                }
+                if (0 < plotModelByType.plotModel.Series.Count)
+                {
+                    plotModelByType.plotModel.Axes[1].Zoom(0.0, plotModelByType.plotModel.Series.Max(series => ((LineSeries)series).Points.Max(dataPoint => dataPoint.X)));
+                }
+                else
+                {
+                    plotModelByType.plotModel.Axes[1].Zoom(0.0, 60.0);
                 }
             }
-            else
+            catch (Exception) { }
+        }
+
+        private void clearLog(LogNumber logNumber)
+        {
+            string prefix = titlePrefixes[(int)logNumber];
+            void doClearLog(PlotModelByType plotModelByType, Mode mode)
             {
-                plotModelByType.plotModel.Axes[0].Zoom(-0.1, 100.1);
+                foreach (string name in LogReportSeries.LogSeriesColor.Keys)
+                {
+                    string seriesTitle = prefix + name;
+                    if (plotModelByType.logSeries.TryGetValue(seriesTitle, out LineSeries? seriesForDevice) == true)
+                    {
+                        seriesForDevice.Points.Clear();
+
+                        Predicate<Annotation> predicate = annotation => (string)annotation.Tag == prefix;
+                        plotModelByType.plotModel.Annotations.RemoveAll(predicate);
+                        plotModelByType.annotations.RemoveAll(predicate);
+                    }
+                }
+                plotModelByType.plotModel.InvalidatePlot(true);
             }
-            if (0 < plotModelByType.plotModel.Series.Count)
-            {
-                plotModelByType.plotModel.Axes[1].Zoom(0.0, plotModelByType.plotModel.Series.Max(series => ((LineSeries)series).Points.Max(dataPoint => dataPoint.X)));
-            }
-            else
-            {
-                plotModelByType.plotModel.Axes[1].Zoom(0.0, 60.0);
-            }
+
+            doClearLog(dataValuePlotModel, Mode.DataValue);
+            doClearLog(percentagePlotModel, Mode.Percentage);
+        }
+
+        [RelayCommand]
+        private void ClearLog1()
+        {
+            clearLog(LogNumber.One);
+            Log1FilePath = string.Empty;
+        }
+
+        [RelayCommand]
+        private void ClearLog2()
+        {
+            clearLog(LogNumber.Two);
+            Log2FilePath = string.Empty;
         }
 
         [RelayCommand]

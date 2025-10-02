@@ -44,6 +44,11 @@
                     </TextBox>
                     <Button x:Name="PlotLog1FileClose" Content="Open" Command="{Binding OpenLog1FileCommand}" Style="{StaticResource PrimaryButton}" Width="66">
                         <Button.Margin>
+                            <Thickness Right="{StaticResource p_2}" />
+                        </Button.Margin>
+                    </Button>
+                    <Button x:Name="PlotLog1Clear" Content="Clear" Command="{Binding ClearLog1Command}" Style="{StaticResource DefaultButton}" Width="66">
+                        <Button.Margin>
                             <Thickness Right="{StaticResource p_4}" />
                         </Button.Margin>
                     </Button>
@@ -53,8 +58,13 @@
                             <Thickness Right="{StaticResource p_2}" />
                         </TextBox.Margin>
                     </TextBox>
-                    <Button x:Name="PlotLog2FileClose" Content="Open" Command="{Binding OpenLog2FileCommand}" Style="{StaticResource PrimaryButton}" Width="66"/>
-            </StackPanel>
+                    <Button x:Name="PlotLog2FileClose" Content="Open" Command="{Binding OpenLog2FileCommand}" Style="{StaticResource PrimaryButton}" Width="66">
+                        <Button.Margin>
+                            <Thickness Right="{StaticResource p_2}" />
+                        </Button.Margin>
+                    </Button>
+                    <Button x:Name="PlotLog2Clear" Content="Clear" Command="{Binding ClearLog2Command}" Style="{StaticResource DefaultButton}" Width="66" />
+                </StackPanel>
             <StackPanel Grid.Row="0" Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Right">
                     <StackPanel.Resources>
                         <local:ChartModeToStringConverter x:Key="chartModeToString" />

@@ -6,29 +6,38 @@
         xmlns:local="clr-namespace:SapphireXR_App.Views"
         xmlns:i="clr-namespace:Microsoft.Xaml.Behaviors;assembly=Microsoft.Xaml.Behaviors"
         mc:Ignorable="d"
-        Title="MO Setting" Height="450" Width="800" WindowStyle="None" AllowsTransparency="True" Background="Transparent" WindowStartupLocation="CenterScreen">
+        Title="MO Setting" Height="Auto" Width="520" WindowStyle="None" AllowsTransparency="True" Background="Transparent" WindowStartupLocation="CenterScreen">
     <Grid>
         <Rectangle Grid.Row="0" RadiusX="{StaticResource r_3}" RadiusY="{StaticResource r_3}" Fill="{StaticResource Gray_100}" />
-        <Grid Grid.Row="0">
-            <Grid.Margin>
-                <Thickness Top="{StaticResource p_1}" Left="{StaticResource p_5}" Right="{StaticResource p_5}" Bottom="{StaticResource p_5}" />
-            </Grid.Margin>
-            <Grid.RowDefinitions>
-                <RowDefinition Height="24" />
-                <RowDefinition Height="8" />
-                <RowDefinition Height="*"/>
-            </Grid.RowDefinitions>
-            <Grid Grid.Row="0">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*" />
-                    <ColumnDefinition Width="24" />
-                </Grid.ColumnDefinitions>
-                <Button Grid.Column="1" Width="24" Height="24" Style="{StaticResource CloseMenuButton}">
-                    <Image Source="/Resources/icons/icon=close.png"  />
-                </Button>
-            </Grid>
-            <Grid Grid.Row="2">
-            </Grid>
-        </Grid>
+        <StackPanel Orientation="Vertical" VerticalAlignment="Center" Margin="{StaticResource p_5_sqrt}">
+            <StackPanel.Resources>
+                <Style x:Key="infoTextBorder" TargetType="Border">
+                    <Setter Property="Background" Value="{StaticResource Gray_50}" />
+                    <Setter Property="BorderBrush" Value="{StaticResource Gray_300}" />
+                    <Setter Property="BorderThickness" Value="1.2" />
+                </Style>
+            </StackPanel.Resources>
+            <TextBlock Text="MO Source Setting" FontSize="14" FontWeight="Bold" Foreground="{StaticResource Gray_900}">
+                <TextBlock.Margin>
+                    <Thickness Bottom="{StaticResource p_5}" />
+                </TextBlock.Margin>
+            </TextBlock>
+            <Border Style="{StaticResource infoTextBorder}"  Padding="{StaticResource p_2_sqrt}">
+                <Border.Margin>
+                    <Thickness Bottom="{StaticResource p_5}" />
+                </Border.Margin>
+                <ContentControl Content="{StaticResource mo_source1}" Height="95" >
+                    <ContentControl.RenderTransform>
+                        <ScaleTransform ScaleX="0.55" ScaleY="0.55" />
+                    </ContentControl.RenderTransform>
+                </ContentControl>
+            </Border>
+            <StackPanel Orientation="Vertical">
+                <StackPanel.Margin>
+                    <Thickness Bottom="{StaticResource p_5}" />
+                </StackPanel.Margin>
+            </StackPanel>
+            
+        </StackPanel>
     </Grid>
 </Window>

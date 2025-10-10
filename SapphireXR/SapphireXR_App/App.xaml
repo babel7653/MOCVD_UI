@@ -11,6 +11,10 @@
                 <ResourceDictionary Source="pack://application:,,,/ToastNotifications.Messages;component/Themes/Default.xaml" />
                 <ResourceDictionary Source="/Resources/icons/icon=buzzer_off.xaml" />
                 <ResourceDictionary Source="/Resources/icons/icon=buzzer_on.xaml" />
+                <ResourceDictionary Source="/Resources/MO_Formula/MO_Source1.xaml" />
+                <ResourceDictionary Source="/Resources/MO_Formula/MO_Source2.xaml" />
+                <ResourceDictionary Source="/Resources/MO_Formula/MO_Source3.xaml" />
+                <ResourceDictionary Source="/Resources/MO_Formula/MO_Source4.xaml" />
             </ResourceDictionary.MergedDictionaries>
             <SolidColorBrush x:Key="DefaultRecipeListBackground" Color="{Binding Color, Source={StaticResource Gray_50}}" />
             <SolidColorBrush x:Key="DefaultRecipeListForeground" Color="{Binding Color, Source={StaticResource Gray_900}}" />

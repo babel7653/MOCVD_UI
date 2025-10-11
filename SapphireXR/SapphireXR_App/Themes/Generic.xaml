@@ -1,6 +1,7 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                    xmlns:System="clr-namespace:System;assembly=mscorlib">
+                    xmlns:System="clr-namespace:System;assembly=mscorlib"
+                    xmlns:SystemWindows="clr-namespace:System.Windows;assembly=PresentationFramework">
     <System:Double x:Key="p_1">4</System:Double>
     <System:Double x:Key="p_1_5">6</System:Double>
     <System:Double x:Key="p_2">8</System:Double>
@@ -34,6 +35,20 @@
     <System:Double x:Key="r_3">12</System:Double>
     <System:Double x:Key="r_4">16</System:Double>
     <System:Double x:Key="r_5">20</System:Double>
+
+    <SystemWindows:GridLength x:Key="p_1_gl">4</SystemWindows:GridLength>
+    <SystemWindows:GridLength x:Key="p_1_5_gl">6</SystemWindows:GridLength>
+    <SystemWindows:GridLength x:Key="p_2_gl">8</SystemWindows:GridLength>
+    <SystemWindows:GridLength x:Key="p_2_5_gl">10</SystemWindows:GridLength>
+    <SystemWindows:GridLength x:Key="p_3_gl">12</SystemWindows:GridLength>
+    <SystemWindows:GridLength x:Key="p_4_gl">16</SystemWindows:GridLength>
+    <SystemWindows:GridLength x:Key="p_5_gl">20</SystemWindows:GridLength>
+    <SystemWindows:GridLength x:Key="p_6_gl">24</SystemWindows:GridLength>
+    <SystemWindows:GridLength x:Key="p_7_gl">28</SystemWindows:GridLength>
+    <SystemWindows:GridLength x:Key="p_8_gl">32</SystemWindows:GridLength>
+    <SystemWindows:GridLength x:Key="p_9_gl">36</SystemWindows:GridLength>
+    <SystemWindows:GridLength x:Key="p_10_gl">40</SystemWindows:GridLength>
+    <SystemWindows:GridLength x:Key="p_12_gl">48</SystemWindows:GridLength>
 
     <CornerRadius x:Key="r_3_sqrt">12</CornerRadius>
 

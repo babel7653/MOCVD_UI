@@ -33,10 +33,19 @@
                 <Ellipse Width="10" Height="10" Fill="Lime" HorizontalAlignment="Right"  Margin="5,0,0,0"/>
             </StackPanel>
         </Border>
-        <i:Interaction.Triggers>
-            <i:EventTrigger EventName="MouseLeftButtonDown">
-                <i:InvokeCommandAction Command="{Binding MouseLeftButtonDownCommand}" />
-            </i:EventTrigger>
-        </i:Interaction.Triggers> 
     </Grid>
+    <i:Interaction.Triggers>
+        <i:EventTrigger EventName="MouseDoubleClick">
+            <i:InvokeCommandAction Command="{Binding MouseDoubleClickCommand}" CommandParameter="{Binding ElementName=sourceMonitor}"/>
+        </i:EventTrigger>
+    </i:Interaction.Triggers>
+    <UserControl.Style>
+        <Style TargetType="UserControl">
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Cursor" Value="Hand" />
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+    </UserControl.Style>
 </UserControl>

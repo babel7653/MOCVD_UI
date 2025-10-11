@@ -15,10 +15,15 @@ namespace SapphireXR_App.ViewModels
                 string? id = args as string;
                 if (id != null && PLCService.dMonitoringMeterIndex.ContainsKey(id) == true)
                 {
-                    ObservableManager<float>.Subscribe("MonitoringPresentValue." + id + ".CurrentValue", this);
+                    onLoaded(id);
                 }
             }
         });
+
+        protected virtual void onLoaded(string id)
+        {
+            ObservableManager<float>.Subscribe("MonitoringPresentValue." + id + ".CurrentValue", this);
+        }
 
         protected virtual void updatePresentValue(float value)
         {

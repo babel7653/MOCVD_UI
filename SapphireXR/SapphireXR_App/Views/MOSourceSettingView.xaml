@@ -6,7 +6,8 @@
         xmlns:local="clr-namespace:SapphireXR_App.Views"
         xmlns:i="clr-namespace:Microsoft.Xaml.Behaviors;assembly=Microsoft.Xaml.Behaviors"
         mc:Ignorable="d"
-        Title="MO Setting" Height="Auto" Width="520" WindowStyle="None" AllowsTransparency="True" Background="Transparent" WindowStartupLocation="CenterScreen">
+        x:Name="moSourceDialog" Title="MO Setting" Height="Auto" Width="520" WindowStyle="None" AllowsTransparency="True" Background="Transparent" 
+        Left="{Binding Left}" Top="{Binding Top}" Topmost="{Binding TopMost}" WindowStartupLocation="Manual" MouseLeftButtonDown="moSourceDialog_MouseLeftButtonDown">
     <Grid>
         <Rectangle Grid.Row="0" RadiusX="{StaticResource r_3}" RadiusY="{StaticResource r_3}" Fill="{StaticResource Gray_100}" />
         <StackPanel Orientation="Vertical" VerticalAlignment="Center" Margin="{StaticResource p_5_sqrt}">
@@ -17,7 +18,7 @@
                     <Setter Property="BorderThickness" Value="1.2" />
                 </Style>
             </StackPanel.Resources>
-            <TextBlock Text="MO Source Setting" FontSize="14" FontWeight="Bold" Foreground="{StaticResource Gray_900}">
+            <TextBlock Text="{Binding Title, Mode=OneTime}" FontSize="14" FontWeight="Bold" Foreground="{StaticResource Gray_900}">
                 <TextBlock.Margin>
                     <Thickness Bottom="{StaticResource p_5}" />
                 </TextBlock.Margin>
@@ -26,18 +27,137 @@
                 <Border.Margin>
                     <Thickness Bottom="{StaticResource p_5}" />
                 </Border.Margin>
-                <ContentControl Content="{StaticResource mo_source1}" Height="95" >
-                    <ContentControl.RenderTransform>
-                        <ScaleTransform ScaleX="0.55" ScaleY="0.55" />
-                    </ContentControl.RenderTransform>
+                <ContentControl Height="80" >
                 </ContentControl>
             </Border>
             <StackPanel Orientation="Vertical">
                 <StackPanel.Margin>
                     <Thickness Bottom="{StaticResource p_5}" />
                 </StackPanel.Margin>
+                <DockPanel LastChildFill="True">
+                    <DockPanel.Margin>
+                        <Thickness Bottom="{StaticResource p_3}" />
+                    </DockPanel.Margin>
+                    <StackPanel Orientation="Horizontal" DockPanel.Dock="Right">
+                        <CheckBox Style="{StaticResource DefaultCheckBox}" Width="16" Height="16" VerticalAlignment="Bottom">
+                            <CheckBox.Margin>
+                                <Thickness Right="{StaticResource p_1}" />
+                            </CheckBox.Margin>
+                        </CheckBox>
+                        <TextBlock Text="Recipe Not Running" FontSize="14" Style="{StaticResource infoTextBlockLeft}" VerticalAlignment="Bottom"/>
+                    </StackPanel>
+                    <StackPanel Orientation="Vertical">
+                        <StackPanel.Margin>
+                            <Thickness Right="{StaticResource p_2}" />
+                        </StackPanel.Margin>
+                        <TextBlock Text="a value" Style="{StaticResource infoTextBlockLeft}">
+                            <TextBlock.Margin>
+                                <Thickness Bottom="{StaticResource p_2}" />
+                            </TextBlock.Margin>
+                        </TextBlock>
+                        <TextBox Height="26" Style="{StaticResource DefaultTextBox}" />
+                    </StackPanel>
+                </DockPanel>
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="{StaticResource p_2_gl}" />
+                        <RowDefinition Height="26" />
+                        <RowDefinition Height="{StaticResource p_3_gl}" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="{StaticResource p_2_gl}" />
+                        <RowDefinition Height="26" />
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="{StaticResource p_2_gl}" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Text="b(k) value" Style="{StaticResource infoTextBlockLeft}" Grid.Row="0" Grid.Column="0" />
+                    <TextBlock Text="Bubbler Temp(°C)" Style="{StaticResource infoTextBlockLeft}" Grid.Row="0" Grid.Column="2" />
+                    <TextBox Style="{StaticResource DefaultTextBox}" Grid.Row="2" Grid.Column="0" />
+                    <TextBox Style="{StaticResource DefaultTextBox}" Grid.Row="2" Grid.Column="2" />
+                    <TextBlock Text="T [K]" Style="{StaticResource infoTextBlockLeft}" Grid.Row="4" Grid.Column="0" />
+                    <TextBlock Text="Partial Pressure (Torr)" Style="{StaticResource infoTextBlockLeft}" Grid.Row="4" Grid.Column="2" />
+                    <TextBox Style="{StaticResource DefaultTextBox}" Grid.Row="6" Grid.Column="0" />
+                    <TextBox Style="{StaticResource DefaultTextBox}" Grid.Row="6" Grid.Column="2" />
+                </Grid>
             </StackPanel>
-            
+            <Border BorderThickness="0 0 0 1" BorderBrush="{StaticResource Gray_500}">
+                <Border.Margin>
+                    <Thickness Bottom="{StaticResource p_5}" />
+                </Border.Margin>
+            </Border>
+            <Border Style="{StaticResource infoTextBorder}"  Padding="{StaticResource p_2_sqrt}">
+                <Border.Margin>
+                    <Thickness Bottom="{StaticResource p_5}" />
+                </Border.Margin>
+                <ContentControl></ContentControl>
+            </Border>
+            <Grid>
+                <Grid.Margin>
+                    <Thickness Bottom="{StaticResource p_3}" />
+                </Grid.Margin>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="{StaticResource p_2_gl}" />
+                    <RowDefinition Height="26" />
+                    <RowDefinition Height="{StaticResource p_3_gl}" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="{StaticResource p_2_gl}" />
+                    <RowDefinition Height="26" />
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="{StaticResource p_2_gl}" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                <TextBlock Text="Bubbler Pressure (Torr)" Style="{StaticResource infoTextBlockLeft}" Grid.Row="0" Grid.Column="0" />
+                <TextBlock Text="Bubbler Const." Style="{StaticResource infoTextBlockLeft}" Grid.Row="0" Grid.Column="2" />
+                <TextBox Style="{StaticResource DefaultTextBox}" Grid.Row="2" Grid.Column="0" />
+                <TextBox Style="{StaticResource DefaultTextBox}" Grid.Row="2" Grid.Column="2" />
+                <TextBlock Text="Molar Weight [g/mole]" Style="{StaticResource infoTextBlockLeft}" Grid.Row="4" Grid.Column="0" />
+                <TextBlock Text="Initial Weight [g]" Style="{StaticResource infoTextBlockLeft}" Grid.Row="4" Grid.Column="2" />
+                <TextBox Style="{StaticResource DefaultTextBox}" Grid.Row="6" Grid.Column="0" />
+                <TextBox Style="{StaticResource DefaultTextBox}" Grid.Row="6" Grid.Column="2" />
+            </Grid>
+            <Grid>
+                <Grid.Margin>
+                    <Thickness Bottom="{StaticResource p_5}" />
+                </Grid.Margin>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="{StaticResource p_2_gl}" />
+                    <RowDefinition Height="26" />
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="{StaticResource p_2_gl}" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="{StaticResource p_2_gl}" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                <TextBlock Text="Initial Weight [g]" Style="{StaticResource infoTextBlockLeft}" Grid.Row="0" Grid.Column="0" />
+                <TextBlock Text="Used Weight [g]" Style="{StaticResource infoTextBlockLeft}" Grid.Row="0" Grid.Column="2" />
+                <TextBlock Text="Remain Weight [g]" Style="{StaticResource infoTextBlockLeft}" Grid.Row="0" Grid.Column="4" />
+                <TextBox Style="{StaticResource DefaultTextBox}" Grid.Row="2" Grid.Column="0" />
+                <TextBox Style="{StaticResource DefaultTextBox}" Grid.Row="2" Grid.Column="2" />
+                <TextBox Style="{StaticResource DefaultTextBox}" Grid.Row="2" Grid.Column="4" />
+            </Grid>
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="{StaticResource p_2_gl}" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                <Button Content="Save" Style="{StaticResource PrimaryButton}" Height="38" Grid.Column="0" FontSize="14" />
+                <Button Content="Close" Command="{Binding CloseCommand}" CommandParameter="{Binding ElementName=moSourceDialog}" Style="{StaticResource DefaultButton}" Height="38" Grid.Column="2" FontSize="14" />
+            </Grid>
         </StackPanel>
     </Grid>
+    <i:Interaction.Triggers>
+        <i:EventTrigger EventName="Closed">
+            <i:InvokeCommandAction Command="{Binding ClosedCommand}" />
+        </i:EventTrigger>
+    </i:Interaction.Triggers>
 </Window>

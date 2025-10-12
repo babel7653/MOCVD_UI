@@ -160,6 +160,36 @@ namespace SapphireXR_App.Models
             baReadValveStatePLC2 = new BitArray([(int)aReadValveStatePLC2]);
         }
 
+        public static bool ReadValveState(string valveID)
+        {
+            if (ValveIDtoOutputSolValveIdx1.ContainsKey(valveID) == true)
+            {
+                if (baReadValveStatePLC1 != null)
+                {
+                    return baReadValveStatePLC1[ValveIDtoOutputSolValveIdx1[valveID]];
+                }
+                else
+                {
+                    throw new InvalidOperationException("baReadValveStatePLC1 is null");
+                }
+            }
+            else if (ValveIDtoOutputSolValveIdx2.ContainsKey(valveID) == true)
+            {
+                if (baReadValveStatePLC2 != null)
+                {
+                    return baReadValveStatePLC2[ValveIDtoOutputSolValveIdx2[valveID]];
+                }
+                else
+                {
+                    throw new InvalidOperationException("baReadValveStatePLC2 is null");
+                }
+            }
+            else
+            {
+                throw new ArgumentException("Invalid valveID: " + valveID);
+            }
+        }
+
         private static void ReadInitialStateValueFromPLC()
         {
             ReadValveStateFromPLC();

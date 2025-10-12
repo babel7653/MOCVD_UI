@@ -249,4 +249,16 @@
     </Content>
   </ItemGroup>
 
+  <ItemGroup>
+    <Compile Update="Controls\MOSourceFormula\MOSource4.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Controls\MOSourceFormula\MOSource3.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Controls\MOSourceFormula\MOSource2.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+  </ItemGroup>
+
 </Project>

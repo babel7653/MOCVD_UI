@@ -1,5 +1,6 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using SapphireXR_App.Models;
 using SapphireXR_App.Views;
 using System.Windows;
 using System.Windows.Input;
@@ -8,13 +9,15 @@ namespace SapphireXR_App.ViewModels
 {
     internal partial class MOSourceSettingViewModel: ObservableObject
     {
-        internal MOSourceSettingViewModel(string titleStr, double leftD, double topD, bool topMostB, Action onClosedAC)
+        internal MOSourceSettingViewModel(string titleStr, string sourceNameStr, double leftD, double topD, bool topMostB, Action onClosedAC)
         {
             title = titleStr;
+            sourceName = sourceNameStr;
             Left = leftD;
             Top = topD;
             TopMost = topMostB;
             onClosed = onClosedAC;
+            SourceModel = new MOSourceModel(sourceNameStr);
         }
 
         [RelayCommand]
@@ -51,7 +54,11 @@ namespace SapphireXR_App.ViewModels
         private double top;
         [ObservableProperty]
         private bool topMost;
+        [ObservableProperty]
+        private string sourceName;
 
         private Action onClosed;
+
+        public MOSourceModel SourceModel { get; }
     }
 }

@@ -3,7 +3,6 @@ using CommunityToolkit.Mvvm.Input;
 using SapphireXR_App.Common;
 using SapphireXR_App.WindowServices;
 using System.ComponentModel;
-using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
@@ -26,7 +25,7 @@ namespace SapphireXR_App.ViewModels
                 if (moSourceSettingView == null)
                 {
                     Point p = sourceSettingView.TransformToAncestor(Util.FindParent<Window>(sourceSettingView, "mainWindow")).Transform(new Point(0, 0));
-                    MOSourceSettingViewModel viewModel = new MOSourceSettingViewModel("MO Source Setting - " + Util.GetGasDeviceName(moControllerID), p.X, p.Y, true, () => moSourceSettingView = null);
+                    MOSourceSettingViewModel viewModel = new MOSourceSettingViewModel("MO Source Setting - " + Util.GetGasDeviceName(moControllerID), moControllerID, p.X, p.Y, true, () => moSourceSettingView = null);
                     moSourceSettingView = MOSourceSettingWindow.Show(viewModel);
                 }
                 else

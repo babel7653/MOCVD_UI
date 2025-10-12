@@ -4,7 +4,9 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:SapphireXR_App.Views"
+        xmlns:uc="clr-namespace:SapphireXR_App.Controls"
         xmlns:i="clr-namespace:Microsoft.Xaml.Behaviors;assembly=Microsoft.Xaml.Behaviors"
+        xmlns:vc="clr-namespace:SapphireXR_App.ValueConverter"
         mc:Ignorable="d"
         x:Name="moSourceDialog" Title="MO Setting" Height="Auto" Width="520" WindowStyle="None" AllowsTransparency="True" Background="Transparent" 
         Left="{Binding Left}" Top="{Binding Top}" Topmost="{Binding TopMost}" WindowStartupLocation="Manual" MouseLeftButtonDown="moSourceDialog_MouseLeftButtonDown">
@@ -24,11 +26,13 @@
                 </TextBlock.Margin>
             </TextBlock>
             <Border Style="{StaticResource infoTextBorder}"  Padding="{StaticResource p_2_sqrt}">
+                <Border.Resources>
+                    <vc:StringToMOSourceFormulaControlConverter x:Key="stringToMOSourceFormulaControlConverter" />
+                </Border.Resources>
                 <Border.Margin>
                     <Thickness Bottom="{StaticResource p_5}" />
                 </Border.Margin>
-                <ContentControl Height="80" >
-                </ContentControl>
+                <ContentControl Content="{Binding SourceName, Converter={StaticResource stringToMOSourceFormulaControlConverter}, Mode=OneTime}" />
             </Border>
             <StackPanel Orientation="Vertical">
                 <StackPanel.Margin>
@@ -55,7 +59,7 @@
                                 <Thickness Bottom="{StaticResource p_2}" />
                             </TextBlock.Margin>
                         </TextBlock>
-                        <TextBox Height="26" Style="{StaticResource DefaultTextBox}" />
+                        <TextBox Height="26" Style="{StaticResource DefaultTextBox}" Text="{Binding SourceModel.AValue, Mode=TwoWay}" />
                     </StackPanel>
                 </DockPanel>
                 <Grid>
@@ -75,12 +79,12 @@
                     </Grid.ColumnDefinitions>
                     <TextBlock Text="b(k) value" Style="{StaticResource infoTextBlockLeft}" Grid.Row="0" Grid.Column="0" />
                     <TextBlock Text="Bubbler Temp(°C)" Style="{StaticResource infoTextBlockLeft}" Grid.Row="0" Grid.Column="2" />
-                    <TextBox Style="{StaticResource DefaultTextBox}" Grid.Row="2" Grid.Column="0" />
-                    <TextBox Style="{StaticResource DefaultTextBox}" Grid.Row="2" Grid.Column="2" />
+                    <TextBox Style="{StaticResource DefaultTextBox}" Text="{Binding SourceModel.BValue, Mode=TwoWay}" Grid.Row="2" Grid.Column="0" />
+                    <TextBox Style="{StaticResource DefaultTextBox}" Text="{Binding SourceModel.BubblerTemp, Mode=TwoWay}" Grid.Row="2" Grid.Column="2" />
                     <TextBlock Text="T [K]" Style="{StaticResource infoTextBlockLeft}" Grid.Row="4" Grid.Column="0" />
                     <TextBlock Text="Partial Pressure (Torr)" Style="{StaticResource infoTextBlockLeft}" Grid.Row="4" Grid.Column="2" />
-                    <TextBox Style="{StaticResource DefaultTextBox}" Grid.Row="6" Grid.Column="0" />
-                    <TextBox Style="{StaticResource DefaultTextBox}" Grid.Row="6" Grid.Column="2" />
+                    <TextBox Style="{StaticResource DefaultTextBox}" Text="{Binding SourceModel.T, Mode=TwoWay}" Grid.Row="6" Grid.Column="0" />
+                    <TextBox Style="{StaticResource DefaultTextBox}" Text="{Binding SourceModel.PartialPressure, Mode=TwoWay}" Grid.Row="6" Grid.Column="2" />
                 </Grid>
             </StackPanel>
             <Border BorderThickness="0 0 0 1" BorderBrush="{StaticResource Gray_500}">
@@ -92,7 +96,14 @@
                 <Border.Margin>
                     <Thickness Bottom="{StaticResource p_5}" />
                 </Border.Margin>
-                <ContentControl></ContentControl>
+                <StackPanel>
+                    <uc:MOSource2>
+                        <uc:MOSource2.Margin>
+                            <Thickness Bottom="{StaticResource p_2}" />
+                        </uc:MOSource2.Margin>
+                    </uc:MOSource2>
+                    <uc:MOSource3 />
+                </StackPanel>
             </Border>
             <Grid>
                 <Grid.Margin>
@@ -114,12 +125,12 @@
                 </Grid.ColumnDefinitions>
                 <TextBlock Text="Bubbler Pressure (Torr)" Style="{StaticResource infoTextBlockLeft}" Grid.Row="0" Grid.Column="0" />
                 <TextBlock Text="Bubbler Const." Style="{StaticResource infoTextBlockLeft}" Grid.Row="0" Grid.Column="2" />
-                <TextBox Style="{StaticResource DefaultTextBox}" Grid.Row="2" Grid.Column="0" />
-                <TextBox Style="{StaticResource DefaultTextBox}" Grid.Row="2" Grid.Column="2" />
+                <TextBox Style="{StaticResource DefaultTextBox}" Text="{Binding SourceModel.BubblePressure, Mode=TwoWay}" Grid.Row="2" Grid.Column="0" />
+                <TextBox Style="{StaticResource DefaultTextBox}" Text="{Binding SourceModel.BubblerConst, Mode=TwoWay}" Grid.Row="2" Grid.Column="2" />
                 <TextBlock Text="Molar Weight [g/mole]" Style="{StaticResource infoTextBlockLeft}" Grid.Row="4" Grid.Column="0" />
                 <TextBlock Text="Initial Weight [g]" Style="{StaticResource infoTextBlockLeft}" Grid.Row="4" Grid.Column="2" />
-                <TextBox Style="{StaticResource DefaultTextBox}" Grid.Row="6" Grid.Column="0" />
-                <TextBox Style="{StaticResource DefaultTextBox}" Grid.Row="6" Grid.Column="2" />
+                <TextBox Style="{StaticResource DefaultTextBox}" Text="{Binding SourceModel.MolarWeight, Mode=TwoWay}" Grid.Row="6" Grid.Column="0" />
+                <TextBox Style="{StaticResource DefaultTextBox}" Text="{Binding SourceModel.InitialWeight, Mode=TwoWay}" Grid.Row="6" Grid.Column="2" />
             </Grid>
             <Grid>
                 <Grid.Margin>
@@ -140,9 +151,9 @@
                 <TextBlock Text="Initial Weight [g]" Style="{StaticResource infoTextBlockLeft}" Grid.Row="0" Grid.Column="0" />
                 <TextBlock Text="Used Weight [g]" Style="{StaticResource infoTextBlockLeft}" Grid.Row="0" Grid.Column="2" />
                 <TextBlock Text="Remain Weight [g]" Style="{StaticResource infoTextBlockLeft}" Grid.Row="0" Grid.Column="4" />
-                <TextBox Style="{StaticResource DefaultTextBox}" Grid.Row="2" Grid.Column="0" />
-                <TextBox Style="{StaticResource DefaultTextBox}" Grid.Row="2" Grid.Column="2" />
-                <TextBox Style="{StaticResource DefaultTextBox}" Grid.Row="2" Grid.Column="4" />
+                <TextBox Style="{StaticResource DefaultTextBox}" Text="{Binding SourceModel.InitialWeight, Mode=TwoWay}" Grid.Row="2" Grid.Column="0" />
+                <TextBox Style="{StaticResource DefaultTextBox}" Text="{Binding SourceModel.UsedWeight, Mode=TwoWay}" Grid.Row="2" Grid.Column="2" />
+                <TextBox Style="{StaticResource DefaultTextBox}" Text="{Binding SourceModel.RemainWeight, Mode=TwoWay}" Grid.Row="2" Grid.Column="4" />
             </Grid>
             <Grid>
                 <Grid.ColumnDefinitions>

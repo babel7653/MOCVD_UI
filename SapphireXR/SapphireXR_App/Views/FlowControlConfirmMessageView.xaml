@@ -11,7 +11,7 @@
         SizeToContent="WidthAndHeight"
         WindowStartupLocation="CenterScreen"
         x:Name="flowControlConfirmDialog"
-        Height="158" Width="400">
+        Height="158" Width="400" Topmost="True">
     <Window.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>

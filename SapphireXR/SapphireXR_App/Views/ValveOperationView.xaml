@@ -12,7 +12,7 @@
         MinHeight="160"
         WindowStartupLocation="CenterScreen"
         x:Name="valveDialog"
-        Title="ValveOperationPopup" Height="160" Width="400">
+        Title="ValveOperationPopup" Height="160" Width="400" Topmost="True">
     <Window.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>

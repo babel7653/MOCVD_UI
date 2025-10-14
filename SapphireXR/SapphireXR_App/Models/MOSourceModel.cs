@@ -1,12 +1,83 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using SapphireXR_App.Common;
+using System.Text.Json.Serialization;
 
 namespace SapphireXR_App.Models
 {
-    internal partial class MOSourceModel: ObservableObject, IObserver<float>, IObserver<bool>
+    internal partial class MOSourceModel: ObservableObject, IDisposable
     {
-        static readonly Dictionary<string, (string, string)> ConnectedInput = new Dictionary<string, (string, string)>() { { "Source1", ("MFC08", "V07") }, { "Source2", ("MFC09", "V10") }, { "Source3", ("MFC10", "V13") }, 
-            { "Source4", ("MFC11", "V16") }, { "Source5", ("MFC12", "V19") }, { "Source6", ("MFC15", "V22") } };
+        private class ConnectedMFCPVSubscriber: IObserver<float>
+        {
+            internal ConnectedMFCPVSubscriber(MOSourceModel model)
+            {
+                moSourceModel = model;
+            }
+            void IObserver<float>.OnCompleted()
+            {
+                throw new NotImplementedException();
+            }
+
+            void IObserver<float>.OnError(Exception error)
+            {
+                throw new NotImplementedException();
+            }
+
+            void IObserver<float>.OnNext(float value)
+            {
+                moSourceModel.QMFC = value;
+            }
+
+            private MOSourceModel moSourceModel;
+        }
+
+        private class ConnectedEPCPVSubscriber : IObserver<float>
+        {
+            internal ConnectedEPCPVSubscriber(MOSourceModel model)
+            {
+                moSourceModel = model;
+            }
+            void IObserver<float>.OnCompleted()
+            {
+                throw new NotImplementedException();
+            }
+
+            void IObserver<float>.OnError(Exception error)
+            {
+                throw new NotImplementedException();
+            }
+
+            void IObserver<float>.OnNext(float value)
+            {
+                moSourceModel.BubblePressure = value;
+            }
+
+            private MOSourceModel moSourceModel;
+        }
+
+        private class ConnectedValveStateSubscriber: IObserver<bool>
+        {
+            internal ConnectedValveStateSubscriber(MOSourceModel model)
+            {
+                moSourceModel = model;
+            }
+            void IObserver<bool>.OnCompleted()
+            {
+                throw new NotImplementedException();
+            }
+
+            void IObserver<bool>.OnError(Exception error)
+            {
+                throw new NotImplementedException();
+            }
+
+            void IObserver<bool>.OnNext(bool value)
+            {
+                moSourceModel.update = value;
+            }
+
+            private MOSourceModel moSourceModel;
+        }
+      
         internal enum MOMaterial { Liquid = 0, Solid }
 
         internal static MOMaterial GetMaterialBySourceName(string sourceName)
@@ -28,42 +99,47 @@ namespace SapphireXR_App.Models
             }
         }
 
-        internal MOSourceModel(string sourceName)
+        [Newtonsoft.Json.JsonConstructor]
+        internal MOSourceModel(string mFC, string ePC, string valve)
         {
-            MFC = ConnectedInput[sourceName].Item1;
-            Valve = ConnectedInput[sourceName].Item2;
+            MFC = mFC;
+            EPC = ePC;
+            Valve = valve;
 
+            connectedMFCPVSubscriberDisposer = ObservableManager<float>.Subscribe("FlowControl." + MFC + ".CurrentValue", connectedMFCPVSubscriber = new ConnectedMFCPVSubscriber(this));
+            connectedEPCPVSubscriberDisposer = ObservableManager<float>.Subscribe("FlowControl." + EPC + ".CurrentValue", connectedEPCPVSubscriber = new ConnectedEPCPVSubscriber(this));
+            connectedValveStateSubscriberDisposer = ObservableManager<bool>.Subscribe("Valve.OnOff." + Valve + ".CurrentPLCState", connectedValveStateSubscriber = new ConnectedValveStateSubscriber(this));
             update = PLCService.ReadValveState(Valve);
 
             PropertyChanged += (sender, args) =>
             {
-                switch(args.PropertyName)
+                switch (args.PropertyName)
                 {
                     case nameof(BubblerTemp):
                         if (BubblerTemp != null)
                         {
-                            T = BubblerTemp + AbsoluteTemp;
+                            T = BubblerTemp.Value + MOSourceSetting.AbsoluteTemp;
                         }
                         else
                         {
-                            T = null;
+                            T = MOSourceSetting.AbsoluteTemp;
                         }
                         break;
 
                     case nameof(AValue):
                     case nameof(BValue):
                     case nameof(T):
-                        if (AValue != null && BValue != null && T != null)
+                        if (AValue != null && BValue != null)
                         {
                             try
                             {
-                                switch (GetMaterialBySourceName(sourceName))
+                                switch (Material)
                                 {
                                     case MOMaterial.Liquid:
-                                        PartialPressure = (float)Math.Pow(10.0, AValue.Value - (BValue.Value / T.Value));
+                                        PartialPressure = (float)Math.Pow(10.0, AValue.Value - (BValue.Value / T));
                                         break;
                                     case MOMaterial.Solid:
-                                        PartialPressure = (float)Math.Pow(10.0, AValue.Value - (2.18 * Math.Log(Math.E, T.Value)) - (BValue.Value / T.Value));
+                                        PartialPressure = (float)Math.Pow(10.0, AValue.Value - (2.18 * Math.Log(Math.E, T)) - (BValue.Value / T));
                                         break;
                                 }
                             }
@@ -87,7 +163,7 @@ namespace SapphireXR_App.Models
                         {
                             try
                             {
-                               weightDelta = QMFC * PartialPressure.Value / (BubblePressure - PartialPressure) / (22400 * 60) * MolarWeight.Value * BubblerConst.Value;
+                                weightDelta = QMFC * PartialPressure.Value / (BubblePressure - PartialPressure) / (22400 * 60) * MolarWeight.Value * BubblerConst.Value;
                             }
                             catch
                             {
@@ -101,7 +177,7 @@ namespace SapphireXR_App.Models
                         break;
 
                     case nameof(InitialWeight):
-                        if(InitialWeight != null)
+                        if (InitialWeight != null)
                         {
                             UsedWeight = 0.0f;
                         }
@@ -128,7 +204,7 @@ namespace SapphireXR_App.Models
                         {
                             Task.Delay(TimeSpan.FromSeconds(1)).ContinueWith(_ =>
                             {
-                                if(UsedWeight == null || weightDelta == null || update == false)
+                                if (UsedWeight == null || weightDelta == null || update == false)
                                 {
                                     return;
                                 }
@@ -138,41 +214,51 @@ namespace SapphireXR_App.Models
                             }, TaskScheduler.FromCurrentSynchronizationContext());
                         }
                         break;
+
+                    case nameof(TemperatureConstant):
+                        if (TemperatureConstant == true)
+                        {
+                            BubblerTemp = null;
+                        }
+                        break;
                 }
             };
-
-            ObservableManager<float>.Subscribe("FlowControl." + MFC + ".CurrentValue", this);
-            ObservableManager<bool>.Subscribe("Valve.OnOff." + Valve + ".CurrentPLCState", this);
         }
 
-        void IObserver<float>.OnCompleted()
+        public void cleanUp()
         {
-            throw new NotImplementedException();
+            connectedMFCPVSubscriberDisposer?.Dispose();
+            connectedEPCPVSubscriberDisposer?.Dispose();
+            connectedValveStateSubscriberDisposer?.Dispose();
         }
 
-        void IObserver<float>.OnError(Exception error)
+        protected virtual void Dispose(bool disposing)
         {
-            throw new NotImplementedException();
+            if (!disposedValue)
+            {
+                if (disposing)
+                {
+                    cleanUp();
+                }
+
+                // TODO: 비관리형 리소스(비관리형 개체)를 해제하고 종료자를 재정의합니다.
+                // TODO: 큰 필드를 null로 설정합니다.
+                disposedValue = true;
+            }
         }
 
-        void IObserver<float>.OnNext(float value)
-        {
-            QMFC = value;
-        }
+        // // TODO: 비관리형 리소스를 해제하는 코드가 'Dispose(bool disposing)'에 포함된 경우에만 종료자를 재정의합니다.
+        // ~MOSourceModel()
+        // {
+        //     // 이 코드를 변경하지 마세요. 'Dispose(bool disposing)' 메서드에 정리 코드를 입력합니다.
+        //     Dispose(disposing: false);
+        // }
 
-        void IObserver<bool>.OnCompleted()
+        void IDisposable.Dispose()
         {
-            throw new NotImplementedException();
-        }
-
-        void IObserver<bool>.OnError(Exception error)
-        {
-            throw new NotImplementedException();
-        }
-
-        void IObserver<bool>.OnNext(bool value)
-        {
-            update = value;
+            // 이 코드를 변경하지 마세요. 'Dispose(bool disposing)' 메서드에 정리 코드를 입력합니다.
+            Dispose(disposing: true);
+            GC.SuppressFinalize(this);
         }
 
         [ObservableProperty]
@@ -182,16 +268,7 @@ namespace SapphireXR_App.Models
         private float? bValue= null;
 
         [ObservableProperty]
-        private float? t= null;
-
-        [ObservableProperty]
         private float? bubblerTemp= null;
-
-        [ObservableProperty]
-        private float? partialPressure= null;
-
-        [ObservableProperty]
-        private float? bubblePressure= null;
 
         [ObservableProperty]
         private float? bubblerConst= null;
@@ -206,17 +283,65 @@ namespace SapphireXR_App.Models
         private float? usedWeight= null;
 
         [ObservableProperty]
-        private float? remainWeight= null;
+        private bool temperatureConstant = false;
+
+        [ObservableProperty]
+        private string? mFC = null;
+
+        [ObservableProperty]
+        private string? ePC = null;
+
+        [ObservableProperty]
+        private string? valve = null;
+
+        //private float t = MOSourceSetting.AbsoluteTemp;
+        //[Ignore]
+        //public float T { get { return t; } private set { SetProperty(ref t, value); } }
+
+        //private float? qMFC = null;
+        //[Ignore]
+        //public float? QMFC { get { return qMFC; } private set { SetProperty(ref qMFC, value); } }
+
+        //private float? partialPressure = null;
+        //[Ignore]
+        //public float? PartialPressure { get { return partialPressure; } private set { SetProperty(ref partialPressure, value); } }
+
+        //private float? remainWeight = null;
+        //[Ignore]
+        //public float? RemainWeight { get { return remainWeight; } private set { SetProperty(ref remainWeight, value); } }
+
+        //private float? bubblePressure = null;
+        //public float? BubblePressure { get { return bubblePressure; } private set { SetProperty(ref bubblePressure, value); } }
+
+        [ObservableProperty]
+        private float t = MOSourceSetting.AbsoluteTemp;
 
         [ObservableProperty]
         private float? qMFC = null;
 
-        private string MFC { get; set; }
-        private string Valve { get; set; }
+        [ObservableProperty]
+        private float? partialPressure = null;
+
+        [ObservableProperty]
+        private float? bubblePressure = null;
+
+        [ObservableProperty]
+        private float? remainWeight = null;
+
+        public MOMaterial Material { get; set; } = MOMaterial.Liquid;
 
         private float? weightDelta = null;
-        private bool update;
+        private bool update = false;
 
-        private static readonly float AbsoluteTemp = 273.15f;
+        private ConnectedMFCPVSubscriber? connectedMFCPVSubscriber = null;
+        private ConnectedEPCPVSubscriber? connectedEPCPVSubscriber = null;
+        private ConnectedValveStateSubscriber? connectedValveStateSubscriber = null;
+
+        private IDisposable? connectedMFCPVSubscriberDisposer = null;
+        private IDisposable? connectedEPCPVSubscriberDisposer = null;
+        private IDisposable? connectedValveStateSubscriberDisposer = null;
+
+        private bool disposedValue = false;
+       
     }
 }

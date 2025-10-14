@@ -19,6 +19,11 @@ namespace SapphireXR_App.ViewModels
         [RelayCommand]
         private void MouseDoubleClick(object? args)
         {
+            if(Models.MOSourceSetting.MOSourceSettingEnable == false)
+            {
+                return;
+            }
+
             UserControl? sourceSettingView = args as UserControl;
             if (sourceSettingView != null)
             {
@@ -60,6 +65,7 @@ namespace SapphireXR_App.ViewModels
 
         [ObservableProperty]
         private Brush onMouseOverBackground = DefaultSourceMonitorColorOnMouseOver;
+        
         private Window? moSourceSettingView = null;
         private string moControllerID = string.Empty;
     }

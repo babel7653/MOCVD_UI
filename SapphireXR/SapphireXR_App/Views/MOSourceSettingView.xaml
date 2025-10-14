@@ -43,12 +43,12 @@
                         <Thickness Bottom="{StaticResource p_3}" />
                     </DockPanel.Margin>
                     <StackPanel Orientation="Horizontal" DockPanel.Dock="Right">
-                        <CheckBox Style="{StaticResource DefaultCheckBox}" Width="16" Height="16" VerticalAlignment="Bottom">
+                        <CheckBox Style="{StaticResource DefaultCheckBox}" Width="16" Height="16" VerticalAlignment="Bottom" IsChecked="{Binding SourceModel.TemperatureConstant}">
                             <CheckBox.Margin>
                                 <Thickness Right="{StaticResource p_1}" />
                             </CheckBox.Margin>
                         </CheckBox>
-                        <TextBlock Text="Recipe Not Running" FontSize="14" Style="{StaticResource infoTextBlockLeft}" VerticalAlignment="Bottom"/>
+                        <TextBlock Text="Temperature Constant" FontSize="14" Style="{StaticResource infoTextBlockLeft}" VerticalAlignment="Bottom"/>
                     </StackPanel>
                     <StackPanel Orientation="Vertical">
                         <StackPanel.Margin>
@@ -80,11 +80,11 @@
                     <TextBlock Text="b(k) value" Style="{StaticResource infoTextBlockLeft}" Grid.Row="0" Grid.Column="0" />
                     <TextBlock Text="Bubbler Temp(°C)" Style="{StaticResource infoTextBlockLeft}" Grid.Row="0" Grid.Column="2" />
                     <TextBox Style="{StaticResource DefaultTextBox}" Text="{Binding SourceModel.BValue, Mode=TwoWay}" Grid.Row="2" Grid.Column="0" />
-                    <TextBox Style="{StaticResource DefaultTextBox}" Text="{Binding SourceModel.BubblerTemp, Mode=TwoWay}" Grid.Row="2" Grid.Column="2" />
+                    <TextBox Style="{StaticResource DefaultTextBox}" Text="{Binding SourceModel.BubblerTemp, Mode=TwoWay}" Grid.Row="2" Grid.Column="2" IsReadOnly="{Binding SourceModel.TemperatureConstant}"/>
                     <TextBlock Text="T [K]" Style="{StaticResource infoTextBlockLeft}" Grid.Row="4" Grid.Column="0" />
                     <TextBlock Text="Partial Pressure (Torr)" Style="{StaticResource infoTextBlockLeft}" Grid.Row="4" Grid.Column="2" />
-                    <TextBox Style="{StaticResource DefaultTextBox}" Text="{Binding SourceModel.T, Mode=TwoWay}" Grid.Row="6" Grid.Column="0" />
-                    <TextBox Style="{StaticResource DefaultTextBox}" Text="{Binding SourceModel.PartialPressure, Mode=TwoWay}" Grid.Row="6" Grid.Column="2" />
+                    <TextBox Text="{Binding SourceModel.T, Mode=OneWay}" Grid.Row="6" Grid.Column="0" Style="{StaticResource InfoTextBox}" />
+                    <TextBox Style="{StaticResource InfoTextBox}" Text="{Binding SourceModel.PartialPressure, Mode=OneWay}" Grid.Row="6" Grid.Column="2" />
                 </Grid>
             </StackPanel>
             <Border BorderThickness="0 0 0 1" BorderBrush="{StaticResource Gray_500}">
@@ -125,7 +125,7 @@
                 </Grid.ColumnDefinitions>
                 <TextBlock Text="Bubbler Pressure (Torr)" Style="{StaticResource infoTextBlockLeft}" Grid.Row="0" Grid.Column="0" />
                 <TextBlock Text="Bubbler Const." Style="{StaticResource infoTextBlockLeft}" Grid.Row="0" Grid.Column="2" />
-                <TextBox Style="{StaticResource DefaultTextBox}" Text="{Binding SourceModel.BubblePressure, Mode=TwoWay}" Grid.Row="2" Grid.Column="0" />
+                <TextBox Style="{StaticResource InfoTextBox}" Text="{Binding SourceModel.BubblePressure, Mode=OneWay}" Grid.Row="2" Grid.Column="0" />
                 <TextBox Style="{StaticResource DefaultTextBox}" Text="{Binding SourceModel.BubblerConst, Mode=TwoWay}" Grid.Row="2" Grid.Column="2" />
                 <TextBlock Text="Molar Weight [g/mole]" Style="{StaticResource infoTextBlockLeft}" Grid.Row="4" Grid.Column="0" />
                 <TextBlock Text="Initial Weight [g]" Style="{StaticResource infoTextBlockLeft}" Grid.Row="4" Grid.Column="2" />
@@ -151,9 +151,9 @@
                 <TextBlock Text="Initial Weight [g]" Style="{StaticResource infoTextBlockLeft}" Grid.Row="0" Grid.Column="0" />
                 <TextBlock Text="Used Weight [g]" Style="{StaticResource infoTextBlockLeft}" Grid.Row="0" Grid.Column="2" />
                 <TextBlock Text="Remain Weight [g]" Style="{StaticResource infoTextBlockLeft}" Grid.Row="0" Grid.Column="4" />
-                <TextBox Style="{StaticResource DefaultTextBox}" Text="{Binding SourceModel.InitialWeight, Mode=TwoWay}" Grid.Row="2" Grid.Column="0" />
+                <TextBox Style="{StaticResource InfoTextBox}" Text="{Binding SourceModel.InitialWeight, Mode=OneWay}" Grid.Row="2" Grid.Column="0" />
                 <TextBox Style="{StaticResource DefaultTextBox}" Text="{Binding SourceModel.UsedWeight, Mode=TwoWay}" Grid.Row="2" Grid.Column="2" />
-                <TextBox Style="{StaticResource DefaultTextBox}" Text="{Binding SourceModel.RemainWeight, Mode=TwoWay}" Grid.Row="2" Grid.Column="4" />
+                <TextBox Style="{StaticResource InfoTextBox}" Text="{Binding SourceModel.RemainWeight, Mode=OneWay}" Grid.Row="2" Grid.Column="4" />
             </Grid>
             <Grid>
                 <Grid.ColumnDefinitions>
@@ -161,7 +161,7 @@
                     <ColumnDefinition Width="{StaticResource p_2_gl}" />
                     <ColumnDefinition Width="*" />
                 </Grid.ColumnDefinitions>
-                <Button Content="Save" Style="{StaticResource PrimaryButton}" Height="38" Grid.Column="0" FontSize="14" />
+                <Button Content="Save" Style="{StaticResource PrimaryButton}" Command="{Binding SaveCommand}" Height="38" Grid.Column="0" FontSize="14" />
                 <Button Content="Close" Command="{Binding CloseCommand}" CommandParameter="{Binding ElementName=moSourceDialog}" Style="{StaticResource DefaultButton}" Height="38" Grid.Column="2" FontSize="14" />
             </Grid>
         </StackPanel>

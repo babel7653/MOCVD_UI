@@ -17,7 +17,16 @@ namespace SapphireXR_App.ViewModels
             Top = topD;
             TopMost = topMostB;
             onClosed = onClosedAC;
-            SourceModel = new MOSourceModel(sourceNameStr);
+
+            MOSourceModel? sourceModel = MOSourceSetting.GetModel(sourceName);
+            if(sourceModel != null)
+            {
+                SourceModel = sourceModel;
+            }
+            else
+            {
+                throw new ArgumentException(MOSourceSetting.MOSourceFilePath + "에서" + " source name " + sourceName + "을 찾을 수 없습니다.");
+            }
         }
 
         [RelayCommand]
@@ -29,7 +38,14 @@ namespace SapphireXR_App.ViewModels
         [RelayCommand]
         private void Closed()
         {
+            SourceModel.cleanUp();
             onClosed();
+        }
+
+        [RelayCommand]
+        private void Save()
+        {
+            MOSourceSetting.Save();
         }
 
         [RelayCommand]

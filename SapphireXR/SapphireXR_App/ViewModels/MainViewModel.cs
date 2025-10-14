@@ -102,6 +102,14 @@ namespace SapphireXR_App.ViewModels
                     Task.Run(() => PLCService.RemovePLCStateUpdateTask(updatePriorityState!));
                 }
             };
+            try
+            {
+                MOSourceSetting.Read();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(MOSourceSetting.MOSourceFilePath + "을 읽어오면서 오류가 발생하였습니다. MO Source Setting 기능은 사용이 불가합니다. 오류의 원인은 다음과 같습니다:" + ex.Message);
+            }
         }
 
         private void changeOperationMode(int tab)

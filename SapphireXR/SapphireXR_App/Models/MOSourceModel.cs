@@ -80,31 +80,13 @@ namespace SapphireXR_App.Models
       
         internal enum MOMaterial { Liquid = 0, Solid }
 
-        internal static MOMaterial GetMaterialBySourceName(string sourceName)
-        {
-            switch (sourceName)
-            {
-                case "Source1":
-                case "Source2":
-                case "Source3":
-                case "Source4":
-                case "Source5":
-                    return MOMaterial.Liquid;
-
-                case "Source6":
-                    return MOMaterial.Solid;
-
-                default:
-                    throw new ArgumentException("Invalid source name");
-            }
-        }
-
         [Newtonsoft.Json.JsonConstructor]
-        internal MOSourceModel(string mFC, string ePC, string valve)
+        internal MOSourceModel(string mFC, string ePC, string valve, MOMaterial material)
         {
             MFC = mFC;
             EPC = ePC;
             Valve = valve;
+            Material = material;
 
             connectedMFCPVSubscriberDisposer = ObservableManager<float>.Subscribe("FlowControl." + MFC + ".CurrentValue", connectedMFCPVSubscriber = new ConnectedMFCPVSubscriber(this));
             connectedEPCPVSubscriberDisposer = ObservableManager<float>.Subscribe("FlowControl." + EPC + ".CurrentValue", connectedEPCPVSubscriber = new ConnectedEPCPVSubscriber(this));
@@ -225,7 +207,7 @@ namespace SapphireXR_App.Models
             };
         }
 
-        public void cleanUp()
+        private void cleanUp()
         {
             connectedMFCPVSubscriberDisposer?.Dispose();
             connectedEPCPVSubscriberDisposer?.Dispose();
@@ -286,34 +268,6 @@ namespace SapphireXR_App.Models
         private bool temperatureConstant = false;
 
         [ObservableProperty]
-        private string? mFC = null;
-
-        [ObservableProperty]
-        private string? ePC = null;
-
-        [ObservableProperty]
-        private string? valve = null;
-
-        //private float t = MOSourceSetting.AbsoluteTemp;
-        //[Ignore]
-        //public float T { get { return t; } private set { SetProperty(ref t, value); } }
-
-        //private float? qMFC = null;
-        //[Ignore]
-        //public float? QMFC { get { return qMFC; } private set { SetProperty(ref qMFC, value); } }
-
-        //private float? partialPressure = null;
-        //[Ignore]
-        //public float? PartialPressure { get { return partialPressure; } private set { SetProperty(ref partialPressure, value); } }
-
-        //private float? remainWeight = null;
-        //[Ignore]
-        //public float? RemainWeight { get { return remainWeight; } private set { SetProperty(ref remainWeight, value); } }
-
-        //private float? bubblePressure = null;
-        //public float? BubblePressure { get { return bubblePressure; } private set { SetProperty(ref bubblePressure, value); } }
-
-        [ObservableProperty]
         private float t = MOSourceSetting.AbsoluteTemp;
 
         [ObservableProperty]
@@ -328,7 +282,11 @@ namespace SapphireXR_App.Models
         [ObservableProperty]
         private float? remainWeight = null;
 
-        public MOMaterial Material { get; set; } = MOMaterial.Liquid;
+        
+        public string MFC { get; private set; }
+        public string EPC { get; private set; }
+        public string Valve { get; private set; }
+        public MOMaterial Material { get; private set; }
 
         private float? weightDelta = null;
         private bool update = false;

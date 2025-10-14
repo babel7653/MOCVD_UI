@@ -27,12 +27,12 @@
             </TextBlock>
             <Border Style="{StaticResource infoTextBorder}"  Padding="{StaticResource p_2_sqrt}">
                 <Border.Resources>
-                    <vc:StringToMOSourceFormulaControlConverter x:Key="stringToMOSourceFormulaControlConverter" />
+                    <vc:MOMaterialToMOSourceFormualaControlConverter x:Key="moMaterialToMOSourceFormualaControlConverter" />
                 </Border.Resources>
                 <Border.Margin>
                     <Thickness Bottom="{StaticResource p_5}" />
                 </Border.Margin>
-                <ContentControl Content="{Binding SourceName, Converter={StaticResource stringToMOSourceFormulaControlConverter}, Mode=OneTime}" />
+                <ContentControl Content="{Binding SourceModel.Material, Converter={StaticResource moMaterialToMOSourceFormualaControlConverter}, Mode=OneTime}" />
             </Border>
             <StackPanel Orientation="Vertical">
                 <StackPanel.Margin>

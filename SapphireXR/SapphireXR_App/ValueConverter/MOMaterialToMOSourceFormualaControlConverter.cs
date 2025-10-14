@@ -1,26 +1,24 @@
 ﻿using System.Globalization;
-using System.Numerics;
 using System.Windows.Data;
+using SapphireXR_App.Models;
 
 namespace SapphireXR_App.ValueConverter
 {
-    internal class StringToMOSourceFormulaControlConverter: IValueConverter
+    internal class MOMaterialToMOSourceFormualaControlConverter: IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            string sourceName = value as string ?? string.Empty;
-            switch(sourceName)
-            {                 
-                case "Source1":
-                case "Source2":
-                case "Source3":
-                case "Source4":
-                case "Source5":
+            MOSourceModel.MOMaterial material = (MOSourceModel.MOMaterial)value;
+            switch (material)
+            {
+                case MOSourceModel.MOMaterial.Liquid:
                     return new Controls.MOSource1();
-                case "Source6":
+
+                case MOSourceModel.MOMaterial.Solid:
                     return new Controls.MOSource4();
+
                 default:
-                    return "";
+                    throw new InvalidCastException("Invalid MOMaterial Enum Value");
             }
         }
 

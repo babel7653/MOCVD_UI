@@ -38,7 +38,6 @@ namespace SapphireXR_App.ViewModels
         [RelayCommand]
         private void Closed()
         {
-            SourceModel.cleanUp();
             onClosed();
         }
 

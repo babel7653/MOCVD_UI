@@ -290,15 +290,17 @@
                     <!-- 반응기 콘트롤러 -->
                     <Rectangle Canvas.Left="965" Canvas.Top="5" Width="330" Height="120" Stroke="#3d495a" StrokeThickness="2" />
 
-                    <Label Canvas.Left="1013" Canvas.Top="50" Foreground="{StaticResource PrimaryFontColor}" Content="Temperature"
-                Width="80" HorizontalContentAlignment="Center"/>
-                    <Label Canvas.Left="1093" Canvas.Top="50" Foreground="{StaticResource PrimaryFontColor}" Content="Pressure"
-                Width="80" HorizontalContentAlignment="Center"/>
-                    <Label Canvas.Left="1173" Canvas.Top="50" Foreground="{StaticResource PrimaryFontColor}" Content="Rotation"
-                Width="80" HorizontalContentAlignment="Center"/>
-                    <control:RecipeRunFlowController x:Name="susceptorTemperature" Canvas.Left="1018" Canvas.Top="72" ControllerID="Temperature" Type="Reactor" />
-                    <control:RecipeRunFlowController x:Name="reactorPressure" Canvas.Left="1098" Canvas.Top="72" ControllerID="Pressure" Type="Reactor" />
-                    <control:RecipeRunFlowController x:Name="susceptorRotation" Canvas.Left="1178" Canvas.Top="72" ControllerID="Rotation" Type="Reactor" />
+                    <Label Canvas.Left="1013" Canvas.Top="26" Foreground="{StaticResource PrimaryFontColor}" Content="Temperature"
+                Width="80" HorizontalContentAlignment="Center" HorizontalAlignment="Center" VerticalAlignment="Top"/>
+                    <Label Canvas.Left="1093" Canvas.Top="26" Foreground="{StaticResource PrimaryFontColor}" Content="Pressure"
+                Width="80" HorizontalContentAlignment="Center" HorizontalAlignment="Center" VerticalAlignment="Top"/>
+                    <Label Canvas.Left="1173" Canvas.Top="26" Foreground="{StaticResource PrimaryFontColor}" Content="Rotation"
+                Width="80" HorizontalContentAlignment="Center" HorizontalAlignment="Center" VerticalAlignment="Top"/>
+                    <control:RecipeRunFlowController x:Name="susceptorTemperature" Canvas.Left="1018" Canvas.Top="48" ControllerID="Temperature" Type="Reactor" HorizontalAlignment="Center" VerticalAlignment="Top" />
+                    <control:MonitoringMeter x:Name="heaterPowerRate" Canvas.Left="1018" Canvas.Top="93" Type="HeaterPowerRate" HorizontalAlignment="Center" VerticalAlignment="Top" />
+                    <control:RecipeRunFlowController x:Name="reactorPressure" Canvas.Left="1098" Canvas.Top="48" ControllerID="Pressure" Type="Reactor" HorizontalAlignment="Center" VerticalAlignment="Top" />
+                    <control:MonitoringMeter x:Name="ultimatePressure" Canvas.Left="1099" Canvas.Top="95" Type="UltimatePressure" HorizontalAlignment="Left" VerticalAlignment="Center" />
+                    <control:RecipeRunFlowController x:Name="susceptorRotation" Canvas.Left="1178" Canvas.Top="48" ControllerID="Rotation" Type="Reactor" HorizontalAlignment="Center" VerticalAlignment="Top" />
                     <!--#endregion-->
 
                     <!-- #Region 4. 가스제어용 밸브 -->

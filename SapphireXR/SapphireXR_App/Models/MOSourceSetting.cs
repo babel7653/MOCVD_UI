@@ -3,6 +3,7 @@ using Newtonsoft.Json.Linq;
 using SapphireXR_App.Common;
 using SapphireXR_App.Controls;
 using System.IO;
+using System.Windows;
 
 namespace SapphireXR_App.Models
 {
@@ -100,9 +101,16 @@ namespace SapphireXR_App.Models
 
         internal static void Save()
         {
-            JObject jDeviceIO = new JObject(new JProperty("AbsoluteTemperature", JsonConvert.SerializeObject(AbsoluteTemp)),
-               new JProperty("MOSource", JsonConvert.SerializeObject(MOSourceModels)));
-            File.WriteAllText(MOSourceFilePath, jDeviceIO.ToString());
+            try
+            {
+                JObject jDeviceIO = new JObject(new JProperty("AbsoluteTemperature", JsonConvert.SerializeObject(AbsoluteTemp)),
+                   new JProperty("MOSource", JsonConvert.SerializeObject(MOSourceModels)));
+                File.WriteAllText(MOSourceFilePath, jDeviceIO.ToString());
+            }
+            catch (Exception exception)
+            {
+                MessageBox.Show("MOSource.json에 저장하는데 문제가 발생하였습니다. 원이은 다음과 같습니다: " + exception.Message);
+            }
         }
 
         internal static MOSourceModel? GetModel(string sourceName)

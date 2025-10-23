@@ -1,12 +1,11 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using SapphireXR_App.Common;
-using System.Text.Json.Serialization;
 
 namespace SapphireXR_App.Models
 {
-    internal partial class MOSourceModel: ObservableObject, IDisposable
+    internal partial class MOSourceModel : ObservableObject, IDisposable
     {
-        private class ConnectedMFCPVSubscriber: IObserver<float>
+        private class ConnectedMFCPVSubscriber : IObserver<float>
         {
             internal ConnectedMFCPVSubscriber(MOSourceModel model)
             {
@@ -54,7 +53,7 @@ namespace SapphireXR_App.Models
             private MOSourceModel moSourceModel;
         }
 
-        private class ConnectedValveStateSubscriber: IObserver<bool>
+        private class ConnectedValveStateSubscriber : IObserver<bool>
         {
             internal ConnectedValveStateSubscriber(MOSourceModel model)
             {
@@ -77,7 +76,7 @@ namespace SapphireXR_App.Models
 
             private MOSourceModel moSourceModel;
         }
-      
+
         internal enum MOMaterial { Liquid = 0, Solid }
 
         [Newtonsoft.Json.JsonConstructor]
@@ -91,8 +90,28 @@ namespace SapphireXR_App.Models
             connectedMFCPVSubscriberDisposer = ObservableManager<float>.Subscribe("FlowControl." + MFC + ".CurrentValue", connectedMFCPVSubscriber = new ConnectedMFCPVSubscriber(this));
             connectedEPCPVSubscriberDisposer = ObservableManager<float>.Subscribe("FlowControl." + EPC + ".CurrentValue", connectedEPCPVSubscriber = new ConnectedEPCPVSubscriber(this));
             connectedValveStateSubscriberDisposer = ObservableManager<bool>.Subscribe("Valve.OnOff." + Valve + ".CurrentPLCState", connectedValveStateSubscriber = new ConnectedValveStateSubscriber(this));
-            update = PLCService.ReadValveState(Valve);
+            if (PLCConnectionState.Instance.Online == true)
+            {
+                try
+                {
+                    update = PLCService.ReadValveState(Valve);
+                }
+                catch { }
+            }
 
+            PLCConnectionState.Instance.PropertyChanged += (sender, args) =>
+            {
+                switch (args.PropertyName)
+                {
+                    case nameof(PLCConnectionState.Instance.Online):
+                        try
+                        {
+                            update = PLCService.ReadValveState(Valve);
+                        }
+                        catch { }
+                        break;
+                }
+            };
             PropertyChanged += (sender, args) =>
             {
                 switch (args.PropertyName)
@@ -184,16 +203,20 @@ namespace SapphireXR_App.Models
                     case nameof(RemainWeight):
                         if (0.0f < RemainWeight)
                         {
-                            Task.Delay(TimeSpan.FromSeconds(1)).ContinueWith(_ =>
+                            try
                             {
-                                if (UsedWeight == null || weightDelta == null || update == false)
+                                Task.Delay(TimeSpan.FromSeconds(1)).ContinueWith(_ =>
                                 {
-                                    return;
-                                }
+                                    if (UsedWeight == null || weightDelta == null || update == false)
+                                    {
+                                        return;
+                                    }
 
-                                UsedWeight += weightDelta;
+                                    UsedWeight += weightDelta;
 
-                            }, TaskScheduler.FromCurrentSynchronizationContext());
+                                }, TaskScheduler.FromCurrentSynchronizationContext());
+                            }
+                            catch { }
                         }
                         break;
 
@@ -244,25 +267,25 @@ namespace SapphireXR_App.Models
         }
 
         [ObservableProperty]
-        private float? aValue= null;
+        private float? aValue = null;
 
         [ObservableProperty]
-        private float? bValue= null;
+        private float? bValue = null;
 
         [ObservableProperty]
-        private float? bubblerTemp= null;
+        private float? bubblerTemp = null;
 
         [ObservableProperty]
-        private float? bubblerConst= null;
+        private float? bubblerConst = null;
 
         [ObservableProperty]
-        private float? molarWeight= null;
+        private float? molarWeight = null;
 
         [ObservableProperty]
-        private float? initialWeight= null;
+        private float? initialWeight = null;
 
         [ObservableProperty]
-        private float? usedWeight= null;
+        private float? usedWeight = null;
 
         [ObservableProperty]
         private bool temperatureConstant = false;
@@ -282,7 +305,6 @@ namespace SapphireXR_App.Models
         [ObservableProperty]
         private float? remainWeight = null;
 
-        
         public string MFC { get; private set; }
         public string EPC { get; private set; }
         public string Valve { get; private set; }
@@ -300,6 +322,6 @@ namespace SapphireXR_App.Models
         private IDisposable? connectedValveStateSubscriberDisposer = null;
 
         private bool disposedValue = false;
-       
+
     }
 }

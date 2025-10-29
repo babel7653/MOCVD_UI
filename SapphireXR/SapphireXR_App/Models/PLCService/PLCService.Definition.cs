@@ -208,8 +208,7 @@ namespace SapphireXR_App.Models
         private static short[]? aInputState = null;
         private static BitArray? bOutputCmd1 = null;
         private static int[] InterlockEnables = Enumerable.Repeat<int>(0, (int)NumAlarmWarningArraySize).ToArray();
-        private static Memory<byte> userStateBuffer = new Memory<byte>([ 0x00, 0x00 ]);
-        private static float?[] aTargetValueMappingFactor = new float?[dIndexController.Count];
+        private static Memory<byte> userStateBuffer = new Memory<byte>([0x00, 0x00]);
 
         private static Dictionary<string, ObservableManager<float>.Publisher>? dCurrentValueIssuers;
         private static Dictionary<string, ObservableManager<float>.Publisher>? dControlValueIssuers;

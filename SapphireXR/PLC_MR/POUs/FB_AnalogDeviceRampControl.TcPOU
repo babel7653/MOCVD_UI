@@ -9,8 +9,8 @@ END_VAR
     <Implementation>
       <ST><![CDATA[FOR i:=1 TO GVL_IO.NumFlowController DO
 	IF GVL_IO.aMaxValueController[i] <> 0 THEN
-		GVL_IO.aAnalogOutputIO[i] := LREAL_TO_INT(GVL_IO.aController[i].rControlValue); //Write to Device
-		GVL_IO.aController_CV[i] := LREAL_TO_REAL((GVL_IO.aController[i].rControlValue / GVL_IO.KL3464MaxValueH)*GVL_IO.aMaxValueController[i]);
+		GVL_IO.aAnalogOutputIO[i] := LREAL_TO_INT(GVL_IO.aController[i].rControlValue * GVL_IO.KL3464MaxValueH / GVL_IO.aMaxValueController[i]); //Write to Device
+		GVL_IO.aController_CV[i] := LREAL_TO_REAL(GVL_IO.aController[i].rControlValue);
 		GVL_IO.aController[i]();
 	END_IF
 END_FOR
@@ -34,14 +34,7 @@ GVL_IO.aController_CV[29] := GVL_IO.rRotation_ControlValue;
 GVL_IO.aController[29]();	]]></ST>
     </Implementation>
     <LineIds Name="FB_AnalogDeviceRampControl">
-      <LineId Id="1" Count="1" />
-      <LineId Id="5" Count="9" />
-      <LineId Id="39" Count="0" />
-      <LineId Id="15" Count="0" />
-      <LineId Id="17" Count="0" />
-      <LineId Id="20" Count="3" />
-      <LineId Id="26" Count="3" />
-      <LineId Id="32" Count="1" />
+      <LineId Id="1" Count="24" />
     </LineIds>
   </POU>
 </TcPlcObject>

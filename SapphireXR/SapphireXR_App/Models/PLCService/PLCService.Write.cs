@@ -1,4 +1,5 @@
 ﻿using SapphireXR_App.Common;
+using SapphireXR_App.ViewModels;
 using System.Collections;
 using System.Windows;
 
@@ -78,40 +79,19 @@ namespace SapphireXR_App.Models
                 }
 
                 float[] maxValue = new float[29];
-                int index = 0;
                 foreach (AnalogDeviceIO entry in analogDeviceIOs)
                 {
                     if (entry.ID == null)
                     {
                         throw new Exception("entry ID is null for AnalogDeviceIO");
                     }
-                    if (index < 3)
-                    {
-                        maxValue[index + 26] = entry.MaxValue;
-                    }
-                    else
-                    {
-                        maxValue[index - 3] = entry.MaxValue;
-                    }
-                    index++;
+                    maxValue[dIndexController[SettingViewModel.AnalogDeviceIDNameMap[entry.ID]]] = entry.MaxValue;
                 }
                 Ads.WriteAny(hDeviceMaxValuePLC, maxValue, [dIndexController.Count]);
-
-                float KL3464MaxValueH = Ads.ReadAny<float>(Ads.CreateVariableHandle("GVL_IO.KL3464MaxValueH"));
-                for (uint mapping = 0; mapping < (aTargetValueMappingFactor.Length - 3); ++mapping)
-                {
-                    aTargetValueMappingFactor[mapping] = KL3464MaxValueH / maxValue[mapping];
-                }
-                for (uint mapping = (uint)(aTargetValueMappingFactor.Length - 3); mapping < aTargetValueMappingFactor.Length; ++mapping)
-                {
-                    aTargetValueMappingFactor[mapping] = 1.0f;
-                }
-
-                // List Analog Device Input / Output
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message);
+                throw new InvalidOperationException("PLC로 Max Value를 쓰는데, 문제가 발생하였습니다. 애플리케이션을 종료합니다. 원인은 다음과 같습니다: " + ex.Message);
             }
         }
 
@@ -360,25 +340,19 @@ namespace SapphireXR_App.Models
         public static void WriteFlowControllerTargetValue(string controllerID, int targetValue, short rampTime)
         {
             int controllerIDIndex = dIndexController[controllerID];
-            float? targetValueMappingFactor = aTargetValueMappingFactor[controllerIDIndex];
-            if (targetValueMappingFactor == null)
-            {
-                throw new Exception("KL3464MaxValueH is null in WriteFlowControllerTargetValue");
-            }
-            short actualTargetValue = (short)(targetValue * targetValueMappingFactor.Value);
-            Ads.WriteAny(hAControllerInput[controllerIDIndex], new RampGeneratorInput { restart = true, rampTime = (ushort)rampTime, targetValue = actualTargetValue });
+            Ads.WriteAny(hAControllerInput[controllerIDIndex], new RampGeneratorInput { restart = true, rampTime = (ushort)rampTime, targetValue = targetValue });
             switch (controllerIDIndex)
             {
                 case 26:
-                    temperatureTVPublisher?.Publish(actualTargetValue);
+                    temperatureTVPublisher?.Publish((short)targetValue);
                     break;
 
                 case 27:
-                    pressureTVPublisher?.Publish(actualTargetValue);
+                    pressureTVPublisher?.Publish((short)targetValue);
                     break;
 
                 case 28:
-                    rotationTVPublisher?.Publish(actualTargetValue);
+                    rotationTVPublisher?.Publish((short)targetValue);
                     break;
             }
         }

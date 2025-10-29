@@ -19,7 +19,7 @@ END_VAR
       <ST><![CDATA[FOR i:= 1 TO 26 DO
 	GVL_IO.aController[i].input.restart := TRUE;
 	GVL_IO.aController[i].input.rampTime := rampTime; 
-	GVL_IO.aController[i].input.targetValue := rRecipe[i] / GVL_IO.aMaxValueController[i] * GVL_IO.KL3464MaxValueH;;
+	GVL_IO.aController[i].input.targetValue := rRecipe[i];
 END_FOR
 
 GVL_IO.aController[27].input.restart := TRUE;

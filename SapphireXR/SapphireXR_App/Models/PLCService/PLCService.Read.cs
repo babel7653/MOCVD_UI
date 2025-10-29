@@ -304,7 +304,7 @@ namespace SapphireXR_App.Models
 
         public static float ReadFlowControllerTargetValue(string controllerID)
         {
-            return Ads.ReadAny<RampGeneratorInput>(hAControllerInput[dIndexController[controllerID]]).targetValue / GetTargetValueMappingFactor(controllerID);
+            return Ads.ReadAny<RampGeneratorInput>(hAControllerInput[dIndexController[controllerID]]).targetValue;
         }
 
         public static short ReadCurrentStep()

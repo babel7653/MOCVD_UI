@@ -8,33 +8,28 @@ END_VAR
 ]]></Declaration>
     <Implementation>
       <ST><![CDATA[FOR i:=1 TO GVL_IO.NumFlowController DO
-	IF GVL_IO.aMaxValueController[i] <> 0 THEN
-		GVL_IO.aAnalogOutputIO[i] := LREAL_TO_INT(GVL_IO.aController[i].rControlValue * GVL_IO.KL3464MaxValueH / GVL_IO.aMaxValueController[i]); //Write to Device
-		GVL_IO.aController_CV[i] := LREAL_TO_REAL(GVL_IO.aController[i].rControlValue);
-		GVL_IO.aController[i]();
-	END_IF
+	GVL_IO.aAnalogOutputIO[i] := LREAL_TO_INT(GVL_IO.aController[i].rControlValue / GVL_IO.AnalogControllerOutputVoltage * GVL_IO.KL3464MaxValueH);
+	GVL_IO.aController[i]();
 END_FOR
 
-IF ( GVL_IO.aController_CV[27] > 10 ) THEN
+IF ( GVL_IO.aController[27].rControlValue > GVL_IO.TempDigitOutputFallbackThres ) THEN
 	GVL_IO.aDigitalOutputIO[2].0 := TRUE;
 ELSE
 	GVL_IO.aDigitalOutputIO[2].0 := FALSE;
 END_IF
 
-GVL_IO.wE3508_CV := LREAL_TO_WORD(GVL_IO.aController[27].rControlValue); //Write to Temperature Controller
-GVL_IO.aController_CV[27] := WORD_TO_REAL(GVL_IO.wE3508_CV);
 GVL_IO.aController[27]();
-				
-GVL_IO.wIqPlus_CV := LREAL_TO_WORD(GVL_IO.aController[28].rControlValue); //Write to Pressure Controller
-GVL_IO.aController_CV[28] := WORD_TO_REAL(GVL_IO.wIqPlus_CV);
 GVL_IO.aController[28]();
-
-GVL_IO.rRotation_ControlValue := LREAL_TO_REAL(GVL_IO.aController[29].rControlValue); //Write to Rotation Controller (rpm)
-GVL_IO.aController_CV[29] := GVL_IO.rRotation_ControlValue;
 GVL_IO.aController[29]();	]]></ST>
     </Implementation>
     <LineIds Name="FB_AnalogDeviceRampControl">
-      <LineId Id="1" Count="24" />
+      <LineId Id="1" Count="0" />
+      <LineId Id="27" Count="0" />
+      <LineId Id="6" Count="7" />
+      <LineId Id="15" Count="0" />
+      <LineId Id="17" Count="0" />
+      <LineId Id="23" Count="0" />
+      <LineId Id="25" Count="0" />
     </LineIds>
   </POU>
 </TcPlcObject>

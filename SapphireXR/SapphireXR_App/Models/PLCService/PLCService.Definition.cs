@@ -198,6 +198,7 @@ namespace SapphireXR_App.Models
         public const uint NumAnalogDevice = 29;
         public const int NumRecipeEnableSubConditions = 12;
         public const int NumReactorEnableSubConditions = 10;
+        private const float AnalogControllerOutputVoltage = 5.0f;
 
         // Variable handles to be connected plc variables
         private static BitArray? baReadValveStatePLC1 = null;
@@ -272,7 +273,6 @@ namespace SapphireXR_App.Models
         // Read from PLC State
         private static uint hReadValveStatePLC1;
         private static uint hReadValveStatePLC2;
-        private static uint hDeviceMaxValuePLC;
         private static uint hDeviceControlValuePLC;
         private static uint hDeviceCurrentValuePLC;
         private static uint hRcp;

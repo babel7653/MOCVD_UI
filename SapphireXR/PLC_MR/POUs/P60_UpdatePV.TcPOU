@@ -8,9 +8,7 @@ END_VAR
 ]]></Declaration>
     <Implementation>
       <ST><![CDATA[FOR i:=1 TO GVL_IO.NumFlowController DO
-	IF 0.0 < GVL_IO.aMaxValueController[i]  THEN		
-		GVL_IO.aController_PV[i] := GVL_IO.aAnalogInputIO[i] / (GVL_IO.KL3464MaxValueH * GVL_IO.aMaxValueController[i]);
-	END_IF
+	GVL_IO.aController_PV[i] := (INT_TO_REAL(GVL_IO.aAnalogInputIO[i]) / GVL_IO.KL3464MaxValueH) * GVL_IO.AnalogControllerOutputVoltage;
 END_FOR
 
 GVL_IO.aController_PV[27] := WORD_TO_REAL(GVL_IO.wE3508_PV);
@@ -18,7 +16,8 @@ GVL_IO.aController_PV[28] := WORD_TO_REAL(GVL_IO.wIqPlus_CDG2_PV);
 GVL_IO.aController_PV[29] := GVL_IO.nRotation_Converted_PV;]]></ST>
     </Implementation>
     <LineIds Name="P60_UpdatePV">
-      <LineId Id="1" Count="8" />
+      <LineId Id="1" Count="0" />
+      <LineId Id="4" Count="5" />
     </LineIds>
   </POU>
 </TcPlcObject>

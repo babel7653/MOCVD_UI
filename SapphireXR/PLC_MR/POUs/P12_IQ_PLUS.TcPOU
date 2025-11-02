@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4026.12">
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4026.11">
   <POU Name="P12_IQ_PLUS" Id="{e511b755-5d71-4ab9-9c97-639ef910a29b}" SpecialFunc="None">
     <Declaration><![CDATA[PROGRAM P12_IQ_PLUS
 VAR
@@ -86,7 +86,7 @@ isFBRunning			:= GVL_IO.aDigitalInputIO[3].2;
 wByteCDG1_PV 		:= USINT_TO_WORD_Bit(aInputPressurePV_CDG1[1],aInputPressurePV_CDG1[2]);
 wByteCDG2_PV 		:= USINT_TO_WORD_Bit(aInputPressurePV_CDG2[1],aInputPressurePV_CDG2[2]);
 wByteValvePosition_PV 	:= USINT_TO_WORD_Bit(aInputValvePosionPV[1], aInputValvePosionPV[2]);
-wControlValue		:= GVL_IO.wIqPlus_CV;
+wControlValue		:= LREAL_TO_WORD(GVL_IO.aController[28].rControlValue);
 
 //From IQ Plus
 // wCDG1_PV 			:= REAL_TO_WORD(wByteCDG1_PV/PressureFactor);

@@ -1,7 +1,7 @@
 ﻿using SapphireXR_App.Common;
 using SapphireXR_App.ViewModels;
 using System.Collections;
-using System.Windows;
+using System.Diagnostics;
 
 namespace SapphireXR_App.Models
 {
@@ -66,33 +66,6 @@ namespace SapphireXR_App.Models
 
             doWrite(hReadValveStatePLC1, firstValveParts);
             doWrite(hReadValveStatePLC2, secondValveParts);
-        }
-
-        public static void WriteDeviceMaxValue(List<AnalogDeviceIO>? analogDeviceIOs)
-        {
-            // Device Max. Value Write
-            try
-            {
-                if (analogDeviceIOs == null)
-                {
-                    throw new Exception("AnalogDeviceIO is null in WriteDeviceMaxValue");
-                }
-
-                float[] maxValue = new float[29];
-                foreach (AnalogDeviceIO entry in analogDeviceIOs)
-                {
-                    if (entry.ID == null)
-                    {
-                        throw new Exception("entry ID is null for AnalogDeviceIO");
-                    }
-                    maxValue[dIndexController[SettingViewModel.AnalogDeviceIDNameMap[entry.ID]]] = entry.MaxValue;
-                }
-                Ads.WriteAny(hDeviceMaxValuePLC, maxValue, [dIndexController.Count]);
-            }
-            catch (Exception ex)
-            {
-                throw new InvalidOperationException("PLC로 Max Value를 쓰는데, 문제가 발생하였습니다. 애플리케이션을 종료합니다. 원인은 다음과 같습니다: " + ex.Message);
-            }
         }
 
         public static void WriteRecipe(PlcRecipe[] recipe)
@@ -340,19 +313,31 @@ namespace SapphireXR_App.Models
         public static void WriteFlowControllerTargetValue(string controllerID, int targetValue, short rampTime)
         {
             int controllerIDIndex = dIndexController[controllerID];
-            Ads.WriteAny(hAControllerInput[controllerIDIndex], new RampGeneratorInput { restart = true, rampTime = (ushort)rampTime, targetValue = targetValue });
+            int? maxValue = SettingViewModel.ReadMaxValue(controllerID);
+            if(maxValue == null)
+            {
+                throw new ArgumentException(controllerID + " is invalid");
+            }
+            
             switch (controllerIDIndex)
             {
                 case 26:
+                    Ads.WriteAny(hAControllerInput[controllerIDIndex], new RampGeneratorInput { restart = true, rampTime = (ushort)rampTime, targetValue = (float)targetValue  });
                     temperatureTVPublisher?.Publish((short)targetValue);
                     break;
 
                 case 27:
+                    Ads.WriteAny(hAControllerInput[controllerIDIndex], new RampGeneratorInput { restart = true, rampTime = (ushort)rampTime, targetValue = (float)targetValue });
                     pressureTVPublisher?.Publish((short)targetValue);
                     break;
 
                 case 28:
+                    Ads.WriteAny(hAControllerInput[controllerIDIndex], new RampGeneratorInput { restart = true, rampTime = (ushort)rampTime, targetValue = (float)targetValue });
                     rotationTVPublisher?.Publish((short)targetValue);
+                    break;
+
+                default:
+                    Ads.WriteAny(hAControllerInput[controllerIDIndex], new RampGeneratorInput { restart = true, rampTime = (ushort)rampTime, targetValue = ((float)targetValue / (float)maxValue * AnalogControllerOutputVoltage) });
                     break;
             }
         }

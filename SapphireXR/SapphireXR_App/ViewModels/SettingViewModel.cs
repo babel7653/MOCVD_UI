@@ -596,7 +596,6 @@ namespace SapphireXR_App.ViewModels
 
         public void initializeSettingToPLC()
         {
-            PLCService.WriteDeviceMaxValue(lAnalogDeviceIO);
             PLCService.WriteAlarmWarningSetting(lAnalogDeviceIO ?? [], lSwitchDI ?? []);
                 
             PLCService.WriteAlarmDeviationState(AlarmDeviation);

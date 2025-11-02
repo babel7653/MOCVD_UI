@@ -37,7 +37,7 @@ nConvertedRotation_PV := REAL_TO_INT(wRotaion_PV/(5*ConversionFactor));
 
 // Interface with other PRGs
 GVL_IO.nRotation_Converted_PV := nConvertedRotation_PV;
-rControlValue := GVL_IO.rRotation_ControlValue;
+rControlValue := LREAL_TO_REAL(GVL_IO.aController[29].rControlValue);
 
 //Write to Motor Driver
 rConvertedCV := rControlValue * ConversionFactor; // Convert from RPM to control value

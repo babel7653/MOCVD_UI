@@ -145,7 +145,6 @@ namespace SapphireXR_App.Models
         {
             hDeviceControlValuePLC = Ads.CreateVariableHandle("GVL_IO.aController_CV");
             hDeviceCurrentValuePLC = Ads.CreateVariableHandle("GVL_IO.aController_PV");
-            hDeviceMaxValuePLC = Ads.CreateVariableHandle("GVL_IO.aMaxValueController");
 
             hReadValveStatePLC1 = Ads.CreateVariableHandle("GVL_IO.aOutputSolValve[1]");
             hReadValveStatePLC2 = Ads.CreateVariableHandle("GVL_IO.aOutputSolValve[2]");

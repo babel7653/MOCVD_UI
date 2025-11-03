@@ -667,11 +667,6 @@
                                                         <Thickness Bottom="{StaticResource p_3}" />
                                                     </Setter.Value>
                                                 </Setter>
-                                                <Style.Triggers>
-                                                    <DataTrigger Binding="{Binding Source={x:Static model:PLCConnectionState.Instance}, Path=Online, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}" Value="True">
-                                                        <Setter Property="IsReadOnly" Value="True" />
-                                                    </DataTrigger>
-                                                </Style.Triggers>
                                             </Style>
                                         </StackPanel.Resources>
                                         <Grid>

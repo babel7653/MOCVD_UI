@@ -143,7 +143,6 @@ namespace SapphireXR_App.Models
 
         private static void CreateHandle()
         {
-            hDeviceControlValuePLC = Ads.CreateVariableHandle("GVL_IO.aController_CV");
             hDeviceCurrentValuePLC = Ads.CreateVariableHandle("GVL_IO.aController_PV");
 
             hReadValveStatePLC1 = Ads.CreateVariableHandle("GVL_IO.aOutputSolValve[1]");
@@ -186,6 +185,7 @@ namespace SapphireXR_App.Models
             for (uint analogDevice = 0; analogDevice < NumControllers; ++analogDevice)
             {
                 hAControllerInput[analogDevice] = Ads.CreateVariableHandle("GVL_IO.aController[" + (analogDevice + 1)+ "].input");
+                hAControllerControlValue[analogDevice] = Ads.CreateVariableHandle("GVL_IO.aController[" + (analogDevice + 1) + "].rControlValue");
             }
             hUIInterockCheckRecipeEnable = Ads.CreateVariableHandle("GVL_IO.nUIInterockCheckRecipeEnable");
             hUIInterockCheckOpenReactor = Ads.CreateVariableHandle("GVL_IO.nUIInterockCheckOpenReactor");

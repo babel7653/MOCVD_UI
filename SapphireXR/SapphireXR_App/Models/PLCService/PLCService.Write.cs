@@ -1,7 +1,6 @@
 ﻿using SapphireXR_App.Common;
 using SapphireXR_App.ViewModels;
 using System.Collections;
-using System.Diagnostics;
 
 namespace SapphireXR_App.Models
 {

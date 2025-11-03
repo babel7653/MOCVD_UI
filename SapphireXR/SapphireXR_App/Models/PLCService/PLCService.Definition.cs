@@ -198,13 +198,13 @@ namespace SapphireXR_App.Models
         public const uint NumAnalogDevice = 29;
         public const int NumRecipeEnableSubConditions = 12;
         public const int NumReactorEnableSubConditions = 10;
-        private const float AnalogControllerOutputVoltage = 5.0f;
+        public const float AnalogControllerOutputVoltage = 5.0f;
 
         // Variable handles to be connected plc variables
         private static BitArray? baReadValveStatePLC1 = null;
         private static BitArray? baReadValveStatePLC2 = null;
         private static float[]? aDeviceCurrentValues = null;
-        private static float[]? aDeviceControlValues = null;
+        private static float[] aDeviceControlValues = new float[NumAnalogDevice];
         private static float[]? aMonitoring_PVs = null;
         private static short[]? aInputState = null;
         private static BitArray? bOutputCmd1 = null;
@@ -273,7 +273,6 @@ namespace SapphireXR_App.Models
         // Read from PLC State
         private static uint hReadValveStatePLC1;
         private static uint hReadValveStatePLC2;
-        private static uint hDeviceControlValuePLC;
         private static uint hDeviceCurrentValuePLC;
         private static uint hRcp;
         private static uint hRcpTotalStep;
@@ -302,6 +301,7 @@ namespace SapphireXR_App.Models
         private static uint[] hInterlockset = new uint[NumInterlockSet];
         private static uint[] hInterlock = new uint[NumInterlock];
         private static uint[] hAControllerInput = new uint[NumControllers];
+        private static uint[] hAControllerControlValue = new uint[NumControllers];
 
         private static bool RecipeRunEndNotified = false;
         private static bool LeakTestMode = true;

@@ -3,7 +3,6 @@ using CommunityToolkit.Mvvm.Input;
 using SapphireXR_App.Enums;
 using SapphireXR_App.Models;
 using SapphireXR_App.WindowServices;
-using static SapphireXR_App.Models.PLCService;
 
 namespace SapphireXR_App.ViewModels
 {
@@ -31,14 +30,17 @@ namespace SapphireXR_App.ViewModels
                                     throw new Exception("Faiure happend in reading max value for flow control view window. Logic error in FlowControlViewModel constructor: "
                                              + "the value of \"fcID\", the third argument of the constructor \"" + fcID + "\" is not valid flow controller ID:" + redMaxValue == null ? "Null" : redMaxValue.ToString());
                                 }
+                                DeviationEnabled = true;
                                 break;
 
                             case HeaterControlMode.Manual:
                                 MaxValue = 100;
+                                DeviationEnabled = false;
                                 break;
                         }
                         TargetValue = "";
-                        RampTimeEnabled = currentMode == ControlMode;
+                        RampTimeEnabled = ControlMode == HeaterControlMode.Auto;
+                        updateDeviation();
                         break;
 
                     case nameof(RampTimeEnabled):
@@ -46,12 +48,27 @@ namespace SapphireXR_App.ViewModels
                         break;
                 }
             };
-            ControlMode = currentMode = PLCService.ReadInputManAuto(10) == true ? HeaterControlMode.Manual : HeaterControlMode.Auto;
+            ControlMode = PLCService.ReadInputManAuto(7) == true ? HeaterControlMode.Manual : HeaterControlMode.Auto;
+            DeviationEnabled = ControlMode == HeaterControlMode.Auto;
+        }
+
+        protected override void updateDeviation()
+        {
+            switch (ControlMode)
+            {
+                case HeaterControlMode.Auto:
+                    base.updateDeviation();
+                    break;
+
+                case HeaterControlMode.Manual:
+                    Deviation = string.Empty;
+                    break;
+            }
         }
 
         protected override bool canConfirmExecute()
         {
-            if (currentMode == ControlMode)
+            if (ControlMode == HeaterControlMode.Auto)
             {
                 return base.canConfirmExecute();
             }
@@ -91,7 +108,7 @@ namespace SapphireXR_App.ViewModels
                         if (controlValues.targetValue != null && controlValues.rampTime != null)
                         {
                             PLCService.WriteOutputCmd1(PLCService.OutputCmd1Index.TempControllerManAuto, ControlMode == HeaterControlMode.Manual ? true : false);
-                            PLCService.WriteFlowControllerTargetValue(controllerID, controlValues.targetValue.Value, currentMode == ControlMode ? controlValues.rampTime.Value : (short)0);
+                            PLCService.WriteFlowControllerTargetValue(controllerID, controlValues.targetValue.Value, ControlMode == HeaterControlMode.Auto ? controlValues.rampTime.Value : (short)0);
                             //App.Current.MainWindow.Dispatcher.InvokeAsync(() => ToastMessage.Show("PLC로 목표 유량과 램프 시간이 성공적으로 전송되었습니다.", ToastMessage.MessageType.Success));
                             ToastMessage.Show("PLC로 목표 유량과 램프 시간이 성공적으로 전송되었습니다.", ToastMessage.MessageType.Success);
                         }
@@ -120,6 +137,7 @@ namespace SapphireXR_App.ViewModels
         private bool rampTimeEnabled = true;
         [ObservableProperty]
         private HeaterControlMode controlMode;
-        private HeaterControlMode currentMode;
+        [ObservableProperty]
+        private bool deviationEnabled;
     }
 }

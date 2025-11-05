@@ -198,14 +198,26 @@ namespace SapphireXR_App.Models
             aDeviceCurrentValues = Ads.ReadAny<float[]>(hDeviceCurrentValuePLC, [NumControllers]);
             foreach(KeyValuePair<string, int> kv in dIndexController)
             {
-                float? maxValue = SettingViewModel.ReadMaxValue(kv.Key);
-                if(maxValue == null)
+                switch(kv.Key)
                 {
-                    throw new ArgumentException(kv.Key + "is not valid analog device ID");
+                    case "Temperature":
+                    case "Pressure":
+                    case "Rotation":
+                        aDeviceControlValues[kv.Value] = (float)Ads.ReadAny<double>(hAControllerControlValue[kv.Value]);
+                        aDeviceCurrentValues[kv.Value] = aDeviceCurrentValues[kv.Value];
+                        break;
+
+                    default:
+                        float? maxValue = SettingViewModel.ReadMaxValue(kv.Key);
+                        if (maxValue == null)
+                        {
+                            throw new ArgumentException(kv.Key + "is not valid analog device ID");
+                        }
+                        aDeviceControlValues[kv.Value] = (float)Ads.ReadAny<double>(hAControllerControlValue[kv.Value]) / AnalogControllerOutputVoltage * maxValue.Value;
+                        aDeviceCurrentValues[kv.Value] = aDeviceCurrentValues[kv.Value] / AnalogControllerOutputVoltage * maxValue.Value;
+                        break;
+
                 }
-               
-                aDeviceControlValues[kv.Value] = (float)Ads.ReadAny<double>(hAControllerControlValue[kv.Value]) / AnalogControllerOutputVoltage * maxValue.Value;
-                aDeviceCurrentValues[kv.Value] = aDeviceCurrentValues[kv.Value] / AnalogControllerOutputVoltage * maxValue.Value;
             }
             aMonitoring_PVs = Ads.ReadAny<float[]>(hMonitoring_PV, [18]);
             aInputState = Ads.ReadAny<short[]>(hInputState, [5]);

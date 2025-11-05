@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4026.11">
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4026.12">
   <POU Name="MAIN" Id="{c65bb020-a024-43e6-87d0-b2b9cfee7c16}" SpecialFunc="None">
     <Declaration><![CDATA[PROGRAM MAIN
 VAR_INPUT
@@ -37,7 +37,7 @@ END_IF
 
 CASE controlMode OF
 	E_ControlMode.Manual:
-		P30_ManualControlExt();
+		P30_ManualControl();
 	
 	E_ControlMode.Recipe:
 		P50_RecipeControl(); //레시피 콘트론
@@ -60,15 +60,7 @@ P92_Maintenance();
 ]]></ST>
     </Implementation>
     <LineIds Name="MAIN">
-      <LineId Id="535" Count="17" />
-      <LineId Id="584" Count="1" />
-      <LineId Id="553" Count="5" />
-      <LineId Id="560" Count="8" />
-      <LineId Id="583" Count="0" />
-      <LineId Id="569" Count="1" />
-      <LineId Id="586" Count="0" />
-      <LineId Id="571" Count="4" />
-      <LineId Id="580" Count="1" />
+      <LineId Id="587" Count="45" />
       <LineId Id="220" Count="0" />
     </LineIds>
   </POU>

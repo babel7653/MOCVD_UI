@@ -681,7 +681,7 @@
                                                 <ColumnDefinition />
                                             </Grid.ColumnDefinitions>
                                             <Label Grid.Column="0" Style="{StaticResource SectionTitle}" Content="Device Naming" VerticalAlignment="Top"/>
-                                            <Button Grid.Column="1" x:Name="DeviceNameSave" Content="Save" Width="66" Height="28" VerticalAlignment="Top" HorizontalAlignment="Right" Style="{StaticResource PrimaryButton}"/>
+                                            <Button Grid.Column="1" x:Name="DeviceNameSave" Content="Save" Width="66" Height="28" VerticalAlignment="Top" HorizontalAlignment="Right" Command="{Binding SaveDeviceNamingCommand}" Style="{StaticResource PrimaryButton}"/>
                                         </Grid>
                                         <DataGrid x:Name="dgMaxValueSetting" ItemsSource="{Binding lAnalogDeviceIO}" Style="{StaticResource DeviceNamingSettingDataGrid}" Height="300">
                                             <DataGrid.Resources>

@@ -1,13 +1,13 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using SapphireXR_App.Models;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-using System.IO;
 using SapphireXR_App.Common;
-using System.ComponentModel;
-using System.Collections;
 using SapphireXR_App.Enums;
+using SapphireXR_App.Models;
+using System.Collections;
+using System.ComponentModel;
+using System.IO;
 using System.Windows;
 
 namespace SapphireXR_App.ViewModels
@@ -18,7 +18,7 @@ namespace SapphireXR_App.ViewModels
         {
             var fdevice = File.ReadAllText(DevceIOSettingFilePath);
             JToken? jDeviceInit = JToken.Parse(fdevice);
-            if(jDeviceInit == null)
+            if (jDeviceInit == null)
             {
                 return;
             }
@@ -42,6 +42,26 @@ namespace SapphireXR_App.ViewModels
                 if (deserialized != null)
                 {
                     dAnalogDeviceIO = deserialized;
+                    foreach (AnalogDeviceIO reactor in (from analogDeviceIO in dAnalogDeviceIO where ReactorNameToEnumMap.Keys.Contains(analogDeviceIO.Key) select analogDeviceIO.Value))
+                    {
+                        reactor.PropertyChanged += (sender, args) =>
+                        {
+                            switch (args.PropertyName)
+                            {
+                                case nameof(AnalogDeviceIO.MaxValue):
+                                    AnalogDeviceIO? analogDeviceIO = sender as AnalogDeviceIO;
+                                    if (analogDeviceIO != null)
+                                    {
+                                        PLCService.WriteReactorMaxValue(ReactorNameToEnumMap[analogDeviceIO.ID!], reactor.MaxValue);
+                                    }
+                                    else
+                                    {
+                                        throw new ArgumentException("AnalogDeviceIO is null in AnalogDeviceIO.MaxValue PropertyChanged event handler in SettingViewModel");
+                                    }
+                                    break;
+                            }
+                        };
+                    }
                 }
             }
             JToken? jSwitchDI = jDeviceInit["SwitchDI"];
@@ -97,7 +117,7 @@ namespace SapphireXR_App.ViewModels
                                     InterLockD? interlockD = sender as InterLockD;
                                     if (interlockD != null)
                                     {
-                                        switch(args.PropertyName)
+                                        switch (args.PropertyName)
                                         {
                                             case nameof(InterLockD.IsEnable):
                                                 PLCService.WriteInterlockEnableState(interlockD.IsEnable, plcArg.Value);
@@ -155,13 +175,13 @@ namespace SapphireXR_App.ViewModels
                                                 {
                                                     PLCService.WriteInterlockValueState(float.Parse(interlockA.Treshold), interlockValueSetting);
                                                 }
-                                                catch(ArgumentException)
-                                                { 
-                                                }
-                                                catch(FormatException)
+                                                catch (ArgumentException)
                                                 {
                                                 }
-                                                catch(OverflowException)
+                                                catch (FormatException)
+                                                {
+                                                }
+                                                catch (OverflowException)
                                                 {
                                                 }
                                                 break;
@@ -177,7 +197,7 @@ namespace SapphireXR_App.ViewModels
             if (jValveDeviceIO != null)
             {
                 var deserialized = JsonConvert.DeserializeObject<List<Device>>(jValveDeviceIO.ToString());
-                if(deserialized != null)
+                if (deserialized != null)
                 {
                     ValveDeviceIO = deserialized;
                 }
@@ -190,7 +210,7 @@ namespace SapphireXR_App.ViewModels
             {
                 ValveDeviceIO = CreateDefaultValveDeviceIO();
             }
-            foreach(var io in ValveDeviceIO)
+            foreach (var io in ValveDeviceIO)
             {
                 io.PropertyChanged += (object? sender, PropertyChangedEventArgs args) =>
                 {
@@ -272,21 +292,21 @@ namespace SapphireXR_App.ViewModels
                             break;
 
                         case nameof(ThermalBathPowerOnOff):
-                            if(ThermalBathPowerOnOff != null)
+                            if (ThermalBathPowerOnOff != null)
                             {
                                 PLCService.WriteOutputCmd1(PLCService.OutputCmd1Index.ThermalBathPower, ThermalBathPowerOnOff.Value);
                             }
                             break;
 
                         case nameof(VaccumPumpPowerOnOff):
-                            if(VaccumPumpPowerOnOff != null)
+                            if (VaccumPumpPowerOnOff != null)
                             {
                                 PLCService.WriteOutputCmd1(PLCService.OutputCmd1Index.VaccumPumpPower, VaccumPumpPowerOnOff.Value);
                             }
                             break;
 
                         case nameof(LineHeaterPowerOnOff):
-                            if(LineHeaterPowerOnOff != null)
+                            if (LineHeaterPowerOnOff != null)
                             {
                                 PLCService.WriteOutputCmd1(PLCService.OutputCmd1Index.LineHeaterPower, LineHeaterPowerOnOff.Value);
                             }
@@ -296,9 +316,9 @@ namespace SapphireXR_App.ViewModels
             };
             PLCConnectionState.Instance.PropertyChanged += (sender, args) =>
             {
-                if(args.PropertyName == nameof(PLCConnectionState.Online))
+                if (args.PropertyName == nameof(PLCConnectionState.Online))
                 {
-                    if(PLCConnectionState.Instance.Online == true)
+                    if (PLCConnectionState.Instance.Online == true)
                     {
                         initializeSettingToPLC();
                     }
@@ -323,7 +343,7 @@ namespace SapphireXR_App.ViewModels
             if (AnalogDeviceIDShortNameMap.TryGetValue(id, out var shortName) == true)
             {
                 var found = dAnalogDeviceIO.Where((KeyValuePair<string, AnalogDeviceIO> analogDeviceIO) => shortName == analogDeviceIO.Key).Select((KeyValuePair<string, AnalogDeviceIO> analogDeviceIO) => analogDeviceIO.Value.MaxValue);
-                if(0 < found.Count())
+                if (0 < found.Count())
                 {
                     return found.First();
                 }
@@ -375,7 +395,7 @@ namespace SapphireXR_App.ViewModels
         {
             PropertyChanged += (object? sender, PropertyChangedEventArgs args) =>
             {
-                switch(args.PropertyName)
+                switch (args.PropertyName)
                 {
                     case nameof(LogIntervalInRecipeRun):
                         if (LogIntervalInRecipeRun != null)
@@ -385,7 +405,7 @@ namespace SapphireXR_App.ViewModels
                         break;
                 }
             };
-          
+
             lAnalogDeviceIO = dAnalogDeviceIO?.Values.ToList();
             if (lAnalogDeviceIO != null)
             {
@@ -412,9 +432,9 @@ namespace SapphireXR_App.ViewModels
                 }
             }
             lSwitchDI = dSwitchDI?.Values.ToList();
-            if(lSwitchDI != null)
+            if (lSwitchDI != null)
             {
-                foreach(var io in lSwitchDI)
+                foreach (var io in lSwitchDI)
                 {
                     io.PropertyChanged += (object? sender, PropertyChangedEventArgs args) =>
                     {
@@ -522,7 +542,7 @@ namespace SapphireXR_App.ViewModels
         [ObservableProperty]
         private Visibility _showDigitalDeviceAlarmGuideCheckBoxPlaceHolder = Visibility.Hidden;
 
-        public void AlarmSettingSave()
+        public void Save()
         {
             JToken jsonAnalogDeviceIO = JsonConvert.SerializeObject(dAnalogDeviceIO);
             JToken jValveDeviceIO = JsonConvert.SerializeObject(ValveDeviceIO);
@@ -597,7 +617,12 @@ namespace SapphireXR_App.ViewModels
         public void initializeSettingToPLC()
         {
             PLCService.WriteAlarmWarningSetting(lAnalogDeviceIO ?? [], lSwitchDI ?? []);
-                
+            for (uint reactor = 0; reactor < PLCService.NumReactor; ++reactor)
+            {
+                PLCService.WriteReactorMaxValue((PLCService.Reactor)reactor, dAnalogDeviceIO.Where(analogDeviceIO => analogDeviceIO.Key == ReactorEnumToNameMap[(PLCService.Reactor)reactor]).Select(analogDeviceIO => analogDeviceIO.Value.MaxValue).First());
+            }
+            PLCService.CommitReactorMaxValueToPLC();
+
             PLCService.WriteAlarmDeviationState(AlarmDeviation);
             PLCService.WriteWarningDeviationState(WarningDeviation);
             PLCService.WriteAnalogDeviceDelayTime(AnalogDeviceDelayTime);
@@ -619,10 +644,10 @@ namespace SapphireXR_App.ViewModels
                     if (InterlockSettingNameToPLCInterlockEnableSettingEnum.TryGetValue(name, out interlockEnableSetting) == true)
                     {
                         PLCService.WriteInterlockEnableState(interlockA.IsEnable, interlockEnableSetting);
-                          
+
                     }
                     PLCService.InterlockValueSetting interlockValueSetting;
-                    if(InterlockSettingNameToPLCInterlockValueSettingEnum.TryGetValue(name, out interlockValueSetting) == true)
+                    if (InterlockSettingNameToPLCInterlockValueSettingEnum.TryGetValue(name, out interlockValueSetting) == true)
                     {
                         try
                         {
@@ -634,9 +659,9 @@ namespace SapphireXR_App.ViewModels
                     }
                 }
             }
-            if(dInterLockD != null)
+            if (dInterLockD != null)
             {
-                foreach((string name, InterLockD interlockD) in dInterLockD)
+                foreach ((string name, InterLockD interlockD) in dInterLockD)
                 {
                     PLCService.InterlockEnableSetting? plcArg = null;
                     switch (name)
@@ -649,7 +674,7 @@ namespace SapphireXR_App.ViewModels
                             plcArg = PLCService.InterlockEnableSetting.SusceptorRotationMotor;
                             break;
                     }
-                    if(plcArg != null)
+                    if (plcArg != null)
                     {
                         PLCService.WriteInterlockEnableState(interlockD.IsEnable, plcArg.Value);
                     }
@@ -663,9 +688,9 @@ namespace SapphireXR_App.ViewModels
         {
             List<Device> valveDeviceIO = new List<Device>();
 
-            foreach(string valveID in PLCService.ValveIDtoOutputSolValveIdx1.Keys)
+            foreach (string valveID in PLCService.ValveIDtoOutputSolValveIdx1.Keys)
             {
-                valveDeviceIO.Add(new () { ID = valveID, Name = valveID });
+                valveDeviceIO.Add(new() { ID = valveID, Name = valveID });
             }
             foreach (string valveID in PLCService.ValveIDtoOutputSolValveIdx2.Keys)
             {
@@ -689,7 +714,7 @@ namespace SapphireXR_App.ViewModels
             {
                 PLCService.CommitAnalogDeviceAlarmWarningSettingStateToPLC();
             }
-            AlarmSettingSave();
+            Save();
         }
         [RelayCommand]
         private void DigitalDeviceSettingSave()
@@ -698,7 +723,7 @@ namespace SapphireXR_App.ViewModels
             {
                 PLCService.CommitDigitalDeviceAlarmWarningSettingStateToPLC();
             }
-            AlarmSettingSave();
+            Save();
         }
         [RelayCommand]
         private void InterlockSettingSave()
@@ -708,7 +733,16 @@ namespace SapphireXR_App.ViewModels
                 PLCService.CommitInterlockEnableToPLC();
                 PLCService.CommitInterlockValueToPLC();
             }
-            AlarmSettingSave();
+            Save();
+        }
+        [RelayCommand]
+        private void SaveDeviceNaming()
+        {
+            if (PLCConnectionState.Instance.Online == true)
+            {
+                PLCService.CommitReactorMaxValueToPLC();
+            }
+            Save();
         }
     }
 }

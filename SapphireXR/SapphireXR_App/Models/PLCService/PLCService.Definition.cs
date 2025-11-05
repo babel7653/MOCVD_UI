@@ -140,6 +140,7 @@ namespace SapphireXR_App.Models
         };
 
         public enum TriggerType { Alarm = 0, Warning };
+        public enum Reactor { SusceptorTemperature = 0, ReactorPressure, SusceptorRotation };
 
         public static readonly Dictionary<string, int> ValveIDtoOutputSolValveIdx1 = new Dictionary<string, int>
         {
@@ -196,6 +197,7 @@ namespace SapphireXR_App.Models
         private const uint NumInterlock = 5;
         public const uint NumDigitalDevice = 14;
         public const uint NumAnalogDevice = 29;
+        public const uint NumReactor = 3;
         public const int NumRecipeEnableSubConditions = 12;
         public const int NumReactorEnableSubConditions = 10;
         public const float AnalogControllerOutputVoltage = 5.0f;
@@ -302,6 +304,7 @@ namespace SapphireXR_App.Models
         private static uint[] hInterlock = new uint[NumInterlock];
         private static uint[] hAControllerInput = new uint[NumControllers];
         private static uint[] hAControllerControlValue = new uint[NumControllers];
+        private static uint[] hReactorMaxValue = new uint[NumReactor];
 
         private static bool RecipeRunEndNotified = false;
         private static bool LeakTestMode = true;
@@ -317,6 +320,7 @@ namespace SapphireXR_App.Models
         private static Dictionary<int, float> AnalogDeviceInterlockSetIndiceToCommit = new Dictionary<int, float>();
         private static (bool, float) DigitalDevicelnterlockSetToCommit = (false, 0.0f);
         private static Dictionary<int, float> InterlockSetIndiceToCommit = new Dictionary<int, float>();
+        private static Dictionary<Reactor, float> ReactorMaxValueToCommit = new Dictionary<Reactor, float>();
 
         private static List<Action> AddOnPLCStateUpdateTask = new List<Action>();
     }

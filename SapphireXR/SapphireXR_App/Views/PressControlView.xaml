@@ -64,6 +64,12 @@
                                     <CornerRadius TopLeft="{StaticResource r_1}" TopRight="{StaticResource r_1}" BottomLeft="{StaticResource r_1}" BottomRight="{StaticResource r_1}" />
                                 </Setter.Value>
                             </Setter>
+                            <Style.Triggers>
+                                <Trigger Property="IsEnabled" Value="False">
+                                    <Setter Property="Background" Value="{StaticResource Gray_600}" />
+                                    <Setter Property="BorderBrush" Value="{StaticResource Gray_500}" />
+                                </Trigger>
+                            </Style.Triggers>
                         </Style>
                         <Style x:Key="valueLabel" TargetType="Label">
                             <Setter Property="HorizontalAlignment" Value="Center" />
@@ -91,9 +97,9 @@
                     <local:NumberBoxWithMax Grid.Row="0" Grid.Column="1" x:Name="txtInput" Text="{Binding TargetValue, UpdateSourceTrigger=PropertyChanged}" MaxValue="{Binding MaxValue}" Style="{StaticResource textInput}" />
                     <TextBlock Grid.Row="2" Grid.Column="0" Style="{StaticResource label}">Ramp Time(s)</TextBlock>
                     <local:NumberBox Grid.Row="2" Grid.Column="1" x:Name="txtInput1" Text="{Binding RampTime, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource textInput}"  IsEnabled="{Binding RampTimeEnabled}" />
-                    <TextBlock Grid.Row="4" Grid.Column="0" Style="{StaticResource label}">Deviation</TextBlock>
-                    <Border Grid.Row="4" Grid.Column="1" Style="{StaticResource readOnlyTextInput}">
-                        <Label  x:Name="txtFlowDeviaion" Content="{Binding Deviation}" Style="{StaticResource valueLabel}" />
+                    <TextBlock Grid.Row="4" Grid.Column="0" Style="{StaticResource label}"  IsEnabled="{Binding DeviationEnabled}">Deviation</TextBlock>
+                    <Border Grid.Row="4" Grid.Column="1" Style="{StaticResource readOnlyTextInput}"  IsEnabled="{Binding DeviationEnabled}">
+                        <Label  x:Name="txtFlowDeviaion" Content="{Binding Deviation}" Style="{StaticResource valueLabel}"  />
                     </Border>
                     <TextBlock Grid.Row="0" Grid.Column="3" Style="{StaticResource label}">Current Value</TextBlock>
                     <Border Grid.Row="0" Grid.Column="4" Style="{StaticResource readOnlyTextInput}">

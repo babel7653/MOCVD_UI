@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4026.11">
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4026.12">
   <POU Name="P90_Interlock" Id="{c8b81d81-de46-4c7a-a894-4387b2cd9bf7}" SpecialFunc="None">
     <Declaration><![CDATA[PROGRAM P90_Interlock
 VAR
@@ -160,7 +160,7 @@ ELSE
 			bWarningEnable := wDeviceWarningEnable.0,
 			fCurrentValue := GVL_IO.aController_PV[i],
 			fControlValue := LREAL_TO_REAL(GVL_IO.aController[i].rControlValue),
-			fMaxValue := GVL_IO.AnalogControllerOutputVoltage,
+			fMaxValue := GVL_IO.aReactorMaxValue[i - 26],
 			fAlarmTreshold := GVL_IO.aInterlockSet[1],
 			fWarningTreshold := GVL_IO.aInterlockSet[2],
 			tAlarmDelay := tAlarmDelay_A,

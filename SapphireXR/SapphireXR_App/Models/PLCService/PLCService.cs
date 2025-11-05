@@ -187,6 +187,10 @@ namespace SapphireXR_App.Models
                 hAControllerInput[analogDevice] = Ads.CreateVariableHandle("GVL_IO.aController[" + (analogDevice + 1)+ "].input");
                 hAControllerControlValue[analogDevice] = Ads.CreateVariableHandle("GVL_IO.aController[" + (analogDevice + 1) + "].rControlValue");
             }
+            for(uint reactor = 0; reactor < NumReactor; ++reactor)
+            {
+                hReactorMaxValue[reactor] = Ads.CreateVariableHandle("GVL_IO.aReactorMaxValue[" + (reactor + 1) + "]");
+            }
             hUIInterockCheckRecipeEnable = Ads.CreateVariableHandle("GVL_IO.nUIInterockCheckRecipeEnable");
             hUIInterockCheckOpenReactor = Ads.CreateVariableHandle("GVL_IO.nUIInterockCheckOpenReactor");
         }

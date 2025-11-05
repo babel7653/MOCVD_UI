@@ -1,7 +1,6 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using SapphireXR_App.Common;
-using SapphireXR_App.Enums;
 using SapphireXR_App.Models;
 using System.Collections;
 using System.Windows;
@@ -55,7 +54,7 @@ namespace SapphireXR_App.ViewModels
 
             void IObserver<bool>.OnNext(bool value)
             {
-                settingViewModel.AlarmSettingSave();
+                settingViewModel.Save();
             }
 
             private SettingViewModel settingViewModel;
@@ -196,7 +195,7 @@ namespace SapphireXR_App.ViewModels
 
 
         public ICommand AlarmSettingLoadCommand => new RelayCommand(AlarmSettingLoad);
-        public ICommand AlarmSettingSaveCommand => new RelayCommand(AlarmSettingSave);
+        public ICommand AlarmSettingSaveCommand => new RelayCommand(Save);
 
         [ObservableProperty]
         private string? _logIntervalInRecipeRun;
@@ -256,6 +255,18 @@ namespace SapphireXR_App.ViewModels
             { "CanOpenReactorPressure", PLCService.InterlockValueSetting.CanOpenReactorPressure },
             { "PressureLimit", PLCService.InterlockValueSetting.PressureLimit },
             { "ReTryCount", PLCService.InterlockValueSetting.RetryCount }
+        };
+        private static readonly Dictionary<PLCService.Reactor, string> ReactorEnumToNameMap = new()
+        {
+            { PLCService.Reactor.SusceptorTemperature, "R01" },
+            { PLCService.Reactor.ReactorPressure, "R02" },
+            { PLCService.Reactor.SusceptorRotation, "R03" }
+        };
+        private static readonly Dictionary<string, PLCService.Reactor> ReactorNameToEnumMap = new()
+        {
+            { "R01", PLCService.Reactor.SusceptorTemperature },
+            { "R02", PLCService.Reactor.ReactorPressure },
+            { "R03", PLCService.Reactor.SusceptorRotation }
         };
     }
 }

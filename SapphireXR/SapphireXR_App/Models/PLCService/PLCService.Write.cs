@@ -340,5 +340,19 @@ namespace SapphireXR_App.Models
                     break;
             }
         }
+
+        public static void WriteReactorMaxValue(Reactor reactor, float maxValue)
+        {
+            ReactorMaxValueToCommit[reactor] = maxValue;
+        }
+
+        public static void CommitReactorMaxValueToPLC()
+        {
+            foreach ((Reactor reactor, float maxValue) in ReactorMaxValueToCommit)
+            {
+                Ads.WriteAny(hReactorMaxValue[(int)reactor], maxValue);
+            }
+            ReactorMaxValueToCommit.Clear();
+        }
     }
 }

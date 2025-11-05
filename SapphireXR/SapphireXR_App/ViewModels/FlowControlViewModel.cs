@@ -162,18 +162,16 @@ namespace SapphireXR_App.ViewModels
             FontColor = OnNormal;
             PropertyChanged += (object? sender, PropertyChangedEventArgs e) =>
             {
-                if (e.PropertyName == "CurrentValue" || e.PropertyName == "ControlValue")
-                {
-                    if (CurrentValue != string.Empty && ControlValue != string.Empty)
-                    {
-                        Deviation = Util.FloatingPointStrWithMaxDigit((((float)(Math.Abs(float.Parse(CurrentValue) - float.Parse(ControlValue))) / ((float)MaxValue)) * 100.0f), AppSetting.FloatingPointMaxNumberDigit);
-                    }
-                }
                 switch (e.PropertyName)
                 {
                     case nameof(TargetValue):
                     case nameof(RampTime):
                         ConfirmCommand.NotifyCanExecuteChanged();
+                        break;
+
+                    case nameof(CurrentValue):
+                    case nameof(ControlValue):
+                        updateDeviation();
                         break;
                 }
             };
@@ -181,6 +179,14 @@ namespace SapphireXR_App.ViewModels
             currentValueSubscriber = new CurrentValueSubscriber(this);
             currentValueSubscriberDisposable = ObservableManager<float>.Subscribe("FlowControl." + fcID + ".CurrentValue", currentValueSubscriber);
             controlValueSubscriberDisposable = ObservableManager<float>.Subscribe("FlowControl." + fcID + ".ControlValue", controlValueSubscriber);
+        }
+
+        protected virtual void updateDeviation()
+        {
+            if (CurrentValue != string.Empty && ControlValue != string.Empty)
+            {
+                Deviation = Util.FloatingPointStrWithMaxDigit((((float)(Math.Abs(float.Parse(CurrentValue) - float.Parse(ControlValue))) / ((float)MaxValue)) * 100.0f), AppSetting.FloatingPointMaxNumberDigit);
+            }
         }
 
         protected virtual bool confirmed(ControlValues controlValues)

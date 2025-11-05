@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4026.11">
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4026.12">
   <GVL Name="GVL_IO" Id="{a5f3292d-798a-4b6c-af88-b59309d83086}">
     <Declaration><![CDATA[{attribute 'qualified_only'}
 VAR_GLOBAL
@@ -18,6 +18,7 @@ VAR_GLOBAL
 	(* Read and Write of Device Control Value*)
 	aController 			: ARRAY[1..NumAnalogController] OF FB_ControlRampGenerator; //MFC, EPC 0 ~ 5V
 	aController_PV 			: ARRAY[1..NumAnalogController] OF REAL; //Present Value from Device
+	aReactorMaxValue		: ARRAY[1..NumReactor] OF REAL;
 	
 	(* Present Value Meter Display*)
 	aMonitoring_PV 			: ARRAY[1..17] OF REAL; //Gauge Monitoring Value to UI
@@ -60,6 +61,7 @@ VAR_GLOBAL CONSTANT
 	
 	NumAnalogController : UINT := 29;
 	NumFlowController : UINT := 26;
+	NumReactor : UINT := 3;
 	
 	AnalogControllerOutputVoltage : REAL := 5;
 	TempDigitOutputFallbackThres : REAL := 10;

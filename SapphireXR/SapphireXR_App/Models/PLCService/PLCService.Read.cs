@@ -228,21 +228,7 @@ namespace SapphireXR_App.Models
         {
             if (aDeviceCurrentValues != null)
             {
-                switch (controllerID)
-                {
-                    case "Temperature":
-                    case "Pressure":
-                    case "Rotation":
-                        return aDeviceCurrentValues[dIndexController[controllerID]];
-
-                    default:
-                        float? maxValue = SettingViewModel.ReadMaxValue(controllerID);
-                        if (maxValue == null)
-                        {
-                            throw new ArgumentException(controllerID + "is not valid analog device ID");
-                        }
-                        return aDeviceCurrentValues[dIndexController[controllerID]] / AnalogControllerOutputVoltage * maxValue.Value;
-                }
+                return aDeviceCurrentValues[dIndexController[controllerID]];
             }
             else
             {

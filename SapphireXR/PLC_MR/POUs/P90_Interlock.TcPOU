@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4026.12">
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4026.11">
   <POU Name="P90_Interlock" Id="{c8b81d81-de46-4c7a-a894-4387b2cd9bf7}" SpecialFunc="None">
     <Declaration><![CDATA[PROGRAM P90_Interlock
 VAR
@@ -418,6 +418,17 @@ END_IF
 // 	P11_E3508.bManAuto_E3508 AND //Temperature Controller Auto : True
 // 	P12_IQ_PLUS.ingPressureControl //Throttle Valve Pressure Control Mode : True 
 // 	;
+GVL_IO.nUIInterockCheckRecipeEnable.0 := NOT(AlarmTrig);
+GVL_IO.nUIInterockCheckRecipeEnable.1 := NOT(WarningTrig);
+GVL_IO.nUIInterockCheckRecipeEnable.2 := NOT(bMaintKey);
+GVL_IO.nUIInterockCheckRecipeEnable.3 := GVL_IO.aInputState[2].4;
+GVL_IO.nUIInterockCheckRecipeEnable.4 := GVL_IO.aInputState[4].6;
+GVL_IO.nUIInterockCheckRecipeEnable.5 := NOT(RCP.cmd_RcpOperation = 10);
+GVL_IO.nUIInterockCheckRecipeEnable.6 := NOT(bGasStateProcess);
+GVL_IO.nUIInterockCheckRecipeEnable.7 := NOT(bGasStateSource);
+GVL_IO.nUIInterockCheckRecipeEnable.8 := NOT(bGasStateVent);
+GVL_IO.nUIInterockCheckRecipeEnable.9 := P11_E3508.bManAuto_E3508;
+GVL_IO.nUIInterockCheckRecipeEnable.10 := P12_IQ_PLUS.ingPressureControl;
 bRecipeStartAvailable := TRUE; // 테스트용 변수
 
 bDorOnEnable :=
@@ -607,6 +618,8 @@ GVL_IO.bDorOnEnable := bDorOnEnable;
       <LineId Id="1258" Count="1" />
       <LineId Id="1262" Count="1" />
       <LineId Id="1243" Count="0" />
+      <LineId Id="1436" Count="0" />
+      <LineId Id="1438" Count="9" />
       <LineId Id="1299" Count="0" />
       <LineId Id="1377" Count="0" />
       <LineId Id="1276" Count="0" />

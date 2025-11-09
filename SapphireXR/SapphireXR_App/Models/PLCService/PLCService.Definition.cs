@@ -198,7 +198,7 @@ namespace SapphireXR_App.Models
         public const uint NumDigitalDevice = 14;
         public const uint NumAnalogDevice = 29;
         public const uint NumReactor = 3;
-        public const int NumRecipeEnableSubConditions = 12;
+        public const int NumRecipeEnableSubConditions = 11;
         public const int NumReactorEnableSubConditions = 10;
         public const float AnalogControllerOutputVoltage = 5.0f;
 

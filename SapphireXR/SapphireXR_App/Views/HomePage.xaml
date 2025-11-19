@@ -567,6 +567,9 @@
                     <TextBlock  Foreground="{StaticResource PrimaryFontColor}" FontSize="16" TextAlignment="Center">C</TextBlock>
                 </Border>
 
+                <Label Canvas.Left="1163" Canvas.Top="276" Foreground="{StaticResource PrimaryFontColor}" Content="Clamp" Width="80" HorizontalContentAlignment="Center"/>
+                <control:OnSwitch x:Name="clamp" Canvas.Left="1191" Canvas.Top="304" RenderTransformOrigin="1.333,11.021" SwitchID="Clamp" />
+
                 <Border Canvas.Left="1229" Canvas.Top="337" BorderThickness="1" BorderBrush="{StaticResource ExhaustLineColor}" Width="22" Height="22">
                     <TextBlock  Foreground="{StaticResource PrimaryFontColor}" FontSize="16" TextAlignment="Center">C</TextBlock>
                 </Border>

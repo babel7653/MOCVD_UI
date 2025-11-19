@@ -1,5 +1,4 @@
-﻿using SapphireXR_App.Enums;
-using SapphireXR_App.WindowServices;
+﻿using SapphireXR_App.ViewModels.Valve;
 using System.Windows;
 using System.Windows.Controls;
 
@@ -10,54 +9,8 @@ namespace SapphireXR_App.Controls
         public OnSwitch()
         {
             InitializeComponent();
+            DataContext = new OnSwitchViewModel();
         }
-        public string SwitchID
-        {
-            get { return (string)GetValue(SwitchIDProperty); }
-            set { SetValue(SwitchIDProperty, value); }
-        }
-        public static readonly DependencyProperty SwitchIDProperty =
-            DependencyProperty.Register("SwitchID", typeof(string), typeof(OnSwitch), new PropertyMetadata(default));
-
-        public bool IsOn
-        {
-            get { return (bool)GetValue(IsOnProperty); }
-            set { SetValue(IsOnProperty, value); }
-        }
-        public static readonly DependencyProperty IsOnProperty =
-            DependencyProperty.Register("IsOn", typeof(bool), typeof(OnSwitch), new PropertyMetadata(default));
-
-        private void OnSwitch_Click(object sender, RoutedEventArgs e)
-        {
-            OnSwitch Switch = (OnSwitch)((Button)e.OriginalSource).Parent;
-            if (Switch.IsOn == true)
-            {
-                var result = ValveOperationEx.Show("Switch Operation", $"{Switch.SwitchID} OFF 하시겠습니까?");
-                switch (result)
-                {
-                    case DialogResult.Ok:
-                        Switch.IsOn = !(Switch.IsOn);
-                        MessageBox.Show($"{Switch.SwitchID} 스위치 OFF");
-                        break;
-                    case DialogResult.Cancel:
-                        MessageBox.Show($"{Switch.SwitchID} 취소됨1");
-                        break;
-                }
-            }
-            else
-            {
-                var result = ValveOperationEx.Show("Switch Operation", $"{Switch.SwitchID} ON 하시겠습니까?");
-                switch (result)
-                {
-                    case DialogResult.Ok:
-                        Switch.IsOn = !(Switch.IsOn);
-                        MessageBox.Show($"{Switch.SwitchID} 스위치 ON");
-                        break;
-                    case DialogResult.Cancel:
-                        MessageBox.Show($"{Switch.SwitchID} 취소됨2");
-                        break;
-                }
-            }
-        }
+        public string? SwitchID { get; set; }
     }
 }

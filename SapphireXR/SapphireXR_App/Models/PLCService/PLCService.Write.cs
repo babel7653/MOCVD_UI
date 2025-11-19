@@ -101,6 +101,24 @@ namespace SapphireXR_App.Models
             if (bOutputCmd1 != null)
             {
                 bOutputCmd1[(int)index] = powerOn;
+                WriteOutputCmd1ToPLC();
+            }
+        }
+
+        public static void WriteClampOnOff(bool onOff)
+        {
+            if (bOutputCmd1 != null)
+            {
+                bOutputCmd1[(int)OutputCmd1Index.ClampOpen] = onOff;
+                bOutputCmd1[(int)OutputCmd1Index.ClampClose] = !onOff;
+                WriteOutputCmd1ToPLC();
+            }
+        }
+
+        private static void WriteOutputCmd1ToPLC()
+        {
+            if (bOutputCmd1 is not null)
+            {
                 int[] array = new int[1];
                 bOutputCmd1.CopyTo(array, 0);
                 Ads.WriteAny(hOutputCmd1, (short)array[0]);

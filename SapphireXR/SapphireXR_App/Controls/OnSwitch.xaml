@@ -4,6 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:SapphireXR_App.Controls"
+             xmlns:i="clr-namespace:Microsoft.Xaml.Behaviors;assembly=Microsoft.Xaml.Behaviors"
              mc:Ignorable="d" 
              x:Name="onSwitch"
              d:DesignHeight="24" d:DesignWidth="24">
@@ -28,10 +29,10 @@
                             <Ellipse x:Name="on" Width="16" Height="16"/>
                         </Border>
                         <ControlTemplate.Triggers>
-                            <DataTrigger Binding="{Binding IsOn, RelativeSource={RelativeSource AncestorType={x:Type local:OnSwitch}}, Mode=TwoWay}" Value="True">
+                            <DataTrigger Binding="{Binding IsOn, Mode=TwoWay}" Value="False">
                                 <Setter TargetName="on" Property="Fill" Value="Red"/>
                             </DataTrigger>
-                            <DataTrigger Binding="{Binding IsOn, RelativeSource={RelativeSource AncestorType={x:Type local:OnSwitch}}, Mode=TwoWay}"  Value="False">
+                            <DataTrigger Binding="{Binding IsOn, Mode=TwoWay}"  Value="True">
                                 <Setter TargetName="on" Property="Fill" Value="White"/>
                             </DataTrigger>
                             <EventTrigger RoutedEvent="MouseEnter">
@@ -47,5 +48,10 @@
             <Setter Property="Cursor" Value="Hand"/>
         </Style>
     </UserControl.Resources>
-    <Button Height="24" Width="24" Style="{StaticResource switchStyle}" Click="OnSwitch_Click"/>
+    <i:Interaction.Triggers>
+        <i:EventTrigger EventName="Loaded">
+            <i:InvokeCommandAction Command="{Binding LoadedCommand}" CommandParameter="{Binding SwitchID, RelativeSource={RelativeSource AncestorType=UserControl}}" />
+        </i:EventTrigger>
+    </i:Interaction.Triggers>
+    <Button Height="24" Width="24" Style="{StaticResource switchStyle}" Command="{Binding ClickCommand}"/>
 </UserControl>

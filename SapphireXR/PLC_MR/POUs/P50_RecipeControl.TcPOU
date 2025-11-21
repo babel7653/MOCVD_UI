@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4026.11">
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4026.12">
   <POU Name="P50_RecipeControl" Id="{e332a806-fd31-4290-a7c3-27f42c11d38e}" SpecialFunc="None">
     <Declaration><![CDATA[PROGRAM P50_RecipeControl
 VAR
@@ -15,6 +15,7 @@ VAR
 	
 	loopCount		: ARRAY[1..100] OF INT;
 	i				: INT;
+	TotalETLast			: TIME := T#0S;
 END_VAR
 VAR CONSTANT
 	Pause_MAX		: TIME := T#1800S;
@@ -24,6 +25,8 @@ END_VAR
       <ST><![CDATA[CASE RCP.cmd_RcpOperation OF
 	0: //Init State
  		f_ResetTimersAndRCPTimes(fbPause_TON := Pause_TON, fbRamp_TON := Ramp_TON, fbHold_TON := Hold_TON);
+		TotalETLast := T#0S;
+		RCP.TotalET := T#0S;
 		
 		FOR i:=1 TO Rcp.iRcpTotalStep DO
 			loopCount[i] := Rcp.aRecipe[i].iRecipe[9];
@@ -53,22 +56,27 @@ END_VAR
 				
 			E_RecipeRun.Ramp: // Ramp 수행
 				Ramp_TON(IN:=TRUE, PT:= RCP.aRecipe[nRcpIndex].iRecipe[2] * T#1S, ET=>RCP.RecipeRunET.ET);
+				RCP.TotalET := TotalETLast + RCP.RecipeRunET.ET;
 				RCP.RecipeRunET.Mode := E_RecipeRunETMode.Ramp;
 				IF Ramp_TON.Q THEN
 					Ramp_TON(IN:=FALSE);
 					eRecipeRun := E_RecipeRun.CheckHoldTemp;
+					TotalETLast := RCP.TotalET;
 				END_IF				
 				
 			E_RecipeRun.CheckHoldTemp: //Hold Temp 확인
 				IF RCP.aRecipe[nRcpIndex].iRecipe[7] = 0 THEN
 					Hold_TON(IN:=TRUE, PT:= RCP.aRecipe[nRcpIndex].iRecipe[3] * T#1S, ET=>RCP.RecipeRunET.ET);
+					RCP.TotalET := TotalETLast + RCP.RecipeRunET.ET;
 					RCP.RecipeRunET.Mode := E_RecipeRunETMode.Hold;
 					IF Hold_TON.Q THEN
 						Hold_TON(IN:=FALSE);
+						TotalETLast := RCP.TotalET;
 						eRecipeRun := E_RecipeRun.End; // 레시피 첫 Column 실행
 					END_IF
 				ELSIF GVL_IO.aController_PV[27] < RCP.aRecipe[nRcpIndex].iRecipe[7] THEN //서셉터 온도가 Wait 온도보다 낮을 때
 					Hold_TON(IN:=FALSE);
+					TotalETLast := RCP.TotalET;
 					eRecipeRun := E_RecipeRun.End; // 레시피 첫 Column 실행
 				ELSE // 서셉터 온도가 Wait 온도보다 높을 때
 					;// 떨어질 때까지 기다림
@@ -117,11 +125,15 @@ END_VAR
 		
 	40: //STOP
 		f_ResetTimersAndRCPTimes(fbPause_TON := Pause_TON, fbRamp_TON := Ramp_TON, fbHold_TON := Hold_TON);
+		TotalETLast := T#0S;
+		RCP.TotalET := T#0S;
 		Rcp.userState := 40;
 		GVL_IO.nCaseSignalTower := 5;
 		
 	50: //END
 		f_ResetTimersAndRCPTimes(fbPause_TON := Pause_TON, fbRamp_TON := Ramp_TON, fbHold_TON := Hold_TON);
+		TotalETLast := T#0S;
+		RCP.TotalET := T#0S;
 		Rcp.userState := 50;
 		fbAnalogDeviceRampControl();
 		GVL_IO.nCaseSignalTower := 5;
@@ -136,15 +148,31 @@ END_CASE
 RCP.iRcpStepN := nRcpIndex;]]></ST>
     </Implementation>
     <LineIds Name="P50_RecipeControl">
-      <LineId Id="1" Count="22" />
+      <LineId Id="1" Count="2" />
+      <LineId Id="132" Count="0" />
+      <LineId Id="136" Count="0" />
+      <LineId Id="4" Count="19" />
       <LineId Id="118" Count="2" />
       <LineId Id="24" Count="5" />
+      <LineId Id="122" Count="0" />
       <LineId Id="110" Count="0" />
-      <LineId Id="30" Count="7" />
+      <LineId Id="30" Count="2" />
+      <LineId Id="125" Count="0" />
+      <LineId Id="33" Count="4" />
+      <LineId Id="127" Count="0" />
       <LineId Id="112" Count="0" />
-      <LineId Id="38" Count="4" />
+      <LineId Id="38" Count="1" />
+      <LineId Id="130" Count="0" />
+      <LineId Id="40" Count="2" />
       <LineId Id="117" Count="0" />
-      <LineId Id="44" Count="64" />
+      <LineId Id="131" Count="0" />
+      <LineId Id="44" Count="47" />
+      <LineId Id="134" Count="0" />
+      <LineId Id="138" Count="0" />
+      <LineId Id="92" Count="4" />
+      <LineId Id="135" Count="0" />
+      <LineId Id="137" Count="0" />
+      <LineId Id="97" Count="11" />
     </LineIds>
   </POU>
 </TcPlcObject>

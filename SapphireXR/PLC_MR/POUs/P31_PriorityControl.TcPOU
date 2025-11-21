@@ -1,32 +1,34 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4026.11">
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4026.12">
   <POU Name="P31_PriorityControl" Id="{1b30a652-8bf4-4fa2-bbbd-1c67b04f4c5a}" SpecialFunc="None">
     <Declaration><![CDATA[PROGRAM P31_PriorityControl
 VAR
 	fbAnalogDeviceRampControl : FB_AnalogDeviceRampControl;
-	pr_TON: TON;
+	i : UINT;
 END_VAR
 VAR_OUTPUT
 	complete : BOOL;
 END_VAR
 ]]></Declaration>
     <Implementation>
-      <ST><![CDATA[pr_TON(IN := TRUE, PT := (1 + GVL_IO.aController[1].input.rampTime) * T#1S);
-fbAnalogDeviceRampControl();
-IF pr_TON.Q = TRUE THEN
-	pr_TON(IN := FALSE);
-	complete := TRUE;
-ELSE 
-	complete := FALSE;
-END_IF ]]></ST>
+      <ST><![CDATA[fbAnalogDeviceRampControl();
+complete := TRUE;
+FOR i := 1 TO GVL_IO.NumAnalogController DO
+	IF GVL_IO.aController[i].targetValueReached = FALSE THEN
+		complete := FALSE;
+		EXIT;
+	END_IF
+END_FOR]]></ST>
     </Implementation>
     <LineIds Name="P31_PriorityControl">
-      <LineId Id="16" Count="0" />
       <LineId Id="1" Count="0" />
-      <LineId Id="10" Count="0" />
-      <LineId Id="17" Count="0" />
-      <LineId Id="13" Count="2" />
+      <LineId Id="20" Count="0" />
       <LineId Id="11" Count="0" />
+      <LineId Id="18" Count="0" />
+      <LineId Id="21" Count="0" />
+      <LineId Id="24" Count="0" />
+      <LineId Id="22" Count="0" />
+      <LineId Id="19" Count="0" />
     </LineIds>
   </POU>
 </TcPlcObject>

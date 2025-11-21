@@ -208,6 +208,30 @@ namespace SapphireXR_App.ViewModels
                 (int, PLCService.RecipeRunETMode)? prevValue = null;
                 private RecipeContext recipeContext;
             }
+
+            private class RecipeTotalElapsedTimeSubscriber : IObserver<TimeSpan>
+            {
+                internal RecipeTotalElapsedTimeSubscriber(RecipeContext context)
+                {
+                    recipeContext = context;
+                }
+                void IObserver<TimeSpan>.OnCompleted()
+                {
+                    throw new NotImplementedException();
+                }
+
+                void IObserver<TimeSpan>.OnError(Exception error)
+                {
+                    throw new NotImplementedException();
+                }
+
+                void IObserver<TimeSpan>.OnNext(TimeSpan value)
+                {
+                    recipeContext.CurrentRecipeTime = value.ToString(@"hh\:mm\:ss"); 
+                }
+
+                RecipeContext recipeContext;
+            }
         }
     }
 }

@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4026.11">
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4026.12">
   <POU Name="F_ResetTimersAndRCPTimes" Id="{cad1d9c5-016c-4366-ba0d-91e43630a276}" SpecialFunc="None">
     <Declaration><![CDATA[FUNCTION F_ResetTimersAndRCPTimes : BOOL
 VAR_IN_OUT // These are references to the actual TON instances and the RCP structure

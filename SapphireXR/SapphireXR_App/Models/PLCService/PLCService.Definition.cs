@@ -224,6 +224,7 @@ namespace SapphireXR_App.Models
         private static ObservableManager<bool>.Publisher? dRecipeEndedPublisher;
         private static ObservableManager<short>.Publisher? dCurrentActiveRecipeIssue;
         private static ObservableManager<float[]>.Publisher? dLineHeaterTemperatureIssuers;
+        private static ObservableManager<TimeSpan>.Publisher? dRecipeControlTotalElapsedTimeIssuer;
         private static ObservableManager<int>.Publisher? dRecipeControlPauseTimeIssuer;
         private static ObservableManager<(int, RecipeRunETMode)>.Publisher? dRecipeRunElapsedTimeIssuer;
         private static ObservableManager<BitArray>.Publisher? dDigitalOutput2;
@@ -281,6 +282,7 @@ namespace SapphireXR_App.Models
         private static uint hRcpTotalStep;
         private static uint hCmd_RcpOperation;
         private static uint hRcpStepN;
+        private static uint hRecipeTotalET;
         private static uint hMonitoring_PV;
         private static uint hInputState;
         private static uint hInputState4;

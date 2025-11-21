@@ -98,6 +98,7 @@ namespace SapphireXR_App.Models
                     {
                         dCurrentActiveRecipeIssue?.Publish(Ads.ReadAny<short>(hRcpStepN));
                         dRecipeControlPauseTimeIssuer?.Publish(Ads.ReadAny<TIME>(hRecipeControlPauseTime).Time.Seconds);
+                        dRecipeControlTotalElapsedTimeIssuer?.Publish(Ads.ReadAny<TIME>(hRecipeTotalET).Time);
                         RecipeRunET recipeRunET = Ads.ReadAny<RecipeRunET>(hRecipeRunET);
                         dRecipeRunElapsedTimeIssuer?.Publish((recipeRunET.ElapsedTime / 1000, recipeRunET.Mode));
                         if (RecipeRunEndNotified == false && Ads.ReadAny<short>(hCmd_RcpOperation) == 50)
@@ -179,6 +180,7 @@ namespace SapphireXR_App.Models
             hUserState = Ads.CreateVariableHandle("RCP.userState");
             hRecipeControlPauseTime = Ads.CreateVariableHandle("RCP.Pause_ET");
             hRecipeRunET = Ads.CreateVariableHandle("RCP.RecipeRunET");
+            hRecipeTotalET = Ads.CreateVariableHandle("RCP.TotalET");
             hE3508InputManAuto = Ads.CreateVariableHandle("GVL_IO.nE3508_nInputManAutoBytes");
             hOutputSetType = Ads.CreateVariableHandle("GVL_IO.nIQPLUS_SetType");
             hOutputMode = Ads.CreateVariableHandle("GVL_IO.nIQPLUS_Mode");
@@ -232,6 +234,7 @@ namespace SapphireXR_App.Models
             dRecipeEndedPublisher = ObservableManager<bool>.Get("RecipeEnded");
             dLineHeaterTemperatureIssuers = ObservableManager<float[]>.Get("LineHeaterTemperature");
             dRecipeControlPauseTimeIssuer = ObservableManager<int>.Get("RecipeControlTime.Pause");
+            dRecipeControlTotalElapsedTimeIssuer = ObservableManager<TimeSpan>.Get("RecipeControlTime.TotalElapsedTime");
             dRecipeRunElapsedTimeIssuer = ObservableManager<(int, RecipeRunETMode)>.Get("RecipeRun.ElapsedTime");
             dDigitalOutput2 = ObservableManager<BitArray>.Get("DigitalOutput2");
             dDigitalOutput3 = ObservableManager<BitArray>.Get("DigitalOutput3");

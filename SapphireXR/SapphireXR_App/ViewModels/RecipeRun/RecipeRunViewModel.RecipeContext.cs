@@ -152,7 +152,7 @@ namespace SapphireXR_App.ViewModels
                     }
                     totalRecipeTime += (loopTototalRecipeTime * loopCount);
                 }
-                TotalRecipeTime = totalRecipeTime;
+                TotalRecipeTime = TimeSpan.FromSeconds(totalRecipeTime).ToString(@"hh\:mm\:ss");
                 TotalStep = Recipes.Count;
             }
 
@@ -191,9 +191,7 @@ namespace SapphireXR_App.ViewModels
                             recipeRunElapsedTimeSubscriber = new RecipeRunElapsedTimeSubscriber(this);
                             recipeRunElapsedTimeUnsubscriber ??= ObservableManager<(int, PLCService.RecipeRunETMode)>.Subscribe("RecipeRun.ElapsedTime", recipeRunElapsedTimeSubscriber);
 
-                            CurrentRecipeTime ??= 0;
-                            CurrentRecipeTime += currentRecipe.RTime;
-                            CurrentRecipeTime += currentRecipe.HTime;
+                        
                             CurrentStep = currentRecipe.No;
                             StepName = currentRecipe.Name;
                             CurrentRampTime = null;
@@ -273,6 +271,8 @@ namespace SapphireXR_App.ViewModels
                 recipeControlPauseTimeSubscriber = null;
                 PauseTime = null;
 
+                totalElapsedTimeSubscriber ??= new RecipeTotalElapsedTimeSubscriber(this);
+                totalElapsedTimeUnsubscriber = ObservableManager<TimeSpan>.Subscribe("RecipeControlTime.TotalElapsedTime", totalElapsedTimeSubscriber);
 
                 startLog();
             }
@@ -335,6 +335,7 @@ namespace SapphireXR_App.ViewModels
                 FileLogger = null;
             }
 
+
             public void loadPLCSubRangeOfRecipes()
             {
                 if(initialized == false)
@@ -383,6 +384,7 @@ namespace SapphireXR_App.ViewModels
                 temperatureControlValueUnsubscriber?.Dispose();
                 recipeRunElapsedTimeUnsubscriber?.Dispose();
                 recipeControlPauseTimeUnsubscriber?.Dispose();
+                totalElapsedTimeUnsubscriber?.Dispose();
             }
 
             public void toLoadedFromFileState()
@@ -402,6 +404,8 @@ namespace SapphireXR_App.ViewModels
                 temperatureControlValueUnsubscriber = null;
                 temperatureControlValueSubscriber = null;
                 recipeRunElapsedTimeUnsubscriber = null;
+                totalElapsedTimeSubscriber = null;
+                totalElapsedTimeUnsubscriber = null;
                 recipeControlPauseTimeUnsubscriber = null;
                 recipeRunElapsedTimeSubscriber = null;
                 recipeControlPauseTimeSubscriber = null;
@@ -493,9 +497,9 @@ namespace SapphireXR_App.ViewModels
             private static readonly Brush DisabledRecipeListForeground = App.Current.FindResource("DisabledRecipeListForeground") as Brush ?? new SolidColorBrush(Color.FromRgb(0x73, 0x73, 0x73));
 
             [ObservableProperty]
-            private int? _currentRecipeTime = null;
+            private string? _currentRecipeTime = null;
             [ObservableProperty]
-            private int? _totalRecipeTime = null;
+            private string? _totalRecipeTime = null;
             [ObservableProperty]
             private int? _currentStep = null;
             [ObservableProperty]
@@ -524,6 +528,8 @@ namespace SapphireXR_App.ViewModels
             private int? _currentWaitTemp = null;
             [ObservableProperty]
             private int? _totalWaitTemp = null;
+            [ObservableProperty]
+            private int? _elapsedTime = null;
 
             public Recipe? currentRecipe = null;
             public int currentRecipeIndex = -1;
@@ -535,6 +541,8 @@ namespace SapphireXR_App.ViewModels
             private IDisposable? recipeControlPauseTimeUnsubscriber = null;
             private RecipeRunElapsedTimeSubscriber? recipeRunElapsedTimeSubscriber = null;
             private IDisposable? recipeRunElapsedTimeUnsubscriber = null;
+            private RecipeTotalElapsedTimeSubscriber? totalElapsedTimeSubscriber = null;
+            private IDisposable? totalElapsedTimeUnsubscriber = null;
 
             private LoopContext[] loopContexts = [];
             private static LoopContext EmptyLoopContext = new LoopContext();

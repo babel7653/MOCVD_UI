@@ -3,7 +3,6 @@ using CommunityToolkit.Mvvm.Input;
 using SapphireXR_App.Enums;
 using SapphireXR_App.Models;
 using SapphireXR_App.WindowServices;
-using static SapphireXR_App.Models.PLCService;
 
 namespace SapphireXR_App.ViewModels
 {

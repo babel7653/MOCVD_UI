@@ -445,7 +445,7 @@ IF  GVL_IO.aController_PV[27] < GVL_IO.aInterlockSet[13] THEN
 ELSE
 	bOpenEnableTemp := FALSE;
 END_IF
-IF  GVL_IO.aController_PV[28] < GVL_IO.aInterlockSet[14] THEN
+IF  GVL_IO.aController_PV[28] > GVL_IO.aInterlockSet[14] THEN
 	bOpenEnablePress := TRUE;
 ELSE
 	bOpenEnablePress := FALSE;
@@ -457,10 +457,8 @@ bDorOffEnable :=
 	bGasStateProcess AND //Safety Process Gas : TRUE
 	bGasStateSource AND //Safety Source Gas : TRUE
 	bGasStateVent AND //Vent Valve는 펌프 뒤쪽 Open
-	GVL_IO.aInterlockEnable[6].4 AND //Can Open Temperature Check
 	bOpenEnableTemp AND
-	GVL_IO.aInterlockEnable[6].5 AND //Can Open Pressure Check
-	bOpenEnablePress ;
+	bOpenEnablePress;
 GVL_IO.nUIInterockCheckOpenReactor.0 := NOT(AlarmTrig);
 GVL_IO.nUIInterockCheckOpenReactor.1 := bOpenEnableTemp;
 GVL_IO.nUIInterockCheckOpenReactor.2 := bOpenEnablePress;
@@ -469,8 +467,8 @@ GVL_IO.nUIInterockCheckOpenReactor.4 := RCP.userState <> 10;
 GVL_IO.nUIInterockCheckOpenReactor.5 := bGasStateProcess;
 GVL_IO.nUIInterockCheckOpenReactor.6 := bGasStateSource;
 GVL_IO.nUIInterockCheckOpenReactor.7 := bGasStateVent;
-GVL_IO.nUIInterockCheckOpenReactor.8 := GVL_IO.aInterlockEnable[6].4;
-GVL_IO.nUIInterockCheckOpenReactor.9 := GVL_IO.aInterlockEnable[6].5;
+GVL_IO.nUIInterockCheckOpenReactor.8 := bOpenEnableTemp;
+GVL_IO.nUIInterockCheckOpenReactor.9 := bOpenEnablePress;
 bReactorOpenEnable := bDorOffEnable;
 
 (* Out to Device*)
@@ -639,7 +637,7 @@ GVL_IO.aDigitalOutputIO[4].5 := GVL_IO.aOutputCmd[1].14;]]></ST>
       <LineId Id="1293" Count="0" />
       <LineId Id="1289" Count="2" />
       <LineId Id="1286" Count="0" />
-      <LineId Id="1341" Count="2" />
+      <LineId Id="1342" Count="0" />
       <LineId Id="1294" Count="0" />
       <LineId Id="1292" Count="0" />
       <LineId Id="1424" Count="0" />

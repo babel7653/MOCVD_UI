@@ -1,5 +1,4 @@
 ﻿using SapphireXR_App.ViewModels.Valve;
-using System.Windows;
 using System.Windows.Controls;
 
 namespace SapphireXR_App.Controls

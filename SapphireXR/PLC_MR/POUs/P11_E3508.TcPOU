@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4026.11">
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.15">
   <POU Name="P11_E3508" Id="{a7e3d6a1-82f0-4607-8ac9-093cb5f931f5}" SpecialFunc="None">
     <Declaration><![CDATA[PROGRAM P11_E3508
 VAR
@@ -86,7 +86,7 @@ GVL_IO.wE3508_PV		:= wE3508_PV;
 // bOutputManAuto := GVL_IO.aOutputCmd[1].11; //Temp Controller Mode Command
 // nOutputManAutoBytes.0 	:= GVL_IO.aOutputCmd[1].11; //Command
 
-IF nInputManAutoBytes.7 THEN // Read form E3508 Mode, 0:Man 1:Auto
+IF nInputManAutoBytes.0 THEN // Read form E3508 Mode, 1:Man 0:Auto
 	wOutputPowerSVBytes 	:= WORD_TO_USINT_Bit(wControlValue*10); //multiple to 10, Power Reate Set Value
 	aOutputPowerBytes[1] 	:= wOutputPowerSVBytes.Lower;
 	aOutputPowerBytes[2] 	:= wOutputPowerSVBytes.Upper;

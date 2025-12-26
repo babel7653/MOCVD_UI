@@ -1,10 +1,9 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4026.11">
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.15">
   <POU Name="P15_RotationOperation" Id="{7f828812-d1bb-49a4-a03d-f3e347855c39}" SpecialFunc="None">
     <Declaration><![CDATA[PROGRAM P15_RotationOperation
 VAR
 	rControlValue			: REAL; //rpm
-	bStart_Stop				: BOOL := TRUE;
 	bAlarmReset				: BOOL; //Motor Driver Alarm
 
 	bRotationCP				: BOOL;
@@ -48,6 +47,7 @@ ELSIF (GVL_IO.aController[29].input.targetValue = 0) AND (wRotaion_PV = 0) THEN
 	bBrake_Run := FALSE;
 END_IF
 
+GVL_IO.aDigitalOutputIO[3].4 	:= bBrake_Run;
 GVL_IO.aDigitalOutputIO[3].5 	:= bBrake_Run;
 GVL_IO.aAnalogOutputIO[28] 		:= REAL_TO_INT(rConvertedCV);
 GVL_IO.aInputState[1].11		:= isRotationFault;]]></ST>
@@ -68,6 +68,7 @@ GVL_IO.aInputState[1].11		:= isRotationFault;]]></ST>
       <LineId Id="148" Count="1" />
       <LineId Id="151" Count="1" />
       <LineId Id="154" Count="0" />
+      <LineId Id="195" Count="0" />
       <LineId Id="95" Count="0" />
       <LineId Id="98" Count="0" />
       <LineId Id="5" Count="0" />
